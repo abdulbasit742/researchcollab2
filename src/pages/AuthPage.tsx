@@ -32,7 +32,7 @@ export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { user, userRole, signIn, signUp, signInWithGoogle, isLoading: authLoading } = useAuth();
+  const { user, userRole, profile, signIn, signUp, signInWithGoogle, isLoading: authLoading } = useAuth();
 
   // Form state
   const [email, setEmail] = useState("");
@@ -44,10 +44,15 @@ export default function AuthPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (!authLoading && user && userRole) {
-      const redirectPath = getRoleBasedRedirect(userRole.role);
-      navigate(redirectPath);
+      // Check if onboarding is completed
+      if (!profile?.onboarding_completed) {
+        navigate("/onboarding");
+      } else {
+        const redirectPath = getRoleBasedRedirect(userRole.role);
+        navigate(redirectPath);
+      }
     }
-  }, [user, userRole, authLoading, navigate]);
+  }, [user, userRole, profile, authLoading, navigate]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();

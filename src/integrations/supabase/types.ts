@@ -17,23 +17,50 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string
+          department: string | null
+          education_level: string | null
           first_name: string | null
+          full_name: string | null
           id: string
+          interests: string[] | null
           last_name: string | null
+          location: string | null
+          onboarding_completed: boolean | null
+          research_level: string | null
+          role: string | null
+          university: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
+          department?: string | null
+          education_level?: string | null
           first_name?: string | null
+          full_name?: string | null
           id: string
+          interests?: string[] | null
           last_name?: string | null
+          location?: string | null
+          onboarding_completed?: boolean | null
+          research_level?: string | null
+          role?: string | null
+          university?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
+          department?: string | null
+          education_level?: string | null
           first_name?: string | null
+          full_name?: string | null
           id?: string
+          interests?: string[] | null
           last_name?: string | null
+          location?: string | null
+          onboarding_completed?: boolean | null
+          research_level?: string | null
+          role?: string | null
+          university?: string | null
           updated_at?: string
         }
         Relationships: []

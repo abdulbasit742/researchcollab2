@@ -7,6 +7,15 @@ export interface Profile {
   id: string;
   first_name: string | null;
   last_name: string | null;
+  full_name: string | null;
+  role: string | null;
+  education_level: string | null;
+  department: string | null;
+  research_level: string | null;
+  location: string | null;
+  university: string | null;
+  interests: string[] | null;
+  onboarding_completed: boolean | null;
   created_at: string;
   updated_at: string;
 }
@@ -238,11 +247,11 @@ export function useAuth() {
 export function getRoleBasedRedirect(role: string | undefined): string {
   switch (role) {
     case "admin":
-      return "/admin/finance";
+      return "/dashboard/admin";
     case "researcher":
-      return "/profile/researcher";
+      return "/dashboard/researcher";
     case "student":
     default:
-      return "/profile/student";
+      return "/dashboard/student";
   }
 }

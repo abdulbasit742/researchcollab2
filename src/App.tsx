@@ -8,6 +8,10 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
+import OnboardingPage from "./pages/OnboardingPage";
+import StudentDashboard from "./pages/dashboard/StudentDashboard";
+import ResearcherDashboard from "./pages/dashboard/ResearcherDashboard";
+import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import ToolsPage from "./pages/ToolsPage";
 import CollaborationsPage from "./pages/CollaborationsPage";
 import EarnPage from "./pages/EarnPage";
@@ -58,7 +62,11 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/dashboard/student" element={<StudentDashboard />} />
+            <Route path="/dashboard/researcher" element={<ResearcherDashboard />} />
+            <Route path="/dashboard/admin" element={<AdminDashboard />} />
             <Route path="/tools" element={<ToolsPage />} />
             <Route path="/collaborations" element={<CollaborationsPage />} />
             <Route path="/earn" element={<EarnPage />} />
