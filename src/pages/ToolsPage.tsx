@@ -12,8 +12,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, Sparkles, Star, Check, ArrowRight, Zap, Brain, Bot, MessageSquare } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Search, Sparkles, Star, Check, ArrowRight, Zap, Brain, Bot, MessageSquare, MessageCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const tools = [
   {
@@ -28,6 +38,7 @@ const tools = [
     features: ["Advanced reasoning", "Code analysis", "Academic writing", "Data interpretation"],
     popular: true,
     color: "from-emerald-500 to-teal-500",
+    plans: ["Semi-private", "Private", "BYO Account"],
   },
   {
     id: "perplexity",
@@ -41,6 +52,7 @@ const tools = [
     features: ["Real-time search", "Academic citations", "Source verification", "Deep research"],
     popular: false,
     color: "from-blue-500 to-cyan-500",
+    plans: ["Semi-private", "Private"],
   },
   {
     id: "gemini",
@@ -54,6 +66,7 @@ const tools = [
     features: ["Multimodal analysis", "Image understanding", "Long context", "Research synthesis"],
     popular: true,
     color: "from-violet-500 to-purple-600",
+    plans: ["Semi-private", "Private", "BYO Account"],
   },
   {
     id: "grok",
@@ -67,6 +80,7 @@ const tools = [
     features: ["Real-time updates", "Humor & wit", "X integration", "Current events"],
     popular: false,
     color: "from-orange-500 to-amber-500",
+    plans: ["Semi-private", "Private"],
   },
   {
     id: "claude",
@@ -80,6 +94,7 @@ const tools = [
     features: ["Thoughtful analysis", "Long documents", "Safety-focused", "Academic excellence"],
     popular: true,
     color: "from-pink-500 to-rose-500",
+    plans: ["Semi-private", "Private", "BYO Account"],
   },
   {
     id: "research-ai",
@@ -93,6 +108,7 @@ const tools = [
     features: ["Paper writing", "Literature review", "Citation generation", "Plagiarism check"],
     popular: false,
     color: "from-slate-500 to-gray-600",
+    plans: ["Semi-private", "Private"],
   },
 ];
 
@@ -104,15 +120,65 @@ const categories = [
   { value: "coding", label: "Coding" },
 ];
 
+const durations = [
+  { value: "1", label: "1 Month" },
+  { value: "3", label: "3 Months" },
+  { value: "6", label: "6 Months" },
+];
+
 export default function ToolsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("all");
+  const [selectedTool, setSelectedTool] = useState<typeof tools[0] | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState("");
+  const [selectedDuration, setSelectedDuration] = useState("1");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { toast } = useToast();
+  const { user, profile } = useAuth();
 
-  const handleSubscribe = (toolName: string) => {
+  const openWhatsAppModal = (tool: typeof tools[0]) => {
+    setSelectedTool(tool);
+    setSelectedPlan(tool.plans[0]);
+    setSelectedDuration("1");
+    setIsModalOpen(true);
+  };
+
+  const generateWhatsAppLink = () => {
+    if (!selectedTool) return "";
+
+    const fullName = profile?.full_name || "User";
+    const educationLevel = profile?.education_level || "Not specified";
+    const department = profile?.department || "Not specified";
+    const email = user?.email || "Not provided";
+
+    const message = `Assalam o Alaikum,
+
+I want to subscribe to *${selectedTool.name}*
+
+📋 *Subscription Details:*
+- Plan: ${selectedPlan}
+- Duration: ${selectedDuration} Month(s)
+- Price: $${selectedTool.price}/month
+
+👤 *My Profile:*
+- Name: ${fullName}
+- Education: ${educationLevel}
+- Department: ${department}
+- Email: ${email}
+
+Please guide me through the subscription process. JazakAllah!`;
+
+    const encodedMessage = encodeURIComponent(message);
+    return `https://wa.me/92318178154?text=${encodedMessage}`;
+  };
+
+  const handleWhatsAppSubscribe = () => {
+    const link = generateWhatsAppLink();
+    window.open(link, "_blank");
+    setIsModalOpen(false);
     toast({
-      title: "Subscription Started",
-      description: `You've subscribed to ${toolName}. Redirecting to checkout...`,
+      title: "WhatsApp Opened",
+      description: "Complete your subscription request on WhatsApp. We'll confirm shortly!",
     });
   };
 
@@ -229,11 +295,11 @@ export default function ToolsPage() {
                     <span className="text-sm text-primary font-medium">/month</span>
                   </div>
                   <Button
-                    className="w-full"
-                    onClick={() => handleSubscribe(tool.name)}
+                    className="w-full bg-green-600 hover:bg-green-700"
+                    onClick={() => openWhatsAppModal(tool)}
                   >
-                    Subscribe Now
-                    <ArrowRight className="h-4 w-4" />
+                    <MessageCircle className="h-4 w-4" />
+                    Subscribe via WhatsApp
                   </Button>
                 </CardFooter>
               </Card>
@@ -266,16 +332,114 @@ export default function ToolsPage() {
                 </div>
                 <Button
                   size="xl"
-                  className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                  onClick={() => {
+                    const bundleMessage = encodeURIComponent(`Assalam o Alaikum,
+
+I want to subscribe to the *Complete Research Bundle* (All 6 Tools) for $79/month.
+
+👤 *My Profile:*
+- Name: ${profile?.full_name || "User"}
+- Education: ${profile?.education_level || "Not specified"}
+- Department: ${profile?.department || "Not specified"}
+- Email: ${user?.email || "Not provided"}
+
+Please guide me through the subscription process. JazakAllah!`);
+                    window.open(`https://wa.me/92318178154?text=${bundleMessage}`, "_blank");
+                  }}
                 >
-                  Get Bundle
-                  <ArrowRight className="h-5 w-5" />
+                  <MessageCircle className="h-5 w-5" />
+                  Get Bundle via WhatsApp
                 </Button>
               </div>
             </CardContent>
           </Card>
         </motion.div>
       </div>
+
+      {/* WhatsApp Subscription Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <MessageCircle className="h-5 w-5 text-green-600" />
+              Subscribe via WhatsApp
+            </DialogTitle>
+            <DialogDescription>
+              Configure your subscription for {selectedTool?.name}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            {/* Plan Selection */}
+            <div className="space-y-2">
+              <Label>Select Plan</Label>
+              <Select value={selectedPlan} onValueChange={setSelectedPlan}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Choose a plan" />
+                </SelectTrigger>
+                <SelectContent>
+                  {selectedTool?.plans.map((plan) => (
+                    <SelectItem key={plan} value={plan}>
+                      {plan}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Duration Selection */}
+            <div className="space-y-2">
+              <Label>Subscription Duration</Label>
+              <Select value={selectedDuration} onValueChange={setSelectedDuration}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Choose duration" />
+                </SelectTrigger>
+                <SelectContent>
+                  {durations.map((duration) => (
+                    <SelectItem key={duration.value} value={duration.value}>
+                      {duration.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Price Summary */}
+            <div className="p-4 rounded-lg bg-muted">
+              <div className="flex justify-between text-sm">
+                <span>Price per month:</span>
+                <span className="font-medium">${selectedTool?.price}</span>
+              </div>
+              <div className="flex justify-between text-sm mt-2">
+                <span>Duration:</span>
+                <span className="font-medium">{selectedDuration} month(s)</span>
+              </div>
+              <div className="flex justify-between font-bold mt-2 pt-2 border-t">
+                <span>Total:</span>
+                <span>${(selectedTool?.price || 0) * parseInt(selectedDuration)}</span>
+              </div>
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              Click below to open WhatsApp with a pre-filled message. Our team will confirm your subscription.
+            </p>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              className="bg-green-600 hover:bg-green-700"
+              onClick={handleWhatsAppSubscribe}
+            >
+              <MessageCircle className="h-4 w-4" />
+              Open WhatsApp
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </MainLayout>
   );
 }
