@@ -27,6 +27,11 @@ import AdminSubscriptionsPage from "./pages/AdminSubscriptionsPage";
 import AffiliateDashboardPage from "./pages/AffiliateDashboardPage";
 import AffiliateAssetsPage from "./pages/AffiliateAssetsPage";
 import AdminAffiliatePage from "./pages/AdminAffiliatePage";
+import VerificationCenterPage from "./pages/VerificationCenterPage";
+import StudentVerificationPage from "./pages/StudentVerificationPage";
+import ResearcherVerificationPage from "./pages/ResearcherVerificationPage";
+import PartnerVerificationPage from "./pages/PartnerVerificationPage";
+import AdminVerificationsPage from "./pages/AdminVerificationsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -60,10 +65,15 @@ const App = () => (
           <Route path="/admin/fulfillment" element={<AdminFulfillmentPage />} />
           <Route path="/admin/subscriptions" element={<AdminSubscriptionsPage />} />
           <Route path="/admin/affiliates" element={<AdminAffiliatePage />} />
+          <Route path="/admin/verifications" element={<AdminVerificationsPage />} />
           <Route path="/wallet" element={<WalletPage />} />
           <Route path="/subscriptions" element={<SubscriptionsPage />} />
           <Route path="/affiliate" element={<AffiliateDashboardPage />} />
           <Route path="/affiliate/assets" element={<AffiliateAssetsPage />} />
+          <Route path="/verification" element={<VerificationCenterPage />} />
+          <Route path="/verification/student" element={<StudentVerificationPage />} />
+          <Route path="/verification/researcher" element={<ResearcherVerificationPage />} />
+          <Route path="/verification/partner" element={<PartnerVerificationPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
