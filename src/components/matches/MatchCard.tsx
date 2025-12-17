@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MapPin, GraduationCap, Briefcase, Star, CheckCircle2, MessageSquare, Send } from "lucide-react";
 import { UserProfile } from "@/data/users";
 import { QuickOfferModal } from "@/components/offers/QuickOfferModal";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface MatchCardProps {
   user: UserProfile;
@@ -26,10 +27,14 @@ export function MatchCard({
   status = null 
 }: MatchCardProps) {
   const [showOfferModal, setShowOfferModal] = useState(false);
+  const { user: authUser } = useAuth();
   const isStudent = user.type === "student";
   const tags = isStudent 
     ? user.skills.slice(0, 3) 
     : user.researchInterests.slice(0, 3);
+
+  // If viewing own profile, link to /profile, otherwise link to /u/:id
+  const profileLink = authUser?.id === user.id ? "/profile" : `/u/${user.id}`;
 
   const getStatusBadge = () => {
     if (!status) return null;
@@ -112,7 +117,7 @@ export function MatchCard({
         </CardContent>
 
         <CardFooter className="p-4 pt-0 gap-2 flex-wrap">
-          <Link to={`/profile/${user.type}/${user.id}`} className="flex-1 min-w-[100px]">
+          <Link to={profileLink} className="flex-1 min-w-[100px]">
             <Button variant="outline" className="w-full" size="sm">
               View Profile
             </Button>

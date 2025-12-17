@@ -22,6 +22,7 @@ import SmartMatchingPage from "./pages/SmartMatchingPage";
 import StudentProfilePage from "./pages/StudentProfilePage";
 import ResearcherProfilePage from "./pages/ResearcherProfilePage";
 import ResearcherPublicProfilePage from "./pages/ResearcherPublicProfilePage";
+import UserPublicProfilePage from "./pages/UserPublicProfilePage";
 import BlogPage from "./pages/BlogPage";
 import OffersPage from "./pages/OffersPage";
 import OfferDetailPage from "./pages/OfferDetailPage";
@@ -65,6 +66,7 @@ const App = () => (
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/u/:id" element={<UserPublicProfilePage />} />
             <Route path="/dashboard/student" element={<StudentDashboard />} />
             <Route path="/dashboard/researcher" element={<ResearcherDashboard />} />
             <Route path="/dashboard/admin" element={<AdminDashboard />} />
