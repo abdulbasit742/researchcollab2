@@ -90,6 +90,11 @@ export function Navbar() {
 
         <div className="hidden md:flex items-center gap-3">
           <NotificationBell />
+          <Link to="/wallet">
+            <Button variant="ghost" size="sm">
+              My Wallet
+            </Button>
+          </Link>
           <Link to="/offers">
             <Button variant="ghost" size="sm">
               My Offers
