@@ -21,6 +21,7 @@ import MatchesPage from "./pages/MatchesPage";
 import SmartMatchingPage from "./pages/SmartMatchingPage";
 import StudentProfilePage from "./pages/StudentProfilePage";
 import ResearcherProfilePage from "./pages/ResearcherProfilePage";
+import ResearcherPublicProfilePage from "./pages/ResearcherPublicProfilePage";
 import BlogPage from "./pages/BlogPage";
 import OffersPage from "./pages/OffersPage";
 import OfferDetailPage from "./pages/OfferDetailPage";
@@ -69,6 +70,7 @@ const App = () => (
             <Route path="/dashboard/admin" element={<AdminDashboard />} />
             <Route path="/tools" element={<ToolsPage />} />
             <Route path="/collaborations" element={<CollaborationsPage />} />
+            <Route path="/researcher/:id" element={<ResearcherPublicProfilePage />} />
             <Route path="/earn" element={<EarnPage />} />
             <Route path="/earn/jobs" element={<JobsPage />} />
             <Route path="/fyp-services" element={<FYPServicesPage />} />

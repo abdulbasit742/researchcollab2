@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ import { useToast } from "@/hooks/use-toast";
 const collaborations = [
   {
     id: 1,
+    researcherId: "researcher-1",
     title: "Machine Learning Research for Climate Analysis",
     description: "Looking for researchers with ML expertise to analyze climate data patterns and develop predictive models for environmental changes.",
     owner: {
@@ -45,6 +47,7 @@ const collaborations = [
   },
   {
     id: 2,
+    researcherId: "researcher-2",
     title: "Quantum Computing Algorithm Development",
     description: "Seeking collaborators for developing novel quantum algorithms for optimization problems in logistics and supply chain management.",
     owner: {
@@ -61,6 +64,7 @@ const collaborations = [
   },
   {
     id: 3,
+    researcherId: "researcher-3",
     title: "Biomedical Image Analysis Using Deep Learning",
     description: "Collaborative research project on developing AI models for early detection of diseases from medical imaging data.",
     owner: {
@@ -77,6 +81,7 @@ const collaborations = [
   },
   {
     id: 4,
+    researcherId: "researcher-4",
     title: "Natural Language Processing for Legal Documents",
     description: "Research collaboration on developing NLP models for automated analysis and summarization of legal documents.",
     owner: {
@@ -93,6 +98,7 @@ const collaborations = [
   },
   {
     id: 5,
+    researcherId: "researcher-5",
     title: "Renewable Energy Optimization Study",
     description: "Multi-disciplinary research on optimizing renewable energy grid integration using AI and IoT technologies.",
     owner: {
@@ -109,6 +115,7 @@ const collaborations = [
   },
   {
     id: 6,
+    researcherId: "researcher-6",
     title: "Social Media Sentiment Analysis Research",
     description: "Analyzing social media trends and sentiment patterns to understand public opinion dynamics on global issues.",
     owner: {
@@ -140,12 +147,17 @@ export default function CollaborationsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [discipline, setDiscipline] = useState("All Disciplines");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleApply = (title: string) => {
     toast({
       title: "Application Submitted!",
       description: `Your application for "${title}" has been sent.`,
     });
+  };
+
+  const handleResearcherClick = (researcherId: string) => {
+    navigate(`/researcher/${researcherId}`);
   };
 
   return (
@@ -230,7 +242,10 @@ export default function CollaborationsPage() {
 
                 <CardHeader>
                   <div className="flex items-start gap-4">
-                    <Avatar className="h-12 w-12">
+                    <Avatar 
+                      className="h-12 w-12 cursor-pointer hover:ring-2 hover:ring-primary transition-all"
+                      onClick={() => handleResearcherClick(collab.researcherId)}
+                    >
                       <AvatarImage src={collab.owner.avatar} />
                       <AvatarFallback>
                         {collab.owner.name.split(" ").map((n) => n[0]).join("")}
@@ -239,9 +254,19 @@ export default function CollaborationsPage() {
                     <div className="flex-1">
                       <CardTitle className="text-xl pr-20">{collab.title}</CardTitle>
                       <CardDescription className="mt-1">
-                        <span className="font-medium text-foreground">{collab.owner.name}</span>
+                        <span 
+                          className="font-medium text-foreground cursor-pointer hover:text-primary transition-colors"
+                          onClick={() => handleResearcherClick(collab.researcherId)}
+                        >
+                          {collab.owner.name}
+                        </span>
                         <span className="mx-2">•</span>
-                        {collab.owner.university}
+                        <span 
+                          className="cursor-pointer hover:text-primary transition-colors"
+                          onClick={() => handleResearcherClick(collab.researcherId)}
+                        >
+                          {collab.owner.university}
+                        </span>
                       </CardDescription>
                     </div>
                   </div>
