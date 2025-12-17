@@ -5,12 +5,13 @@ import { Button } from "@/components/ui/button";
 import {
   Menu,
   X,
-  ChevronDown,
   GraduationCap,
   Users,
   Briefcase,
   Wrench,
-  LayoutDashboard,
+  Sparkles,
+  BookOpen,
+  Heart,
 } from "lucide-react";
 
 const navItems = [
@@ -18,6 +19,16 @@ const navItems = [
     label: "Collaborate",
     href: "/collaborations",
     icon: Users,
+  },
+  {
+    label: "Matches",
+    href: "/matches",
+    icon: Heart,
+  },
+  {
+    label: "Smart Matching",
+    href: "/smart-matching",
+    icon: Sparkles,
   },
   {
     label: "AI Tools",
@@ -33,6 +44,11 @@ const navItems = [
     label: "FYP Services",
     href: "/fyp-services",
     icon: GraduationCap,
+  },
+  {
+    label: "Blog",
+    href: "/blog",
+    icon: BookOpen,
   },
 ];
 
@@ -53,12 +69,12 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-1">
           {navItems.map((item) => (
             <Link
               key={item.href}
               to={item.href}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 location.pathname === item.href
                   ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -83,7 +99,7 @@ export function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden p-2 rounded-lg hover:bg-muted"
+          className="lg:hidden p-2 rounded-lg hover:bg-muted"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -97,7 +113,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t bg-background"
+            className="lg:hidden border-t bg-background"
           >
             <div className="container py-4 space-y-2">
               {navItems.map((item) => (
