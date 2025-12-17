@@ -14,6 +14,7 @@ import {
   BookOpen,
   Heart,
   FileText,
+  Share2,
 } from "lucide-react";
 
 const navItems = [
@@ -46,6 +47,11 @@ const navItems = [
     label: "Jobs",
     href: "/earn/jobs",
     icon: FileText,
+  },
+  {
+    label: "Affiliate",
+    href: "/affiliate",
+    icon: Share2,
   },
   {
     label: "Blog",
