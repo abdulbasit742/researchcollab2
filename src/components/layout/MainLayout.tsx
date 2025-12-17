@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { FloatingSupportChat } from "@/components/support/FloatingSupportChat";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -12,6 +13,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
+      <FloatingSupportChat />
     </div>
   );
 }
