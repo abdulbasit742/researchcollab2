@@ -32,6 +32,15 @@ import StudentVerificationPage from "./pages/StudentVerificationPage";
 import ResearcherVerificationPage from "./pages/ResearcherVerificationPage";
 import PartnerVerificationPage from "./pages/PartnerVerificationPage";
 import AdminVerificationsPage from "./pages/AdminVerificationsPage";
+import OrganizationsListPage from "./pages/OrganizationsListPage";
+import OrganizationDashboardPage from "./pages/OrganizationDashboardPage";
+import OrganizationMembersPage from "./pages/OrganizationMembersPage";
+import OrganizationToolsPage from "./pages/OrganizationToolsPage";
+import OrganizationProjectsPage from "./pages/OrganizationProjectsPage";
+import OrganizationBillingPage from "./pages/OrganizationBillingPage";
+import AdminEnterprisePage from "./pages/AdminEnterprisePage";
+import AIProjectScopePage from "./pages/AIProjectScopePage";
+import AdminAIPricingPage from "./pages/AdminAIPricingPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -66,6 +75,8 @@ const App = () => (
           <Route path="/admin/subscriptions" element={<AdminSubscriptionsPage />} />
           <Route path="/admin/affiliates" element={<AdminAffiliatePage />} />
           <Route path="/admin/verifications" element={<AdminVerificationsPage />} />
+          <Route path="/admin/enterprise" element={<AdminEnterprisePage />} />
+          <Route path="/admin/ai-pricing" element={<AdminAIPricingPage />} />
           <Route path="/wallet" element={<WalletPage />} />
           <Route path="/subscriptions" element={<SubscriptionsPage />} />
           <Route path="/affiliate" element={<AffiliateDashboardPage />} />
@@ -74,6 +85,13 @@ const App = () => (
           <Route path="/verification/student" element={<StudentVerificationPage />} />
           <Route path="/verification/researcher" element={<ResearcherVerificationPage />} />
           <Route path="/verification/partner" element={<PartnerVerificationPage />} />
+          <Route path="/org" element={<OrganizationsListPage />} />
+          <Route path="/org/:id/dashboard" element={<OrganizationDashboardPage />} />
+          <Route path="/org/:id/members" element={<OrganizationMembersPage />} />
+          <Route path="/org/:id/tools" element={<OrganizationToolsPage />} />
+          <Route path="/org/:id/projects" element={<OrganizationProjectsPage />} />
+          <Route path="/org/:id/billing" element={<OrganizationBillingPage />} />
+          <Route path="/ai/project-scope" element={<AIProjectScopePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
