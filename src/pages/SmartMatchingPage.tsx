@@ -204,7 +204,7 @@ export default function SmartMatchingPage() {
                     </div>
 
                     <div className="mt-4 flex gap-2">
-                      <Link to={`/profile/${user.type}/${user.id}`} className="flex-1">
+                      <Link to={`/u/${user.id}`} className="flex-1">
                         <Button variant="outline" className="w-full" size="sm">
                           View Profile
                         </Button>
