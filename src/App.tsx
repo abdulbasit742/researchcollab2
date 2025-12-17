@@ -15,6 +15,11 @@ import SmartMatchingPage from "./pages/SmartMatchingPage";
 import StudentProfilePage from "./pages/StudentProfilePage";
 import ResearcherProfilePage from "./pages/ResearcherProfilePage";
 import BlogPage from "./pages/BlogPage";
+import OffersPage from "./pages/OffersPage";
+import OfferDetailPage from "./pages/OfferDetailPage";
+import WorkRoomPage from "./pages/WorkRoomPage";
+import JobsPage from "./pages/JobsPage";
+import AdminFinancePage from "./pages/AdminFinancePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +36,7 @@ const App = () => (
           <Route path="/tools" element={<ToolsPage />} />
           <Route path="/collaborations" element={<CollaborationsPage />} />
           <Route path="/earn" element={<EarnPage />} />
+          <Route path="/earn/jobs" element={<JobsPage />} />
           <Route path="/fyp-services" element={<FYPServicesPage />} />
           <Route path="/grants" element={<GrantsPage />} />
           <Route path="/matches" element={<MatchesPage />} />
@@ -40,7 +46,10 @@ const App = () => (
           <Route path="/profile/researcher" element={<ResearcherProfilePage />} />
           <Route path="/profile/researcher/:id" element={<ResearcherProfilePage />} />
           <Route path="/blog" element={<BlogPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/offers" element={<OffersPage />} />
+          <Route path="/offers/:id" element={<OfferDetailPage />} />
+          <Route path="/workroom/:offerId" element={<WorkRoomPage />} />
+          <Route path="/admin/finance" element={<AdminFinancePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
