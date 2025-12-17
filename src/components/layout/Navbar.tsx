@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { NotificationBell } from "@/components/layout/NotificationBell";
 import {
   Menu,
   X,
@@ -12,6 +13,7 @@ import {
   Sparkles,
   BookOpen,
   Heart,
+  FileText,
 } from "lucide-react";
 
 const navItems = [
@@ -41,9 +43,9 @@ const navItems = [
     icon: Briefcase,
   },
   {
-    label: "FYP Services",
-    href: "/fyp-services",
-    icon: GraduationCap,
+    label: "Jobs",
+    href: "/earn/jobs",
+    icon: FileText,
   },
   {
     label: "Blog",
@@ -87,6 +89,12 @@ export function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
+          <NotificationBell />
+          <Link to="/offers">
+            <Button variant="ghost" size="sm">
+              My Offers
+            </Button>
+          </Link>
           <Link to="/auth">
             <Button variant="ghost" size="sm">
               Sign In

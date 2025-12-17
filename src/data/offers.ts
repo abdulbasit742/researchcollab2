@@ -1,0 +1,811 @@
+export type OfferStatus = 
+  | "draft"
+  | "sent"
+  | "accepted"
+  | "rejected"
+  | "in_progress"
+  | "delivered"
+  | "completed"
+  | "disputed"
+  | "cancelled";
+
+export type OfferCategory = 
+  | "FYP / Thesis"
+  | "Research Paper Support"
+  | "Data Analysis"
+  | "Coding / App Dev"
+  | "UI/Design"
+  | "Presentation/Poster"
+  | "Other";
+
+export interface Offer {
+  id: string;
+  title: string;
+  category: OfferCategory;
+  description: string;
+  requiredSkills: string[];
+  budgetType: "fixed" | "hourly";
+  budget: number;
+  deadline: string;
+  visibility: "private" | "public";
+  senderId: string;
+  senderName: string;
+  senderAvatar: string;
+  receiverId?: string;
+  receiverName?: string;
+  receiverAvatar?: string;
+  status: OfferStatus;
+  createdAt: string;
+  acceptedBidId?: string;
+}
+
+export interface Bid {
+  id: string;
+  offerId: string;
+  bidderId: string;
+  bidderName: string;
+  bidderAvatar: string;
+  proposedPrice: number;
+  deliveryTime: string;
+  message: string;
+  portfolioLink?: string;
+  status: "pending" | "accepted" | "declined";
+  createdAt: string;
+}
+
+export interface Transaction {
+  id: string;
+  offerId: string;
+  offerTitle: string;
+  category: OfferCategory;
+  grossAmount: number;
+  commissionPercent: number;
+  commissionAmount: number;
+  netPayout: number;
+  providerId: string;
+  providerName: string;
+  clientId: string;
+  clientName: string;
+  completedAt: string;
+}
+
+export interface ToolEvent {
+  id: string;
+  toolId: string;
+  toolName: string;
+  userId: string;
+  eventType: "viewed" | "clicked_buy" | "bundle_interest";
+  timestamp: string;
+}
+
+export interface Notification {
+  id: string;
+  type: "match_request" | "offer_received" | "bid_received" | "offer_accepted" | "offer_rejected";
+  title: string;
+  message: string;
+  read: boolean;
+  createdAt: string;
+  link?: string;
+}
+
+// Admin settings
+export const adminSettings = {
+  commissionPercent: 10,
+};
+
+// Dummy offers
+export const dummyOffers: Offer[] = [
+  {
+    id: "offer-1",
+    title: "Machine Learning Model for Customer Churn Prediction",
+    category: "Data Analysis",
+    description: "Need help building a predictive model to identify customers likely to churn. Dataset is ready, need someone experienced with Python and scikit-learn.",
+    requiredSkills: ["Python", "Machine Learning", "Scikit-learn", "Pandas"],
+    budgetType: "fixed",
+    budget: 800,
+    deadline: "2024-02-15",
+    visibility: "public",
+    senderId: "researcher-1",
+    senderName: "Dr. Sarah Chen",
+    senderAvatar: "https://i.pravatar.cc/150?u=sarah",
+    status: "sent",
+    createdAt: "2024-01-20",
+  },
+  {
+    id: "offer-2",
+    title: "Literature Review on Quantum Computing Applications",
+    category: "Research Paper Support",
+    description: "Comprehensive literature review needed for PhD thesis chapter. Focus on recent developments in quantum computing for cryptography.",
+    requiredSkills: ["Academic Writing", "Research", "Physics", "Quantum Computing"],
+    budgetType: "fixed",
+    budget: 500,
+    deadline: "2024-02-20",
+    visibility: "public",
+    senderId: "researcher-2",
+    senderName: "Prof. James Miller",
+    senderAvatar: "https://i.pravatar.cc/150?u=james",
+    status: "sent",
+    createdAt: "2024-01-18",
+  },
+  {
+    id: "offer-3",
+    title: "React Dashboard for Research Data Visualization",
+    category: "Coding / App Dev",
+    description: "Build an interactive dashboard to visualize climate research data. Must use React and D3.js for charts.",
+    requiredSkills: ["React", "D3.js", "TypeScript", "Data Visualization"],
+    budgetType: "fixed",
+    budget: 1200,
+    deadline: "2024-03-01",
+    visibility: "public",
+    senderId: "researcher-3",
+    senderName: "Dr. Emily Watson",
+    senderAvatar: "https://i.pravatar.cc/150?u=emily",
+    status: "sent",
+    createdAt: "2024-01-22",
+  },
+  {
+    id: "offer-4",
+    title: "Statistical Analysis of Survey Data",
+    category: "Data Analysis",
+    description: "Analyze survey responses (N=500) using SPSS. Need correlation analysis, regression, and visualizations.",
+    requiredSkills: ["SPSS", "Statistics", "Data Analysis", "Excel"],
+    budgetType: "hourly",
+    budget: 35,
+    deadline: "2024-02-10",
+    visibility: "public",
+    senderId: "researcher-4",
+    senderName: "Dr. Michael Brown",
+    senderAvatar: "https://i.pravatar.cc/150?u=michael",
+    status: "in_progress",
+    createdAt: "2024-01-15",
+  },
+  {
+    id: "offer-5",
+    title: "Thesis Formatting and Proofreading",
+    category: "FYP / Thesis",
+    description: "Final year thesis needs professional formatting according to university guidelines and proofreading.",
+    requiredSkills: ["Academic Writing", "LaTeX", "Proofreading"],
+    budgetType: "fixed",
+    budget: 200,
+    deadline: "2024-02-05",
+    visibility: "public",
+    senderId: "researcher-5",
+    senderName: "Dr. Lisa Park",
+    senderAvatar: "https://i.pravatar.cc/150?u=lisa",
+    status: "completed",
+    createdAt: "2024-01-10",
+  },
+  {
+    id: "offer-6",
+    title: "Research Poster Design for Conference",
+    category: "Presentation/Poster",
+    description: "Design an A0 research poster for upcoming IEEE conference. Must be visually appealing and follow template.",
+    requiredSkills: ["Graphic Design", "PowerPoint", "Research Communication"],
+    budgetType: "fixed",
+    budget: 150,
+    deadline: "2024-02-12",
+    visibility: "public",
+    senderId: "researcher-1",
+    senderName: "Dr. Sarah Chen",
+    senderAvatar: "https://i.pravatar.cc/150?u=sarah",
+    status: "sent",
+    createdAt: "2024-01-25",
+  },
+  {
+    id: "offer-7",
+    title: "Mobile App UI Design for Health Tracking",
+    category: "UI/Design",
+    description: "Design UI/UX for a health tracking mobile app. Need wireframes and high-fidelity mockups in Figma.",
+    requiredSkills: ["Figma", "UI/UX", "Mobile Design", "Prototyping"],
+    budgetType: "fixed",
+    budget: 600,
+    deadline: "2024-02-25",
+    visibility: "public",
+    senderId: "researcher-6",
+    senderName: "Dr. Anna Lee",
+    senderAvatar: "https://i.pravatar.cc/150?u=anna",
+    status: "sent",
+    createdAt: "2024-01-23",
+  },
+  {
+    id: "offer-8",
+    title: "Python Script for Web Scraping Academic Papers",
+    category: "Coding / App Dev",
+    description: "Need a Python script to scrape and organize papers from multiple academic databases.",
+    requiredSkills: ["Python", "BeautifulSoup", "Scrapy", "APIs"],
+    budgetType: "fixed",
+    budget: 300,
+    deadline: "2024-02-08",
+    visibility: "public",
+    senderId: "researcher-2",
+    senderName: "Prof. James Miller",
+    senderAvatar: "https://i.pravatar.cc/150?u=james",
+    status: "sent",
+    createdAt: "2024-01-24",
+  },
+  // Private offers (sent to specific users)
+  {
+    id: "offer-9",
+    title: "Help with FYP Data Collection",
+    category: "FYP / Thesis",
+    description: "Need assistance with collecting and organizing data for my final year project on social media analysis.",
+    requiredSkills: ["Data Collection", "Excel", "Research"],
+    budgetType: "fixed",
+    budget: 250,
+    deadline: "2024-02-18",
+    visibility: "private",
+    senderId: "researcher-1",
+    senderName: "Dr. Sarah Chen",
+    senderAvatar: "https://i.pravatar.cc/150?u=sarah",
+    receiverId: "student-1",
+    receiverName: "Ahmad Hassan",
+    receiverAvatar: "https://i.pravatar.cc/150?u=ahmad",
+    status: "sent",
+    createdAt: "2024-01-26",
+  },
+  {
+    id: "offer-10",
+    title: "MATLAB Simulation Support",
+    category: "Coding / App Dev",
+    description: "Help needed with MATLAB simulations for signal processing research.",
+    requiredSkills: ["MATLAB", "Signal Processing", "DSP"],
+    budgetType: "hourly",
+    budget: 40,
+    deadline: "2024-02-20",
+    visibility: "private",
+    senderId: "researcher-3",
+    senderName: "Dr. Emily Watson",
+    senderAvatar: "https://i.pravatar.cc/150?u=emily",
+    receiverId: "student-2",
+    receiverName: "Fatima Ali",
+    receiverAvatar: "https://i.pravatar.cc/150?u=fatima",
+    status: "accepted",
+    createdAt: "2024-01-21",
+  },
+  {
+    id: "offer-11",
+    title: "Research Paper Citation Formatting",
+    category: "Research Paper Support",
+    description: "Need help formatting 150+ citations in APA style for journal submission.",
+    requiredSkills: ["Citation Management", "APA Style", "Zotero"],
+    budgetType: "fixed",
+    budget: 100,
+    deadline: "2024-02-03",
+    visibility: "private",
+    senderId: "researcher-4",
+    senderName: "Dr. Michael Brown",
+    senderAvatar: "https://i.pravatar.cc/150?u=michael",
+    receiverId: "student-3",
+    receiverName: "Zainab Khan",
+    receiverAvatar: "https://i.pravatar.cc/150?u=zainab",
+    status: "completed",
+    createdAt: "2024-01-14",
+  },
+  {
+    id: "offer-12",
+    title: "Neural Network Implementation",
+    category: "Coding / App Dev",
+    description: "Implement a CNN for image classification using TensorFlow.",
+    requiredSkills: ["Python", "TensorFlow", "Deep Learning", "CNN"],
+    budgetType: "fixed",
+    budget: 700,
+    deadline: "2024-02-28",
+    visibility: "private",
+    senderId: "researcher-5",
+    senderName: "Dr. Lisa Park",
+    senderAvatar: "https://i.pravatar.cc/150?u=lisa",
+    receiverId: "student-4",
+    receiverName: "Ali Raza",
+    receiverAvatar: "https://i.pravatar.cc/150?u=ali",
+    status: "in_progress",
+    createdAt: "2024-01-19",
+  },
+  {
+    id: "offer-13",
+    title: "Market Research Survey Analysis",
+    category: "Data Analysis",
+    description: "Analyze market research survey with 300 responses using R.",
+    requiredSkills: ["R", "Statistics", "Survey Analysis"],
+    budgetType: "fixed",
+    budget: 400,
+    deadline: "2024-02-15",
+    visibility: "private",
+    senderId: "researcher-6",
+    senderName: "Dr. Anna Lee",
+    senderAvatar: "https://i.pravatar.cc/150?u=anna",
+    receiverId: "student-5",
+    receiverName: "Usman Malik",
+    receiverAvatar: "https://i.pravatar.cc/150?u=usman",
+    status: "sent",
+    createdAt: "2024-01-25",
+  },
+  {
+    id: "offer-14",
+    title: "Academic Presentation Slides",
+    category: "Presentation/Poster",
+    description: "Create professional presentation slides for thesis defense.",
+    requiredSkills: ["PowerPoint", "Design", "Academic Presentation"],
+    budgetType: "fixed",
+    budget: 180,
+    deadline: "2024-02-10",
+    visibility: "private",
+    senderId: "researcher-1",
+    senderName: "Dr. Sarah Chen",
+    senderAvatar: "https://i.pravatar.cc/150?u=sarah",
+    receiverId: "student-6",
+    receiverName: "Ayesha Siddiqui",
+    receiverAvatar: "https://i.pravatar.cc/150?u=ayesha",
+    status: "delivered",
+    createdAt: "2024-01-17",
+  },
+  {
+    id: "offer-15",
+    title: "Database Design for Research Project",
+    category: "Coding / App Dev",
+    description: "Design and implement PostgreSQL database for multi-center clinical trial data.",
+    requiredSkills: ["PostgreSQL", "Database Design", "SQL"],
+    budgetType: "fixed",
+    budget: 550,
+    deadline: "2024-02-22",
+    visibility: "private",
+    senderId: "researcher-2",
+    senderName: "Prof. James Miller",
+    senderAvatar: "https://i.pravatar.cc/150?u=james",
+    receiverId: "student-7",
+    receiverName: "Hassan Nawaz",
+    receiverAvatar: "https://i.pravatar.cc/150?u=hassan",
+    status: "sent",
+    createdAt: "2024-01-26",
+  },
+  {
+    id: "offer-16",
+    title: "Literature Search and Organization",
+    category: "Research Paper Support",
+    description: "Systematic literature search on AI in healthcare. Need 50+ relevant papers organized.",
+    requiredSkills: ["Literature Review", "PubMed", "Research Skills"],
+    budgetType: "fixed",
+    budget: 350,
+    deadline: "2024-02-14",
+    visibility: "private",
+    senderId: "researcher-3",
+    senderName: "Dr. Emily Watson",
+    senderAvatar: "https://i.pravatar.cc/150?u=emily",
+    receiverId: "student-8",
+    receiverName: "Sana Akram",
+    receiverAvatar: "https://i.pravatar.cc/150?u=sana",
+    status: "sent",
+    createdAt: "2024-01-24",
+  },
+  {
+    id: "offer-17",
+    title: "Excel Macro Development",
+    category: "Coding / App Dev",
+    description: "Create Excel macros to automate data processing workflow.",
+    requiredSkills: ["Excel", "VBA", "Macros"],
+    budgetType: "fixed",
+    budget: 200,
+    deadline: "2024-02-06",
+    visibility: "private",
+    senderId: "researcher-4",
+    senderName: "Dr. Michael Brown",
+    senderAvatar: "https://i.pravatar.cc/150?u=michael",
+    receiverId: "student-9",
+    receiverName: "Bilal Ahmed",
+    receiverAvatar: "https://i.pravatar.cc/150?u=bilal",
+    status: "completed",
+    createdAt: "2024-01-12",
+  },
+  {
+    id: "offer-18",
+    title: "Research Methodology Review",
+    category: "FYP / Thesis",
+    description: "Review and improve research methodology section of thesis.",
+    requiredSkills: ["Research Methodology", "Academic Writing", "Statistics"],
+    budgetType: "fixed",
+    budget: 280,
+    deadline: "2024-02-16",
+    visibility: "private",
+    senderId: "researcher-5",
+    senderName: "Dr. Lisa Park",
+    senderAvatar: "https://i.pravatar.cc/150?u=lisa",
+    receiverId: "student-10",
+    receiverName: "Maria Khan",
+    receiverAvatar: "https://i.pravatar.cc/150?u=maria_k",
+    status: "sent",
+    createdAt: "2024-01-27",
+  },
+];
+
+// Dummy bids
+export const dummyBids: Bid[] = [
+  {
+    id: "bid-1",
+    offerId: "offer-1",
+    bidderId: "student-1",
+    bidderName: "Ahmad Hassan",
+    bidderAvatar: "https://i.pravatar.cc/150?u=ahmad",
+    proposedPrice: 750,
+    deliveryTime: "12 days",
+    message: "I have extensive experience with ML models and customer analytics. I've worked on similar churn prediction projects before.",
+    portfolioLink: "https://github.com/ahmad",
+    status: "pending",
+    createdAt: "2024-01-21",
+  },
+  {
+    id: "bid-2",
+    offerId: "offer-1",
+    bidderId: "student-4",
+    bidderName: "Ali Raza",
+    bidderAvatar: "https://i.pravatar.cc/150?u=ali",
+    proposedPrice: 850,
+    deliveryTime: "10 days",
+    message: "Expert in Python and scikit-learn. Can deliver a robust model with detailed documentation.",
+    portfolioLink: "https://github.com/aliraza",
+    status: "pending",
+    createdAt: "2024-01-22",
+  },
+  {
+    id: "bid-3",
+    offerId: "offer-2",
+    bidderId: "student-3",
+    bidderName: "Zainab Khan",
+    bidderAvatar: "https://i.pravatar.cc/150?u=zainab",
+    proposedPrice: 480,
+    deliveryTime: "18 days",
+    message: "Published researcher in quantum computing. Can provide comprehensive literature review.",
+    status: "pending",
+    createdAt: "2024-01-19",
+  },
+  {
+    id: "bid-4",
+    offerId: "offer-3",
+    bidderId: "student-2",
+    bidderName: "Fatima Ali",
+    bidderAvatar: "https://i.pravatar.cc/150?u=fatima",
+    proposedPrice: 1100,
+    deliveryTime: "20 days",
+    message: "Full-stack developer with expertise in React and D3.js. Portfolio includes several data visualization projects.",
+    portfolioLink: "https://fatima-portfolio.com",
+    status: "pending",
+    createdAt: "2024-01-23",
+  },
+  {
+    id: "bid-5",
+    offerId: "offer-3",
+    bidderId: "student-7",
+    bidderName: "Hassan Nawaz",
+    bidderAvatar: "https://i.pravatar.cc/150?u=hassan",
+    proposedPrice: 1150,
+    deliveryTime: "18 days",
+    message: "Experienced frontend developer. Can create responsive and interactive dashboards.",
+    status: "pending",
+    createdAt: "2024-01-24",
+  },
+  {
+    id: "bid-6",
+    offerId: "offer-6",
+    bidderId: "student-6",
+    bidderName: "Ayesha Siddiqui",
+    bidderAvatar: "https://i.pravatar.cc/150?u=ayesha",
+    proposedPrice: 140,
+    deliveryTime: "5 days",
+    message: "Graphic designer with experience in academic poster design. Have designed posters for ACM and IEEE conferences.",
+    portfolioLink: "https://behance.net/ayesha",
+    status: "pending",
+    createdAt: "2024-01-26",
+  },
+  {
+    id: "bid-7",
+    offerId: "offer-7",
+    bidderId: "student-5",
+    bidderName: "Usman Malik",
+    bidderAvatar: "https://i.pravatar.cc/150?u=usman",
+    proposedPrice: 580,
+    deliveryTime: "14 days",
+    message: "UI/UX designer specializing in health apps. Can provide wireframes, mockups, and prototypes.",
+    portfolioLink: "https://dribbble.com/usman",
+    status: "pending",
+    createdAt: "2024-01-24",
+  },
+  {
+    id: "bid-8",
+    offerId: "offer-8",
+    bidderId: "student-9",
+    bidderName: "Bilal Ahmed",
+    bidderAvatar: "https://i.pravatar.cc/150?u=bilal",
+    proposedPrice: 280,
+    deliveryTime: "7 days",
+    message: "Python developer with web scraping expertise. Familiar with academic databases APIs.",
+    portfolioLink: "https://github.com/bilal",
+    status: "pending",
+    createdAt: "2024-01-25",
+  },
+  {
+    id: "bid-9",
+    offerId: "offer-2",
+    bidderId: "student-8",
+    bidderName: "Sana Akram",
+    bidderAvatar: "https://i.pravatar.cc/150?u=sana",
+    proposedPrice: 520,
+    deliveryTime: "15 days",
+    message: "Physics background with research experience. Can provide thorough and well-structured review.",
+    status: "pending",
+    createdAt: "2024-01-20",
+  },
+  {
+    id: "bid-10",
+    offerId: "offer-1",
+    bidderId: "student-10",
+    bidderName: "Maria Khan",
+    bidderAvatar: "https://i.pravatar.cc/150?u=maria_k",
+    proposedPrice: 780,
+    deliveryTime: "14 days",
+    message: "Data scientist with focus on predictive analytics. Strong background in customer behavior modeling.",
+    status: "pending",
+    createdAt: "2024-01-22",
+  },
+  {
+    id: "bid-11",
+    offerId: "offer-6",
+    bidderId: "student-5",
+    bidderName: "Usman Malik",
+    bidderAvatar: "https://i.pravatar.cc/150?u=usman",
+    proposedPrice: 160,
+    deliveryTime: "4 days",
+    message: "Quick turnaround on poster designs. Multiple revisions included.",
+    status: "pending",
+    createdAt: "2024-01-27",
+  },
+  {
+    id: "bid-12",
+    offerId: "offer-7",
+    bidderId: "student-6",
+    bidderName: "Ayesha Siddiqui",
+    bidderAvatar: "https://i.pravatar.cc/150?u=ayesha",
+    proposedPrice: 620,
+    deliveryTime: "12 days",
+    message: "Mobile app design specialist. Will deliver complete design system in Figma.",
+    portfolioLink: "https://behance.net/ayesha",
+    status: "pending",
+    createdAt: "2024-01-25",
+  },
+  {
+    id: "bid-13",
+    offerId: "offer-8",
+    bidderId: "student-4",
+    bidderName: "Ali Raza",
+    bidderAvatar: "https://i.pravatar.cc/150?u=ali",
+    proposedPrice: 320,
+    deliveryTime: "5 days",
+    message: "Python expert. Can build robust scraping solution with rate limiting and error handling.",
+    portfolioLink: "https://github.com/aliraza",
+    status: "pending",
+    createdAt: "2024-01-26",
+  },
+  {
+    id: "bid-14",
+    offerId: "offer-3",
+    bidderId: "student-9",
+    bidderName: "Bilal Ahmed",
+    bidderAvatar: "https://i.pravatar.cc/150?u=bilal",
+    proposedPrice: 1250,
+    deliveryTime: "22 days",
+    message: "React specialist with D3.js experience. Can create beautiful and performant visualizations.",
+    status: "pending",
+    createdAt: "2024-01-25",
+  },
+  {
+    id: "bid-15",
+    offerId: "offer-2",
+    bidderId: "student-1",
+    bidderName: "Ahmad Hassan",
+    bidderAvatar: "https://i.pravatar.cc/150?u=ahmad",
+    proposedPrice: 450,
+    deliveryTime: "20 days",
+    message: "Research assistant with physics background. Have published literature reviews before.",
+    status: "pending",
+    createdAt: "2024-01-21",
+  },
+];
+
+// Dummy transactions (completed offers)
+export const dummyTransactions: Transaction[] = [
+  {
+    id: "txn-1",
+    offerId: "offer-5",
+    offerTitle: "Thesis Formatting and Proofreading",
+    category: "FYP / Thesis",
+    grossAmount: 200,
+    commissionPercent: 10,
+    commissionAmount: 20,
+    netPayout: 180,
+    providerId: "student-3",
+    providerName: "Zainab Khan",
+    clientId: "researcher-5",
+    clientName: "Dr. Lisa Park",
+    completedAt: "2024-01-28",
+  },
+  {
+    id: "txn-2",
+    offerId: "offer-11",
+    offerTitle: "Research Paper Citation Formatting",
+    category: "Research Paper Support",
+    grossAmount: 100,
+    commissionPercent: 10,
+    commissionAmount: 10,
+    netPayout: 90,
+    providerId: "student-3",
+    providerName: "Zainab Khan",
+    clientId: "researcher-4",
+    clientName: "Dr. Michael Brown",
+    completedAt: "2024-01-30",
+  },
+  {
+    id: "txn-3",
+    offerId: "offer-17",
+    offerTitle: "Excel Macro Development",
+    category: "Coding / App Dev",
+    grossAmount: 200,
+    commissionPercent: 10,
+    commissionAmount: 20,
+    netPayout: 180,
+    providerId: "student-9",
+    providerName: "Bilal Ahmed",
+    clientId: "researcher-4",
+    clientName: "Dr. Michael Brown",
+    completedAt: "2024-01-25",
+  },
+  {
+    id: "txn-4",
+    offerId: "prev-1",
+    offerTitle: "Machine Learning Project Assistance",
+    category: "Data Analysis",
+    grossAmount: 650,
+    commissionPercent: 10,
+    commissionAmount: 65,
+    netPayout: 585,
+    providerId: "student-1",
+    providerName: "Ahmad Hassan",
+    clientId: "researcher-1",
+    clientName: "Dr. Sarah Chen",
+    completedAt: "2024-01-15",
+  },
+  {
+    id: "txn-5",
+    offerId: "prev-2",
+    offerTitle: "Research Paper Review",
+    category: "Research Paper Support",
+    grossAmount: 300,
+    commissionPercent: 10,
+    commissionAmount: 30,
+    netPayout: 270,
+    providerId: "student-8",
+    providerName: "Sana Akram",
+    clientId: "researcher-2",
+    clientName: "Prof. James Miller",
+    completedAt: "2024-01-10",
+  },
+  {
+    id: "txn-6",
+    offerId: "prev-3",
+    offerTitle: "Web Dashboard Development",
+    category: "Coding / App Dev",
+    grossAmount: 900,
+    commissionPercent: 10,
+    commissionAmount: 90,
+    netPayout: 810,
+    providerId: "student-7",
+    providerName: "Hassan Nawaz",
+    clientId: "researcher-3",
+    clientName: "Dr. Emily Watson",
+    completedAt: "2024-01-08",
+  },
+  {
+    id: "txn-7",
+    offerId: "prev-4",
+    offerTitle: "Statistical Analysis Support",
+    category: "Data Analysis",
+    grossAmount: 450,
+    commissionPercent: 10,
+    commissionAmount: 45,
+    netPayout: 405,
+    providerId: "student-10",
+    providerName: "Maria Khan",
+    clientId: "researcher-6",
+    clientName: "Dr. Anna Lee",
+    completedAt: "2024-01-05",
+  },
+  {
+    id: "txn-8",
+    offerId: "prev-5",
+    offerTitle: "UI/UX Design Project",
+    category: "UI/Design",
+    grossAmount: 550,
+    commissionPercent: 10,
+    commissionAmount: 55,
+    netPayout: 495,
+    providerId: "student-5",
+    providerName: "Usman Malik",
+    clientId: "researcher-1",
+    clientName: "Dr. Sarah Chen",
+    completedAt: "2024-01-02",
+  },
+  {
+    id: "txn-9",
+    offerId: "prev-6",
+    offerTitle: "Python Automation Scripts",
+    category: "Coding / App Dev",
+    grossAmount: 350,
+    commissionPercent: 10,
+    commissionAmount: 35,
+    netPayout: 315,
+    providerId: "student-4",
+    providerName: "Ali Raza",
+    clientId: "researcher-5",
+    clientName: "Dr. Lisa Park",
+    completedAt: "2023-12-28",
+  },
+  {
+    id: "txn-10",
+    offerId: "prev-7",
+    offerTitle: "Research Poster Design",
+    category: "Presentation/Poster",
+    grossAmount: 180,
+    commissionPercent: 10,
+    commissionAmount: 18,
+    netPayout: 162,
+    providerId: "student-6",
+    providerName: "Ayesha Siddiqui",
+    clientId: "researcher-2",
+    clientName: "Prof. James Miller",
+    completedAt: "2023-12-20",
+  },
+];
+
+// Dummy notifications
+export const dummyNotifications: Notification[] = [
+  {
+    id: "notif-1",
+    type: "match_request",
+    title: "New Match Request",
+    message: "Dr. Sarah Chen wants to connect with you",
+    read: false,
+    createdAt: "2024-01-27T10:30:00",
+    link: "/matches",
+  },
+  {
+    id: "notif-2",
+    type: "offer_received",
+    title: "New Offer Received",
+    message: "You received an offer for 'Help with FYP Data Collection'",
+    read: false,
+    createdAt: "2024-01-26T14:20:00",
+    link: "/offers/offer-9",
+  },
+  {
+    id: "notif-3",
+    type: "bid_received",
+    title: "New Bid on Your Offer",
+    message: "Ahmad Hassan placed a bid on your ML project",
+    read: true,
+    createdAt: "2024-01-25T09:15:00",
+    link: "/offers/offer-1",
+  },
+  {
+    id: "notif-4",
+    type: "offer_accepted",
+    title: "Offer Accepted",
+    message: "Your offer for MATLAB simulation has been accepted",
+    read: true,
+    createdAt: "2024-01-22T16:45:00",
+    link: "/workroom/offer-10",
+  },
+];
+
+// Tool events for tracking
+export const dummyToolEvents: ToolEvent[] = [
+  { id: "evt-1", toolId: "chatgpt", toolName: "ChatGPT 5.3", userId: "student-1", eventType: "viewed", timestamp: "2024-01-27T10:00:00" },
+  { id: "evt-2", toolId: "perplexity", toolName: "Perplexity Pro", userId: "student-1", eventType: "clicked_buy", timestamp: "2024-01-27T10:05:00" },
+  { id: "evt-3", toolId: "claude", toolName: "Claude 4 Opus", userId: "student-2", eventType: "viewed", timestamp: "2024-01-26T15:30:00" },
+  { id: "evt-4", toolId: "gemini", toolName: "Gemini 4 Ultra", userId: "student-3", eventType: "bundle_interest", timestamp: "2024-01-26T12:00:00" },
+];
