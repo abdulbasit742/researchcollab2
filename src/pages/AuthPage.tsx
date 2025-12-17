@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
@@ -14,8 +14,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { GraduationCap, Mail, Lock, User, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { GraduationCap, Mail, Lock, ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth, getRoleBasedRedirect } from "@/contexts/AuthContext";
 
 const roles = [
   { value: "student", label: "Student", description: "Earn by helping with projects" },
@@ -26,26 +27,97 @@ const roles = [
 
 export default function AuthPage() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const defaultTab = searchParams.get("tab") === "signup" ? "signup" : "signin";
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { user, userRole, signIn, signUp, isLoading: authLoading } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent, type: "signin" | "signup") => {
+  // Form state
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [selectedRole, setSelectedRole] = useState("");
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!authLoading && user && userRole) {
+      const redirectPath = getRoleBasedRedirect(userRole.role);
+      navigate(redirectPath);
+    }
+  }, [user, userRole, authLoading, navigate]);
+
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
+    const { error } = await signIn(email, password);
+
+    setIsLoading(false);
+
+    if (error) {
       toast({
-        title: type === "signin" ? "Welcome back!" : "Account created!",
-        description: type === "signin" 
-          ? "You have successfully signed in." 
-          : "Please check your email to verify your account.",
+        title: "Sign in failed",
+        description: error.message || "Please check your credentials and try again.",
+        variant: "destructive",
       });
-    }, 1500);
+    } else {
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully signed in.",
+      });
+    }
   };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!selectedRole) {
+      toast({
+        title: "Role required",
+        description: "Please select what you want to do on the platform.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    const { error } = await signUp(email, password, {
+      first_name: firstName,
+      last_name: lastName,
+      role: selectedRole,
+    });
+
+    setIsLoading(false);
+
+    if (error) {
+      let errorMessage = error.message;
+      if (error.message.includes("already registered")) {
+        errorMessage = "This email is already registered. Please sign in instead.";
+      }
+      toast({
+        title: "Sign up failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Account created!",
+        description: "Welcome to ResearcherCollab!",
+      });
+    }
+  };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen gradient-hero flex items-center justify-center p-4">
@@ -83,7 +155,7 @@ export default function AuthPage() {
             <CardContent>
               {/* Sign In Tab */}
               <TabsContent value="signin" className="mt-0">
-                <form onSubmit={(e) => handleSubmit(e, "signin")} className="space-y-4">
+                <form onSubmit={handleSignIn} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="signin-email">Email</Label>
                     <div className="relative">
@@ -93,6 +165,8 @@ export default function AuthPage() {
                         type="email"
                         placeholder="you@example.com"
                         className="pl-10"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                       />
                     </div>
@@ -115,6 +189,8 @@ export default function AuthPage() {
                         type={showPassword ? "text" : "password"}
                         placeholder="••••••••"
                         className="pl-10 pr-10"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                       />
                       <button
@@ -132,23 +208,44 @@ export default function AuthPage() {
                   </div>
 
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Signing in..." : "Sign In"}
-                    {!isLoading && <ArrowRight className="h-4 w-4" />}
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Signing in...
+                      </>
+                    ) : (
+                      <>
+                        Sign In
+                        <ArrowRight className="h-4 w-4" />
+                      </>
+                    )}
                   </Button>
                 </form>
               </TabsContent>
 
               {/* Sign Up Tab */}
               <TabsContent value="signup" className="mt-0">
-                <form onSubmit={(e) => handleSubmit(e, "signup")} className="space-y-4">
+                <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstname">First Name</Label>
-                      <Input id="firstname" placeholder="John" required />
+                      <Input
+                        id="firstname"
+                        placeholder="John"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="lastname">Last Name</Label>
-                      <Input id="lastname" placeholder="Doe" required />
+                      <Input
+                        id="lastname"
+                        placeholder="Doe"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        required
+                      />
                     </div>
                   </div>
 
@@ -161,6 +258,8 @@ export default function AuthPage() {
                         type="email"
                         placeholder="you@example.com"
                         className="pl-10"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                       />
                     </div>
@@ -175,6 +274,8 @@ export default function AuthPage() {
                         type={showPassword ? "text" : "password"}
                         placeholder="••••••••"
                         className="pl-10 pr-10"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                         minLength={8}
                       />
@@ -194,7 +295,7 @@ export default function AuthPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="role">I want to...</Label>
-                    <Select required>
+                    <Select value={selectedRole} onValueChange={setSelectedRole} required>
                       <SelectTrigger id="role">
                         <SelectValue placeholder="Select your role" />
                       </SelectTrigger>
@@ -228,8 +329,17 @@ export default function AuthPage() {
                   </div>
 
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Creating account..." : "Create Account"}
-                    {!isLoading && <ArrowRight className="h-4 w-4" />}
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Creating account...
+                      </>
+                    ) : (
+                      <>
+                        Create Account
+                        <ArrowRight className="h-4 w-4" />
+                      </>
+                    )}
                   </Button>
                 </form>
               </TabsContent>
