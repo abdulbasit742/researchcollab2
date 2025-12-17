@@ -24,6 +24,9 @@ import WalletPage from "./pages/WalletPage";
 import SubscriptionsPage from "./pages/SubscriptionsPage";
 import AdminFulfillmentPage from "./pages/AdminFulfillmentPage";
 import AdminSubscriptionsPage from "./pages/AdminSubscriptionsPage";
+import AffiliateDashboardPage from "./pages/AffiliateDashboardPage";
+import AffiliateAssetsPage from "./pages/AffiliateAssetsPage";
+import AdminAffiliatePage from "./pages/AdminAffiliatePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -56,8 +59,11 @@ const App = () => (
           <Route path="/admin/finance" element={<AdminFinancePage />} />
           <Route path="/admin/fulfillment" element={<AdminFulfillmentPage />} />
           <Route path="/admin/subscriptions" element={<AdminSubscriptionsPage />} />
+          <Route path="/admin/affiliates" element={<AdminAffiliatePage />} />
           <Route path="/wallet" element={<WalletPage />} />
           <Route path="/subscriptions" element={<SubscriptionsPage />} />
+          <Route path="/affiliate" element={<AffiliateDashboardPage />} />
+          <Route path="/affiliate/assets" element={<AffiliateAssetsPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
