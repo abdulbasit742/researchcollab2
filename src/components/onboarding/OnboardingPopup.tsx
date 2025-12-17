@@ -86,45 +86,47 @@ export function OnboardingPopup() {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-2xl p-0 gap-0 overflow-hidden">
-        <div className="relative gradient-primary p-6 text-primary-foreground">
+      <DialogContent className="w-[94%] sm:max-w-[520px] max-h-[80vh] sm:max-h-[75vh] p-0 gap-0 overflow-hidden flex flex-col">
+        {/* Header - compact */}
+        <div className="relative gradient-primary px-4 py-3 sm:px-5 sm:py-4 text-primary-foreground flex-shrink-0">
           <button
             onClick={handleClose}
-            className="absolute top-4 right-4 p-1 rounded-full hover:bg-primary-foreground/20 transition-colors"
+            className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 p-1 rounded-full hover:bg-primary-foreground/20 transition-colors"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-primary-foreground">
+            <DialogTitle className="text-lg sm:text-xl font-bold text-primary-foreground pr-6">
               Welcome to ResearcherCollab Pro! 🎓
             </DialogTitle>
           </DialogHeader>
-          <p className="mt-2 text-primary-foreground/90">
+          <p className="mt-1 text-sm text-primary-foreground/90">
             What would you like to do today?
           </p>
         </div>
 
-        <div className="p-6">
-          <div className="grid gap-3">
+        {/* Scrollable content */}
+        <div className="p-3 sm:p-4 overflow-y-auto flex-1">
+          <div className="grid gap-2">
             {options.map((option, index) => (
               <motion.button
                 key={option.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.05, duration: 0.2 }}
                 onClick={() => handleSelect(option.href)}
-                className="flex items-center gap-4 p-4 rounded-xl border-2 border-border/60 hover:border-primary/30 hover:bg-accent/50 transition-all text-left group"
+                className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg border border-border/60 hover:border-primary/30 hover:bg-accent/50 transition-all text-left group"
               >
                 <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${option.color}`}
+                  className={`flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-gradient-to-br ${option.color} flex-shrink-0`}
                 >
-                  <option.icon className="h-6 w-6 text-primary-foreground" />
+                  <option.icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary-foreground" />
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold group-hover:text-primary transition-colors">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm sm:text-base font-semibold group-hover:text-primary transition-colors truncate">
                     {option.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs text-muted-foreground line-clamp-1">
                     {option.description}
                   </p>
                 </div>
@@ -132,7 +134,7 @@ export function OnboardingPopup() {
             ))}
           </div>
 
-          <p className="mt-4 text-center text-sm text-muted-foreground">
+          <p className="mt-3 text-center text-xs text-muted-foreground">
             You can explore all features from the navigation menu
           </p>
         </div>
