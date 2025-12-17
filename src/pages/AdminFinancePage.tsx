@@ -14,9 +14,21 @@ import {
   Percent,
   PieChart,
   ArrowUpRight,
-  Settings
+  Settings,
+  Shield,
+  AlertTriangle,
+  Wrench,
+  FileText,
+  Users
 } from "lucide-react";
 import { dummyTransactions, adminSettings, dummyToolEvents } from "@/data/offers";
+import { 
+  adminWallet, 
+  calculateEscrowTotal, 
+  calculatePendingDisputes,
+  dummyMilestones,
+  dummyDisputes 
+} from "@/data/wallet";
 import { useToast } from "@/hooks/use-toast";
 
 export default function AdminFinancePage() {
@@ -28,6 +40,12 @@ export default function AdminFinancePage() {
   const totalCommission = dummyTransactions.reduce((sum, t) => sum + t.commissionAmount, 0);
   const totalPayout = dummyTransactions.reduce((sum, t) => sum + t.netPayout, 0);
   const completedOffers = dummyTransactions.length;
+
+  // Escrow stats
+  const escrowTotal = calculateEscrowTotal();
+  const pendingDisputes = calculatePendingDisputes();
+  const releasedMilestones = dummyMilestones.filter(m => m.status === "released").length;
+  const pendingMilestones = dummyMilestones.filter(m => m.status === "pending" || m.status === "submitted").length;
 
   // Category breakdown
   const categoryStats = dummyTransactions.reduce((acc, t) => {
@@ -45,6 +63,13 @@ export default function AdminFinancePage() {
     return acc;
   }, {} as Record<string, number>);
 
+  // Revenue sources
+  const revenueSources = [
+    { name: "Offer Commissions", amount: totalCommission, icon: FileText },
+    { name: "Tool Sales", amount: 2450, icon: Wrench },
+    { name: "Milestone Fees", amount: 890, icon: CheckCircle2 },
+  ];
+
   const handleSaveCommission = () => {
     const percent = parseFloat(commissionPercent);
     if (isNaN(percent) || percent < 0 || percent > 50) {
@@ -58,6 +83,13 @@ export default function AdminFinancePage() {
     toast({
       title: "Commission Updated",
       description: `Commission rate set to ${percent}%`,
+    });
+  };
+
+  const handleResolveDispute = (action: string) => {
+    toast({
+      title: "Dispute Resolved",
+      description: `Funds have been ${action}`,
     });
   };
 
@@ -79,7 +111,7 @@ export default function AdminFinancePage() {
               <span className="text-gradient">Overview</span>
             </h1>
             <p className="mt-2 text-muted-foreground">
-              Track platform earnings, commissions, and transactions
+              Track platform earnings, escrow, commissions, and disputes
             </p>
           </motion.div>
         </div>
@@ -87,21 +119,21 @@ export default function AdminFinancePage() {
 
       <div className="container py-8">
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0 }}
           >
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <DollarSign className="h-6 w-6 text-primary" />
+                  <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <DollarSign className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Total Revenue</p>
-                    <p className="text-2xl font-bold">${totalGross.toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">Total Revenue</p>
+                    <p className="text-xl font-bold">${totalGross.toLocaleString()}</p>
                   </div>
                 </div>
               </CardContent>
@@ -114,14 +146,14 @@ export default function AdminFinancePage() {
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                    <TrendingUp className="h-6 w-6 text-emerald-500" />
+                  <div className="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                    <TrendingUp className="h-5 w-5 text-emerald-500" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Commission Earned</p>
-                    <p className="text-2xl font-bold text-emerald-500">
+                    <p className="text-xs text-muted-foreground">Commission</p>
+                    <p className="text-xl font-bold text-emerald-500">
                       ${totalCommission.toLocaleString()}
                     </p>
                   </div>
@@ -136,14 +168,14 @@ export default function AdminFinancePage() {
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                    <ArrowUpRight className="h-6 w-6 text-blue-500" />
+                  <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                    <Shield className="h-5 w-5 text-amber-500" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Total Payouts</p>
-                    <p className="text-2xl font-bold">${totalPayout.toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">In Escrow</p>
+                    <p className="text-xl font-bold">${escrowTotal.toLocaleString()}</p>
                   </div>
                 </div>
               </CardContent>
@@ -156,14 +188,42 @@ export default function AdminFinancePage() {
             transition={{ duration: 0.3, delay: 0.3 }}
           >
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                    <CheckCircle2 className="h-6 w-6 text-amber-500" />
+                  <div className="h-10 w-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                    <ArrowUpRight className="h-5 w-5 text-blue-500" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Completed</p>
-                    <p className="text-2xl font-bold">{completedOffers}</p>
+                    <p className="text-xs text-muted-foreground">Released</p>
+                    <p className="text-xl font-bold">${totalPayout.toLocaleString()}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.4 }}
+          >
+            <Card className={pendingDisputes > 0 ? "border-destructive/50" : ""}>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${
+                    pendingDisputes > 0 ? "bg-destructive/10" : "bg-muted"
+                  }`}>
+                    <AlertTriangle className={`h-5 w-5 ${
+                      pendingDisputes > 0 ? "text-destructive" : "text-muted-foreground"
+                    }`} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Disputes</p>
+                    <p className={`text-xl font-bold ${
+                      pendingDisputes > 0 ? "text-destructive" : ""
+                    }`}>
+                      {pendingDisputes}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -171,12 +231,108 @@ export default function AdminFinancePage() {
           </motion.div>
         </div>
 
-        <Tabs defaultValue="transactions" className="space-y-6">
+        <Tabs defaultValue="overview" className="space-y-6">
           <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="transactions">Transactions</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="disputes">Disputes</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Revenue Sources */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Revenue Sources</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {revenueSources.map((source) => (
+                    <div key={source.name} className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <source.icon className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">{source.name}</span>
+                      </div>
+                      <span className="font-semibold">${source.amount.toLocaleString()}</span>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              {/* Milestone Stats */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-amber-500" />
+                    Escrow Status
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-3 rounded-lg bg-emerald-500/10 text-center">
+                      <p className="text-2xl font-bold text-emerald-500">{releasedMilestones}</p>
+                      <p className="text-xs text-muted-foreground">Released</p>
+                    </div>
+                    <div className="p-3 rounded-lg bg-amber-500/10 text-center">
+                      <p className="text-2xl font-bold text-amber-500">{pendingMilestones}</p>
+                      <p className="text-xs text-muted-foreground">Pending</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Total milestones: {dummyMilestones.length}
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Tool Engagement */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Tool Engagement</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="p-2 rounded-lg bg-muted/50 text-center">
+                      <p className="text-lg font-bold">{toolEventsByType.viewed || 0}</p>
+                      <p className="text-[10px] text-muted-foreground">Views</p>
+                    </div>
+                    <div className="p-2 rounded-lg bg-muted/50 text-center">
+                      <p className="text-lg font-bold">{toolEventsByType.clicked_buy || 0}</p>
+                      <p className="text-[10px] text-muted-foreground">Clicks</p>
+                    </div>
+                    <div className="p-2 rounded-lg bg-muted/50 text-center">
+                      <p className="text-lg font-bold">{toolEventsByType.bundle_interest || 0}</p>
+                      <p className="text-[10px] text-muted-foreground">Bundles</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Category Breakdown */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <PieChart className="h-5 w-5 text-primary" />
+                  Top Categories by Commission
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+                  {sortedCategories.map(([category, amount], index) => (
+                    <div key={category} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                      <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium">
+                        {index + 1}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-muted-foreground truncate">{category}</p>
+                        <p className="font-bold text-primary">${amount}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="transactions" className="space-y-6">
             <Card>
@@ -234,66 +390,78 @@ export default function AdminFinancePage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="analytics" className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Category Breakdown */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <PieChart className="h-5 w-5 text-primary" />
-                    Top Categories by Commission
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {sortedCategories.map(([category, amount], index) => (
-                    <div key={category} className="flex items-center gap-4">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium">
-                        {index + 1}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex justify-between items-center mb-1">
-                          <span className="text-sm font-medium">{category}</span>
-                          <span className="text-sm text-primary font-bold">${amount}</span>
-                        </div>
-                        <div className="h-2 bg-muted rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-primary rounded-full"
-                            style={{ width: `${(amount / totalCommission) * 100}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* Tool Events */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Tool Engagement</CardTitle>
-                  <CardDescription>User interactions with AI tools</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="p-4 rounded-lg bg-muted/50 text-center">
-                      <p className="text-2xl font-bold">{toolEventsByType.viewed || 0}</p>
-                      <p className="text-xs text-muted-foreground">Views</p>
-                    </div>
-                    <div className="p-4 rounded-lg bg-muted/50 text-center">
-                      <p className="text-2xl font-bold">{toolEventsByType.clicked_buy || 0}</p>
-                      <p className="text-xs text-muted-foreground">Buy Clicks</p>
-                    </div>
-                    <div className="p-4 rounded-lg bg-muted/50 text-center">
-                      <p className="text-2xl font-bold">{toolEventsByType.bundle_interest || 0}</p>
-                      <p className="text-xs text-muted-foreground">Bundle Interest</p>
-                    </div>
+          <TabsContent value="disputes" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-destructive" />
+                  Active Disputes
+                </CardTitle>
+                <CardDescription>
+                  Review and resolve milestone disputes
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {dummyDisputes.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <CheckCircle2 className="h-10 w-10 mx-auto mb-2 text-emerald-500" />
+                    <p>No active disputes</p>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Track user engagement with AI tools to optimize recommendations and increase sales.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+                ) : (
+                  <div className="space-y-4">
+                    {dummyDisputes.map((dispute) => {
+                      const milestone = dummyMilestones.find(m => m.id === dispute.milestoneId);
+                      return (
+                        <div key={dispute.id} className="p-4 rounded-lg border border-destructive/30 bg-destructive/5">
+                          <div className="flex items-start justify-between gap-4">
+                            <div>
+                              <Badge variant="destructive" className="mb-2">
+                                {dispute.status.replace("_", " ")}
+                              </Badge>
+                              <h4 className="font-semibold">
+                                Milestone: {milestone?.title || "Unknown"}
+                              </h4>
+                              <p className="text-sm text-muted-foreground mt-1">
+                                Amount in dispute: ${milestone?.amount || 0}
+                              </p>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              {new Date(dispute.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <p className="mt-3 text-sm p-3 rounded bg-muted">
+                            "{dispute.reason}"
+                          </p>
+                          <div className="flex gap-2 mt-4">
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => handleResolveDispute("released to provider")}
+                            >
+                              Release to Provider
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => handleResolveDispute("refunded to client")}
+                            >
+                              Refund Client
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="secondary"
+                              onClick={() => handleResolveDispute("split 50/50")}
+                            >
+                              Split 50/50
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">

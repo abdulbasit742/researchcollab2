@@ -6,28 +6,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { 
   ArrowLeft, 
   MessageSquare, 
   Video,
   Upload,
-  CheckCircle2,
   Clock,
   DollarSign,
   FileText,
-  Calendar
+  Calendar,
+  Shield
 } from "lucide-react";
 import { dummyOffers } from "@/data/offers";
+import { getMilestonesByOfferId, dummyMilestones, Milestone } from "@/data/wallet";
+import { MilestoneTracker } from "@/components/wallet/MilestoneTracker";
+import { WalletCard } from "@/components/wallet/WalletCard";
+import { dummyWallets } from "@/data/wallet";
 import { useToast } from "@/hooks/use-toast";
-
-interface Deliverable {
-  id: string;
-  title: string;
-  completed: boolean;
-}
 
 export default function WorkRoomPage() {
   const { offerId } = useParams();
@@ -35,17 +31,12 @@ export default function WorkRoomPage() {
   const { toast } = useToast();
 
   const offer = dummyOffers.find((o) => o.id === offerId);
+  const [milestones, setMilestones] = useState<Milestone[]>(
+    getMilestonesByOfferId(offerId || "")
+  );
 
-  const [deliverables, setDeliverables] = useState<Deliverable[]>([
-    { id: "1", title: "Initial requirements review", completed: true },
-    { id: "2", title: "Data collection and preparation", completed: true },
-    { id: "3", title: "Analysis implementation", completed: false },
-    { id: "4", title: "Documentation", completed: false },
-    { id: "5", title: "Final delivery and review", completed: false },
-  ]);
-
-  const completedCount = deliverables.filter(d => d.completed).length;
-  const progress = (completedCount / deliverables.length) * 100;
+  // Get wallet for escrow display
+  const providerWallet = dummyWallets[0]; // Student wallet for demo
 
   if (!offer) {
     return (
@@ -60,33 +51,22 @@ export default function WorkRoomPage() {
     );
   }
 
-  const toggleDeliverable = (id: string) => {
-    setDeliverables(deliverables.map(d => 
-      d.id === id ? { ...d, completed: !d.completed } : d
-    ));
+  const handleMilestoneUpdate = (milestoneId: string, status: Milestone["status"]) => {
+    setMilestones(prev => 
+      prev.map(m => m.id === milestoneId ? { ...m, status } : m)
+    );
   };
 
-  const handleMarkDelivered = () => {
-    toast({
-      title: "Marked as Delivered",
-      description: "The client will be notified to review your work.",
-    });
-  };
-
-  const handleMarkComplete = () => {
-    toast({
-      title: "Project Completed!",
-      description: "The project has been marked as complete. Payment will be processed.",
-    });
-    navigate("/offers");
-  };
+  const escrowTotal = milestones
+    .filter(m => m.status !== "released")
+    .reduce((sum, m) => sum + m.amount, 0);
 
   const statusTimeline = [
     { status: "Offer Accepted", date: "Jan 21, 2024", completed: true },
-    { status: "Work Started", date: "Jan 22, 2024", completed: true },
-    { status: "In Progress", date: "Current", completed: true, current: true },
-    { status: "Delivered", date: "Pending", completed: false },
-    { status: "Completed", date: "Pending", completed: false },
+    { status: "Escrow Funded", date: "Jan 21, 2024", completed: true },
+    { status: "Work In Progress", date: "Current", completed: true, current: true },
+    { status: "All Milestones Complete", date: "Pending", completed: false },
+    { status: "Project Closed", date: "Pending", completed: false },
   ];
 
   return (
@@ -109,7 +89,13 @@ export default function WorkRoomPage() {
                 <CardHeader>
                   <div className="flex justify-between items-start gap-4">
                     <div>
-                      <Badge variant="warning" className="mb-2">In Progress</Badge>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge variant="warning">In Progress</Badge>
+                        <Badge variant="secondary" className="gap-1">
+                          <Shield className="h-3 w-3" />
+                          Escrow Protected
+                        </Badge>
+                      </div>
                       <CardTitle className="text-2xl">{offer.title}</CardTitle>
                       <CardDescription className="mt-2">
                         Work Room for your project collaboration
@@ -119,15 +105,20 @@ export default function WorkRoomPage() {
                 </CardHeader>
 
                 <CardContent className="space-y-6">
-                  {/* Progress */}
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium">Overall Progress</span>
-                      <span className="text-sm text-muted-foreground">
-                        {completedCount}/{deliverables.length} tasks
-                      </span>
+                  {/* Escrow Summary */}
+                  <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Shield className="h-8 w-8 text-amber-500" />
+                        <div>
+                          <p className="font-semibold">Funds in Escrow</p>
+                          <p className="text-sm text-muted-foreground">
+                            Protected until milestone approval
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-2xl font-bold">${escrowTotal}</p>
                     </div>
-                    <Progress value={progress} className="h-3" />
                   </div>
 
                   {/* Quick Stats */}
@@ -135,7 +126,7 @@ export default function WorkRoomPage() {
                     <div className="p-4 rounded-lg bg-muted/50 text-center">
                       <DollarSign className="h-5 w-5 mx-auto text-primary mb-1" />
                       <p className="font-semibold">${offer.budget}</p>
-                      <p className="text-xs text-muted-foreground">Budget</p>
+                      <p className="text-xs text-muted-foreground">Total Budget</p>
                     </div>
                     <div className="p-4 rounded-lg bg-muted/50 text-center">
                       <Clock className="h-5 w-5 mx-auto text-primary mb-1" />
@@ -146,44 +137,33 @@ export default function WorkRoomPage() {
                     </div>
                     <div className="p-4 rounded-lg bg-muted/50 text-center">
                       <Calendar className="h-5 w-5 mx-auto text-primary mb-1" />
-                      <p className="font-semibold">8 days</p>
-                      <p className="text-xs text-muted-foreground">Remaining</p>
+                      <p className="font-semibold">{milestones.length}</p>
+                      <p className="text-xs text-muted-foreground">Milestones</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
 
-            {/* Deliverables Checklist */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-primary" />
-                  Deliverables Checklist
-                </CardTitle>
-                <CardDescription>
-                  Track progress on project deliverables
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {deliverables.map((item) => (
-                    <div 
-                      key={item.id}
-                      className="flex items-center gap-3 p-3 rounded-lg border bg-card hover:bg-accent/30 transition-colors"
-                    >
-                      <Checkbox 
-                        checked={item.completed}
-                        onCheckedChange={() => toggleDeliverable(item.id)}
-                      />
-                      <span className={item.completed ? "line-through text-muted-foreground" : ""}>
-                        {item.title}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            {/* Milestone Tracker */}
+            {milestones.length > 0 ? (
+              <MilestoneTracker
+                milestones={milestones}
+                totalBudget={offer.budget}
+                userRole="provider"
+                onMilestoneUpdate={handleMilestoneUpdate}
+              />
+            ) : (
+              <Card>
+                <CardContent className="p-8 text-center">
+                  <FileText className="h-10 w-10 mx-auto text-muted-foreground mb-3" />
+                  <h3 className="font-semibold mb-1">No Milestones Set</h3>
+                  <p className="text-sm text-muted-foreground">
+                    This project doesn't have milestones configured yet.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
 
             {/* File Upload Placeholder */}
             <Card>
@@ -218,30 +198,9 @@ export default function WorkRoomPage() {
                     </div>
                     <Button variant="ghost" size="sm">Download</Button>
                   </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg border">
-                    <div className="flex items-center gap-3">
-                      <FileText className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">data_sample.csv</p>
-                        <p className="text-xs text-muted-foreground">Uploaded 1 day ago</p>
-                      </div>
-                    </div>
-                    <Button variant="ghost" size="sm">Download</Button>
-                  </div>
                 </div>
               </CardContent>
             </Card>
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-3">
-              <Button onClick={handleMarkDelivered} className="gap-2">
-                <CheckCircle2 className="h-4 w-4" />
-                Mark as Delivered
-              </Button>
-              <Button variant="secondary" onClick={handleMarkComplete} className="gap-2">
-                Complete Project
-              </Button>
-            </div>
           </div>
 
           {/* Sidebar */}
@@ -330,6 +289,9 @@ export default function WorkRoomPage() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Wallet Preview */}
+            <WalletCard wallet={providerWallet} variant="compact" />
           </div>
         </div>
       </div>
