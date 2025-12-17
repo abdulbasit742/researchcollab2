@@ -14,6 +14,86 @@ export type Database = {
   }
   public: {
     Tables: {
+      earning_bids: {
+        Row: {
+          amount: number
+          bidder_id: string
+          created_at: string
+          delivery_days: number
+          id: string
+          message: string | null
+          project_id: string
+        }
+        Insert: {
+          amount: number
+          bidder_id: string
+          created_at?: string
+          delivery_days: number
+          id?: string
+          message?: string | null
+          project_id: string
+        }
+        Update: {
+          amount?: number
+          bidder_id?: string
+          created_at?: string
+          delivery_days?: number
+          id?: string
+          message?: string | null
+          project_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "earning_bids_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "earning_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      earning_projects: {
+        Row: {
+          budget_max: number | null
+          budget_min: number | null
+          created_at: string
+          deadline_days: number | null
+          description: string | null
+          id: string
+          location: string | null
+          owner_id: string
+          status: string | null
+          tags: string[] | null
+          title: string
+        }
+        Insert: {
+          budget_max?: number | null
+          budget_min?: number | null
+          created_at?: string
+          deadline_days?: number | null
+          description?: string | null
+          id?: string
+          location?: string | null
+          owner_id: string
+          status?: string | null
+          tags?: string[] | null
+          title: string
+        }
+        Update: {
+          budget_max?: number | null
+          budget_min?: number | null
+          created_at?: string
+          deadline_days?: number | null
+          description?: string | null
+          id?: string
+          location?: string | null
+          owner_id?: string
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

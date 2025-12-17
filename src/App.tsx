@@ -15,6 +15,7 @@ import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import ToolsPage from "./pages/ToolsPage";
 import CollaborationsPage from "./pages/CollaborationsPage";
 import EarnPage from "./pages/EarnPage";
+import EarnProjectDetailPage from "./pages/EarnProjectDetailPage";
 import FYPServicesPage from "./pages/FYPServicesPage";
 import GrantsPage from "./pages/GrantsPage";
 import MatchesPage from "./pages/MatchesPage";
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/collaborations" element={<CollaborationsPage />} />
             <Route path="/researcher/:id" element={<ResearcherPublicProfilePage />} />
             <Route path="/earn" element={<EarnPage />} />
+            <Route path="/earn/projects/:id" element={<EarnProjectDetailPage />} />
             <Route path="/earn/jobs" element={<JobsPage />} />
             <Route path="/fyp-services" element={<FYPServicesPage />} />
             <Route path="/grants" element={<GrantsPage />} />
