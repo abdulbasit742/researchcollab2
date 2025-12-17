@@ -21,6 +21,9 @@ import WorkRoomPage from "./pages/WorkRoomPage";
 import JobsPage from "./pages/JobsPage";
 import AdminFinancePage from "./pages/AdminFinancePage";
 import WalletPage from "./pages/WalletPage";
+import SubscriptionsPage from "./pages/SubscriptionsPage";
+import AdminFulfillmentPage from "./pages/AdminFulfillmentPage";
+import AdminSubscriptionsPage from "./pages/AdminSubscriptionsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,7 +54,10 @@ const App = () => (
           <Route path="/offers/:id" element={<OfferDetailPage />} />
           <Route path="/workroom/:offerId" element={<WorkRoomPage />} />
           <Route path="/admin/finance" element={<AdminFinancePage />} />
+          <Route path="/admin/fulfillment" element={<AdminFulfillmentPage />} />
+          <Route path="/admin/subscriptions" element={<AdminSubscriptionsPage />} />
           <Route path="/wallet" element={<WalletPage />} />
+          <Route path="/subscriptions" element={<SubscriptionsPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
