@@ -1,6 +1,6 @@
 // Support configuration - easily editable
 export const supportConfig = {
-  phoneNumber: "92318178154",
+  phoneNumber: "923181781454",
   avatarImage: "/src/assets/support-avatar.png",
   defaultMessage: "Assalam o Alaikum, I need support.",
 };
