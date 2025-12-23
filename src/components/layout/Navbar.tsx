@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { NotificationBell } from "@/components/layout/NotificationBell";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUnreadCount } from "@/hooks/useMessaging";
 import {
   Menu,
   X,
@@ -17,6 +18,7 @@ import {
   FileText,
   Share2,
   LogOut,
+  MessageSquare,
 } from "lucide-react";
 
 const navItems = [
@@ -62,6 +64,67 @@ const navItems = [
   },
 ];
 
+function MessagesNavItem({ onClick }: { onClick?: () => void }) {
+  const location = useLocation();
+  const unreadCount = useUnreadCount();
+  const isActive = location.pathname.startsWith("/messages");
+
+  return (
+    <Link
+      to="/messages"
+      onClick={onClick}
+      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors relative ${
+        isActive
+          ? "bg-primary/10 text-primary"
+          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+      }`}
+    >
+      <div className="relative">
+        <MessageSquare className="h-4 w-4" />
+        {unreadCount > 0 && (
+          <span className="absolute -top-1.5 -right-1.5 h-4 w-4 flex items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-medium">
+            {unreadCount > 9 ? "9+" : unreadCount}
+          </span>
+        )}
+      </div>
+      Messages
+    </Link>
+  );
+}
+
+function MobileMessagesNavItem({ onClick }: { onClick?: () => void }) {
+  const location = useLocation();
+  const unreadCount = useUnreadCount();
+  const isActive = location.pathname.startsWith("/messages");
+
+  return (
+    <Link
+      to="/messages"
+      onClick={onClick}
+      className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+        isActive
+          ? "bg-primary/10 text-primary"
+          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+      }`}
+    >
+      <div className="relative">
+        <MessageSquare className="h-5 w-5" />
+        {unreadCount > 0 && (
+          <span className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-medium">
+            {unreadCount > 9 ? "9+" : unreadCount}
+          </span>
+        )}
+      </div>
+      Messages
+      {unreadCount > 0 && (
+        <span className="ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
+          {unreadCount}
+        </span>
+      )}
+    </Link>
+  );
+}
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -100,6 +163,7 @@ export function Navbar() {
               {item.label}
             </Link>
           ))}
+          <MessagesNavItem />
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
@@ -174,6 +238,7 @@ export function Navbar() {
                   {item.label}
                 </Link>
               ))}
+              <MobileMessagesNavItem onClick={() => setIsOpen(false)} />
               <div className="pt-4 border-t flex flex-col gap-2">
                 {user ? (
                   <>

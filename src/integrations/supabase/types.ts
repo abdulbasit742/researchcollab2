@@ -94,6 +94,71 @@ export type Database = {
         }
         Relationships: []
       }
+      message_threads: {
+        Row: {
+          created_at: string
+          id: string
+          last_message_at: string
+          last_message_text: string | null
+          pair_key: string | null
+          user_a: string
+          user_b: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          last_message_text?: string | null
+          pair_key?: string | null
+          user_a: string
+          user_b: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          last_message_text?: string | null
+          pair_key?: string | null
+          user_a?: string
+          user_b?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          read_at: string | null
+          sender_id: string
+          thread_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          sender_id: string
+          thread_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          sender_id?: string
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string

@@ -53,6 +53,8 @@ import OrganizationBillingPage from "./pages/OrganizationBillingPage";
 import AIProjectScopePage from "./pages/AIProjectScopePage";
 import AdminAIPricingPage from "./pages/AdminAIPricingPage";
 import AdminEnterprisePage from "./pages/AdminEnterprisePage";
+import MessagesPage from "./pages/MessagesPage";
+import MessageThreadPage from "./pages/MessageThreadPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -115,6 +117,8 @@ const App = () => (
             <Route path="/org/:id/projects" element={<OrganizationProjectsPage />} />
             <Route path="/org/:id/billing" element={<OrganizationBillingPage />} />
             <Route path="/ai/project-scope" element={<AIProjectScopePage />} />
+            <Route path="/messages" element={<MessagesPage />} />
+            <Route path="/messages/:threadId" element={<MessageThreadPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
