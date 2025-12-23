@@ -1,5 +1,6 @@
 import { format, isToday, isYesterday } from "date-fns";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { MessageStatus, type DeliveryStatus } from "./MessageStatus";
 import { cn } from "@/lib/utils";
 import type { Message } from "@/hooks/useMessaging";
 
@@ -8,6 +9,7 @@ interface MessageBubbleProps {
   isMine: boolean;
   showAvatar?: boolean;
   senderName?: string;
+  deliveryStatus?: DeliveryStatus;
 }
 
 function formatMessageTime(dateStr: string) {
@@ -21,12 +23,24 @@ function formatMessageTime(dateStr: string) {
   return format(date, "MMM d, h:mm a");
 }
 
-export function MessageBubble({ message, isMine, showAvatar = true, senderName }: MessageBubbleProps) {
+export function MessageBubble({ 
+  message, 
+  isMine, 
+  showAvatar = true, 
+  senderName,
+  deliveryStatus = "sent"
+}: MessageBubbleProps) {
   const initials = senderName
     ?.split(" ")
     .map((n) => n[0])
     .join("")
-    .toUpperCase() || "?";
+    .toUpperCase()
+    .slice(0, 2) || "?";
+
+  // Determine status based on message state
+  const status: DeliveryStatus = message.read_at 
+    ? "read" 
+    : deliveryStatus;
 
   return (
     <div
@@ -52,9 +66,12 @@ export function MessageBubble({ message, isMine, showAvatar = true, senderName }
         >
           <p className="text-sm whitespace-pre-wrap">{message.body}</p>
         </div>
-        <span className="text-xs text-muted-foreground mt-1 px-1">
-          {formatMessageTime(message.created_at)}
-        </span>
+        <div className="flex items-center gap-1 mt-1 px-1">
+          <span className="text-xs text-muted-foreground">
+            {formatMessageTime(message.created_at)}
+          </span>
+          {isMine && <MessageStatus status={status} />}
+        </div>
       </div>
     </div>
   );
