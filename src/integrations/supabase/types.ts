@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      connection_requests: {
+        Row: {
+          created_at: string
+          id: string
+          recipient_id: string
+          requester_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          recipient_id: string
+          requester_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          recipient_id?: string
+          requester_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       earning_bids: {
         Row: {
           amount: number
@@ -126,32 +150,126 @@ export type Database = {
       }
       messages: {
         Row: {
+          attachment: Json | null
           body: string
           created_at: string
           id: string
+          metadata: Json | null
           read_at: string | null
           sender_id: string
           thread_id: string
+          type: string
         }
         Insert: {
+          attachment?: Json | null
           body: string
           created_at?: string
           id?: string
+          metadata?: Json | null
           read_at?: string | null
           sender_id: string
           thread_id: string
+          type?: string
         }
         Update: {
+          attachment?: Json | null
           body?: string
           created_at?: string
           id?: string
+          metadata?: Json | null
           read_at?: string | null
           sender_id?: string
           thread_id?: string
+          type?: string
         }
         Relationships: [
           {
             foreignKeyName: "messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      offer_attachments: {
+        Row: {
+          created_at: string
+          id: string
+          label: string | null
+          offer_id: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          offer_id: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          offer_id?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "offer_attachments_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      offers: {
+        Row: {
+          created_at: string
+          currency: string
+          delivery_days: number | null
+          description: string | null
+          id: string
+          offer_type: string
+          price: number
+          recipient_id: string
+          sender_id: string
+          status: string
+          thread_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          delivery_days?: number | null
+          description?: string | null
+          id?: string
+          offer_type: string
+          price: number
+          recipient_id: string
+          sender_id: string
+          status?: string
+          thread_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          delivery_days?: number | null
+          description?: string | null
+          id?: string
+          offer_type?: string
+          price?: number
+          recipient_id?: string
+          sender_id?: string
+          status?: string
+          thread_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "offers_thread_id_fkey"
             columns: ["thread_id"]
             isOneToOne: false
             referencedRelation: "message_threads"
