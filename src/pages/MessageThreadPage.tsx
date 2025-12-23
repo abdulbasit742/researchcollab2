@@ -367,6 +367,8 @@ Page: ${window.location.pathname}`;
       );
     }
 
+    const isPinned = pinnedMessages.some(p => p.message_id === message.id);
+    
     return (
       <div
         key={message.id}
@@ -374,16 +376,15 @@ Page: ${window.location.pathname}`;
         className={isSearchMatch ? "ring-2 ring-primary rounded-lg" : ""}
       >
         <MessageBubble
-          message={{
-            ...message,
-            body: showSearch && messageSearch.searchQuery 
-              ? message.body 
-              : message.body,
-          }}
+          message={message}
           isMine={isMine}
           showAvatar={showAvatar}
           senderName={isMine ? "You" : displayName}
           deliveryStatus={pendingMessages.size > 0 ? "sending" : "sent"}
+          isPinned={isPinned}
+          onPin={() => togglePin(message.id)}
+          onDelete={() => deleteMessage(message.id)}
+          onReport={() => setShowReportModal(true)}
         />
       </div>
     );
