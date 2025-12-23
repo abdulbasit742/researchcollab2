@@ -129,6 +129,8 @@ export type Database = {
           muted_by_user_a_until: string | null
           muted_by_user_b_until: string | null
           pair_key: string | null
+          starred_by_user_a: boolean | null
+          starred_by_user_b: boolean | null
           user_a: string
           user_b: string
         }
@@ -142,6 +144,8 @@ export type Database = {
           muted_by_user_a_until?: string | null
           muted_by_user_b_until?: string | null
           pair_key?: string | null
+          starred_by_user_a?: boolean | null
+          starred_by_user_b?: boolean | null
           user_a: string
           user_b: string
         }
@@ -155,6 +159,8 @@ export type Database = {
           muted_by_user_a_until?: string | null
           muted_by_user_b_until?: string | null
           pair_key?: string | null
+          starred_by_user_a?: boolean | null
+          starred_by_user_b?: boolean | null
           user_a?: string
           user_b?: string
         }
@@ -165,8 +171,10 @@ export type Database = {
           attachment: Json | null
           body: string
           created_at: string
+          deleted_at: string | null
           id: string
           metadata: Json | null
+          reactions: Json | null
           read_at: string | null
           sender_id: string
           thread_id: string
@@ -176,8 +184,10 @@ export type Database = {
           attachment?: Json | null
           body: string
           created_at?: string
+          deleted_at?: string | null
           id?: string
           metadata?: Json | null
+          reactions?: Json | null
           read_at?: string | null
           sender_id: string
           thread_id: string
@@ -187,8 +197,10 @@ export type Database = {
           attachment?: Json | null
           body?: string
           created_at?: string
+          deleted_at?: string | null
           id?: string
           metadata?: Json | null
+          reactions?: Json | null
           read_at?: string | null
           sender_id?: string
           thread_id?: string
@@ -282,6 +294,48 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "offers_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pinned_messages: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_global: boolean | null
+          message_id: string
+          pinned_by: string
+          thread_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_global?: boolean | null
+          message_id: string
+          pinned_by: string
+          thread_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_global?: boolean | null
+          message_id?: string
+          pinned_by?: string
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pinned_messages_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pinned_messages_thread_id_fkey"
             columns: ["thread_id"]
             isOneToOne: false
             referencedRelation: "message_threads"
@@ -390,6 +444,41 @@ export type Database = {
           },
           {
             foreignKeyName: "reports_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      thread_notes: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          id: string
+          thread_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          thread_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          thread_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "thread_notes_thread_id_fkey"
             columns: ["thread_id"]
             isOneToOne: false
             referencedRelation: "message_threads"
