@@ -1,17 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, MessageSquare, Phone } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMessages, useSendMessage } from "@/hooks/useMessaging";
-import { useOffers, useConnections, useAttachments } from "@/hooks/useOffersConnections";
+import { useOffers, useConnections } from "@/hooks/useOffersConnections";
+import { useTyping } from "@/hooks/useTyping";
 import { MessageBubble } from "@/components/messages/MessageBubble";
 import { MessageInput } from "@/components/messages/MessageInput";
+import { ChatHeader } from "@/components/messages/ChatHeader";
+import { TypingIndicator } from "@/components/messages/TypingIndicator";
 import { OfferBubble } from "@/components/messages/OfferBubble";
 import { ConnectionBubble } from "@/components/messages/ConnectionBubble";
 import { AttachmentBubble } from "@/components/messages/AttachmentBubble";
@@ -43,17 +44,20 @@ export default function MessageThreadPage() {
   const { sendMessage, isSending } = useSendMessage();
   const { sendOffer, isSending: isSendingOffer } = useOffers(threadId);
   const { sendConnectionRequest, isSending: isSendingConnection } = useConnections();
+  const { typingText, startTyping, stopTyping } = useTyping(threadId);
+  
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [threadInfo, setThreadInfo] = useState<ThreadInfo | null>(null);
   const [threadLoading, setThreadLoading] = useState(true);
   const [showOfferModal, setShowOfferModal] = useState(false);
+  const [pendingMessages, setPendingMessages] = useState<Set<string>>(new Set());
 
   // Check if should auto-open offer modal
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("action") === "offer") {
       setShowOfferModal(true);
-      // Clear the param
       navigate(location.pathname, { replace: true });
     }
   }, [location, navigate]);
@@ -77,7 +81,7 @@ export default function MessageThreadPage() {
         }
 
         const otherUserId = thread.user_a === user.id ? thread.user_b : thread.user_a;
-        const { data: profile } = await supabase
+        const { data: profileData } = await supabase
           .from("profiles")
           .select("id, full_name, role")
           .eq("id", otherUserId)
@@ -93,7 +97,7 @@ export default function MessageThreadPage() {
 
         setThreadInfo({
           ...thread,
-          other_user: profile || { id: otherUserId, full_name: null, role: null },
+          other_user: profileData || { id: otherUserId, full_name: null, role: null },
           is_support: !!adminRole,
         });
       } catch (err) {
@@ -109,11 +113,23 @@ export default function MessageThreadPage() {
   // Auto-scroll to bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, typingText]);
 
   const handleSend = async (body: string) => {
     if (!threadId) return;
-    await sendMessage(threadId, body);
+    
+    // Optimistic: add to pending
+    const tempId = `temp-${Date.now()}`;
+    setPendingMessages(prev => new Set(prev).add(tempId));
+    
+    const result = await sendMessage(threadId, body);
+    
+    // Remove from pending
+    setPendingMessages(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(tempId);
+      return newSet;
+    });
   };
 
   const handleSendAttachment = async (attachment: {
@@ -198,14 +214,11 @@ Page: ${window.location.pathname}`;
 
   const otherUser = threadInfo?.other_user;
   const displayName = threadInfo?.is_support ? "Support" : (otherUser?.full_name || "Unknown User");
-  const initials = displayName
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
 
-  const renderMessage = (message: any) => {
+  const renderMessage = (message: any, index: number) => {
     const isMine = message.sender_id === user?.id;
+    const prevMessage = messages[index - 1];
+    const showAvatar = !prevMessage || prevMessage.sender_id !== message.sender_id;
 
     if (message.type === "offer" && message.metadata?.offer_id) {
       return (
@@ -243,76 +256,32 @@ Page: ${window.location.pathname}`;
         key={message.id}
         message={message}
         isMine={isMine}
+        showAvatar={showAvatar}
         senderName={isMine ? "You" : displayName}
+        deliveryStatus={pendingMessages.size > 0 ? "sending" : "sent"}
       />
     );
   };
 
   return (
-    <MainLayout>
+    <div className="flex flex-col h-screen bg-background">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-background border-b">
-        <div className="container px-4">
-          <div className="flex items-center gap-3 py-3 min-h-[60px]">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate("/messages")}
-              className="shrink-0"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-
-            {threadLoading ? (
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-muted animate-pulse" />
-                <div className="space-y-1">
-                  <div className="h-4 w-24 bg-muted rounded animate-pulse" />
-                  <div className="h-3 w-16 bg-muted rounded animate-pulse" />
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3 flex-1 min-w-0">
-                <Avatar className="h-10 w-10 shrink-0">
-                  <AvatarFallback>{initials}</AvatarFallback>
-                </Avatar>
-                <div className="min-w-0 flex-1">
-                  <h2 className="font-semibold truncate">{displayName}</h2>
-                  <div className="flex items-center gap-2">
-                    {threadInfo?.is_support && (
-                      <Badge variant="secondary" className="text-xs">
-                        Support
-                      </Badge>
-                    )}
-                    {otherUser?.role && !threadInfo?.is_support && (
-                      <Badge variant="secondary" className="text-xs capitalize">
-                        {otherUser.role}
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-
-                {/* WhatsApp Escalation for Support threads */}
-                {threadInfo?.is_support && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleWhatsAppEscalate}
-                    className="shrink-0"
-                  >
-                    <Phone className="h-4 w-4 mr-1" />
-                    <span className="hidden sm:inline">WhatsApp</span>
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      <ChatHeader
+        userId={otherUser?.id}
+        displayName={displayName}
+        role={otherUser?.role}
+        isSupport={threadInfo?.is_support}
+        typingText={typingText}
+        onWhatsAppEscalate={threadInfo?.is_support ? handleWhatsAppEscalate : undefined}
+        isLoading={threadLoading}
+      />
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="container px-4 py-4">
+      <div 
+        ref={messagesContainerRef}
+        className="flex-1 overflow-y-auto overscroll-contain"
+      >
+        <div className="container px-4 py-4 pb-safe">
           {isLoading ? (
             <MessagesSkeleton />
           ) : error ? (
@@ -336,8 +305,16 @@ Page: ${window.location.pathname}`;
               </p>
             </motion.div>
           ) : (
-            <div className="space-y-3">
-              {messages.map(renderMessage)}
+            <div className="space-y-2">
+              {messages.map((msg, idx) => renderMessage(msg, idx))}
+              
+              {/* Typing indicator */}
+              <AnimatePresence>
+                {typingText && (
+                  <TypingIndicator userName={otherUser?.full_name || undefined} />
+                )}
+              </AnimatePresence>
+              
               <div ref={messagesEndRef} />
             </div>
           )}
@@ -345,7 +322,7 @@ Page: ${window.location.pathname}`;
       </div>
 
       {/* Input */}
-      <div className="sticky bottom-0 bg-background border-t">
+      <div className="sticky bottom-0 bg-background border-t safe-area-bottom">
         <div className="container px-4">
           <div className="flex items-end gap-2 py-3">
             <ChatActionsMenu
@@ -365,6 +342,8 @@ Page: ${window.location.pathname}`;
             <div className="flex-1">
               <MessageInput
                 onSend={handleSend}
+                onTyping={startTyping}
+                onStopTyping={stopTyping}
                 disabled={isSending || isLoading}
                 placeholder="Type a message..."
               />
@@ -380,6 +359,6 @@ Page: ${window.location.pathname}`;
         onSubmit={handleSendOffer}
         isSending={isSendingOffer}
       />
-    </MainLayout>
+    </div>
   );
 }

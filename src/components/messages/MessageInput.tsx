@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,26 +6,42 @@ import { cn } from "@/lib/utils";
 
 interface MessageInputProps {
   onSend: (message: string) => void;
+  onTyping?: () => void;
+  onStopTyping?: () => void;
   disabled?: boolean;
   placeholder?: string;
 }
 
-export function MessageInput({ onSend, disabled, placeholder = "Type a message..." }: MessageInputProps) {
+export function MessageInput({ 
+  onSend, 
+  onTyping,
+  onStopTyping,
+  disabled, 
+  placeholder = "Type a message..." 
+}: MessageInputProps) {
   const [message, setMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleSend = () => {
+  const handleSend = useCallback(() => {
     if (message.trim() && !disabled) {
       onSend(message);
       setMessage("");
+      onStopTyping?.();
       textareaRef.current?.focus();
     }
-  };
+  }, [message, disabled, onSend, onStopTyping]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+    if (e.target.value.trim()) {
+      onTyping?.();
     }
   };
 
@@ -38,17 +54,18 @@ export function MessageInput({ onSend, disabled, placeholder = "Type a message..
   }, [message]);
 
   return (
-    <div className="flex items-end gap-2 p-3 border-t bg-background safe-area-bottom">
+    <div className="flex items-end gap-2">
       <Textarea
         ref={textareaRef}
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={handleChange}
         onKeyDown={handleKeyDown}
+        onBlur={() => onStopTyping?.()}
         placeholder={placeholder}
         disabled={disabled}
         className={cn(
           "min-h-[44px] max-h-[120px] resize-none flex-1",
-          "rounded-2xl py-3 px-4"
+          "rounded-2xl py-3 px-4 text-base"
         )}
         rows={1}
       />
@@ -56,7 +73,7 @@ export function MessageInput({ onSend, disabled, placeholder = "Type a message..
         size="icon"
         onClick={handleSend}
         disabled={disabled || !message.trim()}
-        className="h-11 w-11 rounded-full shrink-0"
+        className="h-11 w-11 rounded-full shrink-0 touch-manipulation"
       >
         <Send className="h-5 w-5" />
       </Button>
