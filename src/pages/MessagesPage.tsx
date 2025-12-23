@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -9,15 +9,47 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageSquare, Users, Search, Archive } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useThreads } from "@/hooks/useMessaging";
-import { useThreadSearch } from "@/hooks/useChatControls";
+import { useThreadSearch, useThreadArchive, useThreadMute } from "@/hooks/useChatControls";
+import { useStarThread } from "@/hooks/useChatFeatures";
 import { ThreadListItem } from "@/components/messages/ThreadListItem";
 import { ThreadListSkeleton } from "@/components/skeletons/MessagesSkeleton";
+import { toast } from "sonner";
 
 export default function MessagesPage() {
   const { user } = useAuth();
   const { threads, isLoading, error, refetch } = useThreads();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<"inbox" | "archived">("inbox");
+  
+  // Swipe action hooks
+  const { archiveThread, unarchiveThread } = useThreadArchive();
+  const { muteThread, unmuteThread } = useThreadMute();
+  const { toggleStar } = useStarThread();
+
+  // Swipe handlers
+  const handleArchive = useCallback(async (threadId: string) => {
+    const success = await archiveThread(threadId, user?.id === threads.find(t => t.id === threadId)?.user_a);
+    if (success) {
+      toast.success("Conversation archived");
+      refetch();
+    }
+  }, [archiveThread, user, threads, refetch]);
+
+  const handleUnarchive = useCallback(async (threadId: string) => {
+    const success = await unarchiveThread(threadId, user?.id === threads.find(t => t.id === threadId)?.user_a);
+    if (success) {
+      toast.success("Conversation restored");
+      refetch();
+    }
+  }, [unarchiveThread, user, threads, refetch]);
+
+  const handleStar = useCallback(async (threadId: string, isUserA: boolean, currentlyStarred: boolean) => {
+    const success = await toggleStar(threadId, isUserA, currentlyStarred);
+    if (success) {
+      toast.success(currentlyStarred ? "Removed from favorites" : "Added to favorites");
+      refetch();
+    }
+  }, [toggleStar, refetch]);
 
   // Filter threads by archive status
   const { inboxThreads, archivedThreads } = useMemo(() => {
@@ -172,6 +204,9 @@ export default function MessagesPage() {
                   key={thread.id} 
                   thread={thread}
                   showArchived={activeTab === "archived"}
+                  onArchive={handleArchive}
+                  onUnarchive={handleUnarchive}
+                  onStar={handleStar}
                 />
               ))}
             </div>
