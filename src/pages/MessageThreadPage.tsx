@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Ban } from "lucide-react";
+import { MessageSquare, Ban, FileText, Star } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMessages, useSendMessage } from "@/hooks/useMessaging";
 import { useOffers, useConnections } from "@/hooks/useOffersConnections";
@@ -15,11 +15,17 @@ import {
   useUserBlock,
   useReport,
 } from "@/hooks/useChatControls";
+import {
+  useReactions,
+  usePinnedMessages,
+  useStarThread,
+  useDeleteMessage,
+} from "@/hooks/useChatFeatures";
 import { MessageBubble } from "@/components/messages/MessageBubble";
 import { MessageInput } from "@/components/messages/MessageInput";
 import { ChatHeader } from "@/components/messages/ChatHeader";
 import { TypingIndicator } from "@/components/messages/TypingIndicator";
-import { ThreadSearchBar, HighlightedText } from "@/components/messages/ThreadSearchBar";
+import { ThreadSearchBar } from "@/components/messages/ThreadSearchBar";
 import { ChatOptionsMenu } from "@/components/messages/ChatOptionsMenu";
 import { ReportModal } from "@/components/messages/ReportModal";
 import { OfferBubble } from "@/components/messages/OfferBubble";
@@ -29,6 +35,11 @@ import { AttachmentButton } from "@/components/messages/AttachmentButton";
 import { ChatActionsMenu } from "@/components/messages/ChatActionsMenu";
 import { SendOfferModal } from "@/components/messages/SendOfferModal";
 import { MessagesSkeleton } from "@/components/skeletons/MessagesSkeleton";
+import { ReactionPicker, ReactionsDisplay } from "@/components/messages/ReactionPicker";
+import { PinnedMessagesBar } from "@/components/messages/PinnedMessagesBar";
+import { ConversationSummary } from "@/components/messages/ConversationSummary";
+import { ThreadNotesPanel } from "@/components/messages/ThreadNotesPanel";
+import { MessageContextMenu } from "@/components/messages/MessageContextMenu";
 import { supabase } from "@/integrations/supabase/client";
 import { supportConfig } from "@/config/support";
 
@@ -64,6 +75,12 @@ export default function MessageThreadPage() {
   const { reportUser, isLoading: isReporting } = useReport();
   const messageSearch = useMessageSearch(messages);
   
+  // New features
+  const { toggleReaction, REACTION_EMOJIS } = useReactions();
+  const { pinnedMessages, fetchPins, togglePin } = usePinnedMessages(threadId || '');
+  const { toggleStar } = useStarThread();
+  const { deleteMessage } = useDeleteMessage();
+  
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messageRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [threadInfo, setThreadInfo] = useState<ThreadInfo | null>(null);
@@ -73,6 +90,9 @@ export default function MessageThreadPage() {
   const [showSearch, setShowSearch] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
   const [pendingMessages, setPendingMessages] = useState<Set<string>>(new Set());
+  const [showNotes, setShowNotes] = useState(false);
+  const [activeReactionPicker, setActiveReactionPicker] = useState<string | null>(null);
+  const [contextMenu, setContextMenu] = useState<{ messageId: string; x: number; y: number } | null>(null);
 
   // Check if should auto-open offer modal
   useEffect(() => {
@@ -134,6 +154,13 @@ export default function MessageThreadPage() {
 
     fetchThread();
   }, [threadId, user, navigate, checkIsBlocked]);
+
+  // Fetch pinned messages
+  useEffect(() => {
+    if (threadId) {
+      fetchPins();
+    }
+  }, [threadId, fetchPins]);
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {

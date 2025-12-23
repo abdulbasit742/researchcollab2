@@ -26,6 +26,11 @@ export interface Message {
   body: string;
   created_at: string;
   read_at: string | null;
+  type?: string;
+  attachment?: unknown;
+  metadata?: unknown;
+  reactions?: unknown;
+  deleted_at?: string | null;
 }
 
 export function useThreads() {
