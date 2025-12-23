@@ -55,6 +55,8 @@ interface ThreadInfo {
   is_support?: boolean;
   muted_by_user_a_until?: string | null;
   muted_by_user_b_until?: string | null;
+  starred_by_user_a?: boolean | null;
+  starred_by_user_b?: boolean | null;
 }
 
 export default function MessageThreadPage() {
@@ -112,7 +114,7 @@ export default function MessageThreadPage() {
       try {
         const { data: thread } = await supabase
           .from("message_threads")
-          .select("id, user_a, user_b, muted_by_user_a_until, muted_by_user_b_until")
+          .select("id, user_a, user_b, muted_by_user_a_until, muted_by_user_b_until, starred_by_user_a, starred_by_user_b")
           .eq("id", threadId)
           .maybeSingle();
 
@@ -293,6 +295,25 @@ Page: ${window.location.pathname}`;
     setShowReportModal(false);
   };
 
+  const handleToggleStar = async () => {
+    if (!threadId || !threadInfo || !user) return;
+    const isUserA = threadInfo.user_a === user.id;
+    const currentlyStarred = isUserA
+      ? !!threadInfo.starred_by_user_a
+      : !!threadInfo.starred_by_user_b;
+    await toggleStar(threadId, isUserA, currentlyStarred);
+    // Update local state
+    setThreadInfo((prev) =>
+      prev
+        ? {
+            ...prev,
+            starred_by_user_a: isUserA ? !currentlyStarred : prev.starred_by_user_a,
+            starred_by_user_b: !isUserA ? !currentlyStarred : prev.starred_by_user_b,
+          }
+        : null
+    );
+  };
+
   // Check if muted
   const isUserA = user?.id === threadInfo?.user_a;
   const muteUntil = isUserA
@@ -402,6 +423,9 @@ Page: ${window.location.pathname}`;
           typingText={typingText}
           onWhatsAppEscalate={threadInfo?.is_support ? handleWhatsAppEscalate : undefined}
           isLoading={threadLoading}
+          isStarred={isUserA ? !!threadInfo?.starred_by_user_a : !!threadInfo?.starred_by_user_b}
+          onToggleStar={handleToggleStar}
+          onOpenNotes={() => setShowNotes(true)}
         />
         
         {/* Options Menu */}
