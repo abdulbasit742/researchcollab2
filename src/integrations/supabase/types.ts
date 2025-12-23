@@ -120,28 +120,40 @@ export type Database = {
       }
       message_threads: {
         Row: {
+          archived_by_user_a: boolean | null
+          archived_by_user_b: boolean | null
           created_at: string
           id: string
           last_message_at: string
           last_message_text: string | null
+          muted_by_user_a_until: string | null
+          muted_by_user_b_until: string | null
           pair_key: string | null
           user_a: string
           user_b: string
         }
         Insert: {
+          archived_by_user_a?: boolean | null
+          archived_by_user_b?: boolean | null
           created_at?: string
           id?: string
           last_message_at?: string
           last_message_text?: string | null
+          muted_by_user_a_until?: string | null
+          muted_by_user_b_until?: string | null
           pair_key?: string | null
           user_a: string
           user_b: string
         }
         Update: {
+          archived_by_user_a?: boolean | null
+          archived_by_user_b?: boolean | null
           created_at?: string
           id?: string
           last_message_at?: string
           last_message_text?: string | null
+          muted_by_user_a_until?: string | null
+          muted_by_user_b_until?: string | null
           pair_key?: string | null
           user_a?: string
           user_b?: string
@@ -328,6 +340,84 @@ export type Database = {
         }
         Relationships: []
       }
+      reports: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          description: string | null
+          id: string
+          message_id: string | null
+          reason: string
+          reported_user_id: string
+          reporter_id: string
+          resolved_at: string | null
+          status: string
+          thread_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          message_id?: string | null
+          reason: string
+          reported_user_id: string
+          reporter_id: string
+          resolved_at?: string | null
+          status?: string
+          thread_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          message_id?: string | null
+          reason?: string
+          reported_user_id?: string
+          reporter_id?: string
+          resolved_at?: string | null
+          status?: string
+          thread_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_blocks: {
+        Row: {
+          blocked_id: string
+          blocker_id: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          blocked_id: string
+          blocker_id: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          blocked_id?: string
+          blocker_id?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -365,6 +455,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_blocked: { Args: { user_a: string; user_b: string }; Returns: boolean }
     }
     Enums: {
       app_role: "student" | "researcher" | "admin"
