@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ProfileSkeleton } from "@/components/skeletons";
 import {
   MapPin,
   GraduationCap,
@@ -123,19 +124,7 @@ export default function UserPublicProfilePage() {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className="gradient-hero py-12 md:py-16">
-          <div className="container">
-            <Skeleton className="h-8 w-32 mb-6" />
-            <div className="flex flex-col md:flex-row gap-8 items-start">
-              <Skeleton className="h-32 w-32 rounded-full" />
-              <div className="flex-1 space-y-4">
-                <Skeleton className="h-10 w-64" />
-                <Skeleton className="h-6 w-48" />
-                <Skeleton className="h-4 w-96" />
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProfileSkeleton />
       </MainLayout>
     );
   }
