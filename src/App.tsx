@@ -55,6 +55,7 @@ import AdminAIPricingPage from "./pages/AdminAIPricingPage";
 import AdminEnterprisePage from "./pages/AdminEnterprisePage";
 import MessagesPage from "./pages/MessagesPage";
 import MessageThreadPage from "./pages/MessageThreadPage";
+import AdminSupportPage from "./pages/AdminSupportPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
