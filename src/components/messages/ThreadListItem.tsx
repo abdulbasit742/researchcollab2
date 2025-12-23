@@ -2,12 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { format, isToday, isYesterday } from "date-fns";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { BellOff, Archive } from "lucide-react";
 import { useUserPresence } from "@/hooks/usePresence";
 import { cn } from "@/lib/utils";
 import type { MessageThread } from "@/hooks/useMessaging";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ThreadListItemProps {
   thread: MessageThread;
+  showArchived?: boolean;
 }
 
 function formatThreadTime(dateStr: string) {
@@ -21,8 +24,9 @@ function formatThreadTime(dateStr: string) {
   return format(date, "MMM d");
 }
 
-export function ThreadListItem({ thread }: ThreadListItemProps) {
+export function ThreadListItem({ thread, showArchived }: ThreadListItemProps) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const otherUser = thread.other_user;
   const { isOnline } = useUserPresence(otherUser?.id);
   const displayName = otherUser?.full_name || "Unknown User";
@@ -34,6 +38,13 @@ export function ThreadListItem({ thread }: ThreadListItemProps) {
     .slice(0, 2);
 
   const hasUnread = thread.unread_count && thread.unread_count > 0;
+
+  // Check if muted
+  const isUserA = user?.id === thread.user_a;
+  const muteUntil = isUserA
+    ? (thread as any).muted_by_user_a_until
+    : (thread as any).muted_by_user_b_until;
+  const isMuted = muteUntil && new Date(muteUntil) > new Date();
 
   return (
     <button
@@ -65,12 +76,20 @@ export function ThreadListItem({ thread }: ThreadListItemProps) {
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">
-          <span className={cn(
-            "font-medium truncate",
-            hasUnread && "font-semibold"
-          )}>
-            {displayName}
-          </span>
+          <div className="flex items-center gap-2 min-w-0">
+            <span className={cn(
+              "font-medium truncate",
+              hasUnread && "font-semibold"
+            )}>
+              {displayName}
+            </span>
+            {isMuted && (
+              <BellOff className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+            )}
+            {showArchived && (
+              <Archive className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+            )}
+          </div>
           <span className={cn(
             "text-xs shrink-0",
             hasUnread ? "text-primary font-medium" : "text-muted-foreground"
