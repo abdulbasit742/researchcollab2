@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Phone } from "lucide-react";
+import { ArrowLeft, Phone, Star, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +15,9 @@ interface ChatHeaderProps {
   typingText?: string | null;
   onWhatsAppEscalate?: () => void;
   isLoading?: boolean;
+  isStarred?: boolean;
+  onToggleStar?: () => void;
+  onOpenNotes?: () => void;
 }
 
 export function ChatHeader({
@@ -25,6 +28,9 @@ export function ChatHeader({
   typingText,
   onWhatsAppEscalate,
   isLoading,
+  isStarred,
+  onToggleStar,
+  onOpenNotes,
 }: ChatHeaderProps) {
   const navigate = useNavigate();
   const { isOnline, lastSeen } = useUserPresence(userId);
@@ -105,17 +111,46 @@ export function ChatHeader({
                 </div>
               </div>
 
-              {/* WhatsApp Escalation for Support threads */}
-              {isSupport && onWhatsAppEscalate && (
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={onWhatsAppEscalate}
-                  className="shrink-0 h-10 w-10"
-                >
-                  <Phone className="h-4 w-4" />
-                </Button>
-              )}
+              {/* Action buttons */}
+              <div className="flex items-center gap-1 shrink-0">
+                {onOpenNotes && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onOpenNotes}
+                    className="h-9 w-9"
+                  >
+                    <FileText className="h-4 w-4" />
+                  </Button>
+                )}
+                {onToggleStar && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onToggleStar}
+                    className="h-9 w-9"
+                  >
+                    <Star
+                      className={cn(
+                        "h-4 w-4 transition-colors",
+                        isStarred
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "text-muted-foreground"
+                      )}
+                    />
+                  </Button>
+                )}
+                {isSupport && onWhatsAppEscalate && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={onWhatsAppEscalate}
+                    className="h-9 w-9"
+                  >
+                    <Phone className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
           )}
         </div>
