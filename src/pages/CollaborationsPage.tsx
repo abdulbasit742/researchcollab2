@@ -26,6 +26,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useStartConversation } from "@/hooks/useMessaging";
 
 const collaborations = [
   {
@@ -148,6 +149,7 @@ export default function CollaborationsPage() {
   const [discipline, setDiscipline] = useState("All Disciplines");
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { startConversation } = useStartConversation();
 
   const handleApply = (title: string) => {
     toast({
@@ -310,7 +312,7 @@ export default function CollaborationsPage() {
                   </Button>
                   <Button 
                     variant="outline"
-                    onClick={() => navigate(`/u/${collab.researcherId}`)}
+                    onClick={() => startConversation(collab.researcherId)}
                   >
                     Message Owner
                   </Button>
