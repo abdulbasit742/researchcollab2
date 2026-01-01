@@ -308,7 +308,12 @@ export default function CollaborationsPage() {
                     Apply Now
                     <ArrowRight className="h-4 w-4" />
                   </Button>
-                  <Button variant="outline">Message Owner</Button>
+                  <Button 
+                    variant="outline"
+                    onClick={() => navigate(`/u/${collab.researcherId}`)}
+                  >
+                    Message Owner
+                  </Button>
                 </CardFooter>
               </Card>
             </motion.div>
