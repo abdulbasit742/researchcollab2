@@ -25,6 +25,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useStartConversation } from "@/hooks/useMessaging";
 
 // Mock data for demo (will be replaced with DB data)
 const mockProjects: Record<string, {
@@ -132,6 +133,7 @@ export default function EarnProjectDetailPage() {
   const [deliveryDays, setDeliveryDays] = useState("");
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const { startConversation } = useStartConversation();
 
   useEffect(() => {
     // Simulate loading and use mock data
@@ -385,12 +387,22 @@ export default function EarnProjectDetailPage() {
                   <h3 className="font-semibold text-lg truncate">{project.owner_name}</h3>
                   <p className="text-muted-foreground truncate">{project.owner_university}</p>
                 </div>
-                <Link to={`/u/${project.owner_id}`} className="w-full sm:w-auto">
-                  <Button variant="outline" className="w-full sm:w-auto">
-                    <User className="h-4 w-4 mr-2" />
-                    View Profile
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                  <Button 
+                    variant="outline" 
+                    className="w-full sm:w-auto"
+                    onClick={() => startConversation(project.owner_id)}
+                  >
+                    <MessageSquare className="h-4 w-4 mr-2" />
+                    Message
                   </Button>
-                </Link>
+                  <Link to={`/u/${project.owner_id}`} className="w-full sm:w-auto">
+                    <Button variant="outline" className="w-full sm:w-auto">
+                      <User className="h-4 w-4 mr-2" />
+                      View Profile
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </CardContent>
           </Card>
