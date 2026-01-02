@@ -275,17 +275,13 @@ export default function OfferDetailPage() {
                       <p className="mt-3 text-sm text-muted-foreground">
                         {bid.message}
                       </p>
-                      {bid.portfolioLink && (
-                        <a 
-                          href={bid.portfolioLink} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 mt-2 text-sm text-primary hover:underline"
-                        >
-                          <ExternalLink className="h-3 w-3" />
-                          View Portfolio
-                        </a>
-                      )}
+                      <Link 
+                        to={`/u/${bid.bidderId}`}
+                        className="inline-flex items-center gap-1 mt-2 text-sm text-primary hover:underline"
+                      >
+                        <ExternalLink className="h-3 w-3" />
+                        View Portfolio
+                      </Link>
                       {bid.status === "pending" && (
                         <div className="flex gap-2 mt-4">
                           <Button 
