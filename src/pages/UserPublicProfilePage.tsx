@@ -362,28 +362,36 @@ export default function UserPublicProfilePage() {
 
             {/* Right Column */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Projects (Students) */}
+              {/* Portfolio / Projects (Students) */}
               {isStudent && student.projects.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                  <h2 className="text-2xl font-bold mb-4">Projects</h2>
+                  <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                    <Award className="h-6 w-6 text-primary" />
+                    Portfolio
+                  </h2>
                   <div className="grid gap-4">
                     {student.projects.map((project, idx) => (
-                      <Card key={idx}>
-                        <CardContent className="p-4">
-                          <h3 className="font-semibold">{project.title}</h3>
-                          <p className="text-sm text-muted-foreground mt-1">
+                      <Card key={idx} variant="elevated">
+                        <CardContent className="p-5">
+                          <h3 className="font-semibold text-lg">{project.title}</h3>
+                          <p className="text-sm text-muted-foreground mt-2">
                             {project.description}
                           </p>
                           {project.link && (
-                            <Button variant="link" className="p-0 h-auto mt-2" asChild>
-                              <a href={project.link} target="_blank" rel="noopener noreferrer">
-                                View Project →
-                              </a>
-                            </Button>
+                            <a 
+                              href={project.link} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 mt-3 text-sm text-primary hover:underline font-medium"
+                            >
+                              <Briefcase className="h-4 w-4" />
+                              View Project
+                              <ArrowRight className="h-3 w-3" />
+                            </a>
                           )}
                         </CardContent>
                       </Card>
