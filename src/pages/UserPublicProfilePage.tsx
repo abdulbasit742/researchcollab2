@@ -54,6 +54,15 @@ const mockCollaborations = [
   },
 ];
 
+interface PortfolioProject {
+  id: string;
+  title: string;
+  description: string | null;
+  link: string | null;
+  thumbnail_url: string | null;
+  display_order: number | null;
+}
+
 export default function UserPublicProfilePage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -63,6 +72,7 @@ export default function UserPublicProfilePage() {
   const [profileData, setProfileData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userFromMock, setUserFromMock] = useState<UserProfile | null>(null);
+  const [portfolioProjects, setPortfolioProjects] = useState<PortfolioProject[]>([]);
 
   useEffect(() => {
     // If viewing own profile, redirect to /profile
@@ -76,14 +86,22 @@ export default function UserPublicProfilePage() {
       
       // First try to fetch from Supabase
       if (id) {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", id)
-          .maybeSingle();
+        const [profileResult, portfolioResult] = await Promise.all([
+          supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", id)
+            .maybeSingle(),
+          supabase
+            .from("portfolio_projects")
+            .select("*")
+            .eq("user_id", id)
+            .order("display_order", { ascending: true })
+        ]);
 
-        if (data) {
-          setProfileData(data);
+        if (profileResult.data) {
+          setProfileData(profileResult.data);
+          setPortfolioProjects(portfolioResult.data || []);
           setIsLoading(false);
           return;
         }
@@ -652,12 +670,66 @@ export default function UserPublicProfilePage() {
               )}
             </div>
 
-            <div className="lg:col-span-2">
-              <Card>
-                <CardContent className="p-8 text-center text-muted-foreground">
-                  <p>More profile details coming soon...</p>
-                </CardContent>
-              </Card>
+            <div className="lg:col-span-2 space-y-6">
+              {/* Portfolio Section */}
+              {portfolioProjects.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                    <Award className="h-6 w-6 text-primary" />
+                    Portfolio
+                  </h2>
+                  <div className="grid gap-4">
+                    {portfolioProjects.map((project) => (
+                      <Card key={project.id} variant="elevated">
+                        <CardContent className="p-5">
+                          <div className="flex gap-4">
+                            {project.thumbnail_url && (
+                              <img
+                                src={project.thumbnail_url}
+                                alt={project.title}
+                                className="w-24 h-24 rounded-lg object-cover flex-shrink-0"
+                              />
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold text-lg">{project.title}</h3>
+                              {project.description && (
+                                <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                                  {project.description}
+                                </p>
+                              )}
+                              {project.link && (
+                                <a
+                                  href={project.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 mt-3 text-sm text-primary hover:underline font-medium"
+                                >
+                                  <Briefcase className="h-4 w-4" />
+                                  View Project
+                                  <ArrowRight className="h-3 w-3" />
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {portfolioProjects.length === 0 && (
+                <Card>
+                  <CardContent className="p-8 text-center text-muted-foreground">
+                    <Award className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                    <p>No portfolio projects yet</p>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           </div>
         </div>
