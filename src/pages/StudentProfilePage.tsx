@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { PortfolioManager } from "@/components/portfolio/PortfolioManager";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
@@ -19,12 +20,10 @@ import {
 import {
   GraduationCap,
   User,
-  MapPin,
   BookOpen,
   Target,
   Wrench,
   Briefcase,
-  FolderOpen,
   Shield,
   Save,
   X,
@@ -104,9 +103,6 @@ export default function StudentProfilePage() {
   });
 
   const [newSkill, setNewSkill] = useState("");
-  const [projects, setProjects] = useState([
-    { title: "", description: "", link: "" }
-  ]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -137,20 +133,6 @@ export default function StudentProfilePage() {
       ...prev,
       skills: prev.skills.filter(s => s !== skill)
     }));
-  };
-
-  const addProject = () => {
-    setProjects(prev => [...prev, { title: "", description: "", link: "" }]);
-  };
-
-  const updateProject = (index: number, field: string, value: string) => {
-    setProjects(prev => prev.map((p, i) => 
-      i === index ? { ...p, [field]: value } : p
-    ));
-  };
-
-  const removeProject = (index: number) => {
-    setProjects(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSave = () => {
@@ -477,53 +459,7 @@ export default function StudentProfilePage() {
           </Card>
 
           {/* Portfolio */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FolderOpen className="h-5 w-5 text-primary" />
-                Portfolio
-              </CardTitle>
-              <CardDescription>Showcase your work</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {projects.map((project, index) => (
-                <div key={index} className="p-4 border rounded-lg space-y-3">
-                  <div className="flex justify-between items-center">
-                    <Label className="font-medium">Project {index + 1}</Label>
-                    {projects.length > 1 && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeProject(index)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                  <Input
-                    placeholder="Project Title"
-                    value={project.title}
-                    onChange={(e) => updateProject(index, "title", e.target.value)}
-                  />
-                  <Textarea
-                    placeholder="Brief description..."
-                    rows={2}
-                    value={project.description}
-                    onChange={(e) => updateProject(index, "description", e.target.value)}
-                  />
-                  <Input
-                    placeholder="Link (GitHub, Drive, Behance)"
-                    value={project.link}
-                    onChange={(e) => updateProject(index, "link", e.target.value)}
-                  />
-                </div>
-              ))}
-              <Button variant="outline" onClick={addProject} className="w-full">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Another Project
-              </Button>
-            </CardContent>
-          </Card>
+          <PortfolioManager />
 
           {/* Verification */}
           <Card>
