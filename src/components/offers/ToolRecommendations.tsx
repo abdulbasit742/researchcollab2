@@ -64,8 +64,8 @@ export function ToolRecommendations({
                   <span className="text-xs">{tool.rating}</span>
                 </div>
                 <div className="flex items-center gap-2 mt-2">
-                  <span className="text-lg font-bold">${tool.price}</span>
-                  <span className="text-xs text-muted-foreground line-through">${tool.originalPrice}</span>
+                  <span className="text-sm font-bold">PKR {tool.price.toLocaleString()}</span>
+                  <span className="text-xs text-muted-foreground line-through">PKR {tool.originalPrice.toLocaleString()}</span>
                 </div>
                 <Button 
                   size="sm" 
@@ -123,7 +123,7 @@ export function ToolRecommendations({
               </p>
               <div className="flex items-center justify-between mt-2">
                 <div className="flex items-center gap-1">
-                  <span className="font-bold text-sm">${tool.price}</span>
+                  <span className="font-bold text-sm">PKR {tool.price.toLocaleString()}</span>
                   <span className="text-xs text-muted-foreground">/mo</span>
                 </div>
                 <Button 
