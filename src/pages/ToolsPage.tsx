@@ -31,8 +31,8 @@ const tools = [
     name: "ChatGPT 5.3",
     description: "OpenAI's most advanced language model for research, writing, and analysis.",
     icon: MessageSquare,
-    price: 29,
-    originalPrice: 49,
+    price: 8000,
+    originalPrice: 13500,
     rating: 4.9,
     reviews: 2450,
     features: ["Advanced reasoning", "Code analysis", "Academic writing", "Data interpretation"],
@@ -45,8 +45,8 @@ const tools = [
     name: "Perplexity Pro",
     description: "AI-powered search engine with real-time research capabilities and citations.",
     icon: Search,
-    price: 24,
-    originalPrice: 39,
+    price: 6700,
+    originalPrice: 10800,
     rating: 4.8,
     reviews: 1820,
     features: ["Real-time search", "Academic citations", "Source verification", "Deep research"],
@@ -59,8 +59,8 @@ const tools = [
     name: "Gemini 4 Ultra",
     description: "Google's multimodal AI for text, images, and complex research tasks.",
     icon: Sparkles,
-    price: 34,
-    originalPrice: 54,
+    price: 9500,
+    originalPrice: 15000,
     rating: 4.7,
     reviews: 1340,
     features: ["Multimodal analysis", "Image understanding", "Long context", "Research synthesis"],
@@ -73,8 +73,8 @@ const tools = [
     name: "Grok 3",
     description: "xAI's witty and capable AI assistant with real-time knowledge.",
     icon: Zap,
-    price: 19,
-    originalPrice: 29,
+    price: 5300,
+    originalPrice: 8000,
     rating: 4.6,
     reviews: 890,
     features: ["Real-time updates", "Humor & wit", "X integration", "Current events"],
@@ -87,8 +87,8 @@ const tools = [
     name: "Claude 4 Opus",
     description: "Anthropic's thoughtful AI with exceptional analysis and writing abilities.",
     icon: Brain,
-    price: 32,
-    originalPrice: 49,
+    price: 8900,
+    originalPrice: 13500,
     rating: 4.9,
     reviews: 2100,
     features: ["Thoughtful analysis", "Long documents", "Safety-focused", "Academic excellence"],
@@ -101,8 +101,8 @@ const tools = [
     name: "Research AI Pro",
     description: "Our custom AI specialized for academic research and paper writing.",
     icon: Bot,
-    price: 15,
-    originalPrice: 25,
+    price: 4200,
+    originalPrice: 7000,
     rating: 4.5,
     reviews: 560,
     features: ["Paper writing", "Literature review", "Citation generation", "Plagiarism check"],
@@ -158,7 +158,7 @@ I want to subscribe to *${selectedTool.name}*
 📋 *Subscription Details:*
 - Plan: ${selectedPlan}
 - Duration: ${selectedDuration} Month(s)
-- Price: $${selectedTool.price}/month
+- Price: PKR ${selectedTool.price.toLocaleString()}/month
 
 👤 *My Profile:*
 - Name: ${fullName}
@@ -288,9 +288,9 @@ Please guide me through the subscription process. JazakAllah!`;
 
                 <CardFooter className="flex-col items-stretch gap-4">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold">${tool.price}</span>
-                    <span className="text-lg text-muted-foreground line-through">
-                      ${tool.originalPrice}
+                    <span className="text-2xl font-bold">PKR {tool.price.toLocaleString()}</span>
+                    <span className="text-sm text-muted-foreground line-through">
+                      PKR {tool.originalPrice.toLocaleString()}
                     </span>
                     <span className="text-sm text-primary font-medium">/month</span>
                   </div>
@@ -324,7 +324,7 @@ Please guide me through the subscription process. JazakAllah!`;
                     Bundle Deal
                   </Badge>
                   <h3 className="text-2xl md:text-3xl font-bold">
-                    Get All 6 Tools for $79/month
+                    Get All 6 Tools for PKR 22,000/month
                   </h3>
                   <p className="mt-2 text-primary-foreground/90">
                     Save over 50% with our complete research bundle
@@ -336,7 +336,7 @@ Please guide me through the subscription process. JazakAllah!`;
                   onClick={() => {
                     const bundleMessage = encodeURIComponent(`Assalam o Alaikum,
 
-I want to subscribe to the *Complete Research Bundle* (All 6 Tools) for $79/month.
+I want to subscribe to the *Complete Research Bundle* (All 6 Tools) for PKR 22,000/month.
 
 👤 *My Profile:*
 - Name: ${profile?.full_name || "User"}
@@ -409,7 +409,7 @@ Please guide me through the subscription process. JazakAllah!`);
             <div className="p-4 rounded-lg bg-muted">
               <div className="flex justify-between text-sm">
                 <span>Price per month:</span>
-                <span className="font-medium">${selectedTool?.price}</span>
+                <span className="font-medium">PKR {selectedTool?.price.toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-sm mt-2">
                 <span>Duration:</span>
@@ -417,7 +417,7 @@ Please guide me through the subscription process. JazakAllah!`);
               </div>
               <div className="flex justify-between font-bold mt-2 pt-2 border-t">
                 <span>Total:</span>
-                <span>${(selectedTool?.price || 0) * parseInt(selectedDuration)}</span>
+                <span>PKR {((selectedTool?.price || 0) * parseInt(selectedDuration)).toLocaleString()}</span>
               </div>
             </div>
 

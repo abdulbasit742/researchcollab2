@@ -99,7 +99,7 @@ export function ToolPurchaseModal({ open, onOpenChange, tool }: ToolPurchaseModa
                           </Badge>
                         </div>
                         <span className="font-bold text-lg">
-                          ${plan.monthlyPrice}/mo
+                          PKR {plan.monthlyPrice.toLocaleString()}/mo
                         </span>
                       </div>
                       <p className="text-sm text-muted-foreground mt-1">
@@ -146,9 +146,9 @@ export function ToolPurchaseModal({ open, onOpenChange, tool }: ToolPurchaseModa
                     <p className="font-semibold">
                       {duration.months} {duration.months === 1 ? "Month" : "Months"}
                     </p>
-                    <p className="text-2xl font-bold mt-1">${duration.price}</p>
+                    <p className="text-2xl font-bold mt-1">PKR {duration.price.toLocaleString()}</p>
                     <p className="text-xs text-muted-foreground">
-                      ${(duration.price / duration.months).toFixed(0)}/mo
+                      PKR {Math.round(duration.price / duration.months).toLocaleString()}/mo
                     </p>
                   </button>
                 ))}
@@ -216,7 +216,7 @@ export function ToolPurchaseModal({ open, onOpenChange, tool }: ToolPurchaseModa
               <Separator className="my-2" />
               <div className="flex justify-between text-lg font-bold">
                 <span>Total</span>
-                <span>${finalPrice}</span>
+                <span>PKR {finalPrice.toLocaleString()}</span>
               </div>
             </div>
           </div>
@@ -240,7 +240,7 @@ export function ToolPurchaseModal({ open, onOpenChange, tool }: ToolPurchaseModa
           </Button>
           <Button onClick={handlePurchase} className="gap-2">
             <ShoppingCart className="h-4 w-4" />
-            Subscribe Now - ${finalPrice}
+            Subscribe Now - PKR {finalPrice.toLocaleString()}
           </Button>
         </div>
       </DialogContent>

@@ -74,7 +74,7 @@ const OrganizationToolsPage = () => {
     
     toast({
       title: "License Purchased",
-      description: `${selectedSeats} seats of ${tool.name} added for $${finalPrice.toFixed(2)}/month`
+      description: `${selectedSeats} seats of ${tool.name} added for PKR ${finalPrice.toLocaleString()}/month`
     });
     setPurchaseOpen(false);
   };
@@ -126,7 +126,7 @@ const OrganizationToolsPage = () => {
                     <SelectContent>
                       {tools.slice(0, 6).map(tool => (
                         <SelectItem key={tool.id} value={tool.id}>
-                          {tool.name} - ${tool.price}/seat/mo
+                          {tool.name} - PKR {tool.price.toLocaleString()}/seat/mo
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -156,7 +156,7 @@ const OrganizationToolsPage = () => {
                     <CardContent className="p-4">
                       <div className="flex justify-between mb-2">
                         <span>Base Price</span>
-                        <span>${(tools.find(t => t.id === selectedTool)?.price || 0) * selectedSeats}/mo</span>
+                        <span>PKR {((tools.find(t => t.id === selectedTool)?.price || 0) * selectedSeats).toLocaleString()}/mo</span>
                       </div>
                       {seatOptions.find(o => o.seats === selectedSeats)?.discount > 0 && (
                         <div className="flex justify-between text-green-600 mb-2">
@@ -167,8 +167,8 @@ const OrganizationToolsPage = () => {
                       <div className="flex justify-between font-bold border-t pt-2">
                         <span>Total</span>
                         <span>
-                          ${((tools.find(t => t.id === selectedTool)?.price || 0) * selectedSeats * 
-                            (1 - (seatOptions.find(o => o.seats === selectedSeats)?.discount || 0) / 100)).toFixed(2)}/mo
+                          PKR {((tools.find(t => t.id === selectedTool)?.price || 0) * selectedSeats * 
+                            (1 - (seatOptions.find(o => o.seats === selectedSeats)?.discount || 0) / 100)).toLocaleString()}/mo
                         </span>
                       </div>
                     </CardContent>
@@ -206,7 +206,7 @@ const OrganizationToolsPage = () => {
           <Card>
             <CardContent className="p-4">
               <p className="text-sm text-muted-foreground">Monthly Cost</p>
-              <p className="text-2xl font-bold">${licenses.reduce((sum, l) => sum + l.totalPrice, 0)}</p>
+              <p className="text-2xl font-bold">PKR {licenses.reduce((sum, l) => sum + l.totalPrice, 0).toLocaleString()}</p>
             </CardContent>
           </Card>
         </div>
@@ -228,7 +228,7 @@ const OrganizationToolsPage = () => {
                       <div>
                         <CardTitle className="text-lg">{license.toolName}</CardTitle>
                         <CardDescription>
-                          ${license.pricePerSeat}/seat/mo • {license.totalSeats} seats
+                          PKR {license.pricePerSeat.toLocaleString()}/seat/mo • {license.totalSeats} seats
                         </CardDescription>
                       </div>
                     </div>
@@ -256,7 +256,7 @@ const OrganizationToolsPage = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <CreditCard className="h-4 w-4 text-muted-foreground" />
-                        <span>${license.totalPrice}/mo</span>
+                        <span>PKR {license.totalPrice.toLocaleString()}/mo</span>
                       </div>
                     </div>
 

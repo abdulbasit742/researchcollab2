@@ -56,6 +56,8 @@ import AdminEnterprisePage from "./pages/AdminEnterprisePage";
 import MessagesPage from "./pages/MessagesPage";
 import MessageThreadPage from "./pages/MessageThreadPage";
 import AdminSupportPage from "./pages/AdminSupportPage";
+import HelpCenterPage from "./pages/HelpCenterPage";
+import ApiDocsPage from "./pages/ApiDocsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -120,6 +122,8 @@ const App = () => (
             <Route path="/ai/project-scope" element={<AIProjectScopePage />} />
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/messages/:threadId" element={<MessageThreadPage />} />
+            <Route path="/help" element={<HelpCenterPage />} />
+            <Route path="/docs" element={<ApiDocsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
