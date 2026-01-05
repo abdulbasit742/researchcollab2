@@ -9,6 +9,23 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { FolderOpen, Plus, Pencil, Trash2, ExternalLink, GripVertical, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface PortfolioProject {
   id: string;
@@ -25,6 +42,81 @@ interface ProjectFormData {
   link: string;
 }
 
+interface SortableProjectItemProps {
+  project: PortfolioProject;
+  onEdit: (project: PortfolioProject) => void;
+  onDelete: (projectId: string) => void;
+}
+
+function SortableProjectItem({ project, onEdit, onDelete }: SortableProjectItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: project.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`flex items-start gap-3 p-4 border rounded-lg bg-card hover:bg-accent/50 transition-colors ${
+        isDragging ? "opacity-50 shadow-lg z-50" : ""
+      }`}
+    >
+      <button
+        className="touch-none cursor-grab active:cursor-grabbing"
+        {...attributes}
+        {...listeners}
+      >
+        <GripVertical className="h-5 w-5 text-muted-foreground mt-0.5" />
+      </button>
+      <div className="flex-1 min-w-0">
+        <h4 className="font-medium truncate">{project.title}</h4>
+        {project.description && (
+          <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+            {project.description}
+          </p>
+        )}
+        {project.link && (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-sm text-primary hover:underline mt-2"
+          >
+            <ExternalLink className="h-3 w-3" />
+            View Project
+          </a>
+        )}
+      </div>
+      <div className="flex gap-1">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => onEdit(project)}
+        >
+          <Pencil className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => onDelete(project.id)}
+        >
+          <Trash2 className="h-4 w-4 text-destructive" />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 export function PortfolioManager() {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -38,6 +130,13 @@ export function PortfolioManager() {
     description: "",
     link: "",
   });
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     if (user) {
@@ -65,6 +164,41 @@ export function PortfolioManager() {
       setProjects(data || []);
     }
     setIsLoading(false);
+  };
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = projects.findIndex((p) => p.id === active.id);
+      const newIndex = projects.findIndex((p) => p.id === over.id);
+
+      const newProjects = arrayMove(projects, oldIndex, newIndex);
+      setProjects(newProjects);
+
+      // Update display_order in database
+      const updates = newProjects.map((project, index) => ({
+        id: project.id,
+        display_order: index,
+      }));
+
+      for (const update of updates) {
+        const { error } = await supabase
+          .from("portfolio_projects")
+          .update({ display_order: update.display_order })
+          .eq("id", update.id);
+
+        if (error) {
+          toast({
+            title: "Error saving order",
+            description: error.message,
+            variant: "destructive",
+          });
+          fetchProjects(); // Revert on error
+          return;
+        }
+      }
+    }
   };
 
   const openAddDialog = () => {
@@ -207,51 +341,27 @@ export function PortfolioManager() {
               <p className="text-sm">Add your first project to showcase your work</p>
             </div>
           ) : (
-            <div className="space-y-3">
-              {projects.map((project) => (
-                <div
-                  key={project.id}
-                  className="flex items-start gap-3 p-4 border rounded-lg bg-card hover:bg-accent/50 transition-colors"
-                >
-                  <GripVertical className="h-5 w-5 text-muted-foreground mt-0.5 cursor-grab" />
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-medium truncate">{project.title}</h4>
-                    {project.description && (
-                      <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                        {project.description}
-                      </p>
-                    )}
-                    {project.link && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-sm text-primary hover:underline mt-2"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                        View Project
-                      </a>
-                    )}
-                  </div>
-                  <div className="flex gap-1">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => openEditDialog(project)}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDelete(project.id)}
-                    >
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
-                  </div>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={projects.map((p) => p.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className="space-y-3">
+                  {projects.map((project) => (
+                    <SortableProjectItem
+                      key={project.id}
+                      project={project}
+                      onEdit={openEditDialog}
+                      onDelete={handleDelete}
+                    />
+                  ))}
                 </div>
-              ))}
-            </div>
+              </SortableContext>
+            </DndContext>
           )}
         </CardContent>
       </Card>
