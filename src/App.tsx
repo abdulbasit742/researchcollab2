@@ -58,6 +58,8 @@ import MessageThreadPage from "./pages/MessageThreadPage";
 import AdminSupportPage from "./pages/AdminSupportPage";
 import HelpCenterPage from "./pages/HelpCenterPage";
 import ApiDocsPage from "./pages/ApiDocsPage";
+import PricingPage from "./pages/PricingPage";
+import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -124,6 +126,8 @@ const App = () => (
             <Route path="/messages/:threadId" element={<MessageThreadPage />} />
             <Route path="/help" element={<HelpCenterPage />} />
             <Route path="/docs" element={<ApiDocsPage />} />
+            <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

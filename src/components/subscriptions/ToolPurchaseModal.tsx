@@ -6,12 +6,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Check, ShoppingCart, Shield } from "lucide-react";
+import { Check, ShoppingCart, Shield, Smartphone } from "lucide-react";
 import { ToolPlan, getPlansByToolId } from "@/data/subscriptions";
 import { Tool } from "@/data/tools";
 import { useToast } from "@/hooks/use-toast";
+import PaymentMethodModal from "@/components/payment/PaymentMethodModal";
 
 interface ToolPurchaseModalProps {
   open: boolean;
@@ -34,6 +34,7 @@ export function ToolPurchaseModal({ open, onOpenChange, tool }: ToolPurchaseModa
   const [selectedDuration, setSelectedDuration] = useState<number>(1);
   const [byoEmail, setByoEmail] = useState("");
   const [byoDetails, setByoDetails] = useState("");
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const selectedPlan = plans.find(p => p.id === selectedPlanId);
   const selectedDurationOption = selectedPlan?.durations.find(d => d.months === selectedDuration);
@@ -49,11 +50,16 @@ export function ToolPurchaseModal({ open, onOpenChange, tool }: ToolPurchaseModa
       return;
     }
 
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSuccess = () => {
     toast({
       title: "Order Created!",
-      description: `Your order for ${tool.name} (${selectedPlan?.name}) has been created. Redirecting to payment...`,
+      description: `Your order for ${tool.name} (${selectedPlan?.name}) has been created. You'll receive access within 24 hours.`,
     });
     
+    setShowPaymentModal(false);
     onOpenChange(false);
   };
 
@@ -243,7 +249,27 @@ export function ToolPurchaseModal({ open, onOpenChange, tool }: ToolPurchaseModa
             Subscribe Now - PKR {finalPrice.toLocaleString()}
           </Button>
         </div>
+
+        {/* Payment Method Info */}
+        <div className="flex items-center justify-center gap-4 pt-2 border-t">
+          <span className="text-xs text-muted-foreground">Pay via:</span>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-[#ed1c24] rounded flex items-center justify-center text-white text-[8px] font-bold">JC</div>
+            <div className="w-6 h-6 bg-[#00a651] rounded flex items-center justify-center text-white text-[8px] font-bold">EP</div>
+            <div className="w-6 h-6 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center text-white text-[8px] font-bold">V</div>
+            <div className="w-6 h-6 bg-foreground rounded flex items-center justify-center text-background text-[8px] font-bold">BT</div>
+          </div>
+        </div>
       </DialogContent>
+
+      {/* Payment Method Modal */}
+      <PaymentMethodModal
+        open={showPaymentModal}
+        onOpenChange={setShowPaymentModal}
+        amount={finalPrice}
+        description={`${tool.name} - ${selectedPlan?.name} (${selectedDuration} ${selectedDuration === 1 ? "month" : "months"})`}
+        onSuccess={handlePaymentSuccess}
+      />
     </Dialog>
   );
 }

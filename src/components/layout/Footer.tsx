@@ -17,6 +17,7 @@ const footerLinks = {
   resources: [
     { label: "Blog", href: "/blog" },
     { label: "Research Grants", href: "/grants" },
+    { label: "Pricing", href: "/pricing" },
     { label: "Help Center", href: "/help" },
     { label: "API Docs", href: "/docs" },
   ],
