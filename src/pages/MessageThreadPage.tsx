@@ -324,16 +324,16 @@ Page: ${window.location.pathname}`;
   if (!user) {
     return (
       <div className="flex flex-col h-screen bg-background">
-        <div className="container py-16 px-4">
+        <div className="container py-8 sm:py-16 px-4">
           <Card>
-            <CardContent className="p-8 md:p-12 text-center">
-              <MessageSquare className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h2 className="text-xl font-semibold mb-2">Sign in to view messages</h2>
-              <p className="text-muted-foreground mb-6">
+            <CardContent className="p-6 sm:p-12 text-center">
+              <MessageSquare className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-muted-foreground mb-4" />
+              <h2 className="text-lg sm:text-xl font-semibold mb-2">Sign in to view messages</h2>
+              <p className="text-sm text-muted-foreground mb-6">
                 You need to be logged in to access your messages.
               </p>
               <Link to="/auth">
-                <Button>Sign In</Button>
+                <Button className="h-11 touch-manipulation">Sign In</Button>
               </Link>
             </CardContent>
           </Card>
@@ -413,8 +413,8 @@ Page: ${window.location.pathname}`;
 
   return (
     <div className="flex flex-col h-screen bg-background">
-      {/* Header */}
-      <div className="relative">
+      {/* Header - Mobile Optimized */}
+      <div className="relative safe-area-top">
         <ChatHeader
           userId={otherUser?.id}
           displayName={displayName}
@@ -428,9 +428,9 @@ Page: ${window.location.pathname}`;
           onOpenNotes={() => setShowNotes(true)}
         />
         
-        {/* Options Menu */}
+        {/* Options Menu - Adjusted for mobile */}
         {!threadLoading && (
-          <div className="absolute top-3 right-4">
+          <div className="absolute top-2 sm:top-3 right-2 sm:right-4">
             <ChatOptionsMenu
               onSearch={() => setShowSearch(true)}
               onArchive={handleArchive}
@@ -463,22 +463,26 @@ Page: ${window.location.pathname}`;
       {isBlocked && (
         <div className="bg-destructive/10 border-b border-destructive/20 px-4 py-2 flex items-center justify-center gap-2">
           <Ban className="h-4 w-4 text-destructive" />
-          <span className="text-sm text-destructive">
+          <span className="text-xs sm:text-sm text-destructive">
             This user is blocked. Messages cannot be sent.
           </span>
         </div>
       )}
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto overscroll-contain">
-        <div className="container px-4 py-4 pb-safe">
+      {/* Messages - Mobile Optimized with proper scrolling */}
+      <div className="flex-1 overflow-y-auto overscroll-contain -webkit-overflow-scrolling-touch">
+        <div className="px-3 sm:px-4 py-4 pb-2">
           {isLoading ? (
             <MessagesSkeleton />
           ) : error ? (
             <Card>
-              <CardContent className="p-8 text-center">
-                <p className="text-destructive mb-4">Failed to load messages</p>
-                <Button variant="outline" onClick={() => refetch()}>
+              <CardContent className="p-6 sm:p-8 text-center">
+                <p className="text-destructive mb-4 text-sm">Failed to load messages</p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => refetch()}
+                  className="h-11 touch-manipulation"
+                >
                   Retry
                 </Button>
               </CardContent>
@@ -489,13 +493,13 @@ Page: ${window.location.pathname}`;
               animate={{ opacity: 1, y: 0 }}
               className="text-center py-12"
             >
-              <MessageSquare className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <p className="text-muted-foreground">
+              <MessageSquare className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-muted-foreground mb-4" />
+              <p className="text-sm text-muted-foreground">
                 No messages yet. Say hi to start the conversation!
               </p>
             </motion.div>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-1 sm:space-y-2">
               {messages.map((msg, idx) => renderMessage(msg, idx))}
               
               <AnimatePresence>
@@ -510,10 +514,10 @@ Page: ${window.location.pathname}`;
         </div>
       </div>
 
-      {/* Input */}
-      <div className="sticky bottom-0 bg-background border-t safe-area-bottom">
-        <div className="container px-4">
-          <div className="flex items-end gap-2 py-3">
+      {/* Input - Mobile Optimized with safe area */}
+      <div className="sticky bottom-0 bg-background border-t pb-safe">
+        <div className="px-2 sm:px-4">
+          <div className="flex items-end gap-1 sm:gap-2 py-2 sm:py-3">
             {!isBlocked && (
               <>
                 <ChatActionsMenu

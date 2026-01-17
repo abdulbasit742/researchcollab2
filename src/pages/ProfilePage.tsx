@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { User, Mail, Calendar, Shield, Save, Loader2 } from "lucide-react";
+import { User, Mail, Calendar, Shield, Save, Loader2, ChevronRight } from "lucide-react";
 
 export default function ProfilePage() {
   const { user, profile, userRole, isLoading, updateProfile } = useAuth();
@@ -62,17 +62,17 @@ export default function ProfilePage() {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className="container max-w-2xl py-8">
-          <Skeleton className="h-8 w-48 mb-8" />
+        <div className="container max-w-2xl py-6 sm:py-8 px-4">
+          <Skeleton className="h-8 w-48 mb-6 sm:mb-8" />
           <Card>
-            <CardHeader>
+            <CardHeader className="pb-4">
               <Skeleton className="h-6 w-32" />
               <Skeleton className="h-4 w-64" />
             </CardHeader>
             <CardContent className="space-y-4">
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-12 w-full" />
             </CardContent>
           </Card>
         </div>
@@ -85,57 +85,66 @@ export default function ProfilePage() {
   }
 
   const roleColors: Record<string, string> = {
-    student: "bg-blue-100 text-blue-800",
-    researcher: "bg-purple-100 text-purple-800",
-    admin: "bg-red-100 text-red-800",
+    student: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
+    researcher: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
+    admin: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
   };
 
   return (
     <MainLayout>
-      <div className="container max-w-2xl py-8">
+      <div className="container max-w-2xl py-6 sm:py-8 px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-3xl font-bold mb-8">My Profile</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">My Profile</h1>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Account Info Card */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+              <CardHeader className="pb-3 sm:pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                   <User className="h-5 w-5" />
                   Account Information
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-sm">
                   View and manage your account details
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                  <Mail className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium">{user.email}</p>
+              <CardContent className="space-y-3">
+                {/* Email */}
+                <div className="flex items-center gap-3 p-3 sm:p-4 bg-muted/50 rounded-lg touch-manipulation">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Mail className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm text-muted-foreground">Email</p>
+                    <p className="font-medium text-sm sm:text-base truncate">{user.email}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                  <Shield className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">Role</p>
-                    <Badge className={roleColors[userRole?.role || "student"]}>
+                {/* Role */}
+                <div className="flex items-center gap-3 p-3 sm:p-4 bg-muted/50 rounded-lg touch-manipulation">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Shield className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm text-muted-foreground">Role</p>
+                    <Badge className={`mt-1 ${roleColors[userRole?.role || "student"]}`}>
                       {userRole?.role || "Student"}
                     </Badge>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                  <Calendar className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">Member since</p>
-                    <p className="font-medium">
+                {/* Member Since */}
+                <div className="flex items-center gap-3 p-3 sm:p-4 bg-muted/50 rounded-lg touch-manipulation">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Calendar className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm text-muted-foreground">Member since</p>
+                    <p className="font-medium text-sm sm:text-base">
                       {profile?.created_at
                         ? new Date(profile.created_at).toLocaleDateString("en-US", {
                             year: "numeric",
@@ -151,36 +160,43 @@ export default function ProfilePage() {
 
             {/* Edit Profile Card */}
             <Card>
-              <CardHeader>
-                <CardTitle>Edit Profile</CardTitle>
-                <CardDescription>
+              <CardHeader className="pb-3 sm:pb-4">
+                <CardTitle className="text-lg sm:text-xl">Edit Profile</CardTitle>
+                <CardDescription className="text-sm">
                   Update your personal information
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSave} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  {/* Mobile: Stack vertically, Tablet+: Side by side */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
+                      <Label htmlFor="firstName" className="text-sm">First Name</Label>
                       <Input
                         id="firstName"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         placeholder="John"
+                        className="h-11 sm:h-10 touch-manipulation"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
+                      <Label htmlFor="lastName" className="text-sm">Last Name</Label>
                       <Input
                         id="lastName"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         placeholder="Doe"
+                        className="h-11 sm:h-10 touch-manipulation"
                       />
                     </div>
                   </div>
 
-                  <Button type="submit" disabled={isSaving}>
+                  <Button 
+                    type="submit" 
+                    disabled={isSaving}
+                    className="w-full sm:w-auto h-11 sm:h-10 gap-2 touch-manipulation"
+                  >
                     {isSaving ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -194,6 +210,64 @@ export default function ProfilePage() {
                     )}
                   </Button>
                 </form>
+              </CardContent>
+            </Card>
+
+            {/* Quick Actions - Mobile Optimized */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg sm:text-xl">Quick Actions</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="divide-y">
+                  <button 
+                    onClick={() => navigate("/verification")}
+                    className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors touch-manipulation active:bg-muted"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                        <Shield className="h-5 w-5 text-emerald-500" />
+                      </div>
+                      <div className="text-left">
+                        <p className="font-medium text-sm">Verify Account</p>
+                        <p className="text-xs text-muted-foreground">Get verified status</p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                  </button>
+                  
+                  <button 
+                    onClick={() => navigate("/wallet")}
+                    className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors touch-manipulation active:bg-muted"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <User className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="text-left">
+                        <p className="font-medium text-sm">My Wallet</p>
+                        <p className="text-xs text-muted-foreground">Manage funds</p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                  </button>
+                  
+                  <button 
+                    onClick={() => navigate("/subscriptions")}
+                    className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors touch-manipulation active:bg-muted"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full bg-amber-500/10 flex items-center justify-center">
+                        <Calendar className="h-5 w-5 text-amber-500" />
+                      </div>
+                      <div className="text-left">
+                        <p className="font-medium text-sm">Subscriptions</p>
+                        <p className="text-xs text-muted-foreground">View active plans</p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                  </button>
+                </div>
               </CardContent>
             </Card>
           </div>
