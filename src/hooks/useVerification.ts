@@ -224,8 +224,10 @@ export function useAdminVerifications() {
 
           return {
             ...submission,
+            documents: submission.documents as any[] || [],
+            submitted_data: submission.submitted_data as Record<string, any> || {},
             user_name: profile?.full_name || "Unknown User",
-          };
+          } as VerificationSubmission & { user_name?: string; user_email?: string };
         })
       );
 

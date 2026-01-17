@@ -70,7 +70,7 @@ export function useEarningProjects() {
           // Fetch owner profile
           const { data: ownerProfile } = await supabase
             .from("profiles")
-            .select("full_name, avatar_url")
+            .select("full_name")
             .eq("id", project.owner_id)
             .maybeSingle();
 
@@ -78,7 +78,7 @@ export function useEarningProjects() {
             ...project,
             bid_count: count || 0,
             owner_name: ownerProfile?.full_name || "Anonymous",
-            owner_avatar: ownerProfile?.avatar_url,
+            owner_avatar: undefined,
           };
         })
       );
@@ -129,14 +129,14 @@ export function useEarningProject(projectId: string | undefined) {
         // Fetch owner profile
         const { data: ownerProfile } = await supabase
           .from("profiles")
-          .select("full_name, avatar_url")
+          .select("full_name")
           .eq("id", projectData.owner_id)
           .maybeSingle();
 
         setProject({
           ...projectData,
           owner_name: ownerProfile?.full_name || "Anonymous",
-          owner_avatar: ownerProfile?.avatar_url,
+          owner_avatar: undefined,
         } as EarningProject);
 
         // Fetch bids
@@ -153,14 +153,14 @@ export function useEarningProject(projectId: string | undefined) {
           (bidsData || []).map(async (bid) => {
             const { data: bidderProfile } = await supabase
               .from("profiles")
-              .select("full_name, avatar_url")
+              .select("full_name")
               .eq("id", bid.bidder_id)
               .maybeSingle();
 
             return {
               ...bid,
               bidder_name: bidderProfile?.full_name || "Anonymous",
-              bidder_avatar: bidderProfile?.avatar_url,
+              bidder_avatar: undefined,
             };
           })
         );
