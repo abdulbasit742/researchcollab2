@@ -58,15 +58,15 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section className="py-20 md:py-28">
-      <div className="container">
-        <div className="text-center mb-16">
+    <section className="py-12 md:py-20 lg:py-28">
+      <div className="container px-4 md:px-6">
+        <div className="text-center mb-8 md:mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="text-3xl font-bold md:text-4xl lg:text-5xl"
+            className="text-2xl font-bold xs:text-3xl md:text-4xl lg:text-5xl"
           >
             Everything You Need for{" "}
             <span className="text-gradient">Research Success</span>
@@ -76,13 +76,13 @@ export function FeaturesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             viewport={{ once: true }}
-            className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto"
+            className="mt-3 md:mt-4 text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto px-2"
           >
             One platform for collaboration, AI tools, and earning opportunities
           </motion.p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
@@ -92,23 +92,23 @@ export function FeaturesSection() {
               viewport={{ once: true }}
             >
               <Card variant="interactive" className="h-full flex flex-col">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
+                <CardHeader className="p-4 md:p-6">
+                  <div className="flex items-start justify-between gap-2">
                     <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${feature.color}`}
+                      className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-lg md:rounded-xl bg-gradient-to-br ${feature.color}`}
                     >
-                      <feature.icon className="h-6 w-6 text-primary-foreground" />
+                      <feature.icon className="h-5 w-5 md:h-6 md:w-6 text-primary-foreground" />
                     </div>
-                    <Badge variant="secondary">{feature.badge}</Badge>
+                    <Badge variant="secondary" className="text-xs shrink-0">{feature.badge}</Badge>
                   </div>
-                  <CardTitle className="mt-4">{feature.title}</CardTitle>
+                  <CardTitle className="mt-3 md:mt-4 text-base md:text-lg">{feature.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="flex-1">
-                  <p className="text-muted-foreground">{feature.description}</p>
+                <CardContent className="flex-1 p-4 pt-0 md:p-6 md:pt-0">
+                  <p className="text-muted-foreground text-sm line-clamp-3">{feature.description}</p>
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="p-4 pt-0 md:p-6 md:pt-0">
                   <Link to={feature.href} className="w-full">
-                    <Button variant="ghost" className="w-full justify-between group">
+                    <Button variant="ghost" className="w-full justify-between group h-10 touch-manipulation text-sm">
                       Learn More
                       <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>

@@ -184,23 +184,23 @@ Please guide me through the subscription process. JazakAllah!`;
 
   return (
     <MainLayout>
-      <div className="gradient-hero py-16 md:py-24">
-        <div className="container">
+      <div className="gradient-hero py-10 md:py-16 lg:py-24">
+        <div className="container px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <Badge variant="secondary" className="mb-4">
+            <Badge variant="secondary" className="mb-3 md:mb-4">
               <Sparkles className="h-3 w-3 mr-1" />
               AI Tools Marketplace
             </Badge>
-            <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+            <h1 className="text-2xl font-bold xs:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
               Powerful AI Tools for{" "}
               <span className="text-gradient">Research Excellence</span>
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-3 md:mt-4 text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
               Access premium AI tools at discounted prices. Perfect for students, 
               researchers, and academics.
             </p>
@@ -211,19 +211,19 @@ Please guide me through the subscription process. JazakAllah!`;
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-10 flex flex-col md:flex-row gap-4 max-w-2xl mx-auto"
+            className="mt-6 md:mt-10 flex flex-col gap-3 md:flex-row md:gap-4 max-w-2xl mx-auto"
           >
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search AI tools..."
-                className="pl-10"
+                className="pl-10 h-11"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="md:w-48">
+              <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
@@ -239,8 +239,8 @@ Please guide me through the subscription process. JazakAllah!`;
       </div>
 
       {/* Tools Grid */}
-      <div className="container py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="container py-8 md:py-16 px-4 md:px-6">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {tools.map((tool, index) => (
             <motion.div
               key={tool.id}
@@ -250,52 +250,52 @@ Please guide me through the subscription process. JazakAllah!`;
             >
               <Card variant="interactive" className="h-full flex flex-col relative overflow-hidden">
                 {tool.popular && (
-                  <div className="absolute top-4 right-4">
-                    <Badge variant="premium">Popular</Badge>
+                  <div className="absolute top-3 right-3 md:top-4 md:right-4">
+                    <Badge variant="premium" className="text-xs">Popular</Badge>
                   </div>
                 )}
 
-                <CardHeader>
+                <CardHeader className="p-4 md:p-6">
                   <div
-                    className={`h-14 w-14 rounded-2xl bg-gradient-to-br ${tool.color} flex items-center justify-center mb-4`}
+                    className={`h-12 w-12 md:h-14 md:w-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${tool.color} flex items-center justify-center mb-3 md:mb-4`}
                   >
-                    <tool.icon className="h-7 w-7 text-primary-foreground" />
+                    <tool.icon className="h-6 w-6 md:h-7 md:w-7 text-primary-foreground" />
                   </div>
-                  <CardTitle className="text-xl">{tool.name}</CardTitle>
-                  <CardDescription>{tool.description}</CardDescription>
+                  <CardTitle className="text-lg md:text-xl">{tool.name}</CardTitle>
+                  <CardDescription className="text-sm line-clamp-2">{tool.description}</CardDescription>
                 </CardHeader>
 
-                <CardContent className="flex-1">
-                  <div className="flex items-center gap-2 mb-4">
+                <CardContent className="flex-1 p-4 pt-0 md:p-6 md:pt-0">
+                  <div className="flex items-center gap-2 mb-3 md:mb-4">
                     <div className="flex items-center">
                       <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                      <span className="ml-1 font-medium">{tool.rating}</span>
+                      <span className="ml-1 font-medium text-sm">{tool.rating}</span>
                     </div>
-                    <span className="text-muted-foreground text-sm">
+                    <span className="text-muted-foreground text-xs md:text-sm">
                       ({tool.reviews.toLocaleString()} reviews)
                     </span>
                   </div>
 
-                  <ul className="space-y-2">
-                    {tool.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-sm">
-                        <Check className="h-4 w-4 text-primary" />
-                        {feature}
+                  <ul className="space-y-1.5 md:space-y-2">
+                    {tool.features.slice(0, 3).map((feature) => (
+                      <li key={feature} className="flex items-center gap-2 text-xs md:text-sm">
+                        <Check className="h-3 w-3 md:h-4 md:w-4 text-primary shrink-0" />
+                        <span className="truncate">{feature}</span>
                       </li>
                     ))}
                   </ul>
                 </CardContent>
 
-                <CardFooter className="flex-col items-stretch gap-4">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-bold">PKR {tool.price.toLocaleString()}</span>
-                    <span className="text-sm text-muted-foreground line-through">
+                <CardFooter className="flex-col items-stretch gap-3 md:gap-4 p-4 pt-0 md:p-6 md:pt-0">
+                  <div className="flex items-baseline gap-2 flex-wrap">
+                    <span className="text-xl md:text-2xl font-bold">PKR {tool.price.toLocaleString()}</span>
+                    <span className="text-xs md:text-sm text-muted-foreground line-through">
                       PKR {tool.originalPrice.toLocaleString()}
                     </span>
-                    <span className="text-sm text-primary font-medium">/month</span>
+                    <span className="text-xs md:text-sm text-primary font-medium">/month</span>
                   </div>
                   <Button
-                    className="w-full bg-green-600 hover:bg-green-700"
+                    className="w-full bg-green-600 hover:bg-green-700 h-11 touch-manipulation"
                     onClick={() => openWhatsAppModal(tool)}
                   >
                     <MessageCircle className="h-4 w-4" />
@@ -313,26 +313,26 @@ Please guide me through the subscription process. JazakAllah!`;
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="mt-16"
+          className="mt-8 md:mt-16"
         >
           <Card className="gradient-primary border-0 text-primary-foreground">
-            <CardContent className="p-8 md:p-12">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div>
-                  <Badge className="bg-primary-foreground/20 text-primary-foreground mb-4">
+            <CardContent className="p-6 md:p-8 lg:p-12">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
+                <div className="text-center md:text-left">
+                  <Badge className="bg-primary-foreground/20 text-primary-foreground mb-3 md:mb-4">
                     <Sparkles className="h-3 w-3 mr-1" />
                     Bundle Deal
                   </Badge>
-                  <h3 className="text-2xl md:text-3xl font-bold">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-bold">
                     Get All 6 Tools for PKR 22,000/month
                   </h3>
-                  <p className="mt-2 text-primary-foreground/90">
+                  <p className="mt-2 text-sm md:text-base text-primary-foreground/90">
                     Save over 50% with our complete research bundle
                   </p>
                 </div>
                 <Button
-                  size="xl"
-                  className="bg-green-600 hover:bg-green-700 text-white"
+                  size="lg"
+                  className="bg-green-600 hover:bg-green-700 text-white h-12 md:h-14 w-full md:w-auto touch-manipulation"
                   onClick={() => {
                     const bundleMessage = encodeURIComponent(`Assalam o Alaikum,
 
@@ -348,7 +348,7 @@ Please guide me through the subscription process. JazakAllah!`);
                     window.open(`https://wa.me/92318178154?text=${bundleMessage}`, "_blank");
                   }}
                 >
-                  <MessageCircle className="h-5 w-5" />
+                  <MessageCircle className="h-4 w-4 md:h-5 md:w-5" />
                   Get Bundle via WhatsApp
                 </Button>
               </div>
