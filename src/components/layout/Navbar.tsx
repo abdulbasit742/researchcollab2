@@ -136,14 +136,16 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl">
-      <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg gradient-primary">
-            <GraduationCap className="h-5 w-5 text-primary-foreground" />
+    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl safe-area-top">
+      <div className="container flex h-14 md:h-16 items-center justify-between px-3 md:px-6">
+        <Link to="/" className="flex items-center gap-1.5 md:gap-2">
+          <div className="flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-lg gradient-primary">
+            <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary-foreground" />
           </div>
-          <span className="text-xl font-bold">
-            Researcher<span className="text-primary">Collab</span>
+          <span className="text-base md:text-xl font-bold">
+            <span className="hidden xs:inline">Researcher</span>
+            <span className="xs:hidden">R</span>
+            <span className="text-primary">Collab</span>
           </span>
         </Link>
 
@@ -166,7 +168,7 @@ export function Navbar() {
           <MessagesNavItem />
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2 lg:gap-3">
           <NotificationBell />
           <Link to="/subscriptions">
             <Button variant="ghost" size="sm">
@@ -204,13 +206,16 @@ export function Navbar() {
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="lg:hidden p-2 rounded-lg hover:bg-muted"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        {/* Mobile Actions */}
+        <div className="flex lg:hidden items-center gap-1">
+          <NotificationBell />
+          <button
+            className="p-2 rounded-lg hover:bg-muted active:bg-muted/80 touch-manipulation"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Nav */}
@@ -220,34 +225,49 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t bg-background"
+            className="lg:hidden border-t bg-background overflow-y-auto max-h-[calc(100vh-3.5rem)]"
           >
-            <div className="container py-4 space-y-2">
+            <div className="container py-3 px-3 space-y-1">
+              {/* Quick Actions */}
+              <div className="grid grid-cols-2 gap-2 pb-3 border-b">
+                <Link to="/wallet" onClick={() => setIsOpen(false)}>
+                  <Button variant="outline" size="sm" className="w-full text-xs">
+                    💰 Wallet
+                  </Button>
+                </Link>
+                <Link to="/subscriptions" onClick={() => setIsOpen(false)}>
+                  <Button variant="outline" size="sm" className="w-full text-xs">
+                    🛠️ My Tools
+                  </Button>
+                </Link>
+              </div>
+              
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors active:scale-[0.98] touch-manipulation ${
                     location.pathname === item.href
                       ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted active:bg-muted"
                   }`}
                 >
-                  <item.icon className="h-5 w-5" />
+                  <item.icon className="h-5 w-5 shrink-0" />
                   {item.label}
                 </Link>
               ))}
               <MobileMessagesNavItem onClick={() => setIsOpen(false)} />
-              <div className="pt-4 border-t flex flex-col gap-2">
+              
+              <div className="pt-3 border-t flex flex-col gap-2">
                 {user ? (
                   <>
                     <Link to="/profile" onClick={() => setIsOpen(false)}>
-                      <Button variant="outline" className="w-full">
+                      <Button variant="outline" className="w-full h-11 touch-manipulation">
                         Profile
                       </Button>
                     </Link>
-                    <Button className="w-full" onClick={handleSignOut}>
+                    <Button className="w-full h-11 touch-manipulation" onClick={handleSignOut}>
                       <LogOut className="h-4 w-4 mr-2" />
                       Sign Out
                     </Button>
@@ -255,12 +275,12 @@ export function Navbar() {
                 ) : (
                   <>
                     <Link to="/auth" onClick={() => setIsOpen(false)}>
-                      <Button variant="outline" className="w-full">
+                      <Button variant="outline" className="w-full h-11 touch-manipulation">
                         Sign In
                       </Button>
                     </Link>
                     <Link to="/auth?tab=signup" onClick={() => setIsOpen(false)}>
-                      <Button className="w-full">Get Started</Button>
+                      <Button className="w-full h-11 touch-manipulation">Get Started</Button>
                     </Link>
                   </>
                 )}

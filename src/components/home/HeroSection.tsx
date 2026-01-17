@@ -47,15 +47,15 @@ export function HeroSection() {
         <div className="absolute bottom-0 right-1/4 h-40 w-40 rounded-full bg-accent blur-2xl" />
       </div>
 
-      <div className="container relative py-20 md:py-32">
+      <div className="container relative py-12 px-4 md:py-32 md:px-6">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-              <Sparkles className="h-4 w-4" />
+            <div className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium text-primary">
+              <Sparkles className="h-3 w-3 md:h-4 md:w-4" />
               Trusted by 1000+ researchers worldwide
             </div>
           </motion.div>
@@ -64,11 +64,12 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
+            className="text-2xl font-extrabold tracking-tight xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight"
           >
             Looking for{" "}
             <span className="text-gradient">Research, Tools,</span>
-            <br />
+            <br className="hidden xs:block" />
+            <span className="xs:hidden"> </span>
             or{" "}
             <span className="text-gradient">Real Earning</span> Opportunities?
           </motion.h1>
@@ -77,7 +78,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl"
+            className="mx-auto mt-4 md:mt-6 max-w-2xl text-sm md:text-lg lg:text-xl text-muted-foreground px-2"
           >
             Connect with researchers globally, access cutting-edge AI tools, and earn money 
             with your academic skills. Your all-in-one research collaboration platform.
@@ -87,16 +88,16 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="mt-6 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4"
           >
-            <Link to="/auth?tab=signup">
-              <Button variant="hero" size="xl">
+            <Link to="/auth?tab=signup" className="w-full sm:w-auto">
+              <Button variant="hero" size="lg" className="w-full sm:w-auto h-12 md:h-14 text-sm md:text-base touch-manipulation">
                 Get Started Free
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
               </Button>
             </Link>
-            <Link to="/tools">
-              <Button variant="hero-outline" size="xl">
+            <Link to="/tools" className="w-full sm:w-auto">
+              <Button variant="hero-outline" size="lg" className="w-full sm:w-auto h-12 md:h-14 text-sm md:text-base touch-manipulation">
                 Explore AI Tools
               </Button>
             </Link>
@@ -107,12 +108,12 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-16 mx-auto max-w-3xl"
+            className="mt-8 md:mt-16 mx-auto max-w-3xl px-2"
           >
-            <div className="rounded-2xl bg-card p-4 shadow-xl border">
-              <div className="flex flex-col md:flex-row gap-4">
+            <div className="rounded-xl md:rounded-2xl bg-card p-3 md:p-4 shadow-xl border">
+              <div className="flex flex-col gap-3 md:flex-row md:gap-4">
                 <Select>
-                  <SelectTrigger className="md:w-48">
+                  <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation">
                     <SelectValue placeholder="Discipline" />
                   </SelectTrigger>
                   <SelectContent>
@@ -125,7 +126,7 @@ export function HeroSection() {
                 </Select>
 
                 <Select>
-                  <SelectTrigger className="md:w-48">
+                  <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation">
                     <SelectValue placeholder="Location" />
                   </SelectTrigger>
                   <SelectContent>
@@ -137,12 +138,12 @@ export function HeroSection() {
                   </SelectContent>
                 </Select>
 
-                <div className="flex-1 flex gap-2">
+                <div className="flex-1 flex flex-col xs:flex-row gap-2">
                   <Input
-                    placeholder="Keywords (e.g., machine learning, climate)"
-                    className="flex-1"
+                    placeholder="Keywords (e.g., machine learning)"
+                    className="flex-1 h-11"
                   />
-                  <Button size="default" className="px-6">
+                  <Button size="default" className="h-11 px-6 w-full xs:w-auto touch-manipulation">
                     <Search className="h-4 w-4 mr-2" />
                     Search
                   </Button>
