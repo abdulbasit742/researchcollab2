@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { MainLayout } from "@/components/layout/MainLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AdminLayout } from "@/components/admin/AdminLayout";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Flag, CheckCircle, XCircle, Eye } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
@@ -26,7 +24,6 @@ interface Report {
 }
 
 export default function AdminReportsPage() {
-  const { user } = useAuth();
   const { toast } = useToast();
   const [reports, setReports] = useState<Report[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -95,18 +92,14 @@ export default function AdminReportsPage() {
   };
 
   return (
-    <MainLayout>
-      <div className="gradient-hero py-8">
-        <div className="container px-4">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <h1 className="text-2xl md:text-3xl font-bold">Reports</h1>
-            <p className="text-muted-foreground mt-1">Review user reports</p>
-          </motion.div>
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold">Reports</h1>
+          <p className="text-muted-foreground">Review user reports</p>
         </div>
-      </div>
 
-      <div className="container py-6 px-4">
-        <Tabs value={filter} onValueChange={(v) => setFilter(v as typeof filter)} className="mb-4">
+        <Tabs value={filter} onValueChange={(v) => setFilter(v as typeof filter)}>
           <TabsList>
             <TabsTrigger value="pending">Pending</TabsTrigger>
             <TabsTrigger value="resolved">Resolved</TabsTrigger>
@@ -177,6 +170,6 @@ export default function AdminReportsPage() {
           </div>
         )}
       </div>
-    </MainLayout>
+    </AdminLayout>
   );
 }

@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { MainLayout } from "@/components/layout/MainLayout";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -19,8 +18,6 @@ import {
   GraduationCap,
   Microscope,
   Users,
-  Shield,
-  AlertTriangle,
   Award
 } from "lucide-react";
 import { 
@@ -29,10 +26,7 @@ import {
   VerificationSubmission,
   VerificationStatus,
   BADGES,
-  BadgeType
 } from "@/data/verification";
-import { BadgeDisplay, SingleBadge } from "@/components/badges/BadgeDisplay";
-import { TrustScoreDisplay } from "@/components/badges/TrustScore";
 import { toast } from "sonner";
 
 const AdminVerificationsPage = () => {
@@ -42,8 +36,6 @@ const AdminVerificationsPage = () => {
   const [selectedSubmission, setSelectedSubmission] = useState<VerificationSubmission | null>(null);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
-  const [badgeDialogOpen, setBadgeDialogOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
 
   const getStatusBadge = (status: VerificationStatus) => {
     const styles = {
@@ -113,22 +105,16 @@ const AdminVerificationsPage = () => {
   };
 
   return (
-    <MainLayout>
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <AdminLayout>
+      <div className="space-y-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">Verification Management</h1>
-            <p className="text-muted-foreground">Review and manage user verification requests</p>
-          </div>
-          <Badge variant="outline" className="text-lg px-4 py-2">
-            <Shield className="h-4 w-4 mr-2" />
-            Admin Panel
-          </Badge>
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold">Verification Management</h1>
+          <p className="text-muted-foreground">Review and manage user verification requests</p>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
@@ -184,7 +170,7 @@ const AdminVerificationsPage = () => {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
@@ -312,7 +298,7 @@ const AdminVerificationsPage = () => {
         </Card>
 
         {/* Manage Badges Section */}
-        <Card className="mt-8">
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Award className="h-5 w-5" />
@@ -405,23 +391,10 @@ const AdminVerificationsPage = () => {
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Rejection Reason (if rejecting)</label>
                     <Textarea
-                      placeholder="Provide a reason for rejection..."
+                      placeholder="Explain why this verification is being rejected..."
                       value={rejectionReason}
                       onChange={(e) => setRejectionReason(e.target.value)}
                     />
-                  </div>
-                )}
-
-                {/* Review Log */}
-                {selectedSubmission.reviewedAt && (
-                  <div className="p-3 bg-muted rounded-lg text-sm">
-                    <p>Reviewed by <strong>{selectedSubmission.reviewedBy}</strong></p>
-                    <p className="text-muted-foreground">
-                      on {new Date(selectedSubmission.reviewedAt).toLocaleString()}
-                    </p>
-                    {selectedSubmission.rejectionReason && (
-                      <p className="mt-2 text-destructive">Reason: {selectedSubmission.rejectionReason}</p>
-                    )}
                   </div>
                 )}
               </div>
@@ -452,15 +425,14 @@ const AdminVerificationsPage = () => {
                   variant="destructive"
                   onClick={() => handleSuspend(selectedSubmission)}
                 >
-                  <AlertTriangle className="h-4 w-4 mr-2" />
-                  Suspend
+                  Suspend Verification
                 </Button>
               )}
             </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
-    </MainLayout>
+    </AdminLayout>
   );
 };
 

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { MainLayout } from "@/components/layout/MainLayout";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,12 +13,10 @@ import {
   Percent,
   PieChart,
   ArrowUpRight,
-  Settings,
   Shield,
   AlertTriangle,
   Wrench,
   FileText,
-  Users
 } from "lucide-react";
 import { dummyTransactions, adminSettings, dummyToolEvents } from "@/data/offers";
 import { 
@@ -39,7 +36,6 @@ export default function AdminFinancePage() {
   const totalGross = dummyTransactions.reduce((sum, t) => sum + t.grossAmount, 0);
   const totalCommission = dummyTransactions.reduce((sum, t) => sum + t.commissionAmount, 0);
   const totalPayout = dummyTransactions.reduce((sum, t) => sum + t.netPayout, 0);
-  const completedOffers = dummyTransactions.length;
 
   // Escrow stats
   const escrowTotal = calculateEscrowTotal();
@@ -94,141 +90,94 @@ export default function AdminFinancePage() {
   };
 
   return (
-    <MainLayout>
-      <div className="gradient-hero py-12 md:py-16">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Badge variant="secondary" className="mb-4">
-              <Settings className="h-3 w-3 mr-1" />
-              Admin Dashboard
-            </Badge>
-            <h1 className="text-3xl font-bold md:text-4xl">
-              Financial{" "}
-              <span className="text-gradient">Overview</span>
-            </h1>
-            <p className="mt-2 text-muted-foreground">
-              Track platform earnings, escrow, commissions, and disputes
-            </p>
-          </motion.div>
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold">Financial Overview</h1>
+          <p className="text-muted-foreground">Track platform earnings, escrow, commissions, and disputes</p>
         </div>
-      </div>
 
-      <div className="container py-8">
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0 }}
-          >
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <DollarSign className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">Total Revenue</p>
-                    <p className="text-xl font-bold">${totalGross.toLocaleString()}</p>
-                  </div>
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <DollarSign className="h-5 w-5 text-primary" />
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-          >
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                    <TrendingUp className="h-5 w-5 text-emerald-500" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">Commission</p>
-                    <p className="text-xl font-bold text-emerald-500">
-                      ${totalCommission.toLocaleString()}
-                    </p>
-                  </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Total Revenue</p>
+                  <p className="text-xl font-bold">${totalGross.toLocaleString()}</p>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+              </div>
+            </CardContent>
+          </Card>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-          >
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                    <Shield className="h-5 w-5 text-amber-500" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">In Escrow</p>
-                    <p className="text-xl font-bold">${escrowTotal.toLocaleString()}</p>
-                  </div>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                  <TrendingUp className="h-5 w-5 text-emerald-500" />
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.3 }}
-          >
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                    <ArrowUpRight className="h-5 w-5 text-blue-500" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">Released</p>
-                    <p className="text-xl font-bold">${totalPayout.toLocaleString()}</p>
-                  </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Commission</p>
+                  <p className="text-xl font-bold text-emerald-500">
+                    ${totalCommission.toLocaleString()}
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+              </div>
+            </CardContent>
+          </Card>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.4 }}
-          >
-            <Card className={pendingDisputes > 0 ? "border-destructive/50" : ""}>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${
-                    pendingDisputes > 0 ? "bg-destructive/10" : "bg-muted"
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                  <Shield className="h-5 w-5 text-amber-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">In Escrow</p>
+                  <p className="text-xl font-bold">${escrowTotal.toLocaleString()}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                  <ArrowUpRight className="h-5 w-5 text-blue-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Released</p>
+                  <p className="text-xl font-bold">${totalPayout.toLocaleString()}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className={pendingDisputes > 0 ? "border-destructive/50" : ""}>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${
+                  pendingDisputes > 0 ? "bg-destructive/10" : "bg-muted"
+                }`}>
+                  <AlertTriangle className={`h-5 w-5 ${
+                    pendingDisputes > 0 ? "text-destructive" : "text-muted-foreground"
+                  }`} />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Disputes</p>
+                  <p className={`text-xl font-bold ${
+                    pendingDisputes > 0 ? "text-destructive" : ""
                   }`}>
-                    <AlertTriangle className={`h-5 w-5 ${
-                      pendingDisputes > 0 ? "text-destructive" : "text-muted-foreground"
-                    }`} />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">Disputes</p>
-                    <p className={`text-xl font-bold ${
-                      pendingDisputes > 0 ? "text-destructive" : ""
-                    }`}>
-                      {pendingDisputes}
-                    </p>
-                  </div>
+                    {pendingDisputes}
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
@@ -418,42 +367,22 @@ export default function AdminFinancePage() {
                               <Badge variant="destructive" className="mb-2">
                                 {dispute.status.replace("_", " ")}
                               </Badge>
-                              <h4 className="font-semibold">
-                                Milestone: {milestone?.title || "Unknown"}
-                              </h4>
+                              <h4 className="font-medium">{milestone?.title || "Unknown Milestone"}</h4>
                               <p className="text-sm text-muted-foreground mt-1">
-                                Amount in dispute: ${milestone?.amount || 0}
+                                {dispute.reason}
+                              </p>
+                              <p className="text-xs text-muted-foreground mt-2">
+                                Opened: {new Date(dispute.createdAt).toLocaleDateString()}
                               </p>
                             </div>
-                            <p className="text-xs text-muted-foreground">
-                              {new Date(dispute.createdAt).toLocaleDateString()}
-                            </p>
-                          </div>
-                          <p className="mt-3 text-sm p-3 rounded bg-muted">
-                            "{dispute.reason}"
-                          </p>
-                          <div className="flex gap-2 mt-4">
-                            <Button 
-                              size="sm" 
-                              variant="outline"
-                              onClick={() => handleResolveDispute("released to provider")}
-                            >
-                              Release to Provider
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="outline"
-                              onClick={() => handleResolveDispute("refunded to client")}
-                            >
-                              Refund Client
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="secondary"
-                              onClick={() => handleResolveDispute("split 50/50")}
-                            >
-                              Split 50/50
-                            </Button>
+                            <div className="flex gap-2">
+                              <Button size="sm" variant="outline" onClick={() => handleResolveDispute("released to seller")}>
+                                Release
+                              </Button>
+                              <Button size="sm" variant="destructive" onClick={() => handleResolveDispute("refunded to buyer")}>
+                                Refund
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       );
@@ -468,39 +397,37 @@ export default function AdminFinancePage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Percent className="h-5 w-5 text-primary" />
+                  <Percent className="h-5 w-5" />
                   Commission Settings
                 </CardTitle>
                 <CardDescription>
-                  Configure platform commission rate for completed projects
+                  Configure platform commission rate
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="max-w-sm space-y-2">
-                  <Label htmlFor="commission">Commission Rate (%)</Label>
-                  <div className="flex gap-3">
+                <div className="flex items-end gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="commission">Commission Rate (%)</Label>
                     <Input
                       id="commission"
                       type="number"
-                      min="0"
-                      max="50"
                       value={commissionPercent}
                       onChange={(e) => setCommissionPercent(e.target.value)}
                       className="w-32"
                     />
-                    <Button onClick={handleSaveCommission}>
-                      Save Changes
-                    </Button>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Current rate: {adminSettings.commissionPercent}% • Recommended: 10-15%
-                  </p>
+                  <Button onClick={handleSaveCommission}>
+                    Save Changes
+                  </Button>
                 </div>
+                <p className="text-sm text-muted-foreground">
+                  This commission is applied to all completed transactions.
+                </p>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </div>
-    </MainLayout>
+    </AdminLayout>
   );
 }

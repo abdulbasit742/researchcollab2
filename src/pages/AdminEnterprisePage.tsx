@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MainLayout } from "@/components/layout/MainLayout";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Building2, Users, Package, DollarSign, TrendingUp, Eye,
-  Search, FileText, Plus, BarChart3, CheckCircle2, AlertCircle
+  Search, FileText, Plus, CheckCircle2, AlertCircle
 } from "lucide-react";
 import { 
   dummyOrganizations, dummyOrgMembers, dummyBulkLicenses, 
@@ -45,12 +45,12 @@ const AdminEnterprisePage = () => {
   };
 
   return (
-    <MainLayout>
-      <div className="container py-8">
+    <AdminLayout>
+      <div className="space-y-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Enterprise Management</h1>
+            <h1 className="text-2xl md:text-3xl font-bold">Enterprise Management</h1>
             <p className="text-muted-foreground">Manage universities, enterprises, and B2B clients</p>
           </div>
           <Button>
@@ -60,7 +60,7 @@ const AdminEnterprisePage = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-muted-foreground mb-1">
@@ -400,67 +400,19 @@ const AdminEnterprisePage = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Organization Types</CardTitle>
+                  <CardTitle>License Distribution</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {['university', 'enterprise', 'research_lab', 'department', 'society'].map(type => {
-                      const count = dummyOrganizations.filter(o => o.type === type).length;
-                      const percent = (count / dummyOrganizations.length) * 100;
+                    {Array.from(new Set(dummyBulkLicenses.map(l => l.toolName))).map(tool => {
+                      const count = dummyBulkLicenses.filter(l => l.toolName === tool).length;
                       return (
-                        <div key={type}>
-                          <div className="flex justify-between text-sm mb-1">
-                            <span>{getOrgTypeLabel(type as any)}</span>
-                            <span>{count} orgs</span>
-                          </div>
-                          <Progress value={percent} className="h-2" />
+                        <div key={tool} className="flex items-center justify-between">
+                          <span>{tool}</span>
+                          <span className="font-semibold">{count} licenses</span>
                         </div>
                       );
                     })}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>License Adoption</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {['ChatGPT 5.3 Pro', 'Perplexity Pro', 'Gemini 4 Ultra'].map(tool => {
-                      const licenses = dummyBulkLicenses.filter(l => l.toolName === tool);
-                      const totalSeats = licenses.reduce((sum, l) => sum + l.totalSeats, 0);
-                      const usedSeats = licenses.reduce((sum, l) => sum + l.usedSeats, 0);
-                      return (
-                        <div key={tool}>
-                          <div className="flex justify-between text-sm mb-1">
-                            <span>{tool}</span>
-                            <span>{usedSeats}/{totalSeats} seats</span>
-                          </div>
-                          <Progress value={totalSeats > 0 ? (usedSeats / totalSeats) * 100 : 0} className="h-2" />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Monthly Metrics</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-muted/50 rounded-lg text-center">
-                      <BarChart3 className="h-6 w-6 mx-auto mb-2 text-primary" />
-                      <p className="text-2xl font-bold">${totalLicenseRevenue}</p>
-                      <p className="text-sm text-muted-foreground">MRR from Licenses</p>
-                    </div>
-                    <div className="p-4 bg-muted/50 rounded-lg text-center">
-                      <TrendingUp className="h-6 w-6 mx-auto mb-2 text-green-500" />
-                      <p className="text-2xl font-bold">85%</p>
-                      <p className="text-sm text-muted-foreground">Retention Rate</p>
-                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -468,7 +420,7 @@ const AdminEnterprisePage = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </MainLayout>
+    </AdminLayout>
   );
 };
 

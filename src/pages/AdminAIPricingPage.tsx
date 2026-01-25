@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MainLayout } from "@/components/layout/MainLayout";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,8 +11,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { 
-  Sparkles, Settings, BarChart3, TrendingUp, DollarSign,
-  FileText, Check, X, Edit, Save
+  Sparkles, Settings, TrendingUp,
+  FileText, Check, Edit, Save
 } from "lucide-react";
 import {
   defaultPricingConfig, dummyAIScopedProjects, getAIScopingStats,
@@ -52,21 +52,19 @@ const AdminAIPricingPage = () => {
   };
 
   return (
-    <MainLayout>
-      <div className="container py-8">
+    <AdminLayout>
+      <div className="space-y-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              <Sparkles className="h-8 w-8 text-primary" />
-              AI Pricing Engine
-            </h1>
-            <p className="text-muted-foreground">Configure and monitor AI-powered project pricing</p>
-          </div>
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
+            <Sparkles className="h-7 w-7 text-primary" />
+            AI Pricing Engine
+          </h1>
+          <p className="text-muted-foreground">Configure and monitor AI-powered project pricing</p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-muted-foreground mb-1">
@@ -395,26 +393,17 @@ const AdminAIPricingPage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="p-4 bg-muted/50 rounded-lg">
-                      <div className="flex justify-between mb-2">
-                        <span>Accepted as-is</span>
-                        <span className="font-bold">{stats.pricingAcceptanceRate}%</span>
-                      </div>
-                      <Progress value={stats.pricingAcceptanceRate} className="h-2" />
+                    <div className="flex items-center justify-between">
+                      <span>Accepted as-is</span>
+                      <span className="font-semibold">{stats.pricingAcceptanceRate}%</span>
                     </div>
-                    <div className="p-4 bg-muted/50 rounded-lg">
-                      <div className="flex justify-between mb-2">
-                        <span>Adjusted by user</span>
-                        <span className="font-bold">{stats.overrideRate}%</span>
-                      </div>
-                      <Progress value={stats.overrideRate} className="h-2" />
+                    <div className="flex items-center justify-between">
+                      <span>Adjusted (minor)</span>
+                      <span className="font-semibold">{stats.overrideRate}%</span>
                     </div>
-                    <div className="p-4 bg-muted/50 rounded-lg">
-                      <div className="flex justify-between mb-2">
-                        <span>Average Confidence</span>
-                        <span className="font-bold">{stats.avgConfidence}%</span>
-                      </div>
-                      <Progress value={stats.avgConfidence} className="h-2" />
+                    <div className="flex items-center justify-between">
+                      <span>Rejected</span>
+                      <span className="font-semibold">{100 - stats.pricingAcceptanceRate - stats.overrideRate}%</span>
                     </div>
                   </div>
                 </CardContent>
@@ -426,78 +415,12 @@ const AdminAIPricingPage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="p-4 bg-primary/10 rounded-lg text-center">
-                        <DollarSign className="h-6 w-6 text-primary mx-auto mb-2" />
-                        <p className="text-2xl font-bold">
-                          ${dummyAIScopedProjects.reduce((sum, p) => sum + (p.adjustedPrice || p.pricing.recommendedPrice), 0)}
-                        </p>
-                        <p className="text-sm text-muted-foreground">Total Value</p>
-                      </div>
-                      <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg text-center">
-                        <TrendingUp className="h-6 w-6 text-green-500 mx-auto mb-2" />
-                        <p className="text-2xl font-bold">
-                          ${dummyAIScopedProjects.reduce((sum, p) => sum + p.pricing.platformCommission, 0)}
-                        </p>
-                        <p className="text-sm text-muted-foreground">Platform Commission</p>
-                      </div>
+                    <div className="text-center p-4 bg-green-50 dark:bg-green-950 rounded-lg">
+                      <p className="text-3xl font-bold text-green-600">
+                        ${dummyAIScopedProjects.reduce((sum, p) => sum + (p.adjustedPrice || p.pricing.recommendedPrice), 0).toLocaleString()}
+                      </p>
+                      <p className="text-sm text-muted-foreground">Total Revenue from AI-Priced Projects</p>
                     </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="font-medium mb-3">Top Categories by Value</h4>
-                      {['app_development', 'research_paper', 'fyp'].map(type => {
-                        const typeProjects = dummyAIScopedProjects.filter(p => p.scope.projectType === type);
-                        const value = typeProjects.reduce((sum, p) => sum + (p.adjustedPrice || p.pricing.recommendedPrice), 0);
-                        return (
-                          <div key={type} className="flex justify-between text-sm py-2 border-b last:border-0">
-                            <span>{projectTypeLabels[type as keyof typeof projectTypeLabels]}</span>
-                            <span className="font-medium">${value}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="md:col-span-2">
-                <CardHeader>
-                  <CardTitle>Estimation Quality by Risk Level</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-3 gap-4">
-                    {['low', 'medium', 'high'].map(risk => {
-                      const riskProjects = dummyAIScopedProjects.filter(p => p.estimate.riskLevel === risk);
-                      const avgConfidence = riskProjects.length > 0 
-                        ? Math.round(riskProjects.reduce((sum, p) => sum + p.estimate.confidenceScore, 0) / riskProjects.length)
-                        : 0;
-                      const acceptanceRate = riskProjects.length > 0
-                        ? Math.round((riskProjects.filter(p => p.pricingAccepted).length / riskProjects.length) * 100)
-                        : 0;
-                      
-                      return (
-                        <div key={risk} className={`p-4 rounded-lg ${
-                          risk === 'low' ? 'bg-green-50 dark:bg-green-950' :
-                          risk === 'medium' ? 'bg-yellow-50 dark:bg-yellow-950' :
-                          'bg-red-50 dark:bg-red-950'
-                        }`}>
-                          <h4 className="font-medium capitalize mb-3">{risk} Risk</h4>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span>Projects</span>
-                              <span className="font-medium">{riskProjects.length}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Avg Confidence</span>
-                              <span className="font-medium">{avgConfidence}%</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Acceptance</span>
-                              <span className="font-medium">{acceptanceRate}%</span>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
                   </div>
                 </CardContent>
               </Card>
@@ -505,7 +428,7 @@ const AdminAIPricingPage = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </MainLayout>
+    </AdminLayout>
   );
 };
 
