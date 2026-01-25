@@ -8,41 +8,73 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Building2, Users, Package, DollarSign, TrendingUp, Eye,
-  Search, FileText, Plus, CheckCircle2, AlertCircle
+  Search, FileText, Plus, Download
 } from "lucide-react";
-import { 
-  dummyOrganizations, dummyOrgMembers, dummyBulkLicenses, 
-  dummyOrgProjects, dummyOrgInvoices, getOrgTypeLabel, getOrgStats
-} from "@/data/organizations";
+import { useAdminEnterprise } from "@/hooks/useAdminEnterprise";
+import { exportToCSV } from "@/lib/csvExport";
 
 const AdminEnterprisePage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
+  const {
+    organizations,
+    members,
+    licenses,
+    loading,
+    getStats,
+  } = useAdminEnterprise();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("organizations");
 
-  // Aggregate stats
-  const totalOrgs = dummyOrganizations.length;
-  const totalMembers = dummyOrgMembers.length;
-  const totalLicenseRevenue = dummyBulkLicenses.reduce((sum, l) => sum + l.totalPrice, 0);
-  const totalProjectBudget = dummyOrgProjects.reduce((sum, p) => sum + p.totalBudget, 0);
-  const totalInvoicesPaid = dummyOrgInvoices.filter(i => i.status === 'paid').reduce((sum, i) => sum + i.amount, 0);
+  const stats = getStats();
 
-  const filteredOrgs = dummyOrganizations.filter(org => 
+  const filteredOrgs = organizations.filter(org => 
     org.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    org.city.toLowerCase().includes(searchQuery.toLowerCase())
+    (org.city || "").toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleCreateInvoice = (orgName: string) => {
-    toast({
-      title: "Invoice Created",
-      description: `New invoice created for ${orgName}`
-    });
+  const getOrgTypeLabel = (type: string) => {
+    const labels: Record<string, string> = {
+      university: "University",
+      enterprise: "Enterprise",
+      research_lab: "Research Lab",
+      department: "Department"
+    };
+    return labels[type] || type;
   };
+
+  const handleExportOrgs = () => {
+    exportToCSV(organizations, "organizations.csv", [
+      { key: "name", header: "Name" },
+      { key: "type", header: "Type" },
+      { key: "subscription_plan", header: "Plan" },
+      { key: "status", header: "Status" },
+      { key: "member_count", header: "Members" },
+      { key: "total_spent", header: "Total Spent" },
+    ]);
+  };
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="space-y-6">
+          <Skeleton className="h-10 w-64" />
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            {[...Array(5)].map((_, i) => (
+              <Skeleton key={i} className="h-24" />
+            ))}
+          </div>
+          <Skeleton className="h-96" />
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
@@ -53,10 +85,16 @@ const AdminEnterprisePage = () => {
             <h1 className="text-2xl md:text-3xl font-bold">Enterprise Management</h1>
             <p className="text-muted-foreground">Manage universities, enterprises, and B2B clients</p>
           </div>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Organization
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={handleExportOrgs}>
+              <Download className="h-4 w-4 mr-2" />
+              Export
+            </Button>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Organization
+            </Button>
+          </div>
         </div>
 
         {/* Stats */}
@@ -67,7 +105,7 @@ const AdminEnterprisePage = () => {
                 <Building2 className="h-4 w-4" />
                 <span className="text-xs">Organizations</span>
               </div>
-              <p className="text-2xl font-bold">{totalOrgs}</p>
+              <p className="text-2xl font-bold">{stats.totalOrganizations}</p>
             </CardContent>
           </Card>
           <Card>
@@ -76,45 +114,43 @@ const AdminEnterprisePage = () => {
                 <Users className="h-4 w-4" />
                 <span className="text-xs">Total Members</span>
               </div>
-              <p className="text-2xl font-bold">{totalMembers}</p>
+              <p className="text-2xl font-bold">{stats.totalMembers}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-muted-foreground mb-1">
                 <Package className="h-4 w-4" />
-                <span className="text-xs">License Revenue</span>
+                <span className="text-xs">Active Licenses</span>
               </div>
-              <p className="text-2xl font-bold">${totalLicenseRevenue}/mo</p>
+              <p className="text-2xl font-bold">{stats.activeLicenses}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-muted-foreground mb-1">
                 <DollarSign className="h-4 w-4" />
-                <span className="text-xs">Project Budgets</span>
+                <span className="text-xs">Total Revenue</span>
               </div>
-              <p className="text-2xl font-bold">${totalProjectBudget}</p>
+              <p className="text-2xl font-bold">${stats.totalRevenue}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-muted-foreground mb-1">
                 <TrendingUp className="h-4 w-4" />
-                <span className="text-xs">Revenue Collected</span>
+                <span className="text-xs">Seat Usage</span>
               </div>
-              <p className="text-2xl font-bold">${totalInvoicesPaid}</p>
+              <p className="text-2xl font-bold">{stats.usedSeats}/{stats.totalSeats}</p>
             </CardContent>
           </Card>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-6">
-            <TabsTrigger value="organizations">Organizations</TabsTrigger>
-            <TabsTrigger value="licenses">Bulk Licenses</TabsTrigger>
-            <TabsTrigger value="projects">Projects</TabsTrigger>
-            <TabsTrigger value="invoices">Invoices</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="organizations">Organizations ({organizations.length})</TabsTrigger>
+            <TabsTrigger value="licenses">Bulk Licenses ({licenses.length})</TabsTrigger>
+            <TabsTrigger value="members">Members ({members.length})</TabsTrigger>
           </TabsList>
 
           {/* Organizations Tab */}
@@ -132,26 +168,31 @@ const AdminEnterprisePage = () => {
             </div>
             <Card>
               <CardContent className="p-0">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Organization</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Members</TableHead>
-                      <TableHead>Plan</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredOrgs.map(org => {
-                      const stats = getOrgStats(org.id);
-                      return (
+                {filteredOrgs.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    {organizations.length === 0 ? "No organizations registered yet" : "No organizations match your search"}
+                  </div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Organization</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Members</TableHead>
+                        <TableHead>Plan</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredOrgs.map(org => (
                         <TableRow key={org.id}>
                           <TableCell>
                             <div>
                               <p className="font-medium">{org.name}</p>
-                              <p className="text-sm text-muted-foreground">{org.city}, {org.country}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {org.city && org.country ? `${org.city}, ${org.country}` : "Location not set"}
+                              </p>
                             </div>
                           </TableCell>
                           <TableCell>
@@ -160,12 +201,12 @@ const AdminEnterprisePage = () => {
                           <TableCell>
                             <div className="flex items-center gap-1">
                               <Users className="h-4 w-4 text-muted-foreground" />
-                              <span>{stats.activeMembers}/{org.memberLimit}</span>
+                              <span>{org.member_count || 0}/{org.member_limit}</span>
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Badge variant={org.subscriptionPlan === 'enterprise' ? 'default' : 'secondary'}>
-                              {org.subscriptionPlan}
+                            <Badge variant={org.subscription_plan === 'enterprise' ? 'default' : 'secondary'}>
+                              {org.subscription_plan}
                             </Badge>
                           </TableCell>
                           <TableCell>
@@ -185,17 +226,22 @@ const AdminEnterprisePage = () => {
                               <Button 
                                 variant="outline" 
                                 size="sm"
-                                onClick={() => handleCreateInvoice(org.name)}
+                                onClick={() => {
+                                  toast({
+                                    title: "Invoice Created",
+                                    description: `New invoice created for ${org.name}`
+                                  });
+                                }}
                               >
                                 <FileText className="h-4 w-4" />
                               </Button>
                             </div>
                           </TableCell>
                         </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -208,215 +254,108 @@ const AdminEnterprisePage = () => {
                 <CardDescription>Manage tool licenses across all organizations</CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Organization</TableHead>
-                      <TableHead>Tool</TableHead>
-                      <TableHead>Seats</TableHead>
-                      <TableHead>Usage</TableHead>
-                      <TableHead>Monthly</TableHead>
-                      <TableHead>Expires</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {dummyBulkLicenses.map(license => {
-                      const org = dummyOrganizations.find(o => o.id === license.orgId);
-                      const usagePercent = (license.usedSeats / license.totalSeats) * 100;
-                      return (
-                        <TableRow key={license.id}>
-                          <TableCell className="font-medium">{org?.name}</TableCell>
-                          <TableCell>{license.toolName}</TableCell>
-                          <TableCell>{license.totalSeats}</TableCell>
-                          <TableCell>
-                            <div className="w-24">
-                              <Progress value={usagePercent} className="h-2" />
-                              <p className="text-xs text-muted-foreground mt-1">
-                                {license.usedSeats}/{license.totalSeats}
-                              </p>
-                            </div>
-                          </TableCell>
-                          <TableCell>${license.totalPrice}</TableCell>
-                          <TableCell>{license.endDate.toLocaleDateString()}</TableCell>
-                          <TableCell>
-                            <Badge variant={license.status === 'active' ? 'default' : 'secondary'}>
-                              {license.status}
-                            </Badge>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
+                {licenses.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    No bulk licenses created yet
+                  </div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Organization</TableHead>
+                        <TableHead>Tool</TableHead>
+                        <TableHead>Seats</TableHead>
+                        <TableHead>Usage</TableHead>
+                        <TableHead>Monthly</TableHead>
+                        <TableHead>Expires</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {licenses.map(license => {
+                        const usagePercent = (license.used_seats / license.total_seats) * 100;
+                        return (
+                          <TableRow key={license.id}>
+                            <TableCell className="font-medium">{license.org_name}</TableCell>
+                            <TableCell>{license.tool_name}</TableCell>
+                            <TableCell>{license.total_seats}</TableCell>
+                            <TableCell>
+                              <div className="w-24">
+                                <Progress value={usagePercent} className="h-2" />
+                                <p className="text-xs text-muted-foreground mt-1">
+                                  {license.used_seats}/{license.total_seats}
+                                </p>
+                              </div>
+                            </TableCell>
+                            <TableCell>${license.monthly_cost}</TableCell>
+                            <TableCell>
+                              {license.expires_at 
+                                ? new Date(license.expires_at).toLocaleDateString() 
+                                : "No expiry"}
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant={license.status === 'active' ? 'default' : 'secondary'}>
+                                {license.status}
+                              </Badge>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
 
-          {/* Projects Tab */}
-          <TabsContent value="projects">
+          {/* Members Tab */}
+          <TabsContent value="members">
             <Card>
               <CardHeader>
-                <CardTitle>All Organization Projects</CardTitle>
-                <CardDescription>Track project programs across institutions</CardDescription>
+                <CardTitle>All Organization Members</CardTitle>
+                <CardDescription>View members across all organizations</CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Project</TableHead>
-                      <TableHead>Organization</TableHead>
-                      <TableHead>Students</TableHead>
-                      <TableHead>Budget</TableHead>
-                      <TableHead>Progress</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {dummyOrgProjects.map(project => {
-                      const org = dummyOrganizations.find(o => o.id === project.orgId);
-                      const progressPercent = (project.completedCount / project.numberOfStudents) * 100;
-                      return (
-                        <TableRow key={project.id}>
+                {members.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    No organization members yet
+                  </div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Member</TableHead>
+                        <TableHead>Role</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Tool Access</TableHead>
+                        <TableHead>Joined</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {members.map(member => (
+                        <TableRow key={member.id}>
+                          <TableCell className="font-medium">{member.user_name}</TableCell>
                           <TableCell>
-                            <div>
-                              <p className="font-medium">{project.title}</p>
-                              <p className="text-sm text-muted-foreground">{project.duration}</p>
-                            </div>
-                          </TableCell>
-                          <TableCell>{org?.name}</TableCell>
-                          <TableCell>{project.numberOfStudents}</TableCell>
-                          <TableCell>${project.totalBudget}</TableCell>
-                          <TableCell>
-                            <div className="w-24">
-                              <Progress value={progressPercent} className="h-2" />
-                              <p className="text-xs text-muted-foreground mt-1">
-                                {project.completedCount}/{project.numberOfStudents}
-                              </p>
-                            </div>
+                            <Badge variant="outline" className="capitalize">{member.role}</Badge>
                           </TableCell>
                           <TableCell>
-                            <Badge variant={project.status === 'active' ? 'default' : 'secondary'}>
-                              {project.status}
+                            <Badge variant={member.status === 'active' ? 'default' : 'secondary'}>
+                              {member.status}
                             </Badge>
                           </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Invoices Tab */}
-          <TabsContent value="invoices">
-            <Card>
-              <CardHeader>
-                <CardTitle>All Invoices</CardTitle>
-                <CardDescription>Manage billing across all organizations</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Invoice</TableHead>
-                      <TableHead>Organization</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead>Due Date</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {dummyOrgInvoices.map(invoice => {
-                      const org = dummyOrganizations.find(o => o.id === invoice.orgId);
-                      return (
-                        <TableRow key={invoice.id}>
                           <TableCell>
-                            <div className="flex items-center gap-2">
-                              {invoice.status === 'paid' ? (
-                                <CheckCircle2 className="h-4 w-4 text-green-500" />
-                              ) : invoice.status === 'overdue' ? (
-                                <AlertCircle className="h-4 w-4 text-destructive" />
-                              ) : (
-                                <FileText className="h-4 w-4 text-muted-foreground" />
-                              )}
-                              <span className="font-medium">{invoice.invoiceNumber}</span>
-                            </div>
+                            {member.tool_access?.length || 0} tools
                           </TableCell>
-                          <TableCell>{org?.name}</TableCell>
-                          <TableCell className="font-semibold">${invoice.amount}</TableCell>
-                          <TableCell>{invoice.dueDate.toLocaleDateString()}</TableCell>
                           <TableCell>
-                            <Badge 
-                              variant={
-                                invoice.status === 'paid' ? 'default' : 
-                                invoice.status === 'overdue' ? 'destructive' : 'secondary'
-                              }
-                            >
-                              {invoice.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm">
-                              <Eye className="h-4 w-4" />
-                            </Button>
+                            {new Date(member.created_at).toLocaleDateString()}
                           </TableCell>
                         </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
               </CardContent>
             </Card>
-          </TabsContent>
-
-          {/* Analytics Tab */}
-          <TabsContent value="analytics">
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Top Organizations by Revenue</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {dummyOrganizations.slice(0, 5).map((org, index) => {
-                      const stats = getOrgStats(org.id);
-                      return (
-                        <div key={org.id} className="flex items-center gap-4">
-                          <span className="text-lg font-bold text-muted-foreground">#{index + 1}</span>
-                          <div className="flex-1">
-                            <p className="font-medium">{org.name}</p>
-                            <p className="text-sm text-muted-foreground">{getOrgTypeLabel(org.type)}</p>
-                          </div>
-                          <span className="font-semibold">${stats.totalSpend}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>License Distribution</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {Array.from(new Set(dummyBulkLicenses.map(l => l.toolName))).map(tool => {
-                      const count = dummyBulkLicenses.filter(l => l.toolName === tool).length;
-                      return (
-                        <div key={tool} className="flex items-center justify-between">
-                          <span>{tool}</span>
-                          <span className="font-semibold">{count} licenses</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </TabsContent>
         </Tabs>
       </div>

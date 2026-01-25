@@ -1,5 +1,6 @@
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { DataTable } from "@/components/admin/DataTable";
+import { commonBulkActions } from "@/components/admin/BulkActionsBar";
 import { useAdminUsers, AdminUser } from "@/hooks/useAdminUsers";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -67,6 +68,45 @@ export default function AdminUsersPage() {
     exportToCSV(users, "users-export", userColumns);
     toast.success("Users exported to CSV");
   };
+
+  const handleBulkAction = async (actionId: string, selectedIds: string[]) => {
+    if (!currentUser) return;
+    
+    let successCount = 0;
+    let failCount = 0;
+
+    for (const userId of selectedIds) {
+      try {
+        if (actionId === "block") {
+          const result = await blockUser(userId, currentUser.id);
+          if (result.success) {
+            successCount++;
+            logAdminAction("user_blocked", "user", userId, { bulk: true });
+          } else failCount++;
+        } else if (actionId === "unblock") {
+          const result = await unblockUser(userId, currentUser.id);
+          if (result.success) {
+            successCount++;
+            logAdminAction("user_unblocked", "user", userId, { bulk: true });
+          } else failCount++;
+        }
+      } catch {
+        failCount++;
+      }
+    }
+
+    if (successCount > 0) {
+      toast.success(`${actionId === "block" ? "Blocked" : "Unblocked"} ${successCount} user(s)`);
+    }
+    if (failCount > 0) {
+      toast.error(`Failed to process ${failCount} user(s)`);
+    }
+  };
+
+  const bulkActions = [
+    commonBulkActions.block,
+    commonBulkActions.unblock,
+  ];
 
   const columns = [
     {
@@ -181,6 +221,9 @@ export default function AdminUsersPage() {
           searchKey="full_name"
           searchPlaceholder="Search users..."
           pageSize={15}
+          selectable
+          bulkActions={bulkActions}
+          onBulkAction={handleBulkAction}
         />
 
         {/* User Details Dialog */}

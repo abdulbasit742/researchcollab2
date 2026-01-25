@@ -29,7 +29,14 @@ export type AuditAction =
   | "subscription_cancelled"
   | "subscription_extended"
   | "report_resolved"
-  | "report_dismissed";
+  | "report_dismissed"
+  | "affiliate_approved"
+  | "affiliate_suspended"
+  | "affiliate_blocked"
+  | "affiliate_commission_updated"
+  | "organization_created"
+  | "organization_updated"
+  | "bulk_license_created";
 
 export type EntityType =
   | "user"
@@ -40,7 +47,10 @@ export type EntityType =
   | "settings"
   | "order"
   | "subscription"
-  | "report";
+  | "report"
+  | "affiliate"
+  | "organization"
+  | "bulk_license";
 
 export function useAdminAuditLog() {
   const [logs, setLogs] = useState<AuditLogEntry[]>([]);

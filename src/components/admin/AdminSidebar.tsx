@@ -11,7 +11,9 @@ import {
   MessageSquare,
   Building2,
   Heart,
-  History
+  History,
+  BarChart3,
+  Package
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -27,9 +29,10 @@ const navItems = [
   { icon: MessageSquare, label: "Support", href: "/admin/support" },
   { icon: Heart, label: "Affiliates", href: "/admin/affiliates" },
   { icon: Building2, label: "Enterprise", href: "/admin/enterprise" },
-  { icon: Wrench, label: "Fulfillment", href: "/admin/fulfillment" },
+  { icon: Package, label: "Fulfillment", href: "/admin/fulfillment" },
   { icon: DollarSign, label: "Subscriptions", href: "/admin/subscriptions" },
   { icon: Briefcase, label: "AI Pricing", href: "/admin/ai-pricing" },
+  { icon: BarChart3, label: "Analytics", href: "/admin/analytics" },
   { icon: History, label: "Activity Log", href: "/admin/audit-log" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];

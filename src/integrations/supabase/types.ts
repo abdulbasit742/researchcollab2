@@ -44,6 +44,101 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliate_conversions: {
+        Row: {
+          affiliate_id: string | null
+          commission_amount: number
+          created_at: string | null
+          id: string
+          referred_user_id: string | null
+          status: string | null
+          transaction_amount: number
+          transaction_type: string
+        }
+        Insert: {
+          affiliate_id?: string | null
+          commission_amount: number
+          created_at?: string | null
+          id?: string
+          referred_user_id?: string | null
+          status?: string | null
+          transaction_amount: number
+          transaction_type: string
+        }
+        Update: {
+          affiliate_id?: string | null
+          commission_amount?: number
+          created_at?: string | null
+          id?: string
+          referred_user_id?: string | null
+          status?: string | null
+          transaction_amount?: number
+          transaction_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_conversions_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliates: {
+        Row: {
+          available_earnings: number | null
+          commission_rate: number | null
+          created_at: string | null
+          custom_commission_rate: number | null
+          id: string
+          lifetime_earnings: number | null
+          notes: string | null
+          pending_earnings: number | null
+          referral_code: string
+          status: string | null
+          total_clicks: number | null
+          total_conversions: number | null
+          total_signups: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          available_earnings?: number | null
+          commission_rate?: number | null
+          created_at?: string | null
+          custom_commission_rate?: number | null
+          id?: string
+          lifetime_earnings?: number | null
+          notes?: string | null
+          pending_earnings?: number | null
+          referral_code: string
+          status?: string | null
+          total_clicks?: number | null
+          total_conversions?: number | null
+          total_signups?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          available_earnings?: number | null
+          commission_rate?: number | null
+          created_at?: string | null
+          custom_commission_rate?: number | null
+          id?: string
+          lifetime_earnings?: number | null
+          notes?: string | null
+          pending_earnings?: number | null
+          referral_code?: string
+          status?: string | null
+          total_clicks?: number | null
+          total_conversions?: number | null
+          total_signups?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       connection_requests: {
         Row: {
           created_at: string
@@ -466,6 +561,143 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      org_bulk_licenses: {
+        Row: {
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          monthly_cost: number
+          org_id: string | null
+          status: string | null
+          tool_id: string | null
+          total_seats: number
+          used_seats: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          monthly_cost: number
+          org_id?: string | null
+          status?: string | null
+          tool_id?: string | null
+          total_seats: number
+          used_seats?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          monthly_cost?: number
+          org_id?: string | null
+          status?: string | null
+          tool_id?: string | null
+          total_seats?: number
+          used_seats?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "org_bulk_licenses_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "org_bulk_licenses_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_members: {
+        Row: {
+          created_at: string | null
+          id: string
+          org_id: string | null
+          role: string | null
+          status: string | null
+          tool_access: string[] | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          org_id?: string | null
+          role?: string | null
+          status?: string | null
+          tool_access?: string[] | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          org_id?: string | null
+          role?: string | null
+          status?: string | null
+          tool_access?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_members_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          admin_contact_email: string | null
+          admin_contact_name: string | null
+          city: string | null
+          country: string | null
+          created_at: string | null
+          id: string
+          member_limit: number | null
+          name: string
+          status: string | null
+          subscription_plan: string | null
+          total_spent: number | null
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          admin_contact_email?: string | null
+          admin_contact_name?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          id?: string
+          member_limit?: number | null
+          name: string
+          status?: string | null
+          subscription_plan?: string | null
+          total_spent?: number | null
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          admin_contact_email?: string | null
+          admin_contact_name?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          id?: string
+          member_limit?: number | null
+          name?: string
+          status?: string | null
+          subscription_plan?: string | null
+          total_spent?: number | null
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       pinned_messages: {
         Row: {
