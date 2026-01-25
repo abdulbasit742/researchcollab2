@@ -4,10 +4,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Flag, CheckCircle, XCircle, Eye } from "lucide-react";
+import { Flag, CheckCircle, XCircle, Eye, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import { exportToCSV, reportColumns } from "@/lib/csvExport";
+import { logAdminAction } from "@/hooks/useAdminAuditLog";
 
 interface Report {
   id: string;
@@ -19,6 +21,7 @@ interface Report {
   description: string | null;
   status: string;
   created_at: string;
+  resolved_at: string | null;
   reporter_name?: string;
   reported_name?: string;
 }
@@ -76,11 +79,22 @@ export default function AdminReportsPage() {
         .eq("id", reportId);
 
       if (error) throw error;
+      
       toast({ title: `Report ${status}` });
+      logAdminAction(
+        status === "resolved" ? "report_resolved" : "report_dismissed",
+        "report",
+        reportId
+      );
       fetchReports();
     } catch (err) {
       toast({ title: "Failed to update", variant: "destructive" });
     }
+  };
+
+  const handleExport = () => {
+    exportToCSV(reports, "reports-export", reportColumns);
+    toast({ title: "Reports exported to CSV" });
   };
 
   const reasonColors: Record<string, string> = {
@@ -94,9 +108,15 @@ export default function AdminReportsPage() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold">Reports</h1>
-          <p className="text-muted-foreground">Review user reports</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">Reports</h1>
+            <p className="text-muted-foreground">Review user reports</p>
+          </div>
+          <Button variant="outline" onClick={handleExport}>
+            <Download className="h-4 w-4 mr-2" />
+            Export CSV
+          </Button>
         </div>
 
         <Tabs value={filter} onValueChange={(v) => setFilter(v as typeof filter)}>

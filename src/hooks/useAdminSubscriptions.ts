@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { logAdminAction } from "@/hooks/useAdminAuditLog";
 
 export interface ToolSubscription {
   id: string;
@@ -185,6 +186,7 @@ export function useAdminSubscriptions() {
       if (error) throw error;
 
       toast({ title: "Subscription cancelled" });
+      logAdminAction("subscription_cancelled", "subscription", subscriptionId);
       await fetchSubscriptions();
       return { success: true };
     } catch (err: any) {
@@ -212,6 +214,7 @@ export function useAdminSubscriptions() {
       if (error) throw error;
 
       toast({ title: `Subscription extended by ${days} days` });
+      logAdminAction("subscription_extended", "subscription", subscriptionId, { days });
       await fetchSubscriptions();
       return { success: true };
     } catch (err: any) {

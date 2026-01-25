@@ -12,7 +12,8 @@ import {
   Building2,
   Heart,
   Menu,
-  X
+  X,
+  History
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ const navItems = [
   { icon: Wrench, label: "Fulfillment", href: "/admin/fulfillment" },
   { icon: DollarSign, label: "Subscriptions", href: "/admin/subscriptions" },
   { icon: Briefcase, label: "AI Pricing", href: "/admin/ai-pricing" },
+  { icon: History, label: "Activity Log", href: "/admin/audit-log" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 

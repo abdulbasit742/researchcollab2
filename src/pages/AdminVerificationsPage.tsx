@@ -19,11 +19,14 @@ import {
   GraduationCap,
   Microscope,
   Users,
-  Award
+  Award,
+  Download
 } from "lucide-react";
 import { useAdminVerifications, VerificationSubmission } from "@/hooks/useVerification";
 import { BADGES } from "@/data/verification";
 import { toast } from "sonner";
+import { exportToCSV, verificationColumns } from "@/lib/csvExport";
+import { logAdminAction } from "@/hooks/useAdminAuditLog";
 
 const AdminVerificationsPage = () => {
   const { submissions, loading, reviewSubmission, refetch } = useAdminVerifications();
@@ -70,6 +73,9 @@ const AdminVerificationsPage = () => {
     if (result.success) {
       setReviewDialogOpen(false);
       toast.success("Verification approved!");
+      logAdminAction("verification_approved", "verification", submission.id, { 
+        verification_type: submission.verification_type 
+      });
     }
   };
 
@@ -83,7 +89,19 @@ const AdminVerificationsPage = () => {
       setReviewDialogOpen(false);
       setRejectionReason('');
       toast.success("Verification rejected");
+      logAdminAction("verification_rejected", "verification", submission.id, { 
+        verification_type: submission.verification_type,
+        reason: rejectionReason
+      });
     }
+  };
+
+  const handleExportVerifications = () => {
+    exportToCSV(submissions.map(s => ({
+      ...s,
+      user_name: s.user_name || "Unknown"
+    })), "verifications-export", verificationColumns);
+    toast.success("Verifications exported to CSV");
   };
 
   if (loading) {
@@ -109,9 +127,15 @@ const AdminVerificationsPage = () => {
     <AdminLayout>
       <div className="space-y-6">
         {/* Header */}
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold">Verification Management</h1>
-          <p className="text-muted-foreground">Review and manage user verification requests</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">Verification Management</h1>
+            <p className="text-muted-foreground">Review and manage user verification requests</p>
+          </div>
+          <Button variant="outline" onClick={handleExportVerifications}>
+            <Download className="h-4 w-4 mr-2" />
+            Export CSV
+          </Button>
         </div>
 
         {/* Stats Cards */}

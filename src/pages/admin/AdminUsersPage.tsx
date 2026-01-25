@@ -18,11 +18,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { MoreHorizontal, Shield, Ban, UserCheck, Eye } from "lucide-react";
+import { MoreHorizontal, Shield, Ban, UserCheck, Eye, Download } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { exportToCSV, userColumns } from "@/lib/csvExport";
+import { logAdminAction } from "@/hooks/useAdminAuditLog";
 
 export default function AdminUsersPage() {
   const { users, loading, updateUserRole, blockUser, unblockUser } = useAdminUsers();
@@ -33,6 +35,7 @@ export default function AdminUsersPage() {
     const result = await updateUserRole(userId, role);
     if (result.success) {
       toast.success(`User role updated to ${role}`);
+      logAdminAction("user_role_changed", "user", userId, { new_role: role });
     } else {
       toast.error(`Failed to update role: ${result.error}`);
     }
@@ -43,6 +46,7 @@ export default function AdminUsersPage() {
     const result = await blockUser(userId, currentUser.id);
     if (result.success) {
       toast.success("User blocked successfully");
+      logAdminAction("user_blocked", "user", userId);
     } else {
       toast.error(`Failed to block user: ${result.error}`);
     }
@@ -53,9 +57,15 @@ export default function AdminUsersPage() {
     const result = await unblockUser(userId, currentUser.id);
     if (result.success) {
       toast.success("User unblocked successfully");
+      logAdminAction("user_unblocked", "user", userId);
     } else {
       toast.error(`Failed to unblock user: ${result.error}`);
     }
+  };
+
+  const handleExportUsers = () => {
+    exportToCSV(users, "users-export", userColumns);
+    toast.success("Users exported to CSV");
   };
 
   const columns = [
@@ -158,6 +168,10 @@ export default function AdminUsersPage() {
               View and manage all platform users
             </p>
           </div>
+          <Button variant="outline" onClick={handleExportUsers}>
+            <Download className="h-4 w-4 mr-2" />
+            Export CSV
+          </Button>
         </div>
 
         <DataTable
