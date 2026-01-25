@@ -16,17 +16,42 @@ import {
   RotateCcw,
   Flag
 } from "lucide-react";
-import { Milestone, calculateMilestoneProgress } from "@/data/wallet";
 import { useToast } from "@/hooks/use-toast";
 
-interface MilestoneTrackerProps {
-  milestones: Milestone[];
-  totalBudget: number;
-  userRole: "client" | "provider";
-  onMilestoneUpdate?: (milestoneId: string, status: Milestone["status"]) => void;
+// Flexible milestone type that works with both database and mock data
+export interface MilestoneData {
+  id: string;
+  title: string;
+  description?: string | null;
+  amount: number;
+  status: "pending" | "submitted" | "approved" | "revision_requested" | "released" | "disputed";
+  expected_delivery?: string | null;
+  expectedDelivery?: string;
+  submitted_at?: string | null;
+  submittedAt?: string;
+  approved_at?: string | null;
+  approvedAt?: string;
+  released_at?: string | null;
+  releasedAt?: string;
 }
 
-const statusConfig: Record<Milestone["status"], { 
+// Helper function to calculate milestone progress
+function calculateMilestoneProgress(milestones: MilestoneData[]): number {
+  if (milestones.length === 0) return 0;
+  const completed = milestones.filter(m => 
+    m.status === "approved" || m.status === "released"
+  ).length;
+  return Math.round((completed / milestones.length) * 100);
+}
+
+interface MilestoneTrackerProps {
+  milestones: MilestoneData[];
+  totalBudget: number;
+  userRole: "client" | "provider";
+  onMilestoneUpdate?: (milestoneId: string, status: MilestoneData["status"]) => void;
+}
+
+const statusConfig: Record<MilestoneData["status"], { 
   label: string; 
   color: string; 
   icon: React.ElementType;
@@ -48,7 +73,7 @@ export function MilestoneTracker({
 }: MilestoneTrackerProps) {
   const { toast } = useToast();
   const [showDisputeModal, setShowDisputeModal] = useState(false);
-  const [selectedMilestone, setSelectedMilestone] = useState<Milestone | null>(null);
+  const [selectedMilestone, setSelectedMilestone] = useState<MilestoneData | null>(null);
   const [disputeReason, setDisputeReason] = useState("");
   
   const progress = calculateMilestoneProgress(milestones);
@@ -59,7 +84,7 @@ export function MilestoneTracker({
     .filter(m => m.status === "released")
     .reduce((sum, m) => sum + m.amount, 0);
 
-  const handleSubmit = (milestone: Milestone) => {
+  const handleSubmit = (milestone: MilestoneData) => {
     onMilestoneUpdate?.(milestone.id, "submitted");
     toast({
       title: "Milestone Submitted",
@@ -67,7 +92,7 @@ export function MilestoneTracker({
     });
   };
 
-  const handleApprove = (milestone: Milestone) => {
+  const handleApprove = (milestone: MilestoneData) => {
     const commission = milestone.amount * (10 / 100);
     const netAmount = milestone.amount - commission;
     
@@ -78,7 +103,7 @@ export function MilestoneTracker({
     });
   };
 
-  const handleRequestRevision = (milestone: Milestone) => {
+  const handleRequestRevision = (milestone: MilestoneData) => {
     onMilestoneUpdate?.(milestone.id, "revision_requested");
     toast({
       title: "Revision Requested",
@@ -190,12 +215,14 @@ export function MilestoneTracker({
 
                       {/* Timeline info */}
                       <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                        <span>Due: {new Date(milestone.expectedDelivery).toLocaleDateString()}</span>
-                        {milestone.submittedAt && (
-                          <span>Submitted: {new Date(milestone.submittedAt).toLocaleDateString()}</span>
+                        {(milestone.expectedDelivery || milestone.expected_delivery) && (
+                          <span>Due: {new Date(milestone.expectedDelivery || milestone.expected_delivery!).toLocaleDateString()}</span>
                         )}
-                        {milestone.releasedAt && (
-                          <span className="text-emerald-500">Released: {new Date(milestone.releasedAt).toLocaleDateString()}</span>
+                        {(milestone.submittedAt || milestone.submitted_at) && (
+                          <span>Submitted: {new Date(milestone.submittedAt || milestone.submitted_at!).toLocaleDateString()}</span>
+                        )}
+                        {(milestone.releasedAt || milestone.released_at) && (
+                          <span className="text-emerald-500">Released: {new Date(milestone.releasedAt || milestone.released_at!).toLocaleDateString()}</span>
                         )}
                       </div>
 

@@ -1,10 +1,25 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Wallet, Shield, DollarSign, Clock, TrendingUp } from "lucide-react";
-import { Wallet as WalletType } from "@/data/wallet";
+
+// Flexible wallet type that works with both database and mock data
+export interface WalletCardData {
+  id: string;
+  userId?: string;
+  userName?: string;
+  userType?: "student" | "researcher" | "project_owner" | "admin";
+  availableBalance: number;
+  escrowBalance: number;
+  pendingBalance: number;
+  totalEarned?: number;
+  totalSpent?: number;
+  lifetimeEarnings?: number;
+  lifetimeSpend?: number;
+  currency?: string;
+}
 
 interface WalletCardProps {
-  wallet: WalletType;
+  wallet: WalletCardData;
   variant?: "full" | "compact";
 }
 
@@ -35,6 +50,9 @@ export function WalletCard({ wallet, variant = "full" }: WalletCardProps) {
     );
   }
 
+  const lifetimeEarnings = wallet.lifetimeEarnings ?? wallet.totalEarned ?? 0;
+  const lifetimeSpend = wallet.lifetimeSpend ?? wallet.totalSpent ?? 0;
+
   return (
     <Card className="overflow-hidden">
       <div className="bg-gradient-to-r from-primary to-primary/80 p-6 text-primary-foreground">
@@ -43,9 +61,11 @@ export function WalletCard({ wallet, variant = "full" }: WalletCardProps) {
             <Wallet className="h-6 w-6" />
             <span className="font-semibold">My Wallet</span>
           </div>
-          <Badge className="bg-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/30">
-            {wallet.userType === "student" ? "Student" : "Researcher"}
-          </Badge>
+          {wallet.userType && (
+            <Badge className="bg-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/30">
+              {wallet.userType === "student" ? "Student" : "Researcher"}
+            </Badge>
+          )}
         </div>
         <p className="text-sm opacity-80">Available Balance</p>
         <p className="text-4xl font-bold mt-1">
@@ -78,7 +98,7 @@ export function WalletCard({ wallet, variant = "full" }: WalletCardProps) {
               <TrendingUp className="h-4 w-4" />
               <span className="text-xs font-medium">Total Earned</span>
             </div>
-            <p className="text-xl font-bold">${wallet.lifetimeEarnings.toLocaleString()}</p>
+            <p className="text-xl font-bold">${lifetimeEarnings.toLocaleString()}</p>
             <p className="text-xs text-muted-foreground mt-1">Lifetime</p>
           </div>
 
@@ -87,7 +107,7 @@ export function WalletCard({ wallet, variant = "full" }: WalletCardProps) {
               <DollarSign className="h-4 w-4" />
               <span className="text-xs font-medium">Total Spent</span>
             </div>
-            <p className="text-xl font-bold">${wallet.lifetimeSpend.toLocaleString()}</p>
+            <p className="text-xl font-bold">${lifetimeSpend.toLocaleString()}</p>
             <p className="text-xs text-muted-foreground mt-1">Lifetime</p>
           </div>
         </div>

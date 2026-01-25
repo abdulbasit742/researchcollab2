@@ -18,9 +18,9 @@ import {
   Shield
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { MilestoneTracker } from "@/components/wallet/MilestoneTracker";
-import { WalletCard } from "@/components/wallet/WalletCard";
-import { useWallet, useMilestones, Milestone } from "@/hooks/useWallet";
+import { MilestoneTracker, MilestoneData } from "@/components/wallet/MilestoneTracker";
+import { WalletCard, WalletCardData } from "@/components/wallet/WalletCard";
+import { useWallet, useMilestones } from "@/hooks/useWallet";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -73,7 +73,7 @@ export default function WorkRoomPage() {
     }
   };
 
-  const handleMilestoneUpdate = async (milestoneId: string, status: Milestone["status"]) => {
+  const handleMilestoneUpdate = async (milestoneId: string, status: MilestoneData["status"]) => {
     const result = await updateMilestoneStatus(milestoneId, status);
     if (result.success) {
       toast({
@@ -83,11 +83,17 @@ export default function WorkRoomPage() {
     }
   };
 
-  const escrowTotal = milestones
+  // Transform milestones to MilestoneData format
+  const transformedMilestones: MilestoneData[] = milestones.map(m => ({
+    ...m,
+    status: m.status as MilestoneData["status"],
+  }));
+
+  const escrowTotal = transformedMilestones
     .filter(m => m.status !== "released")
     .reduce((sum, m) => sum + m.amount, 0);
 
-  const walletData = wallet ? {
+  const walletData: WalletCardData | null = wallet ? {
     id: wallet.id,
     userId: wallet.user_id,
     availableBalance: wallet.available_balance,
@@ -96,7 +102,6 @@ export default function WorkRoomPage() {
     totalEarned: wallet.total_earned,
     totalSpent: wallet.total_spent,
     currency: wallet.currency,
-    createdAt: wallet.created_at,
   } : null;
 
   const statusTimeline = [
@@ -217,7 +222,7 @@ export default function WorkRoomPage() {
                     </div>
                     <div className="p-4 rounded-lg bg-muted/50 text-center">
                       <Calendar className="h-5 w-5 mx-auto text-primary mb-1" />
-                      <p className="font-semibold">{milestones.length}</p>
+                      <p className="font-semibold">{transformedMilestones.length}</p>
                       <p className="text-xs text-muted-foreground">Milestones</p>
                     </div>
                   </div>
@@ -226,9 +231,9 @@ export default function WorkRoomPage() {
             </motion.div>
 
             {/* Milestone Tracker */}
-            {milestones.length > 0 ? (
+            {transformedMilestones.length > 0 ? (
               <MilestoneTracker
-                milestones={milestones}
+                milestones={transformedMilestones}
                 totalBudget={offer.price}
                 userRole="provider"
                 onMilestoneUpdate={handleMilestoneUpdate}

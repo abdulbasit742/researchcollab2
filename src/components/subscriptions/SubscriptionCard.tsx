@@ -20,17 +20,47 @@ import {
   MessageSquare,
   ExternalLink
 } from "lucide-react";
-import { Subscription, calculateDaysRemaining } from "@/data/subscriptions";
 import { useToast } from "@/hooks/use-toast";
 
+// Flexible subscription type that works with both database and mock data
+export interface SubscriptionCardData {
+  id: string;
+  toolId: string;
+  toolName: string;
+  toolIcon?: string;
+  planType: string;
+  planName: string;
+  status: "active" | "expiring" | "expired" | "cancelled";
+  startDate: string;
+  endDate: string;
+  autoRenew?: boolean;
+  credentials?: any;
+  deliveryDetails?: {
+    method?: string;
+    email?: string;
+    password?: string;
+    inviteUrl?: string;
+    notes?: string;
+  };
+  cancellationDate?: string;
+}
+
+// Helper function to calculate days remaining
+function calculateDaysRemaining(endDate: string): number {
+  const end = new Date(endDate);
+  const now = new Date();
+  const diff = end.getTime() - now.getTime();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
 interface SubscriptionCardProps {
-  subscription: Subscription;
+  subscription: SubscriptionCardData;
   onRenew?: () => void;
   onCancel?: () => void;
   onReportIssue?: () => void;
 }
 
-const statusConfig: Record<Subscription["status"], {
+const statusConfig: Record<SubscriptionCardData["status"], {
   label: string;
   variant: "default" | "secondary" | "success" | "warning" | "destructive";
 }> = {
