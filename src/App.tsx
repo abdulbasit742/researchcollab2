@@ -71,7 +71,7 @@ import AdminAIPricingPage from "./pages/AdminAIPricingPage";
 import AdminReportsPage from "./pages/AdminReportsPage";
 import AdminSupportPage from "./pages/AdminSupportPage";
 import AdminAuditLogPage from "./pages/admin/AdminAuditLogPage";
-
+import AdminAnalyticsPage from "./pages/admin/AdminAnalyticsPage";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -149,6 +149,8 @@ const App = () => (
             <Route path="/admin/reports" element={<AdminReportsPage />} />
             <Route path="/admin/support" element={<AdminSupportPage />} />
             <Route path="/admin/audit-log" element={<AdminAuditLogPage />} />
+            <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
+            <Route path="*" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
