@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 import { 
   DollarSign, 
   TrendingUp, 
@@ -15,56 +16,14 @@ import {
   ArrowUpRight,
   Shield,
   AlertTriangle,
-  Wrench,
-  FileText,
 } from "lucide-react";
-import { dummyTransactions, adminSettings, dummyToolEvents } from "@/data/offers";
-import { 
-  adminWallet, 
-  calculateEscrowTotal, 
-  calculatePendingDisputes,
-  dummyMilestones,
-  dummyDisputes 
-} from "@/data/wallet";
+import { useAdminFinance } from "@/hooks/useAdminFinance";
 import { useToast } from "@/hooks/use-toast";
 
 export default function AdminFinancePage() {
   const { toast } = useToast();
-  const [commissionPercent, setCommissionPercent] = useState(adminSettings.commissionPercent.toString());
-
-  // Calculate stats
-  const totalGross = dummyTransactions.reduce((sum, t) => sum + t.grossAmount, 0);
-  const totalCommission = dummyTransactions.reduce((sum, t) => sum + t.commissionAmount, 0);
-  const totalPayout = dummyTransactions.reduce((sum, t) => sum + t.netPayout, 0);
-
-  // Escrow stats
-  const escrowTotal = calculateEscrowTotal();
-  const pendingDisputes = calculatePendingDisputes();
-  const releasedMilestones = dummyMilestones.filter(m => m.status === "released").length;
-  const pendingMilestones = dummyMilestones.filter(m => m.status === "pending" || m.status === "submitted").length;
-
-  // Category breakdown
-  const categoryStats = dummyTransactions.reduce((acc, t) => {
-    acc[t.category] = (acc[t.category] || 0) + t.commissionAmount;
-    return acc;
-  }, {} as Record<string, number>);
-
-  const sortedCategories = Object.entries(categoryStats)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
-
-  // Tool events stats
-  const toolEventsByType = dummyToolEvents.reduce((acc, e) => {
-    acc[e.eventType] = (acc[e.eventType] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
-
-  // Revenue sources
-  const revenueSources = [
-    { name: "Offer Commissions", amount: totalCommission, icon: FileText },
-    { name: "Tool Sales", amount: 2450, icon: Wrench },
-    { name: "Milestone Fees", amount: 890, icon: CheckCircle2 },
-  ];
+  const { transactions, disputes, loading, stats, resolveDispute } = useAdminFinance();
+  const [commissionPercent, setCommissionPercent] = useState("10");
 
   const handleSaveCommission = () => {
     const percent = parseFloat(commissionPercent);
@@ -82,12 +41,27 @@ export default function AdminFinancePage() {
     });
   };
 
-  const handleResolveDispute = (action: string) => {
-    toast({
-      title: "Dispute Resolved",
-      description: `Funds have been ${action}`,
-    });
+  const handleResolveDispute = async (disputeId: string, action: "release" | "refund") => {
+    const resolution = action === "release" ? "Released to seller" : "Refunded to buyer";
+    await resolveDispute(disputeId, resolution, action);
   };
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">Financial Overview</h1>
+            <p className="text-muted-foreground">Track platform earnings, escrow, commissions, and disputes</p>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+            {[1, 2, 3, 4, 5].map(i => <Skeleton key={i} className="h-24" />)}
+          </div>
+          <Skeleton className="h-96" />
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
@@ -107,7 +81,7 @@ export default function AdminFinancePage() {
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Total Revenue</p>
-                  <p className="text-xl font-bold">${totalGross.toLocaleString()}</p>
+                  <p className="text-xl font-bold">PKR {stats.totalRevenue.toLocaleString()}</p>
                 </div>
               </div>
             </CardContent>
@@ -122,7 +96,7 @@ export default function AdminFinancePage() {
                 <div>
                   <p className="text-xs text-muted-foreground">Commission</p>
                   <p className="text-xl font-bold text-emerald-500">
-                    ${totalCommission.toLocaleString()}
+                    PKR {stats.totalCommission.toLocaleString()}
                   </p>
                 </div>
               </div>
@@ -137,7 +111,7 @@ export default function AdminFinancePage() {
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">In Escrow</p>
-                  <p className="text-xl font-bold">${escrowTotal.toLocaleString()}</p>
+                  <p className="text-xl font-bold">PKR {stats.totalEscrow.toLocaleString()}</p>
                 </div>
               </div>
             </CardContent>
@@ -150,29 +124,29 @@ export default function AdminFinancePage() {
                   <ArrowUpRight className="h-5 w-5 text-blue-500" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Released</p>
-                  <p className="text-xl font-bold">${totalPayout.toLocaleString()}</p>
+                  <p className="text-xs text-muted-foreground">This Month</p>
+                  <p className="text-xl font-bold">PKR {stats.monthlyRevenue.toLocaleString()}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className={pendingDisputes > 0 ? "border-destructive/50" : ""}>
+          <Card className={stats.openDisputes > 0 ? "border-destructive/50" : ""}>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${
-                  pendingDisputes > 0 ? "bg-destructive/10" : "bg-muted"
+                  stats.openDisputes > 0 ? "bg-destructive/10" : "bg-muted"
                 }`}>
                   <AlertTriangle className={`h-5 w-5 ${
-                    pendingDisputes > 0 ? "text-destructive" : "text-muted-foreground"
+                    stats.openDisputes > 0 ? "text-destructive" : "text-muted-foreground"
                   }`} />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Disputes</p>
                   <p className={`text-xl font-bold ${
-                    pendingDisputes > 0 ? "text-destructive" : ""
+                    stats.openDisputes > 0 ? "text-destructive" : ""
                   }`}>
-                    {pendingDisputes}
+                    {stats.openDisputes}
                   </p>
                 </div>
               </div>
@@ -184,31 +158,34 @@ export default function AdminFinancePage() {
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="transactions">Transactions</TabsTrigger>
-            <TabsTrigger value="disputes">Disputes</TabsTrigger>
+            <TabsTrigger value="disputes">Disputes ({stats.openDisputes})</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Revenue Sources */}
+              {/* Revenue Summary */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Revenue Sources</CardTitle>
+                  <CardTitle className="text-lg">Revenue Summary</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {revenueSources.map((source) => (
-                    <div key={source.name} className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <source.icon className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">{source.name}</span>
-                      </div>
-                      <span className="font-semibold">${source.amount.toLocaleString()}</span>
-                    </div>
-                  ))}
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Total Revenue</span>
+                    <span className="font-semibold">PKR {stats.totalRevenue.toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Platform Commission (10%)</span>
+                    <span className="font-semibold text-emerald-500">PKR {stats.totalCommission.toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Paid to Providers</span>
+                    <span className="font-semibold">PKR {stats.totalPayout.toLocaleString()}</span>
+                  </div>
                 </CardContent>
               </Card>
 
-              {/* Milestone Stats */}
+              {/* Escrow Status */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -218,69 +195,47 @@ export default function AdminFinancePage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="p-3 rounded-lg bg-emerald-500/10 text-center">
-                      <p className="text-2xl font-bold text-emerald-500">{releasedMilestones}</p>
-                      <p className="text-xs text-muted-foreground">Released</p>
-                    </div>
                     <div className="p-3 rounded-lg bg-amber-500/10 text-center">
-                      <p className="text-2xl font-bold text-amber-500">{pendingMilestones}</p>
-                      <p className="text-xs text-muted-foreground">Pending</p>
+                      <p className="text-2xl font-bold text-amber-500">PKR {stats.totalEscrow.toLocaleString()}</p>
+                      <p className="text-xs text-muted-foreground">In Escrow</p>
+                    </div>
+                    <div className="p-3 rounded-lg bg-emerald-500/10 text-center">
+                      <p className="text-2xl font-bold text-emerald-500">PKR {stats.totalAvailable.toLocaleString()}</p>
+                      <p className="text-xs text-muted-foreground">Available</p>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Total milestones: {dummyMilestones.length}
-                  </p>
+                  <div className="p-3 rounded-lg bg-blue-500/10 text-center">
+                    <p className="text-xl font-bold text-blue-500">PKR {stats.totalPending.toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">Pending Withdrawal</p>
+                  </div>
                 </CardContent>
               </Card>
 
-              {/* Tool Engagement */}
+              {/* Quick Stats */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Tool Engagement</CardTitle>
+                  <CardTitle className="text-lg">Quick Stats</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-3 gap-2">
-                    <div className="p-2 rounded-lg bg-muted/50 text-center">
-                      <p className="text-lg font-bold">{toolEventsByType.viewed || 0}</p>
-                      <p className="text-[10px] text-muted-foreground">Views</p>
-                    </div>
-                    <div className="p-2 rounded-lg bg-muted/50 text-center">
-                      <p className="text-lg font-bold">{toolEventsByType.clicked_buy || 0}</p>
-                      <p className="text-[10px] text-muted-foreground">Clicks</p>
-                    </div>
-                    <div className="p-2 rounded-lg bg-muted/50 text-center">
-                      <p className="text-lg font-bold">{toolEventsByType.bundle_interest || 0}</p>
-                      <p className="text-[10px] text-muted-foreground">Bundles</p>
-                    </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Total Transactions</span>
+                    <span className="font-semibold">{transactions.length}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Completed Orders</span>
+                    <span className="font-semibold">
+                      {transactions.filter(t => t.status === "completed" || t.status === "delivered").length}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Open Disputes</span>
+                    <span className={`font-semibold ${stats.openDisputes > 0 ? "text-destructive" : ""}`}>
+                      {stats.openDisputes}
+                    </span>
                   </div>
                 </CardContent>
               </Card>
             </div>
-
-            {/* Category Breakdown */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <PieChart className="h-5 w-5 text-primary" />
-                  Top Categories by Commission
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-                  {sortedCategories.map(([category, amount], index) => (
-                    <div key={category} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-                      <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium">
-                        {index + 1}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs text-muted-foreground truncate">{category}</p>
-                        <p className="font-bold text-primary">${amount}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
 
           <TabsContent value="transactions" className="space-y-6">
@@ -288,53 +243,55 @@ export default function AdminFinancePage() {
               <CardHeader>
                 <CardTitle>Recent Transactions</CardTitle>
                 <CardDescription>
-                  All completed offers and their commission details
+                  All tool orders and their payment details
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-3 px-4 font-medium">Project</th>
-                        <th className="text-left py-3 px-4 font-medium">Category</th>
-                        <th className="text-left py-3 px-4 font-medium">Provider</th>
-                        <th className="text-right py-3 px-4 font-medium">Gross</th>
-                        <th className="text-right py-3 px-4 font-medium">Commission</th>
-                        <th className="text-right py-3 px-4 font-medium">Net</th>
-                        <th className="text-left py-3 px-4 font-medium">Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {dummyTransactions.map((txn) => (
-                        <tr key={txn.id} className="border-b hover:bg-muted/50">
-                          <td className="py-3 px-4">
-                            <p className="font-medium text-sm">{txn.offerTitle}</p>
-                            <p className="text-xs text-muted-foreground">{txn.clientName}</p>
-                          </td>
-                          <td className="py-3 px-4">
-                            <Badge variant="secondary" className="text-xs">
-                              {txn.category}
-                            </Badge>
-                          </td>
-                          <td className="py-3 px-4 text-sm">{txn.providerName}</td>
-                          <td className="py-3 px-4 text-right font-medium">
-                            ${txn.grossAmount}
-                          </td>
-                          <td className="py-3 px-4 text-right text-emerald-500 font-medium">
-                            ${txn.commissionAmount}
-                          </td>
-                          <td className="py-3 px-4 text-right font-medium">
-                            ${txn.netPayout}
-                          </td>
-                          <td className="py-3 px-4 text-sm text-muted-foreground">
-                            {new Date(txn.completedAt).toLocaleDateString()}
-                          </td>
+                {transactions.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <DollarSign className="h-10 w-10 mx-auto mb-2" />
+                    <p>No transactions yet</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="text-left py-3 px-4 font-medium">Order ID</th>
+                          <th className="text-left py-3 px-4 font-medium">User</th>
+                          <th className="text-left py-3 px-4 font-medium">Tool</th>
+                          <th className="text-right py-3 px-4 font-medium">Amount</th>
+                          <th className="text-left py-3 px-4 font-medium">Status</th>
+                          <th className="text-left py-3 px-4 font-medium">Date</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {transactions.slice(0, 20).map((txn) => (
+                          <tr key={txn.id} className="border-b hover:bg-muted/50">
+                            <td className="py-3 px-4">
+                              <p className="font-medium text-sm truncate max-w-[100px]">
+                                {txn.id.slice(0, 8)}...
+                              </p>
+                            </td>
+                            <td className="py-3 px-4 text-sm">{txn.user_name}</td>
+                            <td className="py-3 px-4 text-sm">{txn.tool_name}</td>
+                            <td className="py-3 px-4 text-right font-medium">
+                              {txn.currency} {Number(txn.amount).toLocaleString()}
+                            </td>
+                            <td className="py-3 px-4">
+                              <Badge variant={txn.status === "completed" || txn.status === "delivered" ? "default" : "secondary"}>
+                                {txn.status}
+                              </Badge>
+                            </td>
+                            <td className="py-3 px-4 text-sm text-muted-foreground">
+                              {new Date(txn.created_at).toLocaleDateString()}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -351,42 +308,51 @@ export default function AdminFinancePage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {dummyDisputes.length === 0 ? (
+                {disputes.filter(d => d.status === "open" || d.status === "under_review").length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <CheckCircle2 className="h-10 w-10 mx-auto mb-2 text-emerald-500" />
                     <p>No active disputes</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {dummyDisputes.map((dispute) => {
-                      const milestone = dummyMilestones.find(m => m.id === dispute.milestoneId);
-                      return (
+                    {disputes
+                      .filter(d => d.status === "open" || d.status === "under_review")
+                      .map((dispute) => (
                         <div key={dispute.id} className="p-4 rounded-lg border border-destructive/30 bg-destructive/5">
                           <div className="flex items-start justify-between gap-4">
                             <div>
                               <Badge variant="destructive" className="mb-2">
                                 {dispute.status.replace("_", " ")}
                               </Badge>
-                              <h4 className="font-medium">{milestone?.title || "Unknown Milestone"}</h4>
+                              <h4 className="font-medium">{dispute.milestone_title}</h4>
                               <p className="text-sm text-muted-foreground mt-1">
                                 {dispute.reason}
                               </p>
                               <p className="text-xs text-muted-foreground mt-2">
-                                Opened: {new Date(dispute.createdAt).toLocaleDateString()}
+                                Amount: PKR {Number(dispute.milestone_amount).toLocaleString()} • 
+                                Opened: {new Date(dispute.created_at).toLocaleDateString()} •
+                                By: {dispute.initiator_name}
                               </p>
                             </div>
                             <div className="flex gap-2">
-                              <Button size="sm" variant="outline" onClick={() => handleResolveDispute("released to seller")}>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                onClick={() => handleResolveDispute(dispute.id, "release")}
+                              >
                                 Release
                               </Button>
-                              <Button size="sm" variant="destructive" onClick={() => handleResolveDispute("refunded to buyer")}>
+                              <Button 
+                                size="sm" 
+                                variant="destructive" 
+                                onClick={() => handleResolveDispute(dispute.id, "refund")}
+                              >
                                 Refund
                               </Button>
                             </div>
                           </div>
                         </div>
-                      );
-                    })}
+                      ))}
                   </div>
                 )}
               </CardContent>
@@ -407,21 +373,25 @@ export default function AdminFinancePage() {
               <CardContent className="space-y-4">
                 <div className="flex items-end gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="commission">Commission Rate (%)</Label>
-                    <Input
-                      id="commission"
-                      type="number"
-                      value={commissionPercent}
-                      onChange={(e) => setCommissionPercent(e.target.value)}
-                      className="w-32"
-                    />
+                    <Label>Commission Rate</Label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="number"
+                        value={commissionPercent}
+                        onChange={(e) => setCommissionPercent(e.target.value)}
+                        className="w-24"
+                        min="0"
+                        max="50"
+                      />
+                      <span className="text-lg font-medium">%</span>
+                    </div>
                   </div>
                   <Button onClick={handleSaveCommission}>
                     Save Changes
                   </Button>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  This commission is applied to all completed transactions.
+                  This commission is automatically deducted from each completed transaction before payout to service providers.
                 </p>
               </CardContent>
             </Card>

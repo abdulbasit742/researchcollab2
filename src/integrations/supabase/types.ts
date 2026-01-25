@@ -663,6 +663,60 @@ export type Database = {
           },
         ]
       }
+      support_tickets: {
+        Row: {
+          admin_reply: string | null
+          created_at: string
+          id: string
+          message: string
+          problem_type: string
+          resolved_at: string | null
+          status: string
+          subscription_id: string | null
+          tool_id: string | null
+          user_id: string
+        }
+        Insert: {
+          admin_reply?: string | null
+          created_at?: string
+          id?: string
+          message: string
+          problem_type: string
+          resolved_at?: string | null
+          status?: string
+          subscription_id?: string | null
+          tool_id?: string | null
+          user_id: string
+        }
+        Update: {
+          admin_reply?: string | null
+          created_at?: string
+          id?: string
+          message?: string
+          problem_type?: string
+          resolved_at?: string | null
+          status?: string
+          subscription_id?: string | null
+          tool_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "tool_subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_tickets_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       thread_notes: {
         Row: {
           content: string | null
@@ -703,8 +757,12 @@ export type Database = {
           amount: number
           created_at: string
           currency: string
+          delivery_details: Json | null
+          duration_months: number | null
           id: string
           payment_method: string | null
+          plan_id: string | null
+          plan_name: string | null
           status: string
           subscription_id: string | null
           tool_id: string
@@ -715,8 +773,12 @@ export type Database = {
           amount: number
           created_at?: string
           currency?: string
+          delivery_details?: Json | null
+          duration_months?: number | null
           id?: string
           payment_method?: string | null
+          plan_id?: string | null
+          plan_name?: string | null
           status?: string
           subscription_id?: string | null
           tool_id: string
@@ -727,8 +789,12 @@ export type Database = {
           amount?: number
           created_at?: string
           currency?: string
+          delivery_details?: Json | null
+          duration_months?: number | null
           id?: string
           payment_method?: string | null
+          plan_id?: string | null
+          plan_name?: string | null
           status?: string
           subscription_id?: string | null
           tool_id?: string
@@ -754,10 +820,12 @@ export type Database = {
       }
       tool_subscriptions: {
         Row: {
+          auto_renew: boolean | null
           cancelled_at: string | null
           created_at: string
           expires_at: string | null
           id: string
+          plan_name: string | null
           plan_type: string
           started_at: string
           status: string
@@ -765,10 +833,12 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          auto_renew?: boolean | null
           cancelled_at?: string | null
           created_at?: string
           expires_at?: string | null
           id?: string
+          plan_name?: string | null
           plan_type?: string
           started_at?: string
           status?: string
@@ -776,10 +846,12 @@ export type Database = {
           user_id: string
         }
         Update: {
+          auto_renew?: boolean | null
           cancelled_at?: string | null
           created_at?: string
           expires_at?: string | null
           id?: string
+          plan_name?: string | null
           plan_type?: string
           started_at?: string
           status?: string

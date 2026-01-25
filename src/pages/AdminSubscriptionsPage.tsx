@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { 
   Package, 
   CheckCircle2, 
@@ -15,64 +16,68 @@ import {
   DollarSign,
   MessageSquare,
 } from "lucide-react";
-import { 
-  dummySubscriptions, 
-  dummySupportTickets,
-  getExpiringSubscriptions,
-  getToolSubscriptionStats,
-  Subscription,
-  SupportTicket
-} from "@/data/subscriptions";
-import { useToast } from "@/hooks/use-toast";
+import { useAdminSubscriptions, ToolSubscription, SupportTicket } from "@/hooks/useAdminSubscriptions";
 
-const statusConfig: Record<Subscription["status"], {
-  label: string;
-  variant: "default" | "secondary" | "success" | "warning" | "destructive";
-}> = {
-  active: { label: "Active", variant: "success" },
-  expiring: { label: "Expiring", variant: "warning" },
+const statusConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" }> = {
+  active: { label: "Active", variant: "default" },
+  expiring: { label: "Expiring", variant: "default" },
   expired: { label: "Expired", variant: "destructive" },
   cancelled: { label: "Cancelled", variant: "secondary" },
 };
 
-const ticketStatusConfig: Record<SupportTicket["status"], {
-  label: string;
-  variant: "default" | "secondary" | "success" | "warning";
-}> = {
-  open: { label: "Open", variant: "warning" },
+const ticketStatusConfig: Record<string, { label: string; variant: "default" | "secondary" }> = {
+  open: { label: "Open", variant: "default" },
   in_progress: { label: "In Progress", variant: "default" },
-  resolved: { label: "Resolved", variant: "success" },
+  resolved: { label: "Resolved", variant: "secondary" },
 };
 
 export default function AdminSubscriptionsPage() {
-  const { toast } = useToast();
+  const { 
+    subscriptions, 
+    tickets, 
+    loading, 
+    expiringSubscriptions, 
+    openTickets,
+    stats,
+    sendReminder,
+    resolveTicket 
+  } = useAdminSubscriptions();
+  
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
-  const stats = getToolSubscriptionStats();
-  const expiringSubscriptions = getExpiringSubscriptions(7);
-  const openTickets = dummySupportTickets.filter(t => t.status !== "resolved");
-
-  const filteredSubscriptions = dummySubscriptions.filter(sub => {
-    const matchesSearch = sub.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      sub.toolName.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredSubscriptions = subscriptions.filter(sub => {
+    const matchesSearch = 
+      (sub.user_name?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
+      (sub.tool_name?.toLowerCase() || "").includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === "all" || sub.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  const handleSendReminder = (subscription: Subscription) => {
-    toast({
-      title: "Reminder Sent",
-      description: `Expiry reminder sent to ${subscription.userName}`,
-    });
+  const handleSendReminder = async (subscription: ToolSubscription) => {
+    await sendReminder(subscription);
   };
 
-  const handleResolveTicket = (ticket: SupportTicket) => {
-    toast({
-      title: "Ticket Resolved",
-      description: `Ticket ${ticket.id} marked as resolved`,
-    });
+  const handleResolveTicket = async (ticket: SupportTicket) => {
+    await resolveTicket(ticket.id);
   };
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">Subscription Management</h1>
+            <p className="text-muted-foreground">Monitor subscriptions, handle tickets, and track renewals</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            {[1, 2, 3, 4, 5].map(i => <Skeleton key={i} className="h-24" />)}
+          </div>
+          <Skeleton className="h-96" />
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
@@ -114,8 +119,8 @@ export default function AdminSubscriptionsPage() {
                 <DollarSign className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Revenue</p>
-                <p className="text-xl font-bold">${stats.totalRevenue}</p>
+                <p className="text-xs text-muted-foreground">Total</p>
+                <p className="text-xl font-bold">{stats.totalSubscriptions}</p>
               </div>
             </CardContent>
           </Card>
@@ -127,7 +132,7 @@ export default function AdminSubscriptionsPage() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Open Tickets</p>
-                <p className="text-xl font-bold">{openTickets.length}</p>
+                <p className="text-xl font-bold">{stats.openTicketsCount}</p>
               </div>
             </CardContent>
           </Card>
@@ -139,7 +144,9 @@ export default function AdminSubscriptionsPage() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Best Seller</p>
-                <p className="text-sm font-bold truncate">ChatGPT</p>
+                <p className="text-sm font-bold truncate">
+                  {Object.entries(stats.toolDistribution).sort((a, b) => b[1] - a[1])[0]?.[0] || "N/A"}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -182,12 +189,12 @@ export default function AdminSubscriptionsPage() {
                     {expiringSubscriptions.map((sub) => (
                       <div key={sub.id} className="flex items-center justify-between p-4 rounded-lg border bg-amber-500/5 border-amber-500/20">
                         <div>
-                          <p className="font-medium">{sub.userName}</p>
+                          <p className="font-medium">{sub.user_name}</p>
                           <p className="text-sm text-muted-foreground">
-                            {sub.toolName} - {sub.planName}
+                            {sub.tool_name} - {sub.plan_name || sub.plan_type}
                           </p>
                           <p className="text-xs text-amber-600">
-                            Expires: {new Date(sub.endDate).toLocaleDateString()}
+                            Expires: {sub.expires_at ? new Date(sub.expires_at).toLocaleDateString() : "N/A"}
                           </p>
                         </div>
                         <Button size="sm" onClick={() => handleSendReminder(sub)}>
@@ -226,7 +233,6 @@ export default function AdminSubscriptionsPage() {
                       <SelectContent>
                         <SelectItem value="all">All</SelectItem>
                         <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="expiring">Expiring</SelectItem>
                         <SelectItem value="expired">Expired</SelectItem>
                         <SelectItem value="cancelled">Cancelled</SelectItem>
                       </SelectContent>
@@ -235,48 +241,58 @@ export default function AdminSubscriptionsPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-3 px-4 font-medium">User</th>
-                        <th className="text-left py-3 px-4 font-medium">Tool</th>
-                        <th className="text-left py-3 px-4 font-medium">Plan</th>
-                        <th className="text-left py-3 px-4 font-medium">Period</th>
-                        <th className="text-left py-3 px-4 font-medium">Status</th>
-                        <th className="text-left py-3 px-4 font-medium">Auto Renew</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredSubscriptions.map((sub) => (
-                        <tr key={sub.id} className="border-b hover:bg-muted/50">
-                          <td className="py-3 px-4">
-                            <p className="font-medium">{sub.userName}</p>
-                          </td>
-                          <td className="py-3 px-4">{sub.toolName}</td>
-                          <td className="py-3 px-4">
-                            <Badge variant="secondary" className="text-xs">
-                              {sub.planName}
-                            </Badge>
-                          </td>
-                          <td className="py-3 px-4 text-sm">
-                            {new Date(sub.startDate).toLocaleDateString()} - {new Date(sub.endDate).toLocaleDateString()}
-                          </td>
-                          <td className="py-3 px-4">
-                            <Badge variant={statusConfig[sub.status].variant}>
-                              {statusConfig[sub.status].label}
-                            </Badge>
-                          </td>
-                          <td className="py-3 px-4">
-                            <Badge variant={sub.autoRenew ? "success" : "secondary"}>
-                              {sub.autoRenew ? "Yes" : "No"}
-                            </Badge>
-                          </td>
+                {filteredSubscriptions.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Package className="h-10 w-10 mx-auto mb-2" />
+                    <p>No subscriptions found</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="text-left py-3 px-4 font-medium">User</th>
+                          <th className="text-left py-3 px-4 font-medium">Tool</th>
+                          <th className="text-left py-3 px-4 font-medium">Plan</th>
+                          <th className="text-left py-3 px-4 font-medium">Period</th>
+                          <th className="text-left py-3 px-4 font-medium">Status</th>
+                          <th className="text-left py-3 px-4 font-medium">Auto Renew</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {filteredSubscriptions.map((sub) => {
+                          const status = statusConfig[sub.status] || { label: sub.status, variant: "secondary" as const };
+                          return (
+                            <tr key={sub.id} className="border-b hover:bg-muted/50">
+                              <td className="py-3 px-4">
+                                <p className="font-medium">{sub.user_name}</p>
+                              </td>
+                              <td className="py-3 px-4">{sub.tool_name}</td>
+                              <td className="py-3 px-4">
+                                <Badge variant="secondary" className="text-xs">
+                                  {sub.plan_name || sub.plan_type}
+                                </Badge>
+                              </td>
+                              <td className="py-3 px-4 text-sm">
+                                {new Date(sub.started_at).toLocaleDateString()} - {sub.expires_at ? new Date(sub.expires_at).toLocaleDateString() : "Ongoing"}
+                              </td>
+                              <td className="py-3 px-4">
+                                <Badge variant={status.variant}>
+                                  {status.label}
+                                </Badge>
+                              </td>
+                              <td className="py-3 px-4">
+                                <Badge variant={sub.auto_renew ? "default" : "secondary"}>
+                                  {sub.auto_renew ? "Yes" : "No"}
+                                </Badge>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -288,37 +304,47 @@ export default function AdminSubscriptionsPage() {
                 <CardDescription>Manage customer support requests</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {dummySupportTickets.map((ticket) => (
-                    <div key={ticket.id} className="p-4 rounded-lg border">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <p className="font-medium">{ticket.userName}</p>
-                            <Badge variant={ticketStatusConfig[ticket.status].variant}>
-                              {ticketStatusConfig[ticket.status].label}
-                            </Badge>
+                {tickets.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <MessageSquare className="h-10 w-10 mx-auto mb-2" />
+                    <p>No support tickets</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {tickets.map((ticket) => {
+                      const status = ticketStatusConfig[ticket.status] || { label: ticket.status, variant: "secondary" as const };
+                      return (
+                        <div key={ticket.id} className="p-4 rounded-lg border">
+                          <div className="flex items-start justify-between gap-4">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <p className="font-medium">{ticket.user_name}</p>
+                                <Badge variant={status.variant}>
+                                  {status.label}
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-muted-foreground">
+                                {ticket.tool_name || "General"} • {ticket.problem_type.replace("_", " ")} • {new Date(ticket.created_at).toLocaleDateString()}
+                              </p>
+                            </div>
+                            {ticket.status !== "resolved" && (
+                              <Button size="sm" onClick={() => handleResolveTicket(ticket)}>
+                                Resolve
+                              </Button>
+                            )}
                           </div>
-                          <p className="text-sm text-muted-foreground">
-                            {ticket.toolName} • {ticket.problemType.replace("_", " ")} • {new Date(ticket.createdAt).toLocaleDateString()}
-                          </p>
+                          <p className="mt-3 text-sm p-3 rounded bg-muted/50">{ticket.message}</p>
+                          {ticket.admin_reply && (
+                            <p className="mt-2 text-sm p-3 rounded bg-primary/5 border border-primary/20">
+                              <span className="text-xs text-primary font-medium">Reply: </span>
+                              {ticket.admin_reply}
+                            </p>
+                          )}
                         </div>
-                        {ticket.status !== "resolved" && (
-                          <Button size="sm" onClick={() => handleResolveTicket(ticket)}>
-                            Resolve
-                          </Button>
-                        )}
-                      </div>
-                      <p className="mt-3 text-sm p-3 rounded bg-muted/50">{ticket.message}</p>
-                      {ticket.adminReply && (
-                        <p className="mt-2 text-sm p-3 rounded bg-primary/5 border border-primary/20">
-                          <span className="text-xs text-primary font-medium">Reply: </span>
-                          {ticket.adminReply}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -330,20 +356,24 @@ export default function AdminSubscriptionsPage() {
                   <CardTitle>Plan Distribution</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {Object.entries(stats.planDistribution).map(([plan, count]) => (
-                    <div key={plan} className="flex items-center justify-between">
-                      <span className="capitalize">{plan.replace("-", " ")}</span>
-                      <div className="flex items-center gap-3">
-                        <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-primary rounded-full"
-                            style={{ width: `${(count / dummySubscriptions.length) * 100}%` }}
-                          />
+                  {Object.entries(stats.planDistribution).length === 0 ? (
+                    <p className="text-muted-foreground text-center py-4">No data yet</p>
+                  ) : (
+                    Object.entries(stats.planDistribution).map(([plan, count]) => (
+                      <div key={plan} className="flex items-center justify-between">
+                        <span className="capitalize">{plan.replace("-", " ")}</span>
+                        <div className="flex items-center gap-3">
+                          <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-primary rounded-full"
+                              style={{ width: `${(count / subscriptions.length) * 100}%` }}
+                            />
+                          </div>
+                          <span className="font-bold w-8">{count}</span>
                         </div>
-                        <span className="font-bold w-8">{count}</span>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </CardContent>
               </Card>
 
@@ -352,18 +382,22 @@ export default function AdminSubscriptionsPage() {
                   <CardTitle>Tool Popularity</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {Object.entries(stats.toolDistribution)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 5)
-                    .map(([tool, count], index) => (
-                      <div key={tool} className="flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium">
-                          {index + 1}
+                  {Object.entries(stats.toolDistribution).length === 0 ? (
+                    <p className="text-muted-foreground text-center py-4">No data yet</p>
+                  ) : (
+                    Object.entries(stats.toolDistribution)
+                      .sort((a, b) => b[1] - a[1])
+                      .slice(0, 5)
+                      .map(([tool, count], index) => (
+                        <div key={tool} className="flex items-center gap-3">
+                          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium">
+                            {index + 1}
+                          </div>
+                          <span className="flex-1">{tool}</span>
+                          <span className="font-bold">{count} subs</span>
                         </div>
-                        <span className="flex-1">{tool}</span>
-                        <span className="font-bold">{count} orders</span>
-                      </div>
-                    ))}
+                      ))
+                  )}
                 </CardContent>
               </Card>
             </div>

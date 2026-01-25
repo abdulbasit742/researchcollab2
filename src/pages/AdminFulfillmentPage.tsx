@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import { 
   Package, 
   Clock, 
@@ -19,23 +20,16 @@ import {
   User,
   AlertTriangle,
 } from "lucide-react";
-import { 
-  dummyOrders, 
-  getPendingFulfillmentOrders,
-  Order,
-  toolPlans
-} from "@/data/subscriptions";
+import { useAdminFulfillment, ToolOrder } from "@/hooks/useAdminFulfillment";
 import { useToast } from "@/hooks/use-toast";
 
-const statusConfig: Record<Order["status"], {
-  label: string;
-  variant: "default" | "secondary" | "success" | "warning" | "destructive";
-}> = {
+const statusConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" }> = {
   pending_payment: { label: "Pending Payment", variant: "secondary" },
-  paid: { label: "Paid - Awaiting Fulfillment", variant: "warning" },
-  in_fulfillment: { label: "In Fulfillment", variant: "warning" },
-  delivered: { label: "Delivered", variant: "success" },
-  active: { label: "Active", variant: "success" },
+  paid: { label: "Paid - Awaiting Fulfillment", variant: "default" },
+  in_fulfillment: { label: "In Fulfillment", variant: "default" },
+  delivered: { label: "Delivered", variant: "default" },
+  completed: { label: "Completed", variant: "default" },
+  active: { label: "Active", variant: "default" },
   expired: { label: "Expired", variant: "secondary" },
   cancelled: { label: "Cancelled", variant: "destructive" },
   refunded: { label: "Refunded", variant: "destructive" },
@@ -43,7 +37,8 @@ const statusConfig: Record<Order["status"], {
 
 export default function AdminFulfillmentPage() {
   const { toast } = useToast();
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const { orders, pendingOrders, loading, markAsPaid, startFulfillment, completeDelivery } = useAdminFulfillment();
+  const [selectedOrder, setSelectedOrder] = useState<ToolOrder | null>(null);
   const [showDeliveryModal, setShowDeliveryModal] = useState(false);
   
   // Delivery form state
@@ -54,37 +49,24 @@ export default function AdminFulfillmentPage() {
   const [inviteUrl, setInviteUrl] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const pendingOrders = getPendingFulfillmentOrders();
-  const allOrders = dummyOrders;
-
-  const getPlan = (planId: string) => toolPlans.find(p => p.id === planId);
-
-  const handleMarkPaid = (order: Order) => {
-    toast({
-      title: "Order Marked as Paid",
-      description: `Order ${order.id} is now ready for fulfillment`,
-    });
+  const handleMarkPaid = async (order: ToolOrder) => {
+    await markAsPaid(order.id);
   };
 
-  const handleStartFulfillment = (order: Order) => {
+  const handleStartFulfillment = (order: ToolOrder) => {
     setSelectedOrder(order);
-    
-    // Reset form
     setDeliveryEmail("");
     setDeliveryPassword("");
     setDeliveryRecovery("");
     setDeliveryNotes("");
     setInviteUrl("");
-    
     setShowDeliveryModal(true);
   };
 
-  const handleCompleteDelivery = () => {
+  const handleCompleteDelivery = async () => {
     if (!selectedOrder) return;
 
-    const plan = getPlan(selectedOrder.planId);
-    
-    if (plan?.deliveryMethod === "account_provided" && (!deliveryEmail || !deliveryPassword)) {
+    if (!deliveryEmail || !deliveryPassword) {
       toast({
         title: "Missing Credentials",
         description: "Please enter email and password",
@@ -93,22 +75,20 @@ export default function AdminFulfillmentPage() {
       return;
     }
 
-    if (plan?.deliveryMethod === "invite_link" && !inviteUrl) {
-      toast({
-        title: "Missing Invite Link",
-        description: "Please enter the invite URL",
-        variant: "destructive",
-      });
-      return;
+    const deliveryDetails = {
+      email: deliveryEmail,
+      password: deliveryPassword,
+      recovery: deliveryRecovery,
+      notes: deliveryNotes,
+      inviteUrl,
+      deliveredAt: new Date().toISOString(),
+    };
+
+    const result = await completeDelivery(selectedOrder.id, deliveryDetails);
+    if (result.success) {
+      setShowDeliveryModal(false);
+      setSelectedOrder(null);
     }
-
-    toast({
-      title: "Delivery Completed!",
-      description: `${selectedOrder.toolName} has been delivered to ${selectedOrder.userName}`,
-    });
-
-    setShowDeliveryModal(false);
-    setSelectedOrder(null);
   };
 
   const copyToClipboard = (text: string, label: string) => {
@@ -116,30 +96,31 @@ export default function AdminFulfillmentPage() {
     toast({ title: `${label} copied!` });
   };
 
-  const renderOrderRow = (order: Order) => {
-    const status = statusConfig[order.status];
+  const renderOrderRow = (order: ToolOrder) => {
+    const status = statusConfig[order.status] || { label: order.status, variant: "secondary" as const };
     
     return (
       <tr key={order.id} className="border-b hover:bg-muted/50">
         <td className="py-3 px-4">
-          <p className="font-medium">{order.id}</p>
+          <p className="font-medium truncate max-w-[100px]">{order.id.slice(0, 8)}...</p>
           <p className="text-xs text-muted-foreground">
-            {new Date(order.createdAt).toLocaleDateString()}
+            {new Date(order.created_at).toLocaleDateString()}
           </p>
         </td>
         <td className="py-3 px-4">
-          <p className="font-medium">{order.userName}</p>
-          <p className="text-xs text-muted-foreground">{order.userEmail}</p>
+          <p className="font-medium">{order.user_name}</p>
         </td>
         <td className="py-3 px-4">
-          <p className="font-medium">{order.toolName}</p>
+          <p className="font-medium">{order.tool_name}</p>
           <div className="flex items-center gap-2 mt-1">
-            <Badge variant="secondary" className="text-xs">{order.planName}</Badge>
-            <span className="text-xs text-muted-foreground">{order.duration}mo</span>
+            {order.plan_name && (
+              <Badge variant="secondary" className="text-xs">{order.plan_name}</Badge>
+            )}
+            <span className="text-xs text-muted-foreground">{order.duration_months || 1}mo</span>
           </div>
         </td>
         <td className="py-3 px-4">
-          <p className="font-bold">${order.price}</p>
+          <p className="font-bold">{order.currency} {Number(order.amount).toLocaleString()}</p>
         </td>
         <td className="py-3 px-4">
           <Badge variant={status.variant}>{status.label}</Badge>
@@ -156,16 +137,40 @@ export default function AdminFulfillmentPage() {
                 {order.status === "paid" ? "Start Delivery" : "Complete Delivery"}
               </Button>
             )}
-            {order.status === "delivered" || order.status === "active" ? (
+            {(order.status === "delivered" || order.status === "active" || order.status === "completed") && (
               <Button size="sm" variant="outline" onClick={() => handleStartFulfillment(order)}>
                 View / Edit
               </Button>
-            ) : null}
+            )}
           </div>
         </td>
       </tr>
     );
   };
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">Order Fulfillment</h1>
+            <p className="text-muted-foreground">Process orders and deliver tool credentials</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24" />)}
+          </div>
+          <Skeleton className="h-96" />
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  const deliveredToday = orders.filter(o => {
+    if (o.status !== "delivered" && o.status !== "completed") return false;
+    const today = new Date();
+    const orderDate = new Date(o.created_at);
+    return orderDate.toDateString() === today.toDateString();
+  }).length;
 
   return (
     <AdminLayout>
@@ -196,7 +201,7 @@ export default function AdminFulfillmentPage() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Delivered Today</p>
-                <p className="text-xl font-bold">5</p>
+                <p className="text-xl font-bold">{deliveredToday}</p>
               </div>
             </CardContent>
           </Card>
@@ -208,7 +213,7 @@ export default function AdminFulfillmentPage() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Total Orders</p>
-                <p className="text-xl font-bold">{allOrders.length}</p>
+                <p className="text-xl font-bold">{orders.length}</p>
               </div>
             </CardContent>
           </Card>
@@ -280,23 +285,30 @@ export default function AdminFulfillmentPage() {
                 <CardDescription>Complete order history</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-3 px-4 font-medium">Order</th>
-                        <th className="text-left py-3 px-4 font-medium">Customer</th>
-                        <th className="text-left py-3 px-4 font-medium">Tool / Plan</th>
-                        <th className="text-left py-3 px-4 font-medium">Price</th>
-                        <th className="text-left py-3 px-4 font-medium">Status</th>
-                        <th className="text-left py-3 px-4 font-medium">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {allOrders.map(renderOrderRow)}
-                    </tbody>
-                  </table>
-                </div>
+                {orders.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Package className="h-10 w-10 mx-auto mb-2" />
+                    <p>No orders yet</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="text-left py-3 px-4 font-medium">Order</th>
+                          <th className="text-left py-3 px-4 font-medium">Customer</th>
+                          <th className="text-left py-3 px-4 font-medium">Tool / Plan</th>
+                          <th className="text-left py-3 px-4 font-medium">Price</th>
+                          <th className="text-left py-3 px-4 font-medium">Status</th>
+                          <th className="text-left py-3 px-4 font-medium">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orders.map(renderOrderRow)}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -312,7 +324,7 @@ export default function AdminFulfillmentPage() {
               Deliver Credentials
             </DialogTitle>
             <DialogDescription>
-              {selectedOrder && `${selectedOrder.toolName} - ${selectedOrder.planName} for ${selectedOrder.userName}`}
+              {selectedOrder && `${selectedOrder.tool_name} for ${selectedOrder.user_name}`}
             </DialogDescription>
           </DialogHeader>
 
@@ -322,107 +334,55 @@ export default function AdminFulfillmentPage() {
               <div className="p-3 rounded-lg bg-muted/50 flex items-center gap-3">
                 <User className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <p className="font-medium">{selectedOrder.userName}</p>
-                  <p className="text-sm text-muted-foreground">{selectedOrder.userEmail}</p>
+                  <p className="font-medium">{selectedOrder.user_name}</p>
+                  <p className="text-sm text-muted-foreground">Order: {selectedOrder.id.slice(0, 8)}...</p>
                 </div>
               </div>
 
-              {(() => {
-                const plan = getPlan(selectedOrder.planId);
-                
-                if (plan?.deliveryMethod === "invite_link") {
-                  return (
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label>Invite URL *</Label>
-                        <div className="flex gap-2">
-                          <Input
-                            placeholder="https://workspace.google.com/invite/..."
-                            value={inviteUrl}
-                            onChange={(e) => setInviteUrl(e.target.value)}
-                          />
-                          <Button 
-                            variant="secondary" 
-                            size="icon"
-                            onClick={() => copyToClipboard(inviteUrl, "URL")}
-                          >
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-
-                if (plan?.deliveryMethod === "byo") {
-                  return (
-                    <div className="space-y-4">
-                      <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 text-sm">
-                        <p className="font-medium text-blue-600">BYO Account</p>
-                        <p className="text-muted-foreground">Customer will use their own account</p>
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Customer's Email</Label>
-                        <Input
-                          value={selectedOrder.userEmail}
-                          disabled
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <input type="checkbox" id="access-granted" />
-                        <Label htmlFor="access-granted">Access has been granted</Label>
-                      </div>
-                    </div>
-                  );
-                }
-
-                // Default: account_provided
-                return (
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Email / Username *</Label>
-                      <Input
-                        placeholder="account@service.com"
-                        value={deliveryEmail}
-                        onChange={(e) => setDeliveryEmail(e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Password *</Label>
-                      <div className="flex gap-2">
-                        <Input
-                          type={showPassword ? "text" : "password"}
-                          placeholder="••••••••••••"
-                          value={deliveryPassword}
-                          onChange={(e) => setDeliveryPassword(e.target.value)}
-                        />
-                        <Button 
-                          variant="secondary" 
-                          size="icon"
-                          onClick={() => setShowPassword(!showPassword)}
-                        >
-                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                        </Button>
-                        <Button 
-                          variant="secondary" 
-                          size="icon"
-                          onClick={() => copyToClipboard(deliveryPassword, "Password")}
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Recovery Info (Optional)</Label>
-                      <Input
-                        placeholder="backup@email.com"
-                        value={deliveryRecovery}
-                        onChange={(e) => setDeliveryRecovery(e.target.value)}
-                      />
-                    </div>
+              {/* Credentials Form */}
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Email / Username *</Label>
+                  <Input
+                    placeholder="account@service.com"
+                    value={deliveryEmail}
+                    onChange={(e) => setDeliveryEmail(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Password *</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••••••"
+                      value={deliveryPassword}
+                      onChange={(e) => setDeliveryPassword(e.target.value)}
+                    />
+                    <Button 
+                      variant="secondary" 
+                      size="icon"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                    <Button 
+                      variant="secondary" 
+                      size="icon"
+                      onClick={() => copyToClipboard(deliveryPassword, "Password")}
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
                   </div>
-                );
-              })()}
+                </div>
+                <div className="space-y-2">
+                  <Label>Recovery Info (Optional)</Label>
+                  <Input
+                    placeholder="backup@email.com"
+                    value={deliveryRecovery}
+                    onChange={(e) => setDeliveryRecovery(e.target.value)}
+                  />
+                </div>
+              </div>
 
               <div className="space-y-2">
                 <Label>Delivery Notes</Label>
