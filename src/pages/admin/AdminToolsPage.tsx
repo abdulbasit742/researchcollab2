@@ -1,6 +1,6 @@
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { DataTable } from "@/components/admin/DataTable";
-import { useAdminTools, Tool } from "@/hooks/useTools";
+import { useTools, useAdminTools, Tool } from "@/hooks/useTools";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -27,10 +27,10 @@ import { Switch } from "@/components/ui/switch";
 import { MoreHorizontal, Plus, Star, StarOff, Trash2, Edit, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 
 export default function AdminToolsPage() {
-  const { tools, loading, createTool, updateTool, deleteTool, refetch } = useAdminTools();
+  const { tools, loading, refetch } = useTools();
+  const { createTool, updateTool, deleteTool } = useAdminTools();
   const [createOpen, setCreateOpen] = useState(false);
   const [editingTool, setEditingTool] = useState<Tool | null>(null);
   const [formData, setFormData] = useState({
@@ -54,11 +54,15 @@ export default function AdminToolsPage() {
       description: formData.description,
       is_featured: formData.is_featured,
       is_active: formData.is_active,
+      icon: null,
+      features: [],
+      pricing: {},
     });
     if (result.success) {
       toast.success("Tool created successfully");
       setCreateOpen(false);
       setFormData({ name: "", category: "", short_description: "", description: "", is_featured: false, is_active: true });
+      refetch();
     } else {
       toast.error(`Failed to create tool: ${result.error}`);
     }
@@ -77,6 +81,7 @@ export default function AdminToolsPage() {
     if (result.success) {
       toast.success("Tool updated successfully");
       setEditingTool(null);
+      refetch();
     } else {
       toast.error(`Failed to update tool: ${result.error}`);
     }
@@ -86,6 +91,7 @@ export default function AdminToolsPage() {
     const result = await updateTool(tool.id, { is_featured: !tool.is_featured });
     if (result.success) {
       toast.success(tool.is_featured ? "Tool unfeatured" : "Tool featured");
+      refetch();
     }
   };
 
@@ -93,6 +99,7 @@ export default function AdminToolsPage() {
     const result = await updateTool(tool.id, { is_active: !tool.is_active });
     if (result.success) {
       toast.success(tool.is_active ? "Tool deactivated" : "Tool activated");
+      refetch();
     }
   };
 
@@ -101,6 +108,7 @@ export default function AdminToolsPage() {
     const result = await deleteTool(tool.id);
     if (result.success) {
       toast.success("Tool deleted successfully");
+      refetch();
     } else {
       toast.error(`Failed to delete tool: ${result.error}`);
     }
