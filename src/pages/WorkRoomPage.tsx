@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import { 
   ArrowLeft, 
   MessageSquare, 
@@ -18,25 +17,124 @@ import {
   Calendar,
   Shield
 } from "lucide-react";
-import { dummyOffers } from "@/data/offers";
-import { getMilestonesByOfferId, dummyMilestones, Milestone } from "@/data/wallet";
+import { supabase } from "@/integrations/supabase/client";
 import { MilestoneTracker } from "@/components/wallet/MilestoneTracker";
 import { WalletCard } from "@/components/wallet/WalletCard";
-import { dummyWallets } from "@/data/wallet";
+import { useWallet, useMilestones, Milestone } from "@/hooks/useWallet";
 import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
+
+interface Offer {
+  id: string;
+  title: string;
+  description: string | null;
+  price: number;
+  currency: string;
+  delivery_days: number | null;
+  status: string;
+  sender_id: string;
+  recipient_id: string;
+  created_at: string;
+}
 
 export default function WorkRoomPage() {
   const { offerId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { wallet } = useWallet();
+  const { milestones, updateMilestoneStatus } = useMilestones(offerId);
 
-  const offer = dummyOffers.find((o) => o.id === offerId);
-  const [milestones, setMilestones] = useState<Milestone[]>(
-    getMilestonesByOfferId(offerId || "")
-  );
+  const [offer, setOffer] = useState<Offer | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Get wallet for escrow display
-  const providerWallet = dummyWallets[0]; // Student wallet for demo
+  useEffect(() => {
+    if (offerId) {
+      fetchOffer();
+    }
+  }, [offerId]);
+
+  const fetchOffer = async () => {
+    if (!offerId) return;
+
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("offers")
+        .select("*")
+        .eq("id", offerId)
+        .maybeSingle();
+
+      if (error) throw error;
+      setOffer(data);
+    } catch (err) {
+      console.error("Error fetching offer:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleMilestoneUpdate = async (milestoneId: string, status: Milestone["status"]) => {
+    const result = await updateMilestoneStatus(milestoneId, status);
+    if (result.success) {
+      toast({
+        title: "Milestone Updated",
+        description: `Milestone status changed to ${status}`,
+      });
+    }
+  };
+
+  const escrowTotal = milestones
+    .filter(m => m.status !== "released")
+    .reduce((sum, m) => sum + m.amount, 0);
+
+  const walletData = wallet ? {
+    id: wallet.id,
+    userId: wallet.user_id,
+    availableBalance: wallet.available_balance,
+    escrowBalance: wallet.escrow_balance,
+    pendingBalance: wallet.pending_balance,
+    totalEarned: wallet.total_earned,
+    totalSpent: wallet.total_spent,
+    currency: wallet.currency,
+    createdAt: wallet.created_at,
+  } : null;
+
+  const statusTimeline = [
+    { status: "Offer Accepted", date: offer?.created_at ? new Date(offer.created_at).toLocaleDateString() : "Pending", completed: true },
+    { status: "Escrow Funded", date: offer?.created_at ? new Date(offer.created_at).toLocaleDateString() : "Pending", completed: true },
+    { status: "Work In Progress", date: "Current", completed: true, current: true },
+    { status: "All Milestones Complete", date: "Pending", completed: false },
+    { status: "Project Closed", date: "Pending", completed: false },
+  ];
+
+  if (loading) {
+    return (
+      <MainLayout>
+        <div className="container py-8">
+          <Skeleton className="h-10 w-24 mb-6" />
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-6">
+              <Card>
+                <CardContent className="p-6 space-y-4">
+                  <Skeleton className="h-6 w-48" />
+                  <Skeleton className="h-8 w-64" />
+                  <div className="grid grid-cols-3 gap-4">
+                    <Skeleton className="h-20" />
+                    <Skeleton className="h-20" />
+                    <Skeleton className="h-20" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="space-y-6">
+              <Skeleton className="h-48" />
+              <Skeleton className="h-64" />
+            </div>
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
 
   if (!offer) {
     return (
@@ -50,24 +148,6 @@ export default function WorkRoomPage() {
       </MainLayout>
     );
   }
-
-  const handleMilestoneUpdate = (milestoneId: string, status: Milestone["status"]) => {
-    setMilestones(prev => 
-      prev.map(m => m.id === milestoneId ? { ...m, status } : m)
-    );
-  };
-
-  const escrowTotal = milestones
-    .filter(m => m.status !== "released")
-    .reduce((sum, m) => sum + m.amount, 0);
-
-  const statusTimeline = [
-    { status: "Offer Accepted", date: "Jan 21, 2024", completed: true },
-    { status: "Escrow Funded", date: "Jan 21, 2024", completed: true },
-    { status: "Work In Progress", date: "Current", completed: true, current: true },
-    { status: "All Milestones Complete", date: "Pending", completed: false },
-    { status: "Project Closed", date: "Pending", completed: false },
-  ];
 
   return (
     <MainLayout>
@@ -117,7 +197,7 @@ export default function WorkRoomPage() {
                           </p>
                         </div>
                       </div>
-                      <p className="text-2xl font-bold">${escrowTotal}</p>
+                      <p className="text-2xl font-bold">PKR {escrowTotal.toLocaleString()}</p>
                     </div>
                   </div>
 
@@ -125,15 +205,15 @@ export default function WorkRoomPage() {
                   <div className="grid grid-cols-3 gap-4">
                     <div className="p-4 rounded-lg bg-muted/50 text-center">
                       <DollarSign className="h-5 w-5 mx-auto text-primary mb-1" />
-                      <p className="font-semibold">${offer.budget}</p>
+                      <p className="font-semibold">PKR {offer.price.toLocaleString()}</p>
                       <p className="text-xs text-muted-foreground">Total Budget</p>
                     </div>
                     <div className="p-4 rounded-lg bg-muted/50 text-center">
                       <Clock className="h-5 w-5 mx-auto text-primary mb-1" />
                       <p className="font-semibold">
-                        {new Date(offer.deadline).toLocaleDateString()}
+                        {offer.delivery_days || "-"} days
                       </p>
-                      <p className="text-xs text-muted-foreground">Deadline</p>
+                      <p className="text-xs text-muted-foreground">Delivery Time</p>
                     </div>
                     <div className="p-4 rounded-lg bg-muted/50 text-center">
                       <Calendar className="h-5 w-5 mx-auto text-primary mb-1" />
@@ -149,7 +229,7 @@ export default function WorkRoomPage() {
             {milestones.length > 0 ? (
               <MilestoneTracker
                 milestones={milestones}
-                totalBudget={offer.budget}
+                totalBudget={offer.price}
                 userRole="provider"
                 onMilestoneUpdate={handleMilestoneUpdate}
               />
@@ -186,19 +266,6 @@ export default function WorkRoomPage() {
                     Upload Files
                   </Button>
                 </div>
-
-                <div className="mt-4 space-y-2">
-                  <div className="flex items-center justify-between p-3 rounded-lg border">
-                    <div className="flex items-center gap-3">
-                      <FileText className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">requirements.pdf</p>
-                        <p className="text-xs text-muted-foreground">Uploaded 2 days ago</p>
-                      </div>
-                    </div>
-                    <Button variant="ghost" size="sm">Download</Button>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </div>
@@ -219,37 +286,6 @@ export default function WorkRoomPage() {
                   <Video className="h-4 w-4" />
                   Schedule Meeting
                 </Button>
-              </CardContent>
-            </Card>
-
-            {/* Participants */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Participants</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src={offer.senderAvatar} />
-                    <AvatarFallback>{offer.senderName.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h4 className="font-medium text-sm">{offer.senderName}</h4>
-                    <p className="text-xs text-muted-foreground">Client</p>
-                  </div>
-                </div>
-                {offer.receiverName && (
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage src={offer.receiverAvatar} />
-                      <AvatarFallback>{offer.receiverName.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h4 className="font-medium text-sm">{offer.receiverName}</h4>
-                      <p className="text-xs text-muted-foreground">Provider</p>
-                    </div>
-                  </div>
-                )}
               </CardContent>
             </Card>
 
@@ -291,7 +327,7 @@ export default function WorkRoomPage() {
             </Card>
 
             {/* Wallet Preview */}
-            <WalletCard wallet={providerWallet} variant="compact" />
+            {walletData && <WalletCard wallet={walletData} variant="compact" />}
           </div>
         </div>
       </div>

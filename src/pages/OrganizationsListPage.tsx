@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -9,16 +9,63 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { 
   Building2, Users, Package, MapPin, Search, ArrowRight
 } from "lucide-react";
-import { dummyOrganizations, getOrgTypeLabel, getOrgStats, OrganizationType } from "@/data/organizations";
+import { supabase } from "@/integrations/supabase/client";
+import { CardSkeleton } from "@/components/skeletons";
+
+interface Organization {
+  id: string;
+  name: string;
+  type: string;
+  city: string | null;
+  country: string | null;
+  subscription_plan: string | null;
+  status: string | null;
+  member_limit: number | null;
+}
+
+const getOrgTypeLabel = (type: string) => {
+  const labels: Record<string, string> = {
+    university: "University",
+    research_lab: "Research Lab",
+    enterprise: "Enterprise",
+    department: "Department",
+    society: "Society",
+  };
+  return labels[type] || type;
+};
 
 const OrganizationsListPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredOrgs = dummyOrganizations.filter(org => {
+  useEffect(() => {
+    fetchOrganizations();
+  }, []);
+
+  const fetchOrganizations = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("organizations")
+        .select("*")
+        .eq("status", "active")
+        .order("name");
+
+      if (error) throw error;
+      setOrganizations(data || []);
+    } catch (err) {
+      console.error("Error fetching organizations:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredOrgs = organizations.filter(org => {
     const matchesSearch = org.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         org.city.toLowerCase().includes(searchQuery.toLowerCase());
+                         (org.city?.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesType = typeFilter === "all" || org.type === typeFilter;
     return matchesSearch && matchesType;
   });
@@ -61,10 +108,21 @@ const OrganizationsListPage = () => {
         </div>
 
         {/* Organizations Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredOrgs.map(org => {
-            const stats = getOrgStats(org.id);
-            return (
+        {loading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
+        ) : filteredOrgs.length === 0 ? (
+          <div className="text-center py-12">
+            <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-semibold mb-2">No organizations found</h3>
+            <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredOrgs.map(org => (
               <Card key={org.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -76,7 +134,7 @@ const OrganizationsListPage = () => {
                   <CardTitle className="mt-4">{org.name}</CardTitle>
                   <CardDescription className="flex items-center gap-1">
                     <MapPin className="h-3 w-3" />
-                    {org.city}, {org.country}
+                    {org.city || "Unknown"}, {org.country || "Unknown"}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -85,29 +143,29 @@ const OrganizationsListPage = () => {
                       <div className="flex items-center justify-center gap-1 text-muted-foreground mb-1">
                         <Users className="h-4 w-4" />
                       </div>
-                      <p className="font-semibold">{stats.activeMembers}</p>
-                      <p className="text-xs text-muted-foreground">Members</p>
+                      <p className="font-semibold">{org.member_limit || 10}</p>
+                      <p className="text-xs text-muted-foreground">Max Members</p>
                     </div>
                     <div>
                       <div className="flex items-center justify-center gap-1 text-muted-foreground mb-1">
                         <Package className="h-4 w-4" />
                       </div>
-                      <p className="font-semibold">{stats.activeToolSubscriptions}</p>
+                      <p className="font-semibold">-</p>
                       <p className="text-xs text-muted-foreground">Tools</p>
                     </div>
                     <div>
                       <div className="flex items-center justify-center gap-1 text-muted-foreground mb-1">
                         <Building2 className="h-4 w-4" />
                       </div>
-                      <p className="font-semibold">{stats.ongoingProjects}</p>
+                      <p className="font-semibold">-</p>
                       <p className="text-xs text-muted-foreground">Projects</p>
                     </div>
                   </div>
                   <Badge 
-                    variant={org.subscriptionPlan === 'enterprise' ? 'default' : 'secondary'}
+                    variant={org.subscription_plan === 'enterprise' ? 'default' : 'secondary'}
                     className="w-full justify-center mb-4"
                   >
-                    {org.subscriptionPlan.charAt(0).toUpperCase() + org.subscriptionPlan.slice(1)} Plan
+                    {(org.subscription_plan || 'basic').charAt(0).toUpperCase() + (org.subscription_plan || 'basic').slice(1)} Plan
                   </Badge>
                   <Button 
                     className="w-full" 
@@ -119,16 +177,7 @@ const OrganizationsListPage = () => {
                   </Button>
                 </CardContent>
               </Card>
-            );
-          })}
-        </div>
-
-        {/* Empty State */}
-        {filteredOrgs.length === 0 && (
-          <div className="text-center py-12">
-            <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No organizations found</h3>
-            <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
+            ))}
           </div>
         )}
       </div>
