@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,24 +8,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { dummyNotifications, Notification } from "@/data/offers";
+import { useNotifications, Notification } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function NotificationBell() {
-  const [notifications, setNotifications] = useState<Notification[]>(dummyNotifications);
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const { notifications, unreadCount, loading, markAsRead, markAllAsRead } = useNotifications();
 
-  const markAsRead = (id: string) => {
-    setNotifications(
-      notifications.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
-  };
-
-  const markAllAsRead = () => {
-    setNotifications(notifications.map((n) => ({ ...n, read: true })));
-  };
-
-  const getNotificationIcon = (type: Notification["type"]) => {
+  const getNotificationIcon = (type: string) => {
     switch (type) {
       case "match_request":
         return "👋";
@@ -38,6 +27,14 @@ export function NotificationBell() {
         return "✅";
       case "offer_rejected":
         return "❌";
+      case "milestone_completed":
+        return "🎯";
+      case "payment_received":
+        return "💵";
+      case "verification_approved":
+        return "✓";
+      case "message":
+        return "💬";
       default:
         return "🔔";
     }
@@ -55,6 +52,28 @@ export function NotificationBell() {
     return "Just now";
   };
 
+  const getNotificationLink = (notification: Notification) => {
+    const data = notification.data || {};
+    switch (notification.type) {
+      case "match_request":
+        return "/matches";
+      case "offer_received":
+      case "offer_accepted":
+      case "offer_rejected":
+        return data.offer_id ? `/offers/${data.offer_id}` : "/offers";
+      case "message":
+        return data.thread_id ? `/messages/${data.thread_id}` : "/messages";
+      case "milestone_completed":
+        return data.offer_id ? `/workroom/${data.offer_id}` : "/wallet";
+      case "payment_received":
+        return "/wallet";
+      case "verification_approved":
+        return "/verification";
+      default:
+        return "#";
+    }
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -65,7 +84,7 @@ export function NotificationBell() {
               variant="destructive" 
               className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px]"
             >
-              {unreadCount}
+              {unreadCount > 9 ? "9+" : unreadCount}
             </Badge>
           )}
         </Button>
@@ -85,7 +104,19 @@ export function NotificationBell() {
           )}
         </div>
         <ScrollArea className="h-[300px]">
-          {notifications.length === 0 ? (
+          {loading ? (
+            <div className="p-4 space-y-3">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <Skeleton className="h-8 w-8 rounded-full" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-3 w-2/3" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : notifications.length === 0 ? (
             <div className="p-4 text-center text-muted-foreground">
               No notifications
             </div>
@@ -94,7 +125,7 @@ export function NotificationBell() {
               {notifications.map((notification) => (
                 <Link
                   key={notification.id}
-                  to={notification.link || "#"}
+                  to={getNotificationLink(notification)}
                   onClick={() => markAsRead(notification.id)}
                   className={cn(
                     "flex items-start gap-3 p-4 hover:bg-accent/50 transition-colors",
@@ -111,11 +142,13 @@ export function NotificationBell() {
                     )}>
                       {notification.title}
                     </p>
-                    <p className="text-xs text-muted-foreground line-clamp-2">
-                      {notification.message}
-                    </p>
+                    {notification.message && (
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {notification.message}
+                      </p>
+                    )}
                     <p className="text-xs text-muted-foreground mt-1">
-                      {formatTime(notification.createdAt)}
+                      {formatTime(notification.created_at)}
                     </p>
                   </div>
                   {!notification.read && (

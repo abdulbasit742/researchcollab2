@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -17,55 +17,131 @@ import {
 } from "lucide-react";
 import { SubscriptionCard } from "@/components/subscriptions/SubscriptionCard";
 import { SupportTicketModal } from "@/components/subscriptions/SupportTicketModal";
-import { 
-  dummySubscriptions, 
-  dummySupportTickets,
-  Subscription,
-  getExpiringSubscriptions 
-} from "@/data/subscriptions";
+import { useMySubscriptions, ToolSubscription } from "@/hooks/useTools";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
+
+interface SupportTicket {
+  id: string;
+  tool_id: string | null;
+  subscription_id: string | null;
+  problem_type: string;
+  message: string;
+  status: string;
+  admin_reply: string | null;
+  created_at: string;
+  resolved_at: string | null;
+  toolName?: string;
+}
 
 export default function SubscriptionsPage() {
   const { toast } = useToast();
-  const [selectedSubscription, setSelectedSubscription] = useState<Subscription | null>(null);
+  const { user } = useAuth();
+  const { subscriptions, loading: subsLoading, refetch } = useMySubscriptions();
+  const [selectedSubscription, setSelectedSubscription] = useState<ToolSubscription | null>(null);
   const [showTicketModal, setShowTicketModal] = useState(false);
+  const [tickets, setTickets] = useState<SupportTicket[]>([]);
+  const [ticketsLoading, setTicketsLoading] = useState(true);
 
-  // Filter subscriptions (simulating current user = student-1)
-  const userSubscriptions = dummySubscriptions.filter(s => 
-    s.userId === "student-1" || s.userId === "student-2"
+  useEffect(() => {
+    if (user) {
+      fetchTickets();
+    }
+  }, [user]);
+
+  const fetchTickets = async () => {
+    if (!user) return;
+
+    setTicketsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("support_tickets")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setTickets(data || []);
+    } catch (err) {
+      console.error("Error fetching tickets:", err);
+    } finally {
+      setTicketsLoading(false);
+    }
+  };
+
+  const activeSubscriptions = subscriptions.filter(s => 
+    s.status === "active" && (!s.expires_at || new Date(s.expires_at) > new Date())
   );
   
-  const activeSubscriptions = userSubscriptions.filter(s => 
-    s.status === "active" || s.status === "expiring"
-  );
-  const expiredSubscriptions = userSubscriptions.filter(s => 
-    s.status === "expired" || s.status === "cancelled"
-  );
-  const expiringCount = userSubscriptions.filter(s => s.status === "expiring").length;
+  const expiringSubscriptions = subscriptions.filter(s => {
+    if (!s.expires_at) return false;
+    const expiresIn = new Date(s.expires_at).getTime() - Date.now();
+    const sevenDays = 7 * 24 * 60 * 60 * 1000;
+    return s.status === "active" && expiresIn < sevenDays && expiresIn > 0;
+  });
 
-  // User tickets
-  const userTickets = dummySupportTickets.filter(t => 
-    t.userId === "student-1" || t.userId === "student-2"
+  const expiredSubscriptions = subscriptions.filter(s => 
+    s.status === "cancelled" || s.status === "expired" || 
+    (s.expires_at && new Date(s.expires_at) < new Date())
   );
 
-  const handleRenew = (subscription: Subscription) => {
+  const handleRenew = (subscription: ToolSubscription) => {
     toast({
       title: "Renewal Started",
-      description: `Redirecting to renew ${subscription.toolName}...`,
+      description: `Redirecting to renew ${subscription.tool?.name || "subscription"}...`,
     });
   };
 
-  const handleCancel = (subscription: Subscription) => {
-    toast({
-      title: "Cancellation Requested",
-      description: "Your subscription will remain active until the end date.",
-    });
+  const handleCancel = async (subscription: ToolSubscription) => {
+    try {
+      const { error } = await supabase
+        .from("tool_subscriptions")
+        .update({ 
+          status: "cancelled", 
+          cancelled_at: new Date().toISOString() 
+        })
+        .eq("id", subscription.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Subscription Cancelled",
+        description: "Your subscription will remain active until the end date.",
+      });
+
+      refetch();
+    } catch (err: any) {
+      toast({
+        title: "Cancellation Failed",
+        description: err.message,
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleReportIssue = (subscription: Subscription) => {
+  const handleReportIssue = (subscription: ToolSubscription) => {
     setSelectedSubscription(subscription);
     setShowTicketModal(true);
   };
+
+  // Transform subscriptions for SubscriptionCard
+  const transformSubscription = (sub: ToolSubscription) => ({
+    id: sub.id,
+    toolId: sub.tool_id,
+    toolName: sub.tool?.name || "Unknown Tool",
+    toolIcon: sub.tool?.icon || "Package",
+    planType: sub.plan_type,
+    planName: sub.plan_name || sub.plan_type,
+    status: sub.status as "active" | "expiring" | "expired" | "cancelled",
+    startDate: sub.started_at,
+    endDate: sub.expires_at || "",
+    autoRenew: sub.auto_renew ?? true,
+    credentials: undefined,
+    userId: sub.user_id,
+    createdAt: sub.created_at,
+  });
 
   return (
     <MainLayout>
@@ -106,14 +182,14 @@ export default function SubscriptionsPage() {
             </CardContent>
           </Card>
           
-          <Card className={expiringCount > 0 ? "border-amber-500/50" : ""}>
+          <Card className={expiringSubscriptions.length > 0 ? "border-amber-500/50" : ""}>
             <CardContent className="p-4 flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
                 <AlertTriangle className="h-5 w-5 text-amber-500" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Expiring Soon</p>
-                <p className="text-xl font-bold">{expiringCount}</p>
+                <p className="text-xl font-bold">{expiringSubscriptions.length}</p>
               </div>
             </CardContent>
           </Card>
@@ -138,7 +214,7 @@ export default function SubscriptionsPage() {
               <div>
                 <p className="text-xs text-muted-foreground">Open Tickets</p>
                 <p className="text-xl font-bold">
-                  {userTickets.filter(t => t.status !== "resolved").length}
+                  {tickets.filter(t => t.status !== "resolved").length}
                 </p>
               </div>
             </CardContent>
@@ -157,12 +233,25 @@ export default function SubscriptionsPage() {
             </TabsTrigger>
             <TabsTrigger value="tickets" className="gap-2">
               <MessageSquare className="h-4 w-4" />
-              Support ({userTickets.length})
+              Support ({tickets.length})
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="active" className="space-y-6">
-            {activeSubscriptions.length === 0 ? (
+            {subsLoading ? (
+              <div className="grid md:grid-cols-2 gap-6">
+                {[...Array(2)].map((_, i) => (
+                  <Card key={i}>
+                    <CardContent className="p-6 space-y-4">
+                      <Skeleton className="h-12 w-12 rounded-xl" />
+                      <Skeleton className="h-6 w-32" />
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-10 w-full" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : activeSubscriptions.length === 0 ? (
               <Card>
                 <CardContent className="p-12 text-center">
                   <Package className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
@@ -188,7 +277,7 @@ export default function SubscriptionsPage() {
                     transition={{ duration: 0.3 }}
                   >
                     <SubscriptionCard
-                      subscription={subscription}
+                      subscription={transformSubscription(subscription)}
                       onRenew={() => handleRenew(subscription)}
                       onCancel={() => handleCancel(subscription)}
                       onReportIssue={() => handleReportIssue(subscription)}
@@ -220,7 +309,7 @@ export default function SubscriptionsPage() {
                     transition={{ duration: 0.3 }}
                   >
                     <SubscriptionCard
-                      subscription={subscription}
+                      subscription={transformSubscription(subscription)}
                       onRenew={() => handleRenew(subscription)}
                     />
                   </motion.div>
@@ -230,7 +319,19 @@ export default function SubscriptionsPage() {
           </TabsContent>
 
           <TabsContent value="tickets" className="space-y-6">
-            {userTickets.length === 0 ? (
+            {ticketsLoading ? (
+              <div className="space-y-4">
+                {[...Array(2)].map((_, i) => (
+                  <Card key={i}>
+                    <CardContent className="p-6 space-y-3">
+                      <Skeleton className="h-5 w-32" />
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-16 w-full" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : tickets.length === 0 ? (
               <Card>
                 <CardContent className="p-12 text-center">
                   <MessageSquare className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
@@ -242,19 +343,19 @@ export default function SubscriptionsPage() {
               </Card>
             ) : (
               <div className="space-y-4">
-                {userTickets.map((ticket) => (
+                {tickets.map((ticket) => (
                   <Card key={ticket.id}>
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <CardTitle className="text-lg">{ticket.toolName}</CardTitle>
+                          <CardTitle className="text-lg">Support Ticket</CardTitle>
                           <CardDescription>
-                            {ticket.problemType.replace("_", " ").toUpperCase()} • {new Date(ticket.createdAt).toLocaleDateString()}
+                            {ticket.problem_type.replace("_", " ").toUpperCase()} • {new Date(ticket.created_at).toLocaleDateString()}
                           </CardDescription>
                         </div>
                         <Badge variant={
-                          ticket.status === "resolved" ? "success" :
-                          ticket.status === "in_progress" ? "warning" : "secondary"
+                          ticket.status === "resolved" ? "default" :
+                          ticket.status === "in_progress" ? "secondary" : "outline"
                         }>
                           {ticket.status.replace("_", " ")}
                         </Badge>
@@ -264,10 +365,10 @@ export default function SubscriptionsPage() {
                       <div className="p-3 rounded-lg bg-muted/50">
                         <p className="text-sm">{ticket.message}</p>
                       </div>
-                      {ticket.adminReply && (
+                      {ticket.admin_reply && (
                         <div className="p-3 rounded-lg bg-primary/5 border border-primary/20">
                           <p className="text-xs text-primary font-medium mb-1">Admin Reply:</p>
-                          <p className="text-sm">{ticket.adminReply}</p>
+                          <p className="text-sm">{ticket.admin_reply}</p>
                         </div>
                       )}
                     </CardContent>
@@ -283,7 +384,7 @@ export default function SubscriptionsPage() {
         <SupportTicketModal
           open={showTicketModal}
           onOpenChange={setShowTicketModal}
-          subscription={selectedSubscription}
+          subscription={transformSubscription(selectedSubscription)}
         />
       )}
     </MainLayout>

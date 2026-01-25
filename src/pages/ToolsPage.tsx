@@ -21,103 +21,32 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Search, Sparkles, Star, Check, ArrowRight, Zap, Brain, Bot, MessageSquare, MessageCircle } from "lucide-react";
+import { Search, Sparkles, Star, Check, Zap, Brain, Bot, MessageSquare, MessageCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTools, Tool } from "@/hooks/useTools";
+import { ToolCardSkeleton } from "@/components/skeletons";
 
-const tools = [
-  {
-    id: "chatgpt",
-    name: "ChatGPT 5.3",
-    description: "OpenAI's most advanced language model for research, writing, and analysis.",
-    icon: MessageSquare,
-    price: 8000,
-    originalPrice: 13500,
-    rating: 4.9,
-    reviews: 2450,
-    features: ["Advanced reasoning", "Code analysis", "Academic writing", "Data interpretation"],
-    popular: true,
-    color: "from-emerald-500 to-teal-500",
-    plans: ["Semi-private", "Private", "BYO Account"],
-  },
-  {
-    id: "perplexity",
-    name: "Perplexity Pro",
-    description: "AI-powered search engine with real-time research capabilities and citations.",
-    icon: Search,
-    price: 6700,
-    originalPrice: 10800,
-    rating: 4.8,
-    reviews: 1820,
-    features: ["Real-time search", "Academic citations", "Source verification", "Deep research"],
-    popular: false,
-    color: "from-blue-500 to-cyan-500",
-    plans: ["Semi-private", "Private"],
-  },
-  {
-    id: "gemini",
-    name: "Gemini 4 Ultra",
-    description: "Google's multimodal AI for text, images, and complex research tasks.",
-    icon: Sparkles,
-    price: 9500,
-    originalPrice: 15000,
-    rating: 4.7,
-    reviews: 1340,
-    features: ["Multimodal analysis", "Image understanding", "Long context", "Research synthesis"],
-    popular: true,
-    color: "from-violet-500 to-purple-600",
-    plans: ["Semi-private", "Private", "BYO Account"],
-  },
-  {
-    id: "grok",
-    name: "Grok 3",
-    description: "xAI's witty and capable AI assistant with real-time knowledge.",
-    icon: Zap,
-    price: 5300,
-    originalPrice: 8000,
-    rating: 4.6,
-    reviews: 890,
-    features: ["Real-time updates", "Humor & wit", "X integration", "Current events"],
-    popular: false,
-    color: "from-orange-500 to-amber-500",
-    plans: ["Semi-private", "Private"],
-  },
-  {
-    id: "claude",
-    name: "Claude 4 Opus",
-    description: "Anthropic's thoughtful AI with exceptional analysis and writing abilities.",
-    icon: Brain,
-    price: 8900,
-    originalPrice: 13500,
-    rating: 4.9,
-    reviews: 2100,
-    features: ["Thoughtful analysis", "Long documents", "Safety-focused", "Academic excellence"],
-    popular: true,
-    color: "from-pink-500 to-rose-500",
-    plans: ["Semi-private", "Private", "BYO Account"],
-  },
-  {
-    id: "research-ai",
-    name: "Research AI Pro",
-    description: "Our custom AI specialized for academic research and paper writing.",
-    icon: Bot,
-    price: 4200,
-    originalPrice: 7000,
-    rating: 4.5,
-    reviews: 560,
-    features: ["Paper writing", "Literature review", "Citation generation", "Plagiarism check"],
-    popular: false,
-    color: "from-slate-500 to-gray-600",
-    plans: ["Semi-private", "Private"],
-  },
-];
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  MessageSquare,
+  Search,
+  Sparkles,
+  Zap,
+  Brain,
+  Bot,
+};
+
+const colorMap: Record<string, string> = {
+  writing: "from-emerald-500 to-teal-500",
+  research: "from-blue-500 to-cyan-500",
+  analysis: "from-violet-500 to-purple-600",
+};
 
 const categories = [
   { value: "all", label: "All Tools" },
   { value: "writing", label: "Writing" },
   { value: "research", label: "Research" },
   { value: "analysis", label: "Analysis" },
-  { value: "coding", label: "Coding" },
 ];
 
 const durations = [
@@ -129,16 +58,25 @@ const durations = [
 export default function ToolsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("all");
-  const [selectedTool, setSelectedTool] = useState<typeof tools[0] | null>(null);
+  const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const [selectedPlan, setSelectedPlan] = useState("");
   const [selectedDuration, setSelectedDuration] = useState("1");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { toast } = useToast();
   const { user, profile } = useAuth();
+  const { tools, loading, error } = useTools();
 
-  const openWhatsAppModal = (tool: typeof tools[0]) => {
+  const filteredTools = tools.filter(tool => {
+    const matchesSearch = tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (tool.description?.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesCategory = category === "all" || tool.category === category;
+    return matchesSearch && matchesCategory;
+  });
+
+  const openWhatsAppModal = (tool: Tool) => {
+    const plans = tool.pricing?.plans || ["Standard"];
     setSelectedTool(tool);
-    setSelectedPlan(tool.plans[0]);
+    setSelectedPlan(plans[0]);
     setSelectedDuration("1");
     setIsModalOpen(true);
   };
@@ -150,6 +88,7 @@ export default function ToolsPage() {
     const educationLevel = profile?.education_level || "Not specified";
     const department = profile?.department || "Not specified";
     const email = user?.email || "Not provided";
+    const price = selectedTool.pricing?.price || 0;
 
     const message = `Assalam o Alaikum,
 
@@ -158,7 +97,7 @@ I want to subscribe to *${selectedTool.name}*
 📋 *Subscription Details:*
 - Plan: ${selectedPlan}
 - Duration: ${selectedDuration} Month(s)
-- Price: PKR ${selectedTool.price.toLocaleString()}/month
+- Price: PKR ${price.toLocaleString()}/month
 
 👤 *My Profile:*
 - Name: ${fullName}
@@ -180,6 +119,15 @@ Please guide me through the subscription process. JazakAllah!`;
       title: "WhatsApp Opened",
       description: "Complete your subscription request on WhatsApp. We'll confirm shortly!",
     });
+  };
+
+  const getToolIcon = (iconName: string | null) => {
+    if (!iconName) return MessageSquare;
+    return iconMap[iconName] || MessageSquare;
+  };
+
+  const getToolColor = (category: string) => {
+    return colorMap[category] || "from-slate-500 to-gray-600";
   };
 
   return (
@@ -240,72 +188,105 @@ Please guide me through the subscription process. JazakAllah!`;
 
       {/* Tools Grid */}
       <div className="container py-8 md:py-16 px-4 md:px-6">
-        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {tools.map((tool, index) => (
-            <motion.div
-              key={tool.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Card variant="interactive" className="h-full flex flex-col relative overflow-hidden">
-                {tool.popular && (
-                  <div className="absolute top-3 right-3 md:top-4 md:right-4">
-                    <Badge variant="premium" className="text-xs">Popular</Badge>
-                  </div>
-                )}
+        {loading ? (
+          <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {[...Array(6)].map((_, i) => (
+              <ToolCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : error ? (
+          <Card>
+            <CardContent className="p-12 text-center">
+              <p className="text-destructive">Error loading tools: {error}</p>
+            </CardContent>
+          </Card>
+        ) : filteredTools.length === 0 ? (
+          <Card>
+            <CardContent className="p-12 text-center">
+              <Search className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-xl font-semibold mb-2">No Tools Found</h3>
+              <p className="text-muted-foreground">Try adjusting your search or filters</p>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {filteredTools.map((tool, index) => {
+              const ToolIcon = getToolIcon(tool.icon);
+              const price = tool.pricing?.price || 0;
+              const originalPrice = tool.pricing?.original_price || 0;
+              const plans = tool.pricing?.plans || ["Standard"];
+              
+              return (
+                <motion.div
+                  key={tool.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Card variant="interactive" className="h-full flex flex-col relative overflow-hidden">
+                    {tool.is_featured && (
+                      <div className="absolute top-3 right-3 md:top-4 md:right-4">
+                        <Badge variant="premium" className="text-xs">Popular</Badge>
+                      </div>
+                    )}
 
-                <CardHeader className="p-4 md:p-6">
-                  <div
-                    className={`h-12 w-12 md:h-14 md:w-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${tool.color} flex items-center justify-center mb-3 md:mb-4`}
-                  >
-                    <tool.icon className="h-6 w-6 md:h-7 md:w-7 text-primary-foreground" />
-                  </div>
-                  <CardTitle className="text-lg md:text-xl">{tool.name}</CardTitle>
-                  <CardDescription className="text-sm line-clamp-2">{tool.description}</CardDescription>
-                </CardHeader>
+                    <CardHeader className="p-4 md:p-6">
+                      <div
+                        className={`h-12 w-12 md:h-14 md:w-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${getToolColor(tool.category)} flex items-center justify-center mb-3 md:mb-4`}
+                      >
+                        <ToolIcon className="h-6 w-6 md:h-7 md:w-7 text-primary-foreground" />
+                      </div>
+                      <CardTitle className="text-lg md:text-xl">{tool.name}</CardTitle>
+                      <CardDescription className="text-sm line-clamp-2">
+                        {tool.short_description || tool.description}
+                      </CardDescription>
+                    </CardHeader>
 
-                <CardContent className="flex-1 p-4 pt-0 md:p-6 md:pt-0">
-                  <div className="flex items-center gap-2 mb-3 md:mb-4">
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                      <span className="ml-1 font-medium text-sm">{tool.rating}</span>
-                    </div>
-                    <span className="text-muted-foreground text-xs md:text-sm">
-                      ({tool.reviews.toLocaleString()} reviews)
-                    </span>
-                  </div>
+                    <CardContent className="flex-1 p-4 pt-0 md:p-6 md:pt-0">
+                      <div className="flex items-center gap-2 mb-3 md:mb-4">
+                        <div className="flex items-center">
+                          <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                          <span className="ml-1 font-medium text-sm">4.8</span>
+                        </div>
+                        <span className="text-muted-foreground text-xs md:text-sm">
+                          (1000+ users)
+                        </span>
+                      </div>
 
-                  <ul className="space-y-1.5 md:space-y-2">
-                    {tool.features.slice(0, 3).map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-xs md:text-sm">
-                        <Check className="h-3 w-3 md:h-4 md:w-4 text-primary shrink-0" />
-                        <span className="truncate">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
+                      <ul className="space-y-1.5 md:space-y-2">
+                        {tool.features.slice(0, 3).map((feature, idx) => (
+                          <li key={idx} className="flex items-center gap-2 text-xs md:text-sm">
+                            <Check className="h-3 w-3 md:h-4 md:w-4 text-primary shrink-0" />
+                            <span className="truncate">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
 
-                <CardFooter className="flex-col items-stretch gap-3 md:gap-4 p-4 pt-0 md:p-6 md:pt-0">
-                  <div className="flex items-baseline gap-2 flex-wrap">
-                    <span className="text-xl md:text-2xl font-bold">PKR {tool.price.toLocaleString()}</span>
-                    <span className="text-xs md:text-sm text-muted-foreground line-through">
-                      PKR {tool.originalPrice.toLocaleString()}
-                    </span>
-                    <span className="text-xs md:text-sm text-primary font-medium">/month</span>
-                  </div>
-                  <Button
-                    className="w-full bg-green-600 hover:bg-green-700 h-11 touch-manipulation"
-                    onClick={() => openWhatsAppModal(tool)}
-                  >
-                    <MessageCircle className="h-4 w-4" />
-                    Subscribe via WhatsApp
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+                    <CardFooter className="flex-col items-stretch gap-3 md:gap-4 p-4 pt-0 md:p-6 md:pt-0">
+                      <div className="flex items-baseline gap-2 flex-wrap">
+                        <span className="text-xl md:text-2xl font-bold">PKR {price.toLocaleString()}</span>
+                        {originalPrice > 0 && (
+                          <span className="text-xs md:text-sm text-muted-foreground line-through">
+                            PKR {originalPrice.toLocaleString()}
+                          </span>
+                        )}
+                        <span className="text-xs md:text-sm text-primary font-medium">/month</span>
+                      </div>
+                      <Button
+                        className="w-full bg-green-600 hover:bg-green-700 h-11 touch-manipulation"
+                        onClick={() => openWhatsAppModal(tool)}
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                        Subscribe via WhatsApp
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
 
         {/* Bundle Offer */}
         <motion.div
@@ -324,7 +305,7 @@ Please guide me through the subscription process. JazakAllah!`;
                     Bundle Deal
                   </Badge>
                   <h3 className="text-xl md:text-2xl lg:text-3xl font-bold">
-                    Get All 6 Tools for PKR 22,000/month
+                    Get All {tools.length} Tools for PKR 22,000/month
                   </h3>
                   <p className="mt-2 text-sm md:text-base text-primary-foreground/90">
                     Save over 50% with our complete research bundle
@@ -336,7 +317,7 @@ Please guide me through the subscription process. JazakAllah!`;
                   onClick={() => {
                     const bundleMessage = encodeURIComponent(`Assalam o Alaikum,
 
-I want to subscribe to the *Complete Research Bundle* (All 6 Tools) for PKR 22,000/month.
+I want to subscribe to the *Complete Research Bundle* (All ${tools.length} Tools) for PKR 22,000/month.
 
 👤 *My Profile:*
 - Name: ${profile?.full_name || "User"}
@@ -379,7 +360,7 @@ Please guide me through the subscription process. JazakAllah!`);
                   <SelectValue placeholder="Choose a plan" />
                 </SelectTrigger>
                 <SelectContent>
-                  {selectedTool?.plans.map((plan) => (
+                  {(selectedTool?.pricing?.plans || ["Standard"]).map((plan) => (
                     <SelectItem key={plan} value={plan}>
                       {plan}
                     </SelectItem>
@@ -409,7 +390,7 @@ Please guide me through the subscription process. JazakAllah!`);
             <div className="p-4 rounded-lg bg-muted">
               <div className="flex justify-between text-sm">
                 <span>Price per month:</span>
-                <span className="font-medium">PKR {selectedTool?.price.toLocaleString()}</span>
+                <span className="font-medium">PKR {(selectedTool?.pricing?.price || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-sm mt-2">
                 <span>Duration:</span>
@@ -417,7 +398,7 @@ Please guide me through the subscription process. JazakAllah!`);
               </div>
               <div className="flex justify-between font-bold mt-2 pt-2 border-t">
                 <span>Total:</span>
-                <span>PKR {((selectedTool?.price || 0) * parseInt(selectedDuration)).toLocaleString()}</span>
+                <span>PKR {((selectedTool?.pricing?.price || 0) * parseInt(selectedDuration)).toLocaleString()}</span>
               </div>
             </div>
 

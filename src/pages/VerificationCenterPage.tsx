@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,19 +11,28 @@ import {
   XCircle,
   ArrowRight,
   Shield,
-  Star,
   Award
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { dummyUserTrustProfiles, VerificationStatus } from "@/data/verification";
-import { TrustScoreCard } from "@/components/badges/TrustScore";
-import { BadgeDisplay } from "@/components/badges/BadgeDisplay";
+import { useMyTrustProfile } from "@/hooks/useMyTrustProfile";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/contexts/AuthContext";
+
+type VerificationStatus = "unverified" | "pending" | "verified" | "rejected" | "suspended";
 
 const VerificationCenterPage = () => {
   const navigate = useNavigate();
-  // Mock current user profile
-  const currentUserProfile = dummyUserTrustProfiles[0];
+  const { profile } = useAuth();
+  const { trustProfile, badges, loading } = useMyTrustProfile();
   
+  const getVerificationStatus = (): VerificationStatus => {
+    if (!trustProfile) return "unverified";
+    if (trustProfile.is_verified_student || trustProfile.is_verified_researcher || trustProfile.is_verified_partner) {
+      return "verified";
+    }
+    return trustProfile.verification_level === "pending" ? "pending" : "unverified";
+  };
+
   const getStatusBadge = (status: VerificationStatus) => {
     const styles = {
       unverified: { variant: 'outline' as const, icon: XCircle, text: 'Not Verified', color: 'text-muted-foreground' },
@@ -69,6 +77,14 @@ const VerificationCenterPage = () => {
     }
   ];
 
+  // Transform badges for BadgeDisplay component
+  const displayBadges = badges.map(b => ({
+    id: b.id,
+    type: b.badge_type as "verification" | "achievement" | "skill" | "trust",
+    name: b.badge_name,
+    earnedAt: new Date(b.earned_at),
+  }));
+
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -84,18 +100,30 @@ const VerificationCenterPage = () => {
         <Card className="mb-8 border-2">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <img 
-                  src={currentUserProfile.userAvatar} 
-                  alt={currentUserProfile.userName}
-                  className="w-16 h-16 rounded-full border-2 border-primary"
-                />
-                <div>
-                  <CardTitle className="text-xl">{currentUserProfile.userName}</CardTitle>
-                  <CardDescription className="capitalize">{currentUserProfile.userRole}</CardDescription>
+              {loading ? (
+                <div className="flex items-center gap-4">
+                  <Skeleton className="h-16 w-16 rounded-full" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-5 w-32" />
+                    <Skeleton className="h-4 w-24" />
+                  </div>
                 </div>
-              </div>
-              {getStatusBadge(currentUserProfile.verificationStatus)}
+              ) : (
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-full border-2 border-primary bg-primary/10 flex items-center justify-center text-2xl font-bold text-primary">
+                    {profile?.first_name?.charAt(0) || "U"}
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl">
+                      {profile?.full_name || profile?.first_name || "User"}
+                    </CardTitle>
+                    <CardDescription className="capitalize">
+                      {profile?.role || "Member"}
+                    </CardDescription>
+                  </div>
+                </div>
+              )}
+              {getStatusBadge(getVerificationStatus())}
             </div>
           </CardHeader>
           <CardContent>
@@ -105,9 +133,37 @@ const VerificationCenterPage = () => {
                   <Award className="h-4 w-4" />
                   Your Badges
                 </h4>
-                <BadgeDisplay badges={currentUserProfile.badges} showLabels maxDisplay={5} />
+                {loading ? (
+                  <div className="flex gap-2">
+                    {[...Array(3)].map((_, i) => (
+                      <Skeleton key={i} className="h-8 w-8 rounded-full" />
+                    ))}
+                  </div>
+                ) : badges.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {badges.map(b => (
+                      <Badge key={b.id} variant="outline" className="gap-1">
+                        <CheckCircle2 className="h-3 w-3" />
+                        {b.badge_name}
+                      </Badge>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">No badges earned yet. Complete verification to earn your first badge!</p>
+                )}
               </div>
-              <TrustScoreCard trustScore={currentUserProfile.trustScore} />
+              <div className="bg-card rounded-xl border p-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold text-lg">Trust Score</h3>
+                  <div className="text-3xl font-bold text-primary">{trustProfile?.trust_score || 0}</div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-primary" />
+                  <span className="font-medium text-primary">
+                    {(trustProfile?.trust_score || 0) >= 75 ? "Excellent" : (trustProfile?.trust_score || 0) >= 50 ? "Good" : "Building"}
+                  </span>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
