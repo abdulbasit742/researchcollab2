@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { MainLayout } from "@/components/layout/MainLayout";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,11 +15,9 @@ import {
   Eye,
   EyeOff,
   Copy,
-  Link as LinkIcon,
   Key,
   User,
   AlertTriangle,
-  Settings
 } from "lucide-react";
 import { 
   dummyOrders, 
@@ -71,7 +68,6 @@ export default function AdminFulfillmentPage() {
 
   const handleStartFulfillment = (order: Order) => {
     setSelectedOrder(order);
-    const plan = getPlan(order.planId);
     
     // Reset form
     setDeliveryEmail("");
@@ -122,7 +118,6 @@ export default function AdminFulfillmentPage() {
 
   const renderOrderRow = (order: Order) => {
     const status = statusConfig[order.status];
-    const plan = getPlan(order.planId);
     
     return (
       <tr key={order.id} className="border-b hover:bg-muted/50">
@@ -173,32 +168,15 @@ export default function AdminFulfillmentPage() {
   };
 
   return (
-    <MainLayout>
-      <div className="gradient-hero py-12 md:py-16">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Badge variant="secondary" className="mb-4">
-              <Settings className="h-3 w-3 mr-1" />
-              Admin Panel
-            </Badge>
-            <h1 className="text-3xl font-bold md:text-4xl">
-              Order{" "}
-              <span className="text-gradient">Fulfillment</span>
-            </h1>
-            <p className="mt-2 text-muted-foreground">
-              Process orders and deliver tool credentials
-            </p>
-          </motion.div>
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold">Order Fulfillment</h1>
+          <p className="text-muted-foreground">Process orders and deliver tool credentials</p>
         </div>
-      </div>
 
-      <div className="container py-8">
         {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card className={pendingOrders.length > 0 ? "border-amber-500/50" : ""}>
             <CardContent className="p-4 flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
@@ -449,26 +427,24 @@ export default function AdminFulfillmentPage() {
               <div className="space-y-2">
                 <Label>Delivery Notes</Label>
                 <Textarea
-                  placeholder="Any notes for the customer..."
-                  rows={2}
+                  placeholder="Any additional instructions..."
                   value={deliveryNotes}
                   onChange={(e) => setDeliveryNotes(e.target.value)}
                 />
               </div>
+
+              <div className="flex gap-2 pt-4">
+                <Button variant="outline" onClick={() => setShowDeliveryModal(false)} className="flex-1">
+                  Cancel
+                </Button>
+                <Button onClick={handleCompleteDelivery} className="flex-1">
+                  Complete Delivery
+                </Button>
+              </div>
             </div>
           )}
-
-          <div className="flex justify-end gap-3">
-            <Button variant="outline" onClick={() => setShowDeliveryModal(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleCompleteDelivery}>
-              <CheckCircle2 className="h-4 w-4 mr-2" />
-              Complete Delivery
-            </Button>
-          </div>
         </DialogContent>
       </Dialog>
-    </MainLayout>
+    </AdminLayout>
   );
 }

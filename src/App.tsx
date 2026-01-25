@@ -31,19 +31,14 @@ import OffersPage from "./pages/OffersPage";
 import OfferDetailPage from "./pages/OfferDetailPage";
 import WorkRoomPage from "./pages/WorkRoomPage";
 import JobsPage from "./pages/JobsPage";
-import AdminFinancePage from "./pages/AdminFinancePage";
 import WalletPage from "./pages/WalletPage";
 import SubscriptionsPage from "./pages/SubscriptionsPage";
-import AdminFulfillmentPage from "./pages/AdminFulfillmentPage";
-import AdminSubscriptionsPage from "./pages/AdminSubscriptionsPage";
 import AffiliateDashboardPage from "./pages/AffiliateDashboardPage";
 import AffiliateAssetsPage from "./pages/AffiliateAssetsPage";
-import AdminAffiliatePage from "./pages/AdminAffiliatePage";
 import VerificationCenterPage from "./pages/VerificationCenterPage";
 import StudentVerificationPage from "./pages/StudentVerificationPage";
 import ResearcherVerificationPage from "./pages/ResearcherVerificationPage";
 import PartnerVerificationPage from "./pages/PartnerVerificationPage";
-import AdminVerificationsPage from "./pages/AdminVerificationsPage";
 import OrganizationsListPage from "./pages/OrganizationsListPage";
 import OrganizationDashboardPage from "./pages/OrganizationDashboardPage";
 import OrganizationMembersPage from "./pages/OrganizationMembersPage";
@@ -51,11 +46,8 @@ import OrganizationToolsPage from "./pages/OrganizationToolsPage";
 import OrganizationProjectsPage from "./pages/OrganizationProjectsPage";
 import OrganizationBillingPage from "./pages/OrganizationBillingPage";
 import AIProjectScopePage from "./pages/AIProjectScopePage";
-import AdminAIPricingPage from "./pages/AdminAIPricingPage";
-import AdminEnterprisePage from "./pages/AdminEnterprisePage";
 import MessagesPage from "./pages/MessagesPage";
 import MessageThreadPage from "./pages/MessageThreadPage";
-import AdminSupportPage from "./pages/AdminSupportPage";
 import HelpCenterPage from "./pages/HelpCenterPage";
 import ApiDocsPage from "./pages/ApiDocsPage";
 import PricingPage from "./pages/PricingPage";
@@ -63,6 +55,21 @@ import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutPage";
 import CareersPage from "./pages/CareersPage";
 import NotFound from "./pages/NotFound";
+// Admin pages
+import AdminPortalPage from "./pages/AdminPortalPage";
+import AdminUsersPage from "./pages/admin/AdminUsersPage";
+import AdminToolsPage from "./pages/admin/AdminToolsPage";
+import AdminProjectsPage from "./pages/admin/AdminProjectsPage";
+import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
+import AdminFinancePage from "./pages/AdminFinancePage";
+import AdminFulfillmentPage from "./pages/AdminFulfillmentPage";
+import AdminSubscriptionsPage from "./pages/AdminSubscriptionsPage";
+import AdminAffiliatePage from "./pages/AdminAffiliatePage";
+import AdminVerificationsPage from "./pages/AdminVerificationsPage";
+import AdminEnterprisePage from "./pages/AdminEnterprisePage";
+import AdminAIPricingPage from "./pages/AdminAIPricingPage";
+import AdminReportsPage from "./pages/AdminReportsPage";
+import AdminSupportPage from "./pages/AdminSupportPage";
 
 const queryClient = new QueryClient();
 
@@ -102,13 +109,6 @@ const App = () => (
             <Route path="/offers" element={<OffersPage />} />
             <Route path="/offers/:id" element={<OfferDetailPage />} />
             <Route path="/workroom/:offerId" element={<WorkRoomPage />} />
-            <Route path="/admin/finance" element={<AdminFinancePage />} />
-            <Route path="/admin/fulfillment" element={<AdminFulfillmentPage />} />
-            <Route path="/admin/subscriptions" element={<AdminSubscriptionsPage />} />
-            <Route path="/admin/affiliates" element={<AdminAffiliatePage />} />
-            <Route path="/admin/verifications" element={<AdminVerificationsPage />} />
-            <Route path="/admin/enterprise" element={<AdminEnterprisePage />} />
-            <Route path="/admin/ai-pricing" element={<AdminAIPricingPage />} />
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/subscriptions" element={<SubscriptionsPage />} />
             <Route path="/affiliate" element={<AffiliateDashboardPage />} />
@@ -132,6 +132,21 @@ const App = () => (
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/careers" element={<CareersPage />} />
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminPortalPage />} />
+            <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/admin/tools" element={<AdminToolsPage />} />
+            <Route path="/admin/projects" element={<AdminProjectsPage />} />
+            <Route path="/admin/settings" element={<AdminSettingsPage />} />
+            <Route path="/admin/finance" element={<AdminFinancePage />} />
+            <Route path="/admin/fulfillment" element={<AdminFulfillmentPage />} />
+            <Route path="/admin/subscriptions" element={<AdminSubscriptionsPage />} />
+            <Route path="/admin/affiliates" element={<AdminAffiliatePage />} />
+            <Route path="/admin/verifications" element={<AdminVerificationsPage />} />
+            <Route path="/admin/enterprise" element={<AdminEnterprisePage />} />
+            <Route path="/admin/ai-pricing" element={<AdminAIPricingPage />} />
+            <Route path="/admin/reports" element={<AdminReportsPage />} />
+            <Route path="/admin/support" element={<AdminSupportPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

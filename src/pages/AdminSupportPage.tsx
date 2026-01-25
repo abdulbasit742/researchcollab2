@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { MainLayout } from "@/components/layout/MainLayout";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Inbox } from "lucide-react";
+import { Inbox } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { ThreadListSkeleton } from "@/components/skeletons/MessagesSkeleton";
@@ -27,26 +25,10 @@ export default function AdminSupportPage() {
   const navigate = useNavigate();
   const [threads, setThreads] = useState<SupportThread[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const checkAdminAndFetch = async () => {
+    const fetchThreads = async () => {
       if (!user) return;
-
-      // Check if user is admin
-      const { data: roleData } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", user.id)
-        .eq("role", "admin")
-        .maybeSingle();
-
-      if (!roleData) {
-        navigate("/messages");
-        return;
-      }
-
-      setIsAdmin(true);
 
       // Fetch all threads where admin is a participant
       const { data: threadsData } = await supabase
@@ -98,8 +80,8 @@ export default function AdminSupportPage() {
       setIsLoading(false);
     };
 
-    checkAdminAndFetch();
-  }, [user, navigate]);
+    fetchThreads();
+  }, [user]);
 
   const formatTime = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -108,28 +90,14 @@ export default function AdminSupportPage() {
     return format(date, "MMM d");
   };
 
-  if (!isAdmin && !isLoading) {
-    return null;
-  }
-
   return (
-    <MainLayout>
-      <div className="gradient-hero py-8 md:py-12">
-        <div className="container px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <Badge variant="secondary" className="mb-2">Admin</Badge>
-            <h1 className="text-2xl md:text-3xl font-bold">Support Inbox</h1>
-            <p className="text-muted-foreground mt-1">
-              Manage user support conversations
-            </p>
-          </motion.div>
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold">Support Inbox</h1>
+          <p className="text-muted-foreground">Manage user support conversations</p>
         </div>
-      </div>
 
-      <div className="container py-6 px-4">
         <Card className="overflow-hidden">
           {isLoading ? (
             <ThreadListSkeleton />
@@ -187,6 +155,6 @@ export default function AdminSupportPage() {
           )}
         </Card>
       </div>
-    </MainLayout>
+    </AdminLayout>
   );
 }

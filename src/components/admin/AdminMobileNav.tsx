@@ -31,6 +31,9 @@ const navItems = [
   { icon: MessageSquare, label: "Support", href: "/admin/support" },
   { icon: Heart, label: "Affiliates", href: "/admin/affiliates" },
   { icon: Building2, label: "Enterprise", href: "/admin/enterprise" },
+  { icon: Wrench, label: "Fulfillment", href: "/admin/fulfillment" },
+  { icon: DollarSign, label: "Subscriptions", href: "/admin/subscriptions" },
+  { icon: Briefcase, label: "AI Pricing", href: "/admin/ai-pricing" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 

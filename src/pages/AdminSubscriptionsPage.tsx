@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { MainLayout } from "@/components/layout/MainLayout";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,14 +8,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Package, 
-  Clock, 
   CheckCircle2, 
   AlertTriangle,
   Search,
   TrendingUp,
   DollarSign,
   MessageSquare,
-  Settings
 } from "lucide-react";
 import { 
   dummySubscriptions, 
@@ -78,32 +75,15 @@ export default function AdminSubscriptionsPage() {
   };
 
   return (
-    <MainLayout>
-      <div className="gradient-hero py-12 md:py-16">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Badge variant="secondary" className="mb-4">
-              <Settings className="h-3 w-3 mr-1" />
-              Admin Panel
-            </Badge>
-            <h1 className="text-3xl font-bold md:text-4xl">
-              Subscription{" "}
-              <span className="text-gradient">Management</span>
-            </h1>
-            <p className="mt-2 text-muted-foreground">
-              Monitor subscriptions, handle tickets, and track renewals
-            </p>
-          </motion.div>
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold">Subscription Management</h1>
+          <p className="text-muted-foreground">Monitor subscriptions, handle tickets, and track renewals</p>
         </div>
-      </div>
 
-      <div className="container py-8">
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <Card>
             <CardContent className="p-4 flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
@@ -390,6 +370,6 @@ export default function AdminSubscriptionsPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </MainLayout>
+    </AdminLayout>
   );
 }
