@@ -28,6 +28,8 @@ export interface ToolSubscription {
   user_id: string;
   tool_id: string;
   plan_type: string;
+  plan_name: string | null;
+  auto_renew: boolean | null;
   status: string;
   started_at: string;
   expires_at: string | null;
