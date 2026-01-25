@@ -10,6 +10,7 @@ export interface AdminStats {
   openDisputes: number;
   activeProjects: number;
   totalTools: number;
+  pendingReports: number;
 }
 
 export function useAdminStats() {
@@ -22,11 +23,41 @@ export function useAdminStats() {
     openDisputes: 0,
     activeProjects: 0,
     totalTools: 0,
+    pendingReports: 0,
   });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchStats();
+
+    // Set up real-time subscriptions for admin-relevant tables
+    const channel = supabase
+      .channel("admin-stats-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "verification_submissions" },
+        () => fetchStats()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "reports" },
+        () => fetchStats()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "tool_orders" },
+        () => fetchStats()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "disputes" },
+        () => fetchStats()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const fetchStats = async () => {
@@ -93,6 +124,12 @@ export function useAdminStats() {
         .select("*", { count: "exact", head: true })
         .eq("is_active", true);
 
+      // Pending reports
+      const { count: reportCount } = await supabase
+        .from("reports")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "pending");
+
       setStats({
         totalUsers: userCount || 0,
         activeSubscriptions: subCount || 0,
@@ -102,6 +139,7 @@ export function useAdminStats() {
         openDisputes: disputeCount || 0,
         activeProjects: projectCount || 0,
         totalTools: toolCount || 0,
+        pendingReports: reportCount || 0,
       });
     } catch (err) {
       console.error("Error fetching admin stats:", err);

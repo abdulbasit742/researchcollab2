@@ -16,9 +16,12 @@ import {
   ArrowUpRight,
   Shield,
   AlertTriangle,
+  Download,
 } from "lucide-react";
 import { useAdminFinance } from "@/hooks/useAdminFinance";
 import { useToast } from "@/hooks/use-toast";
+import { exportToCSV, transactionColumns } from "@/lib/csvExport";
+import { logAdminAction } from "@/hooks/useAdminAuditLog";
 
 export default function AdminFinancePage() {
   const { toast } = useToast();
@@ -44,6 +47,12 @@ export default function AdminFinancePage() {
   const handleResolveDispute = async (disputeId: string, action: "release" | "refund") => {
     const resolution = action === "release" ? "Released to seller" : "Refunded to buyer";
     await resolveDispute(disputeId, resolution, action);
+    logAdminAction("dispute_resolved", "dispute", disputeId, { action, resolution });
+  };
+
+  const handleExportTransactions = () => {
+    exportToCSV(transactions, "transactions-export", transactionColumns);
+    toast({ title: "Transactions exported to CSV" });
   };
 
   if (loading) {
@@ -66,9 +75,15 @@ export default function AdminFinancePage() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold">Financial Overview</h1>
-          <p className="text-muted-foreground">Track platform earnings, escrow, commissions, and disputes</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">Financial Overview</h1>
+            <p className="text-muted-foreground">Track platform earnings, escrow, commissions, and disputes</p>
+          </div>
+          <Button variant="outline" onClick={handleExportTransactions}>
+            <Download className="h-4 w-4 mr-2" />
+            Export CSV
+          </Button>
         </div>
 
         {/* Stats Grid */}

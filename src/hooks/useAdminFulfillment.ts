@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { logAdminAction } from "@/hooks/useAdminAuditLog";
 
 export interface ToolOrder {
   id: string;
@@ -160,6 +161,10 @@ export function useAdminFulfillment() {
       toast({ 
         title: "Delivery completed!",
         description: `${order.tool_name} has been delivered successfully.`
+      });
+      logAdminAction("order_fulfilled", "order", orderId, { 
+        tool_name: order.tool_name,
+        user_id: order.user_id
       });
       await fetchOrders();
       return { success: true };
