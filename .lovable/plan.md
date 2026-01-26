@@ -1,104 +1,118 @@
 
-
-# Loading Screen with Animated Logo and Progress Bar
+# Parallax Scrolling Effects Plan
 
 ## Overview
-Create a premium initial loading screen that displays during the first app load, featuring an animated logo, floating orbs background, and a smooth progress bar. This enhances the perceived performance and reinforces the premium academic branding while the app bundles are loading.
+Add parallax scrolling effects to the homepage hero section, feature cards, and decorative elements to create enhanced depth perception and a more immersive, premium experience. The parallax effects will make elements move at different speeds relative to scroll position, creating a layered 3D-like visual effect.
 
 ---
 
-## Visual Design
-
-The loading screen will feature:
-- **Centered animated logo** - "RC" monogram with pulse/glow effect
-- **Brand name** - "ResearcherCollab Pro" with gradient text animation
-- **Tagline** - Subtle animated text below the logo
-- **Progress bar** - Slim, animated gradient progress indicator
-- **Floating orbs** - Reusing the existing `FloatingOrbs` component for visual consistency
-- **Fade-out transition** - Smooth exit animation when app is ready
+## What is Parallax Scrolling?
+Parallax creates depth by moving background elements slower than foreground elements as the user scrolls. This gives a subtle 3D effect that makes the page feel more dynamic and engaging without being distracting.
 
 ---
 
-## Technical Implementation
+## Implementation Approach
 
-### 1. Create Loading Screen Component
+### Phase 1: Create Parallax Utility Hook
 
-**File:** `src/components/loading/LoadingScreen.tsx`
+**New File:** `src/hooks/useParallax.ts`
 
+A custom hook that tracks scroll position and calculates parallax offsets:
+- Uses `useScroll` and `useTransform` from Framer Motion
+- Provides configurable speed multipliers
+- Optimized with `requestAnimationFrame` for smooth performance
+- Respects `prefers-reduced-motion` for accessibility
+
+---
+
+### Phase 2: Hero Section Enhancements
+
+**File:** `src/components/home/HeroSection.tsx`
+
+| Element | Parallax Effect |
+|---------|-----------------|
+| Background orbs | Move slower than content (0.3x speed) |
+| Floating academic icons | Move at different speeds (0.2x - 0.5x) |
+| Hero text content | Subtle upward drift on scroll (0.1x) |
+| Search bar | Slightly faster parallax (0.15x) |
+| Gradient mesh overlay | Ultra-slow movement (0.1x) for depth |
+
+Visual result: As user scrolls down, background elements appear to "stay behind" while foreground content moves faster, creating layered depth.
+
+---
+
+### Phase 3: Stats Section Parallax
+
+**File:** `src/components/home/StatsSection.tsx`
+
+| Element | Effect |
+|---------|--------|
+| Background dot pattern | Slow parallax (0.2x) |
+| Stat icons | Subtle vertical offset on scroll |
+| Numbers/labels | Standard scroll (1x) for readability |
+
+---
+
+### Phase 4: Features Section Enhancements
+
+**File:** `src/components/home/FeaturesSection.tsx`
+
+| Element | Effect |
+|---------|--------|
+| Feature cards | Staggered parallax - each row at slightly different speed |
+| Card icons | Subtle 3D tilt on scroll |
+| Background gradient | Very slow parallax for depth |
+| Badges | Micro-float effect tied to scroll |
+
+---
+
+### Phase 5: CTA Section
+
+**File:** `src/components/home/CTASection.tsx`
+
+| Element | Effect |
+|---------|--------|
+| Background blur decorations | Slow parallax movement |
+| CTA container | Subtle scale-on-scroll effect |
+| Text content | Clean entrance with scroll trigger |
+
+---
+
+### Phase 6: FloatingOrbs Enhancement
+
+**File:** `src/components/decorations/FloatingOrbs.tsx`
+
+Add scroll-based parallax layer on top of existing animations:
+- Each orb responds to scroll at different rates based on its size
+- Larger orbs move slower (appear farther away)
+- Smaller orbs move faster (appear closer)
+- Creates true depth layering effect
+
+---
+
+## Technical Implementation Details
+
+### useParallax Hook Structure
+```
 Features:
-- Full-screen overlay with gradient background matching hero section
-- Animated "RC" logo using Framer Motion
-- Pulsing glow effect around the logo
-- Progress bar component showing loading status
-- Floating academic icons (graduation cap, book, flask) for brand consistency
-- Smooth fade-out transition when loading completes
-
-```
-Logo Animation Sequence:
-1. Scale in from 0.5 to 1 with bounce
-2. Continuous subtle pulse effect
-3. Gradient glow animating around logo
-4. Text fades in with stagger after logo appears
+- useScrollY: Current scroll position
+- useParallaxValue(range, speed): Transform scroll to offset
+- useParallaxRotate(range): Subtle rotation on scroll
+- Automatic cleanup of event listeners
+- SSR-safe (checks for window)
 ```
 
-### 2. Create Loading Progress Hook
+### Performance Optimizations
+1. Use CSS `transform` and `will-change` for GPU acceleration
+2. Debounce scroll calculations where appropriate
+3. Use `viewport` intersection observer to only animate visible elements
+4. Respect `prefers-reduced-motion` media query
+5. Disable parallax on mobile for battery/performance (optional toggle)
 
-**File:** `src/hooks/useAppLoading.ts`
-
-Responsibilities:
-- Track app initialization state
-- Simulate progress based on time (for visual feedback)
-- Detect when React has fully mounted
-- Provide loading state and progress value to components
-
-### 3. Update App Entry Point
-
-**File:** `src/App.tsx`
-
-Changes:
-- Wrap app with loading screen
-- Show loading screen during initial render
-- Fade out loading screen once app is ready
-- Use Suspense boundaries for lazy-loaded routes (optional enhancement)
-
-### 4. Update index.html (Optional Enhancement)
-
-Add a minimal inline CSS loading state that shows before React loads, ensuring no white flash.
-
----
-
-## Component Structure
-
-```
-LoadingScreen
-├── FloatingOrbs (reused)
-├── LogoContainer
-│   ├── AnimatedLogo ("RC" monogram)
-│   ├── GlowEffect (animated gradient glow)
-│   └── FloatingIcons (academic icons)
-├── BrandText
-│   ├── GradientText ("ResearcherCollab Pro")
-│   └── Tagline (fade-in)
-└── ProgressSection
-    ├── ProgressBar (gradient animated)
-    └── LoadingText ("Loading..." with dots animation)
-```
-
----
-
-## Animation Timeline
-
-| Time | Animation |
-|------|-----------|
-| 0ms | Orbs appear, background gradient visible |
-| 100ms | Logo scales in with bounce effect |
-| 300ms | Glow pulse starts around logo |
-| 400ms | Brand name fades in with gradient |
-| 600ms | Tagline fades in |
-| 800ms | Progress bar starts animating |
-| ~1500ms | Progress reaches 100% |
-| ~1700ms | Entire screen fades out |
-| ~2000ms | App content visible |
+### Accessibility Considerations
+- Add `@media (prefers-reduced-motion: reduce)` fallbacks
+- Keep text content readable (minimal parallax on text)
+- Ensure no motion sickness triggers (subtle movements only)
 
 ---
 
@@ -106,79 +120,48 @@ LoadingScreen
 
 | File | Purpose |
 |------|---------|
-| `src/components/loading/LoadingScreen.tsx` | Main loading screen component |
-| `src/components/loading/AnimatedLogo.tsx` | Animated "RC" logo with glow |
-| `src/components/loading/index.ts` | Barrel export |
-| `src/hooks/useAppLoading.ts` | Loading state management hook |
+| `src/hooks/useParallax.ts` | Parallax scroll utilities hook |
 
 ## Files to Modify
 
 | File | Changes |
 |------|---------|
-| `src/App.tsx` | Wrap app with LoadingScreen, manage loading state |
-| `src/index.css` | Add keyframes for logo pulse and glow animations |
-| `tailwind.config.ts` | Add any new animation utilities |
+| `src/components/home/HeroSection.tsx` | Add parallax to orbs, icons, content layers |
+| `src/components/home/StatsSection.tsx` | Background pattern parallax |
+| `src/components/home/FeaturesSection.tsx` | Card parallax with stagger |
+| `src/components/home/CTASection.tsx` | Background decoration parallax |
+| `src/components/decorations/FloatingOrbs.tsx` | Scroll-responsive movement layer |
 
 ---
 
-## Technical Details
+## Visual Depth Layers (Front to Back)
 
-### AnimatedLogo Component
-- Uses SVG or styled div for "RC" monogram
-- Primary purple gradient fill
-- Framer Motion for entrance animation
-- CSS animation for continuous glow pulse
-- Matches existing brand colors from CSS variables
-
-### Progress Bar
-- Slim design (h-1 or h-1.5)
-- Gradient background matching brand
-- Smooth width transition
-- Shimmer effect overlay for premium feel
-
-### Loading State Management
-- Start with `isLoading: true`
-- Track progress from 0-100
-- Set to complete when:
-  - React has mounted all components
-  - Minimum display time has elapsed (~1.5s for branding visibility)
-- Use `requestAnimationFrame` for smooth progress updates
-
-### Performance Considerations
-- Loading screen CSS is inline for instant display
-- Minimal JavaScript for initial render
-- Lazy load heavy components after initial mount
-- Use CSS animations (not JS) where possible
-
----
-
-## Dark Mode Support
-
-The loading screen will automatically adapt:
-- Light mode: Light gradient background with purple accents
-- Dark mode: Dark gradient background with brighter purple accents
-- Uses existing CSS variables for colors
+```
+Layer 1 (Fastest): UI elements, buttons, text
+Layer 2 (Medium): Cards, icons, badges  
+Layer 3 (Slow): Floating academic icons
+Layer 4 (Slower): Gradient overlays
+Layer 5 (Slowest): Background orbs, patterns
+```
 
 ---
 
 ## Expected Result
 
-Users will see:
-1. **Instant feedback** - No white flash, loading screen appears immediately
-2. **Premium branding** - Animated logo reinforces brand identity
-3. **Progress indication** - Users know the app is loading
-4. **Smooth transition** - Elegant fade to actual content
-5. **Academic aesthetic** - Floating icons and orbs match the platform's studely look
+After implementation:
+1. Hero section has distinct depth layers as you scroll
+2. Floating icons appear to exist in 3D space
+3. Feature cards have subtle movement that adds polish
+4. Background decorations create atmospheric depth
+5. Overall experience feels more premium and immersive
+6. Performance remains smooth (60fps target)
+7. Graceful fallback for reduced-motion preference
 
 ---
 
-## Credit Estimate
+## Mobile Considerations
 
-| Task | Credits |
-|------|---------|
-| Create LoadingScreen + AnimatedLogo | 3-4 |
-| Create useAppLoading hook | 1-2 |
-| Update App.tsx integration | 1-2 |
-| Add CSS animations | 1 |
-| **Total** | **~6-9 credits** |
-
+- Lighter parallax effects on mobile (reduced multipliers)
+- Option to disable completely on low-power devices
+- Touch scroll works smoothly without jank
+- No impact on tap/touch interactions
