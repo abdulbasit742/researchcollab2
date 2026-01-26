@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ScrollRestoration } from "@/components/ScrollRestoration";
 import { RouteProgress } from "@/components/layout/RouteProgress";
+import { LoadingScreen } from "@/components/loading";
+import { useAppLoading } from "@/hooks/useAppLoading";
 import Index from "./pages/Index";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -74,16 +76,15 @@ import AdminAuditLogPage from "./pages/admin/AdminAuditLogPage";
 import AdminAnalyticsPage from "./pages/admin/AdminAnalyticsPage";
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <RouteProgress />
-          <ScrollRestoration />
-          <Routes>
+const AppContent = () => {
+  const { isLoading, progress, isComplete } = useAppLoading();
+
+  return (
+    <>
+      <LoadingScreen isLoading={isLoading} progress={progress} isComplete={isComplete} />
+      <RouteProgress />
+      <ScrollRestoration />
+      <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
@@ -151,8 +152,19 @@ const App = () => (
             <Route path="/admin/audit-log" element={<AdminAuditLogPage />} />
             <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
             <Route path="*" element={<NotFound />} />
-            <Route path="*" element={<NotFound />} />
           </Routes>
+    </>
+  );
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <AuthProvider>
+          <AppContent />
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
