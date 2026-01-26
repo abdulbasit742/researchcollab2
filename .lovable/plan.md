@@ -1,167 +1,215 @@
 
-# Parallax Scrolling Effects Plan
+# Comprehensive Bug Fix & PKR Currency Standardization Plan
 
-## Overview
-Add parallax scrolling effects to the homepage hero section, feature cards, and decorative elements to create enhanced depth perception and a more immersive, premium experience. The parallax effects will make elements move at different speeds relative to scroll position, creating a layered 3D-like visual effect.
-
----
-
-## What is Parallax Scrolling?
-Parallax creates depth by moving background elements slower than foreground elements as the user scrolls. This gives a subtle 3D effect that makes the page feel more dynamic and engaging without being distracting.
+## Executive Summary
+This plan addresses two major categories of issues discovered in the codebase:
+1. **Currency Inconsistency**: Multiple pages display prices in USD ($) instead of PKR, violating the platform's localization strategy for the Pakistan/South Asia market
+2. **Mock Data Usage**: Several pages still use hardcoded mock data instead of real database integration
 
 ---
 
-## Implementation Approach
+## Issues Discovered
 
-### Phase 1: Create Parallax Utility Hook
+### Category 1: Currency Display Issues ($ instead of PKR)
 
-**New File:** `src/hooks/useParallax.ts`
+The following files display amounts with "$" or "USD" that need to be converted to PKR:
 
-A custom hook that tracks scroll position and calculates parallax offsets:
-- Uses `useScroll` and `useTransform` from Framer Motion
-- Provides configurable speed multipliers
-- Optimized with `requestAnimationFrame` for smooth performance
-- Respects `prefers-reduced-motion` for accessibility
+| File | Issue |
+|------|-------|
+| `src/components/wallet/WalletCard.tsx` | All balance displays use "$" |
+| `src/pages/EarnPage.tsx` | Mock project budgets use "$" (e.g., "$500 - $800") |
+| `src/pages/EarnProjectDetailPage.tsx` | Budget and bid amounts use "$" |
+| `src/pages/OffersPage.tsx` | Offer budgets display with "$" |
+| `src/pages/OfferDetailPage.tsx` | Budget and counter-offer amounts use "$" |
+| `src/pages/AffiliateDashboardPage.tsx` | All commission amounts use "$" |
+| `src/components/offers/BidModal.tsx` | Bid amounts use "$" |
+| `src/pages/StudentProfilePage.tsx` | Hourly rate label says "USD" |
+| `src/components/messages/SendOfferModal.tsx` | Has USD as currency option |
+| `src/data/offers.ts` | Mock data budgets are in USD |
+| `src/data/affiliates.ts` | All earnings/commissions in USD |
 
----
+**Pages Already Correctly Using PKR:**
+- `src/pages/ToolsPage.tsx` 
+- `src/pages/WalletPage.tsx` 
+- `src/pages/PricingPage.tsx`
+- `src/pages/FYPServicesPage.tsx`
 
-### Phase 2: Hero Section Enhancements
+### Category 2: Mock Data Still in Use (Should Use Database)
 
-**File:** `src/components/home/HeroSection.tsx`
+| Page | Current State | Required Change |
+|------|---------------|-----------------|
+| `EarnPage.tsx` | Uses hardcoded `projects` array | Should use `useEarningProjects` hook |
+| `EarnProjectDetailPage.tsx` | Uses `mockProjects` and `mockBids` | Should use `useEarningProject` hook |
+| `OffersPage.tsx` | Uses `dummyOffers` from data file | Should use Supabase `offers` table |
+| `OfferDetailPage.tsx` | Uses `dummyOffers` and `dummyBids` | Should use Supabase queries |
+| `AffiliateDashboardPage.tsx` | Uses `dummyAffiliates`, `dummyConversions` | Should use `useMyAffiliate` hook |
 
-| Element | Parallax Effect |
-|---------|-----------------|
-| Background orbs | Move slower than content (0.3x speed) |
-| Floating academic icons | Move at different speeds (0.2x - 0.5x) |
-| Hero text content | Subtle upward drift on scroll (0.1x) |
-| Search bar | Slightly faster parallax (0.15x) |
-| Gradient mesh overlay | Ultra-slow movement (0.1x) for depth |
+### Category 3: Database Default Currency
 
-Visual result: As user scrolls down, background elements appear to "stay behind" while foreground content moves faster, creating layered depth.
-
----
-
-### Phase 3: Stats Section Parallax
-
-**File:** `src/components/home/StatsSection.tsx`
-
-| Element | Effect |
-|---------|--------|
-| Background dot pattern | Slow parallax (0.2x) |
-| Stat icons | Subtle vertical offset on scroll |
-| Numbers/labels | Standard scroll (1x) for readability |
-
----
-
-### Phase 4: Features Section Enhancements
-
-**File:** `src/components/home/FeaturesSection.tsx`
-
-| Element | Effect |
-|---------|--------|
-| Feature cards | Staggered parallax - each row at slightly different speed |
-| Card icons | Subtle 3D tilt on scroll |
-| Background gradient | Very slow parallax for depth |
-| Badges | Micro-float effect tied to scroll |
+| Table | Current Default | Required Change |
+|-------|-----------------|-----------------|
+| `wallets` | `currency = 'USD'` | Change to `'PKR'` |
+| `tool_orders` | `currency = 'USD'` | Change to `'PKR'` |
 
 ---
 
-### Phase 5: CTA Section
+## Implementation Plan
 
-**File:** `src/components/home/CTASection.tsx`
+### Phase 1: Database Migration for Currency Defaults
 
-| Element | Effect |
-|---------|--------|
-| Background blur decorations | Slow parallax movement |
-| CTA container | Subtle scale-on-scroll effect |
-| Text content | Clean entrance with scroll trigger |
+Create a migration to update currency defaults:
 
----
+```sql
+-- Update default currency for wallets table
+ALTER TABLE public.wallets 
+  ALTER COLUMN currency SET DEFAULT 'PKR';
 
-### Phase 6: FloatingOrbs Enhancement
+-- Update default currency for tool_orders table  
+ALTER TABLE public.tool_orders
+  ALTER COLUMN currency SET DEFAULT 'PKR';
 
-**File:** `src/components/decorations/FloatingOrbs.tsx`
-
-Add scroll-based parallax layer on top of existing animations:
-- Each orb responds to scroll at different rates based on its size
-- Larger orbs move slower (appear farther away)
-- Smaller orbs move faster (appear closer)
-- Creates true depth layering effect
-
----
-
-## Technical Implementation Details
-
-### useParallax Hook Structure
-```
-Features:
-- useScrollY: Current scroll position
-- useParallaxValue(range, speed): Transform scroll to offset
-- useParallaxRotate(range): Subtle rotation on scroll
-- Automatic cleanup of event listeners
-- SSR-safe (checks for window)
+-- Update existing records (if any) to PKR
+UPDATE public.wallets SET currency = 'PKR' WHERE currency = 'USD';
+UPDATE public.tool_orders SET currency = 'PKR' WHERE currency = 'USD';
 ```
 
-### Performance Optimizations
-1. Use CSS `transform` and `will-change` for GPU acceleration
-2. Debounce scroll calculations where appropriate
-3. Use `viewport` intersection observer to only animate visible elements
-4. Respect `prefers-reduced-motion` media query
-5. Disable parallax on mobile for battery/performance (optional toggle)
+### Phase 2: Fix Currency Display in Components
 
-### Accessibility Considerations
-- Add `@media (prefers-reduced-motion: reduce)` fallbacks
-- Keep text content readable (minimal parallax on text)
-- Ensure no motion sickness triggers (subtle movements only)
+#### 2.1 WalletCard.tsx
+- Change all `$` prefixes to `PKR `
+- Lines 38, 44, 72, 83, 92, 101, 110
+
+#### 2.2 BidModal.tsx
+- Change label from `($)` to `(PKR)`
+- Change suggested text from `$` to `PKR `
+
+#### 2.3 SendOfferModal.tsx
+- Remove USD option from currency dropdown
+- Keep only PKR as the currency option
+
+#### 2.4 StudentProfilePage.tsx
+- Change "Hourly Rate (USD, optional)" to "Hourly Rate (PKR, optional)"
+
+### Phase 3: Fix Mock Data Pages
+
+#### 3.1 EarnPage.tsx
+- Replace hardcoded `projects` array with `useEarningProjects()` hook
+- Update budget display format from `$X - $Y` to `PKR X - Y`
+- Update `topEarners` mock data to use PKR
+
+#### 3.2 EarnProjectDetailPage.tsx
+- Replace `mockProjects` with `useEarningProject(id)` hook
+- Replace `mockBids` with real bids from the hook
+- Change all `$` displays to `PKR `
+
+#### 3.3 OffersPage.tsx
+- Create `useOffers()` hook to fetch from Supabase `offers` table
+- Replace `dummyOffers` usage with real data
+- Update budget display to PKR
+
+#### 3.4 OfferDetailPage.tsx
+- Use Supabase queries for offer and bids data
+- Update all currency displays to PKR
+- Fix counter-offer modal labels
+
+#### 3.5 AffiliateDashboardPage.tsx
+- Use `useMyAffiliate()` hook for real affiliate data
+- Update all commission displays from `$` to `PKR `
+
+### Phase 4: Update Mock Data Files
+
+#### 4.1 src/data/offers.ts
+- Convert all `budget` values to PKR equivalents (multiply by ~280)
+- Or remove mock data entirely if pages are using real DB
+
+#### 4.2 src/data/affiliates.ts
+- Convert all commission/earnings to PKR
+- Update display logic in pages
 
 ---
 
-## Files to Create
+## Technical Details
 
-| File | Purpose |
-|------|---------|
-| `src/hooks/useParallax.ts` | Parallax scroll utilities hook |
+### Currency Formatting Helper
+Create a utility function for consistent currency display:
 
-## Files to Modify
+```typescript
+// src/lib/currency.ts
+export function formatPKR(amount: number): string {
+  return `PKR ${amount.toLocaleString()}`;
+}
+
+// Usage: formatPKR(5000) returns "PKR 5,000"
+```
+
+### Hook Updates Required
+
+**New Hook: useOffers()**
+```typescript
+// Fetch offers from database instead of mock data
+export function useOffers() {
+  const { user } = useAuth();
+  // Query offers where user is sender or recipient
+  // Return sent and received offers
+}
+```
+
+### Files to Modify
 
 | File | Changes |
 |------|---------|
-| `src/components/home/HeroSection.tsx` | Add parallax to orbs, icons, content layers |
-| `src/components/home/StatsSection.tsx` | Background pattern parallax |
-| `src/components/home/FeaturesSection.tsx` | Card parallax with stagger |
-| `src/components/home/CTASection.tsx` | Background decoration parallax |
-| `src/components/decorations/FloatingOrbs.tsx` | Scroll-responsive movement layer |
+| `src/components/wallet/WalletCard.tsx` | Replace $ with PKR |
+| `src/components/offers/BidModal.tsx` | Replace $ with PKR |
+| `src/components/messages/SendOfferModal.tsx` | Remove USD option |
+| `src/pages/StudentProfilePage.tsx` | Update label text |
+| `src/pages/EarnPage.tsx` | Use real data + PKR |
+| `src/pages/EarnProjectDetailPage.tsx` | Use hooks + PKR |
+| `src/pages/OffersPage.tsx` | Create hook + use real data + PKR |
+| `src/pages/OfferDetailPage.tsx` | Use real data + PKR |
+| `src/pages/AffiliateDashboardPage.tsx` | Use hook + PKR |
+| `src/data/offers.ts` | Optional: Update mock values |
+| `src/data/affiliates.ts` | Optional: Update mock values |
+| `src/lib/currency.ts` | New: Create currency helper |
+
+### New Files to Create
+
+| File | Purpose |
+|------|---------|
+| `src/lib/currency.ts` | Currency formatting utility |
+| `src/hooks/useOffers.ts` | Hook for fetching offers from DB |
 
 ---
 
-## Visual Depth Layers (Front to Back)
+## Testing Checklist
 
-```
-Layer 1 (Fastest): UI elements, buttons, text
-Layer 2 (Medium): Cards, icons, badges  
-Layer 3 (Slow): Floating academic icons
-Layer 4 (Slower): Gradient overlays
-Layer 5 (Slowest): Background orbs, patterns
-```
-
----
-
-## Expected Result
-
-After implementation:
-1. Hero section has distinct depth layers as you scroll
-2. Floating icons appear to exist in 3D space
-3. Feature cards have subtle movement that adds polish
-4. Background decorations create atmospheric depth
-5. Overall experience feels more premium and immersive
-6. Performance remains smooth (60fps target)
-7. Graceful fallback for reduced-motion preference
+After implementation, verify:
+- [ ] WalletPage displays all amounts in PKR
+- [ ] WalletCard component shows PKR everywhere
+- [ ] EarnPage shows projects with PKR budgets
+- [ ] EarnProjectDetailPage shows PKR for budgets and bids
+- [ ] OffersPage displays offer budgets in PKR
+- [ ] OfferDetailPage shows PKR amounts
+- [ ] AffiliateDashboardPage shows PKR commissions
+- [ ] BidModal shows PKR labels
+- [ ] SendOfferModal only offers PKR as currency
+- [ ] StudentProfilePage shows PKR for hourly rate
+- [ ] Database wallets default to PKR
+- [ ] Tool orders default to PKR
 
 ---
 
-## Mobile Considerations
+## Priority Order
 
-- Lighter parallax effects on mobile (reduced multipliers)
-- Option to disable completely on low-power devices
-- Touch scroll works smoothly without jank
-- No impact on tap/touch interactions
+1. **High Priority**: Currency display fixes (user-facing)
+2. **High Priority**: Database migration for defaults
+3. **Medium Priority**: Replace mock data with real DB queries
+4. **Low Priority**: Update mock data files (may become obsolete)
+
+---
+
+## Estimated Changes
+
+- **Database Migration**: 1 migration file
+- **New Files**: 2 (currency utility, offers hook)
+- **Modified Files**: ~11 files
+- **Lines Changed**: ~200-300 lines across all files
