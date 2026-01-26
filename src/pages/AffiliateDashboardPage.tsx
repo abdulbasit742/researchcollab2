@@ -179,7 +179,7 @@ export default function AffiliateDashboardPage() {
                     <Clock className="h-5 w-5 text-yellow-500" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">${affiliate.pendingCommission.toFixed(2)}</p>
+                    <p className="text-2xl font-bold">PKR {(affiliate.pendingCommission * 280).toLocaleString()}</p>
                     <p className="text-xs text-muted-foreground">Pending</p>
                   </div>
                 </div>
@@ -193,7 +193,7 @@ export default function AffiliateDashboardPage() {
                     <Wallet className="h-5 w-5 text-emerald-500" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">${affiliate.availableCommission.toFixed(2)}</p>
+                    <p className="text-2xl font-bold">PKR {(affiliate.availableCommission * 280).toLocaleString()}</p>
                     <p className="text-xs text-muted-foreground">Available</p>
                   </div>
                 </div>
@@ -207,7 +207,7 @@ export default function AffiliateDashboardPage() {
                     <TrendingUp className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">${affiliate.lifetimeEarnings.toFixed(2)}</p>
+                    <p className="text-2xl font-bold">PKR {(affiliate.lifetimeEarnings * 280).toLocaleString()}</p>
                     <p className="text-xs text-muted-foreground">Lifetime</p>
                   </div>
                 </div>
@@ -264,7 +264,7 @@ export default function AffiliateDashboardPage() {
                             </div>
                             <div>
                               <p className="font-medium">{tool.name}</p>
-                              <p className="text-sm text-muted-foreground">${tool.price}/mo • 15% commission</p>
+                              <p className="text-sm text-muted-foreground">PKR {(tool.price * 280).toLocaleString()}/mo • 15% commission</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
@@ -296,7 +296,7 @@ export default function AffiliateDashboardPage() {
                             <div>
                               <p className="font-medium">{bundle.name}</p>
                               <p className="text-sm text-muted-foreground">
-                                ${bundle.price} • {bundle.discount}% off • 20% commission
+                                PKR {(bundle.price * 280).toLocaleString()} • {bundle.discount}% off • 20% commission
                               </p>
                             </div>
                             <Button
@@ -343,9 +343,9 @@ export default function AffiliateDashboardPage() {
                           <TableCell className="capitalize">
                             {conv.transactionType.replace(/_/g, " ")}
                           </TableCell>
-                          <TableCell>${conv.grossAmount.toFixed(2)}</TableCell>
+                          <TableCell>PKR {(conv.grossAmount * 280).toLocaleString()}</TableCell>
                           <TableCell className="font-medium text-green-500">
-                            +${conv.commissionAmount.toFixed(2)}
+                            +PKR {(conv.commissionAmount * 280).toLocaleString()}
                           </TableCell>
                           <TableCell>
                             <Badge className={getStatusColor(conv.status)}>
@@ -369,7 +369,7 @@ export default function AffiliateDashboardPage() {
                   </div>
                   <Button variant="outline" className="gap-2">
                     <Wallet className="h-4 w-4" />
-                    Withdraw (${affiliate.availableCommission.toFixed(2)})
+                    Withdraw (PKR {(affiliate.availableCommission * 280).toLocaleString()})
                   </Button>
                 </CardHeader>
                 <CardContent>
@@ -403,7 +403,7 @@ export default function AffiliateDashboardPage() {
                           <TableCell className={`text-right font-medium ${
                             txn.amount >= 0 ? "text-green-500" : "text-red-500"
                           }`}>
-                            {txn.amount >= 0 ? "+" : ""}${txn.amount.toFixed(2)}
+                            {txn.amount >= 0 ? "+" : ""}PKR {Math.abs(txn.amount * 280).toLocaleString()}
                           </TableCell>
                           <TableCell>
                             <Badge variant={txn.status === "completed" ? "default" : "secondary"}>

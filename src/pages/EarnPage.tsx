@@ -23,12 +23,12 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const projects = [
+const mockProjects = [
   {
     id: "1",
     title: "Data Analysis for Healthcare Research",
     description: "Need an expert in statistical analysis to process and analyze healthcare survey data using SPSS or R.",
-    budget: "$500 - $800",
+    budget: "PKR 140,000 - 224,000",
     deadline: "5 days",
     bids: 8,
     skills: ["R", "SPSS", "Statistics", "Healthcare"],
@@ -39,7 +39,7 @@ const projects = [
     id: "2",
     title: "Machine Learning Model Development",
     description: "Looking for ML expert to build a classification model for customer segmentation project.",
-    budget: "$1,000 - $1,500",
+    budget: "PKR 280,000 - 420,000",
     deadline: "10 days",
     bids: 15,
     skills: ["Python", "Scikit-learn", "TensorFlow", "ML"],
@@ -50,7 +50,7 @@ const projects = [
     id: "3",
     title: "Literature Review - Environmental Science",
     description: "Comprehensive literature review on renewable energy policies in developing countries.",
-    budget: "$300 - $500",
+    budget: "PKR 84,000 - 140,000",
     deadline: "7 days",
     bids: 12,
     skills: ["Academic Writing", "Research", "Environmental"],
@@ -61,7 +61,7 @@ const projects = [
     id: "4",
     title: "Survey Design and Analysis",
     description: "Design a survey questionnaire and analyze results for marketing research project.",
-    budget: "$400 - $600",
+    budget: "PKR 112,000 - 168,000",
     deadline: "4 days",
     bids: 6,
     skills: ["Survey Design", "SPSS", "Marketing Research"],
@@ -76,7 +76,7 @@ const topEarners = [
     name: "Alex Thompson",
     avatar: "https://i.pravatar.cc/150?u=alex",
     specialty: "Data Science",
-    earnings: "$12,450",
+    earnings: "PKR 3,486,000",
     rating: 4.9,
     projects: 45,
   },
@@ -85,7 +85,7 @@ const topEarners = [
     name: "Maria Garcia",
     avatar: "https://i.pravatar.cc/150?u=maria",
     specialty: "Academic Writing",
-    earnings: "$9,800",
+    earnings: "PKR 2,744,000",
     rating: 4.8,
     projects: 62,
   },
@@ -94,7 +94,7 @@ const topEarners = [
     name: "David Kim",
     avatar: "https://i.pravatar.cc/150?u=kim",
     specialty: "Statistical Analysis",
-    earnings: "$8,200",
+    earnings: "PKR 2,296,000",
     rating: 4.9,
     projects: 38,
   },
@@ -103,7 +103,7 @@ const topEarners = [
     name: "Lisa Wang",
     avatar: "https://i.pravatar.cc/150?u=lisa",
     specialty: "Machine Learning",
-    earnings: "$15,600",
+    earnings: "PKR 4,368,000",
     rating: 5.0,
     projects: 29,
   },
@@ -111,7 +111,7 @@ const topEarners = [
 
 const earningStats = [
   { label: "Active Projects", value: "250+", icon: Briefcase },
-  { label: "Total Paid Out", value: "$125K+", icon: DollarSign },
+  { label: "Total Paid Out", value: "PKR 35M+", icon: DollarSign },
   { label: "Active Earners", value: "500+", icon: Users },
   { label: "Avg. Response", value: "< 2hrs", icon: Clock },
 ];
@@ -121,7 +121,7 @@ export default function EarnPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const filteredProjects = projects.filter(
+  const filteredProjects = mockProjects.filter(
     (p) =>
       p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.skills.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()))

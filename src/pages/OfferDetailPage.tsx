@@ -154,7 +154,7 @@ export default function OfferDetailPage() {
                       <p className="text-sm text-muted-foreground">Budget</p>
                       <p className="font-semibold text-lg flex items-center gap-1">
                         <DollarSign className="h-4 w-4 text-primary" />
-                        {offer.budget}{offer.budgetType === "hourly" ? "/hr" : ""}
+                        PKR {offer.budget.toLocaleString()}{offer.budgetType === "hourly" ? "/hr" : ""}
                       </p>
                     </div>
                     <div>
@@ -207,7 +207,7 @@ export default function OfferDetailPage() {
                       </DialogHeader>
                       <div className="space-y-4 py-4">
                         <div className="space-y-2">
-                          <Label>Proposed Budget ($)</Label>
+                          <Label>Proposed Budget (PKR)</Label>
                           <Input
                             type="number"
                             value={counterBudget}
@@ -264,7 +264,7 @@ export default function OfferDetailPage() {
                           <div>
                             <h4 className="font-semibold">{bid.bidderName}</h4>
                             <p className="text-sm text-muted-foreground">
-                              Bid: ${bid.proposedPrice} • {bid.deliveryTime}
+                              Bid: PKR {bid.proposedPrice.toLocaleString()} • {bid.deliveryTime}
                             </p>
                           </div>
                         </div>

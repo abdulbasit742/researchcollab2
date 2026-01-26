@@ -67,7 +67,7 @@ export function BidModal({
           {/* Proposed Price */}
           <div className="space-y-2">
             <Label htmlFor="price">
-              Proposed {budgetType === "fixed" ? "Price" : "Hourly Rate"} ($) *
+              Proposed {budgetType === "fixed" ? "Price" : "Hourly Rate"} (PKR) *
             </Label>
             <Input
               id="price"
@@ -77,7 +77,7 @@ export function BidModal({
               onChange={(e) => setProposedPrice(e.target.value)}
             />
             <p className="text-xs text-muted-foreground">
-              Suggested: ${suggestedBudget} {budgetType === "hourly" ? "/hr" : ""}
+              Suggested: PKR {suggestedBudget.toLocaleString()} {budgetType === "hourly" ? "/hr" : ""}
             </p>
           </div>
 
