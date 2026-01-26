@@ -429,11 +429,11 @@ export default function StudentProfilePage() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="hourlyRate">Hourly Rate (USD, optional)</Label>
+                  <Label htmlFor="hourlyRate">Hourly Rate (PKR, optional)</Label>
                   <Input
                     id="hourlyRate"
                     type="number"
-                    placeholder="25"
+                    placeholder="2500"
                     value={formData.hourlyRate}
                     onChange={(e) => handleInputChange("hourlyRate", e.target.value)}
                   />

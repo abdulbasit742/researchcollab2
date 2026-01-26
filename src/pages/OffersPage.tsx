@@ -103,7 +103,7 @@ export default function OffersPage() {
             <div className="flex items-center gap-2">
               <DollarSign className="h-4 w-4 text-primary" />
               <span className="font-semibold">
-                ${offer.budget}{offer.budgetType === "hourly" ? "/hr" : ""}
+                PKR {offer.budget.toLocaleString()}{offer.budgetType === "hourly" ? "/hr" : ""}
               </span>
             </div>
             <div className="flex items-center gap-2">

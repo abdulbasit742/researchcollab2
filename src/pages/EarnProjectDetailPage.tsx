@@ -313,7 +313,7 @@ export default function EarnProjectDetailPage() {
               <div className="min-w-0">
                 <p className="text-xs text-muted-foreground">Budget</p>
                 <p className="font-semibold text-sm md:text-base truncate">
-                  ${project.budget_min} - ${project.budget_max}
+                  PKR {project.budget_min?.toLocaleString()} - {project.budget_max?.toLocaleString()}
                 </p>
               </div>
             </CardContent>
@@ -435,7 +435,7 @@ export default function EarnProjectDetailPage() {
                       <span className="font-medium">{bid.bidder_name}</span>
                     </div>
                     <div className="flex items-center gap-4 text-sm pl-11 sm:pl-0">
-                      <span className="font-semibold text-primary">${bid.amount}</span>
+                      <span className="font-semibold text-primary">PKR {bid.amount.toLocaleString()}</span>
                       <span className="text-muted-foreground">
                         in {bid.delivery_days} days
                       </span>
@@ -471,7 +471,7 @@ export default function EarnProjectDetailPage() {
               <form onSubmit={handleSubmitBid} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="bid-amount">Bid Amount ($) *</Label>
+                    <Label htmlFor="bid-amount">Bid Amount (PKR) *</Label>
                     <Input
                       id="bid-amount"
                       type="number"

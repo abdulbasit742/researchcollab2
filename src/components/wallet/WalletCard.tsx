@@ -35,13 +35,13 @@ export function WalletCard({ wallet, variant = "full" }: WalletCardProps) {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Available Balance</p>
-                <p className="text-2xl font-bold">${wallet.availableBalance.toLocaleString()}</p>
+                <p className="text-2xl font-bold">PKR {wallet.availableBalance.toLocaleString()}</p>
               </div>
             </div>
             {wallet.escrowBalance > 0 && (
               <Badge variant="secondary" className="gap-1">
                 <Shield className="h-3 w-3" />
-                ${wallet.escrowBalance} in escrow
+                PKR {wallet.escrowBalance.toLocaleString()} in escrow
               </Badge>
             )}
           </div>
@@ -69,7 +69,7 @@ export function WalletCard({ wallet, variant = "full" }: WalletCardProps) {
         </div>
         <p className="text-sm opacity-80">Available Balance</p>
         <p className="text-4xl font-bold mt-1">
-          ${wallet.availableBalance.toLocaleString()}
+          PKR {wallet.availableBalance.toLocaleString()}
         </p>
       </div>
 
@@ -80,7 +80,7 @@ export function WalletCard({ wallet, variant = "full" }: WalletCardProps) {
               <Shield className="h-4 w-4" />
               <span className="text-xs font-medium">In Escrow</span>
             </div>
-            <p className="text-xl font-bold">${wallet.escrowBalance.toLocaleString()}</p>
+            <p className="text-xl font-bold">PKR {wallet.escrowBalance.toLocaleString()}</p>
             <p className="text-xs text-muted-foreground mt-1">Protected funds</p>
           </div>
 
@@ -89,7 +89,7 @@ export function WalletCard({ wallet, variant = "full" }: WalletCardProps) {
               <Clock className="h-4 w-4" />
               <span className="text-xs font-medium">Pending</span>
             </div>
-            <p className="text-xl font-bold">${wallet.pendingBalance.toLocaleString()}</p>
+            <p className="text-xl font-bold">PKR {wallet.pendingBalance.toLocaleString()}</p>
             <p className="text-xs text-muted-foreground mt-1">Awaiting release</p>
           </div>
 
@@ -98,7 +98,7 @@ export function WalletCard({ wallet, variant = "full" }: WalletCardProps) {
               <TrendingUp className="h-4 w-4" />
               <span className="text-xs font-medium">Total Earned</span>
             </div>
-            <p className="text-xl font-bold">${lifetimeEarnings.toLocaleString()}</p>
+            <p className="text-xl font-bold">PKR {lifetimeEarnings.toLocaleString()}</p>
             <p className="text-xs text-muted-foreground mt-1">Lifetime</p>
           </div>
 
@@ -107,7 +107,7 @@ export function WalletCard({ wallet, variant = "full" }: WalletCardProps) {
               <DollarSign className="h-4 w-4" />
               <span className="text-xs font-medium">Total Spent</span>
             </div>
-            <p className="text-xl font-bold">${lifetimeSpend.toLocaleString()}</p>
+            <p className="text-xl font-bold">PKR {lifetimeSpend.toLocaleString()}</p>
             <p className="text-xs text-muted-foreground mt-1">Lifetime</p>
           </div>
         </div>

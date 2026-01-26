@@ -128,7 +128,7 @@ export function SendOfferModal({ open, onOpenChange, onSubmit, isSending }: Send
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Price *</Label>
+              <Label>Price (PKR) *</Label>
               <Input
                 type="number"
                 placeholder="5000"
@@ -144,7 +144,6 @@ export function SendOfferModal({ open, onOpenChange, onSubmit, isSending }: Send
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="PKR">PKR</SelectItem>
-                  <SelectItem value="USD">USD</SelectItem>
                 </SelectContent>
               </Select>
             </div>
