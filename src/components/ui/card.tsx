@@ -13,6 +13,8 @@ const cardVariants = cva(
         glass: "bg-card/60 backdrop-blur-xl border-border/50 shadow-lg",
         gradient: "gradient-card border-0 shadow-md",
         outline: "border-2 border-border/60 shadow-none hover:border-primary/30 transition-colors",
+        premium: "glass-premium gradient-border hover:shadow-xl hover:-translate-y-1 transition-all duration-300",
+        glow: "card-glow shadow-md hover:shadow-xl transition-all duration-300",
       },
     },
     defaultVariants: {

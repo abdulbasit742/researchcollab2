@@ -9,7 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, ArrowRight, Sparkles, Globe, Users, Building } from "lucide-react";
+import { Search, ArrowRight, Sparkles, GraduationCap, BookOpen, FlaskConical } from "lucide-react";
+import { FloatingOrbs } from "@/components/decorations/FloatingOrbs";
 
 const disciplines = [
   "Computer Science",
@@ -37,15 +38,40 @@ const locations = [
   "Netherlands",
 ];
 
+const floatingIcons = [
+  { Icon: GraduationCap, x: "15%", y: "25%", delay: 0 },
+  { Icon: BookOpen, x: "85%", y: "20%", delay: 1 },
+  { Icon: FlaskConical, x: "10%", y: "70%", delay: 2 },
+  { Icon: Sparkles, x: "90%", y: "65%", delay: 1.5 },
+];
+
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden gradient-hero">
-      {/* Background decorations */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute top-20 -left-20 h-60 w-60 rounded-full bg-primary/5 blur-2xl" />
-        <div className="absolute bottom-0 right-1/4 h-40 w-40 rounded-full bg-accent blur-2xl" />
-      </div>
+    <section className="relative overflow-hidden gradient-hero min-h-[600px] md:min-h-[700px]">
+      {/* Animated background orbs */}
+      <FloatingOrbs variant="hero" />
+
+      {/* Floating academic icons */}
+      {floatingIcons.map(({ Icon, x, y, delay }, index) => (
+        <motion.div
+          key={index}
+          className="absolute hidden md:flex items-center justify-center w-12 h-12 rounded-xl bg-card/50 backdrop-blur-sm border border-border/30 shadow-lg"
+          style={{ left: x, top: y }}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: delay + 0.5, duration: 0.5 }}
+        >
+          <motion.div
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 3, delay, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Icon className="h-6 w-6 text-primary" />
+          </motion.div>
+        </motion.div>
+      ))}
+
+      {/* Gradient mesh overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/5 to-background/20 pointer-events-none" />
 
       <div className="container relative py-12 px-4 md:py-32 md:px-6">
         <div className="mx-auto max-w-4xl text-center">
@@ -54,8 +80,8 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium text-primary">
-              <Sparkles className="h-3 w-3 md:h-4 md:w-4" />
+            <div className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium text-primary border border-primary/20 backdrop-blur-sm">
+              <Sparkles className="h-3 w-3 md:h-4 md:w-4 animate-pulse" />
               Trusted by 1000+ researchers worldwide
             </div>
           </motion.div>
@@ -67,11 +93,11 @@ export function HeroSection() {
             className="text-2xl font-extrabold tracking-tight xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight"
           >
             Looking for{" "}
-            <span className="text-gradient">Research, Tools,</span>
+            <span className="text-gradient animate-gradient-text bg-[length:200%_auto]">Research, Tools,</span>
             <br className="hidden xs:block" />
             <span className="xs:hidden"> </span>
             or{" "}
-            <span className="text-gradient">Real Earning</span> Opportunities?
+            <span className="text-gradient animate-gradient-text bg-[length:200%_auto]">Real Earning</span> Opportunities?
           </motion.h1>
 
           <motion.p
@@ -91,7 +117,7 @@ export function HeroSection() {
             className="mt-6 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4"
           >
             <Link to="/auth?tab=signup" className="w-full sm:w-auto">
-              <Button variant="hero" size="lg" className="w-full sm:w-auto h-12 md:h-14 text-sm md:text-base touch-manipulation">
+              <Button variant="premium" size="lg" className="w-full sm:w-auto h-12 md:h-14 text-sm md:text-base touch-manipulation">
                 Get Started Free
                 <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
               </Button>
@@ -103,17 +129,17 @@ export function HeroSection() {
             </Link>
           </motion.div>
 
-          {/* Search Bar */}
+          {/* Search Bar with glow effect */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
             className="mt-8 md:mt-16 mx-auto max-w-3xl px-2"
           >
-            <div className="rounded-xl md:rounded-2xl bg-card p-3 md:p-4 shadow-xl border">
+            <div className="rounded-xl md:rounded-2xl bg-card/80 backdrop-blur-xl p-3 md:p-4 shadow-xl border border-border/50 glow-focus transition-all duration-300 hover:shadow-2xl hover:border-primary/20">
               <div className="flex flex-col gap-3 md:flex-row md:gap-4">
                 <Select>
-                  <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation">
+                  <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation bg-background/50">
                     <SelectValue placeholder="Discipline" />
                   </SelectTrigger>
                   <SelectContent>
@@ -126,7 +152,7 @@ export function HeroSection() {
                 </Select>
 
                 <Select>
-                  <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation">
+                  <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation bg-background/50">
                     <SelectValue placeholder="Location" />
                   </SelectTrigger>
                   <SelectContent>
@@ -141,7 +167,7 @@ export function HeroSection() {
                 <div className="flex-1 flex flex-col xs:flex-row gap-2">
                   <Input
                     placeholder="Keywords (e.g., machine learning)"
-                    className="flex-1 h-11"
+                    className="flex-1 h-11 bg-background/50"
                   />
                   <Button size="default" className="h-11 px-6 w-full xs:w-auto touch-manipulation">
                     <Search className="h-4 w-4 mr-2" />

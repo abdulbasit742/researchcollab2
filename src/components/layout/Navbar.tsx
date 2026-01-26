@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -127,8 +127,17 @@ function MobileMessagesNavItem({ onClick }: { onClick?: () => void }) {
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const { user, signOut } = useAuth();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleSignOut = async () => {
     await signOut();
@@ -136,7 +145,13 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl safe-area-top">
+    <header 
+      className={`sticky top-0 z-50 w-full border-b backdrop-blur-xl safe-area-top transition-all duration-300 ${
+        isScrolled 
+          ? "bg-background/95 border-border shadow-md" 
+          : "bg-background/80 border-transparent"
+      }`}
+    >
       <div className="container flex h-14 md:h-16 items-center justify-between px-3 md:px-6">
         <Link to="/" className="flex items-center gap-1.5 md:gap-2">
           <div className="flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-lg gradient-primary">
