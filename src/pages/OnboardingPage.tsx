@@ -17,6 +17,8 @@ import { GraduationCap, User, MapPin, Building, BookOpen, Sparkles, ArrowRight, 
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { CelebrationOverlay } from "@/components/celebrations";
+import { useCelebration, CELEBRATION_PRESETS } from "@/hooks/useCelebration";
 
 const educationLevels = [
   { value: "FSC", label: "FSC / Intermediate" },
@@ -56,6 +58,7 @@ export default function OnboardingPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, refreshProfile } = useAuth();
+  const { isActive: isCelebrating, config: celebrationConfig, celebrate } = useCelebration();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -146,19 +149,24 @@ export default function OnboardingPage() {
 
       await refreshProfile();
 
+      // Trigger celebration
+      celebrate(CELEBRATION_PRESETS.onboardingComplete);
+
       toast({
         title: "Profile Complete!",
         description: "Welcome to ResearcherCollab!",
       });
 
-      // Redirect based on role
-      if (formData.role === "admin") {
-        navigate("/dashboard/admin");
-      } else if (formData.role === "researcher") {
-        navigate("/dashboard/researcher");
-      } else {
-        navigate("/dashboard/student");
-      }
+      // Redirect after celebration animation
+      setTimeout(() => {
+        if (formData.role === "admin") {
+          navigate("/dashboard/admin");
+        } else if (formData.role === "researcher") {
+          navigate("/dashboard/researcher");
+        } else {
+          navigate("/dashboard/student");
+        }
+      }, 2500);
     } catch (error: any) {
       console.error("Onboarding error:", error);
       toast({
@@ -173,6 +181,14 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen gradient-hero flex items-center justify-center p-4">
+      {/* Celebration overlay */}
+      <CelebrationOverlay 
+        isActive={isCelebrating} 
+        title={celebrationConfig.title}
+        subtitle={celebrationConfig.subtitle}
+        icon={celebrationConfig.icon}
+      />
+
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />

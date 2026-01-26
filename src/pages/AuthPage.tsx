@@ -17,6 +17,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { GraduationCap, Mail, Lock, ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth, getRoleBasedRedirect } from "@/contexts/AuthContext";
+import { CelebrationOverlay } from "@/components/celebrations";
+import { useCelebration, CELEBRATION_PRESETS } from "@/hooks/useCelebration";
 
 const roles = [
   { value: "student", label: "Student", description: "Earn by helping with projects" },
@@ -33,6 +35,7 @@ export default function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { user, userRole, profile, signIn, signUp, signInWithGoogle, isLoading: authLoading } = useAuth();
+  const { isActive: isCelebrating, config: celebrationConfig, celebrate } = useCelebration();
 
   // Form state
   const [email, setEmail] = useState("");
@@ -109,6 +112,8 @@ export default function AuthPage() {
         variant: "destructive",
       });
     } else {
+      // Trigger celebration for successful signup
+      celebrate(CELEBRATION_PRESETS.signup);
       toast({
         title: "Account created!",
         description: "Welcome to ResearcherCollab!",
@@ -126,6 +131,14 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen gradient-hero flex items-center justify-center p-4">
+      {/* Celebration overlay */}
+      <CelebrationOverlay 
+        isActive={isCelebrating} 
+        title={celebrationConfig.title}
+        subtitle={celebrationConfig.subtitle}
+        icon={celebrationConfig.icon}
+      />
+
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
