@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Wrench, Users, DollarSign, FileText, Sparkles, Shield } from "lucide-react";
+import { useParallax } from "@/hooks/useParallax";
 
 const features = [
   {
@@ -82,10 +83,18 @@ const itemVariants = {
 };
 
 export function FeaturesSection() {
+  const { scrollY, isDisabled } = useParallax({ speed: 0.1 });
+  
+  // Background gradient parallax
+  const bgY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.03));
+
   return (
     <section className="py-12 md:py-20 lg:py-28 relative overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent pointer-events-none" />
+      {/* Subtle background gradient with parallax */}
+      <motion.div 
+        className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent pointer-events-none"
+        style={{ y: bgY }}
+      />
 
       <div className="container px-4 md:px-6 relative">
         <div className="text-center mb-8 md:mb-16">
@@ -128,43 +137,56 @@ export function FeaturesSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
         >
-          {features.map((feature) => (
-            <motion.div
-              key={feature.title}
-              variants={itemVariants}
-            >
-              <Card variant="premium" className="h-full flex flex-col group">
-                <CardHeader className="p-4 md:p-6">
-                  <div className="flex items-start justify-between gap-2">
-                    <motion.div
-                      className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-lg md:rounded-xl bg-gradient-to-br ${feature.color} shadow-lg`}
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    >
-                      <feature.icon className="h-5 w-5 md:h-6 md:w-6 text-white" />
-                    </motion.div>
-                    <Badge variant={feature.badgeVariant} className="text-xs shrink-0">
-                      {feature.badge}
-                    </Badge>
-                  </div>
-                  <CardTitle className="mt-3 md:mt-4 text-base md:text-lg group-hover:text-primary transition-colors">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex-1 p-4 pt-0 md:p-6 md:pt-0">
-                  <p className="text-muted-foreground text-sm line-clamp-3">{feature.description}</p>
-                </CardContent>
-                <CardFooter className="p-4 pt-0 md:p-6 md:pt-0">
-                  <Link to={feature.href} className="w-full">
-                    <Button variant="ghost" className="w-full justify-between group/btn h-10 touch-manipulation text-sm hover:bg-primary/5">
-                      Learn More
-                      <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
+          {features.map((feature, index) => {
+            // Staggered row parallax - cards in different rows move at slightly different speeds
+            const row = Math.floor(index / 3);
+            const cardY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * (0.02 + row * 0.01)));
+            
+            return (
+              <motion.div
+                key={feature.title}
+                variants={itemVariants}
+                style={{ y: cardY }}
+                className="will-change-transform"
+              >
+                <Card variant="premium" className="h-full flex flex-col group">
+                  <CardHeader className="p-4 md:p-6">
+                    <div className="flex items-start justify-between gap-2">
+                      <motion.div
+                        className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-lg md:rounded-xl bg-gradient-to-br ${feature.color} shadow-lg`}
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                      >
+                        <feature.icon className="h-5 w-5 md:h-6 md:w-6 text-white" />
+                      </motion.div>
+                      <motion.div
+                        whileHover={{ y: -2 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <Badge variant={feature.badgeVariant} className="text-xs shrink-0">
+                          {feature.badge}
+                        </Badge>
+                      </motion.div>
+                    </div>
+                    <CardTitle className="mt-3 md:mt-4 text-base md:text-lg group-hover:text-primary transition-colors">
+                      {feature.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 p-4 pt-0 md:p-6 md:pt-0">
+                    <p className="text-muted-foreground text-sm line-clamp-3">{feature.description}</p>
+                  </CardContent>
+                  <CardFooter className="p-4 pt-0 md:p-6 md:pt-0">
+                    <Link to={feature.href} className="w-full">
+                      <Button variant="ghost" className="w-full justify-between group/btn h-10 touch-manipulation text-sm hover:bg-primary/5">
+                        Learn More
+                        <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>

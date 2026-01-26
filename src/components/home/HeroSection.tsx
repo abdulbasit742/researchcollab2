@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Search, ArrowRight, Sparkles, GraduationCap, BookOpen, FlaskConical } from "lucide-react";
 import { FloatingOrbs } from "@/components/decorations/FloatingOrbs";
+import { useParallax } from "@/hooks/useParallax";
 
 const disciplines = [
   "Computer Science",
@@ -39,42 +40,63 @@ const locations = [
 ];
 
 const floatingIcons = [
-  { Icon: GraduationCap, x: "15%", y: "25%", delay: 0 },
-  { Icon: BookOpen, x: "85%", y: "20%", delay: 1 },
-  { Icon: FlaskConical, x: "10%", y: "70%", delay: 2 },
-  { Icon: Sparkles, x: "90%", y: "65%", delay: 1.5 },
+  { Icon: GraduationCap, x: "15%", y: "25%", delay: 0, speed: 0.15 },
+  { Icon: BookOpen, x: "85%", y: "20%", delay: 1, speed: 0.25 },
+  { Icon: FlaskConical, x: "10%", y: "70%", delay: 2, speed: 0.2 },
+  { Icon: Sparkles, x: "90%", y: "65%", delay: 1.5, speed: 0.3 },
 ];
 
 export function HeroSection() {
+  // Parallax for different layers
+  const { scrollY, isDisabled } = useParallax({ speed: 0.3 });
+  
+  // Create transforms for each layer
+  const orbsY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.15));
+  const gradientY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.08));
+  const contentY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.1));
+  const searchY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.12));
+
   return (
     <section className="relative overflow-hidden gradient-hero min-h-[600px] md:min-h-[700px]">
-      {/* Animated background orbs */}
-      <FloatingOrbs variant="hero" />
+      {/* Animated background orbs with parallax */}
+      <motion.div style={{ y: orbsY }} className="absolute inset-0">
+        <FloatingOrbs variant="hero" />
+      </motion.div>
 
-      {/* Floating academic icons */}
-      {floatingIcons.map(({ Icon, x, y, delay }, index) => (
-        <motion.div
-          key={index}
-          className="absolute hidden md:flex items-center justify-center w-12 h-12 rounded-xl bg-card/50 backdrop-blur-sm border border-border/30 shadow-lg"
-          style={{ left: x, top: y }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: delay + 0.5, duration: 0.5 }}
-        >
+      {/* Floating academic icons with individual parallax */}
+      {floatingIcons.map(({ Icon, x, y, delay, speed }, index) => {
+        const iconY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * speed));
+        
+        return (
           <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 3, delay, repeat: Infinity, ease: "easeInOut" }}
+            key={index}
+            className="absolute hidden md:flex items-center justify-center w-12 h-12 rounded-xl bg-card/50 backdrop-blur-sm border border-border/30 shadow-lg will-change-transform"
+            style={{ left: x, top: y, y: iconY }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: delay + 0.5, duration: 0.5 }}
           >
-            <Icon className="h-6 w-6 text-primary" />
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 3, delay, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <Icon className="h-6 w-6 text-primary" />
+            </motion.div>
           </motion.div>
-        </motion.div>
-      ))}
+        );
+      })}
 
-      {/* Gradient mesh overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/5 to-background/20 pointer-events-none" />
+      {/* Gradient mesh overlay with parallax */}
+      <motion.div 
+        className="absolute inset-0 bg-gradient-to-b from-transparent via-background/5 to-background/20 pointer-events-none"
+        style={{ y: gradientY }}
+      />
 
       <div className="container relative py-12 px-4 md:py-32 md:px-6">
-        <div className="mx-auto max-w-4xl text-center">
+        <motion.div 
+          className="mx-auto max-w-4xl text-center"
+          style={{ y: contentY }}
+        >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -129,11 +151,12 @@ export function HeroSection() {
             </Link>
           </motion.div>
 
-          {/* Search Bar with glow effect */}
+          {/* Search Bar with glow effect and parallax */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
+            style={{ y: searchY }}
             className="mt-8 md:mt-16 mx-auto max-w-3xl px-2"
           >
             <div className="rounded-xl md:rounded-2xl bg-card/80 backdrop-blur-xl p-3 md:p-4 shadow-xl border border-border/50 glow-focus transition-all duration-300 hover:shadow-2xl hover:border-primary/20">
@@ -177,7 +200,7 @@ export function HeroSection() {
               </div>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
