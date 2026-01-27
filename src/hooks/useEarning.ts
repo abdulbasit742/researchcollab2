@@ -382,3 +382,173 @@ export function useCreateProject() {
     creating,
   };
 }
+
+export function useMyProjects() {
+  const { user } = useAuth();
+  const [projects, setProjects] = useState<EarningProject[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user) {
+      fetchMyProjects();
+    } else {
+      setProjects([]);
+      setLoading(false);
+    }
+  }, [user]);
+
+  const fetchMyProjects = async () => {
+    if (!user) return;
+
+    setLoading(true);
+    try {
+      const { data: projectsData, error } = await supabase
+        .from("earning_projects")
+        .select("*")
+        .eq("owner_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+
+      // Fetch bid counts for each project
+      const projectsWithCounts = await Promise.all(
+        (projectsData || []).map(async (project) => {
+          const { count } = await supabase
+            .from("earning_bids")
+            .select("*", { count: "exact", head: true })
+            .eq("project_id", project.id);
+
+          return {
+            ...project,
+            bid_count: count || 0,
+            owner_name: "You",
+            owner_avatar: undefined,
+          };
+        })
+      );
+
+      setProjects(projectsWithCounts as EarningProject[]);
+    } catch (err) {
+      console.error("Error fetching my projects:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    projects,
+    loading,
+    refetch: fetchMyProjects,
+  };
+}
+
+export function useUpdateProject() {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [updating, setUpdating] = useState(false);
+
+  const updateProject = async (
+    projectId: string,
+    data: {
+      title?: string;
+      description?: string;
+      budget_min?: number;
+      budget_max?: number;
+      deadline_days?: number;
+      tags?: string[];
+      location?: string;
+    }
+  ) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to update your project.",
+        variant: "destructive",
+      });
+      return { success: false, error: "Not authenticated" };
+    }
+
+    setUpdating(true);
+    try {
+      const { error } = await supabase
+        .from("earning_projects")
+        .update(data)
+        .eq("id", projectId)
+        .eq("owner_id", user.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Project Updated!",
+        description: "Your changes have been saved.",
+      });
+
+      return { success: true };
+    } catch (err: any) {
+      console.error("Error updating project:", err);
+      toast({
+        title: "Update Failed",
+        description: err.message,
+        variant: "destructive",
+      });
+      return { success: false, error: err.message };
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  return {
+    updateProject,
+    updating,
+  };
+}
+
+export function useUpdateProjectStatus() {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [updating, setUpdating] = useState(false);
+
+  const updateStatus = async (projectId: string, status: string) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to update project status.",
+        variant: "destructive",
+      });
+      return { success: false, error: "Not authenticated" };
+    }
+
+    setUpdating(true);
+    try {
+      const { error } = await supabase
+        .from("earning_projects")
+        .update({ status })
+        .eq("id", projectId)
+        .eq("owner_id", user.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Status Updated",
+        description: `Project is now ${status}.`,
+      });
+
+      return { success: true };
+    } catch (err: any) {
+      console.error("Error updating status:", err);
+      toast({
+        title: "Update Failed",
+        description: err.message,
+        variant: "destructive",
+      });
+      return { success: false, error: err.message };
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  return {
+    updateStatus,
+    updating,
+  };
+}
