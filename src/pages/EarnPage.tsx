@@ -21,14 +21,17 @@ import {
   FileText,
   RefreshCw,
   PlusCircle,
+  FolderOpen,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useEarningProjects, useMyBids } from "@/hooks/useEarning";
+import { useEarningProjects, useMyBids, useMyProjects, EarningProject } from "@/hooks/useEarning";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatPKRRange, formatPKR } from "@/lib/currency";
 import { ProjectListSkeleton } from "@/components/skeletons/ProjectListSkeleton";
 import { formatDistanceToNow } from "date-fns";
 import { PostProjectModal } from "@/components/earn/PostProjectModal";
+import { EditProjectModal } from "@/components/earn/EditProjectModal";
+import { MyProjectCard } from "@/components/earn/MyProjectCard";
 
 const topEarners = [
   {
@@ -79,6 +82,8 @@ const earningStats = [
 export default function EarnPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [postModalOpen, setPostModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [projectToEdit, setProjectToEdit] = useState<EarningProject | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
@@ -86,6 +91,12 @@ export default function EarnPage() {
   // Real database hooks
   const { projects, loading: projectsLoading, error: projectsError, refetch: refetchProjects } = useEarningProjects();
   const { bids: myBids, loading: bidsLoading, refetch: refetchBids } = useMyBids();
+  const { projects: myProjects, loading: myProjectsLoading, refetch: refetchMyProjects } = useMyProjects();
+
+  const handleEditProject = (project: EarningProject) => {
+    setProjectToEdit(project);
+    setEditModalOpen(true);
+  };
 
   const filteredProjects = projects.filter(
     (p) =>
@@ -164,6 +175,9 @@ export default function EarnPage() {
                 </TabsTrigger>
                 <TabsTrigger value="my-bids" className="whitespace-nowrap">
                   My Bids
+                </TabsTrigger>
+                <TabsTrigger value="my-projects" className="whitespace-nowrap">
+                  My Projects
                 </TabsTrigger>
               </TabsList>
               <ScrollBar orientation="horizontal" className="invisible" />
@@ -441,6 +455,52 @@ export default function EarnPage() {
               </div>
             )}
           </TabsContent>
+
+          {/* My Projects Tab */}
+          <TabsContent value="my-projects">
+            {!user ? (
+              <Card>
+                <CardContent className="p-8 md:p-12 text-center">
+                  <FolderOpen className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-xl font-semibold mb-2">Sign In to View Your Projects</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Create an account to post projects and manage them here.
+                  </p>
+                  <Link to="/auth?tab=signup">
+                    <Button>Create Account to Start</Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ) : myProjectsLoading ? (
+              <ProjectListSkeleton count={3} />
+            ) : myProjects.length === 0 ? (
+              <Card>
+                <CardContent className="p-8 md:p-12 text-center">
+                  <FolderOpen className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-xl font-semibold mb-2">No Projects Posted Yet</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Post your first project to find talented freelancers.
+                  </p>
+                  <Button onClick={() => setPostModalOpen(true)}>
+                    <PlusCircle className="h-4 w-4 mr-2" />
+                    Post a Project
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                {myProjects.map((project, index) => (
+                  <MyProjectCard
+                    key={project.id}
+                    project={project}
+                    index={index}
+                    onEdit={handleEditProject}
+                    onStatusChange={refetchMyProjects}
+                  />
+                ))}
+              </div>
+            )}
+          </TabsContent>
         </Tabs>
       </div>
 
@@ -448,7 +508,18 @@ export default function EarnPage() {
       <PostProjectModal 
         open={postModalOpen} 
         onOpenChange={setPostModalOpen}
-        onSuccess={refetchProjects}
+        onSuccess={() => {
+          refetchProjects();
+          refetchMyProjects();
+        }}
+      />
+
+      {/* Edit Project Modal */}
+      <EditProjectModal
+        open={editModalOpen}
+        onOpenChange={setEditModalOpen}
+        project={projectToEdit}
+        onSuccess={refetchMyProjects}
       />
     </MainLayout>
   );
