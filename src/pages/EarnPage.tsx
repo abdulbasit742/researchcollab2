@@ -16,11 +16,11 @@ import {
   Clock,
   ArrowRight,
   Briefcase,
-  TrendingUp,
   CheckCircle2,
   Users,
   FileText,
   RefreshCw,
+  PlusCircle,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useEarningProjects, useMyBids } from "@/hooks/useEarning";
@@ -28,6 +28,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { formatPKRRange, formatPKR } from "@/lib/currency";
 import { ProjectListSkeleton } from "@/components/skeletons/ProjectListSkeleton";
 import { formatDistanceToNow } from "date-fns";
+import { PostProjectModal } from "@/components/earn/PostProjectModal";
 
 const topEarners = [
   {
@@ -77,6 +78,7 @@ const earningStats = [
 
 export default function EarnPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [postModalOpen, setPostModalOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
@@ -177,12 +179,19 @@ export default function EarnPage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <Link to="/auth?tab=signup" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto">
-                  Create Profile
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
+              <Button 
+                onClick={() => {
+                  if (user) {
+                    setPostModalOpen(true);
+                  } else {
+                    navigate("/auth?tab=signup");
+                  }
+                }}
+                className="w-full sm:w-auto"
+              >
+                <PlusCircle className="h-4 w-4 mr-2" />
+                Post Project
+              </Button>
             </div>
           </div>
 
@@ -434,6 +443,13 @@ export default function EarnPage() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Post Project Modal */}
+      <PostProjectModal 
+        open={postModalOpen} 
+        onOpenChange={setPostModalOpen}
+        onSuccess={refetchProjects}
+      />
     </MainLayout>
   );
 }
