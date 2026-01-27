@@ -28,9 +28,8 @@ export interface EarningBid {
   amount: number;
   delivery_days: number;
   message: string | null;
-  status: string | null;
   created_at: string;
-  // Joined data
+  // Joined/computed data
   project_title?: string;
   bidder_name?: string;
   bidder_avatar?: string;

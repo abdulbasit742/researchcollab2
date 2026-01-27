@@ -438,8 +438,8 @@ export default function EarnPage() {
                                 in {bid.delivery_days} days
                               </p>
                             </div>
-                            <Badge variant={bid.status === "accepted" ? "success" : "secondary"} className="capitalize">
-                              {bid.status || "Pending"}
+                            <Badge variant="secondary">
+                              Pending
                             </Badge>
                           </div>
                         </div>

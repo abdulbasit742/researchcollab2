@@ -23,10 +23,7 @@ export function ToolRecommendations({
     ? getRecommendedTools(researchLevel, skills)
     : getDefaultRecommendations();
 
-  const trackToolEvent = (toolId: string, toolName: string, eventType: "viewed" | "clicked_buy") => {
-    // In real app, this would call API to store event
-    console.log("Tool event:", { toolId, toolName, eventType, timestamp: new Date().toISOString() });
-    
+  const trackToolEvent = (_toolId: string, toolName: string, eventType: "viewed" | "clicked_buy") => {
     if (eventType === "clicked_buy") {
       toast({
         title: "Redirecting to Purchase",
