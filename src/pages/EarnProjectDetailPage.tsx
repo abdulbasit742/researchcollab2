@@ -16,110 +16,17 @@ import {
   MapPin,
   Users,
   ArrowLeft,
-  Calendar,
   Send,
   User,
   MessageSquare,
-  CheckCircle2,
+  RefreshCw,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
 import { useStartConversation } from "@/hooks/useMessaging";
-
-// Mock data for demo (will be replaced with DB data)
-const mockProjects: Record<string, {
-  id: string;
-  title: string;
-  description: string;
-  budget_min: number;
-  budget_max: number;
-  deadline_days: number;
-  location: string;
-  tags: string[];
-  status: string;
-  created_at: string;
-  owner_id: string;
-  owner_name: string;
-  owner_avatar: string;
-  owner_university: string;
-  bids_count: number;
-}> = {
-  "1": {
-    id: "1",
-    title: "Data Analysis for Healthcare Research",
-    description: "Need an expert in statistical analysis to process and analyze healthcare survey data using SPSS or R. The project involves cleaning a dataset of 5000+ patient responses, performing descriptive statistics, regression analysis, and creating visualizations for a research paper submission.",
-    budget_min: 500,
-    budget_max: 800,
-    deadline_days: 5,
-    location: "Remote",
-    tags: ["R", "SPSS", "Statistics", "Healthcare"],
-    status: "open",
-    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    owner_id: "owner-1",
-    owner_name: "Dr. Sarah Johnson",
-    owner_avatar: "https://i.pravatar.cc/150?u=sarah",
-    owner_university: "Stanford University",
-    bids_count: 8,
-  },
-  "2": {
-    id: "2",
-    title: "Machine Learning Model Development",
-    description: "Looking for ML expert to build a classification model for customer segmentation project. Must have experience with Python, Scikit-learn, and TensorFlow. The model should achieve at least 85% accuracy on the test set.",
-    budget_min: 1000,
-    budget_max: 1500,
-    deadline_days: 10,
-    location: "Remote",
-    tags: ["Python", "Scikit-learn", "TensorFlow", "ML"],
-    status: "open",
-    created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-    owner_id: "owner-2",
-    owner_name: "Prof. Michael Chen",
-    owner_avatar: "https://i.pravatar.cc/150?u=michael",
-    owner_university: "MIT",
-    bids_count: 15,
-  },
-  "3": {
-    id: "3",
-    title: "Literature Review - Environmental Science",
-    description: "Comprehensive literature review on renewable energy policies in developing countries. Should cover at least 50 peer-reviewed sources from the last 10 years. APA format required.",
-    budget_min: 300,
-    budget_max: 500,
-    deadline_days: 7,
-    location: "Remote",
-    tags: ["Academic Writing", "Research", "Environmental"],
-    status: "open",
-    created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    owner_id: "owner-3",
-    owner_name: "Dr. Emily Williams",
-    owner_avatar: "https://i.pravatar.cc/150?u=emily",
-    owner_university: "UC Berkeley",
-    bids_count: 12,
-  },
-  "4": {
-    id: "4",
-    title: "Survey Design and Analysis",
-    description: "Design a survey questionnaire and analyze results for marketing research project. Need expertise in survey methodology and SPSS for analysis.",
-    budget_min: 400,
-    budget_max: 600,
-    deadline_days: 4,
-    location: "Remote",
-    tags: ["Survey Design", "SPSS", "Marketing Research"],
-    status: "open",
-    created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-    owner_id: "owner-4",
-    owner_name: "Prof. David Lee",
-    owner_avatar: "https://i.pravatar.cc/150?u=david",
-    owner_university: "Harvard Business School",
-    bids_count: 6,
-  },
-};
-
-const mockBids = [
-  { id: "b1", bidder_name: "Alex T.", amount: 650, delivery_days: 4, created_at: "2 hours ago" },
-  { id: "b2", bidder_name: "Maria G.", amount: 700, delivery_days: 5, created_at: "4 hours ago" },
-  { id: "b3", bidder_name: "John D.", amount: 550, delivery_days: 6, created_at: "1 day ago" },
-];
+import { useEarningProject, useSubmitBid } from "@/hooks/useEarning";
+import { formatPKR } from "@/lib/currency";
+import { formatDistanceToNow } from "date-fns";
 
 export default function EarnProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -127,25 +34,13 @@ export default function EarnProjectDetailPage() {
   const { toast } = useToast();
   const { user, isLoading: authLoading } = useAuth();
   
-  const [project, setProject] = useState<typeof mockProjects["1"] | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { project, bids, loading, refetch } = useEarningProject(id);
+  const { submitBid, submitting } = useSubmitBid();
+  const { startConversation } = useStartConversation();
+  
   const [bidAmount, setBidAmount] = useState("");
   const [deliveryDays, setDeliveryDays] = useState("");
   const [message, setMessage] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const { startConversation } = useStartConversation();
-
-  useEffect(() => {
-    // Simulate loading and use mock data
-    const timer = setTimeout(() => {
-      if (id && mockProjects[id]) {
-        setProject(mockProjects[id]);
-      }
-      setLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [id]);
 
   // Scroll to bid section if hash is present
   useEffect(() => {
@@ -177,42 +72,29 @@ export default function EarnProjectDetailPage() {
       return;
     }
 
-    setSubmitting(true);
+    if (!id) return;
 
-    try {
-      // For now, use mock success since we don't have real project IDs
-      // In production, this would insert into earning_bids table
-      await new Promise(resolve => setTimeout(resolve, 1000));
+    const result = await submitBid(
+      id,
+      parseFloat(bidAmount),
+      parseInt(deliveryDays),
+      message
+    );
 
-      toast({
-        title: "Bid Submitted!",
-        description: "Your bid has been submitted successfully. The project owner will review it shortly.",
-      });
-
+    if (result.success) {
       setBidAmount("");
       setDeliveryDays("");
       setMessage("");
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to submit bid. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setSubmitting(false);
+      refetch();
     }
   };
 
   const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffDays = Math.floor(diffHours / 24);
-
-    if (diffDays > 0) return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
-    if (diffHours > 0) return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
-    return "Just now";
+    try {
+      return formatDistanceToNow(new Date(dateString), { addSuffix: true });
+    } catch {
+      return "Recently";
+    }
   };
 
   if (loading) {
@@ -240,12 +122,18 @@ export default function EarnProjectDetailPage() {
           <p className="text-muted-foreground mb-6">
             This project may have been removed or doesn't exist.
           </p>
-          <Link to="/earn">
-            <Button>
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Projects
+          <div className="flex gap-3 justify-center">
+            <Link to="/earn">
+              <Button>
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Projects
+              </Button>
+            </Link>
+            <Button variant="outline" onClick={() => refetch()}>
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Retry
             </Button>
-          </Link>
+          </div>
         </div>
       </MainLayout>
     );
@@ -276,7 +164,9 @@ export default function EarnProjectDetailPage() {
           <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-6">
             <div className="flex-1">
               <div className="flex items-center gap-2 flex-wrap mb-2">
-                <Badge variant="success">Open</Badge>
+                <Badge variant={project.status === "open" ? "success" : "secondary"} className="capitalize">
+                  {project.status || "Open"}
+                </Badge>
                 <span className="text-sm text-muted-foreground">
                   Posted {formatTimeAgo(project.created_at)}
                 </span>
@@ -293,7 +183,7 @@ export default function EarnProjectDetailPage() {
           transition={{ delay: 0.2 }}
           className="flex flex-wrap gap-2 mb-6"
         >
-          {project.tags.map((tag) => (
+          {(project.tags || []).map((tag) => (
             <Badge key={tag} variant="secondary">
               {tag}
             </Badge>
@@ -313,7 +203,12 @@ export default function EarnProjectDetailPage() {
               <div className="min-w-0">
                 <p className="text-xs text-muted-foreground">Budget</p>
                 <p className="font-semibold text-sm md:text-base truncate">
-                  PKR {project.budget_min?.toLocaleString()} - {project.budget_max?.toLocaleString()}
+                  {project.budget_min && project.budget_max 
+                    ? `PKR ${project.budget_min.toLocaleString()} - ${project.budget_max.toLocaleString()}`
+                    : project.budget_min
+                      ? formatPKR(project.budget_min)
+                      : "TBD"
+                  }
                 </p>
               </div>
             </CardContent>
@@ -323,7 +218,9 @@ export default function EarnProjectDetailPage() {
               <Clock className="h-5 w-5 text-primary shrink-0" />
               <div className="min-w-0">
                 <p className="text-xs text-muted-foreground">Deadline</p>
-                <p className="font-semibold text-sm md:text-base">{project.deadline_days} days</p>
+                <p className="font-semibold text-sm md:text-base">
+                  {project.deadline_days ? `${project.deadline_days} days` : "Flexible"}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -332,7 +229,9 @@ export default function EarnProjectDetailPage() {
               <MapPin className="h-5 w-5 text-primary shrink-0" />
               <div className="min-w-0">
                 <p className="text-xs text-muted-foreground">Location</p>
-                <p className="font-semibold text-sm md:text-base truncate">{project.location}</p>
+                <p className="font-semibold text-sm md:text-base truncate">
+                  {project.location || "Remote"}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -341,7 +240,7 @@ export default function EarnProjectDetailPage() {
               <Users className="h-5 w-5 text-primary shrink-0" />
               <div className="min-w-0">
                 <p className="text-xs text-muted-foreground">Bids</p>
-                <p className="font-semibold text-sm md:text-base">{project.bids_count} placed</p>
+                <p className="font-semibold text-sm md:text-base">{bids.length} placed</p>
               </div>
             </CardContent>
           </Card>
@@ -359,7 +258,7 @@ export default function EarnProjectDetailPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground whitespace-pre-wrap">
-                {project.description}
+                {project.description || "No description provided."}
               </p>
             </CardContent>
           </Card>
@@ -380,12 +279,14 @@ export default function EarnProjectDetailPage() {
                 <Avatar className="h-14 w-14 shrink-0">
                   <AvatarImage src={project.owner_avatar} />
                   <AvatarFallback>
-                    {project.owner_name.split(" ").map((n) => n[0]).join("")}
+                    {(project.owner_name || "U").split(" ").map((n) => n[0]).join("")}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-lg truncate">{project.owner_name}</h3>
-                  <p className="text-muted-foreground truncate">{project.owner_university}</p>
+                  <h3 className="font-semibold text-lg truncate">
+                    {project.owner_name || "Anonymous"}
+                  </h3>
+                  <p className="text-muted-foreground truncate">Project Owner</p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   <Button 
@@ -418,34 +319,45 @@ export default function EarnProjectDetailPage() {
             <CardHeader>
               <CardTitle className="text-lg">Recent Bids</CardTitle>
               <CardDescription>
-                {project.bids_count} freelancers have bid on this project
+                {bids.length} freelancer{bids.length !== 1 ? "s have" : " has"} bid on this project
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {mockBids.map((bid) => (
-                  <div
-                    key={bid.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-muted/50 rounded-lg gap-2"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback>{bid.bidder_name[0]}</AvatarFallback>
-                      </Avatar>
-                      <span className="font-medium">{bid.bidder_name}</span>
+              {bids.length === 0 ? (
+                <p className="text-muted-foreground text-center py-6">
+                  No bids yet. Be the first to bid!
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {bids.slice(0, 10).map((bid) => (
+                    <div
+                      key={bid.id}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-muted/50 rounded-lg gap-2"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src={bid.bidder_avatar} />
+                          <AvatarFallback>
+                            {(bid.bidder_name || "U")[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="font-medium">{bid.bidder_name || "Anonymous"}</span>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm pl-11 sm:pl-0">
+                        <span className="font-semibold text-primary">
+                          {formatPKR(bid.amount)}
+                        </span>
+                        <span className="text-muted-foreground">
+                          in {bid.delivery_days} days
+                        </span>
+                        <span className="text-muted-foreground text-xs hidden sm:inline">
+                          {formatTimeAgo(bid.created_at)}
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-4 text-sm pl-11 sm:pl-0">
-                      <span className="font-semibold text-primary">PKR {bid.amount.toLocaleString()}</span>
-                      <span className="text-muted-foreground">
-                        in {bid.delivery_days} days
-                      </span>
-                      <span className="text-muted-foreground text-xs hidden sm:inline">
-                        {bid.created_at}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </motion.div>
@@ -481,9 +393,11 @@ export default function EarnProjectDetailPage() {
                       min={0}
                       required
                     />
-                    <p className="text-xs text-muted-foreground">
-                      Budget: ${project.budget_min} - ${project.budget_max}
-                    </p>
+                    {project.budget_min && project.budget_max && (
+                      <p className="text-xs text-muted-foreground">
+                        Suggested: PKR {project.budget_min.toLocaleString()} - {project.budget_max.toLocaleString()}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="delivery-days">Delivery Time (days) *</Label>
@@ -496,40 +410,30 @@ export default function EarnProjectDetailPage() {
                       min={1}
                       required
                     />
-                    <p className="text-xs text-muted-foreground">
-                      Deadline: {project.deadline_days} days
-                    </p>
+                    {project.deadline_days && (
+                      <p className="text-xs text-muted-foreground">
+                        Client deadline: {project.deadline_days} days
+                      </p>
+                    )}
                   </div>
                 </div>
-
                 <div className="space-y-2">
-                  <Label htmlFor="proposal">Your Proposal *</Label>
+                  <Label htmlFor="message">Cover Letter *</Label>
                   <Textarea
-                    id="proposal"
-                    placeholder="Describe your approach, relevant experience, and why you're the best fit..."
+                    id="message"
+                    placeholder="Describe why you're the best fit for this project..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     rows={4}
                     required
                   />
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="attachments">Attachments Link (optional)</Label>
-                  <Input
-                    id="attachments"
-                    type="url"
-                    placeholder="Link to portfolio or relevant work (Google Drive, etc.)"
-                  />
-                </div>
-
-                <Button 
-                  type="submit" 
-                  className="w-full sm:w-auto"
-                  disabled={submitting}
-                >
+                <Button type="submit" className="w-full sm:w-auto" disabled={submitting}>
                   {submitting ? (
-                    "Submitting..."
+                    <>
+                      <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                      Submitting...
+                    </>
                   ) : (
                     <>
                       <Send className="h-4 w-4 mr-2" />
@@ -537,37 +441,11 @@ export default function EarnProjectDetailPage() {
                     </>
                   )}
                 </Button>
-
-                {!user && (
-                  <p className="text-sm text-muted-foreground">
-                    <Link to={`/auth?redirect=/earn/projects/${id}#bid`} className="text-primary hover:underline">
-                      Log in
-                    </Link>
-                    {" "}to submit your bid
-                  </p>
-                )}
               </form>
             </CardContent>
           </Card>
         </motion.div>
       </div>
-
-      {/* Mobile Sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t md:hidden z-50">
-        <Button 
-          className="w-full"
-          onClick={() => {
-            const bidSection = document.getElementById("bid-section");
-            bidSection?.scrollIntoView({ behavior: "smooth" });
-          }}
-        >
-          <Send className="h-4 w-4 mr-2" />
-          Place Bid
-        </Button>
-      </div>
-
-      {/* Spacer for mobile sticky CTA */}
-      <div className="h-20 md:hidden" />
     </MainLayout>
   );
 }
