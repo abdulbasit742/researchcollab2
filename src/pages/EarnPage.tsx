@@ -20,55 +20,14 @@ import {
   CheckCircle2,
   Users,
   FileText,
+  RefreshCw,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-const mockProjects = [
-  {
-    id: "1",
-    title: "Data Analysis for Healthcare Research",
-    description: "Need an expert in statistical analysis to process and analyze healthcare survey data using SPSS or R.",
-    budget: "PKR 140,000 - 224,000",
-    deadline: "5 days",
-    bids: 8,
-    skills: ["R", "SPSS", "Statistics", "Healthcare"],
-    posted: "2 hours ago",
-    status: "open",
-  },
-  {
-    id: "2",
-    title: "Machine Learning Model Development",
-    description: "Looking for ML expert to build a classification model for customer segmentation project.",
-    budget: "PKR 280,000 - 420,000",
-    deadline: "10 days",
-    bids: 15,
-    skills: ["Python", "Scikit-learn", "TensorFlow", "ML"],
-    posted: "5 hours ago",
-    status: "open",
-  },
-  {
-    id: "3",
-    title: "Literature Review - Environmental Science",
-    description: "Comprehensive literature review on renewable energy policies in developing countries.",
-    budget: "PKR 84,000 - 140,000",
-    deadline: "7 days",
-    bids: 12,
-    skills: ["Academic Writing", "Research", "Environmental"],
-    posted: "1 day ago",
-    status: "open",
-  },
-  {
-    id: "4",
-    title: "Survey Design and Analysis",
-    description: "Design a survey questionnaire and analyze results for marketing research project.",
-    budget: "PKR 112,000 - 168,000",
-    deadline: "4 days",
-    bids: 6,
-    skills: ["Survey Design", "SPSS", "Marketing Research"],
-    posted: "3 hours ago",
-    status: "open",
-  },
-];
+import { useEarningProjects, useMyBids } from "@/hooks/useEarning";
+import { useAuth } from "@/contexts/AuthContext";
+import { formatPKRRange, formatPKR } from "@/lib/currency";
+import { ProjectListSkeleton } from "@/components/skeletons/ProjectListSkeleton";
+import { formatDistanceToNow } from "date-fns";
 
 const topEarners = [
   {
@@ -120,12 +79,30 @@ export default function EarnPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
+  
+  // Real database hooks
+  const { projects, loading: projectsLoading, error: projectsError, refetch: refetchProjects } = useEarningProjects();
+  const { bids: myBids, loading: bidsLoading, refetch: refetchBids } = useMyBids();
 
-  const filteredProjects = mockProjects.filter(
+  const filteredProjects = projects.filter(
     (p) =>
       p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.skills.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()))
+      (p.tags || []).some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+
+  const formatTimeAgo = (dateString: string) => {
+    try {
+      return formatDistanceToNow(new Date(dateString), { addSuffix: true });
+    } catch {
+      return "Recently";
+    }
+  };
+
+  const formatDeadline = (days: number | null) => {
+    if (!days) return "Flexible";
+    return `${days} days`;
+  };
 
   return (
     <MainLayout>
@@ -210,14 +187,36 @@ export default function EarnPage() {
           </div>
 
           <TabsContent value="projects" className="space-y-4 md:space-y-6">
-            {filteredProjects.length === 0 ? (
+            {projectsLoading ? (
+              <ProjectListSkeleton count={4} />
+            ) : projectsError ? (
+              <Card>
+                <CardContent className="p-8 md:p-12 text-center">
+                  <div className="text-destructive mb-4">Error loading projects</div>
+                  <Button onClick={() => refetchProjects()}>
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Retry
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : filteredProjects.length === 0 ? (
               <Card>
                 <CardContent className="p-8 md:p-12 text-center">
                   <Search className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">No Projects Found</h3>
-                  <p className="text-muted-foreground">
-                    Try adjusting your search criteria.
+                  <h3 className="text-xl font-semibold mb-2">
+                    {searchQuery ? "No Projects Found" : "No Projects Available Yet"}
+                  </h3>
+                  <p className="text-muted-foreground mb-6">
+                    {searchQuery 
+                      ? "Try adjusting your search criteria."
+                      : "Be the first to post a project and find talented freelancers."
+                    }
                   </p>
+                  {!searchQuery && (
+                    <Button onClick={() => navigate("/auth?tab=signup")}>
+                      Post a Project
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             ) : (
@@ -239,26 +238,27 @@ export default function EarnPage() {
                             {project.title}
                           </CardTitle>
                           <CardDescription className="mt-1">
-                            Posted {project.posted}
+                            Posted {formatTimeAgo(project.created_at)}
+                            {project.owner_name && ` by ${project.owner_name}`}
                           </CardDescription>
                         </div>
                         <Badge 
-                          variant="success" 
-                          className="cursor-pointer hover:opacity-80 transition-opacity self-start shrink-0"
+                          variant={project.status === "open" ? "success" : "secondary"}
+                          className="cursor-pointer hover:opacity-80 transition-opacity self-start shrink-0 capitalize"
                           onClick={() => navigate(`/earn/projects/${project.id}`)}
                         >
-                          Open
+                          {project.status || "Open"}
                         </Badge>
                       </div>
                     </CardHeader>
 
                     <CardContent className="space-y-4 pt-0">
                       <p className="text-muted-foreground text-sm md:text-base line-clamp-2">
-                        {project.description}
+                        {project.description || "No description provided."}
                       </p>
 
                       <div className="flex flex-wrap gap-1.5 md:gap-2">
-                        {project.skills.map((skill) => (
+                        {(project.tags || []).map((skill) => (
                           <Badge key={skill} variant="secondary" className="text-xs">
                             {skill}
                           </Badge>
@@ -268,15 +268,22 @@ export default function EarnPage() {
                       <div className="flex flex-wrap gap-4 md:gap-6 text-sm">
                         <div className="flex items-center gap-2">
                           <DollarSign className="h-4 w-4 text-primary shrink-0" />
-                          <span className="font-semibold">{project.budget}</span>
+                          <span className="font-semibold">
+                            {project.budget_min && project.budget_max 
+                              ? formatPKRRange(project.budget_min, project.budget_max)
+                              : project.budget_min 
+                                ? formatPKR(project.budget_min)
+                                : "Budget TBD"
+                            }
+                          </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
-                          <span>Deadline: {project.deadline}</span>
+                          <span>Deadline: {formatDeadline(project.deadline_days)}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Users className="h-4 w-4 text-muted-foreground shrink-0" />
-                          <span>{project.bids} bids</span>
+                          <span>{project.bid_count || 0} bids</span>
                         </div>
                       </div>
                     </CardContent>
@@ -350,18 +357,80 @@ export default function EarnPage() {
           </TabsContent>
 
           <TabsContent value="my-bids">
-            <Card>
-              <CardContent className="p-8 md:p-12 text-center">
-                <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-xl font-semibold mb-2">No Bids Yet</h3>
-                <p className="text-muted-foreground mb-6">
-                  Start bidding on projects to track your submissions here.
-                </p>
-                <Link to="/auth?tab=signup">
-                  <Button>Create Account to Start</Button>
-                </Link>
-              </CardContent>
-            </Card>
+            {!user ? (
+              <Card>
+                <CardContent className="p-8 md:p-12 text-center">
+                  <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-xl font-semibold mb-2">Sign In to View Your Bids</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Create an account to start bidding on projects and track your submissions.
+                  </p>
+                  <Link to="/auth?tab=signup">
+                    <Button>Create Account to Start</Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ) : bidsLoading ? (
+              <ProjectListSkeleton count={3} />
+            ) : myBids.length === 0 ? (
+              <Card>
+                <CardContent className="p-8 md:p-12 text-center">
+                  <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-xl font-semibold mb-2">No Bids Yet</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Start bidding on projects to track your submissions here.
+                  </p>
+                  <Button onClick={() => navigate("/earn")}>
+                    Browse Projects
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                {myBids.map((bid, index) => (
+                  <motion.div
+                    key={bid.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                  >
+                    <Card variant="interactive">
+                      <CardContent className="p-4 md:p-6">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                          <div className="flex-1 min-w-0">
+                            <h3 
+                              className="font-semibold text-lg cursor-pointer hover:text-primary truncate"
+                              onClick={() => navigate(`/earn/projects/${bid.project_id}`)}
+                            >
+                              {bid.project_title || "Project"}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              Submitted {formatTimeAgo(bid.created_at)}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <div className="text-right">
+                              <p className="font-semibold text-primary">{formatPKR(bid.amount)}</p>
+                              <p className="text-xs text-muted-foreground">
+                                in {bid.delivery_days} days
+                              </p>
+                            </div>
+                            <Badge variant={bid.status === "accepted" ? "success" : "secondary"} className="capitalize">
+                              {bid.status || "Pending"}
+                            </Badge>
+                          </div>
+                        </div>
+                        {bid.message && (
+                          <p className="mt-3 text-sm text-muted-foreground line-clamp-2">
+                            {bid.message}
+                          </p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>
