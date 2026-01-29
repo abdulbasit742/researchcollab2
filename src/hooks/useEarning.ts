@@ -387,15 +387,6 @@ export function useMyProjects() {
   const [projects, setProjects] = useState<EarningProject[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user) {
-      fetchMyProjects();
-    } else {
-      setProjects([]);
-      setLoading(false);
-    }
-  }, [user]);
-
   const fetchMyProjects = async () => {
     if (!user) return;
 
@@ -433,6 +424,65 @@ export function useMyProjects() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchMyProjects();
+
+      // Subscribe to real-time updates for user's projects
+      const projectsChannel = supabase
+        .channel('my-projects-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'earning_projects',
+            filter: `owner_id=eq.${user.id}`,
+          },
+          () => {
+            fetchMyProjects();
+          }
+        )
+        .subscribe();
+
+      // Subscribe to real-time updates for bids on user's projects
+      const bidsChannel = supabase
+        .channel('my-projects-bids')
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'earning_bids',
+          },
+          async (payload) => {
+            // Check if this bid is for one of the user's projects
+            const bidProjectId = payload.new?.project_id;
+            if (bidProjectId) {
+              const { data: project } = await supabase
+                .from("earning_projects")
+                .select("owner_id")
+                .eq("id", bidProjectId)
+                .maybeSingle();
+              
+              if (project?.owner_id === user.id) {
+                fetchMyProjects();
+              }
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(projectsChannel);
+        supabase.removeChannel(bidsChannel);
+      };
+    } else {
+      setProjects([]);
+      setLoading(false);
+    }
+  }, [user]);
 
   return {
     projects,
