@@ -384,6 +384,7 @@ export function useCreateProject() {
 
 export function useMyProjects() {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [projects, setProjects] = useState<EarningProject[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -462,11 +463,16 @@ export function useMyProjects() {
             if (bidProjectId) {
               const { data: project } = await supabase
                 .from("earning_projects")
-                .select("owner_id")
+                .select("owner_id, title")
                 .eq("id", bidProjectId)
                 .maybeSingle();
               
               if (project?.owner_id === user.id) {
+                // Show toast notification for new bid
+                toast({
+                  title: "New Bid Received! 🎉",
+                  description: `Someone placed a bid on "${project.title}"`,
+                });
                 fetchMyProjects();
               }
             }
