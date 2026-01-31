@@ -32,6 +32,7 @@ import { formatDistanceToNow } from "date-fns";
 import { PostProjectModal } from "@/components/earn/PostProjectModal";
 import { EditProjectModal } from "@/components/earn/EditProjectModal";
 import { MyProjectCard } from "@/components/earn/MyProjectCard";
+import { MyProjectsFilterSort, StatusFilter, SortOption } from "@/components/earn/MyProjectsFilterSort";
 
 const topEarners = [
   {
@@ -84,6 +85,11 @@ export default function EarnPage() {
   const [postModalOpen, setPostModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [projectToEdit, setProjectToEdit] = useState<EarningProject | null>(null);
+  
+  // My Projects filter/sort state
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [sortOption, setSortOption] = useState<SortOption>("date-desc");
+  
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
@@ -489,15 +495,67 @@ export default function EarnPage() {
               </Card>
             ) : (
               <div className="space-y-4">
-                {myProjects.map((project, index) => (
-                  <MyProjectCard
-                    key={project.id}
-                    project={project}
-                    index={index}
-                    onEdit={handleEditProject}
-                    onStatusChange={refetchMyProjects}
-                  />
-                ))}
+                <MyProjectsFilterSort
+                  statusFilter={statusFilter}
+                  sortOption={sortOption}
+                  onStatusFilterChange={setStatusFilter}
+                  onSortChange={setSortOption}
+                  onReset={() => {
+                    setStatusFilter("all");
+                    setSortOption("date-desc");
+                  }}
+                  hasActiveFilters={statusFilter !== "all" || sortOption !== "date-desc"}
+                />
+                
+                {(() => {
+                  // Filter projects
+                  let filtered = myProjects.filter((project) => {
+                    if (statusFilter === "all") return true;
+                    return (project.status || "open") === statusFilter;
+                  });
+
+                  // Sort projects
+                  filtered = [...filtered].sort((a, b) => {
+                    switch (sortOption) {
+                      case "date-desc":
+                        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+                      case "date-asc":
+                        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+                      case "bids-desc":
+                        return (b.bid_count || 0) - (a.bid_count || 0);
+                      case "bids-asc":
+                        return (a.bid_count || 0) - (b.bid_count || 0);
+                      case "budget-desc":
+                        return (b.budget_max || b.budget_min || 0) - (a.budget_max || a.budget_min || 0);
+                      case "budget-asc":
+                        return (a.budget_max || a.budget_min || 0) - (b.budget_max || b.budget_min || 0);
+                      default:
+                        return 0;
+                    }
+                  });
+
+                  if (filtered.length === 0) {
+                    return (
+                      <Card>
+                        <CardContent className="p-8 text-center">
+                          <p className="text-muted-foreground">
+                            No projects match the current filters.
+                          </p>
+                        </CardContent>
+                      </Card>
+                    );
+                  }
+
+                  return filtered.map((project, index) => (
+                    <MyProjectCard
+                      key={project.id}
+                      project={project}
+                      index={index}
+                      onEdit={handleEditProject}
+                      onStatusChange={refetchMyProjects}
+                    />
+                  ));
+                })()}
               </div>
             )}
           </TabsContent>
