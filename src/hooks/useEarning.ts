@@ -278,6 +278,15 @@ export function useSubmitBid() {
         return { success: false, error: "Already bid on this project" };
       }
 
+      // Get bidder's profile name
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      const bidderName = profile?.full_name || "Anonymous";
+
       const { error } = await supabase
         .from("earning_bids")
         .insert({
@@ -289,6 +298,25 @@ export function useSubmitBid() {
         });
 
       if (error) throw error;
+
+      // Trigger email notification (fire-and-forget)
+      try {
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+        await fetch(`${supabaseUrl}/functions/v1/notify-new-bid`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            projectId,
+            bidAmount: amount,
+            bidderName,
+            deliveryDays,
+          }),
+        });
+      } catch (emailError) {
+        console.log("Email notification failed (non-blocking):", emailError);
+      }
 
       toast({
         title: "Bid Submitted!",
