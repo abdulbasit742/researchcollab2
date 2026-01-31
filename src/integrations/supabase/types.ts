@@ -1436,6 +1436,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: { Args: { check_user_id: string }; Returns: boolean }
       is_blocked: { Args: { user_a: string; user_b: string }; Returns: boolean }
     }
     Enums: {
