@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -7,6 +8,16 @@ import { DollarSign, Clock, Users, Eye, Pencil, X, RotateCcw, Loader2 } from "lu
 import { formatPKRRange, formatPKR } from "@/lib/currency";
 import { formatDistanceToNow } from "date-fns";
 import { EarningProject, useUpdateProjectStatus } from "@/hooks/useEarning";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface MyProjectCardProps {
   project: EarningProject;
@@ -25,6 +36,7 @@ const statusColors: Record<string, "success" | "secondary" | "default" | "outlin
 export function MyProjectCard({ project, index, onEdit, onStatusChange }: MyProjectCardProps) {
   const navigate = useNavigate();
   const { updateStatus, updating } = useUpdateProjectStatus();
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const formatTimeAgo = (dateString: string) => {
     try {
@@ -45,12 +57,40 @@ export function MyProjectCard({ project, index, onEdit, onStatusChange }: MyProj
     if (result.success) {
       onStatusChange();
     }
+    setShowConfirmDialog(false);
   };
 
   const status = project.status || "open";
+  const isClosing = status === "open";
 
   return (
-    <motion.div
+    <>
+      <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {isClosing ? "Close this project?" : "Reopen this project?"}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {isClosing 
+                ? "Closing this project will hide it from the public listings. No new bids can be submitted. You can reopen it anytime."
+                : "Reopening this project will make it visible again and allow new bids to be submitted."
+              }
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleToggleStatus} disabled={updating}>
+              {updating ? (
+                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+              ) : null}
+              {isClosing ? "Close Project" : "Reopen Project"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      
+      <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -137,7 +177,7 @@ export function MyProjectCard({ project, index, onEdit, onStatusChange }: MyProj
           <Button 
             variant={status === "open" ? "secondary" : "default"}
             size="sm"
-            onClick={handleToggleStatus}
+            onClick={() => setShowConfirmDialog(true)}
             disabled={updating}
           >
             {updating ? (
@@ -152,5 +192,6 @@ export function MyProjectCard({ project, index, onEdit, onStatusChange }: MyProj
         </CardFooter>
       </Card>
     </motion.div>
+    </>
   );
 }
