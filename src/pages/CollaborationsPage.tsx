@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -20,118 +20,31 @@ import {
   MapPin,
   Calendar,
   DollarSign,
-  Clock,
   ArrowRight,
   Filter,
   Sparkles,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useStartConversation } from "@/hooks/useMessaging";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const collaborations = [
-  {
-    id: 1,
-    researcherId: "researcher-1",
-    title: "Machine Learning Research for Climate Analysis",
-    description: "Looking for researchers with ML expertise to analyze climate data patterns and develop predictive models for environmental changes.",
-    owner: {
-      name: "Dr. Sarah Chen",
-      avatar: "https://i.pravatar.cc/150?u=sarah",
-      university: "MIT",
-    },
-    skills: ["Python", "TensorFlow", "Climate Science", "Data Analysis"],
-    location: "Remote",
-    deadline: "Dec 30, 2025",
-    budget: "$2,000 - $5,000",
-    applicants: 12,
-    featured: true,
-  },
-  {
-    id: 2,
-    researcherId: "researcher-2",
-    title: "Quantum Computing Algorithm Development",
-    description: "Seeking collaborators for developing novel quantum algorithms for optimization problems in logistics and supply chain management.",
-    owner: {
-      name: "Prof. James Wilson",
-      avatar: "https://i.pravatar.cc/150?u=james",
-      university: "Stanford",
-    },
-    skills: ["Quantum Computing", "Qiskit", "Algorithm Design", "Mathematics"],
-    location: "California, USA",
-    deadline: "Jan 15, 2026",
-    budget: "$3,000 - $8,000",
-    applicants: 8,
-    featured: true,
-  },
-  {
-    id: 3,
-    researcherId: "researcher-3",
-    title: "Biomedical Image Analysis Using Deep Learning",
-    description: "Collaborative research project on developing AI models for early detection of diseases from medical imaging data.",
-    owner: {
-      name: "Dr. Emily Rodriguez",
-      avatar: "https://i.pravatar.cc/150?u=emily",
-      university: "Johns Hopkins",
-    },
-    skills: ["Deep Learning", "PyTorch", "Medical Imaging", "CNNs"],
-    location: "Remote",
-    deadline: "Jan 20, 2026",
-    budget: "$4,000 - $10,000",
-    applicants: 15,
-    featured: false,
-  },
-  {
-    id: 4,
-    researcherId: "researcher-4",
-    title: "Natural Language Processing for Legal Documents",
-    description: "Research collaboration on developing NLP models for automated analysis and summarization of legal documents.",
-    owner: {
-      name: "Dr. Michael Park",
-      avatar: "https://i.pravatar.cc/150?u=michael",
-      university: "Harvard Law",
-    },
-    skills: ["NLP", "Transformers", "Legal Tech", "Python"],
-    location: "Boston, USA",
-    deadline: "Feb 1, 2026",
-    budget: "$2,500 - $6,000",
-    applicants: 10,
-    featured: false,
-  },
-  {
-    id: 5,
-    researcherId: "researcher-5",
-    title: "Renewable Energy Optimization Study",
-    description: "Multi-disciplinary research on optimizing renewable energy grid integration using AI and IoT technologies.",
-    owner: {
-      name: "Dr. Anna Schmidt",
-      avatar: "https://i.pravatar.cc/150?u=anna",
-      university: "TU Munich",
-    },
-    skills: ["Energy Systems", "IoT", "Optimization", "Data Science"],
-    location: "Germany / Remote",
-    deadline: "Jan 25, 2026",
-    budget: "$3,500 - $7,500",
-    applicants: 18,
-    featured: true,
-  },
-  {
-    id: 6,
-    researcherId: "researcher-6",
-    title: "Social Media Sentiment Analysis Research",
-    description: "Analyzing social media trends and sentiment patterns to understand public opinion dynamics on global issues.",
-    owner: {
-      name: "Prof. David Lee",
-      avatar: "https://i.pravatar.cc/150?u=david",
-      university: "Oxford",
-    },
-    skills: ["Sentiment Analysis", "Social Media", "Statistics", "R/Python"],
-    location: "UK / Remote",
-    deadline: "Feb 10, 2026",
-    budget: "$1,500 - $4,000",
-    applicants: 22,
-    featured: false,
-  },
-];
+interface Collaboration {
+  id: string;
+  researcherId: string;
+  title: string;
+  description: string;
+  owner: {
+    name: string;
+    university: string;
+  };
+  skills: string[];
+  location: string;
+  deadline: string;
+  budget: string;
+  applicants: number;
+  featured: boolean;
+}
 
 const disciplines = [
   "All Disciplines",
@@ -147,9 +60,93 @@ const disciplines = [
 export default function CollaborationsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [discipline, setDiscipline] = useState("All Disciplines");
+  const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
   const { startConversation } = useStartConversation();
+
+  // Fetch collaborations from DB
+  useEffect(() => {
+    const fetchCollaborations = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch open projects from earning_projects
+        const { data: projects, error } = await supabase
+          .from("earning_projects")
+          .select("id, title, description, owner_id, tags, budget_min, budget_max, deadline_days, location, status")
+          .eq("status", "open")
+          .order("created_at", { ascending: false })
+          .limit(20);
+
+        if (error) throw error;
+
+        if (!projects || projects.length === 0) {
+          setCollaborations([]);
+          setIsLoading(false);
+          return;
+        }
+
+        // Fetch owner profiles
+        const ownerIds = [...new Set(projects.map(p => p.owner_id).filter(Boolean))] as string[];
+        const { data: profiles } = await supabase
+          .from("profiles")
+          .select("id, full_name, university")
+          .in("id", ownerIds);
+
+        const profileMap = new Map(profiles?.map(p => [p.id, p]) || []);
+
+        // Fetch bid counts
+        const { data: bidsData } = await supabase
+          .from("earning_bids")
+          .select("project_id")
+          .in("project_id", projects.map(p => p.id));
+
+        const bidCounts: Record<string, number> = {};
+        bidsData?.forEach(b => {
+          bidCounts[b.project_id] = (bidCounts[b.project_id] || 0) + 1;
+        });
+
+        // Transform to collaboration format
+        const collabs: Collaboration[] = projects.map(project => {
+          const profile = profileMap.get(project.owner_id);
+          return {
+            id: project.id,
+            researcherId: project.owner_id,
+            title: project.title,
+            description: project.description || "",
+            owner: {
+              name: profile?.full_name || "Anonymous Researcher",
+              university: profile?.university || "Institution",
+            },
+            skills: project.tags || [],
+            location: project.location || "Remote",
+            deadline: project.deadline_days 
+              ? `${project.deadline_days} days`
+              : "Flexible",
+            budget: project.budget_min && project.budget_max 
+              ? `$${project.budget_min.toLocaleString()} - $${project.budget_max.toLocaleString()}`
+              : "Negotiable",
+            applicants: bidCounts[project.id] || 0,
+            featured: false,
+          };
+        });
+
+        setCollaborations(collabs);
+      } catch (err) {
+        console.error("Failed to fetch collaborations:", err);
+        toast({
+          title: "Error loading collaborations",
+          description: "Please try again later.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCollaborations();
+  }, [toast]);
 
   const handleApply = (title: string) => {
     toast({
@@ -159,8 +156,33 @@ export default function CollaborationsPage() {
   };
 
   const handleResearcherClick = (researcherId: string) => {
-    navigate(`/researcher/${researcherId}`);
+    navigate(`/u/${researcherId}`);
   };
+
+  const handleMessageOwner = (researcherId: string) => {
+    if (!researcherId) {
+      toast({
+        title: "Unable to message",
+        description: "Owner information is not available.",
+        variant: "destructive",
+      });
+      return;
+    }
+    startConversation(researcherId);
+  };
+
+  // Filter collaborations
+  const filteredCollaborations = collaborations.filter(collab => {
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      if (!collab.title.toLowerCase().includes(query) &&
+          !collab.description.toLowerCase().includes(query) &&
+          !collab.skills.some(s => s.toLowerCase().includes(query))) {
+        return false;
+      }
+    }
+    return true;
+  });
 
   return (
     <MainLayout>
@@ -225,109 +247,143 @@ export default function CollaborationsPage() {
       {/* Collaborations List */}
       <div className="container py-16">
         <div className="grid gap-6">
-          {collaborations.map((collab, index) => (
-            <motion.div
-              key={collab.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Card variant="interactive" className="relative">
-                {collab.featured && (
-                  <div className="absolute top-4 right-4">
-                    <Badge variant="premium">
-                      <Sparkles className="h-3 w-3 mr-1" />
-                      Featured
-                    </Badge>
-                  </div>
-                )}
-
-                <CardHeader>
-                  <div className="flex items-start gap-4">
-                    <Avatar 
-                      className="h-12 w-12 cursor-pointer hover:ring-2 hover:ring-primary transition-all"
-                      onClick={() => handleResearcherClick(collab.researcherId)}
-                    >
-                      <AvatarImage src={collab.owner.avatar} />
-                      <AvatarFallback>
-                        {collab.owner.name.split(" ").map((n) => n[0]).join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <CardTitle className="text-xl pr-20">{collab.title}</CardTitle>
-                      <CardDescription className="mt-1">
-                        <span 
-                          className="font-medium text-foreground cursor-pointer hover:text-primary transition-colors"
-                          onClick={() => handleResearcherClick(collab.researcherId)}
-                        >
-                          {collab.owner.name}
-                        </span>
-                        <span className="mx-2">•</span>
-                        <span 
-                          className="cursor-pointer hover:text-primary transition-colors"
-                          onClick={() => handleResearcherClick(collab.researcherId)}
-                        >
-                          {collab.owner.university}
-                        </span>
-                      </CardDescription>
+          {isLoading ? (
+            // Loading skeleton
+            Array.from({ length: 3 }).map((_, i) => (
+              <Card key={i} className="p-6">
+                <div className="flex items-start gap-4">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                    <Skeleton className="h-16 w-full mt-4" />
+                    <div className="flex gap-2 mt-4">
+                      <Skeleton className="h-6 w-20" />
+                      <Skeleton className="h-6 w-24" />
+                      <Skeleton className="h-6 w-16" />
                     </div>
                   </div>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">{collab.description}</p>
-
-                  <div className="flex flex-wrap gap-2">
-                    {collab.skills.map((skill) => (
-                      <Badge key={skill} variant="secondary">
-                        {skill}
-                      </Badge>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4" />
-                      {collab.location}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      Deadline: {collab.deadline}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <DollarSign className="h-4 w-4" />
-                      {collab.budget}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Users className="h-4 w-4" />
-                      {collab.applicants} applicants
-                    </div>
-                  </div>
-                </CardContent>
-
-                <CardFooter className="flex gap-3">
-                  <Button onClick={() => handleApply(collab.title)}>
-                    Apply Now
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    onClick={() => startConversation(collab.researcherId)}
-                  >
-                    Message Owner
-                  </Button>
-                </CardFooter>
+                </div>
               </Card>
-            </motion.div>
-          ))}
+            ))
+          ) : filteredCollaborations.length === 0 ? (
+            <Card>
+              <CardContent className="p-12 text-center">
+                <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <h3 className="text-xl font-semibold mb-2">No Collaborations Found</h3>
+                <p className="text-muted-foreground">
+                  {searchQuery 
+                    ? "Try adjusting your search terms" 
+                    : "Check back later for new collaboration opportunities"}
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            filteredCollaborations.map((collab, index) => (
+              <motion.div
+                key={collab.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card variant="interactive" className="relative">
+                  {collab.featured && (
+                    <div className="absolute top-4 right-4">
+                      <Badge variant="premium">
+                        <Sparkles className="h-3 w-3 mr-1" />
+                        Featured
+                      </Badge>
+                    </div>
+                  )}
+
+                  <CardHeader>
+                    <div className="flex items-start gap-4">
+                      <Avatar 
+                        className="h-12 w-12 cursor-pointer hover:ring-2 hover:ring-primary transition-all"
+                        onClick={() => handleResearcherClick(collab.researcherId)}
+                      >
+                        <AvatarFallback>
+                          {collab.owner.name.split(" ").map((n) => n[0]).join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <CardTitle className="text-xl pr-20">{collab.title}</CardTitle>
+                        <CardDescription className="mt-1">
+                          <span 
+                            className="font-medium text-foreground cursor-pointer hover:text-primary transition-colors"
+                            onClick={() => handleResearcherClick(collab.researcherId)}
+                          >
+                            {collab.owner.name}
+                          </span>
+                          <span className="mx-2">•</span>
+                          <span 
+                            className="cursor-pointer hover:text-primary transition-colors"
+                            onClick={() => handleResearcherClick(collab.researcherId)}
+                          >
+                            {collab.owner.university}
+                          </span>
+                        </CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="space-y-4">
+                    <p className="text-muted-foreground">{collab.description}</p>
+
+                    <div className="flex flex-wrap gap-2">
+                      {collab.skills.map((skill) => (
+                        <Badge key={skill} variant="secondary">
+                          {skill}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <MapPin className="h-4 w-4" />
+                        {collab.location}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        Deadline: {collab.deadline}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <DollarSign className="h-4 w-4" />
+                        {collab.budget}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Users className="h-4 w-4" />
+                        {collab.applicants} applicants
+                      </div>
+                    </div>
+                  </CardContent>
+
+                  <CardFooter className="flex gap-3">
+                    <Button onClick={() => handleApply(collab.title)}>
+                      Apply Now
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      onClick={() => handleMessageOwner(collab.researcherId)}
+                    >
+                      Message Owner
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            ))
+          )}
         </div>
 
         {/* Load More */}
-        <div className="mt-10 text-center">
-          <Button variant="outline" size="lg">
-            Load More Collaborations
-          </Button>
-        </div>
+        {filteredCollaborations.length > 0 && (
+          <div className="mt-10 text-center">
+            <Button variant="outline" size="lg">
+              Load More Collaborations
+            </Button>
+          </div>
+        )}
       </div>
     </MainLayout>
   );
