@@ -104,6 +104,7 @@ import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsOfServicePage from "./pages/TermsOfServicePage";
 import CookiePolicyPage from "./pages/CookiePolicyPage";
 import OpportunitiesPage from "./pages/OpportunitiesPage";
+import NotificationSettingsPage from "./pages/NotificationSettingsPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -166,6 +167,7 @@ const AppContent = () => {
             <Route path="/ai/project-scope" element={<AIProjectScopePage />} />
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/messages/:threadId" element={<MessageThreadPage />} />
+            <Route path="/settings/notifications" element={<NotificationSettingsPage />} />
             <Route path="/help" element={<HelpCenterPage />} />
             <Route path="/docs" element={<ApiDocsPage />} />
             <Route path="/pricing" element={<PricingPage />} />
