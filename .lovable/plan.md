@@ -1,59 +1,116 @@
 
-# Add WhatsApp Support Number to Sign-Up Page
+# Make Blog Cards Clickable & Create Article Detail Pages
 
 ## Overview
-Add a visible WhatsApp support contact link to the authentication page, specifically in the sign-up section, to help users who need assistance during registration. This aligns with the platform's localized support strategy for the Pakistan/South Asia market.
+Currently the Blog page displays static content with non-functional buttons. This plan will make all blog-related elements clickable and create a proper article detail page, enabling users to navigate to and read full blog articles.
 
-## Design Approach
-The WhatsApp support link will be added:
-1. Below the "Create Account" button in the sign-up tab
-2. Styled subtly but clearly visible with a WhatsApp icon
-3. Opens WhatsApp with a pre-filled message indicating the user needs help with sign-up
+## Current Issues Identified
+1. Blog cards in the grid are not clickable
+2. "Read Article" button on featured post doesn't navigate
+3. No article detail page exists (`/blog/:slug` route missing)
+4. Using static mock data instead of database
 
 ## Changes Required
 
-### 1. Update AuthPage.tsx
-**File:** `src/pages/AuthPage.tsx`
+### 1. Create Blog Article Detail Page
+**New File:** `src/pages/BlogArticlePage.tsx`
 
-**Modifications:**
-- Import the WhatsApp support configuration from `@/config/support`
-- Import a phone/message icon from lucide-react (MessageCircle or Phone)
-- Add a support link section after the "Create Account" button in the sign-up tab
-- The link will use `buildWhatsAppUrl` function with context indicating sign-up help
+This page will:
+- Use the `useBlogPost` hook to fetch article by slug/id
+- Display full article content with:
+  - Cover image (hero banner)
+  - Title, author, date, read time, category
+  - Full article content (HTML/Markdown rendered)
+  - Related articles section (optional)
+- Handle loading and error states
+- Include back navigation to `/blog`
 
-**New UI Element (after Create Account button):**
-```text
-Need help signing up?
-[WhatsApp Icon] Chat with Support
+### 2. Update BlogPage.tsx
+**File:** `src/pages/BlogPage.tsx`
+
+Modifications:
+- Wrap featured post card with `<Link to={`/blog/${post.id}`}>` 
+- Make "Read Article" button navigate using `<Link>` or `asChild` pattern
+- Wrap each blog card in the grid with clickable link
+- Make entire card clickable (image, title, content area)
+- Add hover cursor and visual feedback
+
+**Featured Post Section Changes:**
+```jsx
+<Link to={`/blog/${blogPosts[0].id}`}>
+  <Button className="w-fit">
+    Read Article
+    <ArrowRight className="h-4 w-4" />
+  </Button>
+</Link>
 ```
 
-The link will:
-- Open in a new tab
-- Pre-fill message: "Assalam o Alaikum, I need help with sign-up."
-- Include the formatted phone number for visibility: +92 318 178 1454
-
-## Technical Details
-
-### Implementation Steps:
-1. Add imports for `supportConfig` and `buildWhatsAppUrl` from support config
-2. Add `MessageCircle` or `Phone` icon import from lucide-react
-3. Create a helper function or inline the WhatsApp URL with sign-up context
-4. Add a styled link/button below the Create Account button
-5. Format the phone number nicely for display (e.g., +92 318 178 1454)
-
-### Security Consideration:
-- The phone number is publicly visible (as intended for support)
-- Uses `noopener,noreferrer` for external links
-- No sensitive data is exposed
-
-## Visual Placement
-```text
-[Create Account Button]
-
-        ---- OR ----
-
-Need help signing up?
-📱 WhatsApp: +92 318 178 1454
+**Grid Card Changes:**
+```jsx
+<Link to={`/blog/${post.id}`} className="block">
+  <Card variant="interactive" className="h-full ...">
+    ...
+  </Card>
+</Link>
 ```
 
-The design will use muted colors to not distract from the main sign-up flow while remaining accessible for those who need help.
+### 3. Add Route in App.tsx
+**File:** `src/App.tsx`
+
+Add new route:
+```jsx
+import BlogArticlePage from "./pages/BlogArticlePage";
+
+// In Routes:
+<Route path="/blog/:slug" element={<BlogArticlePage />} />
+```
+
+## Technical Implementation Details
+
+### BlogArticlePage Layout
+```text
+[Back to Blog button]
+
+[Full-width Cover Image]
+
+[Category Badge]  [Read Time]
+
+# Article Title
+
+By [Author] | [Date] | [Views] views
+
+---
+
+[Full Article Content - rendered HTML/Markdown]
+
+---
+
+[Share buttons (optional)]
+
+[Related Articles Grid (optional)]
+```
+
+### Navigation Flow
+1. User visits `/blog` - sees all articles
+2. User clicks on any article card or "Read Article" button
+3. Navigates to `/blog/article-slug-or-id`
+4. Article page loads full content
+5. User can click "Back to Blog" to return
+
+### Data Handling
+For now, the page will work with the static mock data (using post `id`). The `useBlogPost` hook from `useBlog.ts` already supports fetching by slug or ID, so when real database content is added, it will work automatically.
+
+## Files to Create/Modify
+
+| File | Action |
+|------|--------|
+| `src/pages/BlogArticlePage.tsx` | **Create** - New article detail page |
+| `src/pages/BlogPage.tsx` | **Modify** - Add Link wrappers to cards |
+| `src/App.tsx` | **Modify** - Add `/blog/:slug` route |
+
+## Success Criteria
+- Clicking any blog card navigates to `/blog/:id`
+- "Read Article" button navigates correctly
+- Article page displays full content
+- Back button returns to blog list
+- Smooth transitions between pages
