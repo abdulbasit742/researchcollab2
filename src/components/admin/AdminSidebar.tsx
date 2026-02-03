@@ -13,7 +13,13 @@ import {
   Heart,
   History,
   BarChart3,
-  Package
+  Package,
+  Landmark,
+  Globe,
+  Shield,
+  BookOpen,
+  Vote,
+  Database
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -34,6 +40,13 @@ const navItems = [
   { icon: Briefcase, label: "AI Pricing", href: "/admin/ai-pricing" },
   { icon: BarChart3, label: "Analytics", href: "/admin/analytics" },
   { icon: History, label: "Activity Log", href: "/admin/audit-log" },
+  // Phase 5 & 6 - Infrastructure & Governance
+  { icon: Landmark, label: "Government", href: "/admin/government" },
+  { icon: Globe, label: "National Insights", href: "/admin/national-insights" },
+  { icon: Shield, label: "Infrastructure", href: "/admin/infrastructure" },
+  { icon: Vote, label: "Governance", href: "/admin/governance" },
+  { icon: Database, label: "Resilience", href: "/admin/resilience" },
+  { icon: BookOpen, label: "Knowledge", href: "/admin/knowledge" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 

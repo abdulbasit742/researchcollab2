@@ -74,6 +74,12 @@ import AdminReportsPage from "./pages/AdminReportsPage";
 import AdminSupportPage from "./pages/AdminSupportPage";
 import AdminAuditLogPage from "./pages/admin/AdminAuditLogPage";
 import AdminAnalyticsPage from "./pages/admin/AdminAnalyticsPage";
+import AdminGovernmentPage from "./pages/admin/AdminGovernmentPage";
+import AdminNationalInsightsPage from "./pages/admin/AdminNationalInsightsPage";
+import AdminInfrastructurePage from "./pages/admin/AdminInfrastructurePage";
+import AdminGovernancePage from "./pages/admin/AdminGovernancePage";
+import AdminResiliencePage from "./pages/admin/AdminResiliencePage";
+import AdminKnowledgePage from "./pages/admin/AdminKnowledgePage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -151,6 +157,12 @@ const AppContent = () => {
             <Route path="/admin/support" element={<AdminSupportPage />} />
             <Route path="/admin/audit-log" element={<AdminAuditLogPage />} />
             <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
+            <Route path="/admin/government" element={<AdminGovernmentPage />} />
+            <Route path="/admin/national-insights" element={<AdminNationalInsightsPage />} />
+            <Route path="/admin/infrastructure" element={<AdminInfrastructurePage />} />
+            <Route path="/admin/governance" element={<AdminGovernancePage />} />
+            <Route path="/admin/resilience" element={<AdminResiliencePage />} />
+            <Route path="/admin/knowledge" element={<AdminKnowledgePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
