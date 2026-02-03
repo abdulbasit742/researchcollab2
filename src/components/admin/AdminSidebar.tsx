@@ -27,6 +27,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const navItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/admin" },
   { icon: Users, label: "Users", href: "/admin/users" },
+  { icon: MessageSquare, label: "Feed Moderation", href: "/admin/feed" },
   { icon: Wrench, label: "Tools", href: "/admin/tools" },
   { icon: Briefcase, label: "Projects", href: "/admin/projects" },
   { icon: ShieldCheck, label: "Verifications", href: "/admin/verifications" },
