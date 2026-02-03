@@ -19,6 +19,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useStartConversation } from "@/hooks/useMessaging";
 
 // Mock researcher data - in production, fetch from Supabase
 const mockResearchers: Record<string, {
@@ -193,14 +194,16 @@ export default function ResearcherPublicProfilePage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { startConversation } = useStartConversation();
 
   const researcher = id ? mockResearchers[id] : null;
 
   const handleMessage = () => {
-    toast({
-      title: "Message Sent!",
-      description: `Your message request has been sent to ${researcher?.name}.`,
-    });
+    // For mock researchers, we use the id as a placeholder
+    // In production, this would be a real user UUID
+    if (researcher?.id) {
+      startConversation(researcher.id);
+    }
   };
 
   const handleApply = (collabTitle: string) => {

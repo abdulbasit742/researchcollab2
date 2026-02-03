@@ -275,7 +275,7 @@ export function useSendMessage() {
 }
 
 export function useStartConversation() {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -321,6 +321,24 @@ export function useStartConversation() {
         .single();
 
       if (error) throw error;
+
+      // Insert a system welcome message
+      await supabase.from("messages").insert({
+        thread_id: newThread.id,
+        sender_id: user.id,
+        body: "You can now start collaborating. Send a message to begin the conversation.",
+        type: "system",
+      });
+
+      // Update thread with last message
+      await supabase
+        .from("message_threads")
+        .update({
+          last_message_at: new Date().toISOString(),
+          last_message_text: "Conversation started",
+        })
+        .eq("id", newThread.id);
+
       navigate(`/messages/${newThread.id}`);
     } catch (err) {
       toast({
