@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { Target, Briefcase, MessageCircle, Users, User } from "lucide-react";
+import { Activity, Briefcase, MessageCircle, Users, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNotifications } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
-  icon: typeof Target;
+  icon: typeof Activity;
   label: string;
   route: string;
   badge?: number;
@@ -17,13 +17,13 @@ export function MobileBottomNav() {
   const isMobile = useIsMobile();
   const { unreadCount } = useNotifications();
 
-  // Outcome-focused navigation - work, not social
+  // Accountability-focused navigation - reality events, not social
   const navItems: NavItem[] = [
-    { icon: Target, label: "Feed", route: "/feed" },
+    { icon: Activity, label: "Reality", route: "/reality" },
     { icon: Briefcase, label: "Projects", route: "/offers" },
     { icon: MessageCircle, label: "Messages", route: "/messages", badge: unreadCount },
     { icon: Users, label: "Network", route: "/network" },
-    { icon: User, label: "Profile", route: "/profile" },
+    { icon: User, label: "Ledger", route: "/profile" },
   ];
 
   // Only show on mobile
