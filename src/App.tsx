@@ -105,6 +105,8 @@ import TermsOfServicePage from "./pages/TermsOfServicePage";
 import CookiePolicyPage from "./pages/CookiePolicyPage";
 import OpportunitiesPage from "./pages/OpportunitiesPage";
 import NotificationSettingsPage from "./pages/NotificationSettingsPage";
+import ProgressPage from "./pages/ProgressPage";
+import DealsPage from "./pages/DealsPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -168,6 +170,8 @@ const AppContent = () => {
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/messages/:threadId" element={<MessageThreadPage />} />
             <Route path="/settings/notifications" element={<NotificationSettingsPage />} />
+            <Route path="/progress" element={<ProgressPage />} />
+            <Route path="/deals" element={<DealsPage />} />
             <Route path="/help" element={<HelpCenterPage />} />
             <Route path="/docs" element={<ApiDocsPage />} />
             <Route path="/pricing" element={<PricingPage />} />
