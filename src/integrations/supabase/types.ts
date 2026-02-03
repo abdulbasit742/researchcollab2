@@ -753,6 +753,45 @@ export type Database = {
         }
         Relationships: []
       }
+      connection_degrees: {
+        Row: {
+          computed_at: string
+          degree: number
+          id: string
+          target_user_id: string
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string
+          degree: number
+          id?: string
+          target_user_id: string
+          user_id: string
+        }
+        Update: {
+          computed_at?: string
+          degree?: number
+          id?: string
+          target_user_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connection_degrees_target_user_id_fkey"
+            columns: ["target_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connection_degrees_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       connection_requests: {
         Row: {
           created_at: string
@@ -2884,6 +2923,51 @@ export type Database = {
         }
         Relationships: []
       }
+      network_suggestions: {
+        Row: {
+          created_at: string
+          id: string
+          is_dismissed: boolean | null
+          reason: string
+          score: number
+          suggested_user_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          reason: string
+          score?: number
+          suggested_user_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          reason?: string
+          score?: number
+          suggested_user_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "network_suggestions_suggested_user_id_fkey"
+            columns: ["suggested_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "network_suggestions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string
@@ -3782,6 +3866,42 @@ export type Database = {
           },
         ]
       }
+      profile_views: {
+        Row: {
+          created_at: string
+          id: string
+          viewed_user_id: string
+          viewer_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          viewed_user_id: string
+          viewer_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          viewed_user_id?: string
+          viewer_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_views_viewed_user_id_fkey"
+            columns: ["viewed_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profile_views_viewer_id_fkey"
+            columns: ["viewer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -3930,6 +4050,102 @@ export type Database = {
           role?: string
         }
         Relationships: []
+      }
+      recommendation_requests: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          requester_id: string
+          status: string | null
+          target_user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          requester_id: string
+          status?: string | null
+          target_user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          requester_id?: string
+          status?: string | null
+          target_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendation_requests_requester_id_fkey"
+            columns: ["requester_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_requests_target_user_id_fkey"
+            columns: ["target_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recommendations: {
+        Row: {
+          content: string
+          context_id: string | null
+          context_type: string
+          created_at: string
+          id: string
+          recommended_user_id: string
+          recommender_id: string
+          status: string | null
+          updated_at: string
+          visibility: string | null
+        }
+        Insert: {
+          content: string
+          context_id?: string | null
+          context_type?: string
+          created_at?: string
+          id?: string
+          recommended_user_id: string
+          recommender_id: string
+          status?: string | null
+          updated_at?: string
+          visibility?: string | null
+        }
+        Update: {
+          content?: string
+          context_id?: string | null
+          context_type?: string
+          created_at?: string
+          id?: string
+          recommended_user_id?: string
+          recommender_id?: string
+          status?: string | null
+          updated_at?: string
+          visibility?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendations_recommended_user_id_fkey"
+            columns: ["recommended_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendations_recommender_id_fkey"
+            columns: ["recommender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       regional_governance: {
         Row: {
@@ -4202,6 +4418,127 @@ export type Database = {
           },
         ]
       }
+      saved_searches: {
+        Row: {
+          created_at: string
+          filters: Json | null
+          id: string
+          last_used_at: string
+          query_text: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          filters?: Json | null
+          id?: string
+          last_used_at?: string
+          query_text: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          filters?: Json | null
+          id?: string
+          last_used_at?: string
+          query_text?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_searches_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      search_events: {
+        Row: {
+          created_at: string
+          entity_clicked: string | null
+          entity_type_clicked: string | null
+          filters: Json | null
+          id: string
+          query: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          entity_clicked?: string | null
+          entity_type_clicked?: string | null
+          filters?: Json | null
+          id?: string
+          query: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          entity_clicked?: string | null
+          entity_type_clicked?: string | null
+          filters?: Json | null
+          id?: string
+          query?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "search_events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      search_index: {
+        Row: {
+          description: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          organization_id: string | null
+          searchable_text: unknown
+          skills: string[] | null
+          tags: string[] | null
+          title: string
+          trust_score_snapshot: number | null
+          university: string | null
+          updated_at: string
+          visibility: string | null
+        }
+        Insert: {
+          description?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          organization_id?: string | null
+          searchable_text?: unknown
+          skills?: string[] | null
+          tags?: string[] | null
+          title: string
+          trust_score_snapshot?: number | null
+          university?: string | null
+          updated_at?: string
+          visibility?: string | null
+        }
+        Update: {
+          description?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          organization_id?: string | null
+          searchable_text?: unknown
+          skills?: string[] | null
+          tags?: string[] | null
+          title?: string
+          trust_score_snapshot?: number | null
+          university?: string | null
+          updated_at?: string
+          visibility?: string | null
+        }
+        Relationships: []
+      }
       service_abstractions: {
         Row: {
           abstraction_interface: string
@@ -4246,6 +4583,45 @@ export type Database = {
           vendor_lock_in_risk?: string | null
         }
         Relationships: []
+      }
+      skill_endorsements: {
+        Row: {
+          created_at: string
+          endorsement_strength: number | null
+          endorser_id: string
+          id: string
+          user_skill_id: string
+        }
+        Insert: {
+          created_at?: string
+          endorsement_strength?: number | null
+          endorser_id: string
+          id?: string
+          user_skill_id: string
+        }
+        Update: {
+          created_at?: string
+          endorsement_strength?: number | null
+          endorser_id?: string
+          id?: string
+          user_skill_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "skill_endorsements_endorser_id_fkey"
+            columns: ["endorser_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "skill_endorsements_user_skill_id_fkey"
+            columns: ["user_skill_id"]
+            isOneToOne: false
+            referencedRelation: "user_skills"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       student_cohorts: {
         Row: {
@@ -4727,6 +5103,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_connections: {
+        Row: {
+          connected_at: string
+          connection_strength: number | null
+          id: string
+          user_a_id: string
+          user_b_id: string
+        }
+        Insert: {
+          connected_at?: string
+          connection_strength?: number | null
+          id?: string
+          user_a_id: string
+          user_b_id: string
+        }
+        Update: {
+          connected_at?: string
+          connection_strength?: number | null
+          id?: string
+          user_a_id?: string
+          user_b_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_connections_user_a_id_fkey"
+            columns: ["user_a_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_connections_user_b_id_fkey"
+            columns: ["user_b_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_consents: {
         Row: {
           consent_type: string
@@ -4891,6 +5306,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_skills: {
+        Row: {
+          created_at: string
+          endorsement_count: number | null
+          id: string
+          is_featured: boolean | null
+          proficiency_level: string
+          skill_category: string
+          skill_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          endorsement_count?: number | null
+          id?: string
+          is_featured?: boolean | null
+          proficiency_level?: string
+          skill_category?: string
+          skill_name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          endorsement_count?: number | null
+          id?: string
+          is_featured?: boolean | null
+          proficiency_level?: string
+          skill_category?: string
+          skill_name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_skills_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_subscriptions: {
         Row: {
@@ -5221,6 +5677,14 @@ export type Database = {
         Returns: string
       }
       generate_credential_verification_code: { Args: never; Returns: string }
+      get_connection_degree: {
+        Args: { source_user: string; target_user: string }
+        Returns: number
+      }
+      get_mutual_connections_count: {
+        Args: { user_a: string; user_b: string }
+        Returns: number
+      }
       get_platform_fee: {
         Args: { p_amount: number; p_user_id: string }
         Returns: number
