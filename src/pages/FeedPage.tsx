@@ -12,9 +12,7 @@ import {
   OutcomeFeedCard,
   OutcomeFeedSkeleton,
   EmptyOutcomeFeed,
-  ProofProfileCard,
   WorkGraphCard,
-  TrustEngineDisplay,
 } from "@/components/outcome";
 import {
   RealityFeedCard,
@@ -22,6 +20,7 @@ import {
   EmptyRealityFeed,
   ConsequenceLedgerCard,
 } from "@/components/accountability";
+import { ProfileReadinessCard } from "@/components/opportunity";
 import {
   Briefcase,
   Award,
@@ -112,8 +111,8 @@ export default function FeedPage() {
           {/* Left Sidebar - Consequence Ledger Summary */}
           <aside className="hidden lg:block lg:col-span-3">
             <div className="sticky top-20 space-y-4">
-              {/* Compact Consequence Ledger */}
-              <ConsequenceLedgerCard ledger={ledger || null} isCompact />
+              {/* Profile Readiness */}
+              <ProfileReadinessCard compact />
 
               {/* Trust Tier Badge */}
               <Card className="border-primary/20 bg-primary/5">
@@ -129,8 +128,8 @@ export default function FeedPage() {
                 </CardContent>
               </Card>
 
-              {/* Compact Work Graph */}
-              <WorkGraphCard connections={connections} isCompact />
+              {/* Compact Consequence Ledger */}
+              <ConsequenceLedgerCard ledger={ledger || null} isCompact />
             </div>
           </aside>
 
