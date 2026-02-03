@@ -1,5 +1,9 @@
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { QuickStats } from "@/components/admin/QuickStats";
+import { SystemHealthPanel } from "@/components/admin/SystemHealthPanel";
+import { ActionQueuePanel } from "@/components/admin/ActionQueuePanel";
+import { RecentAuditActivity } from "@/components/admin/RecentAuditActivity";
+import { GrowthMetricsPanel } from "@/components/admin/GrowthMetricsPanel";
 import { useAdminStats } from "@/hooks/useAdminStats";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,7 +16,9 @@ import {
   DollarSign, 
   Flag, 
   ArrowRight,
-  AlertCircle
+  AlertCircle,
+  Wallet,
+  Scale
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -24,6 +30,10 @@ export default function AdminPortalPage() {
     { title: "Active Subscriptions", value: stats.activeSubscriptions, icon: Wrench, color: "green" as const },
     { title: "Pending Verifications", value: stats.pendingVerifications, icon: ShieldCheck, color: "yellow" as const },
     { title: "Revenue (MTD)", value: `$${stats.revenueThisMonth.toLocaleString()}`, icon: DollarSign, color: "primary" as const },
+    { title: "Escrow Balance", value: `$${stats.totalEscrowBalance.toLocaleString()}`, icon: Wallet, color: "blue" as const },
+    { title: "Open Disputes", value: stats.openDisputes, icon: Scale, color: "red" as const },
+    { title: "Active Projects", value: stats.activeProjects, icon: Briefcase, color: "green" as const },
+    { title: "Pending Reports", value: stats.pendingReports, icon: Flag, color: "yellow" as const },
   ];
 
   const actionCards = [
@@ -74,6 +84,8 @@ export default function AdminPortalPage() {
       description: "Handle user reports and moderation",
       icon: Flag,
       href: "/admin/reports",
+      badge: stats.pendingReports > 0 ? stats.pendingReports : undefined,
+      badgeVariant: stats.pendingReports > 0 ? "destructive" : "secondary",
       color: "red",
     },
   ];
@@ -89,15 +101,15 @@ export default function AdminPortalPage() {
           </p>
         </div>
 
-        {/* Quick Stats */}
+        {/* Quick Stats - 8 cards in 2 rows */}
         <QuickStats stats={quickStats} loading={loading} />
 
         {/* Alerts */}
-        {(stats.pendingVerifications > 0 || stats.openDisputes > 0) && (
-          <Card className="border-yellow-500/50 bg-yellow-500/5">
+        {(stats.pendingVerifications > 0 || stats.openDisputes > 0 || stats.pendingReports > 0) && (
+          <Card className="border-amber-500/50 bg-amber-500/5">
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
-                <AlertCircle className="h-5 w-5 text-yellow-500 mt-0.5" />
+                <AlertCircle className="h-5 w-5 text-amber-500 mt-0.5" />
                 <div>
                   <p className="font-medium">Action Required</p>
                   <ul className="text-sm text-muted-foreground mt-1 space-y-1">
@@ -107,12 +119,25 @@ export default function AdminPortalPage() {
                     {stats.openDisputes > 0 && (
                       <li>{stats.openDisputes} dispute(s) need resolution</li>
                     )}
+                    {stats.pendingReports > 0 && (
+                      <li>{stats.pendingReports} report(s) require attention</li>
+                    )}
                   </ul>
                 </div>
               </div>
             </CardContent>
           </Card>
         )}
+
+        {/* Main Grid - System Health, Action Queue, Audit Activity */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <SystemHealthPanel />
+          <ActionQueuePanel />
+          <RecentAuditActivity />
+        </div>
+
+        {/* Growth Metrics */}
+        <GrowthMetricsPanel />
 
         {/* Action Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -163,6 +188,9 @@ export default function AdminPortalPage() {
             </Button>
             <Button asChild variant="outline">
               <Link to="/admin/verifications">Review Verifications</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/admin/audit">View Audit Log</Link>
             </Button>
           </CardContent>
         </Card>
