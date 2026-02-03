@@ -1,3 +1,4 @@
+export { LearningProgressPanel } from "./LearningProgressPanel";
 export { ProgressDashboard } from "./ProgressDashboard";
 export { TrustTrajectoryChart } from "./TrustTrajectoryChart";
 export { FailureRecoveryPanel } from "./FailureRecoveryPanel";
