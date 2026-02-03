@@ -24,6 +24,8 @@ import { formatDistanceToNow } from "date-fns";
 import { AffiliateApplicationForm } from "@/components/affiliate/AffiliateApplicationForm";
 import { EligibilityStatus } from "@/components/affiliate/EligibilityStatus";
 import { ApplicationStatus } from "@/components/affiliate/ApplicationStatus";
+import { AffiliateStatusBanner, AffiliateStatusIndicator } from "@/components/affiliate/AffiliateStatusBanner";
+import { TrustCommissionCard } from "@/components/affiliate/TrustCommissionCard";
 
 export default function AffiliateDashboardPage() {
   const { user } = useAuth();
@@ -261,6 +263,8 @@ export default function AffiliateDashboardPage() {
   }
 
   const generalLink = generateReferralLink(affiliate.referral_code);
+  const lifecycleStatus = affiliate.lifecycle_status || affiliate.status || "active";
+  const isRestricted = lifecycleStatus === "paused" || lifecycleStatus === "revoked" || lifecycleStatus === "suspended";
 
   return (
     <MainLayout>
@@ -272,34 +276,43 @@ export default function AffiliateDashboardPage() {
               <div>
                 <h1 className="text-3xl font-bold text-foreground">Affiliate Dashboard</h1>
                 <p className="text-muted-foreground mt-1">
-                  Earn by sharing tools and services with your network
+                  {isRestricted 
+                    ? "Your affiliate account has restrictions" 
+                    : "Earn by sharing tools and services with your network"
+                  }
                 </p>
               </div>
-              <Badge variant={affiliate.status === "active" ? "default" : "secondary"} className="capitalize">
-                {affiliate.status || "Pending"} Affiliate
-              </Badge>
+              <AffiliateStatusIndicator status={lifecycleStatus} />
             </div>
           </div>
 
-          {/* Referral Link Section */}
-          <Card className="mb-8 border-primary/20 bg-primary/5">
+          {/* Status Banner for paused/revoked */}
+          <AffiliateStatusBanner affiliate={affiliate} />
+
+          {/* Referral Link Section - disabled when restricted */}
+          <Card className={`mb-8 ${isRestricted ? "border-muted bg-muted/30 opacity-75" : "border-primary/20 bg-primary/5"}`}>
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row md:items-center gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <LinkIcon className="h-5 w-5 text-primary" />
+                    <LinkIcon className={`h-5 w-5 ${isRestricted ? "text-muted-foreground" : "text-primary"}`} />
                     <span className="font-semibold">Your Referral Link</span>
+                    {isRestricted && (
+                      <Badge variant="secondary" className="text-xs">Inactive</Badge>
+                    )}
                   </div>
                   <div className="flex items-center gap-2">
                     <Input 
-                      value={generalLink} 
+                      value={isRestricted ? "Link deactivated - account restricted" : generalLink}
                       readOnly 
                       className="bg-background font-mono text-sm"
+                      disabled={isRestricted}
                     />
                     <Button
                       variant="outline"
                       size="icon"
                       onClick={() => copyToClipboard(generalLink, "Referral link")}
+                      disabled={isRestricted}
                     >
                       <Copy className="h-4 w-4" />
                     </Button>
@@ -309,11 +322,11 @@ export default function AffiliateDashboardPage() {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" className="gap-2">
+                  <Button variant="outline" className="gap-2" disabled={isRestricted}>
                     <Share2 className="h-4 w-4" />
                     Share
                   </Button>
-                  <Button className="gap-2" asChild>
+                  <Button className="gap-2" asChild disabled={isRestricted}>
                     <Link to="/affiliate/assets">
                       <ExternalLink className="h-4 w-4" />
                       Promo Assets
@@ -411,30 +424,10 @@ export default function AffiliateDashboardPage() {
             </Card>
           </div>
 
-          {/* Commission Rates Card */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <DollarSign className="h-5 w-5" />
-                Commission Rates
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {commissionRules.map(rule => (
-                  <div key={rule.id} className="p-4 rounded-lg border bg-card">
-                    <p className="text-sm text-muted-foreground">{rule.name}</p>
-                    <p className="text-2xl font-bold text-primary">
-                      {affiliate.custom_commission_rate || rule.commissionRate}%
-                    </p>
-                    {rule.firstPurchaseBonus > 0 && (
-                      <p className="text-xs text-green-500">+PKR {(rule.firstPurchaseBonus * 280).toLocaleString()} first purchase</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          {/* Trust-Weighted Commission Card */}
+          <div className="mb-8">
+            <TrustCommissionCard affiliate={affiliate} />
+          </div>
 
           {/* Trust Status & Violations Warning */}
           {violations.length > 0 && (
