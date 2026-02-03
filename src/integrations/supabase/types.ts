@@ -14,6 +14,83 @@ export type Database = {
   }
   public: {
     Tables: {
+      academic_records: {
+        Row: {
+          created_at: string
+          description: string | null
+          end_date: string | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          institution_id: string | null
+          is_public: boolean
+          metadata: Json | null
+          record_type: string
+          skills_demonstrated: string[] | null
+          start_date: string | null
+          supervisor_id: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          verification_hash: string | null
+          verification_status: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          institution_id?: string | null
+          is_public?: boolean
+          metadata?: Json | null
+          record_type: string
+          skills_demonstrated?: string[] | null
+          start_date?: string | null
+          supervisor_id?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          verification_hash?: string | null
+          verification_status?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          institution_id?: string | null
+          is_public?: boolean
+          metadata?: Json | null
+          record_type?: string
+          skills_demonstrated?: string[] | null
+          start_date?: string | null
+          supervisor_id?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          verification_hash?: string | null
+          verification_status?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academic_records_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       admin_audit_logs: {
         Row: {
           action: string
@@ -166,6 +243,54 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_bias_monitoring: {
+        Row: {
+          ai_capability: string
+          bias_indicators: Json | null
+          created_at: string
+          demographic_breakdown: Json | null
+          fairness_score: number | null
+          id: string
+          monitoring_period_end: string
+          monitoring_period_start: string
+          outcome_distribution: Json | null
+          recommendations: string[] | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          total_decisions: number
+        }
+        Insert: {
+          ai_capability: string
+          bias_indicators?: Json | null
+          created_at?: string
+          demographic_breakdown?: Json | null
+          fairness_score?: number | null
+          id?: string
+          monitoring_period_end: string
+          monitoring_period_start: string
+          outcome_distribution?: Json | null
+          recommendations?: string[] | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          total_decisions: number
+        }
+        Update: {
+          ai_capability?: string
+          bias_indicators?: Json | null
+          created_at?: string
+          demographic_breakdown?: Json | null
+          fairness_score?: number | null
+          id?: string
+          monitoring_period_end?: string
+          monitoring_period_start?: string
+          outcome_distribution?: Json | null
+          recommendations?: string[] | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          total_decisions?: number
+        }
+        Relationships: []
+      }
       ai_credit_packs: {
         Row: {
           bonus_credits: number
@@ -251,6 +376,312 @@ export type Database = {
           status?: string
         }
         Relationships: []
+      }
+      contract_usage: {
+        Row: {
+          additional_metrics: Json | null
+          ai_credits_used: number | null
+          api_calls: number | null
+          contract_id: string
+          created_at: string
+          id: string
+          reports_generated: number | null
+          storage_used_mb: number | null
+          usage_period_end: string
+          usage_period_start: string
+          users_active: number | null
+        }
+        Insert: {
+          additional_metrics?: Json | null
+          ai_credits_used?: number | null
+          api_calls?: number | null
+          contract_id: string
+          created_at?: string
+          id?: string
+          reports_generated?: number | null
+          storage_used_mb?: number | null
+          usage_period_end: string
+          usage_period_start: string
+          users_active?: number | null
+        }
+        Update: {
+          additional_metrics?: Json | null
+          ai_credits_used?: number | null
+          api_calls?: number | null
+          contract_id?: string
+          created_at?: string
+          id?: string
+          reports_generated?: number | null
+          storage_used_mb?: number | null
+          usage_period_end?: string
+          usage_period_start?: string
+          users_active?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_usage_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "infrastructure_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      country_policies: {
+        Row: {
+          compliance_notes: string | null
+          country_code: string
+          country_name: string
+          created_at: string
+          data_residency_required: boolean
+          government_integration_enabled: boolean
+          id: string
+          identity_verification_required: boolean
+          is_enabled: boolean
+          min_age_requirement: number | null
+          payment_enabled: boolean
+          special_restrictions: Json | null
+          tax_compliance_required: boolean
+          tax_rate_percentage: number | null
+          updated_at: string
+        }
+        Insert: {
+          compliance_notes?: string | null
+          country_code: string
+          country_name: string
+          created_at?: string
+          data_residency_required?: boolean
+          government_integration_enabled?: boolean
+          id?: string
+          identity_verification_required?: boolean
+          is_enabled?: boolean
+          min_age_requirement?: number | null
+          payment_enabled?: boolean
+          special_restrictions?: Json | null
+          tax_compliance_required?: boolean
+          tax_rate_percentage?: number | null
+          updated_at?: string
+        }
+        Update: {
+          compliance_notes?: string | null
+          country_code?: string
+          country_name?: string
+          created_at?: string
+          data_residency_required?: boolean
+          government_integration_enabled?: boolean
+          id?: string
+          identity_verification_required?: boolean
+          is_enabled?: boolean
+          min_age_requirement?: number | null
+          payment_enabled?: boolean
+          special_restrictions?: Json | null
+          tax_compliance_required?: boolean
+          tax_rate_percentage?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      credential_verifications: {
+        Row: {
+          created_at: string
+          credential_id: string
+          id: string
+          ip_address: string | null
+          user_agent: string | null
+          verification_method: string
+          verification_result: boolean | null
+          verifier_email: string | null
+          verifier_organization: string | null
+        }
+        Insert: {
+          created_at?: string
+          credential_id: string
+          id?: string
+          ip_address?: string | null
+          user_agent?: string | null
+          verification_method: string
+          verification_result?: boolean | null
+          verifier_email?: string | null
+          verifier_organization?: string | null
+        }
+        Update: {
+          created_at?: string
+          credential_id?: string
+          id?: string
+          ip_address?: string | null
+          user_agent?: string | null
+          verification_method?: string
+          verification_result?: boolean | null
+          verifier_email?: string | null
+          verifier_organization?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credential_verifications_credential_id_fkey"
+            columns: ["credential_id"]
+            isOneToOne: false
+            referencedRelation: "digital_credentials"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      data_access_requests: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          processed_at: string | null
+          processed_by: string | null
+          request_type: string
+          requested_at: string
+          response_file_url: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          processed_at?: string | null
+          processed_by?: string | null
+          request_type: string
+          requested_at?: string
+          response_file_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          processed_at?: string | null
+          processed_by?: string | null
+          request_type?: string
+          requested_at?: string
+          response_file_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      data_escrow: {
+        Row: {
+          created_at: string
+          encryption_key_holder: string | null
+          escrow_provider: string
+          escrow_type: string
+          id: string
+          is_active: boolean
+          last_sync_at: string | null
+          metadata: Json | null
+          retention_years: number
+          sync_frequency_hours: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          encryption_key_holder?: string | null
+          escrow_provider: string
+          escrow_type: string
+          id?: string
+          is_active?: boolean
+          last_sync_at?: string | null
+          metadata?: Json | null
+          retention_years?: number
+          sync_frequency_hours?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          encryption_key_holder?: string | null
+          escrow_provider?: string
+          escrow_type?: string
+          id?: string
+          is_active?: boolean
+          last_sync_at?: string | null
+          metadata?: Json | null
+          retention_years?: number
+          sync_frequency_hours?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      digital_credentials: {
+        Row: {
+          created_at: string
+          credential_data: Json | null
+          credential_type: string
+          description: string | null
+          expiry_date: string | null
+          id: string
+          is_revoked: boolean
+          issue_date: string
+          issuer_id: string | null
+          issuer_name: string
+          issuer_type: string
+          related_record_id: string | null
+          revoked_at: string | null
+          revoked_reason: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          verification_code: string
+          verification_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          credential_data?: Json | null
+          credential_type: string
+          description?: string | null
+          expiry_date?: string | null
+          id?: string
+          is_revoked?: boolean
+          issue_date: string
+          issuer_id?: string | null
+          issuer_name: string
+          issuer_type: string
+          related_record_id?: string | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          verification_code: string
+          verification_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          credential_data?: Json | null
+          credential_type?: string
+          description?: string | null
+          expiry_date?: string | null
+          id?: string
+          is_revoked?: boolean
+          issue_date?: string
+          issuer_id?: string | null
+          issuer_name?: string
+          issuer_type?: string
+          related_record_id?: string | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          verification_code?: string
+          verification_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "digital_credentials_related_record_id_fkey"
+            columns: ["related_record_id"]
+            isOneToOne: false
+            referencedRelation: "academic_records"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       disputes: {
         Row: {
@@ -525,6 +956,484 @@ export type Database = {
           },
         ]
       }
+      governance_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          created_at: string
+          emergency_contact_info: Json | null
+          expires_at: string | null
+          governance_role_id: string
+          id: string
+          is_active: boolean
+          succession_priority: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          created_at?: string
+          emergency_contact_info?: Json | null
+          expires_at?: string | null
+          governance_role_id: string
+          id?: string
+          is_active?: boolean
+          succession_priority?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          created_at?: string
+          emergency_contact_info?: Json | null
+          expires_at?: string | null
+          governance_role_id?: string
+          id?: string
+          is_active?: boolean
+          succession_priority?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_assignments_governance_role_id_fkey"
+            columns: ["governance_role_id"]
+            isOneToOne: false
+            referencedRelation: "governance_roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      governance_roles: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          max_holders: number | null
+          permissions: Json
+          requires_mfa: boolean
+          role_level: number
+          role_name: string
+          succession_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          max_holders?: number | null
+          permissions?: Json
+          requires_mfa?: boolean
+          role_level: number
+          role_name: string
+          succession_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          max_holders?: number | null
+          permissions?: Json
+          requires_mfa?: boolean
+          role_level?: number
+          role_name?: string
+          succession_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      government_bodies: {
+        Row: {
+          access_restrictions: Json | null
+          agreement_signed_at: string | null
+          api_access_level: string
+          body_type: string
+          contact_email: string | null
+          contact_name: string | null
+          country: string
+          created_at: string
+          data_sharing_agreement_id: string | null
+          id: string
+          integration_status: string
+          mou_document_url: string | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          access_restrictions?: Json | null
+          agreement_signed_at?: string | null
+          api_access_level?: string
+          body_type: string
+          contact_email?: string | null
+          contact_name?: string | null
+          country: string
+          created_at?: string
+          data_sharing_agreement_id?: string | null
+          id?: string
+          integration_status?: string
+          mou_document_url?: string | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          access_restrictions?: Json | null
+          agreement_signed_at?: string | null
+          api_access_level?: string
+          body_type?: string
+          contact_email?: string | null
+          contact_name?: string | null
+          country?: string
+          created_at?: string
+          data_sharing_agreement_id?: string | null
+          id?: string
+          integration_status?: string
+          mou_document_url?: string | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      government_report_executions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          execution_status: string
+          file_size_bytes: number | null
+          file_url: string | null
+          id: string
+          parameters_snapshot: Json | null
+          report_id: string
+          requested_by: string | null
+          started_at: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          execution_status?: string
+          file_size_bytes?: number | null
+          file_url?: string | null
+          id?: string
+          parameters_snapshot?: Json | null
+          report_id: string
+          requested_by?: string | null
+          started_at?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          execution_status?: string
+          file_size_bytes?: number | null
+          file_url?: string | null
+          id?: string
+          parameters_snapshot?: Json | null
+          report_id?: string
+          requested_by?: string | null
+          started_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "government_report_executions_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "government_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      government_reports: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          format: string
+          government_body_id: string
+          id: string
+          is_active: boolean
+          last_generated_at: string | null
+          next_scheduled_at: string | null
+          parameters: Json | null
+          report_name: string
+          report_type: string
+          schedule: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          format?: string
+          government_body_id: string
+          id?: string
+          is_active?: boolean
+          last_generated_at?: string | null
+          next_scheduled_at?: string | null
+          parameters?: Json | null
+          report_name: string
+          report_type: string
+          schedule?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          format?: string
+          government_body_id?: string
+          id?: string
+          is_active?: boolean
+          last_generated_at?: string | null
+          next_scheduled_at?: string | null
+          parameters?: Json | null
+          report_name?: string
+          report_type?: string
+          schedule?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "government_reports_government_body_id_fkey"
+            columns: ["government_body_id"]
+            isOneToOne: false
+            referencedRelation: "government_bodies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      government_users: {
+        Row: {
+          created_at: string
+          email: string
+          government_body_id: string
+          id: string
+          is_active: boolean
+          last_access_at: string | null
+          name: string
+          permissions: Json | null
+          role: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          government_body_id: string
+          id?: string
+          is_active?: boolean
+          last_access_at?: string | null
+          name: string
+          permissions?: Json | null
+          role?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          government_body_id?: string
+          id?: string
+          is_active?: boolean
+          last_access_at?: string | null
+          name?: string
+          permissions?: Json | null
+          role?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "government_users_government_body_id_fkey"
+            columns: ["government_body_id"]
+            isOneToOne: false
+            referencedRelation: "government_bodies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      infrastructure_contracts: {
+        Row: {
+          auto_renew: boolean
+          billing_cycle: string | null
+          contract_type: string
+          contract_value: number | null
+          country_code: string | null
+          created_at: string
+          currency: string
+          end_date: string | null
+          entity_id: string | null
+          entity_name: string
+          entity_type: string
+          id: string
+          services_included: Json | null
+          signed_at: string | null
+          signed_by: string | null
+          start_date: string
+          status: string
+          terms_document_url: string | null
+          updated_at: string
+          usage_limits: Json | null
+        }
+        Insert: {
+          auto_renew?: boolean
+          billing_cycle?: string | null
+          contract_type: string
+          contract_value?: number | null
+          country_code?: string | null
+          created_at?: string
+          currency?: string
+          end_date?: string | null
+          entity_id?: string | null
+          entity_name: string
+          entity_type: string
+          id?: string
+          services_included?: Json | null
+          signed_at?: string | null
+          signed_by?: string | null
+          start_date: string
+          status?: string
+          terms_document_url?: string | null
+          updated_at?: string
+          usage_limits?: Json | null
+        }
+        Update: {
+          auto_renew?: boolean
+          billing_cycle?: string | null
+          contract_type?: string
+          contract_value?: number | null
+          country_code?: string | null
+          created_at?: string
+          currency?: string
+          end_date?: string | null
+          entity_id?: string | null
+          entity_name?: string
+          entity_type?: string
+          id?: string
+          services_included?: Json | null
+          signed_at?: string | null
+          signed_by?: string | null
+          start_date?: string
+          status?: string
+          terms_document_url?: string | null
+          updated_at?: string
+          usage_limits?: Json | null
+        }
+        Relationships: []
+      }
+      institution_partnerships: {
+        Row: {
+          agreement_end_date: string | null
+          agreement_start_date: string | null
+          created_at: string
+          id: string
+          institution_a_id: string
+          institution_b_id: string
+          is_active: boolean
+          partnership_type: string
+          terms: Json | null
+        }
+        Insert: {
+          agreement_end_date?: string | null
+          agreement_start_date?: string | null
+          created_at?: string
+          id?: string
+          institution_a_id: string
+          institution_b_id: string
+          is_active?: boolean
+          partnership_type: string
+          terms?: Json | null
+        }
+        Update: {
+          agreement_end_date?: string | null
+          agreement_start_date?: string | null
+          created_at?: string
+          id?: string
+          institution_a_id?: string
+          institution_b_id?: string
+          is_active?: boolean
+          partnership_type?: string
+          terms?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_partnerships_institution_a_id_fkey"
+            columns: ["institution_a_id"]
+            isOneToOne: false
+            referencedRelation: "international_institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "institution_partnerships_institution_b_id_fkey"
+            columns: ["institution_b_id"]
+            isOneToOne: false
+            referencedRelation: "international_institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      international_institutions: {
+        Row: {
+          accreditation_status: string | null
+          city: string | null
+          country_code: string
+          created_at: string
+          id: string
+          institution_type: string
+          local_org_id: string | null
+          metadata: Json | null
+          name: string
+          ranking_tier: string | null
+          updated_at: string
+          verified: boolean
+          verified_at: string | null
+          website_url: string | null
+        }
+        Insert: {
+          accreditation_status?: string | null
+          city?: string | null
+          country_code: string
+          created_at?: string
+          id?: string
+          institution_type: string
+          local_org_id?: string | null
+          metadata?: Json | null
+          name: string
+          ranking_tier?: string | null
+          updated_at?: string
+          verified?: boolean
+          verified_at?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          accreditation_status?: string | null
+          city?: string | null
+          country_code?: string
+          created_at?: string
+          id?: string
+          institution_type?: string
+          local_org_id?: string | null
+          metadata?: Json | null
+          name?: string
+          ranking_tier?: string | null
+          updated_at?: string
+          verified?: boolean
+          verified_at?: string | null
+          website_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "international_institutions_local_org_id_fkey"
+            columns: ["local_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       message_threads: {
         Row: {
           archived_by_user_a: boolean | null
@@ -687,6 +1596,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      national_insights: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          confidence_score: number | null
+          country_code: string | null
+          created_at: string
+          data_sources: Json | null
+          detailed_analysis: string | null
+          generated_by: string
+          id: string
+          insight_type: string
+          is_public: boolean
+          recommendations: Json | null
+          summary: string
+          title: string
+          updated_at: string
+          valid_from: string | null
+          valid_until: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          confidence_score?: number | null
+          country_code?: string | null
+          created_at?: string
+          data_sources?: Json | null
+          detailed_analysis?: string | null
+          generated_by?: string
+          id?: string
+          insight_type: string
+          is_public?: boolean
+          recommendations?: Json | null
+          summary: string
+          title: string
+          updated_at?: string
+          valid_from?: string | null
+          valid_until?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          confidence_score?: number | null
+          country_code?: string | null
+          created_at?: string
+          data_sources?: Json | null
+          detailed_analysis?: string | null
+          generated_by?: string
+          id?: string
+          insight_type?: string
+          is_public?: boolean
+          recommendations?: Json | null
+          summary?: string
+          title?: string
+          updated_at?: string
+          valid_from?: string | null
+          valid_until?: string | null
+        }
+        Relationships: []
       }
       notifications: {
         Row: {
@@ -1998,6 +2967,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_consents: {
+        Row: {
+          consent_type: string
+          created_at: string
+          granted: boolean
+          granted_at: string | null
+          id: string
+          ip_address: string | null
+          user_agent: string | null
+          user_id: string
+          version: string
+          withdrawn_at: string | null
+        }
+        Insert: {
+          consent_type: string
+          created_at?: string
+          granted: boolean
+          granted_at?: string | null
+          id?: string
+          ip_address?: string | null
+          user_agent?: string | null
+          user_id: string
+          version: string
+          withdrawn_at?: string | null
+        }
+        Update: {
+          consent_type?: string
+          created_at?: string
+          granted?: boolean
+          granted_at?: string | null
+          id?: string
+          ip_address?: string | null
+          user_agent?: string | null
+          user_id?: string
+          version?: string
+          withdrawn_at?: string | null
+        }
+        Relationships: []
+      }
       user_drafts: {
         Row: {
           auto_saved: boolean
@@ -2401,6 +3409,11 @@ export type Database = {
         Args: { p_action_type: string; p_user_id: string }
         Returns: boolean
       }
+      create_academic_record_from_offer: {
+        Args: { p_offer_id: string }
+        Returns: string
+      }
+      generate_credential_verification_code: { Args: never; Returns: string }
       get_platform_fee: {
         Args: { p_amount: number; p_user_id: string }
         Returns: number
@@ -2435,6 +3448,17 @@ export type Database = {
       is_user_restricted: {
         Args: { p_restriction_type?: string; p_user_id: string }
         Returns: boolean
+      }
+      issue_digital_credential: {
+        Args: {
+          p_credential_type: string
+          p_issuer_name: string
+          p_issuer_type: string
+          p_related_record_id?: string
+          p_title: string
+          p_user_id: string
+        }
+        Returns: string
       }
       partial_release_milestone: {
         Args: { p_amount: number; p_milestone_id: string; p_reason: string }
