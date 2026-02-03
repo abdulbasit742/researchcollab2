@@ -107,6 +107,7 @@ import OpportunitiesPage from "./pages/OpportunitiesPage";
 import NotificationSettingsPage from "./pages/NotificationSettingsPage";
 import ProgressPage from "./pages/ProgressPage";
 import DealsPage from "./pages/DealsPage";
+import DealDetailPage from "./pages/DealDetailPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -172,6 +173,7 @@ const AppContent = () => {
             <Route path="/settings/notifications" element={<NotificationSettingsPage />} />
             <Route path="/progress" element={<ProgressPage />} />
             <Route path="/deals" element={<DealsPage />} />
+            <Route path="/deals/:dealId" element={<DealDetailPage />} />
             <Route path="/help" element={<HelpCenterPage />} />
             <Route path="/docs" element={<ApiDocsPage />} />
             <Route path="/pricing" element={<PricingPage />} />

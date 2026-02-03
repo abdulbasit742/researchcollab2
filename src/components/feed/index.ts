@@ -1,5 +1,8 @@
 export { PostComposer } from "./PostComposer";
 export { FeedPostCard } from "./FeedPostCard";
+export { CredibilityFeedCard } from "./CredibilityFeedCard";
+export { ProfessionalReactionBar } from "./ProfessionalReactionBar";
+export { OpportunityBridgeCTAs } from "./OpportunityBridgeCTAs";
 export { CommentThread } from "./CommentThread";
 export { ShareModal } from "./ShareModal";
 export { ReportPostModal } from "./ReportPostModal";
