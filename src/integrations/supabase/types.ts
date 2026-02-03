@@ -16387,6 +16387,17 @@ export type Database = {
         }
         Returns: string
       }
+      log_platform_event: {
+        Args: {
+          _context?: Json
+          _entity_id?: string
+          _entity_type?: string
+          _event_type: string
+          _severity?: string
+          _user_id?: string
+        }
+        Returns: string
+      }
       partial_release_milestone: {
         Args: { p_amount: number; p_milestone_id: string; p_reason: string }
         Returns: boolean
