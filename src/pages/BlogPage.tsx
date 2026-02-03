@@ -173,9 +173,11 @@ export default function BlogPage() {
                     {blogPosts[0].readTime}
                   </div>
                 </div>
-                <Button className="w-fit">
-                  Read Article
-                  <ArrowRight className="h-4 w-4" />
+                <Button className="w-fit" asChild>
+                  <Link to={`/blog/${blogPosts[0].id}`}>
+                    Read Article
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -191,36 +193,38 @@ export default function BlogPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card variant="interactive" className="h-full flex flex-col overflow-hidden">
-                <div className="aspect-video">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <CardHeader className="pb-2">
-                  <Badge variant="secondary" className="w-fit mb-2">
-                    {post.category}
-                  </Badge>
-                  <CardTitle className="text-lg line-clamp-2">{post.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-1">
-                  <CardDescription className="line-clamp-2">
-                    {post.excerpt}
-                  </CardDescription>
-                </CardContent>
-                <CardFooter className="flex items-center justify-between text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <User className="h-3 w-3" />
-                    {post.author}
+              <Link to={`/blog/${post.id}`} className="block h-full">
+                <Card variant="interactive" className="h-full flex flex-col overflow-hidden cursor-pointer">
+                  <div className="aspect-video">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    {post.readTime}
-                  </div>
-                </CardFooter>
-              </Card>
+                  <CardHeader className="pb-2">
+                    <Badge variant="secondary" className="w-fit mb-2">
+                      {post.category}
+                    </Badge>
+                    <CardTitle className="text-lg line-clamp-2">{post.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1">
+                    <CardDescription className="line-clamp-2">
+                      {post.excerpt}
+                    </CardDescription>
+                  </CardContent>
+                  <CardFooter className="flex items-center justify-between text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <User className="h-3 w-3" />
+                      {post.author}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      {post.readTime}
+                    </div>
+                  </CardFooter>
+                </Card>
+              </Link>
             </motion.div>
           ))}
         </div>
