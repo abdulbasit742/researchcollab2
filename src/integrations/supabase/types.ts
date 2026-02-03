@@ -4887,6 +4887,81 @@ export type Database = {
         }
         Relationships: []
       }
+      feature_flag_audits: {
+        Row: {
+          action: string
+          admin_id: string | null
+          created_at: string
+          feature_key: string
+          id: string
+          new_state: Json | null
+          previous_state: Json | null
+          reason: string | null
+        }
+        Insert: {
+          action: string
+          admin_id?: string | null
+          created_at?: string
+          feature_key: string
+          id?: string
+          new_state?: Json | null
+          previous_state?: Json | null
+          reason?: string | null
+        }
+        Update: {
+          action?: string
+          admin_id?: string | null
+          created_at?: string
+          feature_key?: string
+          id?: string
+          new_state?: Json | null
+          previous_state?: Json | null
+          reason?: string | null
+        }
+        Relationships: []
+      }
+      feature_flags: {
+        Row: {
+          conditions: Json | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          enabled: boolean
+          feature_key: string
+          id: string
+          is_kill_switch: boolean | null
+          priority: number | null
+          scope: string
+          updated_at: string
+        }
+        Insert: {
+          conditions?: Json | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enabled?: boolean
+          feature_key: string
+          id?: string
+          is_kill_switch?: boolean | null
+          priority?: number | null
+          scope?: string
+          updated_at?: string
+        }
+        Update: {
+          conditions?: Json | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enabled?: boolean
+          feature_key?: string
+          id?: string
+          is_kill_switch?: boolean | null
+          priority?: number | null
+          scope?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       featured_listings: {
         Row: {
           amount_paid: number
@@ -13389,6 +13464,86 @@ export type Database = {
           },
         ]
       }
+      schema_changes: {
+        Row: {
+          backward_compatible: boolean
+          change_type: string
+          created_at: string
+          deprecation_deadline: string | null
+          deprecation_notice: string | null
+          id: string
+          new_definition: Json | null
+          old_definition: Json | null
+          schema_version_id: string | null
+          table_name: string | null
+        }
+        Insert: {
+          backward_compatible?: boolean
+          change_type: string
+          created_at?: string
+          deprecation_deadline?: string | null
+          deprecation_notice?: string | null
+          id?: string
+          new_definition?: Json | null
+          old_definition?: Json | null
+          schema_version_id?: string | null
+          table_name?: string | null
+        }
+        Update: {
+          backward_compatible?: boolean
+          change_type?: string
+          created_at?: string
+          deprecation_deadline?: string | null
+          deprecation_notice?: string | null
+          id?: string
+          new_definition?: Json | null
+          old_definition?: Json | null
+          schema_version_id?: string | null
+          table_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schema_changes_schema_version_id_fkey"
+            columns: ["schema_version_id"]
+            isOneToOne: false
+            referencedRelation: "schema_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      schema_versions: {
+        Row: {
+          applied_at: string
+          applied_by: string | null
+          description: string
+          id: string
+          is_active: boolean
+          migration_sql: string | null
+          rollback_sql: string | null
+          version: string
+        }
+        Insert: {
+          applied_at?: string
+          applied_by?: string | null
+          description: string
+          id?: string
+          is_active?: boolean
+          migration_sql?: string | null
+          rollback_sql?: string | null
+          version: string
+        }
+        Update: {
+          applied_at?: string
+          applied_by?: string | null
+          description?: string
+          id?: string
+          is_active?: boolean
+          migration_sql?: string | null
+          rollback_sql?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
       scholar_credentials: {
         Row: {
           created_at: string
@@ -15151,6 +15306,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_feature_overrides: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          enabled: boolean
+          expires_at: string | null
+          feature_key: string
+          id: string
+          reason: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          enabled: boolean
+          expires_at?: string | null
+          feature_key: string
+          id?: string
+          reason?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          enabled?: boolean
+          expires_at?: string | null
+          feature_key?: string
+          id?: string
+          reason?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_follows: {
         Row: {
           created_at: string
@@ -16024,6 +16212,10 @@ export type Database = {
       }
       is_admin: { Args: { check_user_id: string }; Returns: boolean }
       is_blocked: { Args: { user_a: string; user_b: string }; Returns: boolean }
+      is_feature_enabled: {
+        Args: { p_feature_key: string; p_user_id?: string }
+        Returns: boolean
+      }
       is_following: {
         Args: { follower: string; following: string }
         Returns: boolean

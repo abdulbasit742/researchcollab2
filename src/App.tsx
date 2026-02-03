@@ -81,6 +81,8 @@ import AdminGovernancePage from "./pages/admin/AdminGovernancePage";
 import AdminResiliencePage from "./pages/admin/AdminResiliencePage";
 import AdminKnowledgePage from "./pages/admin/AdminKnowledgePage";
 import AdminFeedModerationPage from "./pages/admin/AdminFeedModerationPage";
+import AdminFeatureFlagsPage from "./pages/admin/AdminFeatureFlagsPage";
+import AdminSchemaPage from "./pages/admin/AdminSchemaPage";
 import FeedPage from "./pages/FeedPage";
 import PostDetailPage from "./pages/PostDetailPage";
 import NetworkPage from "./pages/NetworkPage";
@@ -173,6 +175,8 @@ const AppContent = () => {
             <Route path="/admin/resilience" element={<AdminResiliencePage />} />
             <Route path="/admin/knowledge" element={<AdminKnowledgePage />} />
             <Route path="/admin/feed" element={<AdminFeedModerationPage />} />
+            <Route path="/admin/feature-flags" element={<AdminFeatureFlagsPage />} />
+            <Route path="/admin/schema" element={<AdminSchemaPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
