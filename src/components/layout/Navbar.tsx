@@ -19,23 +19,25 @@ import {
   Share2,
   LogOut,
   MessageSquare,
+  Home,
+  Target,
 } from "lucide-react";
 
 const navItems = [
   {
-    label: "Collaborate",
-    href: "/collaborations",
-    icon: Users,
+    label: "Home",
+    href: "/home",
+    icon: Home,
+  },
+  {
+    label: "Opportunities",
+    href: "/offers",
+    icon: Target,
   },
   {
     label: "Matches",
     href: "/matches",
     icon: Heart,
-  },
-  {
-    label: "Smart Matching",
-    href: "/smart-matching",
-    icon: Sparkles,
   },
   {
     label: "AI Tools",
@@ -46,16 +48,6 @@ const navItems = [
     label: "Earn",
     href: "/earn",
     icon: Briefcase,
-  },
-  {
-    label: "Jobs",
-    href: "/earn/jobs",
-    icon: FileText,
-  },
-  {
-    label: "Affiliate",
-    href: "/affiliate",
-    icon: Share2,
   },
   {
     label: "Blog",

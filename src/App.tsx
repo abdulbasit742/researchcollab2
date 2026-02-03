@@ -92,6 +92,7 @@ import AdminAIGovernancePage from "./pages/admin/AdminAIGovernancePage";
 import AdminReproducibilityPage from "./pages/admin/AdminReproducibilityPage";
 import AdminFederationPage from "./pages/admin/AdminFederationPage";
 import FeedPage from "./pages/FeedPage";
+import HomeDashboard from "./pages/HomeDashboard";
 import PostDetailPage from "./pages/PostDetailPage";
 import NetworkPage from "./pages/NetworkPage";
 import SearchPage from "./pages/SearchPage";
@@ -102,6 +103,7 @@ import PressKitPage from "./pages/PressKitPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsOfServicePage from "./pages/TermsOfServicePage";
 import CookiePolicyPage from "./pages/CookiePolicyPage";
+import OpportunitiesPage from "./pages/OpportunitiesPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -114,6 +116,7 @@ const AppContent = () => {
       <ScrollRestoration />
       <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/home" element={<HomeDashboard />} />
             <Route path="/feed" element={<FeedPage />} />
             <Route path="/reality" element={<RealityFeedPage />} />
             <Route path="/opportunities" element={<OutcomeFeedPage />} />
@@ -143,7 +146,7 @@ const AppContent = () => {
             <Route path="/profile/researcher/:id" element={<ResearcherProfilePage />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogArticlePage />} />
-            <Route path="/offers" element={<OffersPage />} />
+            <Route path="/offers" element={<OpportunitiesPage />} />
             <Route path="/offers/:id" element={<OfferDetailPage />} />
             <Route path="/workroom/:offerId" element={<WorkRoomPage />} />
             <Route path="/wallet" element={<WalletPage />} />

@@ -10,9 +10,9 @@ import { Navigate } from "react-router-dom";
 const Index = () => {
   const { user, isLoading } = useAuth();
 
-  // Redirect authenticated users to the outcome-based feed
+  // Redirect authenticated users to the home dashboard
   if (!isLoading && user) {
-    return <Navigate to="/feed" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   return (
