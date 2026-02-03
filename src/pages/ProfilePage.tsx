@@ -1,25 +1,45 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
+import { useMyTrustProfile } from "@/hooks/useMyTrustProfile";
+import { useProfileProofMetrics, useWorkConnections } from "@/hooks/useOutcomeFeed";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useToast } from "@/hooks/use-toast";
-import { User, Mail, Calendar, Shield, Save, Loader2, ChevronRight } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import {
+  ProofProfileCard,
+  WorkGraphCard,
+  TrustEngineDisplay,
+} from "@/components/outcome";
+import {
+  User,
+  Briefcase,
+  Award,
+  Shield,
+  Building,
+  FileText,
+  DollarSign,
+  Clock,
+  CheckCircle,
+  TrendingUp,
+  Star,
+  ChevronRight,
+  Settings,
+  ExternalLink,
+} from "lucide-react";
 
 export default function ProfilePage() {
-  const { user, profile, userRole, isLoading, updateProfile } = useAuth();
+  const { user, profile, userRole, isLoading } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
-  
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
+  const { trustProfile, badges, loading: trustLoading } = useMyTrustProfile();
+  const { metrics, loading: metricsLoading } = useProfileProofMetrics();
+  const { connections } = useWorkConnections();
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -27,54 +47,21 @@ export default function ProfilePage() {
     }
   }, [user, isLoading, navigate]);
 
-  useEffect(() => {
-    if (profile) {
-      setFirstName(profile.first_name || "");
-      setLastName(profile.last_name || "");
-    }
-  }, [profile]);
-
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSaving(true);
-
-    const { error } = await updateProfile({
-      first_name: firstName,
-      last_name: lastName,
-    });
-
-    setIsSaving(false);
-
-    if (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update profile. Please try again.",
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Profile updated",
-        description: "Your profile has been updated successfully.",
-      });
-    }
-  };
-
-  if (isLoading) {
+  if (isLoading || trustLoading || metricsLoading) {
     return (
       <MainLayout>
-        <div className="container max-w-2xl py-6 sm:py-8 px-4">
+        <div className="container max-w-4xl py-6 sm:py-8 px-4">
           <Skeleton className="h-8 w-48 mb-6 sm:mb-8" />
-          <Card>
-            <CardHeader className="pb-4">
-              <Skeleton className="h-6 w-32" />
-              <Skeleton className="h-4 w-64" />
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Skeleton className="h-12 w-full" />
-              <Skeleton className="h-12 w-full" />
-              <Skeleton className="h-12 w-full" />
-            </CardContent>
-          </Card>
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="md:col-span-2 space-y-4">
+              <Skeleton className="h-64 w-full" />
+              <Skeleton className="h-48 w-full" />
+            </div>
+            <div className="space-y-4">
+              <Skeleton className="h-48 w-full" />
+              <Skeleton className="h-32 w-full" />
+            </div>
+          </div>
         </div>
       </MainLayout>
     );
@@ -84,6 +71,9 @@ export default function ProfilePage() {
     return null;
   }
 
+  const trustScore = trustProfile?.trust_score ?? 0;
+  const trustTier = trustScore >= 80 ? "platinum" : trustScore >= 60 ? "gold" : trustScore >= 40 ? "silver" : "bronze";
+
   const roleColors: Record<string, string> = {
     student: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
     researcher: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
@@ -92,187 +82,312 @@ export default function ProfilePage() {
 
   return (
     <MainLayout>
-      <div className="container max-w-2xl py-6 sm:py-8 px-4">
+      <div className="container max-w-5xl py-6 sm:py-8 px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">My Profile</h1>
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl sm:text-3xl font-bold">Proof Profile</h1>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/profile/settings">
+                <Settings className="h-4 w-4 mr-2" />
+                Settings
+              </Link>
+            </Button>
+          </div>
 
-          <div className="space-y-4 sm:space-y-6">
-            {/* Account Info Card */}
-            <Card>
-              <CardHeader className="pb-3 sm:pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-                  <User className="h-5 w-5" />
-                  Account Information
-                </CardTitle>
-                <CardDescription className="text-sm">
-                  View and manage your account details
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {/* Email */}
-                <div className="flex items-center gap-3 p-3 sm:p-4 bg-muted/50 rounded-lg touch-manipulation">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Mail className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium text-sm sm:text-base truncate">{user.email}</p>
-                  </div>
-                </div>
+          {/* Subtitle explaining the philosophy */}
+          <p className="text-muted-foreground mb-8 max-w-2xl">
+            Your profile is generated from verified activity—not self-written claims. 
+            Complete projects, win grants, and earn trust to build your professional ledger.
+          </p>
 
-                {/* Role */}
-                <div className="flex items-center gap-3 p-3 sm:p-4 bg-muted/50 rounded-lg touch-manipulation">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Shield className="h-5 w-5 text-primary" />
+          <div className="grid gap-6 lg:grid-cols-3">
+            {/* Main Content - 2 columns */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Full Proof Profile Card */}
+              <ProofProfileCard
+                userId={user.id}
+                userEmail={user.email}
+                userName={profile?.full_name || undefined}
+                metrics={metrics}
+                trustScore={trustScore}
+                trustTier={trustTier}
+              />
+
+              {/* Activity Tabs */}
+              <Card>
+                <Tabs defaultValue="work" className="w-full">
+                  <CardHeader className="pb-0">
+                    <TabsList className="grid w-full grid-cols-4">
+                      <TabsTrigger value="work" className="text-xs sm:text-sm">
+                        <Briefcase className="h-4 w-4 mr-1 hidden sm:inline" />
+                        Work
+                      </TabsTrigger>
+                      <TabsTrigger value="publications" className="text-xs sm:text-sm">
+                        <FileText className="h-4 w-4 mr-1 hidden sm:inline" />
+                        Publications
+                      </TabsTrigger>
+                      <TabsTrigger value="grants" className="text-xs sm:text-sm">
+                        <Award className="h-4 w-4 mr-1 hidden sm:inline" />
+                        Grants
+                      </TabsTrigger>
+                      <TabsTrigger value="badges" className="text-xs sm:text-sm">
+                        <Star className="h-4 w-4 mr-1 hidden sm:inline" />
+                        Badges
+                      </TabsTrigger>
+                    </TabsList>
+                  </CardHeader>
+                  <CardContent className="pt-6">
+                    <TabsContent value="work" className="mt-0">
+                      {metrics && metrics.projects_completed > 0 ? (
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="p-4 rounded-lg bg-muted/50">
+                              <div className="flex items-center gap-2 mb-1">
+                                <Briefcase className="h-4 w-4 text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground">Completed</span>
+                              </div>
+                              <span className="text-2xl font-bold">{metrics.projects_completed}</span>
+                            </div>
+                            <div className="p-4 rounded-lg bg-muted/50">
+                              <div className="flex items-center gap-2 mb-1">
+                                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground">Success Rate</span>
+                              </div>
+                              <span className="text-2xl font-bold">{metrics.escrow_success_rate.toFixed(0)}%</span>
+                            </div>
+                          </div>
+                          <Button variant="outline" asChild className="w-full">
+                            <Link to="/offers">
+                              Browse More Projects
+                              <ExternalLink className="h-4 w-4 ml-2" />
+                            </Link>
+                          </Button>
+                        </div>
+                      ) : (
+                        <EmptyTabContent
+                          icon={Briefcase}
+                          title="No completed work yet"
+                          description="Complete your first project to build your work history"
+                          actionLabel="Find Projects"
+                          actionHref="/offers"
+                        />
+                      )}
+                    </TabsContent>
+
+                    <TabsContent value="publications" className="mt-0">
+                      <EmptyTabContent
+                        icon={FileText}
+                        title="No publications linked"
+                        description="Link your publications to strengthen your profile"
+                        actionLabel="Add Publications"
+                        actionHref="/profile/publications"
+                      />
+                    </TabsContent>
+
+                    <TabsContent value="grants" className="mt-0">
+                      {metrics && metrics.grants_won > 0 ? (
+                        <div className="space-y-4">
+                          <div className="p-4 rounded-lg bg-muted/50">
+                            <div className="flex items-center gap-2 mb-1">
+                              <Award className="h-4 w-4 text-amber-500" />
+                              <span className="text-sm text-muted-foreground">Grants Won</span>
+                            </div>
+                            <span className="text-2xl font-bold">{metrics.grants_won}</span>
+                          </div>
+                          <Button variant="outline" asChild className="w-full">
+                            <Link to="/grants">
+                              Find More Grants
+                              <ExternalLink className="h-4 w-4 ml-2" />
+                            </Link>
+                          </Button>
+                        </div>
+                      ) : (
+                        <EmptyTabContent
+                          icon={Award}
+                          title="No grants yet"
+                          description="Win grants to showcase your competitive success"
+                          actionLabel="Find Grants"
+                          actionHref="/grants"
+                        />
+                      )}
+                    </TabsContent>
+
+                    <TabsContent value="badges" className="mt-0">
+                      {badges.length > 0 ? (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                          {badges.map((badge) => (
+                            <div
+                              key={badge.id}
+                              className="p-3 rounded-lg border bg-card text-center"
+                            >
+                              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2">
+                                <Star className="h-5 w-5 text-primary" />
+                              </div>
+                              <p className="font-medium text-sm">{badge.badge_name}</p>
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {new Date(badge.earned_at).toLocaleDateString()}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <EmptyTabContent
+                          icon={Star}
+                          title="No badges earned"
+                          description="Complete milestones to earn recognition badges"
+                          actionLabel="View Milestones"
+                          actionHref="/achievements"
+                        />
+                      )}
+                    </TabsContent>
+                  </CardContent>
+                </Tabs>
+              </Card>
+            </div>
+
+            {/* Sidebar - 1 column */}
+            <div className="space-y-6">
+              {/* Trust Engine */}
+              <TrustEngineDisplay
+                totalScore={trustScore}
+                tier={trustTier}
+                breakdown={{
+                  verification_status: trustProfile?.is_verified_student || trustProfile?.is_verified_researcher ? 25 : 0,
+                  completed_offers: Math.min((metrics?.projects_completed || 0) * 2, 20),
+                  on_time_delivery_rate: 12,
+                  dispute_free_history: (metrics?.dispute_loss_count || 0) === 0 ? 15 : 5,
+                  ratings_score: Math.min((metrics?.peer_reviews_received || 0) * 2, 10),
+                  financial_reliability: metrics?.escrow_success_rate ? Math.round(metrics.escrow_success_rate / 10) : 0,
+                }}
+                lastUpdated={trustProfile?.updated_at}
+              />
+
+              {/* Work Graph */}
+              <WorkGraphCard connections={connections} maxDisplay={3} />
+
+              {/* Quick Actions */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm">Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="divide-y">
+                    <QuickActionButton
+                      icon={Shield}
+                      iconColor="text-emerald-500"
+                      label="Get Verified"
+                      description="Prove your credentials"
+                      href="/verification"
+                    />
+                    <QuickActionButton
+                      icon={DollarSign}
+                      iconColor="text-primary"
+                      label="My Wallet"
+                      description="Manage funds"
+                      href="/wallet"
+                    />
+                    <QuickActionButton
+                      icon={Building}
+                      iconColor="text-orange-500"
+                      label="Institutions"
+                      description="Link affiliations"
+                      href="/organizations"
+                    />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm text-muted-foreground">Role</p>
-                    <Badge className={`mt-1 ${roleColors[userRole?.role || "student"]}`}>
+                </CardContent>
+              </Card>
+
+              {/* Account Info (minimal) */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm">Account</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Email</span>
+                    <span className="font-medium truncate max-w-[150px]">{user.email}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Role</span>
+                    <Badge className={roleColors[userRole?.role || "student"]}>
                       {userRole?.role || "Student"}
                     </Badge>
                   </div>
-                </div>
-
-                {/* Member Since */}
-                <div className="flex items-center gap-3 p-3 sm:p-4 bg-muted/50 rounded-lg touch-manipulation">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Calendar className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm text-muted-foreground">Member since</p>
-                    <p className="font-medium text-sm sm:text-base">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Member since</span>
+                    <span className="font-medium">
                       {profile?.created_at
                         ? new Date(profile.created_at).toLocaleDateString("en-US", {
                             year: "numeric",
-                            month: "long",
-                            day: "numeric",
+                            month: "short",
                           })
                         : "N/A"}
-                    </p>
+                    </span>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Edit Profile Card */}
-            <Card>
-              <CardHeader className="pb-3 sm:pb-4">
-                <CardTitle className="text-lg sm:text-xl">Edit Profile</CardTitle>
-                <CardDescription className="text-sm">
-                  Update your personal information
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSave} className="space-y-4">
-                  {/* Mobile: Stack vertically, Tablet+: Side by side */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName" className="text-sm">First Name</Label>
-                      <Input
-                        id="firstName"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        placeholder="John"
-                        className="h-11 sm:h-10 touch-manipulation"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName" className="text-sm">Last Name</Label>
-                      <Input
-                        id="lastName"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        placeholder="Doe"
-                        className="h-11 sm:h-10 touch-manipulation"
-                      />
-                    </div>
-                  </div>
-
-                  <Button 
-                    type="submit" 
-                    disabled={isSaving}
-                    className="w-full sm:w-auto h-11 sm:h-10 gap-2 touch-manipulation"
-                  >
-                    {isSaving ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Saving...
-                      </>
-                    ) : (
-                      <>
-                        <Save className="h-4 w-4" />
-                        Save Changes
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-
-            {/* Quick Actions - Mobile Optimized */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg sm:text-xl">Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="divide-y">
-                  <button 
-                    onClick={() => navigate("/verification")}
-                    className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors touch-manipulation active:bg-muted"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                        <Shield className="h-5 w-5 text-emerald-500" />
-                      </div>
-                      <div className="text-left">
-                        <p className="font-medium text-sm">Verify Account</p>
-                        <p className="text-xs text-muted-foreground">Get verified status</p>
-                      </div>
-                    </div>
-                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                  </button>
-                  
-                  <button 
-                    onClick={() => navigate("/wallet")}
-                    className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors touch-manipulation active:bg-muted"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <User className="h-5 w-5 text-primary" />
-                      </div>
-                      <div className="text-left">
-                        <p className="font-medium text-sm">My Wallet</p>
-                        <p className="text-xs text-muted-foreground">Manage funds</p>
-                      </div>
-                    </div>
-                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                  </button>
-                  
-                  <button 
-                    onClick={() => navigate("/subscriptions")}
-                    className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors touch-manipulation active:bg-muted"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-amber-500/10 flex items-center justify-center">
-                        <Calendar className="h-5 w-5 text-amber-500" />
-                      </div>
-                      <div className="text-left">
-                        <p className="font-medium text-sm">Subscriptions</p>
-                        <p className="text-xs text-muted-foreground">View active plans</p>
-                      </div>
-                    </div>
-                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                  </button>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </motion.div>
       </div>
     </MainLayout>
+  );
+}
+
+interface EmptyTabContentProps {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  actionLabel: string;
+  actionHref: string;
+}
+
+function EmptyTabContent({ icon: Icon, title, description, actionLabel, actionHref }: EmptyTabContentProps) {
+  return (
+    <div className="py-8 text-center">
+      <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
+        <Icon className="h-6 w-6 text-muted-foreground" />
+      </div>
+      <h4 className="font-medium mb-1">{title}</h4>
+      <p className="text-sm text-muted-foreground mb-4">{description}</p>
+      <Button variant="outline" size="sm" asChild>
+        <Link to={actionHref}>{actionLabel}</Link>
+      </Button>
+    </div>
+  );
+}
+
+interface QuickActionButtonProps {
+  icon: React.ElementType;
+  iconColor: string;
+  label: string;
+  description: string;
+  href: string;
+}
+
+function QuickActionButton({ icon: Icon, iconColor, label, description, href }: QuickActionButtonProps) {
+  const navigate = useNavigate();
+  
+  return (
+    <button
+      onClick={() => navigate(href)}
+      className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors touch-manipulation active:bg-muted"
+    >
+      <div className="flex items-center gap-3">
+        <div className="h-9 w-9 rounded-full bg-muted flex items-center justify-center">
+          <Icon className={`h-4 w-4 ${iconColor}`} />
+        </div>
+        <div className="text-left">
+          <p className="font-medium text-sm">{label}</p>
+          <p className="text-xs text-muted-foreground">{description}</p>
+        </div>
+      </div>
+      <ChevronRight className="h-4 w-4 text-muted-foreground" />
+    </button>
   );
 }

@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Briefcase, MessageCircle, Heart, User } from "lucide-react";
+import { Target, Briefcase, MessageCircle, Users, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNotifications } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
-  icon: typeof Home;
+  icon: typeof Target;
   label: string;
   route: string;
   badge?: number;
@@ -17,11 +17,12 @@ export function MobileBottomNav() {
   const isMobile = useIsMobile();
   const { unreadCount } = useNotifications();
 
+  // Outcome-focused navigation - work, not social
   const navItems: NavItem[] = [
-    { icon: Home, label: "Home", route: "/" },
-    { icon: Briefcase, label: "Earn", route: "/earn" },
+    { icon: Target, label: "Feed", route: "/feed" },
+    { icon: Briefcase, label: "Projects", route: "/offers" },
     { icon: MessageCircle, label: "Messages", route: "/messages", badge: unreadCount },
-    { icon: Heart, label: "Matches", route: "/matches" },
+    { icon: Users, label: "Network", route: "/network" },
     { icon: User, label: "Profile", route: "/profile" },
   ];
 
