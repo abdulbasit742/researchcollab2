@@ -116,7 +116,7 @@ export function DealRoomList() {
                 </div>
 
                 <Button variant="ghost" size="sm" asChild>
-                  <Link to={`/messages/${deal.id}`}>
+                  <Link to={`/deals/${deal.id}`}>
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
