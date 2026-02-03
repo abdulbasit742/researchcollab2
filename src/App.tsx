@@ -29,6 +29,7 @@ import ResearcherProfilePage from "./pages/ResearcherProfilePage";
 import ResearcherPublicProfilePage from "./pages/ResearcherPublicProfilePage";
 import UserPublicProfilePage from "./pages/UserPublicProfilePage";
 import BlogPage from "./pages/BlogPage";
+import BlogArticlePage from "./pages/BlogArticlePage";
 import OffersPage from "./pages/OffersPage";
 import OfferDetailPage from "./pages/OfferDetailPage";
 import WorkRoomPage from "./pages/WorkRoomPage";
@@ -137,6 +138,7 @@ const AppContent = () => {
             <Route path="/profile/researcher" element={<ResearcherProfilePage />} />
             <Route path="/profile/researcher/:id" element={<ResearcherProfilePage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogArticlePage />} />
             <Route path="/offers" element={<OffersPage />} />
             <Route path="/offers/:id" element={<OfferDetailPage />} />
             <Route path="/workroom/:offerId" element={<WorkRoomPage />} />
