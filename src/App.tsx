@@ -80,6 +80,9 @@ import AdminInfrastructurePage from "./pages/admin/AdminInfrastructurePage";
 import AdminGovernancePage from "./pages/admin/AdminGovernancePage";
 import AdminResiliencePage from "./pages/admin/AdminResiliencePage";
 import AdminKnowledgePage from "./pages/admin/AdminKnowledgePage";
+import AdminFeedModerationPage from "./pages/admin/AdminFeedModerationPage";
+import FeedPage from "./pages/FeedPage";
+import PostDetailPage from "./pages/PostDetailPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -92,6 +95,8 @@ const AppContent = () => {
       <ScrollRestoration />
       <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/feed" element={<FeedPage />} />
+            <Route path="/posts/:postId" element={<PostDetailPage />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/profile" element={<ProfilePage />} />
@@ -163,6 +168,7 @@ const AppContent = () => {
             <Route path="/admin/governance" element={<AdminGovernancePage />} />
             <Route path="/admin/resilience" element={<AdminResiliencePage />} />
             <Route path="/admin/knowledge" element={<AdminKnowledgePage />} />
+            <Route path="/admin/feed" element={<AdminFeedModerationPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
