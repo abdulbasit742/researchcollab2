@@ -101,19 +101,11 @@ export default function MessagesPage() {
 
   return (
     <MainLayout>
-      {/* Compact mobile header */}
-      <div className="gradient-hero py-4 sm:py-8 md:py-12 safe-area-top">
-        <div className="container px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Messages</h1>
-            <p className="text-muted-foreground text-sm sm:text-base mt-0.5 sm:mt-1">
-              Your conversations
-            </p>
-          </motion.div>
+      {/* Clean header */}
+      <div className="border-b bg-card safe-area-top">
+        <div className="container py-4 px-4">
+          <h1 className="text-xl font-bold">Messages</h1>
+          <p className="text-sm text-muted-foreground">Your conversations</p>
         </div>
       </div>
 

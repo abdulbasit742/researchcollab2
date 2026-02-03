@@ -7,64 +7,91 @@ interface EmptyStateProps {
   icon?: LucideIcon;
   title: string;
   description: string;
+  /** Guidance text explaining what the user should do next */
+  guidance?: string;
   actionLabel?: string;
   actionHref?: string;
   onAction?: () => void;
+  secondaryActionLabel?: string;
+  secondaryActionHref?: string;
   compact?: boolean;
 }
 
+/**
+ * EmptyState with professional, outcome-oriented messaging.
+ * Every empty state teaches users what to do next.
+ */
 export function EmptyState({
   icon: Icon = Inbox,
   title,
   description,
+  guidance,
   actionLabel,
   actionHref,
   onAction,
+  secondaryActionLabel,
+  secondaryActionHref,
   compact = false,
 }: EmptyStateProps) {
-  const content = (
-    <div className={`text-center ${compact ? "py-6" : "py-12"}`}>
-      <div className={`mx-auto rounded-full bg-muted flex items-center justify-center mb-4 ${
-        compact ? "w-12 h-12" : "w-16 h-16"
-      }`}>
-        <Icon className={`text-muted-foreground ${compact ? "h-6 w-6" : "h-8 w-8"}`} />
-      </div>
-      <h3 className={`font-semibold mb-2 ${compact ? "text-sm" : "text-lg"}`}>
-        {title}
-      </h3>
-      <p className={`text-muted-foreground mb-4 max-w-sm mx-auto ${compact ? "text-xs" : "text-sm"}`}>
-        {description}
-      </p>
-      {(actionLabel && actionHref) && (
-        <Button size={compact ? "sm" : "default"} asChild>
-          <Link to={actionHref}>{actionLabel}</Link>
-        </Button>
-      )}
-      {(actionLabel && onAction && !actionHref) && (
-        <Button size={compact ? "sm" : "default"} onClick={onAction}>
-          {actionLabel}
-        </Button>
-      )}
-    </div>
-  );
-
   return (
     <Card className="border-dashed">
-      <CardContent className="p-0">
-        {content}
+      <CardContent className={`text-center ${compact ? "py-6 px-4" : "py-12 px-6"}`}>
+        <div className={`mx-auto rounded-full bg-muted flex items-center justify-center mb-4 ${
+          compact ? "w-12 h-12" : "w-14 h-14"
+        }`}>
+          <Icon className={`text-muted-foreground ${compact ? "h-6 w-6" : "h-7 w-7"}`} />
+        </div>
+        
+        <h3 className={`font-semibold mb-2 ${compact ? "text-sm" : "text-base"}`}>
+          {title}
+        </h3>
+        
+        <p className={`text-muted-foreground max-w-sm mx-auto ${compact ? "text-xs" : "text-sm"}`}>
+          {description}
+        </p>
+        
+        {guidance && (
+          <p className="text-xs text-muted-foreground/70 max-w-xs mx-auto mt-2 italic">
+            {guidance}
+          </p>
+        )}
+        
+        {(actionLabel || secondaryActionLabel) && (
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-4">
+            {actionLabel && (
+              actionHref ? (
+                <Button size={compact ? "sm" : "default"} asChild>
+                  <Link to={actionHref}>{actionLabel}</Link>
+                </Button>
+              ) : onAction ? (
+                <Button size={compact ? "sm" : "default"} onClick={onAction}>
+                  {actionLabel}
+                </Button>
+              ) : null
+            )}
+            {secondaryActionLabel && secondaryActionHref && (
+              <Button variant="outline" size={compact ? "sm" : "default"} asChild>
+                <Link to={secondaryActionHref}>{secondaryActionLabel}</Link>
+              </Button>
+            )}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
 }
 
-// Pre-configured empty states for common scenarios
+// Professional empty states with actionable guidance
 export function EmptyOpportunities() {
   return (
     <EmptyState
-      title="No matching opportunities yet"
-      description="Complete your profile to get personalized project matches, or browse all available opportunities."
-      actionLabel="Browse All Projects"
-      actionHref="/offers"
+      title="No opportunities match your profile yet"
+      description="Opportunities appear here based on your skills and trust level."
+      guidance="Complete your profile or improve your trust score to unlock more matches."
+      actionLabel="Complete Profile"
+      actionHref="/profile"
+      secondaryActionLabel="Browse All"
+      secondaryActionHref="/offers"
     />
   );
 }
@@ -72,10 +99,11 @@ export function EmptyOpportunities() {
 export function EmptyMessages() {
   return (
     <EmptyState
-      title="No messages yet"
-      description="Start a conversation by reaching out to someone on a project or through their profile."
-      actionLabel="Find People"
-      actionHref="/network"
+      title="No conversations yet"
+      description="All conversations start from work — find a project or opportunity to begin."
+      guidance="Messages are tied to outcomes, not social connections."
+      actionLabel="Find Opportunities"
+      actionHref="/offers"
     />
   );
 }
@@ -83,10 +111,11 @@ export function EmptyMessages() {
 export function EmptyProjects() {
   return (
     <EmptyState
-      title="No projects yet"
-      description="Post your first project to find collaborators, or browse existing opportunities to bid on."
-      actionLabel="Post a Project"
-      actionHref="/earn"
+      title="No projects on record"
+      description="Your work history builds your professional identity."
+      guidance="Complete projects to create a permanent, verified record of your outcomes."
+      actionLabel="Find Projects"
+      actionHref="/offers"
     />
   );
 }
@@ -94,9 +123,10 @@ export function EmptyProjects() {
 export function EmptyActivity() {
   return (
     <EmptyState
-      title="No activity yet"
-      description="Complete your first project to start building your permanent record of work."
-      actionLabel="Find Projects"
+      title="No activity recorded"
+      description="Your activity feed shows real outcomes — projects completed, milestones delivered, trust earned."
+      guidance="This is not a social feed. Only work-related events appear here."
+      actionLabel="Start Working"
       actionHref="/offers"
     />
   );
@@ -105,9 +135,10 @@ export function EmptyActivity() {
 export function EmptyNetwork() {
   return (
     <EmptyState
-      title="No connections yet"
-      description="Build your professional network by collaborating on projects. All connections are work-based, not social."
-      actionLabel="Browse Projects"
+      title="No work connections yet"
+      description="Your network is built through collaboration, not social following."
+      guidance="Connections form when you complete work with others. Quality over quantity."
+      actionLabel="Find Collaborations"
       actionHref="/offers"
     />
   );
@@ -116,8 +147,9 @@ export function EmptyNetwork() {
 export function EmptyBids() {
   return (
     <EmptyState
-      title="No bids yet"
-      description="Your project hasn't received any bids yet. Make sure your requirements are clear and the budget is competitive."
+      title="No proposals received"
+      description="Professionals with matching skills will see your project."
+      guidance="Ensure your scope is clear and budget is competitive for your requirements."
       actionLabel="Edit Project"
       actionHref="/earn"
     />
@@ -127,10 +159,23 @@ export function EmptyBids() {
 export function EmptyGrants() {
   return (
     <EmptyState
-      title="No grants available"
-      description="Check back soon for new research funding opportunities. Make sure your profile is complete to match with relevant grants."
-      actionLabel="Complete Profile"
+      title="No grants match your profile"
+      description="Grant opportunities are matched based on your research domain and qualifications."
+      guidance="Complete your research profile to improve matching accuracy."
+      actionLabel="Update Profile"
       actionHref="/profile"
+    />
+  );
+}
+
+export function EmptyDeals() {
+  return (
+    <EmptyState
+      title="No active deals"
+      description="Deals are created when you and another professional agree on a scope of work."
+      guidance="Find an opportunity and submit a proposal to start a deal."
+      actionLabel="Browse Opportunities"
+      actionHref="/offers"
     />
   );
 }
@@ -139,7 +184,8 @@ export function EmptySearch({ query }: { query?: string }) {
   return (
     <EmptyState
       title={query ? `No results for "${query}"` : "No results found"}
-      description="Try adjusting your search terms or filters to find what you're looking for."
+      description="Try different keywords or adjust your filters."
+      guidance="Search covers projects, people, and institutions."
     />
   );
 }

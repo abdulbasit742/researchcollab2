@@ -166,7 +166,7 @@ export function OutcomeFeedCard({ item }: OutcomeFeedCardProps) {
                     {config.label}
                   </Badge>
                   {item.is_verified && (
-                    <Badge variant="outline" className="text-xs gap-1 text-emerald-600 border-emerald-200 bg-emerald-50 dark:bg-emerald-950/50">
+                    <Badge variant="outline" className="text-xs gap-1 text-primary border-primary/30 bg-primary/5">
                       <CheckCircle className="h-3 w-3" />
                       Verified
                     </Badge>
@@ -189,9 +189,9 @@ export function OutcomeFeedCard({ item }: OutcomeFeedCardProps) {
                 </p>
               )}
 
-              {/* Value Amount (if present) */}
+              {/* Value Amount */}
               {item.value_amount && (
-                <div className="flex items-center gap-1.5 text-sm font-medium text-emerald-600">
+                <div className="flex items-center gap-1.5 text-sm font-medium text-primary">
                   <DollarSign className="h-4 w-4" />
                   {formatPKR(item.value_amount)}
                 </div>
@@ -269,20 +269,23 @@ export function OutcomeFeedSkeleton() {
 export function EmptyOutcomeFeed() {
   return (
     <Card className="border-dashed">
-      <CardContent className="py-16 text-center">
-        <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-          <Target className="h-8 w-8 text-primary" />
+      <CardContent className="py-12 text-center">
+        <div className="mx-auto w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-4">
+          <Target className="h-7 w-7 text-muted-foreground" />
         </div>
-        <h3 className="font-semibold text-lg mb-2">No opportunities yet</h3>
-        <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
-          Projects, grants, and verified outcomes will appear here. This is your operational intelligence feed.
+        <h3 className="font-semibold mb-2">No opportunities match your profile</h3>
+        <p className="text-sm text-muted-foreground mb-2 max-w-sm mx-auto">
+          Projects, grants, and collaborations appear here based on your skills.
+        </p>
+        <p className="text-xs text-muted-foreground/70 italic mb-4">
+          Complete your profile to improve matching.
         </p>
         <div className="flex flex-wrap justify-center gap-2">
-          <Button asChild>
-            <Link to="/offers">Browse Projects</Link>
+          <Button asChild size="sm">
+            <Link to="/offers">Browse All</Link>
           </Button>
-          <Button variant="outline" asChild>
-            <Link to="/grants">Find Grants</Link>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/profile">Update Profile</Link>
           </Button>
         </div>
       </CardContent>

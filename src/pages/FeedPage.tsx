@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { useRealityFeed, useConsequenceLedger } from "@/hooks/useAccountability";
+import { useRealityFeed } from "@/hooks/useAccountability";
 import { useOutcomeFeed } from "@/hooks/useOutcomeFeed";
 import { useProfessionalSignalFeed } from "@/hooks/useProfessionalSignals";
 import { useAuth } from "@/contexts/AuthContext";
@@ -23,7 +23,6 @@ import {
   ProfessionalIdentityCard,
   OpportunitySuggestions,
   PeopleYouMayKnow,
-  InstitutionsToFollow,
   CareerCopilotCard,
 } from "@/components/feed";
 import {
@@ -32,13 +31,13 @@ import {
   Target,
   Activity,
   Radio,
+  Briefcase,
 } from "lucide-react";
 
 export default function FeedPage() {
   const { user, profile, isLoading: authLoading } = useAuth();
   const [activeTab, setActiveTab] = useState<"signals" | "reality" | "opportunities">("signals");
   
-  // Professional Signal Feed
   const {
     signals,
     isLoading: signalsLoading,
@@ -47,7 +46,6 @@ export default function FeedPage() {
     refetch: refetchSignals,
   } = useProfessionalSignalFeed();
 
-  // Reality Feed (system events)
   const { 
     events: realityEvents, 
     loading: realityLoading, 
@@ -56,7 +54,6 @@ export default function FeedPage() {
     refetch: refetchReality 
   } = useRealityFeed();
   
-  // Outcome Feed (opportunities)
   const { 
     feedItems, 
     loading: outcomeLoading, 
@@ -111,52 +108,39 @@ export default function FeedPage() {
 
   return (
     <MainLayout>
-      <div className="bg-muted/30 min-h-screen">
+      <div className="bg-muted/20 min-h-screen">
         <div className="container py-4 sm:py-6">
-          {/* LinkedIn-inspired 3-column layout */}
+          {/* 3-column professional layout */}
           <div className="grid lg:grid-cols-12 gap-5">
             
-            {/* ===== LEFT COLUMN: Identity Card ===== */}
+            {/* Left Column: Identity */}
             <aside className="hidden lg:block lg:col-span-3">
               <div className="sticky top-20 space-y-4">
-                {/* Professional Identity Card */}
                 <ProfessionalIdentityCard />
-                
-                {/* Career Co-pilot */}
                 <CareerCopilotCard />
               </div>
             </aside>
 
-            {/* ===== CENTER COLUMN: Main Feed ===== */}
+            {/* Center Column: Feed */}
             <main className="lg:col-span-6 space-y-4">
-              {/* Structured Update Composer */}
+              {/* Update Composer */}
               <StructuredUpdateComposer />
 
-              {/* Feed Philosophy Banner */}
-              <Card className="border-dashed bg-card">
-                <CardContent className="py-3 text-center">
-                  <p className="text-sm text-muted-foreground">
-                    <span className="font-medium text-foreground">RCollab is not social media.</span>{" "}
-                    Only work updates, outcomes, and professional signals.
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Feed Tabs */}
+              {/* Feed Tabs - Clean, minimal */}
               <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)}>
                 <div className="flex items-center justify-between bg-card rounded-lg border p-1">
                   <TabsList className="grid w-full grid-cols-3 bg-transparent">
-                    <TabsTrigger value="signals" className="gap-1.5 data-[state=active]:bg-muted">
+                    <TabsTrigger value="signals" className="gap-1.5 text-xs sm:text-sm data-[state=active]:bg-muted">
                       <Radio className="h-4 w-4" />
-                      <span className="hidden sm:inline">Signals</span>
+                      <span className="hidden sm:inline">Updates</span>
                     </TabsTrigger>
-                    <TabsTrigger value="reality" className="gap-1.5 data-[state=active]:bg-muted">
+                    <TabsTrigger value="reality" className="gap-1.5 text-xs sm:text-sm data-[state=active]:bg-muted">
                       <Activity className="h-4 w-4" />
-                      <span className="hidden sm:inline">Reality</span>
+                      <span className="hidden sm:inline">Activity</span>
                     </TabsTrigger>
-                    <TabsTrigger value="opportunities" className="gap-1.5 data-[state=active]:bg-muted">
+                    <TabsTrigger value="opportunities" className="gap-1.5 text-xs sm:text-sm data-[state=active]:bg-muted">
                       <Target className="h-4 w-4" />
-                      <span className="hidden sm:inline">Opps</span>
+                      <span className="hidden sm:inline">Work</span>
                     </TabsTrigger>
                   </TabsList>
                   <Button variant="ghost" size="icon" onClick={() => refetch()} className="shrink-0 ml-2">
@@ -164,7 +148,7 @@ export default function FeedPage() {
                   </Button>
                 </div>
 
-                {/* Professional Signals Tab */}
+                {/* Professional Signals */}
                 <TabsContent value="signals" className="mt-4 space-y-4">
                   {signalsLoading && signals.length === 0 ? (
                     <div className="space-y-4">
@@ -175,13 +159,18 @@ export default function FeedPage() {
                   ) : signals.length === 0 ? (
                     <Card className="py-12">
                       <CardContent className="text-center">
-                        <Radio className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
-                        <h3 className="font-semibold mb-2">No Professional Signals Yet</h3>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Share your first work update, research milestone, or lesson learned.
+                        <div className="mx-auto w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-4">
+                          <Radio className="h-7 w-7 text-muted-foreground" />
+                        </div>
+                        <h3 className="font-semibold mb-2">No professional updates yet</h3>
+                        <p className="text-sm text-muted-foreground mb-2 max-w-sm mx-auto">
+                          Share work milestones, research outcomes, or lessons learned.
+                        </p>
+                        <p className="text-xs text-muted-foreground/70 italic mb-4">
+                          This is not social media. Only professional signals appear here.
                         </p>
                         <Button variant="outline" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                          Create Your First Signal
+                          Share Your First Update
                         </Button>
                       </CardContent>
                     </Card>
@@ -194,7 +183,7 @@ export default function FeedPage() {
                   )}
                 </TabsContent>
 
-                {/* Reality Feed Tab */}
+                {/* Reality Feed */}
                 <TabsContent value="reality" className="mt-4 space-y-4">
                   {realityLoading && realityEvents.length === 0 ? (
                     <div className="space-y-4">
@@ -213,7 +202,7 @@ export default function FeedPage() {
                   )}
                 </TabsContent>
 
-                {/* Opportunities Feed Tab */}
+                {/* Opportunities */}
                 <TabsContent value="opportunities" className="mt-4 space-y-4">
                   {outcomeLoading && feedItems.length === 0 ? (
                     <div className="space-y-4">
@@ -232,12 +221,12 @@ export default function FeedPage() {
                   )}
                 </TabsContent>
 
-                {/* Load More Trigger */}
+                {/* Load More */}
                 <div ref={loadMoreRef} className="py-4 flex justify-center">
                   {loading && (
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      <span className="text-sm">Loading more...</span>
+                      <span className="text-sm">Loading...</span>
                     </div>
                   )}
                   {!hasMore && (
@@ -245,33 +234,17 @@ export default function FeedPage() {
                     activeTab === "reality" ? realityEvents.length > 0 : 
                     feedItems.length > 0
                   ) && (
-                    <p className="text-sm text-muted-foreground">You're all caught up</p>
+                    <p className="text-xs text-muted-foreground">You're all caught up</p>
                   )}
                 </div>
               </Tabs>
             </main>
 
-            {/* ===== RIGHT COLUMN: Suggestions ===== */}
+            {/* Right Column: Suggestions */}
             <aside className="hidden lg:block lg:col-span-3">
               <div className="sticky top-20 space-y-4">
-                {/* Opportunity Suggestions */}
                 <OpportunitySuggestions />
-                
-                {/* People In Your Domain */}
                 <PeopleYouMayKnow />
-                
-                {/* Institutions to Follow */}
-                <InstitutionsToFollow />
-
-                {/* Platform Philosophy Note */}
-                <Card className="bg-muted/50 border-dashed">
-                  <CardContent className="p-4 text-center">
-                    <p className="text-xs text-muted-foreground italic">
-                      "LinkedIn shows who you claim to be.<br />
-                      <span className="font-semibold text-foreground">RCollab proves what you've done.</span>"
-                    </p>
-                  </CardContent>
-                </Card>
               </div>
             </aside>
           </div>
