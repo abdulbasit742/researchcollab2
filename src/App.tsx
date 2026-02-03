@@ -83,6 +83,8 @@ import AdminKnowledgePage from "./pages/admin/AdminKnowledgePage";
 import AdminFeedModerationPage from "./pages/admin/AdminFeedModerationPage";
 import FeedPage from "./pages/FeedPage";
 import PostDetailPage from "./pages/PostDetailPage";
+import NetworkPage from "./pages/NetworkPage";
+import SearchPage from "./pages/SearchPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -97,6 +99,8 @@ const AppContent = () => {
             <Route path="/" element={<Index />} />
             <Route path="/feed" element={<FeedPage />} />
             <Route path="/posts/:postId" element={<PostDetailPage />} />
+            <Route path="/network" element={<NetworkPage />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/profile" element={<ProfilePage />} />
