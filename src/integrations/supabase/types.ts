@@ -453,6 +453,39 @@ export type Database = {
         }
         Relationships: []
       }
+      action_confirmations: {
+        Row: {
+          action_target_id: string
+          action_type: string
+          confirmation_data: Json
+          confirmed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          action_target_id: string
+          action_type: string
+          confirmation_data: Json
+          confirmed_at?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          action_target_id?: string
+          action_type?: string
+          confirmation_data?: Json
+          confirmed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       admin_audit_logs: {
         Row: {
           action: string
@@ -2412,6 +2445,42 @@ export type Database = {
           },
         ]
       }
+      collaboration_cooldowns: {
+        Row: {
+          collaboration_count: number
+          created_at: string
+          id: string
+          last_collaboration_at: string
+          next_full_credit_at: string | null
+          trust_dampening_factor: number
+          updated_at: string
+          user_a_id: string
+          user_b_id: string
+        }
+        Insert: {
+          collaboration_count?: number
+          created_at?: string
+          id?: string
+          last_collaboration_at?: string
+          next_full_credit_at?: string | null
+          trust_dampening_factor?: number
+          updated_at?: string
+          user_a_id: string
+          user_b_id: string
+        }
+        Update: {
+          collaboration_count?: number
+          created_at?: string
+          id?: string
+          last_collaboration_at?: string
+          next_full_credit_at?: string | null
+          trust_dampening_factor?: number
+          updated_at?: string
+          user_a_id?: string
+          user_b_id?: string
+        }
+        Relationships: []
+      }
       collaboration_members: {
         Row: {
           collaboration_id: string
@@ -2561,6 +2630,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      collusion_flags: {
+        Row: {
+          confidence_score: number
+          created_at: string
+          evidence_data: Json | null
+          flag_type: string
+          id: string
+          resolution: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          user_a_id: string
+          user_b_id: string
+        }
+        Insert: {
+          confidence_score: number
+          created_at?: string
+          evidence_data?: Json | null
+          flag_type: string
+          id?: string
+          resolution?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          user_a_id: string
+          user_b_id: string
+        }
+        Update: {
+          confidence_score?: number
+          created_at?: string
+          evidence_data?: Json | null
+          flag_type?: string
+          id?: string
+          resolution?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          user_a_id?: string
+          user_b_id?: string
+        }
+        Relationships: []
       }
       comment_likes: {
         Row: {
@@ -6132,6 +6240,48 @@ export type Database = {
           id?: string
           requested_by?: string
           status?: string
+        }
+        Relationships: []
+      }
+      feature_access_gates: {
+        Row: {
+          created_at: string
+          description: string | null
+          feature_name: string
+          id: string
+          is_active: boolean
+          max_disputes_allowed: number | null
+          minimum_account_age_days: number
+          minimum_projects_completed: number
+          minimum_trust_score: number
+          requires_escrow_history: boolean
+          requires_verification: boolean
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          feature_name: string
+          id?: string
+          is_active?: boolean
+          max_disputes_allowed?: number | null
+          minimum_account_age_days?: number
+          minimum_projects_completed?: number
+          minimum_trust_score?: number
+          requires_escrow_history?: boolean
+          requires_verification?: boolean
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          feature_name?: string
+          id?: string
+          is_active?: boolean
+          max_disputes_allowed?: number | null
+          minimum_account_age_days?: number
+          minimum_projects_completed?: number
+          minimum_trust_score?: number
+          requires_escrow_history?: boolean
+          requires_verification?: boolean
         }
         Relationships: []
       }
@@ -13687,6 +13837,39 @@ export type Database = {
           },
         ]
       }
+      project_thresholds: {
+        Row: {
+          applies_to: string
+          created_at: string
+          id: string
+          is_active: boolean
+          rationale: string | null
+          threshold_type: string
+          threshold_value: number
+          trust_level_required: number | null
+        }
+        Insert: {
+          applies_to?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          rationale?: string | null
+          threshold_type: string
+          threshold_value: number
+          trust_level_required?: number | null
+        }
+        Update: {
+          applies_to?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          rationale?: string | null
+          threshold_type?: string
+          threshold_value?: number
+          trust_level_required?: number | null
+        }
+        Relationships: []
+      }
       public_accountability_reports: {
         Row: {
           access_statistics: Json | null
@@ -17705,6 +17888,39 @@ export type Database = {
           },
         ]
       }
+      trust_decay_log: {
+        Row: {
+          applied_at: string
+          days_inactive: number | null
+          decay_amount: number
+          decay_reason: string
+          id: string
+          new_score: number
+          previous_score: number
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string
+          days_inactive?: number | null
+          decay_amount: number
+          decay_reason: string
+          id?: string
+          new_score: number
+          previous_score: number
+          user_id: string
+        }
+        Update: {
+          applied_at?: string
+          days_inactive?: number | null
+          decay_amount?: number
+          decay_reason?: string
+          id?: string
+          new_score?: number
+          previous_score?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       trust_events: {
         Row: {
           created_at: string | null
@@ -17758,6 +17974,45 @@ export type Database = {
           trust_after?: number
           trust_before?: number
           trust_delta?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      trust_hard_penalties: {
+        Row: {
+          applied_at: string
+          applied_by: string | null
+          evidence_reference: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          penalty_points: number
+          penalty_type: string
+          recovery_months: number
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string
+          applied_by?: string | null
+          evidence_reference?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          penalty_points: number
+          penalty_type: string
+          recovery_months: number
+          user_id: string
+        }
+        Update: {
+          applied_at?: string
+          applied_by?: string | null
+          evidence_reference?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          penalty_points?: number
+          penalty_type?: string
+          recovery_months?: number
           user_id?: string
         }
         Relationships: []
@@ -17876,6 +18131,111 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      trust_score_components: {
+        Row: {
+          abandoned_collaborations: number
+          active_months: number
+          avg_peer_rating: number | null
+          avg_response_hours: number | null
+          collaboration_score: number
+          computed_at: string
+          consistency_score: number
+          delivery_score: number
+          disputes_lost: number
+          disputes_raised: number
+          escrow_cancellations: number
+          escrow_releases_successful: number
+          financial_score: number
+          grants_executed: number
+          id: string
+          institutional_affiliations: number
+          institutional_disputes: number
+          institutional_score: number
+          last_decay_applied_at: string | null
+          longest_inactive_days: number
+          on_time_rate: number
+          partial_deliveries: number
+          peer_reviews_received: number
+          projects_completed: number
+          projects_failed: number
+          refunds_issued: number
+          repeat_collaborations: number
+          total_trust_score: number
+          trend_direction: string | null
+          trust_volatility: number
+          user_id: string
+          verifications_count: number
+        }
+        Insert: {
+          abandoned_collaborations?: number
+          active_months?: number
+          avg_peer_rating?: number | null
+          avg_response_hours?: number | null
+          collaboration_score?: number
+          computed_at?: string
+          consistency_score?: number
+          delivery_score?: number
+          disputes_lost?: number
+          disputes_raised?: number
+          escrow_cancellations?: number
+          escrow_releases_successful?: number
+          financial_score?: number
+          grants_executed?: number
+          id?: string
+          institutional_affiliations?: number
+          institutional_disputes?: number
+          institutional_score?: number
+          last_decay_applied_at?: string | null
+          longest_inactive_days?: number
+          on_time_rate?: number
+          partial_deliveries?: number
+          peer_reviews_received?: number
+          projects_completed?: number
+          projects_failed?: number
+          refunds_issued?: number
+          repeat_collaborations?: number
+          total_trust_score?: number
+          trend_direction?: string | null
+          trust_volatility?: number
+          user_id: string
+          verifications_count?: number
+        }
+        Update: {
+          abandoned_collaborations?: number
+          active_months?: number
+          avg_peer_rating?: number | null
+          avg_response_hours?: number | null
+          collaboration_score?: number
+          computed_at?: string
+          consistency_score?: number
+          delivery_score?: number
+          disputes_lost?: number
+          disputes_raised?: number
+          escrow_cancellations?: number
+          escrow_releases_successful?: number
+          financial_score?: number
+          grants_executed?: number
+          id?: string
+          institutional_affiliations?: number
+          institutional_disputes?: number
+          institutional_score?: number
+          last_decay_applied_at?: string | null
+          longest_inactive_days?: number
+          on_time_rate?: number
+          partial_deliveries?: number
+          peer_reviews_received?: number
+          projects_completed?: number
+          projects_failed?: number
+          refunds_issued?: number
+          repeat_collaborations?: number
+          total_trust_score?: number
+          trend_direction?: string | null
+          trust_volatility?: number
+          user_id?: string
+          verifications_count?: number
+        }
+        Relationships: []
       }
       trust_score_history: {
         Row: {
@@ -19121,6 +19481,10 @@ export type Database = {
         Args: { p_new_score: number; p_reason: string; p_user_id: string }
         Returns: boolean
       }
+      apply_trust_decay: {
+        Args: { p_days_inactive: number; p_user_id: string }
+        Returns: undefined
+      }
       apply_user_restriction: {
         Args: {
           p_expires_at?: string
@@ -19145,6 +19509,7 @@ export type Database = {
         Args: { p_user_id: string }
         Returns: number
       }
+      calculate_trust_score: { Args: { p_user_id: string }; Returns: number }
       can_view_post: {
         Args: {
           post_row: Database["public"]["Tables"]["posts"]["Row"]
@@ -19154,6 +19519,10 @@ export type Database = {
       }
       check_and_unlock_reviews: {
         Args: { p_offer_id: string }
+        Returns: boolean
+      }
+      check_feature_access: {
+        Args: { p_feature_name: string; p_user_id: string }
         Returns: boolean
       }
       check_fraud_patterns: { Args: { p_wallet_id: string }; Returns: number }
@@ -19197,6 +19566,10 @@ export type Database = {
         Returns: string
       }
       generate_scholar_id: { Args: never; Returns: string }
+      get_collaboration_dampening: {
+        Args: { p_user_a: string; p_user_b: string }
+        Returns: number
+      }
       get_connection_degree: {
         Args: { source_user: string; target_user: string }
         Returns: number
