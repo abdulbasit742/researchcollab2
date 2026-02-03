@@ -14,6 +14,56 @@ export type Database = {
   }
   public: {
     Tables: {
+      academic_courses: {
+        Row: {
+          course_code: string
+          course_title: string
+          course_type: string
+          created_at: string
+          description: string | null
+          id: string
+          institution_id: string | null
+          instructor_id: string | null
+          is_active: boolean | null
+          linked_research_domains: string[] | null
+          term: string | null
+        }
+        Insert: {
+          course_code: string
+          course_title: string
+          course_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          instructor_id?: string | null
+          is_active?: boolean | null
+          linked_research_domains?: string[] | null
+          term?: string | null
+        }
+        Update: {
+          course_code?: string
+          course_title?: string
+          course_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          instructor_id?: string | null
+          is_active?: boolean | null
+          linked_research_domains?: string[] | null
+          term?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academic_courses_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       academic_disciplines: {
         Row: {
           created_at: string
@@ -218,6 +268,39 @@ export type Database = {
           publication_preferences?: Json | null
           regions?: string[]
           tradition_name?: string
+        }
+        Relationships: []
+      }
+      accessibility_preferences: {
+        Row: {
+          audio_descriptions_enabled: boolean | null
+          keyboard_navigation_enhanced: boolean | null
+          preferred_contrast: string | null
+          reduced_motion: boolean | null
+          screen_reader_mode: boolean | null
+          text_scaling: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          audio_descriptions_enabled?: boolean | null
+          keyboard_navigation_enhanced?: boolean | null
+          preferred_contrast?: string | null
+          reduced_motion?: boolean | null
+          screen_reader_mode?: boolean | null
+          text_scaling?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          audio_descriptions_enabled?: boolean | null
+          keyboard_navigation_enhanced?: boolean | null
+          preferred_contrast?: string | null
+          reduced_motion?: boolean | null
+          screen_reader_mode?: boolean | null
+          text_scaling?: number | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -1040,6 +1123,39 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics_guardrails: {
+        Row: {
+          description: string
+          guardrail_type: string
+          id: string
+          resolution_notes: string | null
+          resolved_at: string | null
+          severity: string
+          trigger_condition: Json
+          triggered_at: string
+        }
+        Insert: {
+          description: string
+          guardrail_type: string
+          id?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          severity?: string
+          trigger_condition: Json
+          triggered_at?: string
+        }
+        Update: {
+          description?: string
+          guardrail_type?: string
+          id?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          severity?: string
+          trigger_condition?: Json
+          triggered_at?: string
+        }
+        Relationships: []
+      }
       analytics_snapshots: {
         Row: {
           computed_at: string
@@ -1072,6 +1188,119 @@ export type Database = {
           scope_type?: string
         }
         Relationships: []
+      }
+      api_clients: {
+        Row: {
+          client_name: string
+          client_secret_hash: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          last_used_at: string | null
+          owner_entity_id: string
+          owner_entity_type: string
+          rate_limit_per_hour: number | null
+          scopes: string[]
+          status: string
+        }
+        Insert: {
+          client_name: string
+          client_secret_hash: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          last_used_at?: string | null
+          owner_entity_id: string
+          owner_entity_type: string
+          rate_limit_per_hour?: number | null
+          scopes?: string[]
+          status?: string
+        }
+        Update: {
+          client_name?: string
+          client_secret_hash?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          last_used_at?: string | null
+          owner_entity_id?: string
+          owner_entity_type?: string
+          rate_limit_per_hour?: number | null
+          scopes?: string[]
+          status?: string
+        }
+        Relationships: []
+      }
+      archival_objects: {
+        Row: {
+          archival_format: string
+          archival_status: string
+          archived_at: string
+          checksum: string
+          id: string
+          metadata: Json | null
+          size_mb: number | null
+          storage_location: string | null
+          target_id: string
+          target_type: string
+        }
+        Insert: {
+          archival_format: string
+          archival_status?: string
+          archived_at?: string
+          checksum: string
+          id?: string
+          metadata?: Json | null
+          size_mb?: number | null
+          storage_location?: string | null
+          target_id: string
+          target_type: string
+        }
+        Update: {
+          archival_format?: string
+          archival_status?: string
+          archived_at?: string
+          checksum?: string
+          id?: string
+          metadata?: Json | null
+          size_mb?: number | null
+          storage_location?: string | null
+          target_id?: string
+          target_type?: string
+        }
+        Relationships: []
+      }
+      archival_snapshots: {
+        Row: {
+          archival_object_id: string
+          created_at: string
+          id: string
+          snapshot_metadata: Json | null
+          snapshot_reason: string
+        }
+        Insert: {
+          archival_object_id: string
+          created_at?: string
+          id?: string
+          snapshot_metadata?: Json | null
+          snapshot_reason: string
+        }
+        Update: {
+          archival_object_id?: string
+          created_at?: string
+          id?: string
+          snapshot_metadata?: Json | null
+          snapshot_reason?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archival_snapshots_archival_object_id_fkey"
+            columns: ["archival_object_id"]
+            isOneToOne: false
+            referencedRelation: "archival_objects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       blog_posts: {
         Row: {
@@ -1831,6 +2060,33 @@ export type Database = {
           recipient_id?: string
           requester_id?: string
           status?: string
+        }
+        Relationships: []
+      }
+      connectivity_profiles: {
+        Row: {
+          avg_bandwidth_kbps: number | null
+          last_detected_at: string | null
+          low_data_mode: boolean | null
+          offline_mode_enabled: boolean | null
+          preferred_media_quality: string | null
+          user_id: string
+        }
+        Insert: {
+          avg_bandwidth_kbps?: number | null
+          last_detected_at?: string | null
+          low_data_mode?: boolean | null
+          offline_mode_enabled?: boolean | null
+          preferred_media_quality?: string | null
+          user_id: string
+        }
+        Update: {
+          avg_bandwidth_kbps?: number | null
+          last_detected_at?: string | null
+          low_data_mode?: boolean | null
+          offline_mode_enabled?: boolean | null
+          preferred_media_quality?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -2849,6 +3105,57 @@ export type Database = {
         }
         Relationships: []
       }
+      data_exchange_logs: {
+        Row: {
+          consent_reference: string | null
+          data_type: string
+          exchange_direction: string
+          exchanged_at: string
+          id: string
+          record_count: number | null
+          source_node_id: string | null
+          status: string
+          target_node_id: string | null
+        }
+        Insert: {
+          consent_reference?: string | null
+          data_type: string
+          exchange_direction: string
+          exchanged_at?: string
+          id?: string
+          record_count?: number | null
+          source_node_id?: string | null
+          status?: string
+          target_node_id?: string | null
+        }
+        Update: {
+          consent_reference?: string | null
+          data_type?: string
+          exchange_direction?: string
+          exchanged_at?: string
+          id?: string
+          record_count?: number | null
+          source_node_id?: string | null
+          status?: string
+          target_node_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_exchange_logs_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_exchange_logs_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       data_format_versions: {
         Row: {
           backward_compatible_with: string[] | null
@@ -3630,6 +3937,75 @@ export type Database = {
         }
         Relationships: []
       }
+      equity_adjustment_rules: {
+        Row: {
+          adjustment_bounds: Json | null
+          adjustment_logic: Json
+          approved_by: string | null
+          created_at: string
+          id: string
+          is_active: boolean | null
+          rule_name: string
+          rule_type: string
+          target_group: string
+        }
+        Insert: {
+          adjustment_bounds?: Json | null
+          adjustment_logic: Json
+          approved_by?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          rule_name: string
+          rule_type: string
+          target_group: string
+        }
+        Update: {
+          adjustment_bounds?: Json | null
+          adjustment_logic?: Json
+          approved_by?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          rule_name?: string
+          rule_type?: string
+          target_group?: string
+        }
+        Relationships: []
+      }
+      equity_metrics_snapshots: {
+        Row: {
+          computed_at: string
+          funding_access_stats: Json | null
+          id: string
+          inclusion_indicators: Json | null
+          participation_distribution: Json | null
+          review_visibility_stats: Json | null
+          scope_id: string | null
+          scope_type: string
+        }
+        Insert: {
+          computed_at?: string
+          funding_access_stats?: Json | null
+          id?: string
+          inclusion_indicators?: Json | null
+          participation_distribution?: Json | null
+          review_visibility_stats?: Json | null
+          scope_id?: string | null
+          scope_type: string
+        }
+        Update: {
+          computed_at?: string
+          funding_access_stats?: Json | null
+          id?: string
+          inclusion_indicators?: Json | null
+          participation_distribution?: Json | null
+          review_visibility_stats?: Json | null
+          scope_id?: string | null
+          scope_type?: string
+        }
+        Relationships: []
+      }
       ethics_board_members: {
         Row: {
           appointed_at: string
@@ -4048,6 +4424,39 @@ export type Database = {
           },
         ]
       }
+      export_packages: {
+        Row: {
+          created_at: string
+          download_url: string | null
+          expires_at: string | null
+          export_scope: string
+          format: string
+          id: string
+          requested_by: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          download_url?: string | null
+          expires_at?: string | null
+          export_scope: string
+          format: string
+          id?: string
+          requested_by: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          download_url?: string | null
+          expires_at?: string | null
+          export_scope?: string
+          format?: string
+          id?: string
+          requested_by?: string
+          status?: string
+        }
+        Relationships: []
+      }
       feature_entitlements: {
         Row: {
           created_at: string
@@ -4114,6 +4523,48 @@ export type Database = {
           listing_type?: string
           starts_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      federated_nodes: {
+        Row: {
+          base_url: string
+          capabilities: string[] | null
+          federation_protocol: string
+          id: string
+          last_sync_at: string | null
+          node_name: string
+          node_type: string
+          public_key: string | null
+          registered_at: string
+          status: string
+          trust_level: string
+        }
+        Insert: {
+          base_url: string
+          capabilities?: string[] | null
+          federation_protocol?: string
+          id?: string
+          last_sync_at?: string | null
+          node_name: string
+          node_type: string
+          public_key?: string | null
+          registered_at?: string
+          status?: string
+          trust_level?: string
+        }
+        Update: {
+          base_url?: string
+          capabilities?: string[] | null
+          federation_protocol?: string
+          id?: string
+          last_sync_at?: string | null
+          node_name?: string
+          node_type?: string
+          public_key?: string | null
+          registered_at?: string
+          status?: string
+          trust_level?: string
         }
         Relationships: []
       }
@@ -4279,6 +4730,98 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      foresight_scenarios: {
+        Row: {
+          assumptions: Json
+          created_at: string
+          created_by: string
+          id: string
+          opportunity_factors: string[] | null
+          probability_assessment: string | null
+          projected_outcomes: Json
+          risk_factors: string[] | null
+          scenario_name: string
+          scenario_scope: string
+          scope_id: string | null
+          status: string
+          time_horizon_months: number | null
+          updated_at: string
+        }
+        Insert: {
+          assumptions: Json
+          created_at?: string
+          created_by: string
+          id?: string
+          opportunity_factors?: string[] | null
+          probability_assessment?: string | null
+          projected_outcomes: Json
+          risk_factors?: string[] | null
+          scenario_name: string
+          scenario_scope: string
+          scope_id?: string | null
+          status?: string
+          time_horizon_months?: number | null
+          updated_at?: string
+        }
+        Update: {
+          assumptions?: Json
+          created_at?: string
+          created_by?: string
+          id?: string
+          opportunity_factors?: string[] | null
+          probability_assessment?: string | null
+          projected_outcomes?: Json
+          risk_factors?: string[] | null
+          scenario_name?: string
+          scenario_scope?: string
+          scope_id?: string | null
+          status?: string
+          time_horizon_months?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      format_migration_records: {
+        Row: {
+          archival_object_id: string
+          from_format: string
+          id: string
+          migrated_at: string
+          migrated_by: string | null
+          migration_notes: string | null
+          migration_reason: string
+          to_format: string
+        }
+        Insert: {
+          archival_object_id: string
+          from_format: string
+          id?: string
+          migrated_at?: string
+          migrated_by?: string | null
+          migration_notes?: string | null
+          migration_reason: string
+          to_format: string
+        }
+        Update: {
+          archival_object_id?: string
+          from_format?: string
+          id?: string
+          migrated_at?: string
+          migrated_by?: string | null
+          migration_notes?: string | null
+          migration_reason?: string
+          to_format?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "format_migration_records_archival_object_id_fkey"
+            columns: ["archival_object_id"]
+            isOneToOne: false
+            referencedRelation: "archival_objects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       fraud_detection_logs: {
         Row: {
@@ -4996,6 +5539,65 @@ export type Database = {
           },
         ]
       }
+      governance_proposals: {
+        Row: {
+          affected_scope: string | null
+          created_at: string
+          decided_at: string | null
+          id: string
+          proposal_text: string
+          proposal_type: string
+          proposed_by: string
+          rationale: string | null
+          required_majority: number | null
+          sponsoring_council_id: string | null
+          status: string
+          title: string
+          voting_closes_at: string | null
+          voting_opens_at: string | null
+        }
+        Insert: {
+          affected_scope?: string | null
+          created_at?: string
+          decided_at?: string | null
+          id?: string
+          proposal_text: string
+          proposal_type: string
+          proposed_by: string
+          rationale?: string | null
+          required_majority?: number | null
+          sponsoring_council_id?: string | null
+          status?: string
+          title: string
+          voting_closes_at?: string | null
+          voting_opens_at?: string | null
+        }
+        Update: {
+          affected_scope?: string | null
+          created_at?: string
+          decided_at?: string | null
+          id?: string
+          proposal_text?: string
+          proposal_type?: string
+          proposed_by?: string
+          rationale?: string | null
+          required_majority?: number | null
+          sponsoring_council_id?: string | null
+          status?: string
+          title?: string
+          voting_closes_at?: string | null
+          voting_opens_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_proposals_sponsoring_council_id_fkey"
+            columns: ["sponsoring_council_id"]
+            isOneToOne: false
+            referencedRelation: "governance_councils"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       governance_roles: {
         Row: {
           created_at: string
@@ -5034,6 +5636,51 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      governance_votes: {
+        Row: {
+          cast_at: string
+          governance_proposal_id: string
+          id: string
+          reasoning: string | null
+          vote: string
+          vote_weight: number | null
+          voter_scholar_passport_id: string
+        }
+        Insert: {
+          cast_at?: string
+          governance_proposal_id: string
+          id?: string
+          reasoning?: string | null
+          vote: string
+          vote_weight?: number | null
+          voter_scholar_passport_id: string
+        }
+        Update: {
+          cast_at?: string
+          governance_proposal_id?: string
+          id?: string
+          reasoning?: string | null
+          vote?: string
+          vote_weight?: number | null
+          voter_scholar_passport_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_votes_governance_proposal_id_fkey"
+            columns: ["governance_proposal_id"]
+            isOneToOne: false
+            referencedRelation: "governance_proposals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "governance_votes_voter_scholar_passport_id_fkey"
+            columns: ["voter_scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       government_bodies: {
         Row: {
@@ -5672,6 +6319,185 @@ export type Database = {
           },
         ]
       }
+      impact_adoptions: {
+        Row: {
+          adopting_entity_id: string | null
+          adopting_entity_name: string
+          adopting_entity_type: string
+          adoption_date: string
+          adoption_description: string
+          adoption_evidence_url: string | null
+          created_at: string
+          id: string
+          impact_pathway_id: string
+          verification_status: string
+          verified_by: string | null
+        }
+        Insert: {
+          adopting_entity_id?: string | null
+          adopting_entity_name: string
+          adopting_entity_type: string
+          adoption_date: string
+          adoption_description: string
+          adoption_evidence_url?: string | null
+          created_at?: string
+          id?: string
+          impact_pathway_id: string
+          verification_status?: string
+          verified_by?: string | null
+        }
+        Update: {
+          adopting_entity_id?: string | null
+          adopting_entity_name?: string
+          adopting_entity_type?: string
+          adoption_date?: string
+          adoption_description?: string
+          adoption_evidence_url?: string | null
+          created_at?: string
+          id?: string
+          impact_pathway_id?: string
+          verification_status?: string
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impact_adoptions_impact_pathway_id_fkey"
+            columns: ["impact_pathway_id"]
+            isOneToOne: false
+            referencedRelation: "impact_pathways"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      impact_disclaimers: {
+        Row: {
+          created_at: string
+          disclaimer_text: string
+          id: string
+          impact_pathway_id: string
+          required_by: string | null
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          disclaimer_text: string
+          id?: string
+          impact_pathway_id: string
+          required_by?: string | null
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          disclaimer_text?: string
+          id?: string
+          impact_pathway_id?: string
+          required_by?: string | null
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impact_disclaimers_impact_pathway_id_fkey"
+            columns: ["impact_pathway_id"]
+            isOneToOne: false
+            referencedRelation: "impact_pathways"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      impact_evaluations: {
+        Row: {
+          data_sources: string[] | null
+          evaluated_at: string
+          evaluated_by: string
+          evaluation_method: string
+          external_evaluator: string | null
+          findings_summary: string
+          id: string
+          impact_pathway_id: string
+          lessons_learned: string | null
+          success_indicators: Json | null
+          unintended_effects: string | null
+        }
+        Insert: {
+          data_sources?: string[] | null
+          evaluated_at?: string
+          evaluated_by: string
+          evaluation_method: string
+          external_evaluator?: string | null
+          findings_summary: string
+          id?: string
+          impact_pathway_id: string
+          lessons_learned?: string | null
+          success_indicators?: Json | null
+          unintended_effects?: string | null
+        }
+        Update: {
+          data_sources?: string[] | null
+          evaluated_at?: string
+          evaluated_by?: string
+          evaluation_method?: string
+          external_evaluator?: string | null
+          findings_summary?: string
+          id?: string
+          impact_pathway_id?: string
+          lessons_learned?: string | null
+          success_indicators?: Json | null
+          unintended_effects?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impact_evaluations_impact_pathway_id_fkey"
+            columns: ["impact_pathway_id"]
+            isOneToOne: false
+            referencedRelation: "impact_pathways"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      impact_pathways: {
+        Row: {
+          created_at: string
+          id: string
+          impact_domain: string
+          intended_outcome: string
+          primary_contact_id: string | null
+          research_timeline_id: string
+          status: string
+          theory_of_change: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          impact_domain: string
+          intended_outcome: string
+          primary_contact_id?: string | null
+          research_timeline_id: string
+          status?: string
+          theory_of_change?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          impact_domain?: string
+          intended_outcome?: string
+          primary_contact_id?: string | null
+          research_timeline_id?: string
+          status?: string
+          theory_of_change?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impact_pathways_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       infrastructure_contracts: {
         Row: {
           auto_renew: boolean
@@ -6000,6 +6826,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      integration_mappings: {
+        Row: {
+          created_at: string
+          external_identifier: string
+          external_system: string
+          id: string
+          internal_entity_id: string
+          internal_entity_type: string
+          last_synced_at: string | null
+          mapping_metadata: Json | null
+          verified: boolean | null
+        }
+        Insert: {
+          created_at?: string
+          external_identifier: string
+          external_system: string
+          id?: string
+          internal_entity_id: string
+          internal_entity_type: string
+          last_synced_at?: string | null
+          mapping_metadata?: Json | null
+          verified?: boolean | null
+        }
+        Update: {
+          created_at?: string
+          external_identifier?: string
+          external_system?: string
+          id?: string
+          internal_entity_id?: string
+          internal_entity_type?: string
+          last_synced_at?: string | null
+          mapping_metadata?: Json | null
+          verified?: boolean | null
+        }
+        Relationships: []
       }
       interdisciplinary_calls: {
         Row: {
@@ -6963,6 +7825,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      language_support_profiles: {
+        Row: {
+          preferred_academic_language: string | null
+          primary_language: string
+          secondary_languages: string[] | null
+          translation_assist_enabled: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          preferred_academic_language?: string | null
+          primary_language?: string
+          secondary_languages?: string[] | null
+          translation_assist_enabled?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          preferred_academic_language?: string | null
+          primary_language?: string
+          secondary_languages?: string[] | null
+          translation_assist_enabled?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       lesson_progress: {
         Row: {
@@ -8865,6 +9754,56 @@ export type Database = {
           },
         ]
       }
+      policy_translation_records: {
+        Row: {
+          created_at: string
+          created_by: string
+          evidence_strength: string
+          id: string
+          impact_pathway_id: string
+          limitations: string | null
+          plain_language_summary: string | null
+          policy_area: string
+          reviewed_by: string | null
+          target_audience: string | null
+          translation_summary: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          evidence_strength: string
+          id?: string
+          impact_pathway_id: string
+          limitations?: string | null
+          plain_language_summary?: string | null
+          policy_area: string
+          reviewed_by?: string | null
+          target_audience?: string | null
+          translation_summary: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          evidence_strength?: string
+          id?: string
+          impact_pathway_id?: string
+          limitations?: string | null
+          plain_language_summary?: string | null
+          policy_area?: string
+          reviewed_by?: string | null
+          target_audience?: string | null
+          translation_summary?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_translation_records_impact_pathway_id_fkey"
+            columns: ["impact_pathway_id"]
+            isOneToOne: false
+            referencedRelation: "impact_pathways"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       portfolio_projects: {
         Row: {
           created_at: string
@@ -9164,6 +10103,41 @@ export type Database = {
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      preservation_audit_logs: {
+        Row: {
+          action_type: string
+          archival_object_id: string
+          details: Json | null
+          id: string
+          performed_at: string
+          performed_by: string | null
+        }
+        Insert: {
+          action_type: string
+          archival_object_id: string
+          details?: Json | null
+          id?: string
+          performed_at?: string
+          performed_by?: string | null
+        }
+        Update: {
+          action_type?: string
+          archival_object_id?: string
+          details?: Json | null
+          id?: string
+          performed_at?: string
+          performed_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "preservation_audit_logs_archival_object_id_fkey"
+            columns: ["archival_object_id"]
+            isOneToOne: false
+            referencedRelation: "archival_objects"
             referencedColumns: ["id"]
           },
         ]
@@ -11110,6 +12084,50 @@ export type Database = {
           },
         ]
       }
+      research_trend_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          alert_summary: string
+          alert_type: string
+          created_at: string
+          id: string
+          target_audience: string
+          target_id: string | null
+          trend_output_id: string | null
+          urgency: string | null
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          alert_summary: string
+          alert_type: string
+          created_at?: string
+          id?: string
+          target_audience: string
+          target_id?: string | null
+          trend_output_id?: string | null
+          urgency?: string | null
+        }
+        Update: {
+          acknowledged_at?: string | null
+          alert_summary?: string
+          alert_type?: string
+          created_at?: string
+          id?: string
+          target_audience?: string
+          target_id?: string | null
+          trend_output_id?: string | null
+          urgency?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_trend_alerts_trend_output_id_fkey"
+            columns: ["trend_output_id"]
+            isOneToOne: false
+            referencedRelation: "trend_outputs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_versions: {
         Row: {
           change_summary: string | null
@@ -11564,6 +12582,47 @@ export type Database = {
           },
         ]
       }
+      scholarly_legacy_profiles: {
+        Row: {
+          created_at: string
+          designated_heirs: string[] | null
+          id: string
+          legacy_statement: string | null
+          legacy_visibility: string
+          preservation_preferences: Json | null
+          scholar_passport_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          designated_heirs?: string[] | null
+          id?: string
+          legacy_statement?: string | null
+          legacy_visibility?: string
+          preservation_preferences?: Json | null
+          scholar_passport_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          designated_heirs?: string[] | null
+          id?: string
+          legacy_statement?: string | null
+          legacy_visibility?: string
+          preservation_preferences?: Json | null
+          scholar_passport_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scholarly_legacy_profiles_scholar_passport_id_fkey"
+            columns: ["scholar_passport_id"]
+            isOneToOne: true
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       search_events: {
         Row: {
           created_at: string
@@ -11864,6 +12923,57 @@ export type Database = {
           },
         ]
       }
+      student_research_links: {
+        Row: {
+          contribution_scope: string
+          created_at: string
+          credit_visibility: string | null
+          credited: boolean | null
+          hours_contributed: number | null
+          id: string
+          research_timeline_id: string
+          scholar_passport_id: string
+          supervisor_approved: boolean | null
+        }
+        Insert: {
+          contribution_scope: string
+          created_at?: string
+          credit_visibility?: string | null
+          credited?: boolean | null
+          hours_contributed?: number | null
+          id?: string
+          research_timeline_id: string
+          scholar_passport_id: string
+          supervisor_approved?: boolean | null
+        }
+        Update: {
+          contribution_scope?: string
+          created_at?: string
+          credit_visibility?: string | null
+          credited?: boolean | null
+          hours_contributed?: number | null
+          id?: string
+          research_timeline_id?: string
+          scholar_passport_id?: string
+          supervisor_approved?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_research_links_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_research_links_scholar_passport_id_fkey"
+            columns: ["scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscription_tiers: {
         Row: {
           advanced_analytics: boolean | null
@@ -11927,6 +13037,76 @@ export type Database = {
         }
         Relationships: []
       }
+      supervision_records: {
+        Row: {
+          actual_end_date: string | null
+          created_at: string
+          expected_end_date: string | null
+          formal_agreement: string | null
+          id: string
+          research_timeline_id: string | null
+          start_date: string
+          status: string
+          supervisee_scholar_passport_id: string
+          supervision_type: string
+          supervisor_scholar_passport_id: string
+          termination_reason: string | null
+          updated_at: string
+        }
+        Insert: {
+          actual_end_date?: string | null
+          created_at?: string
+          expected_end_date?: string | null
+          formal_agreement?: string | null
+          id?: string
+          research_timeline_id?: string | null
+          start_date: string
+          status?: string
+          supervisee_scholar_passport_id: string
+          supervision_type: string
+          supervisor_scholar_passport_id: string
+          termination_reason?: string | null
+          updated_at?: string
+        }
+        Update: {
+          actual_end_date?: string | null
+          created_at?: string
+          expected_end_date?: string | null
+          formal_agreement?: string | null
+          id?: string
+          research_timeline_id?: string | null
+          start_date?: string
+          status?: string
+          supervisee_scholar_passport_id?: string
+          supervision_type?: string
+          supervisor_scholar_passport_id?: string
+          termination_reason?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supervision_records_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supervision_records_supervisee_scholar_passport_id_fkey"
+            columns: ["supervisee_scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supervision_records_supervisor_scholar_passport_id_fkey"
+            columns: ["supervisor_scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       support_tickets: {
         Row: {
           admin_reply: string | null
@@ -11977,6 +13157,57 @@ export type Database = {
             columns: ["tool_id"]
             isOneToOne: false
             referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      teaching_research_outputs: {
+        Row: {
+          course_id: string
+          created_at: string
+          description: string | null
+          id: string
+          linked_research_timeline_id: string | null
+          output_type: string
+          published: boolean | null
+          student_contributors: string[] | null
+          title: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          linked_research_timeline_id?: string | null
+          output_type: string
+          published?: boolean | null
+          student_contributors?: string[] | null
+          title: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          linked_research_timeline_id?: string | null
+          output_type?: string
+          published?: boolean | null
+          student_contributors?: string[] | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teaching_research_outputs_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "academic_courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "teaching_research_outputs_linked_research_timeline_id_fkey"
+            columns: ["linked_research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
             referencedColumns: ["id"]
           },
         ]
@@ -12176,6 +13407,92 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      trend_models: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          last_run_at: string | null
+          model_name: string
+          model_scope: string
+          model_type: string
+          parameters: Json
+          scope_id: string | null
+          version_number: number | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_run_at?: string | null
+          model_name: string
+          model_scope: string
+          model_type: string
+          parameters?: Json
+          scope_id?: string | null
+          version_number?: number | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_run_at?: string | null
+          model_name?: string
+          model_scope?: string
+          model_type?: string
+          parameters?: Json
+          scope_id?: string | null
+          version_number?: number | null
+        }
+        Relationships: []
+      }
+      trend_outputs: {
+        Row: {
+          computed_at: string
+          confidence_band: string
+          domain: string
+          explanation: string
+          id: string
+          signal_direction: string
+          signal_strength: number | null
+          supporting_data: Json | null
+          trend_model_id: string
+        }
+        Insert: {
+          computed_at?: string
+          confidence_band: string
+          domain: string
+          explanation: string
+          id?: string
+          signal_direction: string
+          signal_strength?: number | null
+          supporting_data?: Json | null
+          trend_model_id: string
+        }
+        Update: {
+          computed_at?: string
+          confidence_band?: string
+          domain?: string
+          explanation?: string
+          id?: string
+          signal_direction?: string
+          signal_strength?: number | null
+          supporting_data?: Json | null
+          trend_model_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trend_outputs_trend_model_id_fkey"
+            columns: ["trend_model_id"]
+            isOneToOne: false
+            referencedRelation: "trend_models"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       trust_contexts: {
         Row: {
