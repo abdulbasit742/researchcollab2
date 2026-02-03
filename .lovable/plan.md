@@ -1,645 +1,336 @@
 
-# Academic Forge Flow - Phase 2: Scale, Intelligence, Monetization & Enterprise Hardening
+
+# Academic Forge Flow (RCollab) - 100% World-Class Platform Completion Plan
 
 ## Executive Summary
 
-This plan evolves the existing production-ready Academic Forge Flow platform into a globally scalable, enterprise-grade, revenue-optimized academic marketplace. The implementation is structured across 9 major workstreams, extending (not replacing) the current 29-table PostgreSQL schema with RLS.
+After thorough analysis of your platform, I've identified **9 major work streams** across **45+ specific tasks** needed to transform this into a production-ready, world-class academic collaboration platform. The platform already has an impressive foundation with 300+ database tables, 80+ hooks, and comprehensive admin infrastructure.
 
 ---
 
-## Implementation Phases Overview
+## Current State Assessment
 
-| Phase | Focus Area | Estimated Scope | Priority |
-|-------|-----------|-----------------|----------|
-| 1 | Advanced Trust & Reputation Engine | 3 new tables, 2 functions, UI updates | Critical |
-| 2 | Rating & Review System | 2 new tables, review logic, UI components | Critical |
-| 3 | Escrow & Payment Hardening | Table extensions, edge functions, workflows | High |
-| 4 | AI Intelligence Layer | 1 edge function (multi-capability), UI integration | High |
-| 5 | Enterprise/University Mode | 3 new tables, department hierarchy, admin tools | Medium |
-| 6 | Advanced Admin Safety Controls | 3 new tables, risk dashboard, moderation queue | High |
-| 7 | UX/Conversion Optimization | Onboarding improvements, draft saving, tooltips | Medium |
-| 8 | Monetization Expansion | Subscription tiers, featured listings, credit packs | Medium |
-| 9 | Performance & Scalability | Indexes, pagination, query optimization | Ongoing |
+### What's Already Built (Strengths)
+- 300+ database tables with comprehensive schema
+- Admin system with real-time dashboards
+- Feature flags & kill-switch infrastructure
+- Schema versioning system
+- 80+ React hooks for data management
+- Messaging system with realtime updates
+- Wallet & escrow system (frontend only)
+- Global search with `search_index` table
+- Presence tracking system
+- Trust engine & verification workflow
 
----
-
-## Phase 1: Advanced Trust & Reputation Engine
-
-### Database Changes
-
-**New Table: `trust_score_history`**
-```text
-┌─────────────────────────────────────────────┐
-│ trust_score_history                         │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ user_id (uuid, FK profiles)                 │
-│ previous_score (integer)                    │
-│ new_score (integer)                         │
-│ change_reason (text)                        │
-│ change_source (text) - system/admin/project │
-│ metadata (jsonb) - details                  │
-│ created_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
-```
-
-**Extend `user_trust_profiles` table:**
-- Add `trust_tier` column (enum: bronze, silver, gold, platinum)
-- Add `last_activity_at` (timestamptz)
-- Add `decay_applied_at` (timestamptz)
-- Add `financial_reliability_score` (integer, 0-100)
-- Add `dispute_rate` (numeric)
-- Add `avg_milestone_approval_hours` (numeric)
-- Add `is_frozen` (boolean, default false)
-- Add `frozen_reason` (text)
-- Add `frozen_at` (timestamptz)
-- Add `frozen_by` (uuid)
-
-**New Table: `trust_tier_requirements`**
-```text
-┌─────────────────────────────────────────────┐
-│ trust_tier_requirements                     │
-├─────────────────────────────────────────────┤
-│ tier (text, PK) - bronze/silver/gold/plat   │
-│ min_trust_score (integer)                   │
-│ min_projects_completed (integer)            │
-│ requires_verification (boolean)             │
-│ max_budget_access (numeric) - PKR limit     │
-│ org_access_allowed (boolean)                │
-│ priority_support (boolean)                  │
-│ description (text)                          │
-└─────────────────────────────────────────────┘
-```
-
-### Backend Logic
-
-**Database Function: `calculate_dynamic_trust_score(user_id uuid)`**
-- Calculates weighted score from:
-  - On-time delivery rate (15 points)
-  - Milestone approval speed (10 points)
-  - Dispute frequency (15 points negative)
-  - Ratings average (15 points)
-  - Verification depth (30 points)
-  - Financial reliability (15 points)
-- Returns updated score and tier
-
-**Database Trigger: `on_milestone_complete`**
-- Recalculates trust score when milestones are approved
-- Updates `avg_milestone_approval_hours`
-- Records change in `trust_score_history`
-
-**Scheduled Function: `apply_trust_decay`**
-- Runs weekly via pg_cron
-- Reduces score by 2% for users inactive > 90 days
-- Records decay in history
-
-### Admin Controls
-
-- Trust score override form (set score, add reason)
-- Freeze/unfreeze trust profile button
-- Audit trust score history table
-- Manual tier assignment override
-
-### Frontend Components
-
-- `TrustTierBadge` - displays tier with icon
-- `TrustScoreHistoryTimeline` - shows score changes
-- Enhanced `TrustScoreCard` with tier display
-- Admin `TrustManagementPanel` component
+### Critical Gaps Identified
+1. **No payment gateway** - Stripe not integrated
+2. **Missing UI pages** - 8+ feature hooks have no pages
+3. **Only 2 Edge Functions** - Need 5+ more for automation
+4. **No data integrity jobs** - Background cleanup missing
+5. **Performance not optimized** - No indexes audit, no caching
+6. **Observability incomplete** - No metrics/alerting system
+7. **Permission matrix informal** - No formal RBAC tables
 
 ---
 
-## Phase 2: Rating & Review System
+## Work Streams & Priority Order
 
-### Database Changes
-
-**New Table: `project_reviews`**
 ```text
-┌─────────────────────────────────────────────┐
-│ project_reviews                             │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ offer_id (uuid, FK offers)                  │
-│ reviewer_id (uuid, FK profiles)             │
-│ reviewee_id (uuid, FK profiles)             │
-│ overall_rating (integer, 1-5)               │
-│ communication_rating (integer, 1-5)         │
-│ quality_rating (integer, 1-5)               │
-│ timeliness_rating (integer, 1-5)            │
-│ comment (text)                              │
-│ is_visible (boolean, default false)         │
-│ visibility_unlocked_at (timestamptz)        │
-│ moderation_status (text) - pending/approved │
-│ moderation_notes (text)                     │
-│ moderated_by (uuid)                         │
-│ moderated_at (timestamptz)                  │
-│ created_at (timestamptz)                    │
-│ updated_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
++----------------------------------------------+
+|  PHASE 1: CORE INFRASTRUCTURE (Week 1-2)     |
+|  - Stripe Integration                        |
+|  - Edge Functions                            |
+|  - Permission Matrix                         |
++----------------------------------------------+
+            |
+            v
++----------------------------------------------+
+|  PHASE 2: UI COMPLETION (Week 2-3)           |
+|  - Missing Feature Pages                     |
+|  - Advanced Messaging                        |
+|  - Collaborative Workspaces                  |
++----------------------------------------------+
+            |
+            v
++----------------------------------------------+
+|  PHASE 3: OPTIMIZATION (Week 3-4)            |
+|  - Database Indexes                          |
+|  - Query Hardening                           |
+|  - Caching Layer                             |
++----------------------------------------------+
+            |
+            v
++----------------------------------------------+
+|  PHASE 4: RELIABILITY (Week 4-5)             |
+|  - Observability                             |
+|  - Data Integrity Jobs                       |
+|  - Go-Live Checklist                         |
++----------------------------------------------+
 ```
-
-**New Table: `review_unlock_queue`**
-```text
-┌─────────────────────────────────────────────┐
-│ review_unlock_queue                         │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ offer_id (uuid, FK offers)                  │
-│ reviewer_a_id (uuid)                        │
-│ reviewer_b_id (uuid)                        │
-│ review_a_submitted (boolean)                │
-│ review_b_submitted (boolean)                │
-│ unlock_deadline (timestamptz)               │
-│ unlocked_at (timestamptz)                   │
-│ created_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
-```
-
-### Backend Logic
-
-**Double-Blind Review Flow:**
-1. On offer completion, create `review_unlock_queue` entry
-2. Both parties submit reviews (not visible)
-3. When both submit OR 7-day timeout expires:
-   - Set `is_visible = true` on both reviews
-   - Trigger trust score recalculation
-4. Reviews with profanity/abuse flagged for moderation
-
-**Database Function: `unlock_reviews(offer_id uuid)`**
-- Makes both reviews visible
-- Updates reviewer trust scores
-- Sends notification to both parties
-
-### Frontend Components
-
-- `ReviewSubmitModal` - structured feedback form
-- `ReviewCard` - displays individual review
-- `ProfileReviewsSection` - aggregated reviews on public profile
-- `ReviewModerationQueue` - admin review moderation
 
 ---
 
-## Phase 3: Escrow & Payment Hardening
+## Phase 1: Core Infrastructure
 
-### Database Changes
+### 1.1 Stripe Payment Integration
+**Priority: CRITICAL**
 
-**Extend `milestones` table:**
-- Add `auto_release_at` (timestamptz)
-- Add `partial_release_amount` (numeric)
-- Add `approval_reminder_sent` (boolean)
+| Task | Description |
+|------|-------------|
+| Create Stripe tables | `stripe_customers`, `stripe_payment_intents`, `stripe_webhook_events` |
+| Stripe webhook Edge Function | Handle `payment_intent.succeeded`, `invoice.paid`, subscription events |
+| Wallet top-up flow | PaymentIntent creation, frontend checkout, webhook confirmation |
+| Escrow funding | Lock funds via Stripe, release on milestone approval |
+| Subscription management | Create/cancel/renew subscriptions for premium features |
+| Invoice history page | User can view all payment history |
 
-**Extend `disputes` table:**
-- Add `escalation_level` (integer, 1-3)
-- Add `auto_mediation_result` (text)
-- Add `arbitration_deadline` (timestamptz)
-- Add `evidence_files` (jsonb)
+### 1.2 Edge Functions Build-out
+**Priority: CRITICAL**
 
-**Extend `wallets` table:**
-- Add `is_frozen` (boolean)
-- Add `frozen_reason` (text)
-- Add `fraud_flags` (jsonb)
-- Add `risk_score` (integer)
+| Function | Purpose |
+|----------|---------|
+| `stripe-webhook` | Process all Stripe events securely |
+| `process-grant-application` | Validate eligibility, notify reviewers, update status |
+| `release-milestone-payment` | Idempotent escrow release with audit logging |
+| `run-scheduled-analytics` | Daily/weekly trend aggregation, foresight snapshots |
+| `send-platform-email` | Template-based notifications respecting preferences |
+| `handle-dataset-access-request` | Ethics/consent validation, owner notification |
 
-**New Table: `platform_fee_rules`**
-```text
-┌─────────────────────────────────────────────┐
-│ platform_fee_rules                          │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ role (text) - student/researcher/org        │
-│ fee_percentage (numeric)                    │
-│ min_fee (numeric)                           │
-│ max_fee (numeric)                           │
-│ is_active (boolean)                         │
-│ created_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
-```
+### 1.3 Permission Matrix & RBAC
+**Priority: HIGH**
 
-### Backend Logic (Edge Functions)
-
-**`escrow-auto-release` (scheduled)**
-- Checks milestones where `auto_release_at < now()`
-- Auto-releases if no dispute within 7 days of submission
-- Logs action in audit trail
-
-**`dispute-escalation` function**
-- Level 1: Auto-mediation (24h)
-- Level 2: Admin queue (48h)
-- Level 3: Senior arbitration
-- Partial release capability
-
-**`fraud-detection` function**
-- Flags suspicious patterns:
-  - Multiple rapid withdrawals
-  - Large escrow movements
-  - Account age vs transaction volume
-- Updates `wallets.fraud_flags`
-
-### Admin Controls
-
-- Freeze/unfreeze wallet button
-- View fraud flags and risk score
-- Configure fee rules per role
-- Partial milestone release action
-- Dispute resolution with evidence viewer
+| Task | Description |
+|------|-------------|
+| Create `permission_definitions` table | Action + entity type definitions |
+| Create `role_permissions` table | Role-to-action mappings |
+| Create `contextual_permissions` table | User-specific overrides with expiry |
+| `check_permission()` function | Postgres function for RLS |
+| Admin permissions UI | `/admin/permissions` - view/audit matrix |
+| Enforcement at all layers | RLS + Edge + Frontend guards |
 
 ---
 
-## Phase 4: AI Intelligence Layer
+## Phase 2: UI Completion
 
-### Edge Function: `ai-platform-intelligence`
+### 2.1 Missing Feature Pages
+**Priority: HIGH**
 
-**Capabilities (single function, multiple endpoints):**
+| Route | Hook | Description |
+|-------|------|-------------|
+| `/ip` & `/ip/licenses` | `useIPManagement` | IP declarations, ownership breakdown, licensing |
+| `/workspace/:id` | `useCollaborativeWorkspace` | Real-time editor, presence, version history |
+| `/archive` & `/legacy` | `useArchival` | Immutable records, scholar legacy view |
+| `/impact` | `useImpactTranslation` | Policy translations, adoption records |
+| `/analytics/foresight` | `useForesight` | Trend signals, confidence bands, scenarios |
+| `/economics` | `useEconomicSustainability` | Revenue transparency, subsidies, pricing logic |
+| `/national` | `useNationalSovereignty` | Sovereign data, public accountability |
+| `/stewardship` | `usePlatformStewardship` | Mission charter, governance evolution |
 
-1. **Project Feasibility Check** (`/feasibility`)
-   - Input: project description, budget, timeline
-   - Output: feasibility score, risk factors, suggestions
-   - Used before project posting
+### 2.2 Advanced Messaging Engine
+**Priority: HIGH**
 
-2. **Bid Quality Scoring** (`/bid-score`)
-   - Input: bid details, bidder profile, project requirements
-   - Output: quality score (private), ranking factors
-   - Powers bid sorting (not shown to users)
+| Feature | Implementation |
+|---------|----------------|
+| `user_presence` table | Status, last_seen, with timeout cleanup |
+| `typing_events` table | Thread-scoped, auto-expiry (5s) |
+| `message_reads` table | Per-message read receipts |
+| Realtime channels | `thread:{id}`, `presence:global`, `user:{id}` |
+| UI enhancements | Typing indicators, read receipts, reconnect handling |
 
-3. **Research Match Confidence** (`/match-confidence`)
-   - Input: project requirements, candidate profile
-   - Output: match percentage, skill gaps, recommendations
+### 2.3 Collaborative Workspaces
+**Priority: MEDIUM**
 
-4. **Profile Strength Analysis** (`/profile-strength`)
-   - Input: user profile data
-   - Output: strength score, improvement suggestions
-   - Displayed on profile page
-
-5. **Suggested Pricing** (`/suggested-pricing`)
-   - Input: project scope, category, market data
-   - Output: price range, market benchmarks
-
-### Implementation Notes
-
-- Uses Lovable AI models (no API key required)
-- All outputs are advisory, not authoritative
-- Results stored in `ai_analysis_cache` table for 24h
-- Explainability text included with every score
-
-### Frontend Integration
-
-- `AIFeasibilityCard` on project creation
-- `ProfileStrengthWidget` on profile page
-- `AISuggestedPricing` in project form
-- Bid list sorted by AI quality score (hidden metric)
+| Feature | Description |
+|---------|-------------|
+| Real-time document editor | Collaborative text editing |
+| Presence indicators | Show who's viewing/editing |
+| Version history | Track all changes with rollback |
+| Comment sidebar | Thread-based discussions |
+| File attachments | Document sharing within workspace |
 
 ---
 
-## Phase 5: Enterprise/University Mode
+## Phase 3: Performance Optimization
 
-### Database Changes
+### 3.1 Database Index Audit
+**Priority: HIGH**
 
-**Extend `organizations` table:**
-- Add `parent_org_id` (uuid, self-reference for sub-orgs)
-- Add `org_trust_score` (integer)
-- Add `sla_tier` (text)
-- Add `custom_pricing_enabled` (boolean)
-- Add `invoice_prefix` (text)
-- Add `data_retention_days` (integer)
+| Table Category | Index Columns |
+|----------------|---------------|
+| Core entities | `user_id`, `owner_id`, `created_at`, `status` |
+| Messaging | `thread_id`, `sender_id`, `read_at` |
+| Financial | `wallet_id`, `offer_id`, `milestone_id` |
+| Search | GIN indexes on `searchable_text`, `tags` |
+| Admin | `admin_id`, `entity_type`, `action` |
 
-**New Table: `org_departments`**
-```text
-┌─────────────────────────────────────────────┐
-│ org_departments                             │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ org_id (uuid, FK organizations)             │
-│ name (text)                                 │
-│ head_user_id (uuid, FK profiles)            │
-│ budget_limit (numeric)                      │
-│ member_limit (integer)                      │
-│ created_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
-```
+### 3.2 Query Hardening
+**Priority: HIGH**
 
-**Extend `organization_members` table:**
-- Add `department_id` (uuid, FK org_departments)
-- Add `is_faculty_admin` (boolean)
+| Task | Description |
+|------|-------------|
+| Remove `SELECT *` | Explicit column selection everywhere |
+| Create materialized views | `admin_platform_stats`, `admin_growth_metrics` |
+| Enforce pagination | All list queries capped at 50-100 |
+| Batch heavy operations | Analytics aggregation, notifications |
 
-**New Table: `student_cohorts`**
-```text
-┌─────────────────────────────────────────────┐
-│ student_cohorts                             │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ org_id (uuid, FK organizations)             │
-│ name (text) - e.g., "Fall 2024 MS Students" │
-│ start_date (date)                           │
-│ end_date (date)                             │
-│ supervisor_id (uuid)                        │
-│ created_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
-```
+### 3.3 Caching Strategy
+**Priority: MEDIUM**
 
-**New Table: `cohort_members`**
-```text
-┌─────────────────────────────────────────────┐
-│ cohort_members                              │
-├─────────────────────────────────────────────┤
-│ cohort_id (uuid, FK student_cohorts)        │
-│ user_id (uuid, FK profiles)                 │
-│ enrollment_status (text)                    │
-│ joined_at (timestamptz)                     │
-└─────────────────────────────────────────────┘
-```
-
-**New Table: `org_internal_projects`**
-```text
-┌─────────────────────────────────────────────┐
-│ org_internal_projects                       │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ org_id (uuid, FK organizations)             │
-│ department_id (uuid, FK org_departments)    │
-│ earning_project_id (uuid, FK earning_proj)  │
-│ visibility (text) - org_only/public         │
-│ created_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
-```
-
-### Frontend Pages
-
-- `OrganizationHierarchyPage` - department tree view
-- `CohortManagementPage` - manage student groups
-- `OrgAnalyticsDashboard` - usage metrics per department
-- `OrgDataExportPage` - compliance data exports
+| Cache Type | Where Applied |
+|------------|---------------|
+| React Query `staleTime` | 5min for profiles, 1min for search |
+| Server-side cache | Edge function responses |
+| Memoization | Heavy dashboard components |
+| Virtual lists | Messages, search results (100+ items) |
 
 ---
 
-## Phase 6: Advanced Admin Safety Controls
+## Phase 4: Reliability & Go-Live
 
-### Database Changes
+### 4.1 Observability System
+**Priority: HIGH**
 
-**New Table: `user_restrictions`**
-```text
-┌─────────────────────────────────────────────┐
-│ user_restrictions                           │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ user_id (uuid, FK profiles)                 │
-│ restriction_type (text) - shadow_ban/limit  │
-│ reason (text)                               │
-│ applied_by (uuid)                           │
-│ expires_at (timestamptz)                    │
-│ is_active (boolean)                         │
-│ created_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
-```
+| Component | Implementation |
+|-----------|----------------|
+| `platform_metrics` table | API latency, error rates, realtime health |
+| `platform_events` table | Auth failures, payment events, permission denials |
+| `platform_traces` table | Request-to-result tracing |
+| Alert thresholds | Error rate >2%, payment failures, DB locks |
+| Admin dashboards | `/admin/health`, `/admin/metrics`, `/admin/incidents` |
 
-**New Table: `admin_notes`**
-```text
-┌─────────────────────────────────────────────┐
-│ admin_notes                                 │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ entity_type (text) - user/project/org       │
-│ entity_id (uuid)                            │
-│ note (text)                                 │
-│ created_by (uuid)                           │
-│ created_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
-```
+### 4.2 Data Integrity Jobs
+**Priority: HIGH**
 
-**New Table: `rate_limits`**
-```text
-┌─────────────────────────────────────────────┐
-│ rate_limits                                 │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ action_type (text) - bid/message/project    │
-│ role (text) - student/researcher/all        │
-│ max_per_hour (integer)                      │
-│ max_per_day (integer)                       │
-│ is_active (boolean)                         │
-└─────────────────────────────────────────────┘
-```
+| Job | Purpose |
+|-----|---------|
+| `cleanup-orphaned-records` | Remove dangling references |
+| `enforce-state-consistency` | Fix mismatched statuses |
+| `reconcile-wallet-balances` | Verify transaction math |
+| `expire-stale-data` | Clear old typing events, presence |
+| `verify-analytics-integrity` | Ensure snapshots match reality |
 
-**New Table: `flagged_behaviors`**
-```text
-┌─────────────────────────────────────────────┐
-│ flagged_behaviors                           │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ user_id (uuid, FK profiles)                 │
-│ behavior_type (text)                        │
-│ severity (text) - low/medium/high/critical  │
-│ auto_flagged (boolean)                      │
-│ ai_confidence (numeric)                     │
-│ reviewed (boolean)                          │
-│ reviewed_by (uuid)                          │
-│ action_taken (text)                         │
-│ created_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
-```
+### 4.3 Go-Live Checklist Page
+**Priority: CRITICAL**
 
-### Admin Pages
-
-- `AdminRiskDashboard` - risk metrics overview
-- `AdminModerationQueue` - flagged behaviors queue
-- `AdminBulkActionsPage` - mass enforcement tools
-- Enhanced user detail with admin notes panel
+| Check Category | Items |
+|----------------|-------|
+| Auth & Access | Email verification, OAuth, role assignment, blocked users |
+| Database & RLS | All tables have RLS, no `USING (true)`, indexes present |
+| Stripe | Webhooks verified, no credits before confirmation, refunds work |
+| Edge Functions | Auth validated, idempotent, timeouts handled |
+| Realtime | Messaging stable, presence correct, reconnect works |
+| Performance | No N+1 queries, pagination everywhere |
 
 ---
 
-## Phase 7: UX/Conversion Optimization
+## Technical Specifications
 
-### Features
+### Database Additions Required
 
-**Progressive Onboarding:**
-- Role-specific onboarding flows
-- Contextual step indicators
-- Skip with "remind later" option
+```text
+New Tables:
+- stripe_customers (user_id, stripe_customer_id, created_at)
+- stripe_payment_intents (user_id, intent_id, amount, status, purpose)
+- stripe_webhook_events (event_id, event_type, processed, received_at)
+- permission_definitions (action, entity_type, description)
+- role_permissions (role, action, entity_type, allowed)
+- contextual_permissions (user_id, context_type, context_id, action, expires_at)
+- user_presence (user_id, status, last_seen_at, updated_at)
+- typing_events (thread_id, user_id, started_at, expires_at)
+- message_reads (message_id, user_id, read_at)
+- platform_metrics (metric_name, value, labels, recorded_at)
+- platform_events (event_type, severity, context, user_id)
+- platform_traces (trace_id, span_name, duration_ms, status)
+- platform_integrity_logs (job_name, action_type, affected_table, severity)
+```
 
-**Feature Gating with Education:**
-- Locked features show tooltip explaining unlock criteria
-- Trust tier requirements displayed clearly
-- "How to unlock" guidance
+### Edge Functions Required
 
-**Draft Saving:**
-- Auto-save projects, bids, offers every 30s
-- "Drafts" section in relevant pages
-- Resume editing from drafts
+```text
+1. stripe-webhook
+2. process-grant-application
+3. release-milestone-payment
+4. run-scheduled-analytics
+5. send-platform-email
+6. handle-dataset-access-request
+7. cleanup-orphaned-records (scheduled)
+8. enforce-state-consistency (scheduled)
+```
 
-**Smart CTAs:**
-- Behavior-based CTA suggestions
-- "Complete your profile" prompts
-- "Post your first project" nudges
+### New Pages Required
 
-**First Success Checklists:**
-- Student checklist: Profile → Verify → First bid → First project
-- Researcher checklist: Profile → Post project → Accept bid → Complete milestone
-
-### Frontend Components
-
-- `OnboardingChecklist` - sidebar widget
-- `FeatureLockedTooltip` - explains unlock criteria
-- `DraftsBanner` - shows pending drafts
-- `SmartCTABanner` - contextual suggestions
+```text
+/ip                    - IP Management
+/ip/licenses           - License Management
+/workspace/:id         - Collaborative Workspace
+/archive               - Archival Records
+/legacy                - Scholar Legacy
+/impact                - Impact Translation
+/analytics/foresight   - Foresight Dashboard
+/economics             - Economic Sustainability
+/national              - National Sovereignty
+/stewardship           - Platform Stewardship
+/admin/health          - System Health
+/admin/metrics         - Metrics Dashboard
+/admin/incidents       - Incident Tracker
+/admin/permissions     - Permission Matrix
+/admin/integrity       - Data Integrity Logs
+/admin/launch-checklist - Go-Live Status
+```
 
 ---
 
-## Phase 8: Monetization Expansion
+## Implementation Order (Recommended)
 
-### Database Changes
-
-**New Table: `subscription_tiers`**
-```text
-┌─────────────────────────────────────────────┐
-│ subscription_tiers                          │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ name (text) - Free/Pro/Elite                │
-│ price_monthly (numeric)                     │
-│ price_yearly (numeric)                      │
-│ features (jsonb)                            │
-│ max_projects_month (integer)                │
-│ max_bids_month (integer)                    │
-│ priority_support (boolean)                  │
-│ featured_profile (boolean)                  │
-│ ai_credits_included (integer)               │
-│ is_active (boolean)                         │
-└─────────────────────────────────────────────┘
-```
-
-**New Table: `user_subscriptions`**
-```text
-┌─────────────────────────────────────────────┐
-│ user_subscriptions                          │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ user_id (uuid, FK profiles)                 │
-│ tier_id (uuid, FK subscription_tiers)       │
-│ status (text)                               │
-│ started_at (timestamptz)                    │
-│ expires_at (timestamptz)                    │
-│ auto_renew (boolean)                        │
-│ payment_method_id (text)                    │
-└─────────────────────────────────────────────┘
-```
-
-**New Table: `featured_listings`**
-```text
-┌─────────────────────────────────────────────┐
-│ featured_listings                           │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ listing_type (text) - project/profile       │
-│ listing_id (uuid)                           │
-│ user_id (uuid)                              │
-│ boost_level (integer, 1-3)                  │
-│ amount_paid (numeric)                       │
-│ starts_at (timestamptz)                     │
-│ expires_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
-```
-
-**New Table: `ai_credit_packs`**
-```text
-┌─────────────────────────────────────────────┐
-│ ai_credit_packs                             │
-├─────────────────────────────────────────────┤
-│ id (uuid, PK)                               │
-│ name (text)                                 │
-│ credits (integer)                           │
-│ price (numeric)                             │
-│ is_active (boolean)                         │
-└─────────────────────────────────────────────┘
-```
-
-**New Table: `user_ai_credits`**
-```text
-┌─────────────────────────────────────────────┐
-│ user_ai_credits                             │
-├─────────────────────────────────────────────┤
-│ user_id (uuid, PK, FK profiles)             │
-│ balance (integer)                           │
-│ updated_at (timestamptz)                    │
-└─────────────────────────────────────────────┘
-```
-
-### Admin Platform Settings Extensions
-
-Add new keys to `platform_settings`:
-- `subscription_enabled`
-- `featured_listing_prices`
-- `priority_dispute_fee`
-- `affiliate_tier_multipliers`
+1. **Stripe Integration** - Enables real money flow
+2. **Edge Functions** - Enables automation
+3. **Permission Matrix** - Formalizes access control
+4. **Missing UI Pages** - Completes user experience
+5. **Advanced Messaging** - Polishes core communication
+6. **Database Optimization** - Prepares for scale
+7. **Observability** - Enables production monitoring
+8. **Data Integrity Jobs** - Ensures long-term health
+9. **Go-Live Checklist** - Final verification
 
 ---
 
-## Phase 9: Performance & Scalability
+## Estimated Effort
 
-### Database Optimizations
-
-**New Indexes:**
-```sql
--- Trust profile lookups
-CREATE INDEX idx_user_trust_profiles_tier 
-ON user_trust_profiles(trust_tier);
-
--- Project queries
-CREATE INDEX idx_earning_projects_status_created 
-ON earning_projects(status, created_at DESC);
-
--- Bid queries
-CREATE INDEX idx_earning_bids_project_created 
-ON earning_bids(project_id, created_at DESC);
-
--- Review visibility
-CREATE INDEX idx_project_reviews_visible_reviewee 
-ON project_reviews(reviewee_id) WHERE is_visible = true;
-
--- Transaction history
-CREATE INDEX idx_wallet_transactions_wallet_created 
-ON wallet_transactions(wallet_id, created_at DESC);
-```
-
-### Query Optimizations
-
-- Replace N+1 queries with JOINs in hooks
-- Add `.limit()` to all list queries
-- Implement cursor-based pagination for large datasets
-- Add query result caching where appropriate
-
-### Real-time Optimization
-
-- Reduce subscription scope to necessary tables only
-- Implement channel cleanup on component unmount
-- Batch real-time updates where possible
+| Phase | Duration | Complexity |
+|-------|----------|------------|
+| Phase 1: Infrastructure | 1-2 weeks | High |
+| Phase 2: UI Completion | 1-2 weeks | Medium |
+| Phase 3: Optimization | 1 week | Medium |
+| Phase 4: Reliability | 1 week | High |
+| **Total** | **4-6 weeks** | **High** |
 
 ---
 
-## Security Considerations
+## Success Criteria
 
-1. **RLS Policies**: All new tables will have appropriate RLS policies following existing patterns
-2. **Admin Functions**: Use SECURITY DEFINER pattern for admin operations
-3. **Input Validation**: Server-side validation on all edge functions
-4. **Audit Trail**: All admin actions logged to `admin_audit_logs`
-5. **Rate Limiting**: Configurable limits on sensitive operations
+The platform is "100% World-Class" when:
 
----
-
-## Implementation Order Recommendation
-
-1. **Week 1-2**: Trust Engine + Review System (foundational)
-2. **Week 3**: Escrow Hardening (financial safety)
-3. **Week 4**: AI Intelligence Layer (differentiator)
-4. **Week 5-6**: Enterprise Mode (revenue driver)
-5. **Week 7**: Admin Safety Controls (operational)
-6. **Week 8**: UX Optimization + Monetization (growth)
-7. **Ongoing**: Performance optimization
+1. Real money flows securely through Stripe
+2. All 80+ hooks have corresponding UI pages
+3. 8+ Edge Functions automate critical workflows
+4. Database has comprehensive indexes and views
+5. Observability catches issues before users report them
+6. Data integrity jobs run daily without intervention
+7. Go-Live checklist shows all green
+8. Admin can understand platform state in 30 seconds
+9. No user action results in a broken or empty state
+10. Platform feels as reliable as LinkedIn or Upwork
 
 ---
 
-## Technical Notes
+## Next Steps
 
-- All database changes via Supabase migrations
-- Edge functions deployed automatically
-- Uses existing design system and component patterns
-- Mobile-first responsive design maintained
-- PKR currency standard preserved throughout
+When you approve this plan, I will begin implementation in the following order:
+
+1. **First**: Stripe payment integration (tables + webhook + frontend flows)
+2. **Second**: Critical Edge Functions for automation
+3. **Third**: Missing UI pages for feature hooks
+4. **Fourth**: Performance and reliability hardening
+
+Each step will be production-ready before moving to the next.
+
