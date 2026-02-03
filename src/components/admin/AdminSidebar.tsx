@@ -19,7 +19,8 @@ import {
   Shield,
   BookOpen,
   Vote,
-  Database
+  Database,
+  Key
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -27,6 +28,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const navItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/admin" },
   { icon: Users, label: "Users", href: "/admin/users" },
+  { icon: Key, label: "Permissions", href: "/admin/permissions" },
   { icon: MessageSquare, label: "Feed Moderation", href: "/admin/feed" },
   { icon: Wrench, label: "Tools", href: "/admin/tools" },
   { icon: Briefcase, label: "Projects", href: "/admin/projects" },

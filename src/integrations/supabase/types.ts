@@ -2284,6 +2284,50 @@ export type Database = {
         }
         Relationships: []
       }
+      contextual_permissions: {
+        Row: {
+          action_key: string
+          allowed: boolean
+          context_id: string
+          context_type: string
+          created_at: string
+          expires_at: string | null
+          granted_by: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          action_key: string
+          allowed?: boolean
+          context_id: string
+          context_type: string
+          created_at?: string
+          expires_at?: string | null
+          granted_by?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          action_key?: string
+          allowed?: boolean
+          context_id?: string
+          context_type?: string
+          created_at?: string
+          expires_at?: string | null
+          granted_by?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contextual_permissions_action_key_fkey"
+            columns: ["action_key"]
+            isOneToOne: false
+            referencedRelation: "permission_definitions"
+            referencedColumns: ["action_key"]
+          },
+        ]
+      }
       continuity_checkpoints: {
         Row: {
           checkpoint_date: string
@@ -10267,6 +10311,72 @@ export type Database = {
           },
         ]
       }
+      permission_audit_logs: {
+        Row: {
+          action_key: string
+          action_type: string
+          admin_id: string
+          created_at: string
+          id: string
+          new_value: Json | null
+          old_value: Json | null
+          reason: string | null
+          target_id: string | null
+          target_table: string
+        }
+        Insert: {
+          action_key: string
+          action_type: string
+          admin_id: string
+          created_at?: string
+          id?: string
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
+          target_id?: string | null
+          target_table: string
+        }
+        Update: {
+          action_key?: string
+          action_type?: string
+          admin_id?: string
+          created_at?: string
+          id?: string
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
+          target_id?: string | null
+          target_table?: string
+        }
+        Relationships: []
+      }
+      permission_definitions: {
+        Row: {
+          action_key: string
+          created_at: string
+          description: string | null
+          entity_type: string
+          id: string
+          is_stripe_related: boolean | null
+        }
+        Insert: {
+          action_key: string
+          created_at?: string
+          description?: string | null
+          entity_type: string
+          id?: string
+          is_stripe_related?: boolean | null
+        }
+        Update: {
+          action_key?: string
+          created_at?: string
+          description?: string | null
+          entity_type?: string
+          id?: string
+          is_stripe_related?: boolean | null
+        }
+        Relationships: []
+      }
       pinned_messages: {
         Row: {
           created_at: string | null
@@ -13393,6 +13503,38 @@ export type Database = {
         }
         Relationships: []
       }
+      role_permissions: {
+        Row: {
+          action_key: string
+          allowed: boolean
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          action_key: string
+          allowed?: boolean
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          action_key?: string
+          allowed?: boolean
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "role_permissions_action_key_fkey"
+            columns: ["action_key"]
+            isOneToOne: false
+            referencedRelation: "permission_definitions"
+            referencedColumns: ["action_key"]
+          },
+        ]
+      }
       saved_jobs: {
         Row: {
           created_at: string | null
@@ -16163,6 +16305,15 @@ export type Database = {
         Returns: boolean
       }
       check_fraud_patterns: { Args: { p_wallet_id: string }; Returns: number }
+      check_permission: {
+        Args: {
+          _action_key: string
+          _context_id?: string
+          _context_type?: string
+          _user_id: string
+        }
+        Returns: boolean
+      }
       check_rate_limit: {
         Args: { p_action_type: string; p_user_id: string }
         Returns: boolean

@@ -83,6 +83,7 @@ import AdminKnowledgePage from "./pages/admin/AdminKnowledgePage";
 import AdminFeedModerationPage from "./pages/admin/AdminFeedModerationPage";
 import AdminFeatureFlagsPage from "./pages/admin/AdminFeatureFlagsPage";
 import AdminSchemaPage from "./pages/admin/AdminSchemaPage";
+import AdminPermissionsPage from "./pages/admin/AdminPermissionsPage";
 import FeedPage from "./pages/FeedPage";
 import PostDetailPage from "./pages/PostDetailPage";
 import NetworkPage from "./pages/NetworkPage";
@@ -177,6 +178,7 @@ const AppContent = () => {
             <Route path="/admin/feed" element={<AdminFeedModerationPage />} />
             <Route path="/admin/feature-flags" element={<AdminFeatureFlagsPage />} />
             <Route path="/admin/schema" element={<AdminSchemaPage />} />
+            <Route path="/admin/permissions" element={<AdminPermissionsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
