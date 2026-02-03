@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      academic_disciplines: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon_name: string | null
+          id: string
+          name: string
+          parent_discipline_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          name: string
+          parent_discipline_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          name?: string
+          parent_discipline_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academic_disciplines_parent_discipline_id_fkey"
+            columns: ["parent_discipline_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disciplines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       academic_disputes: {
         Row: {
           confidentiality_level: string
@@ -1093,6 +1128,68 @@ export type Database = {
             columns: ["author_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bridge_roles: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          research_timeline_id: string
+          role_type: string
+          scholar_passport_id: string
+          source_discipline_id: string | null
+          target_discipline_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          research_timeline_id: string
+          role_type: string
+          scholar_passport_id: string
+          source_discipline_id?: string | null
+          target_discipline_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          research_timeline_id?: string
+          role_type?: string
+          scholar_passport_id?: string
+          source_discipline_id?: string | null
+          target_discipline_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bridge_roles_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bridge_roles_scholar_passport_id_fkey"
+            columns: ["scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bridge_roles_source_discipline_id_fkey"
+            columns: ["source_discipline_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disciplines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bridge_roles_target_discipline_id_fkey"
+            columns: ["target_discipline_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disciplines"
             referencedColumns: ["id"]
           },
         ]
@@ -2897,6 +2994,51 @@ export type Database = {
           },
         ]
       }
+      discipline_affiliations: {
+        Row: {
+          created_at: string
+          depth_level: string
+          discipline_id: string
+          id: string
+          scholar_passport_id: string
+          verified: boolean | null
+          years_experience: number | null
+        }
+        Insert: {
+          created_at?: string
+          depth_level: string
+          discipline_id: string
+          id?: string
+          scholar_passport_id: string
+          verified?: boolean | null
+          years_experience?: number | null
+        }
+        Update: {
+          created_at?: string
+          depth_level?: string
+          discipline_id?: string
+          id?: string
+          scholar_passport_id?: string
+          verified?: boolean | null
+          years_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discipline_affiliations_discipline_id_fkey"
+            columns: ["discipline_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disciplines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "discipline_affiliations_scholar_passport_id_fkey"
+            columns: ["scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dispute_actions: {
         Row: {
           action_type: string
@@ -3323,6 +3465,102 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      ethics_board_members: {
+        Row: {
+          appointed_at: string
+          board_role: string | null
+          expertise_areas: string[] | null
+          id: string
+          institution_id: string | null
+          is_active: boolean | null
+          term_expires_at: string | null
+          user_id: string
+        }
+        Insert: {
+          appointed_at?: string
+          board_role?: string | null
+          expertise_areas?: string[] | null
+          id?: string
+          institution_id?: string | null
+          is_active?: boolean | null
+          term_expires_at?: string | null
+          user_id: string
+        }
+        Update: {
+          appointed_at?: string
+          board_role?: string | null
+          expertise_areas?: string[] | null
+          id?: string
+          institution_id?: string | null
+          is_active?: boolean | null
+          term_expires_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ethics_board_members_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ethics_board_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ethics_protocol_templates: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          ethics_scope: string
+          id: string
+          institution_id: string | null
+          is_public: boolean | null
+          template_content: Json
+          template_name: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          ethics_scope: string
+          id?: string
+          institution_id?: string | null
+          is_public?: boolean | null
+          template_content: Json
+          template_name: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          ethics_scope?: string
+          id?: string
+          institution_id?: string | null
+          is_public?: boolean | null
+          template_content?: Json
+          template_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ethics_protocol_templates_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ethics_protocol_templates_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ethics_reviews: {
         Row: {
@@ -3761,6 +3999,74 @@ export type Database = {
             columns: ["actor_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      field_translation_records: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          key_concepts_mapped: Json | null
+          methodology_adaptations: string | null
+          related_research_timeline_id: string | null
+          source_discipline_id: string
+          target_discipline_id: string
+          translation_summary: string
+          visibility: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          key_concepts_mapped?: Json | null
+          methodology_adaptations?: string | null
+          related_research_timeline_id?: string | null
+          source_discipline_id: string
+          target_discipline_id: string
+          translation_summary: string
+          visibility?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          key_concepts_mapped?: Json | null
+          methodology_adaptations?: string | null
+          related_research_timeline_id?: string | null
+          source_discipline_id?: string
+          target_discipline_id?: string
+          translation_summary?: string
+          visibility?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "field_translation_records_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "field_translation_records_related_research_timeline_id_fkey"
+            columns: ["related_research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "field_translation_records_source_discipline_id_fkey"
+            columns: ["source_discipline_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disciplines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "field_translation_records_target_discipline_id_fkey"
+            columns: ["target_discipline_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disciplines"
             referencedColumns: ["id"]
           },
         ]
@@ -5477,6 +5783,165 @@ export type Database = {
           },
         ]
       }
+      interdisciplinary_calls: {
+        Row: {
+          collaboration_type: string
+          created_at: string
+          created_by_user_id: string
+          expected_duration: string | null
+          id: string
+          missing_disciplines: string[]
+          primary_discipline_id: string
+          problem_statement: string
+          status: string
+          updated_at: string
+          visibility: string | null
+        }
+        Insert: {
+          collaboration_type: string
+          created_at?: string
+          created_by_user_id: string
+          expected_duration?: string | null
+          id?: string
+          missing_disciplines: string[]
+          primary_discipline_id: string
+          problem_statement: string
+          status?: string
+          updated_at?: string
+          visibility?: string | null
+        }
+        Update: {
+          collaboration_type?: string
+          created_at?: string
+          created_by_user_id?: string
+          expected_duration?: string | null
+          id?: string
+          missing_disciplines?: string[]
+          primary_discipline_id?: string
+          problem_statement?: string
+          status?: string
+          updated_at?: string
+          visibility?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interdisciplinary_calls_created_by_user_id_fkey"
+            columns: ["created_by_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interdisciplinary_calls_primary_discipline_id_fkey"
+            columns: ["primary_discipline_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disciplines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interdisciplinary_programs: {
+        Row: {
+          created_at: string
+          description: string | null
+          disciplines_involved: string[]
+          end_date: string | null
+          funding_source: string | null
+          id: string
+          institution_id: string | null
+          program_lead_user_id: string | null
+          program_name: string
+          start_date: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          disciplines_involved: string[]
+          end_date?: string | null
+          funding_source?: string | null
+          id?: string
+          institution_id?: string | null
+          program_lead_user_id?: string | null
+          program_name: string
+          start_date?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          disciplines_involved?: string[]
+          end_date?: string | null
+          funding_source?: string | null
+          id?: string
+          institution_id?: string | null
+          program_lead_user_id?: string | null
+          program_name?: string
+          start_date?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interdisciplinary_programs_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interdisciplinary_programs_program_lead_user_id_fkey"
+            columns: ["program_lead_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interdisciplinary_responses: {
+        Row: {
+          call_id: string
+          created_at: string
+          id: string
+          offering_disciplines: string[]
+          proposal_text: string
+          responder_user_id: string
+          status: string
+        }
+        Insert: {
+          call_id: string
+          created_at?: string
+          id?: string
+          offering_disciplines: string[]
+          proposal_text: string
+          responder_user_id: string
+          status?: string
+        }
+        Update: {
+          call_id?: string
+          created_at?: string
+          id?: string
+          offering_disciplines?: string[]
+          proposal_text?: string
+          responder_user_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interdisciplinary_responses_call_id_fkey"
+            columns: ["call_id"]
+            isOneToOne: false
+            referencedRelation: "interdisciplinary_calls"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interdisciplinary_responses_responder_user_id_fkey"
+            columns: ["responder_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       international_institutions: {
         Row: {
           accreditation_status: string | null
@@ -5662,6 +6127,282 @@ export type Database = {
           },
         ]
       }
+      knowledge_contributions: {
+        Row: {
+          contribution_notes: string | null
+          contribution_type: string
+          contributor_id: string
+          created_at: string
+          id: string
+          knowledge_node_id: string
+        }
+        Insert: {
+          contribution_notes?: string | null
+          contribution_type: string
+          contributor_id: string
+          created_at?: string
+          id?: string
+          knowledge_node_id: string
+        }
+        Update: {
+          contribution_notes?: string | null
+          contribution_type?: string
+          contributor_id?: string
+          created_at?: string
+          id?: string
+          knowledge_node_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_contributions_contributor_id_fkey"
+            columns: ["contributor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_contributions_knowledge_node_id_fkey"
+            columns: ["knowledge_node_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_edges: {
+        Row: {
+          confidence_level: string | null
+          created_at: string
+          created_by: string
+          evidence_summary: string | null
+          id: string
+          relationship_type: string
+          source_node_id: string
+          target_node_id: string
+        }
+        Insert: {
+          confidence_level?: string | null
+          created_at?: string
+          created_by: string
+          evidence_summary?: string | null
+          id?: string
+          relationship_type: string
+          source_node_id: string
+          target_node_id: string
+        }
+        Update: {
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string
+          evidence_summary?: string | null
+          id?: string
+          relationship_type?: string
+          source_node_id?: string
+          target_node_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_edges_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_edges_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_edges_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_graph_snapshots: {
+        Row: {
+          discipline_id: string | null
+          edge_count: number | null
+          id: string
+          key_concepts: string[] | null
+          last_computed_at: string
+          major_clusters: Json | null
+          node_count: number | null
+          scope_id: string | null
+          scope_type: string
+        }
+        Insert: {
+          discipline_id?: string | null
+          edge_count?: number | null
+          id?: string
+          key_concepts?: string[] | null
+          last_computed_at?: string
+          major_clusters?: Json | null
+          node_count?: number | null
+          scope_id?: string | null
+          scope_type: string
+        }
+        Update: {
+          discipline_id?: string | null
+          edge_count?: number | null
+          id?: string
+          key_concepts?: string[] | null
+          last_computed_at?: string
+          major_clusters?: Json | null
+          node_count?: number | null
+          scope_id?: string | null
+          scope_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_graph_snapshots_discipline_id_fkey"
+            columns: ["discipline_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disciplines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_lineages: {
+        Row: {
+          descendant_node_id: string
+          id: string
+          lineage_type: string
+          recorded_at: string
+          recorded_by: string | null
+          root_node_id: string
+          transformation_notes: string | null
+        }
+        Insert: {
+          descendant_node_id: string
+          id?: string
+          lineage_type: string
+          recorded_at?: string
+          recorded_by?: string | null
+          root_node_id: string
+          transformation_notes?: string | null
+        }
+        Update: {
+          descendant_node_id?: string
+          id?: string
+          lineage_type?: string
+          recorded_at?: string
+          recorded_by?: string | null
+          root_node_id?: string
+          transformation_notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_lineages_descendant_node_id_fkey"
+            columns: ["descendant_node_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_lineages_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_lineages_root_node_id_fkey"
+            columns: ["root_node_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_node_tags: {
+        Row: {
+          created_at: string
+          id: string
+          knowledge_node_id: string
+          tag: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          knowledge_node_id: string
+          tag: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          knowledge_node_id?: string
+          tag?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_node_tags_knowledge_node_id_fkey"
+            columns: ["knowledge_node_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_nodes: {
+        Row: {
+          confidence_level: string | null
+          created_at: string
+          created_by_user_id: string
+          description: string | null
+          discipline_id: string | null
+          id: string
+          node_type: string
+          title: string
+          updated_at: string
+          visibility: string | null
+        }
+        Insert: {
+          confidence_level?: string | null
+          created_at?: string
+          created_by_user_id: string
+          description?: string | null
+          discipline_id?: string | null
+          id?: string
+          node_type: string
+          title: string
+          updated_at?: string
+          visibility?: string | null
+        }
+        Update: {
+          confidence_level?: string | null
+          created_at?: string
+          created_by_user_id?: string
+          description?: string | null
+          discipline_id?: string | null
+          id?: string
+          node_type?: string
+          title?: string
+          updated_at?: string
+          visibility?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_nodes_created_by_user_id_fkey"
+            columns: ["created_by_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_nodes_discipline_id_fkey"
+            columns: ["discipline_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disciplines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       knowledge_snapshots: {
         Row: {
           access_restrictions: Json | null
@@ -5706,6 +6447,47 @@ export type Database = {
           verification_hash?: string
         }
         Relationships: []
+      }
+      knowledge_sources: {
+        Row: {
+          citation_text: string | null
+          created_at: string
+          external_url: string | null
+          id: string
+          knowledge_node_id: string
+          note: string | null
+          source_id: string | null
+          source_type: string
+        }
+        Insert: {
+          citation_text?: string | null
+          created_at?: string
+          external_url?: string | null
+          id?: string
+          knowledge_node_id: string
+          note?: string | null
+          source_id?: string | null
+          source_type: string
+        }
+        Update: {
+          citation_text?: string | null
+          created_at?: string
+          external_url?: string | null
+          id?: string
+          knowledge_node_id?: string
+          note?: string | null
+          source_id?: string | null
+          source_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_sources_knowledge_node_id_fkey"
+            columns: ["knowledge_node_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       lesson_progress: {
         Row: {
@@ -8982,6 +9764,161 @@ export type Database = {
           },
         ]
       }
+      research_compliance_tracker: {
+        Row: {
+          compliance_issues: Json | null
+          consent_coverage_percent: number | null
+          data_sensitivity_level: string | null
+          ethics_approved: boolean | null
+          id: string
+          last_compliance_check: string | null
+          protocol_id: string | null
+          research_timeline_id: string
+          updated_at: string
+        }
+        Insert: {
+          compliance_issues?: Json | null
+          consent_coverage_percent?: number | null
+          data_sensitivity_level?: string | null
+          ethics_approved?: boolean | null
+          id?: string
+          last_compliance_check?: string | null
+          protocol_id?: string | null
+          research_timeline_id: string
+          updated_at?: string
+        }
+        Update: {
+          compliance_issues?: Json | null
+          consent_coverage_percent?: number | null
+          data_sensitivity_level?: string | null
+          ethics_approved?: boolean | null
+          id?: string
+          last_compliance_check?: string | null
+          protocol_id?: string | null
+          research_timeline_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_compliance_tracker_protocol_id_fkey"
+            columns: ["protocol_id"]
+            isOneToOne: false
+            referencedRelation: "research_ethics_protocols"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_compliance_tracker_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: true
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_consent_records: {
+        Row: {
+          consent_method: string | null
+          consent_text_version: string
+          consent_type: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          obtained_at: string
+          participant_identifier: string
+          protocol_id: string
+          scope_limitations: Json | null
+          withdrawn_at: string | null
+        }
+        Insert: {
+          consent_method?: string | null
+          consent_text_version: string
+          consent_type: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          obtained_at: string
+          participant_identifier: string
+          protocol_id: string
+          scope_limitations?: Json | null
+          withdrawn_at?: string | null
+        }
+        Update: {
+          consent_method?: string | null
+          consent_text_version?: string
+          consent_type?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          obtained_at?: string
+          participant_identifier?: string
+          protocol_id?: string
+          scope_limitations?: Json | null
+          withdrawn_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_consent_records_protocol_id_fkey"
+            columns: ["protocol_id"]
+            isOneToOne: false
+            referencedRelation: "research_ethics_protocols"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_data_sensitivity: {
+        Row: {
+          access_restrictions: string | null
+          flagged_at: string
+          flagged_by: string | null
+          handling_requirements: string | null
+          id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          sensitivity_type: string
+          target_id: string
+          target_type: string
+        }
+        Insert: {
+          access_restrictions?: string | null
+          flagged_at?: string
+          flagged_by?: string | null
+          handling_requirements?: string | null
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          sensitivity_type: string
+          target_id: string
+          target_type: string
+        }
+        Update: {
+          access_restrictions?: string | null
+          flagged_at?: string
+          flagged_by?: string | null
+          handling_requirements?: string | null
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          sensitivity_type?: string
+          target_id?: string
+          target_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_data_sensitivity_flagged_by_fkey"
+            columns: ["flagged_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_data_sensitivity_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_datasets: {
         Row: {
           access_level: string
@@ -9139,6 +10076,165 @@ export type Database = {
           },
           {
             foreignKeyName: "research_entries_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_ethics_audit: {
+        Row: {
+          action_details: Json | null
+          action_type: string
+          id: string
+          ip_address: string | null
+          performed_at: string
+          performed_by: string | null
+          protocol_id: string | null
+        }
+        Insert: {
+          action_details?: Json | null
+          action_type: string
+          id?: string
+          ip_address?: string | null
+          performed_at?: string
+          performed_by?: string | null
+          protocol_id?: string | null
+        }
+        Update: {
+          action_details?: Json | null
+          action_type?: string
+          id?: string
+          ip_address?: string | null
+          performed_at?: string
+          performed_by?: string | null
+          protocol_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_ethics_audit_performed_by_fkey"
+            columns: ["performed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_ethics_audit_protocol_id_fkey"
+            columns: ["protocol_id"]
+            isOneToOne: false
+            referencedRelation: "research_ethics_protocols"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_ethics_decisions: {
+        Row: {
+          conditions: string | null
+          decision: string
+          feedback: string | null
+          id: string
+          protocol_id: string
+          reviewed_at: string
+          reviewer_id: string
+          reviewer_role: string
+        }
+        Insert: {
+          conditions?: string | null
+          decision: string
+          feedback?: string | null
+          id?: string
+          protocol_id: string
+          reviewed_at?: string
+          reviewer_id: string
+          reviewer_role: string
+        }
+        Update: {
+          conditions?: string | null
+          decision?: string
+          feedback?: string | null
+          id?: string
+          protocol_id?: string
+          reviewed_at?: string
+          reviewer_id?: string
+          reviewer_role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_ethics_decisions_protocol_id_fkey"
+            columns: ["protocol_id"]
+            isOneToOne: false
+            referencedRelation: "research_ethics_protocols"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_ethics_decisions_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_ethics_protocols: {
+        Row: {
+          approved_at: string | null
+          created_at: string
+          created_by: string
+          data_handling_plan: string | null
+          ethics_scope: string
+          expires_at: string | null
+          id: string
+          participant_protection_measures: string | null
+          requires_review: boolean | null
+          research_timeline_id: string | null
+          risk_level: string
+          status: string
+          summary: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          created_at?: string
+          created_by: string
+          data_handling_plan?: string | null
+          ethics_scope: string
+          expires_at?: string | null
+          id?: string
+          participant_protection_measures?: string | null
+          requires_review?: boolean | null
+          research_timeline_id?: string | null
+          risk_level?: string
+          status?: string
+          summary: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          created_at?: string
+          created_by?: string
+          data_handling_plan?: string | null
+          ethics_scope?: string
+          expires_at?: string | null
+          id?: string
+          participant_protection_measures?: string | null
+          requires_review?: boolean | null
+          research_timeline_id?: string | null
+          risk_level?: string
+          status?: string
+          summary?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_ethics_protocols_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_ethics_protocols_research_timeline_id_fkey"
             columns: ["research_timeline_id"]
             isOneToOne: false
             referencedRelation: "research_timelines"
