@@ -304,6 +304,104 @@ export type Database = {
         }
         Relationships: []
       }
+      accountability_records: {
+        Row: {
+          collaboration_type: string
+          created_at: string | null
+          deadline: string | null
+          escrow_amount: number | null
+          escrow_locked_at: string | null
+          escrow_released_at: string | null
+          executor_id: string
+          failure_attributed_to: string | null
+          failure_reason: string | null
+          funder_id: string | null
+          id: string
+          initiator_id: string
+          is_public: boolean | null
+          outcome_evidence: Json | null
+          outcome_status: string
+          outcome_verdict: string | null
+          project_id: string | null
+          promised_deliverables: string[]
+          roles: Json | null
+          total_paid: number | null
+          trust_impact_applied: boolean | null
+          trust_impact_executor: number | null
+          trust_impact_initiator: number | null
+          updated_at: string | null
+          verification_method: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          collaboration_type?: string
+          created_at?: string | null
+          deadline?: string | null
+          escrow_amount?: number | null
+          escrow_locked_at?: string | null
+          escrow_released_at?: string | null
+          executor_id: string
+          failure_attributed_to?: string | null
+          failure_reason?: string | null
+          funder_id?: string | null
+          id?: string
+          initiator_id: string
+          is_public?: boolean | null
+          outcome_evidence?: Json | null
+          outcome_status?: string
+          outcome_verdict?: string | null
+          project_id?: string | null
+          promised_deliverables?: string[]
+          roles?: Json | null
+          total_paid?: number | null
+          trust_impact_applied?: boolean | null
+          trust_impact_executor?: number | null
+          trust_impact_initiator?: number | null
+          updated_at?: string | null
+          verification_method?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          collaboration_type?: string
+          created_at?: string | null
+          deadline?: string | null
+          escrow_amount?: number | null
+          escrow_locked_at?: string | null
+          escrow_released_at?: string | null
+          executor_id?: string
+          failure_attributed_to?: string | null
+          failure_reason?: string | null
+          funder_id?: string | null
+          id?: string
+          initiator_id?: string
+          is_public?: boolean | null
+          outcome_evidence?: Json | null
+          outcome_status?: string
+          outcome_verdict?: string | null
+          project_id?: string | null
+          promised_deliverables?: string[]
+          roles?: Json | null
+          total_paid?: number | null
+          trust_impact_applied?: boolean | null
+          trust_impact_executor?: number | null
+          trust_impact_initiator?: number | null
+          updated_at?: string | null
+          verification_method?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "accountability_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       accountability_reports: {
         Row: {
           created_at: string
@@ -2774,6 +2872,90 @@ export type Database = {
           offline_mode_enabled?: boolean | null
           preferred_media_quality?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      consequence_ledgers: {
+        Row: {
+          completion_rate: number | null
+          computed_at: string | null
+          created_at: string | null
+          disputes_lost: number | null
+          disputes_raised: number | null
+          disputes_won: number | null
+          escrow_success_rate: number | null
+          id: string
+          institutions_worked_with: string[] | null
+          last_completed_project_at: string | null
+          last_failure_at: string | null
+          on_time_rate: number | null
+          projects_abandoned: number | null
+          projects_attempted: number | null
+          projects_completed: number | null
+          projects_failed: number | null
+          total_escrow_disputed: number | null
+          total_escrow_handled: number | null
+          total_escrow_released: number | null
+          trust_score_current: number | null
+          trust_score_lowest: number | null
+          trust_score_peak: number | null
+          trust_trajectory: string | null
+          user_id: string
+          verified_associations: number | null
+        }
+        Insert: {
+          completion_rate?: number | null
+          computed_at?: string | null
+          created_at?: string | null
+          disputes_lost?: number | null
+          disputes_raised?: number | null
+          disputes_won?: number | null
+          escrow_success_rate?: number | null
+          id?: string
+          institutions_worked_with?: string[] | null
+          last_completed_project_at?: string | null
+          last_failure_at?: string | null
+          on_time_rate?: number | null
+          projects_abandoned?: number | null
+          projects_attempted?: number | null
+          projects_completed?: number | null
+          projects_failed?: number | null
+          total_escrow_disputed?: number | null
+          total_escrow_handled?: number | null
+          total_escrow_released?: number | null
+          trust_score_current?: number | null
+          trust_score_lowest?: number | null
+          trust_score_peak?: number | null
+          trust_trajectory?: string | null
+          user_id: string
+          verified_associations?: number | null
+        }
+        Update: {
+          completion_rate?: number | null
+          computed_at?: string | null
+          created_at?: string | null
+          disputes_lost?: number | null
+          disputes_raised?: number | null
+          disputes_won?: number | null
+          escrow_success_rate?: number | null
+          id?: string
+          institutions_worked_with?: string[] | null
+          last_completed_project_at?: string | null
+          last_failure_at?: string | null
+          on_time_rate?: number | null
+          projects_abandoned?: number | null
+          projects_attempted?: number | null
+          projects_completed?: number | null
+          projects_failed?: number | null
+          total_escrow_disputed?: number | null
+          total_escrow_handled?: number | null
+          total_escrow_released?: number | null
+          trust_score_current?: number | null
+          trust_score_lowest?: number | null
+          trust_score_peak?: number | null
+          trust_trajectory?: string | null
+          user_id?: string
+          verified_associations?: number | null
         }
         Relationships: []
       }
@@ -13861,6 +14043,63 @@ export type Database = {
         }
         Relationships: []
       }
+      reality_feed_events: {
+        Row: {
+          amount_involved: number | null
+          created_at: string | null
+          currency: string | null
+          event_type: string
+          id: string
+          is_verified: boolean | null
+          primary_actor_id: string
+          primary_actor_type: string | null
+          reference_id: string | null
+          reference_type: string | null
+          secondary_actor_id: string | null
+          summary: string | null
+          title: string
+          trust_impact: number | null
+          verified_by: string | null
+          visibility: string | null
+        }
+        Insert: {
+          amount_involved?: number | null
+          created_at?: string | null
+          currency?: string | null
+          event_type: string
+          id?: string
+          is_verified?: boolean | null
+          primary_actor_id: string
+          primary_actor_type?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          secondary_actor_id?: string | null
+          summary?: string | null
+          title: string
+          trust_impact?: number | null
+          verified_by?: string | null
+          visibility?: string | null
+        }
+        Update: {
+          amount_involved?: number | null
+          created_at?: string | null
+          currency?: string | null
+          event_type?: string
+          id?: string
+          is_verified?: boolean | null
+          primary_actor_id?: string
+          primary_actor_type?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          secondary_actor_id?: string | null
+          summary?: string | null
+          title?: string
+          trust_impact?: number | null
+          verified_by?: string | null
+          visibility?: string | null
+        }
+        Relationships: []
+      }
       recommendation_requests: {
         Row: {
           created_at: string
@@ -17380,6 +17619,54 @@ export type Database = {
           },
         ]
       }
+      trust_access_gates: {
+        Row: {
+          created_at: string | null
+          denial_message: string | null
+          feature_type: string
+          gate_description: string | null
+          gate_name: string
+          id: string
+          is_active: boolean | null
+          max_dispute_rate: number | null
+          min_escrow_success_rate: number | null
+          min_projects_completed: number | null
+          min_trust_score: number | null
+          min_trust_tier: string | null
+          requires_verification: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          denial_message?: string | null
+          feature_type: string
+          gate_description?: string | null
+          gate_name: string
+          id?: string
+          is_active?: boolean | null
+          max_dispute_rate?: number | null
+          min_escrow_success_rate?: number | null
+          min_projects_completed?: number | null
+          min_trust_score?: number | null
+          min_trust_tier?: string | null
+          requires_verification?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          denial_message?: string | null
+          feature_type?: string
+          gate_description?: string | null
+          gate_name?: string
+          id?: string
+          is_active?: boolean | null
+          max_dispute_rate?: number | null
+          min_escrow_success_rate?: number | null
+          min_projects_completed?: number | null
+          min_trust_score?: number | null
+          min_trust_tier?: string | null
+          requires_verification?: boolean | null
+        }
+        Relationships: []
+      }
       trust_contexts: {
         Row: {
           computed_at: string
@@ -17417,6 +17704,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      trust_events: {
+        Row: {
+          created_at: string | null
+          event_source: string | null
+          event_type: string
+          evidence_links: Json | null
+          evidence_summary: string | null
+          hide_reason: string | null
+          id: string
+          is_public: boolean | null
+          reference_id: string | null
+          reference_type: string | null
+          tier_after: string | null
+          tier_before: string | null
+          trust_after: number
+          trust_before: number
+          trust_delta: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_source?: string | null
+          event_type: string
+          evidence_links?: Json | null
+          evidence_summary?: string | null
+          hide_reason?: string | null
+          id?: string
+          is_public?: boolean | null
+          reference_id?: string | null
+          reference_type?: string | null
+          tier_after?: string | null
+          tier_before?: string | null
+          trust_after: number
+          trust_before: number
+          trust_delta: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_source?: string | null
+          event_type?: string
+          evidence_links?: Json | null
+          evidence_summary?: string | null
+          hide_reason?: string | null
+          id?: string
+          is_public?: boolean | null
+          reference_id?: string | null
+          reference_type?: string | null
+          tier_after?: string | null
+          tier_before?: string | null
+          trust_after?: number
+          trust_before?: number
+          trust_delta?: number
+          user_id?: string
+        }
+        Relationships: []
       }
       trust_interventions: {
         Row: {
@@ -18825,6 +19169,14 @@ export type Database = {
       check_rate_limit: {
         Args: { p_action_type: string; p_user_id: string }
         Returns: boolean
+      }
+      check_trust_gate: {
+        Args: { p_gate_name: string; p_user_id: string }
+        Returns: Json
+      }
+      compute_consequence_ledger: {
+        Args: { p_user_id: string }
+        Returns: undefined
       }
       compute_profile_proof_metrics: {
         Args: { p_user_id: string }

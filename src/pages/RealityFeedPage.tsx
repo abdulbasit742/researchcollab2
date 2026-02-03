@@ -1,26 +1,17 @@
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { useRealityFeed, useConsequenceLedger } from "@/hooks/useAccountability";
-import { useOutcomeFeed, useWorkConnections, useProfileProofMetrics } from "@/hooks/useOutcomeFeed";
+import { useRealityFeed, useConsequenceLedger, useTrustTrajectory } from "@/hooks/useAccountability";
 import { useMyTrustProfile } from "@/hooks/useMyTrustProfile";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link, Navigate } from "react-router-dom";
-import {
-  OutcomeFeedCard,
-  OutcomeFeedSkeleton,
-  EmptyOutcomeFeed,
-  ProofProfileCard,
-  WorkGraphCard,
-  TrustEngineDisplay,
-} from "@/components/outcome";
 import {
   RealityFeedCard,
   RealityFeedSkeleton,
   EmptyRealityFeed,
   ConsequenceLedgerCard,
+  TrustTrajectoryChart,
 } from "@/components/accountability";
 import {
   Briefcase,
@@ -28,47 +19,20 @@ import {
   DollarSign,
   RefreshCw,
   Loader2,
-  Target,
-  TrendingUp,
-  Zap,
   Activity,
   Shield,
+  Zap,
+  Target,
 } from "lucide-react";
 
-export default function FeedPage() {
+export default function RealityFeedPage() {
   const { user, profile, isLoading: authLoading } = useAuth();
-  const [activeTab, setActiveTab] = useState<"reality" | "opportunities">("reality");
-  
-  // Reality Feed (system events)
-  const { 
-    events: realityEvents, 
-    loading: realityLoading, 
-    hasMore: realityHasMore, 
-    loadMore: loadMoreReality, 
-    refetch: refetchReality 
-  } = useRealityFeed();
-  
-  // Outcome Feed (opportunities)
-  const { 
-    feedItems, 
-    loading: outcomeLoading, 
-    hasMore: outcomeHasMore, 
-    loadMore: loadMoreOutcome, 
-    refetch: refetchOutcome 
-  } = useOutcomeFeed();
-  
-  const { connections } = useWorkConnections();
-  const { metrics } = useProfileProofMetrics();
-  const { trustProfile } = useMyTrustProfile();
+  const { events, loading, hasMore, loadMore, refetch } = useRealityFeed();
   const { data: ledger } = useConsequenceLedger();
+  const { trustProfile } = useMyTrustProfile();
 
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
-
-  const loading = activeTab === "reality" ? realityLoading : outcomeLoading;
-  const hasMore = activeTab === "reality" ? realityHasMore : outcomeHasMore;
-  const loadMore = activeTab === "reality" ? loadMoreReality : loadMoreOutcome;
-  const refetch = activeTab === "reality" ? refetchReality : refetchOutcome;
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -109,11 +73,14 @@ export default function FeedPage() {
     <MainLayout>
       <div className="container py-6">
         <div className="grid lg:grid-cols-12 gap-6">
-          {/* Left Sidebar - Consequence Ledger Summary */}
+          {/* Left Sidebar - Consequence Ledger */}
           <aside className="hidden lg:block lg:col-span-3">
             <div className="sticky top-20 space-y-4">
               {/* Compact Consequence Ledger */}
               <ConsequenceLedgerCard ledger={ledger || null} isCompact />
+
+              {/* Trust Trajectory */}
+              <TrustTrajectoryChart userId={user?.id} isCompact />
 
               {/* Trust Tier Badge */}
               <Card className="border-primary/20 bg-primary/5">
@@ -128,103 +95,62 @@ export default function FeedPage() {
                   <p className="text-xs text-muted-foreground">Trust Score</p>
                 </CardContent>
               </Card>
-
-              {/* Compact Work Graph */}
-              <WorkGraphCard connections={connections} isCompact />
             </div>
           </aside>
 
-          {/* Main Feed */}
+          {/* Main Feed - Reality Events Only */}
           <main className="lg:col-span-6 space-y-4">
-            {/* Feed Tabs */}
-            <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "reality" | "opportunities")}>
-              <div className="flex items-center justify-between">
-                <TabsList className="grid w-auto grid-cols-2">
-                  <TabsTrigger value="reality" className="gap-1.5">
-                    <Activity className="h-4 w-4" />
-                    Reality
-                  </TabsTrigger>
-                  <TabsTrigger value="opportunities" className="gap-1.5">
-                    <Target className="h-4 w-4" />
-                    Opportunities
-                  </TabsTrigger>
-                </TabsList>
-                <Button variant="ghost" size="sm" onClick={() => refetch()} className="gap-1.5">
-                  <RefreshCw className="h-4 w-4" />
-                  Refresh
-                </Button>
+            {/* Feed Header */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Activity className="h-5 w-5 text-primary" />
+                <h1 className="text-xl font-semibold">Reality Feed</h1>
               </div>
+              <Button variant="ghost" size="sm" onClick={() => refetch()} className="gap-1.5">
+                <RefreshCw className="h-4 w-4" />
+                Refresh
+              </Button>
+            </div>
 
-              {/* Philosophy Banner */}
-              <Card className="border-dashed bg-muted/30 mt-4">
-                <CardContent className="py-3 text-center">
-                  <p className="text-sm text-muted-foreground">
-                    {activeTab === "reality" ? (
-                      <>
-                        <span className="font-medium text-foreground">System events only.</span>{" "}
-                        Projects. Money. Trust. Consequences. No opinions.
-                      </>
-                    ) : (
-                      <>
-                        <span className="font-medium text-foreground">Opportunities only.</span>{" "}
-                        Projects, grants, publications. No social noise.
-                      </>
-                    )}
-                  </p>
-                </CardContent>
-              </Card>
+            {/* Philosophy Banner */}
+            <Card className="border-dashed bg-muted/30">
+              <CardContent className="py-3 text-center">
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">System events only.</span>{" "}
+                  Projects. Money. Trust. Consequences. No opinions. No noise.
+                </p>
+              </CardContent>
+            </Card>
 
-              {/* Reality Feed Tab */}
-              <TabsContent value="reality" className="mt-4 space-y-4">
-                {realityLoading && realityEvents.length === 0 ? (
-                  <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                      <RealityFeedSkeleton key={i} />
-                    ))}
-                  </div>
-                ) : realityEvents.length === 0 ? (
-                  <EmptyRealityFeed />
-                ) : (
-                  <div className="space-y-4">
-                    {realityEvents.map((event) => (
-                      <RealityFeedCard key={event.id} event={event} />
-                    ))}
-                  </div>
-                )}
-              </TabsContent>
-
-              {/* Opportunities Feed Tab */}
-              <TabsContent value="opportunities" className="mt-4 space-y-4">
-                {outcomeLoading && feedItems.length === 0 ? (
-                  <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                      <OutcomeFeedSkeleton key={i} />
-                    ))}
-                  </div>
-                ) : feedItems.length === 0 ? (
-                  <EmptyOutcomeFeed />
-                ) : (
-                  <div className="space-y-4">
-                    {feedItems.map((item) => (
-                      <OutcomeFeedCard key={item.id} item={item} />
-                    ))}
-                  </div>
-                )}
-              </TabsContent>
-
-              {/* Load More Trigger */}
-              <div ref={loadMoreRef} className="py-4 flex justify-center">
-                {loading && (
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    <span className="text-sm">Loading more...</span>
-                  </div>
-                )}
-                {!hasMore && (activeTab === "reality" ? realityEvents.length > 0 : feedItems.length > 0) && (
-                  <p className="text-sm text-muted-foreground">All loaded</p>
-                )}
+            {/* Feed Events */}
+            {loading && events.length === 0 ? (
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <RealityFeedSkeleton key={i} />
+                ))}
               </div>
-            </Tabs>
+            ) : events.length === 0 ? (
+              <EmptyRealityFeed />
+            ) : (
+              <div className="space-y-4">
+                {events.map((event) => (
+                  <RealityFeedCard key={event.id} event={event} />
+                ))}
+
+                {/* Load More Trigger */}
+                <div ref={loadMoreRef} className="py-4 flex justify-center">
+                  {loading && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span className="text-sm">Loading more...</span>
+                    </div>
+                  )}
+                  {!hasMore && events.length > 0 && (
+                    <p className="text-sm text-muted-foreground">All events loaded</p>
+                  )}
+                </div>
+              </div>
+            )}
           </main>
 
           {/* Right Sidebar - Quick Actions & Philosophy */}
@@ -264,7 +190,7 @@ export default function FeedPage() {
               <Card className="border-primary/20 bg-primary/5">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4" />
+                    <Target className="h-4 w-4" />
                     Why This Is Different
                   </CardTitle>
                 </CardHeader>
@@ -280,7 +206,7 @@ export default function FeedPage() {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-primary font-bold">✓</span>
-                      Trust <span className="font-medium text-foreground">earned from work</span>
+                      Trust <span className="font-medium text-foreground">earned from work</span>, not followers
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-primary font-bold">✓</span>

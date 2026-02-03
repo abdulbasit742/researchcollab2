@@ -95,6 +95,7 @@ import PostDetailPage from "./pages/PostDetailPage";
 import NetworkPage from "./pages/NetworkPage";
 import SearchPage from "./pages/SearchPage";
 import OutcomeFeedPage from "./pages/OutcomeFeedPage";
+import RealityFeedPage from "./pages/RealityFeedPage";
 import AdminStewardshipPage from "./pages/admin/AdminStewardshipPage";
 const queryClient = new QueryClient();
 
@@ -109,6 +110,7 @@ const AppContent = () => {
       <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/feed" element={<FeedPage />} />
+            <Route path="/reality" element={<RealityFeedPage />} />
             <Route path="/opportunities" element={<OutcomeFeedPage />} />
             <Route path="/posts/:postId" element={<PostDetailPage />} />
             <Route path="/network" element={<NetworkPage />} />
