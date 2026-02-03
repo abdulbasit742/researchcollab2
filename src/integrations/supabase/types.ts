@@ -419,6 +419,106 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_assistant_outputs: {
+        Row: {
+          ai_output: string
+          citations_used: Json | null
+          confidence_level: string
+          created_at: string
+          id: string
+          model_used: string | null
+          processing_time_ms: number | null
+          prompt_summary: string
+          session_id: string
+          tokens_used: number | null
+          user_feedback: string | null
+          user_rating: number | null
+          was_helpful: boolean | null
+        }
+        Insert: {
+          ai_output: string
+          citations_used?: Json | null
+          confidence_level?: string
+          created_at?: string
+          id?: string
+          model_used?: string | null
+          processing_time_ms?: number | null
+          prompt_summary: string
+          session_id: string
+          tokens_used?: number | null
+          user_feedback?: string | null
+          user_rating?: number | null
+          was_helpful?: boolean | null
+        }
+        Update: {
+          ai_output?: string
+          citations_used?: Json | null
+          confidence_level?: string
+          created_at?: string
+          id?: string
+          model_used?: string | null
+          processing_time_ms?: number | null
+          prompt_summary?: string
+          session_id?: string
+          tokens_used?: number | null
+          user_feedback?: string | null
+          user_rating?: number | null
+          was_helpful?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_assistant_outputs_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "ai_assistant_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_assistant_sessions: {
+        Row: {
+          created_at: string
+          ended_at: string | null
+          id: string
+          intent: string
+          is_active: boolean | null
+          scope_id: string | null
+          scope_type: string | null
+          session_title: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          intent: string
+          is_active?: boolean | null
+          scope_id?: string | null
+          scope_type?: string | null
+          session_title?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          intent?: string
+          is_active?: boolean | null
+          scope_id?: string | null
+          scope_type?: string | null
+          session_title?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_assistant_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_bias_monitoring: {
         Row: {
           ai_capability: string
@@ -520,6 +620,47 @@ export type Database = {
           },
         ]
       }
+      ai_context_snapshots: {
+        Row: {
+          context_id: string
+          context_summary: string
+          context_tokens: number | null
+          context_type: string
+          id: string
+          is_active: boolean | null
+          last_updated_at: string
+          user_id: string
+        }
+        Insert: {
+          context_id: string
+          context_summary: string
+          context_tokens?: number | null
+          context_type: string
+          id?: string
+          is_active?: boolean | null
+          last_updated_at?: string
+          user_id: string
+        }
+        Update: {
+          context_id?: string
+          context_summary?: string
+          context_tokens?: number | null
+          context_type?: string
+          id?: string
+          is_active?: boolean | null
+          last_updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_context_snapshots_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_credit_packs: {
         Row: {
           bonus_credits: number
@@ -579,6 +720,54 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      ai_guardrail_events: {
+        Row: {
+          guardrail_type: string
+          id: string
+          message: string
+          session_id: string | null
+          severity: string
+          triggered_at: string
+          user_id: string | null
+          was_blocked: boolean | null
+        }
+        Insert: {
+          guardrail_type: string
+          id?: string
+          message: string
+          session_id?: string | null
+          severity?: string
+          triggered_at?: string
+          user_id?: string | null
+          was_blocked?: boolean | null
+        }
+        Update: {
+          guardrail_type?: string
+          id?: string
+          message?: string
+          session_id?: string | null
+          severity?: string
+          triggered_at?: string
+          user_id?: string | null
+          was_blocked?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_guardrail_events_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "ai_assistant_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_guardrail_events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ai_human_overrides: {
         Row: {
@@ -739,6 +928,50 @@ export type Database = {
           },
         ]
       }
+      ai_usage_quotas: {
+        Row: {
+          created_at: string
+          id: string
+          period_end: string
+          period_start: string
+          quota_type: string
+          sessions_count: number | null
+          tokens_limit: number
+          tokens_used: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          period_end: string
+          period_start: string
+          quota_type: string
+          sessions_count?: number | null
+          tokens_limit?: number
+          tokens_used?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          period_end?: string
+          period_start?: string
+          quota_type?: string
+          sessions_count?: number | null
+          tokens_limit?: number
+          tokens_used?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_usage_quotas_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       analytics_events: {
         Row: {
           created_at: string
@@ -860,6 +1093,178 @@ export type Database = {
             columns: ["author_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      career_milestones: {
+        Row: {
+          achieved_at: string
+          career_profile_id: string
+          created_at: string
+          description: string | null
+          id: string
+          institution: string | null
+          is_public: boolean | null
+          milestone_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          title: string
+          verification_status: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          achieved_at: string
+          career_profile_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution?: string | null
+          is_public?: boolean | null
+          milestone_type: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          title: string
+          verification_status?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          achieved_at?: string
+          career_profile_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution?: string | null
+          is_public?: boolean | null
+          milestone_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          title?: string
+          verification_status?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "career_milestones_career_profile_id_fkey"
+            columns: ["career_profile_id"]
+            isOneToOne: false
+            referencedRelation: "career_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "career_milestones_verified_by_fkey"
+            columns: ["verified_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      career_profiles: {
+        Row: {
+          career_goal_statement: string | null
+          created_at: string
+          current_stage: string
+          id: string
+          is_open_to_mentoring: boolean | null
+          max_mentees: number | null
+          mentoring_interests: string[] | null
+          mentorship_needs: string[] | null
+          primary_domain: string | null
+          privacy_level: string | null
+          scholar_passport_id: string
+          secondary_domains: string[] | null
+          seeking_mentorship: boolean | null
+          updated_at: string
+          years_in_academia: number | null
+        }
+        Insert: {
+          career_goal_statement?: string | null
+          created_at?: string
+          current_stage?: string
+          id?: string
+          is_open_to_mentoring?: boolean | null
+          max_mentees?: number | null
+          mentoring_interests?: string[] | null
+          mentorship_needs?: string[] | null
+          primary_domain?: string | null
+          privacy_level?: string | null
+          scholar_passport_id: string
+          secondary_domains?: string[] | null
+          seeking_mentorship?: boolean | null
+          updated_at?: string
+          years_in_academia?: number | null
+        }
+        Update: {
+          career_goal_statement?: string | null
+          created_at?: string
+          current_stage?: string
+          id?: string
+          is_open_to_mentoring?: boolean | null
+          max_mentees?: number | null
+          mentoring_interests?: string[] | null
+          mentorship_needs?: string[] | null
+          primary_domain?: string | null
+          privacy_level?: string | null
+          scholar_passport_id?: string
+          secondary_domains?: string[] | null
+          seeking_mentorship?: boolean | null
+          updated_at?: string
+          years_in_academia?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "career_profiles_scholar_passport_id_fkey"
+            columns: ["scholar_passport_id"]
+            isOneToOne: true
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      career_risk_flags: {
+        Row: {
+          acknowledged_at: string | null
+          career_profile_id: string
+          description: string | null
+          detected_at: string
+          id: string
+          is_visible_to_user: boolean | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          risk_type: string
+          severity: string | null
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          career_profile_id: string
+          description?: string | null
+          detected_at?: string
+          id?: string
+          is_visible_to_user?: boolean | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          risk_type: string
+          severity?: string | null
+        }
+        Update: {
+          acknowledged_at?: string | null
+          career_profile_id?: string
+          description?: string | null
+          detected_at?: string
+          id?: string
+          is_visible_to_user?: boolean | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          risk_type?: string
+          severity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "career_risk_flags_career_profile_id_fkey"
+            columns: ["career_profile_id"]
+            isOneToOne: false
+            referencedRelation: "career_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -2248,6 +2653,175 @@ export type Database = {
           version?: string
         }
         Relationships: []
+      }
+      dataset_access_requests: {
+        Row: {
+          access_expires_at: string | null
+          created_at: string
+          data_management_plan: string | null
+          dataset_id: string
+          ethics_approval_ref: string | null
+          id: string
+          institution: string | null
+          intended_use: string | null
+          purpose: string
+          requester_user_id: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+        }
+        Insert: {
+          access_expires_at?: string | null
+          created_at?: string
+          data_management_plan?: string | null
+          dataset_id: string
+          ethics_approval_ref?: string | null
+          id?: string
+          institution?: string | null
+          intended_use?: string | null
+          purpose: string
+          requester_user_id: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+        }
+        Update: {
+          access_expires_at?: string | null
+          created_at?: string
+          data_management_plan?: string | null
+          dataset_id?: string
+          ethics_approval_ref?: string | null
+          id?: string
+          institution?: string | null
+          intended_use?: string | null
+          purpose?: string
+          requester_user_id?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dataset_access_requests_dataset_id_fkey"
+            columns: ["dataset_id"]
+            isOneToOne: false
+            referencedRelation: "research_datasets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dataset_access_requests_requester_user_id_fkey"
+            columns: ["requester_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dataset_access_requests_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dataset_usage_logs: {
+        Row: {
+          created_at: string
+          dataset_id: string
+          id: string
+          metadata: Json | null
+          usage_type: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          dataset_id: string
+          id?: string
+          metadata?: Json | null
+          usage_type: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          dataset_id?: string
+          id?: string
+          metadata?: Json | null
+          usage_type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dataset_usage_logs_dataset_id_fkey"
+            columns: ["dataset_id"]
+            isOneToOne: false
+            referencedRelation: "research_datasets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dataset_usage_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dataset_versions: {
+        Row: {
+          change_log: string
+          checksum: string | null
+          created_at: string
+          created_by: string
+          dataset_id: string
+          file_manifest: Json | null
+          id: string
+          schema_definition: Json | null
+          total_records: number | null
+          version_number: number
+        }
+        Insert: {
+          change_log: string
+          checksum?: string | null
+          created_at?: string
+          created_by: string
+          dataset_id: string
+          file_manifest?: Json | null
+          id?: string
+          schema_definition?: Json | null
+          total_records?: number | null
+          version_number?: number
+        }
+        Update: {
+          change_log?: string
+          checksum?: string | null
+          created_at?: string
+          created_by?: string
+          dataset_id?: string
+          file_manifest?: Json | null
+          id?: string
+          schema_definition?: Json | null
+          total_records?: number | null
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dataset_versions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dataset_versions_dataset_id_fkey"
+            columns: ["dataset_id"]
+            isOneToOne: false
+            referencedRelation: "research_datasets"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       digital_credentials: {
         Row: {
@@ -5168,6 +5742,126 @@ export type Database = {
           },
         ]
       }
+      mentorship_interactions: {
+        Row: {
+          created_at: string
+          duration_minutes: number | null
+          id: string
+          interaction_type: string
+          logged_by: string
+          mentorship_relationship_id: string
+          occurred_at: string
+          summary: string | null
+        }
+        Insert: {
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          interaction_type: string
+          logged_by: string
+          mentorship_relationship_id: string
+          occurred_at?: string
+          summary?: string | null
+        }
+        Update: {
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          interaction_type?: string
+          logged_by?: string
+          mentorship_relationship_id?: string
+          occurred_at?: string
+          summary?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentorship_interactions_logged_by_fkey"
+            columns: ["logged_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentorship_interactions_mentorship_relationship_id_fkey"
+            columns: ["mentorship_relationship_id"]
+            isOneToOne: false
+            referencedRelation: "mentorship_relationships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentorship_relationships: {
+        Row: {
+          actual_end_date: string | null
+          created_at: string
+          expected_end_date: string | null
+          expected_frequency: string | null
+          goals: string | null
+          id: string
+          initiated_by: string
+          mentee_consent_at: string | null
+          mentee_scholar_passport_id: string
+          mentor_consent_at: string | null
+          mentor_scholar_passport_id: string
+          mentorship_type: string
+          start_date: string
+          status: string
+          termination_reason: string | null
+          updated_at: string
+        }
+        Insert: {
+          actual_end_date?: string | null
+          created_at?: string
+          expected_end_date?: string | null
+          expected_frequency?: string | null
+          goals?: string | null
+          id?: string
+          initiated_by: string
+          mentee_consent_at?: string | null
+          mentee_scholar_passport_id: string
+          mentor_consent_at?: string | null
+          mentor_scholar_passport_id: string
+          mentorship_type: string
+          start_date?: string
+          status?: string
+          termination_reason?: string | null
+          updated_at?: string
+        }
+        Update: {
+          actual_end_date?: string | null
+          created_at?: string
+          expected_end_date?: string | null
+          expected_frequency?: string | null
+          goals?: string | null
+          id?: string
+          initiated_by?: string
+          mentee_consent_at?: string | null
+          mentee_scholar_passport_id?: string
+          mentor_consent_at?: string | null
+          mentor_scholar_passport_id?: string
+          mentorship_type?: string
+          start_date?: string
+          status?: string
+          termination_reason?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentorship_relationships_mentee_scholar_passport_id_fkey"
+            columns: ["mentee_scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentorship_relationships_mentor_scholar_passport_id_fkey"
+            columns: ["mentor_scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       message_threads: {
         Row: {
           archived_by_user_a: boolean | null
@@ -5978,6 +6672,42 @@ export type Database = {
           steps_completed?: Json
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      open_science_badges: {
+        Row: {
+          badge_type: string
+          expires_at: string | null
+          id: string
+          issued_at: string
+          issued_by: string
+          issuer_entity_id: string | null
+          target_id: string
+          target_type: string
+          verification_url: string | null
+        }
+        Insert: {
+          badge_type: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string
+          issued_by?: string
+          issuer_entity_id?: string | null
+          target_id: string
+          target_type: string
+          verification_url?: string | null
+        }
+        Update: {
+          badge_type?: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string
+          issued_by?: string
+          issuer_entity_id?: string | null
+          target_id?: string
+          target_type?: string
+          verification_url?: string | null
         }
         Relationships: []
       }
@@ -8099,6 +8829,62 @@ export type Database = {
           },
         ]
       }
+      reproducibility_records: {
+        Row: {
+          code_available: boolean | null
+          created_at: string
+          data_available: boolean | null
+          environment_specified: boolean | null
+          id: string
+          methodology_documented: boolean | null
+          reproduced_by: string | null
+          reproducibility_level: string
+          reproduction_notes: string | null
+          target_id: string
+          target_type: string
+          updated_at: string
+          verification_date: string | null
+        }
+        Insert: {
+          code_available?: boolean | null
+          created_at?: string
+          data_available?: boolean | null
+          environment_specified?: boolean | null
+          id?: string
+          methodology_documented?: boolean | null
+          reproduced_by?: string | null
+          reproducibility_level?: string
+          reproduction_notes?: string | null
+          target_id: string
+          target_type: string
+          updated_at?: string
+          verification_date?: string | null
+        }
+        Update: {
+          code_available?: boolean | null
+          created_at?: string
+          data_available?: boolean | null
+          environment_specified?: boolean | null
+          id?: string
+          methodology_documented?: boolean | null
+          reproduced_by?: string | null
+          reproducibility_level?: string
+          reproduction_notes?: string | null
+          target_id?: string
+          target_type?: string
+          updated_at?: string
+          verification_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reproducibility_records_reproduced_by_fkey"
+            columns: ["reproduced_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_artifacts: {
         Row: {
           artifact_type: string
@@ -8192,6 +8978,87 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_datasets: {
+        Row: {
+          access_level: string
+          consent_type: string | null
+          created_at: string
+          dataset_type: string
+          description: string | null
+          doi: string | null
+          embargo_until: string | null
+          ethical_approval_ref: string | null
+          id: string
+          is_active: boolean | null
+          keywords: string[] | null
+          license: string | null
+          methodology_summary: string | null
+          owner_user_id: string
+          research_timeline_id: string | null
+          size_mb: number | null
+          storage_location: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          access_level?: string
+          consent_type?: string | null
+          created_at?: string
+          dataset_type: string
+          description?: string | null
+          doi?: string | null
+          embargo_until?: string | null
+          ethical_approval_ref?: string | null
+          id?: string
+          is_active?: boolean | null
+          keywords?: string[] | null
+          license?: string | null
+          methodology_summary?: string | null
+          owner_user_id: string
+          research_timeline_id?: string | null
+          size_mb?: number | null
+          storage_location?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          access_level?: string
+          consent_type?: string | null
+          created_at?: string
+          dataset_type?: string
+          description?: string | null
+          doi?: string | null
+          embargo_until?: string | null
+          ethical_approval_ref?: string | null
+          id?: string
+          is_active?: boolean | null
+          keywords?: string[] | null
+          license?: string | null
+          methodology_summary?: string | null
+          owner_user_id?: string
+          research_timeline_id?: string | null
+          size_mb?: number | null
+          storage_location?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_datasets_owner_user_id_fkey"
+            columns: ["owner_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_datasets_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
             referencedColumns: ["id"]
           },
         ]
@@ -10134,6 +11001,7 @@ export type Database = {
         Args: { p_amount: number; p_milestone_id: string; p_reason: string }
         Returns: boolean
       }
+      release_expired_embargoes: { Args: never; Returns: undefined }
       submit_review: {
         Args: {
           p_comment?: string
