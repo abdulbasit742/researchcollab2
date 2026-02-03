@@ -99,6 +99,9 @@ import OutcomeFeedPage from "./pages/OutcomeFeedPage";
 import RealityFeedPage from "./pages/RealityFeedPage";
 import AdminStewardshipPage from "./pages/admin/AdminStewardshipPage";
 import PressKitPage from "./pages/PressKitPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsOfServicePage from "./pages/TermsOfServicePage";
+import CookiePolicyPage from "./pages/CookiePolicyPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -167,6 +170,9 @@ const AppContent = () => {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/careers" element={<CareersPage />} />
             <Route path="/press" element={<PressKitPage />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms" element={<TermsOfServicePage />} />
+            <Route path="/cookies" element={<CookiePolicyPage />} />
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminPortalPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
