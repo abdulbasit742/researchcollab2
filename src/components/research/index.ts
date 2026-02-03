@@ -1,0 +1,1 @@
+export { ResearchImpactPanel } from "./ResearchImpactPanel";
