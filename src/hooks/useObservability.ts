@@ -76,11 +76,11 @@ export function useObservability() {
         supabase.from("integrity_job_runs" as any).select("*").order("started_at", { ascending: false }).limit(50),
       ]);
 
-      if (!healthRes.error) setHealthStatus(healthRes.data as PlatformHealthStatus[] || []);
-      if (!alertsRes.error) setAlerts(alertsRes.data as PlatformAlert[] || []);
-      if (!eventsRes.error) setEvents(eventsRes.data as PlatformEvent[] || []);
-      if (!logsRes.error) setIntegrityLogs(logsRes.data as IntegrityLog[] || []);
-      if (!jobsRes.error) setJobRuns(jobsRes.data as IntegrityJobRun[] || []);
+      if (!healthRes.error) setHealthStatus((healthRes.data as unknown as PlatformHealthStatus[]) || []);
+      if (!alertsRes.error) setAlerts((alertsRes.data as unknown as PlatformAlert[]) || []);
+      if (!eventsRes.error) setEvents((eventsRes.data as unknown as PlatformEvent[]) || []);
+      if (!logsRes.error) setIntegrityLogs((logsRes.data as unknown as IntegrityLog[]) || []);
+      if (!jobsRes.error) setJobRuns((jobsRes.data as unknown as IntegrityJobRun[]) || []);
     } catch (err) {
       console.error("Observability fetch error:", err);
     } finally {
