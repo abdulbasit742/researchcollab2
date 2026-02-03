@@ -11,20 +11,26 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { 
   Link as LinkIcon, Copy, Users, DollarSign, TrendingUp, MousePointer, 
   UserPlus, ShoppingCart, Wallet, ExternalLink,
-  Share2, Gift, Clock, XCircle, RefreshCw
+  Share2, Gift, Clock, XCircle, RefreshCw, Shield, AlertTriangle
 } from "lucide-react";
 import { toast } from "sonner";
 import { useMyAffiliate } from "@/hooks/useMyAffiliate";
+import { useAffiliateStatus } from "@/hooks/useAffiliateApplication";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatPKR } from "@/lib/currency";
 import { tools, toolBundles } from "@/data/tools";
 import { commissionRules } from "@/data/affiliates";
 import { formatDistanceToNow } from "date-fns";
+import { AffiliateApplicationForm } from "@/components/affiliate/AffiliateApplicationForm";
+import { EligibilityStatus } from "@/components/affiliate/EligibilityStatus";
+import { ApplicationStatus } from "@/components/affiliate/ApplicationStatus";
 
 export default function AffiliateDashboardPage() {
   const { user } = useAuth();
-  const { affiliate, conversions, loading, error, generateReferralLink } = useMyAffiliate();
+  const { affiliate, conversions, outcomes, violations, loading, error, generateReferralLink, getFunnelStats } = useMyAffiliate();
+  const { status: affiliateStatus, eligibility, application, isLoading: statusLoading } = useAffiliateStatus();
   const [copiedLink, setCopiedLink] = useState<string | null>(null);
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -61,7 +67,7 @@ export default function AffiliateDashboardPage() {
   };
 
   // Loading state
-  if (loading) {
+  if (loading || statusLoading) {
     return (
       <MainLayout>
         <div className="min-h-screen bg-background py-8">
@@ -102,41 +108,152 @@ export default function AffiliateDashboardPage() {
     );
   }
 
-  // No affiliate profile yet
+  // No affiliate profile yet - show application flow
   if (!affiliate) {
     return (
       <MainLayout>
-        <div className="min-h-screen bg-background py-16">
-          <div className="container mx-auto px-4 max-w-2xl text-center">
-            <Gift className="h-16 w-16 mx-auto text-primary mb-6" />
-            <h1 className="text-3xl font-bold mb-4">Become an Affiliate</h1>
-            <p className="text-muted-foreground mb-4">
-              You don't have an affiliate account yet. Join our affiliate program to earn commissions by sharing tools and services with your network.
-            </p>
-            <div className="bg-muted/50 rounded-lg p-6 mb-8 text-left">
-              <h3 className="font-semibold mb-3">What you'll get:</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-center gap-2">
-                  <DollarSign className="h-4 w-4 text-primary" />
-                  Up to 20% commission on referrals
-                </li>
-                <li className="flex items-center gap-2">
-                  <LinkIcon className="h-4 w-4 text-primary" />
-                  Unique referral links and promo codes
-                </li>
-                <li className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  Real-time earnings tracking
-                </li>
-                <li className="flex items-center gap-2">
-                  <Wallet className="h-4 w-4 text-primary" />
-                  Easy withdrawals to your wallet
-                </li>
-              </ul>
+        <div className="min-h-screen bg-background py-8">
+          <div className="container mx-auto px-4 max-w-4xl">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
+                <Gift className="h-8 w-8 text-primary" />
+              </div>
+              <h1 className="text-3xl font-bold mb-2">Affiliate Program</h1>
+              <p className="text-muted-foreground max-w-xl mx-auto">
+                Become a trusted partner and earn by recommending our platform to your network. 
+                This is not marketing — it's extending trust.
+              </p>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Contact support to apply for the affiliate program.
-            </p>
+
+            {/* Status Badge */}
+            {affiliateStatus && (
+              <div className="flex justify-center mb-8">
+                <Badge 
+                  variant={affiliateStatus.canApply ? "default" : "secondary"} 
+                  className="text-sm px-4 py-1"
+                >
+                  {affiliateStatus.statusLabel}
+                </Badge>
+              </div>
+            )}
+
+            {/* Application Already Submitted */}
+            {application && (
+              <div className="mb-8">
+                <ApplicationStatus application={application} />
+              </div>
+            )}
+
+            {/* Eligibility Status (when no application yet or rejected) */}
+            {(!application || application.status === "rejected") && eligibility && (
+              <div className="mb-8">
+                <EligibilityStatus eligibility={eligibility} isLoading={statusLoading} />
+              </div>
+            )}
+
+            {/* Application Form (only if eligible and not already applied/approved) */}
+            {affiliateStatus?.canApply && !application && (
+              <Card className="mb-8">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="h-5 w-5" />
+                    Apply to Become an Affiliate
+                  </CardTitle>
+                  <CardDescription>
+                    Complete this application to join our trusted affiliate network
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {showApplicationForm ? (
+                    <AffiliateApplicationForm 
+                      onSuccess={() => setShowApplicationForm(false)} 
+                    />
+                  ) : (
+                    <div className="text-center py-6">
+                      <p className="text-muted-foreground mb-4">
+                        You meet all eligibility requirements. Ready to apply?
+                      </p>
+                      <Button size="lg" onClick={() => setShowApplicationForm(true)}>
+                        Start Application
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Program Benefits */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Why Become an Affiliate?</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <TrendingUp className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Trust-Weighted Commissions</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Higher trust scores unlock better commission rates (up to 20%)
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <DollarSign className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Outcome-Based Earnings</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Earn when referrals complete real actions, not just clicks
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <LinkIcon className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Professional Tools</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Unique referral links, promo codes, and tracking dashboard
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <Shield className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Reputation Protection</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Anti-spam policies ensure only quality referrals
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Anti-Spam Notice */}
+            <div className="mt-6 p-4 rounded-lg border border-amber-500/30 bg-amber-500/5">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                <div>
+                  <h4 className="font-medium text-amber-700 dark:text-amber-400">
+                    This is Not a Marketing Program
+                  </h4>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Affiliates are trusted partners who extend our platform's credibility. 
+                    Spam, cold outreach, and deceptive practices result in immediate revocation 
+                    and trust score penalties.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </MainLayout>
@@ -319,12 +436,121 @@ export default function AffiliateDashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Tabs for Links, Earnings */}
-          <Tabs defaultValue="links" className="space-y-4">
+          {/* Trust Status & Violations Warning */}
+          {violations.length > 0 && (
+            <Card className="mb-8 border-amber-500/30 bg-amber-500/5">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center gap-2 text-amber-600">
+                  <AlertTriangle className="h-5 w-5" />
+                  Active Violations ({violations.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {violations.slice(0, 3).map(violation => (
+                    <div key={violation.id} className="flex items-start justify-between p-3 rounded-lg bg-background/50 border">
+                      <div>
+                        <p className="font-medium text-sm">{violation.violation_type}</p>
+                        <p className="text-xs text-muted-foreground">{violation.description}</p>
+                      </div>
+                      <Badge variant="destructive" className="text-xs">
+                        -{violation.trust_penalty} trust
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-3">
+                  Violations affect your commission rate and may result in account suspension.
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Tabs for Links, Outcomes, Earnings */}
+          <Tabs defaultValue="outcomes" className="space-y-4">
             <TabsList>
-              <TabsTrigger value="links">Tool Links</TabsTrigger>
-              <TabsTrigger value="earnings">Recent Earnings</TabsTrigger>
+              <TabsTrigger value="outcomes">Conversion Funnel</TabsTrigger>
+              <TabsTrigger value="links">Referral Links</TabsTrigger>
+              <TabsTrigger value="earnings">Earnings History</TabsTrigger>
             </TabsList>
+
+            {/* Conversion Funnel Tab */}
+            <TabsContent value="outcomes">
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Funnel Stats */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base">Referral Quality</CardTitle>
+                    <CardDescription>
+                      Outcomes that count toward your commission
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                        <span className="text-sm">Signups</span>
+                        <span className="font-bold">{getFunnelStats().totalReferrals}</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                        <span className="text-sm">Completed Onboarding</span>
+                        <span className="font-bold">{getFunnelStats().onboardedReferrals}</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-primary/10">
+                        <span className="text-sm font-medium">Real Conversions</span>
+                        <span className="font-bold text-primary">{getFunnelStats().convertedReferrals}</span>
+                      </div>
+                      <div className="pt-3 border-t">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Onboarding Rate</span>
+                          <span>{getFunnelStats().onboardingRate}%</span>
+                        </div>
+                        <div className="flex justify-between text-sm mt-1">
+                          <span className="text-muted-foreground">Conversion Rate</span>
+                          <span className="font-medium text-primary">{getFunnelStats().conversionRate}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Recent Outcomes */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base">Recent Outcomes</CardTitle>
+                    <CardDescription>
+                      Actions by your referrals that earned commission
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {outcomes.length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Users className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                        <p className="text-sm">No outcomes yet</p>
+                        <p className="text-xs">Share your links to start earning</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3 max-h-64 overflow-y-auto">
+                        {outcomes.slice(0, 10).map(outcome => (
+                          <div key={outcome.id} className="flex items-center justify-between p-2 rounded border">
+                            <div>
+                              <p className="text-sm font-medium capitalize">
+                                {outcome.outcome_type.replace(/_/g, " ")}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {formatDistanceToNow(new Date(outcome.created_at), { addSuffix: true })}
+                              </p>
+                            </div>
+                            <Badge variant={outcome.commission_status === "released" ? "default" : "secondary"}>
+                              {formatPKR(outcome.commission_earned)}
+                            </Badge>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
 
             <TabsContent value="links">
               <Card>
