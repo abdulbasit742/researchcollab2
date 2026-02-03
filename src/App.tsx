@@ -94,6 +94,8 @@ import FeedPage from "./pages/FeedPage";
 import PostDetailPage from "./pages/PostDetailPage";
 import NetworkPage from "./pages/NetworkPage";
 import SearchPage from "./pages/SearchPage";
+import OutcomeFeedPage from "./pages/OutcomeFeedPage";
+import AdminStewardshipPage from "./pages/admin/AdminStewardshipPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -107,6 +109,7 @@ const AppContent = () => {
       <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/feed" element={<FeedPage />} />
+            <Route path="/opportunities" element={<OutcomeFeedPage />} />
             <Route path="/posts/:postId" element={<PostDetailPage />} />
             <Route path="/network" element={<NetworkPage />} />
             <Route path="/search" element={<SearchPage />} />
@@ -191,6 +194,7 @@ const AppContent = () => {
             <Route path="/admin/ai-governance" element={<AdminAIGovernancePage />} />
             <Route path="/admin/reproducibility" element={<AdminReproducibilityPage />} />
             <Route path="/admin/federation" element={<AdminFederationPage />} />
+            <Route path="/admin/stewardship" element={<AdminStewardshipPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>

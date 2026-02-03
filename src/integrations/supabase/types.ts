@@ -537,6 +537,59 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_advisory_records: {
+        Row: {
+          ai_model_id: string | null
+          created_at: string
+          decided_by: string | null
+          decision_class_id: string | null
+          decision_context: string
+          divergence_reason: string | null
+          full_reasoning: Json | null
+          human_decision: string | null
+          id: string
+          recommendation_summary: string
+          uncertainty_level: string
+          was_followed: boolean | null
+        }
+        Insert: {
+          ai_model_id?: string | null
+          created_at?: string
+          decided_by?: string | null
+          decision_class_id?: string | null
+          decision_context: string
+          divergence_reason?: string | null
+          full_reasoning?: Json | null
+          human_decision?: string | null
+          id?: string
+          recommendation_summary: string
+          uncertainty_level: string
+          was_followed?: boolean | null
+        }
+        Update: {
+          ai_model_id?: string | null
+          created_at?: string
+          decided_by?: string | null
+          decision_class_id?: string | null
+          decision_context?: string
+          divergence_reason?: string | null
+          full_reasoning?: Json | null
+          human_decision?: string | null
+          id?: string
+          recommendation_summary?: string
+          uncertainty_level?: string
+          was_followed?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_advisory_records_decision_class_id_fkey"
+            columns: ["decision_class_id"]
+            isOneToOne: false
+            referencedRelation: "decision_classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_assistance_records: {
         Row: {
           ai_model_version: string | null
@@ -1973,6 +2026,54 @@ export type Database = {
           },
         ]
       }
+      canonical_knowledge_records: {
+        Row: {
+          abstract: string | null
+          artifact_id: string | null
+          artifact_type: string
+          canonical_version: string
+          checksum: string
+          created_at: string
+          declared_scope: string
+          governance_body: string | null
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          abstract?: string | null
+          artifact_id?: string | null
+          artifact_type: string
+          canonical_version?: string
+          checksum: string
+          created_at?: string
+          declared_scope: string
+          governance_body?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          abstract?: string | null
+          artifact_id?: string | null
+          artifact_type?: string
+          canonical_version?: string
+          checksum?: string
+          created_at?: string
+          declared_scope?: string
+          governance_body?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       career_milestones: {
         Row: {
           achieved_at: string
@@ -2144,6 +2245,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      civilizational_principles: {
+        Row: {
+          change_requirements: Json
+          created_at: string
+          description: string
+          id: string
+          is_active: boolean | null
+          principle_name: string
+          ratified_at: string | null
+          ratified_by: Json | null
+          scope: string
+        }
+        Insert: {
+          change_requirements?: Json
+          created_at?: string
+          description: string
+          id?: string
+          is_active?: boolean | null
+          principle_name: string
+          ratified_at?: string | null
+          ratified_by?: Json | null
+          scope: string
+        }
+        Update: {
+          change_requirements?: Json
+          created_at?: string
+          description?: string
+          id?: string
+          is_active?: boolean | null
+          principle_name?: string
+          ratified_at?: string | null
+          ratified_by?: Json | null
+          scope?: string
+        }
+        Relationships: []
       }
       cohort_members: {
         Row: {
@@ -4225,6 +4362,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      decision_classes: {
+        Row: {
+          ai_allowed_role: string
+          created_at: string
+          description: string | null
+          domain: string
+          examples: Json | null
+          human_override_required: boolean
+          id: string
+          impact_level: string
+        }
+        Insert: {
+          ai_allowed_role: string
+          created_at?: string
+          description?: string | null
+          domain: string
+          examples?: Json | null
+          human_override_required?: boolean
+          id?: string
+          impact_level: string
+        }
+        Update: {
+          ai_allowed_role?: string
+          created_at?: string
+          description?: string | null
+          domain?: string
+          examples?: Json | null
+          human_override_required?: boolean
+          id?: string
+          impact_level?: string
+        }
+        Relationships: []
       }
       deployment_admins: {
         Row: {
@@ -8659,6 +8829,33 @@ export type Database = {
           },
         ]
       }
+      institutional_capabilities: {
+        Row: {
+          capability_type: string
+          created_at: string
+          enabled: boolean | null
+          id: string
+          limits: Json | null
+          organization_id: string
+        }
+        Insert: {
+          capability_type: string
+          created_at?: string
+          enabled?: boolean | null
+          id?: string
+          limits?: Json | null
+          organization_id: string
+        }
+        Update: {
+          capability_type?: string
+          created_at?: string
+          enabled?: boolean | null
+          id?: string
+          limits?: Json | null
+          organization_id?: string
+        }
+        Relationships: []
+      }
       integration_mappings: {
         Row: {
           created_at: string
@@ -8907,6 +9104,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      intergenerational_safeguards: {
+        Row: {
+          created_at: string
+          decision_id: string | null
+          id: string
+          last_reviewed_at: string | null
+          next_review_at: string | null
+          parameters: Json
+          review_count: number | null
+          safeguard_type: string
+        }
+        Insert: {
+          created_at?: string
+          decision_id?: string | null
+          id?: string
+          last_reviewed_at?: string | null
+          next_review_at?: string | null
+          parameters: Json
+          review_count?: number | null
+          safeguard_type: string
+        }
+        Update: {
+          created_at?: string
+          decision_id?: string | null
+          id?: string
+          last_reviewed_at?: string | null
+          next_review_at?: string | null
+          parameters?: Json
+          review_count?: number | null
+          safeguard_type?: string
+        }
+        Relationships: []
       }
       international_institutions: {
         Row: {
@@ -9350,6 +9580,44 @@ export type Database = {
           },
         ]
       }
+      knowledge_context_layers: {
+        Row: {
+          authored_by: string | null
+          canonical_record_id: string
+          content: string
+          created_at: string
+          id: string
+          layer_type: string
+          version_applicable: string | null
+        }
+        Insert: {
+          authored_by?: string | null
+          canonical_record_id: string
+          content: string
+          created_at?: string
+          id?: string
+          layer_type: string
+          version_applicable?: string | null
+        }
+        Update: {
+          authored_by?: string | null
+          canonical_record_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          layer_type?: string
+          version_applicable?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_context_layers_canonical_record_id_fkey"
+            columns: ["canonical_record_id"]
+            isOneToOne: false
+            referencedRelation: "canonical_knowledge_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       knowledge_contributions: {
         Row: {
           contribution_notes: string | null
@@ -9388,6 +9656,50 @@ export type Database = {
             columns: ["knowledge_node_id"]
             isOneToOne: false
             referencedRelation: "knowledge_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_dissent_records: {
+        Row: {
+          canonical_record_id: string
+          created_at: string
+          dissenting_claim: string
+          id: string
+          rejection_reason: string | null
+          status: string
+          submitted_by: string | null
+          supporting_evidence: Json | null
+          visibility: string
+        }
+        Insert: {
+          canonical_record_id: string
+          created_at?: string
+          dissenting_claim: string
+          id?: string
+          rejection_reason?: string | null
+          status?: string
+          submitted_by?: string | null
+          supporting_evidence?: Json | null
+          visibility?: string
+        }
+        Update: {
+          canonical_record_id?: string
+          created_at?: string
+          dissenting_claim?: string
+          id?: string
+          rejection_reason?: string | null
+          status?: string
+          submitted_by?: string | null
+          supporting_evidence?: Json | null
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_dissent_records_canonical_record_id_fkey"
+            columns: ["canonical_record_id"]
+            isOneToOne: false
+            referencedRelation: "canonical_knowledge_records"
             referencedColumns: ["id"]
           },
         ]
@@ -9446,6 +9758,78 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      knowledge_export_jobs: {
+        Row: {
+          created_at: string
+          download_url: string | null
+          expires_at: string | null
+          export_type: string
+          format: string
+          id: string
+          requested_by: string | null
+          scope: Json
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          download_url?: string | null
+          expires_at?: string | null
+          export_type: string
+          format: string
+          id?: string
+          requested_by?: string | null
+          scope: Json
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          download_url?: string | null
+          expires_at?: string | null
+          export_type?: string
+          format?: string
+          id?: string
+          requested_by?: string | null
+          scope?: Json
+          status?: string
+        }
+        Relationships: []
+      }
+      knowledge_governance_bodies: {
+        Row: {
+          created_at: string
+          decision_process: string
+          id: string
+          is_active: boolean | null
+          jurisdiction: string
+          mandate: string
+          members: Json | null
+          name: string
+          quorum_rules: Json
+        }
+        Insert: {
+          created_at?: string
+          decision_process: string
+          id?: string
+          is_active?: boolean | null
+          jurisdiction: string
+          mandate: string
+          members?: Json | null
+          name: string
+          quorum_rules?: Json
+        }
+        Update: {
+          created_at?: string
+          decision_process?: string
+          id?: string
+          is_active?: boolean | null
+          jurisdiction?: string
+          mandate?: string
+          members?: Json | null
+          name?: string
+          quorum_rules?: Json
+        }
+        Relationships: []
       }
       knowledge_graph_snapshots: {
         Row: {
@@ -9708,6 +10092,63 @@ export type Database = {
             columns: ["knowledge_node_id"]
             isOneToOne: false
             referencedRelation: "knowledge_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_versions: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          canonical_record_id: string
+          change_type: string
+          context_snapshot: Json | null
+          created_at: string
+          evidence_links: Json | null
+          id: string
+          justification: string
+          supersedes_version_id: string | null
+          version_label: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          canonical_record_id: string
+          change_type: string
+          context_snapshot?: Json | null
+          created_at?: string
+          evidence_links?: Json | null
+          id?: string
+          justification: string
+          supersedes_version_id?: string | null
+          version_label: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          canonical_record_id?: string
+          change_type?: string
+          context_snapshot?: Json | null
+          created_at?: string
+          evidence_links?: Json | null
+          id?: string
+          justification?: string
+          supersedes_version_id?: string | null
+          version_label?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_versions_canonical_record_id_fkey"
+            columns: ["canonical_record_id"]
+            isOneToOne: false
+            referencedRelation: "canonical_knowledge_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_versions_supersedes_version_id_fkey"
+            columns: ["supersedes_version_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_versions"
             referencedColumns: ["id"]
           },
         ]
@@ -11328,6 +11769,57 @@ export type Database = {
           },
         ]
       }
+      outcome_feed_items: {
+        Row: {
+          actor_id: string | null
+          actor_type: string
+          created_at: string
+          engagement_disabled: boolean | null
+          id: string
+          is_verified: boolean | null
+          item_type: string
+          proof_reference: Json | null
+          relevance_tags: string[] | null
+          summary: string | null
+          target_id: string | null
+          target_type: string | null
+          title: string
+          visibility: string
+        }
+        Insert: {
+          actor_id?: string | null
+          actor_type: string
+          created_at?: string
+          engagement_disabled?: boolean | null
+          id?: string
+          is_verified?: boolean | null
+          item_type: string
+          proof_reference?: Json | null
+          relevance_tags?: string[] | null
+          summary?: string | null
+          target_id?: string | null
+          target_type?: string | null
+          title: string
+          visibility?: string
+        }
+        Update: {
+          actor_id?: string | null
+          actor_type?: string
+          created_at?: string
+          engagement_disabled?: boolean | null
+          id?: string
+          is_verified?: boolean | null
+          item_type?: string
+          proof_reference?: Json | null
+          relevance_tags?: string[] | null
+          summary?: string | null
+          target_id?: string | null
+          target_type?: string | null
+          title?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
       paid_boosts: {
         Row: {
           boost_type: string
@@ -12729,6 +13221,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      profile_proof_metrics: {
+        Row: {
+          computed_at: string
+          dispute_loss_count: number | null
+          earnings_visibility: string | null
+          escrow_success_rate: number | null
+          grants_won: number | null
+          id: string
+          institutions_worked_with: string[] | null
+          last_activity_at: string | null
+          peer_reviews_received: number | null
+          projects_completed: number | null
+          total_earnings: number | null
+          user_id: string
+          verification_count: number | null
+        }
+        Insert: {
+          computed_at?: string
+          dispute_loss_count?: number | null
+          earnings_visibility?: string | null
+          escrow_success_rate?: number | null
+          grants_won?: number | null
+          id?: string
+          institutions_worked_with?: string[] | null
+          last_activity_at?: string | null
+          peer_reviews_received?: number | null
+          projects_completed?: number | null
+          total_earnings?: number | null
+          user_id: string
+          verification_count?: number | null
+        }
+        Update: {
+          computed_at?: string
+          dispute_loss_count?: number | null
+          earnings_visibility?: string | null
+          escrow_success_rate?: number | null
+          grants_won?: number | null
+          id?: string
+          institutions_worked_with?: string[] | null
+          last_activity_at?: string | null
+          peer_reviews_received?: number | null
+          projects_completed?: number | null
+          total_earnings?: number | null
+          user_id?: string
+          verification_count?: number | null
+        }
+        Relationships: []
       }
       profile_views: {
         Row: {
@@ -15774,6 +16314,42 @@ export type Database = {
         }
         Relationships: []
       }
+      shutdown_modes: {
+        Row: {
+          created_at: string
+          data_export_enabled: boolean | null
+          description: string
+          estimated_duration_days: number | null
+          federation_participation: boolean | null
+          id: string
+          mode_name: string
+          preservation_level: string
+          steps: Json
+        }
+        Insert: {
+          created_at?: string
+          data_export_enabled?: boolean | null
+          description: string
+          estimated_duration_days?: number | null
+          federation_participation?: boolean | null
+          id?: string
+          mode_name: string
+          preservation_level: string
+          steps?: Json
+        }
+        Update: {
+          created_at?: string
+          data_export_enabled?: boolean | null
+          description?: string
+          estimated_duration_days?: number | null
+          federation_participation?: boolean | null
+          id?: string
+          mode_name?: string
+          preservation_level?: string
+          steps?: Json
+        }
+        Relationships: []
+      }
       skill_endorsements: {
         Row: {
           created_at: string
@@ -15970,6 +16546,42 @@ export type Database = {
           },
         ]
       }
+      stewardship_transfers: {
+        Row: {
+          approved_at: string | null
+          completed_at: string | null
+          created_at: string
+          from_body: string | null
+          id: string
+          scope: string
+          status: string
+          to_body: string | null
+          transition_plan: Json
+        }
+        Insert: {
+          approved_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          from_body?: string | null
+          id?: string
+          scope: string
+          status?: string
+          to_body?: string | null
+          transition_plan: Json
+        }
+        Update: {
+          approved_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          from_body?: string | null
+          id?: string
+          scope?: string
+          status?: string
+          to_body?: string | null
+          transition_plan?: Json
+        }
+        Relationships: []
+      }
       student_cohorts: {
         Row: {
           created_at: string
@@ -16164,6 +16776,42 @@ export type Database = {
         }
         Relationships: []
       }
+      sunset_policies: {
+        Row: {
+          auto_suspend_on_failure: boolean | null
+          component: string
+          created_at: string
+          id: string
+          last_renewed_at: string | null
+          next_review_at: string | null
+          renewal_requirements: Json
+          review_interval_years: number
+          status: string
+        }
+        Insert: {
+          auto_suspend_on_failure?: boolean | null
+          component: string
+          created_at?: string
+          id?: string
+          last_renewed_at?: string | null
+          next_review_at?: string | null
+          renewal_requirements?: Json
+          review_interval_years?: number
+          status?: string
+        }
+        Update: {
+          auto_suspend_on_failure?: boolean | null
+          component?: string
+          created_at?: string
+          id?: string
+          last_renewed_at?: string | null
+          next_review_at?: string | null
+          renewal_requirements?: Json
+          review_interval_years?: number
+          status?: string
+        }
+        Relationships: []
+      }
       supervision_records: {
         Row: {
           actual_end_date: string | null
@@ -16287,6 +16935,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      system_scope_limits: {
+        Row: {
+          created_at: string
+          domain: string
+          explicitly_allowed: Json
+          explicitly_prohibited: Json
+          id: string
+          last_reviewed_at: string | null
+          next_review_at: string | null
+          rationale: string
+          reviewed_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          domain: string
+          explicitly_allowed?: Json
+          explicitly_prohibited?: Json
+          id?: string
+          last_reviewed_at?: string | null
+          next_review_at?: string | null
+          rationale: string
+          reviewed_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          domain?: string
+          explicitly_allowed?: Json
+          explicitly_prohibited?: Json
+          id?: string
+          last_reviewed_at?: string | null
+          next_review_at?: string | null
+          rationale?: string
+          reviewed_by?: string | null
+        }
+        Relationships: []
       }
       teaching_research_outputs: {
         Row: {
@@ -17745,6 +18429,42 @@ export type Database = {
         }
         Relationships: []
       }
+      work_connections: {
+        Row: {
+          connected_user_id: string
+          connection_type: string
+          created_at: string
+          id: string
+          project_reference: string | null
+          user_id: string
+          verified: boolean | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          connected_user_id: string
+          connection_type: string
+          created_at?: string
+          id?: string
+          project_reference?: string | null
+          user_id: string
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          connected_user_id?: string
+          connection_type?: string
+          created_at?: string
+          id?: string
+          project_reference?: string | null
+          user_id?: string
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: []
+      }
       workspace_block_versions: {
         Row: {
           block_id: string
@@ -18105,6 +18825,10 @@ export type Database = {
       check_rate_limit: {
         Args: { p_action_type: string; p_user_id: string }
         Returns: boolean
+      }
+      compute_profile_proof_metrics: {
+        Args: { p_user_id: string }
+        Returns: undefined
       }
       create_academic_record_from_offer: {
         Args: { p_offer_id: string }
