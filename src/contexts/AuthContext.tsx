@@ -247,7 +247,7 @@ export function useAuth() {
 export function getRoleBasedRedirect(role: string | undefined): string {
   switch (role) {
     case "admin":
-      return "/dashboard/admin";
+      return "/admin";
     case "researcher":
       return "/dashboard/researcher";
     case "student":
