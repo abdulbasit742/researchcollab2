@@ -98,6 +98,7 @@ import SearchPage from "./pages/SearchPage";
 import OutcomeFeedPage from "./pages/OutcomeFeedPage";
 import RealityFeedPage from "./pages/RealityFeedPage";
 import AdminStewardshipPage from "./pages/admin/AdminStewardshipPage";
+import PressKitPage from "./pages/PressKitPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -165,6 +166,7 @@ const AppContent = () => {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/careers" element={<CareersPage />} />
+            <Route path="/press" element={<PressKitPage />} />
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminPortalPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
