@@ -11,39 +11,20 @@ import {
   GraduationCap,
   Users,
   Briefcase,
-  Wrench,
-  Sparkles,
-  BookOpen,
-  Heart,
-  FileText,
-  Share2,
-  LogOut,
   MessageSquare,
   Home,
   Target,
+  User,
+  LogOut,
+  TrendingUp,
 } from "lucide-react";
 
+// Simplified, focused navigation - only core actions
 const navItems = [
-  {
-    label: "Home",
-    href: "/feed",
-    icon: Home,
-  },
-  {
-    label: "Network",
-    href: "/network",
-    icon: Users,
-  },
-  {
-    label: "Opportunities",
-    href: "/offers",
-    icon: Target,
-  },
-  {
-    label: "Deals",
-    href: "/deals",
-    icon: Briefcase,
-  },
+  { label: "Home", href: "/feed", icon: Home },
+  { label: "Network", href: "/network", icon: Users },
+  { label: "Opportunities", href: "/offers", icon: Target },
+  { label: "Deals", href: "/deals", icon: Briefcase },
 ];
 
 function MessagesNavItem({ onClick }: { onClick?: () => void }) {
@@ -128,25 +109,24 @@ export function Navbar() {
 
   return (
     <header 
-      className={`sticky top-0 z-50 w-full border-b backdrop-blur-xl safe-area-top transition-all duration-300 ${
+      className={`sticky top-0 z-50 w-full border-b backdrop-blur-xl safe-area-top transition-all duration-200 ${
         isScrolled 
-          ? "bg-background/95 border-border shadow-md" 
+          ? "bg-background/95 border-border shadow-sm" 
           : "bg-background/80 border-transparent"
       }`}
     >
-      <div className="container flex h-14 md:h-16 items-center justify-between px-3 md:px-6">
-        <Link to="/" className="flex items-center gap-1.5 md:gap-2">
-          <div className="flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-lg gradient-primary">
-            <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary-foreground" />
+      <div className="container flex h-14 items-center justify-between px-4">
+        {/* Logo */}
+        <Link to={user ? "/feed" : "/"} className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+            <GraduationCap className="h-4 w-4 text-primary-foreground" />
           </div>
-          <span className="text-base md:text-xl font-bold">
-            <span className="hidden xs:inline">Researcher</span>
-            <span className="xs:hidden">R</span>
-            <span className="text-primary">Collab</span>
+          <span className="text-lg font-bold">
+            R<span className="text-primary">Collab</span>
           </span>
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Navigation - Clean, minimal */}
         <nav className="hidden lg:flex items-center gap-1">
           {navItems.map((item) => (
             <Link
@@ -165,36 +145,31 @@ export function Navbar() {
           <MessagesNavItem />
         </nav>
 
-        <div className="hidden md:flex items-center gap-2 lg:gap-3">
+        {/* Desktop Actions - Simplified */}
+        <div className="hidden lg:flex items-center gap-2">
           <NotificationBell />
-          <Link to="/subscriptions">
-            <Button variant="ghost" size="sm">
-              My Tools
-            </Button>
-          </Link>
-          <Link to="/wallet">
-            <Button variant="ghost" size="sm">
-              Wallet
-            </Button>
-          </Link>
           {user ? (
             <>
+              <Link to="/progress">
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <TrendingUp className="h-4 w-4" />
+                  Progress
+                </Button>
+              </Link>
               <Link to="/profile">
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <User className="h-4 w-4" />
                   Profile
                 </Button>
               </Link>
-              <Button variant="ghost" size="sm" onClick={handleSignOut}>
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
+              <Button variant="ghost" size="sm" onClick={handleSignOut} className="gap-2">
+                <LogOut className="h-4 w-4" />
               </Button>
             </>
           ) : (
             <>
               <Link to="/auth">
-                <Button variant="ghost" size="sm">
-                  Sign In
-                </Button>
+                <Button variant="ghost" size="sm">Sign In</Button>
               </Link>
               <Link to="/auth?tab=signup">
                 <Button size="sm">Get Started</Button>
@@ -207,64 +182,58 @@ export function Navbar() {
         <div className="flex lg:hidden items-center gap-1">
           <NotificationBell />
           <button
-            className="p-2 rounded-lg hover:bg-muted active:bg-muted/80 touch-manipulation"
+            className="p-2 rounded-lg hover:bg-muted touch-manipulation"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Nav */}
+      {/* Mobile Navigation - Streamlined */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t bg-background overflow-y-auto max-h-[calc(100vh-3.5rem)]"
+            className="lg:hidden border-t bg-background overflow-y-auto max-h-[70vh]"
           >
-            <div className="container py-3 px-3 space-y-1">
-              {/* Quick Actions */}
-              <div className="grid grid-cols-2 gap-2 pb-3 border-b">
-                <Link to="/wallet" onClick={() => setIsOpen(false)}>
-                  <Button variant="outline" size="sm" className="w-full text-xs">
-                    💰 Wallet
-                  </Button>
-                </Link>
-                <Link to="/subscriptions" onClick={() => setIsOpen(false)}>
-                  <Button variant="outline" size="sm" className="w-full text-xs">
-                    🛠️ My Tools
-                  </Button>
-                </Link>
-              </div>
-              
+            <div className="container py-3 px-4 space-y-1">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors active:scale-[0.98] touch-manipulation ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors touch-manipulation ${
                     location.pathname === item.href
                       ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted active:bg-muted"
+                      : "text-muted-foreground hover:bg-muted"
                   }`}
                 >
-                  <item.icon className="h-5 w-5 shrink-0" />
+                  <item.icon className="h-5 w-5" />
                   {item.label}
                 </Link>
               ))}
               <MobileMessagesNavItem onClick={() => setIsOpen(false)} />
               
-              <div className="pt-3 border-t flex flex-col gap-2">
+              <div className="pt-3 border-t space-y-2">
                 {user ? (
                   <>
+                    <Link to="/progress" onClick={() => setIsOpen(false)}>
+                      <Button variant="outline" className="w-full justify-start gap-2 h-11">
+                        <TrendingUp className="h-4 w-4" />
+                        Career Progress
+                      </Button>
+                    </Link>
                     <Link to="/profile" onClick={() => setIsOpen(false)}>
-                      <Button variant="outline" className="w-full h-11 touch-manipulation">
+                      <Button variant="outline" className="w-full justify-start gap-2 h-11">
+                        <User className="h-4 w-4" />
                         Profile
                       </Button>
                     </Link>
-                    <Button className="w-full h-11 touch-manipulation" onClick={handleSignOut}>
+                    <Button className="w-full h-11" onClick={handleSignOut}>
                       <LogOut className="h-4 w-4 mr-2" />
                       Sign Out
                     </Button>
@@ -272,12 +241,10 @@ export function Navbar() {
                 ) : (
                   <>
                     <Link to="/auth" onClick={() => setIsOpen(false)}>
-                      <Button variant="outline" className="w-full h-11 touch-manipulation">
-                        Sign In
-                      </Button>
+                      <Button variant="outline" className="w-full h-11">Sign In</Button>
                     </Link>
                     <Link to="/auth?tab=signup" onClick={() => setIsOpen(false)}>
-                      <Button className="w-full h-11 touch-manipulation">Get Started</Button>
+                      <Button className="w-full h-11">Get Started</Button>
                     </Link>
                   </>
                 )}

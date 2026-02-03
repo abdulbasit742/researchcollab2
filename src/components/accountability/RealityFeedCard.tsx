@@ -113,11 +113,9 @@ export function RealityFeedCard({ event }: RealityFeedCardProps) {
               <div className="flex flex-col items-end gap-1 flex-shrink-0">
                 {/* Amount */}
                 {event.amount_involved && event.amount_involved > 0 && (
-                  <div className="flex items-center gap-1 text-sm font-semibold">
-                    <DollarSign className="h-4 w-4 text-emerald-600" />
-                    <span className="text-emerald-600">
-                      {event.amount_involved.toLocaleString()}
-                    </span>
+                  <div className="flex items-center gap-1 text-sm font-semibold text-primary">
+                    <DollarSign className="h-4 w-4" />
+                    <span>{event.amount_involved.toLocaleString()}</span>
                   </div>
                 )}
 
@@ -179,13 +177,15 @@ export function EmptyRealityFeed() {
   return (
     <Card className="border-dashed">
       <CardContent className="py-12 text-center">
-        <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
-          <Briefcase className="h-8 w-8 text-muted-foreground" />
+        <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+          <Briefcase className="h-7 w-7 text-muted-foreground" />
         </div>
-        <h3 className="font-semibold mb-2">No Reality Events Yet</h3>
-        <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+        <h3 className="font-semibold mb-2">No activity recorded</h3>
+        <p className="text-sm text-muted-foreground max-w-sm mx-auto mb-2">
           This feed shows real outcomes: projects completed, money moved, trust earned.
-          No opinions. No noise. Just consequences.
+        </p>
+        <p className="text-xs text-muted-foreground/70 italic">
+          Complete your first project to start building your record.
         </p>
       </CardContent>
     </Card>

@@ -4,17 +4,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
-  DollarSign,
   Clock,
-  MapPin,
   Briefcase,
   Award,
   Users,
   Building2,
   Sparkles,
   ArrowRight,
+  Shield,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { formatPKR } from "@/lib/currency";
 import type { Opportunity } from "@/hooks/useOpportunityEngine";
 
 interface OpportunityCardProps {
@@ -41,13 +41,13 @@ export function OpportunityCard({ opportunity, showMatchReason = true }: Opportu
   const getTypeLabel = () => {
     switch (opportunity.type) {
       case "project":
-        return "Paid Project";
+        return "Project";
       case "grant":
         return "Grant";
       case "collaboration":
         return "Collaboration";
       case "institutional":
-        return "Institution Request";
+        return "Institutional";
       default:
         return "Opportunity";
     }
@@ -56,21 +56,19 @@ export function OpportunityCard({ opportunity, showMatchReason = true }: Opportu
   const formatBudget = () => {
     if (!opportunity.budget_min && !opportunity.budget_max) return null;
     if (opportunity.budget_min === opportunity.budget_max) {
-      return `PKR ${opportunity.budget_min?.toLocaleString()}`;
+      return formatPKR(opportunity.budget_min || 0);
     }
     if (opportunity.budget_min && opportunity.budget_max) {
-      return `PKR ${opportunity.budget_min?.toLocaleString()} - ${opportunity.budget_max?.toLocaleString()}`;
+      return `${formatPKR(opportunity.budget_min)} - ${formatPKR(opportunity.budget_max)}`;
     }
     if (opportunity.budget_max) {
-      return `Up to PKR ${opportunity.budget_max?.toLocaleString()}`;
+      return `Up to ${formatPKR(opportunity.budget_max)}`;
     }
-    return `From PKR ${opportunity.budget_min?.toLocaleString()}`;
+    return `From ${formatPKR(opportunity.budget_min || 0)}`;
   };
 
-  const hasMatchReason = showMatchReason && opportunity.match_reason;
-
   return (
-    <Card className="group hover:border-primary/50 transition-colors">
+    <Card className="hover:border-primary/30 transition-colors">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-3">
@@ -90,74 +88,72 @@ export function OpportunityCard({ opportunity, showMatchReason = true }: Opportu
                 <span>{opportunity.owner_name || "Unknown"}</span>
                 {opportunity.owner_university && (
                   <>
-                    <span>•</span>
+                    <span>·</span>
                     <span className="truncate">{opportunity.owner_university}</span>
                   </>
                 )}
               </div>
             </div>
           </div>
-          <Badge variant="outline" className="shrink-0 gap-1">
+          <Badge variant="secondary" className="shrink-0 gap-1 text-xs">
             {getTypeIcon()}
             {getTypeLabel()}
           </Badge>
         </div>
       </CardHeader>
 
-      <CardContent className="py-0">
+      <CardContent className="py-0 space-y-3">
         {opportunity.description && (
-          <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+          <p className="text-sm text-muted-foreground line-clamp-2">
             {opportunity.description}
           </p>
         )}
 
-        {/* Match Reason */}
-        {hasMatchReason && (
-          <div className="flex items-center gap-1.5 text-xs text-primary bg-primary/5 rounded-md px-2 py-1.5 mb-3">
-            <Sparkles className="h-3 w-3" />
-            <span className="font-medium">Why you're seeing this:</span>
-            <span>{opportunity.match_reason}</span>
+        {/* Match Reason - Clear explanation */}
+        {showMatchReason && opportunity.match_reason && (
+          <div className="flex items-start gap-2 text-xs bg-primary/5 rounded-md px-2.5 py-2">
+            <Sparkles className="h-3 w-3 text-primary mt-0.5 shrink-0" />
+            <span className="text-muted-foreground">
+              <span className="font-medium text-foreground">Match:</span> {opportunity.match_reason}
+            </span>
           </div>
         )}
 
         {/* Tags */}
         {opportunity.tags && opportunity.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {opportunity.tags.slice(0, 4).map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-xs">
+          <div className="flex flex-wrap gap-1.5">
+            {opportunity.tags.slice(0, 3).map((tag) => (
+              <Badge key={tag} variant="outline" className="text-xs font-normal">
                 {tag}
               </Badge>
             ))}
-            {opportunity.tags.length > 4 && (
-              <Badge variant="secondary" className="text-xs">
-                +{opportunity.tags.length - 4}
+            {opportunity.tags.length > 3 && (
+              <Badge variant="outline" className="text-xs font-normal">
+                +{opportunity.tags.length - 3}
               </Badge>
             )}
           </div>
         )}
 
-        {/* Metadata */}
-        <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+        {/* Metadata - Clean layout */}
+        <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
           {formatBudget() && (
-            <div className="flex items-center gap-1">
-              <DollarSign className="h-3.5 w-3.5 text-emerald-500" />
-              <span className="font-medium text-foreground">{formatBudget()}</span>
-            </div>
+            <span className="font-medium text-foreground">{formatBudget()}</span>
           )}
           {opportunity.deadline_days && (
-            <div className="flex items-center gap-1">
-              <Clock className="h-3.5 w-3.5" />
-              <span>{opportunity.deadline_days} days</span>
-            </div>
+            <span className="flex items-center gap-1">
+              <Clock className="h-3 w-3" />
+              {opportunity.deadline_days}d
+            </span>
           )}
-          <div className="flex items-center gap-1">
-            <span>Posted {formatDistanceToNow(new Date(opportunity.created_at), { addSuffix: true })}</span>
-          </div>
+          <span>
+            {formatDistanceToNow(new Date(opportunity.created_at), { addSuffix: true })}
+          </span>
         </div>
       </CardContent>
 
       <CardFooter className="pt-4">
-        <Button asChild size="sm" className="w-full group-hover:bg-primary group-hover:text-primary-foreground">
+        <Button asChild size="sm" variant="outline" className="w-full">
           <Link to={`/earn/projects/${opportunity.id}`}>
             View Details
             <ArrowRight className="h-4 w-4 ml-1" />
@@ -167,3 +163,4 @@ export function OpportunityCard({ opportunity, showMatchReason = true }: Opportu
     </Card>
   );
 }
+
