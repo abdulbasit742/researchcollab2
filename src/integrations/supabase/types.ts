@@ -3636,6 +3636,71 @@ export type Database = {
         }
         Relationships: []
       }
+      data_residency_proofs: {
+        Row: {
+          created_at: string | null
+          data_location_verified: string
+          deployment_instance_id: string
+          evidence_metadata: Json | null
+          evidence_urls: string[] | null
+          id: string
+          is_current: boolean | null
+          proof_certificate_chain: string | null
+          proof_hash: string
+          proof_signature: string | null
+          proof_timestamp: string
+          proof_type: string
+          valid_from: string
+          valid_until: string | null
+          verification_method: string
+          verifier_entity: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          data_location_verified: string
+          deployment_instance_id: string
+          evidence_metadata?: Json | null
+          evidence_urls?: string[] | null
+          id?: string
+          is_current?: boolean | null
+          proof_certificate_chain?: string | null
+          proof_hash: string
+          proof_signature?: string | null
+          proof_timestamp?: string
+          proof_type: string
+          valid_from?: string
+          valid_until?: string | null
+          verification_method: string
+          verifier_entity?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          data_location_verified?: string
+          deployment_instance_id?: string
+          evidence_metadata?: Json | null
+          evidence_urls?: string[] | null
+          id?: string
+          is_current?: boolean | null
+          proof_certificate_chain?: string | null
+          proof_hash?: string
+          proof_signature?: string | null
+          proof_timestamp?: string
+          proof_type?: string
+          valid_from?: string
+          valid_until?: string | null
+          verification_method?: string
+          verifier_entity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_residency_proofs_deployment_instance_id_fkey"
+            columns: ["deployment_instance_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dataset_access_requests: {
         Row: {
           access_expires_at: string | null
@@ -3801,6 +3866,467 @@ export type Database = {
             columns: ["dataset_id"]
             isOneToOne: false
             referencedRelation: "research_datasets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deployment_admins: {
+        Row: {
+          admin_role: string
+          can_access_data: boolean | null
+          can_approve_updates: boolean | null
+          can_manage_admins: boolean | null
+          can_modify_config: boolean | null
+          deployment_instance_id: string
+          expires_at: string | null
+          granted_at: string | null
+          granted_by: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          admin_role?: string
+          can_access_data?: boolean | null
+          can_approve_updates?: boolean | null
+          can_manage_admins?: boolean | null
+          can_modify_config?: boolean | null
+          deployment_instance_id: string
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          admin_role?: string
+          can_access_data?: boolean | null
+          can_approve_updates?: boolean | null
+          can_manage_admins?: boolean | null
+          can_modify_config?: boolean | null
+          deployment_instance_id?: string
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deployment_admins_deployment_instance_id_fkey"
+            columns: ["deployment_instance_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deployment_admins_granted_by_fkey"
+            columns: ["granted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deployment_admins_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deployment_compliance_status: {
+        Row: {
+          certificate_expires_at: string | null
+          certificate_url: string | null
+          certifying_authority: string | null
+          compliance_framework: string
+          created_at: string | null
+          critical_findings: number | null
+          deployment_instance_id: string
+          finding_count: number | null
+          id: string
+          is_certified: boolean | null
+          last_assessment_at: string | null
+          next_assessment_due: string | null
+          remediation_plan_url: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          certificate_expires_at?: string | null
+          certificate_url?: string | null
+          certifying_authority?: string | null
+          compliance_framework: string
+          created_at?: string | null
+          critical_findings?: number | null
+          deployment_instance_id: string
+          finding_count?: number | null
+          id?: string
+          is_certified?: boolean | null
+          last_assessment_at?: string | null
+          next_assessment_due?: string | null
+          remediation_plan_url?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          certificate_expires_at?: string | null
+          certificate_url?: string | null
+          certifying_authority?: string | null
+          compliance_framework?: string
+          created_at?: string | null
+          critical_findings?: number | null
+          deployment_instance_id?: string
+          finding_count?: number | null
+          id?: string
+          is_certified?: boolean | null
+          last_assessment_at?: string | null
+          next_assessment_due?: string | null
+          remediation_plan_url?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deployment_compliance_status_deployment_instance_id_fkey"
+            columns: ["deployment_instance_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deployment_configurations: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          config_key: string
+          config_type: string
+          config_value: Json
+          created_at: string | null
+          default_value: Json | null
+          deployment_instance_id: string
+          id: string
+          overrides_default: boolean | null
+          requires_approval: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          config_key: string
+          config_type: string
+          config_value: Json
+          created_at?: string | null
+          default_value?: Json | null
+          deployment_instance_id: string
+          id?: string
+          overrides_default?: boolean | null
+          requires_approval?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          config_key?: string
+          config_type?: string
+          config_value?: Json
+          created_at?: string | null
+          default_value?: Json | null
+          deployment_instance_id?: string
+          id?: string
+          overrides_default?: boolean | null
+          requires_approval?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deployment_configurations_deployment_instance_id_fkey"
+            columns: ["deployment_instance_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deployment_instances: {
+        Row: {
+          allowed_outbound_domains: string[] | null
+          auth_tenant_id: string | null
+          created_at: string | null
+          created_by: string | null
+          data_residency_certificate_url: string | null
+          data_residency_certified: boolean | null
+          data_residency_country: string | null
+          database_cluster_id: string | null
+          governance_authority_contact: string | null
+          governance_authority_name: string | null
+          governance_mode: Database["public"]["Enums"]["governance_mode"]
+          health_status: string | null
+          id: string
+          instance_code: string
+          instance_name: string
+          instance_type: Database["public"]["Enums"]["deployment_type"]
+          isolation_level: Database["public"]["Enums"]["isolation_level"]
+          last_health_check: string | null
+          local_payment_config: Json | null
+          local_services_config: Json | null
+          network_mode: string | null
+          owner_contact_email: string | null
+          owner_entity_id: string | null
+          owner_entity_type: string
+          payment_provider: string | null
+          provisioned_at: string | null
+          region: string
+          status: string | null
+          storage_bucket_prefix: string | null
+          stripe_account_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          allowed_outbound_domains?: string[] | null
+          auth_tenant_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          data_residency_certificate_url?: string | null
+          data_residency_certified?: boolean | null
+          data_residency_country?: string | null
+          database_cluster_id?: string | null
+          governance_authority_contact?: string | null
+          governance_authority_name?: string | null
+          governance_mode?: Database["public"]["Enums"]["governance_mode"]
+          health_status?: string | null
+          id?: string
+          instance_code: string
+          instance_name: string
+          instance_type?: Database["public"]["Enums"]["deployment_type"]
+          isolation_level?: Database["public"]["Enums"]["isolation_level"]
+          last_health_check?: string | null
+          local_payment_config?: Json | null
+          local_services_config?: Json | null
+          network_mode?: string | null
+          owner_contact_email?: string | null
+          owner_entity_id?: string | null
+          owner_entity_type?: string
+          payment_provider?: string | null
+          provisioned_at?: string | null
+          region?: string
+          status?: string | null
+          storage_bucket_prefix?: string | null
+          stripe_account_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          allowed_outbound_domains?: string[] | null
+          auth_tenant_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          data_residency_certificate_url?: string | null
+          data_residency_certified?: boolean | null
+          data_residency_country?: string | null
+          database_cluster_id?: string | null
+          governance_authority_contact?: string | null
+          governance_authority_name?: string | null
+          governance_mode?: Database["public"]["Enums"]["governance_mode"]
+          health_status?: string | null
+          id?: string
+          instance_code?: string
+          instance_name?: string
+          instance_type?: Database["public"]["Enums"]["deployment_type"]
+          isolation_level?: Database["public"]["Enums"]["isolation_level"]
+          last_health_check?: string | null
+          local_payment_config?: Json | null
+          local_services_config?: Json | null
+          network_mode?: string | null
+          owner_contact_email?: string | null
+          owner_entity_id?: string | null
+          owner_entity_type?: string
+          payment_provider?: string | null
+          provisioned_at?: string | null
+          region?: string
+          status?: string | null
+          storage_bucket_prefix?: string | null
+          stripe_account_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deployment_instances_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deployment_isolation_audit: {
+        Row: {
+          access_path: string | null
+          access_type: string
+          accessor_user_id: string | null
+          block_reason: string | null
+          created_at: string | null
+          id: string
+          ip_address: unknown
+          source_instance_id: string | null
+          target_instance_id: string | null
+          user_agent: string | null
+          was_blocked: boolean
+        }
+        Insert: {
+          access_path?: string | null
+          access_type: string
+          accessor_user_id?: string | null
+          block_reason?: string | null
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          source_instance_id?: string | null
+          target_instance_id?: string | null
+          user_agent?: string | null
+          was_blocked?: boolean
+        }
+        Update: {
+          access_path?: string | null
+          access_type?: string
+          accessor_user_id?: string | null
+          block_reason?: string | null
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          source_instance_id?: string | null
+          target_instance_id?: string | null
+          user_agent?: string | null
+          was_blocked?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deployment_isolation_audit_source_instance_id_fkey"
+            columns: ["source_instance_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deployment_isolation_audit_target_instance_id_fkey"
+            columns: ["target_instance_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deployment_schema_versions: {
+        Row: {
+          applied_at: string | null
+          applied_by: string | null
+          compatibility_notes: string | null
+          deployment_instance_id: string
+          id: string
+          is_compatible_with_platform: boolean | null
+          migration_hash: string
+          rollback_available: boolean | null
+          rollback_script_url: string | null
+          schema_version: string
+        }
+        Insert: {
+          applied_at?: string | null
+          applied_by?: string | null
+          compatibility_notes?: string | null
+          deployment_instance_id: string
+          id?: string
+          is_compatible_with_platform?: boolean | null
+          migration_hash: string
+          rollback_available?: boolean | null
+          rollback_script_url?: string | null
+          schema_version: string
+        }
+        Update: {
+          applied_at?: string | null
+          applied_by?: string | null
+          compatibility_notes?: string | null
+          deployment_instance_id?: string
+          id?: string
+          is_compatible_with_platform?: boolean | null
+          migration_hash?: string
+          rollback_available?: boolean | null
+          rollback_script_url?: string | null
+          schema_version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deployment_schema_versions_deployment_instance_id_fkey"
+            columns: ["deployment_instance_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deployment_update_schedule: {
+        Row: {
+          approval_authority_user_id: string | null
+          auto_update_enabled: boolean | null
+          created_at: string | null
+          deployment_instance_id: string
+          id: string
+          last_update_at: string | null
+          last_update_status: string | null
+          last_update_version: string | null
+          pending_update_notes: string | null
+          pending_update_schema_changes: Json | null
+          pending_update_version: string | null
+          requires_manual_approval: boolean | null
+          update_window_day: string | null
+          update_window_end_hour: number | null
+          update_window_start_hour: number | null
+          update_window_timezone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          approval_authority_user_id?: string | null
+          auto_update_enabled?: boolean | null
+          created_at?: string | null
+          deployment_instance_id: string
+          id?: string
+          last_update_at?: string | null
+          last_update_status?: string | null
+          last_update_version?: string | null
+          pending_update_notes?: string | null
+          pending_update_schema_changes?: Json | null
+          pending_update_version?: string | null
+          requires_manual_approval?: boolean | null
+          update_window_day?: string | null
+          update_window_end_hour?: number | null
+          update_window_start_hour?: number | null
+          update_window_timezone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          approval_authority_user_id?: string | null
+          auto_update_enabled?: boolean | null
+          created_at?: string | null
+          deployment_instance_id?: string
+          id?: string
+          last_update_at?: string | null
+          last_update_status?: string | null
+          last_update_version?: string | null
+          pending_update_notes?: string | null
+          pending_update_schema_changes?: Json | null
+          pending_update_version?: string | null
+          requires_manual_approval?: boolean | null
+          update_window_day?: string | null
+          update_window_end_hour?: number | null
+          update_window_start_hour?: number | null
+          update_window_timezone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deployment_update_schedule_deployment_instance_id_fkey"
+            columns: ["deployment_instance_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_instances"
             referencedColumns: ["id"]
           },
         ]
@@ -16323,11 +16849,21 @@ export type Database = {
         Returns: string
       }
       generate_credential_verification_code: { Args: never; Returns: string }
+      generate_residency_proof: {
+        Args: {
+          p_data_location: string
+          p_deployment_id: string
+          p_proof_type: string
+          p_verification_method: string
+        }
+        Returns: string
+      }
       generate_scholar_id: { Args: never; Returns: string }
       get_connection_degree: {
         Args: { source_user: string; target_user: string }
         Returns: number
       }
+      get_current_deployment_instance: { Args: never; Returns: string }
       get_mutual_connections_count: {
         Args: { user_a: string; user_b: string }
         Returns: number
@@ -16363,6 +16899,10 @@ export type Database = {
       }
       is_admin: { Args: { check_user_id: string }; Returns: boolean }
       is_blocked: { Args: { user_a: string; user_b: string }; Returns: boolean }
+      is_deployment_admin: {
+        Args: { p_deployment_id: string; p_user_id: string }
+        Returns: boolean
+      }
       is_feature_enabled: {
         Args: { p_feature_key: string; p_user_id?: string }
         Returns: boolean
@@ -16426,9 +16966,19 @@ export type Database = {
         Args: { p_feature: string; p_user_id: string }
         Returns: boolean
       }
+      verify_deployment_isolation: {
+        Args: {
+          p_access_type: string
+          p_accessor_user_id?: string
+          p_source_deployment_id: string
+          p_target_deployment_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "student" | "researcher" | "admin"
+      deployment_type: "saas" | "dedicated" | "sovereign"
       feed_event_type:
         | "new_connection"
         | "new_publication"
@@ -16441,6 +16991,8 @@ export type Database = {
         | "tool_purchased"
         | "review_received"
         | "profile_updated"
+      governance_mode: "platform" | "delegated" | "autonomous"
+      isolation_level: "shared" | "logical" | "physical"
       post_type:
         | "text"
         | "research_update"
@@ -16592,6 +17144,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["student", "researcher", "admin"],
+      deployment_type: ["saas", "dedicated", "sovereign"],
       feed_event_type: [
         "new_connection",
         "new_publication",
@@ -16605,6 +17158,8 @@ export const Constants = {
         "review_received",
         "profile_updated",
       ],
+      governance_mode: ["platform", "delegated", "autonomous"],
+      isolation_level: ["shared", "logical", "physical"],
       post_type: [
         "text",
         "research_update",
