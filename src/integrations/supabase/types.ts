@@ -573,6 +573,119 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliate_applications: {
+        Row: {
+          account_age_days: number
+          acknowledged_rules: boolean
+          affiliate_type: Database["public"]["Enums"]["affiliate_type"]
+          created_at: string
+          has_completed_outcomes: boolean
+          has_spam_flags: boolean
+          has_unresolved_disputes: boolean
+          id: string
+          institution_id: string | null
+          motivation: string
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          target_audience: string
+          trust_score_at_application: number
+          trust_tier_at_application: string
+          updated_at: string
+          user_id: string
+          value_proposition: string
+        }
+        Insert: {
+          account_age_days: number
+          acknowledged_rules?: boolean
+          affiliate_type?: Database["public"]["Enums"]["affiliate_type"]
+          created_at?: string
+          has_completed_outcomes?: boolean
+          has_spam_flags?: boolean
+          has_unresolved_disputes?: boolean
+          id?: string
+          institution_id?: string | null
+          motivation: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          target_audience: string
+          trust_score_at_application: number
+          trust_tier_at_application: string
+          updated_at?: string
+          user_id: string
+          value_proposition: string
+        }
+        Update: {
+          account_age_days?: number
+          acknowledged_rules?: boolean
+          affiliate_type?: Database["public"]["Enums"]["affiliate_type"]
+          created_at?: string
+          has_completed_outcomes?: boolean
+          has_spam_flags?: boolean
+          has_unresolved_disputes?: boolean
+          id?: string
+          institution_id?: string | null
+          motivation?: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          target_audience?: string
+          trust_score_at_application?: number
+          trust_tier_at_application?: string
+          updated_at?: string
+          user_id?: string
+          value_proposition?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_applications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliate_commission_tiers: {
+        Row: {
+          base_commission_rate: number
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          max_trust_score: number | null
+          min_trust_score: number
+          tier_name: string
+          trust_weight: number
+        }
+        Insert: {
+          base_commission_rate: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_trust_score?: number | null
+          min_trust_score: number
+          tier_name: string
+          trust_weight?: number
+        }
+        Update: {
+          base_commission_rate?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_trust_score?: number | null
+          min_trust_score?: number
+          tier_name?: string
+          trust_weight?: number
+        }
+        Relationships: []
+      }
       affiliate_conversions: {
         Row: {
           affiliate_id: string | null
@@ -614,57 +727,293 @@ export type Database = {
           },
         ]
       }
+      affiliate_eligibility_rules: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          rule_key: string
+          rule_name: string
+          rule_value: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          rule_key: string
+          rule_name: string
+          rule_value: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          rule_key?: string
+          rule_name?: string
+          rule_value?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      affiliate_referral_outcomes: {
+        Row: {
+          affiliate_id: string
+          approved_at: string | null
+          commission_earned: number | null
+          commission_status: string
+          created_at: string
+          id: string
+          outcome_type: Database["public"]["Enums"]["referral_outcome_type"]
+          outcome_value: number | null
+          referred_user_id: string | null
+          referred_user_retained: boolean | null
+          referred_user_trust_score: number | null
+          related_entity_id: string | null
+          related_entity_type: string | null
+          released_at: string | null
+          retention_days: number | null
+          reversal_reason: string | null
+          reversed_at: string | null
+        }
+        Insert: {
+          affiliate_id: string
+          approved_at?: string | null
+          commission_earned?: number | null
+          commission_status?: string
+          created_at?: string
+          id?: string
+          outcome_type: Database["public"]["Enums"]["referral_outcome_type"]
+          outcome_value?: number | null
+          referred_user_id?: string | null
+          referred_user_retained?: boolean | null
+          referred_user_trust_score?: number | null
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          released_at?: string | null
+          retention_days?: number | null
+          reversal_reason?: string | null
+          reversed_at?: string | null
+        }
+        Update: {
+          affiliate_id?: string
+          approved_at?: string | null
+          commission_earned?: number | null
+          commission_status?: string
+          created_at?: string
+          id?: string
+          outcome_type?: Database["public"]["Enums"]["referral_outcome_type"]
+          outcome_value?: number | null
+          referred_user_id?: string | null
+          referred_user_retained?: boolean | null
+          referred_user_trust_score?: number | null
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          released_at?: string | null
+          retention_days?: number | null
+          reversal_reason?: string | null
+          reversed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_referral_outcomes_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_referral_outcomes_referred_user_id_fkey"
+            columns: ["referred_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliate_violations: {
+        Row: {
+          affiliate_id: string
+          appeal_text: string | null
+          auto_detected: boolean | null
+          commission_penalty_percent: number | null
+          created_at: string
+          description: string
+          evidence: Json | null
+          id: string
+          reported_by: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          resulted_in_pause: boolean | null
+          resulted_in_revocation: boolean | null
+          severity: Database["public"]["Enums"]["violation_severity"]
+          status: string
+          trust_penalty: number | null
+          violation_type: string
+        }
+        Insert: {
+          affiliate_id: string
+          appeal_text?: string | null
+          auto_detected?: boolean | null
+          commission_penalty_percent?: number | null
+          created_at?: string
+          description: string
+          evidence?: Json | null
+          id?: string
+          reported_by?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          resulted_in_pause?: boolean | null
+          resulted_in_revocation?: boolean | null
+          severity?: Database["public"]["Enums"]["violation_severity"]
+          status?: string
+          trust_penalty?: number | null
+          violation_type: string
+        }
+        Update: {
+          affiliate_id?: string
+          appeal_text?: string | null
+          auto_detected?: boolean | null
+          commission_penalty_percent?: number | null
+          created_at?: string
+          description?: string
+          evidence?: Json | null
+          id?: string
+          reported_by?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          resulted_in_pause?: boolean | null
+          resulted_in_revocation?: boolean | null
+          severity?: Database["public"]["Enums"]["violation_severity"]
+          status?: string
+          trust_penalty?: number | null
+          violation_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_violations_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       affiliates: {
         Row: {
+          affiliate_type: Database["public"]["Enums"]["affiliate_type"] | null
+          application_id: string | null
           available_earnings: number | null
+          base_commission_rate: number | null
           commission_rate: number | null
           created_at: string | null
+          current_trust_weight: number | null
           custom_commission_rate: number | null
+          effective_commission_rate: number | null
           id: string
+          institution_id: string | null
+          last_violation_at: string | null
+          lifecycle_status:
+            | Database["public"]["Enums"]["affiliate_lifecycle_status"]
+            | null
           lifetime_earnings: number | null
           notes: string | null
+          outcome_conversion_rate: number | null
+          paused_at: string | null
+          paused_reason: string | null
           pending_earnings: number | null
           referral_code: string
+          referral_quality_score: number | null
+          revoked_at: string | null
+          revoked_reason: string | null
           status: string | null
           total_clicks: number | null
           total_conversions: number | null
+          total_outcomes: number | null
           total_signups: number | null
+          trust_score_at_activation: number | null
           updated_at: string | null
           user_id: string
+          violation_count: number | null
         }
         Insert: {
+          affiliate_type?: Database["public"]["Enums"]["affiliate_type"] | null
+          application_id?: string | null
           available_earnings?: number | null
+          base_commission_rate?: number | null
           commission_rate?: number | null
           created_at?: string | null
+          current_trust_weight?: number | null
           custom_commission_rate?: number | null
+          effective_commission_rate?: number | null
           id?: string
+          institution_id?: string | null
+          last_violation_at?: string | null
+          lifecycle_status?:
+            | Database["public"]["Enums"]["affiliate_lifecycle_status"]
+            | null
           lifetime_earnings?: number | null
           notes?: string | null
+          outcome_conversion_rate?: number | null
+          paused_at?: string | null
+          paused_reason?: string | null
           pending_earnings?: number | null
           referral_code: string
+          referral_quality_score?: number | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
           status?: string | null
           total_clicks?: number | null
           total_conversions?: number | null
+          total_outcomes?: number | null
           total_signups?: number | null
+          trust_score_at_activation?: number | null
           updated_at?: string | null
           user_id: string
+          violation_count?: number | null
         }
         Update: {
+          affiliate_type?: Database["public"]["Enums"]["affiliate_type"] | null
+          application_id?: string | null
           available_earnings?: number | null
+          base_commission_rate?: number | null
           commission_rate?: number | null
           created_at?: string | null
+          current_trust_weight?: number | null
           custom_commission_rate?: number | null
+          effective_commission_rate?: number | null
           id?: string
+          institution_id?: string | null
+          last_violation_at?: string | null
+          lifecycle_status?:
+            | Database["public"]["Enums"]["affiliate_lifecycle_status"]
+            | null
           lifetime_earnings?: number | null
           notes?: string | null
+          outcome_conversion_rate?: number | null
+          paused_at?: string | null
+          paused_reason?: string | null
           pending_earnings?: number | null
           referral_code?: string
+          referral_quality_score?: number | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
           status?: string | null
           total_clicks?: number | null
           total_conversions?: number | null
+          total_outcomes?: number | null
           total_signups?: number | null
+          trust_score_at_activation?: number | null
           updated_at?: string | null
           user_id?: string
+          violation_count?: number | null
         }
         Relationships: []
       }
@@ -19498,6 +19847,10 @@ export type Database = {
         Args: { user_a: string; user_b: string }
         Returns: boolean
       }
+      calculate_affiliate_commission_rate: {
+        Args: { p_affiliate_id: string }
+        Returns: number
+      }
       calculate_dynamic_trust_score: {
         Args: { p_user_id: string }
         Returns: {
@@ -19516,6 +19869,10 @@ export type Database = {
           viewer_id: string
         }
         Returns: boolean
+      }
+      check_affiliate_eligibility: {
+        Args: { p_user_id: string }
+        Returns: Json
       }
       check_and_unlock_reviews: {
         Args: { p_offer_id: string }
@@ -19692,6 +20049,16 @@ export type Database = {
       }
     }
     Enums: {
+      affiliate_lifecycle_status:
+        | "not_applied"
+        | "applied"
+        | "under_review"
+        | "approved"
+        | "active"
+        | "paused"
+        | "suspended"
+        | "revoked"
+      affiliate_type: "standard" | "institutional" | "ambassador"
       app_role: "student" | "researcher" | "admin"
       deployment_type: "saas" | "dedicated" | "sovereign"
       feed_event_type:
@@ -19722,6 +20089,15 @@ export type Database = {
         | "followers"
         | "organization"
         | "private"
+      referral_outcome_type:
+        | "signup"
+        | "onboarding_complete"
+        | "first_project_completed"
+        | "first_subscription"
+        | "first_earning"
+        | "milestone_delivered"
+        | "tool_purchase"
+        | "bundle_purchase"
       report_reason:
         | "spam"
         | "harassment"
@@ -19731,6 +20107,7 @@ export type Database = {
         | "off_topic"
         | "other"
       trust_tier: "bronze" | "silver" | "gold" | "platinum"
+      violation_severity: "warning" | "minor" | "major" | "critical"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -19858,6 +20235,17 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      affiliate_lifecycle_status: [
+        "not_applied",
+        "applied",
+        "under_review",
+        "approved",
+        "active",
+        "paused",
+        "suspended",
+        "revoked",
+      ],
+      affiliate_type: ["standard", "institutional", "ambassador"],
       app_role: ["student", "researcher", "admin"],
       deployment_type: ["saas", "dedicated", "sovereign"],
       feed_event_type: [
@@ -19891,6 +20279,16 @@ export const Constants = {
         "organization",
         "private",
       ],
+      referral_outcome_type: [
+        "signup",
+        "onboarding_complete",
+        "first_project_completed",
+        "first_subscription",
+        "first_earning",
+        "milestone_delivered",
+        "tool_purchase",
+        "bundle_purchase",
+      ],
       report_reason: [
         "spam",
         "harassment",
@@ -19901,6 +20299,7 @@ export const Constants = {
         "other",
       ],
       trust_tier: ["bronze", "silver", "gold", "platinum"],
+      violation_severity: ["warning", "minor", "major", "critical"],
     },
   },
 } as const
