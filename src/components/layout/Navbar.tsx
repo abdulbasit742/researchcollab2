@@ -26,8 +26,13 @@ import {
 const navItems = [
   {
     label: "Home",
-    href: "/home",
+    href: "/feed",
     icon: Home,
+  },
+  {
+    label: "Network",
+    href: "/network",
+    icon: Users,
   },
   {
     label: "Opportunities",
@@ -35,24 +40,9 @@ const navItems = [
     icon: Target,
   },
   {
-    label: "Matches",
-    href: "/matches",
-    icon: Heart,
-  },
-  {
-    label: "AI Tools",
-    href: "/tools",
-    icon: Wrench,
-  },
-  {
-    label: "Earn",
-    href: "/earn",
+    label: "Deals",
+    href: "/deals",
     icon: Briefcase,
-  },
-  {
-    label: "Blog",
-    href: "/blog",
-    icon: BookOpen,
   },
 ];
 
