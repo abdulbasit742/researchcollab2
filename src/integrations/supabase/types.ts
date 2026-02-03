@@ -241,6 +241,36 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_scopes: {
+        Row: {
+          expires_at: string | null
+          granted_at: string
+          granted_by: string | null
+          id: string
+          is_active: boolean | null
+          scope: string
+          user_id: string
+        }
+        Insert: {
+          expires_at?: string | null
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          scope: string
+          user_id: string
+        }
+        Update: {
+          expires_at?: string | null
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          scope?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       affiliate_conversions: {
         Row: {
           affiliate_id: string | null
@@ -467,6 +497,36 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_credit_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          description: string | null
+          id: string
+          metadata: Json | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_human_overrides: {
         Row: {
           ai_capability: string
@@ -625,6 +685,72 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      analytics_events: {
+        Row: {
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          event_type: string
+          id: string
+          metadata: Json | null
+          session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_snapshots: {
+        Row: {
+          computed_at: string
+          id: string
+          metric_key: string
+          metric_value: number
+          period: string
+          period_start: string
+          scope_id: string | null
+          scope_type: string
+        }
+        Insert: {
+          computed_at?: string
+          id?: string
+          metric_key: string
+          metric_value?: number
+          period: string
+          period_start: string
+          scope_id?: string | null
+          scope_type: string
+        }
+        Update: {
+          computed_at?: string
+          id?: string
+          metric_key?: string
+          metric_value?: number
+          period?: string
+          period_start?: string
+          scope_id?: string | null
+          scope_type?: string
+        }
+        Relationships: []
       }
       blog_posts: {
         Row: {
@@ -1349,6 +1475,282 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      course_certificates: {
+        Row: {
+          certificate_number: string
+          certificate_url: string | null
+          course_id: string
+          id: string
+          is_revoked: boolean | null
+          issued_at: string
+          revoked_reason: string | null
+          user_id: string
+          verification_hash: string
+        }
+        Insert: {
+          certificate_number: string
+          certificate_url?: string | null
+          course_id: string
+          id?: string
+          is_revoked?: boolean | null
+          issued_at?: string
+          revoked_reason?: string | null
+          user_id: string
+          verification_hash: string
+        }
+        Update: {
+          certificate_number?: string
+          certificate_url?: string | null
+          course_id?: string
+          id?: string
+          is_revoked?: boolean | null
+          issued_at?: string
+          revoked_reason?: string | null
+          user_id?: string
+          verification_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_certificates_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_enrollments: {
+        Row: {
+          completed_at: string | null
+          course_id: string
+          enrolled_at: string
+          id: string
+          progress_percent: number
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          course_id: string
+          enrolled_at?: string
+          id?: string
+          progress_percent?: number
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          course_id?: string
+          enrolled_at?: string
+          id?: string
+          progress_percent?: number
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_enrollments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_lessons: {
+        Row: {
+          content_text: string | null
+          content_url: string | null
+          created_at: string
+          duration_minutes: number | null
+          id: string
+          is_preview: boolean | null
+          lesson_order: number
+          lesson_type: string
+          module_id: string
+          title: string
+        }
+        Insert: {
+          content_text?: string | null
+          content_url?: string | null
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          is_preview?: boolean | null
+          lesson_order?: number
+          lesson_type: string
+          module_id: string
+          title: string
+        }
+        Update: {
+          content_text?: string | null
+          content_url?: string | null
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          is_preview?: boolean | null
+          lesson_order?: number
+          lesson_type?: string
+          module_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_lessons_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_modules: {
+        Row: {
+          course_id: string
+          created_at: string
+          description: string | null
+          id: string
+          module_order: number
+          title: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          module_order?: number
+          title: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          module_order?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_modules_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_reviews: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          is_verified_enrollment: boolean | null
+          rating: number
+          review_text: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          is_verified_enrollment?: boolean | null
+          rating: number
+          review_text?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          is_verified_enrollment?: boolean | null
+          rating?: number
+          review_text?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_reviews_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          avg_rating: number | null
+          category: string
+          created_at: string
+          description: string | null
+          estimated_hours: number | null
+          id: string
+          instructor_org_id: string | null
+          instructor_user_id: string | null
+          is_featured: boolean | null
+          is_published: boolean | null
+          language: string | null
+          level: string
+          price: number
+          slug: string
+          thumbnail_url: string | null
+          title: string
+          total_enrollments: number
+          updated_at: string
+        }
+        Insert: {
+          avg_rating?: number | null
+          category: string
+          created_at?: string
+          description?: string | null
+          estimated_hours?: number | null
+          id?: string
+          instructor_org_id?: string | null
+          instructor_user_id?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          language?: string | null
+          level?: string
+          price?: number
+          slug: string
+          thumbnail_url?: string | null
+          title: string
+          total_enrollments?: number
+          updated_at?: string
+        }
+        Update: {
+          avg_rating?: number | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          estimated_hours?: number | null
+          id?: string
+          instructor_org_id?: string | null
+          instructor_user_id?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          language?: string | null
+          level?: string
+          price?: number
+          slug?: string
+          thumbnail_url?: string | null
+          title?: string
+          total_enrollments?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "courses_instructor_org_id_fkey"
+            columns: ["instructor_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       credential_verifications: {
         Row: {
@@ -2258,6 +2660,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      feature_entitlements: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_name: string
+          feature_key: string
+          id: string
+          is_active: boolean | null
+          min_tier_name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_name: string
+          feature_key: string
+          id?: string
+          is_active?: boolean | null
+          min_tier_name?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          feature_key?: string
+          id?: string
+          is_active?: boolean | null
+          min_tier_name?: string
+        }
+        Relationships: []
       }
       featured_listings: {
         Row: {
@@ -3743,6 +4175,41 @@ export type Database = {
         }
         Relationships: []
       }
+      lesson_progress: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          id: string
+          lesson_id: string
+          time_spent_seconds: number | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          id?: string
+          lesson_id: string
+          time_spent_seconds?: number | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          id?: string
+          lesson_id?: string
+          time_spent_seconds?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "course_lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       message_threads: {
         Row: {
           archived_by_user_a: boolean | null
@@ -4657,6 +5124,45 @@ export type Database = {
           },
         ]
       }
+      paid_boosts: {
+        Row: {
+          boost_type: string
+          created_at: string
+          ends_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          price: number
+          starts_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          boost_type: string
+          created_at?: string
+          ends_at: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          price: number
+          starts_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          boost_type?: string
+          created_at?: string
+          ends_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          price?: number
+          starts_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       pinned_messages: {
         Row: {
           created_at: string | null
@@ -4822,6 +5328,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      policy_acceptances: {
+        Row: {
+          accepted_at: string
+          id: string
+          ip_address: unknown
+          policy_type: string
+          policy_version: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          accepted_at?: string
+          id?: string
+          ip_address?: unknown
+          policy_type: string
+          policy_version: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          accepted_at?: string
+          id?: string
+          ip_address?: unknown
+          policy_type?: string
+          policy_version?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       portfolio_projects: {
         Row: {
@@ -5125,6 +5661,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      profile_analytics: {
+        Row: {
+          connection_requests_received: number
+          endorsements_received: number
+          id: string
+          post_impressions: number
+          profile_views: number
+          publication_views: number
+          search_appearances: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          connection_requests_received?: number
+          endorsements_received?: number
+          id?: string
+          post_impressions?: number
+          profile_views?: number
+          publication_views?: number
+          search_appearances?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          connection_requests_received?: number
+          endorsements_received?: number
+          id?: string
+          post_impressions?: number
+          profile_views?: number
+          publication_views?: number
+          search_appearances?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       profile_causes: {
         Row: {
@@ -5544,6 +6116,39 @@ export type Database = {
           role?: string | null
           university?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      project_analytics: {
+        Row: {
+          avg_bid_amount: number | null
+          bids_count: number
+          completion_rate: number | null
+          conversion_rate: number | null
+          id: string
+          project_id: string
+          updated_at: string
+          views: number
+        }
+        Insert: {
+          avg_bid_amount?: number | null
+          bids_count?: number
+          completion_rate?: number | null
+          conversion_rate?: number | null
+          id?: string
+          project_id: string
+          updated_at?: string
+          views?: number
+        }
+        Update: {
+          avg_bid_amount?: number | null
+          bids_count?: number
+          completion_rate?: number | null
+          conversion_rate?: number | null
+          id?: string
+          project_id?: string
+          updated_at?: string
+          views?: number
         }
         Relationships: []
       }
@@ -6237,6 +6842,60 @@ export type Database = {
           },
         ]
       }
+      rls_audit_checklist: {
+        Row: {
+          admin_access_tested: boolean | null
+          audited_by: string | null
+          blocked_user_tested: boolean | null
+          created_at: string
+          cross_user_tested: boolean | null
+          delete_policy_verified: boolean | null
+          has_rls_enabled: boolean | null
+          id: string
+          insert_policy_verified: boolean | null
+          last_audited_at: string | null
+          notes: string | null
+          select_policy_verified: boolean | null
+          table_name: string
+          update_policy_verified: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          admin_access_tested?: boolean | null
+          audited_by?: string | null
+          blocked_user_tested?: boolean | null
+          created_at?: string
+          cross_user_tested?: boolean | null
+          delete_policy_verified?: boolean | null
+          has_rls_enabled?: boolean | null
+          id?: string
+          insert_policy_verified?: boolean | null
+          last_audited_at?: string | null
+          notes?: string | null
+          select_policy_verified?: boolean | null
+          table_name: string
+          update_policy_verified?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          admin_access_tested?: boolean | null
+          audited_by?: string | null
+          blocked_user_tested?: boolean | null
+          created_at?: string
+          cross_user_tested?: boolean | null
+          delete_policy_verified?: boolean | null
+          has_rls_enabled?: boolean | null
+          id?: string
+          insert_policy_verified?: boolean | null
+          last_audited_at?: string | null
+          notes?: string | null
+          select_policy_verified?: boolean | null
+          table_name?: string
+          update_policy_verified?: boolean | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       saved_jobs: {
         Row: {
           created_at: string | null
@@ -6521,15 +7180,19 @@ export type Database = {
       }
       subscription_tiers: {
         Row: {
+          advanced_analytics: boolean | null
           ai_credits_included: number
           badge_name: string | null
           created_at: string
+          description: string | null
           featured_profile: boolean
           features: Json
           id: string
           is_active: boolean
           max_bids_month: number | null
+          max_boosts_monthly: number | null
           max_projects_month: number | null
+          max_saved_searches: number | null
           name: string
           price_monthly: number
           price_yearly: number
@@ -6537,15 +7200,19 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          advanced_analytics?: boolean | null
           ai_credits_included?: number
           badge_name?: string | null
           created_at?: string
+          description?: string | null
           featured_profile?: boolean
           features?: Json
           id?: string
           is_active?: boolean
           max_bids_month?: number | null
+          max_boosts_monthly?: number | null
           max_projects_month?: number | null
+          max_saved_searches?: number | null
           name: string
           price_monthly?: number
           price_yearly?: number
@@ -6553,15 +7220,19 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          advanced_analytics?: boolean | null
           ai_credits_included?: number
           badge_name?: string | null
           created_at?: string
+          description?: string | null
           featured_profile?: boolean
           features?: Json
           id?: string
           is_active?: boolean
           max_bids_month?: number | null
+          max_boosts_monthly?: number | null
           max_projects_month?: number | null
+          max_saved_searches?: number | null
           name?: string
           price_monthly?: number
           price_yearly?: number
