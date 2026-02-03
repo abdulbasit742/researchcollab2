@@ -10,10 +10,11 @@ import { NextActionCard } from "@/components/home/NextActionCard";
 import { QuickActionsCard } from "@/components/home/QuickActionsCard";
 import { WorkLedgerSummary } from "@/components/home/WorkLedgerSummary";
 import { NetworkContext } from "@/components/home/NetworkContext";
-import { OpportunityList } from "@/components/home/OpportunityList";
-import { RecentActivityCard } from "@/components/home/RecentActivityCard";
 import { OpportunityMatchCard } from "@/components/opportunity/OpportunityMatchCard";
 import { ProfileViewsCard } from "@/components/profile/ProfileViewsCard";
+import { TrustExplainer } from "@/components/trust/TrustExplainer";
+import { PlatformTrustBanner } from "@/components/trust/TrustSignals";
+import { FirstTimeUserOverlay } from "@/components/onboarding/FirstTimeUserOverlay";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -59,13 +60,22 @@ export default function HomeDashboard() {
       totalEarned: ledger?.total_escrow_released || 0,
       escrowSuccessRate: ledger?.escrow_success_rate || 0,
       onTimeRate: ledger?.on_time_rate || 0,
-      trustTrend: "stable" as const, // Would need trust_score_history for trend
+      trustTrend: "stable" as const,
     };
   }, [ledger]);
 
+  // Trust breakdown for explainer
+  const trustBreakdown = useMemo(() => ({
+    delivery: Math.min((ledger?.projects_completed || 0) * 4, 40),
+    financial: Math.round((ledger?.escrow_success_rate || 0) / 4),
+    collaboration: 8,
+    institutional: isVerified ? 10 : 0,
+    consistency: 5,
+  }), [ledger, isVerified]);
+
   // Top matching opportunities
   const topOpportunities = useMemo(() => {
-    return opportunities.slice(0, 5);
+    return opportunities.slice(0, 4);
   }, [opportunities]);
 
   const loading = authLoading || trustLoading || ledgerLoading;
@@ -77,6 +87,8 @@ export default function HomeDashboard() {
 
   return (
     <MainLayout>
+      <FirstTimeUserOverlay />
+      
       <div className="container py-6 max-w-6xl">
         {/* Header */}
         <div className="mb-6">
@@ -92,10 +104,15 @@ export default function HomeDashboard() {
                 )}
               </h1>
               <p className="text-muted-foreground text-sm">
-                Find opportunities, complete work, prove reliability.
+                Your professional command center. Find opportunities, complete work, prove reliability.
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Platform Trust Banner */}
+        <div className="mb-6">
+          <PlatformTrustBanner />
         </div>
 
         <div className="grid lg:grid-cols-12 gap-6">
@@ -119,16 +136,16 @@ export default function HomeDashboard() {
               trustScore={trustScore}
             />
 
-            {/* Opportunities Radar - Main Focus */}
+            {/* Opportunities Radar */}
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-base flex items-center gap-2">
                     <Target className="h-4 w-4 text-primary" />
-                    Opportunity Radar
+                    Matched Opportunities
                     <Badge variant="secondary" className="text-[10px] gap-0.5">
                       <Sparkles className="h-2.5 w-2.5" />
-                      Personalized
+                      Trust-Ranked
                     </Badge>
                   </CardTitle>
                   <Button variant="ghost" size="sm" asChild className="gap-1 text-xs">
@@ -139,7 +156,7 @@ export default function HomeDashboard() {
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Matched based on your skills, trust, and institution.
+                  Matched based on your verified skills, trust level, and institution.
                 </p>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -153,7 +170,8 @@ export default function HomeDashboard() {
                   <EmptyState
                     icon={Target}
                     title="No opportunities matched yet"
-                    description="Complete your profile and add skills to get personalized matches."
+                    description="Complete your profile and add verified skills to get personalized matches."
+                    guidance="Higher-quality opportunities unlock after completing your first project."
                     actionLabel="Complete Profile"
                     actionHref="/profile"
                   />
@@ -173,6 +191,16 @@ export default function HomeDashboard() {
             {/* Quick Actions */}
             <QuickActionsCard />
 
+            {/* Trust Explainer - Shows WHY your trust is what it is */}
+            <TrustExplainer
+              trustScore={trustScore}
+              trustTier={trustTier}
+              breakdown={trustBreakdown}
+              trend="stable"
+              lastUpdated={trustProfile?.updated_at}
+              showActions={true}
+            />
+
             {/* Work Ledger Summary */}
             <WorkLedgerSummary
               {...workStats}
@@ -186,12 +214,12 @@ export default function HomeDashboard() {
                 <Button variant="outline" className="w-full gap-2" asChild>
                   <Link to="/progress">
                     <BarChart3 className="h-4 w-4" />
-                    View Career Dashboard
+                    Career Dashboard
                     <ArrowRight className="h-3 w-3 ml-auto" />
                   </Link>
                 </Button>
                 <p className="text-xs text-muted-foreground text-center mt-2">
-                  Track trust trajectory, economic outcomes & AI career guidance
+                  Track trust trajectory, outcomes & professional guidance
                 </p>
               </CardContent>
             </Card>
@@ -206,17 +234,6 @@ export default function HomeDashboard() {
               sharedProjects={workStats.projectsCompleted}
               loading={loading}
             />
-
-            {/* Platform Philosophy */}
-            <Card className="bg-muted/30 border-dashed">
-              <CardContent className="py-4 text-center">
-                <p className="text-xs text-muted-foreground italic">
-                  "LinkedIn shows who you claim to be.
-                  <br />
-                  <span className="font-medium text-foreground">RCollab proves what you've done.</span>"
-                </p>
-              </CardContent>
-            </Card>
           </aside>
         </div>
       </div>
