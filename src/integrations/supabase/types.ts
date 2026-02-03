@@ -91,6 +91,99 @@ export type Database = {
           },
         ]
       }
+      academic_traditions: {
+        Row: {
+          collaboration_norms: Json | null
+          core_values: Json
+          created_at: string
+          description: string
+          hierarchy_expectations: Json | null
+          id: string
+          is_active: boolean | null
+          peer_review_customs: Json | null
+          publication_preferences: Json | null
+          regions: string[]
+          tradition_name: string
+        }
+        Insert: {
+          collaboration_norms?: Json | null
+          core_values: Json
+          created_at?: string
+          description: string
+          hierarchy_expectations?: Json | null
+          id?: string
+          is_active?: boolean | null
+          peer_review_customs?: Json | null
+          publication_preferences?: Json | null
+          regions: string[]
+          tradition_name: string
+        }
+        Update: {
+          collaboration_norms?: Json | null
+          core_values?: Json
+          created_at?: string
+          description?: string
+          hierarchy_expectations?: Json | null
+          id?: string
+          is_active?: boolean | null
+          peer_review_customs?: Json | null
+          publication_preferences?: Json | null
+          regions?: string[]
+          tradition_name?: string
+        }
+        Relationships: []
+      }
+      accountability_reports: {
+        Row: {
+          created_at: string
+          executive_summary: string
+          financial_summary: Json | null
+          full_report_url: string | null
+          governance_changes: Json | null
+          id: string
+          incident_summary: Json | null
+          is_public: boolean | null
+          key_metrics: Json
+          published_at: string | null
+          report_period_end: string
+          report_period_start: string
+          report_type: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          executive_summary: string
+          financial_summary?: Json | null
+          full_report_url?: string | null
+          governance_changes?: Json | null
+          id?: string
+          incident_summary?: Json | null
+          is_public?: boolean | null
+          key_metrics: Json
+          published_at?: string | null
+          report_period_end: string
+          report_period_start: string
+          report_type: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          executive_summary?: string
+          financial_summary?: Json | null
+          full_report_url?: string | null
+          governance_changes?: Json | null
+          id?: string
+          incident_summary?: Json | null
+          is_public?: boolean | null
+          key_metrics?: Json
+          published_at?: string | null
+          report_period_end?: string
+          report_period_start?: string
+          report_type?: string
+          title?: string
+        }
+        Relationships: []
+      }
       admin_audit_logs: {
         Row: {
           action: string
@@ -291,6 +384,59 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_constitutional_rules: {
+        Row: {
+          can_be_suspended: boolean | null
+          created_at: string
+          created_by_charter: string | null
+          effective_from: string
+          enforcement_mechanism: string
+          id: string
+          rationale: string
+          rule_category: string
+          rule_definition: string
+          rule_name: string
+          suspension_requires: string | null
+          violation_consequences: string
+        }
+        Insert: {
+          can_be_suspended?: boolean | null
+          created_at?: string
+          created_by_charter?: string | null
+          effective_from?: string
+          enforcement_mechanism: string
+          id?: string
+          rationale: string
+          rule_category: string
+          rule_definition: string
+          rule_name: string
+          suspension_requires?: string | null
+          violation_consequences: string
+        }
+        Update: {
+          can_be_suspended?: boolean | null
+          created_at?: string
+          created_by_charter?: string | null
+          effective_from?: string
+          enforcement_mechanism?: string
+          id?: string
+          rationale?: string
+          rule_category?: string
+          rule_definition?: string
+          rule_name?: string
+          suspension_requires?: string | null
+          violation_consequences?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_constitutional_rules_created_by_charter_fkey"
+            columns: ["created_by_charter"]
+            isOneToOne: false
+            referencedRelation: "platform_charters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_credit_packs: {
         Row: {
           bonus_credits: number
@@ -320,6 +466,117 @@ export type Database = {
           price?: number
         }
         Relationships: []
+      }
+      ai_human_overrides: {
+        Row: {
+          ai_capability: string
+          ai_decision_id: string | null
+          ai_recommendation: Json
+          created_at: string
+          human_decision: Json
+          id: string
+          learning_incorporated: boolean | null
+          outcome_after_override: string | null
+          overridden_by: string
+          override_authority: string
+          override_reason: string
+          was_ai_correct: boolean | null
+        }
+        Insert: {
+          ai_capability: string
+          ai_decision_id?: string | null
+          ai_recommendation: Json
+          created_at?: string
+          human_decision: Json
+          id?: string
+          learning_incorporated?: boolean | null
+          outcome_after_override?: string | null
+          overridden_by: string
+          override_authority: string
+          override_reason: string
+          was_ai_correct?: boolean | null
+        }
+        Update: {
+          ai_capability?: string
+          ai_decision_id?: string | null
+          ai_recommendation?: Json
+          created_at?: string
+          human_decision?: Json
+          id?: string
+          learning_incorporated?: boolean | null
+          outcome_after_override?: string | null
+          overridden_by?: string
+          override_authority?: string
+          override_reason?: string
+          was_ai_correct?: boolean | null
+        }
+        Relationships: []
+      }
+      ai_model_registry: {
+        Row: {
+          approval_council: string | null
+          approved_at: string | null
+          bias_assessment: Json | null
+          capabilities: string[]
+          created_at: string
+          id: string
+          limitations: string[] | null
+          model_identifier: string
+          provider: string
+          replacement_model_id: string | null
+          safety_rating: string | null
+          sunset_date: string | null
+          updated_at: string
+          usage_restrictions: Json | null
+        }
+        Insert: {
+          approval_council?: string | null
+          approved_at?: string | null
+          bias_assessment?: Json | null
+          capabilities: string[]
+          created_at?: string
+          id?: string
+          limitations?: string[] | null
+          model_identifier: string
+          provider: string
+          replacement_model_id?: string | null
+          safety_rating?: string | null
+          sunset_date?: string | null
+          updated_at?: string
+          usage_restrictions?: Json | null
+        }
+        Update: {
+          approval_council?: string | null
+          approved_at?: string | null
+          bias_assessment?: Json | null
+          capabilities?: string[]
+          created_at?: string
+          id?: string
+          limitations?: string[] | null
+          model_identifier?: string
+          provider?: string
+          replacement_model_id?: string | null
+          safety_rating?: string | null
+          sunset_date?: string | null
+          updated_at?: string
+          usage_restrictions?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_model_registry_approval_council_fkey"
+            columns: ["approval_council"]
+            isOneToOne: false
+            referencedRelation: "governance_councils"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_model_registry_replacement_model_id_fkey"
+            columns: ["replacement_model_id"]
+            isOneToOne: false
+            referencedRelation: "ai_model_registry"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       cohort_members: {
         Row: {
@@ -353,6 +610,113 @@ export type Database = {
           },
         ]
       }
+      community_challenges: {
+        Row: {
+          appeal_available: boolean | null
+          appealed: boolean | null
+          assigned_council: string | null
+          challenge_description: string
+          challenge_title: string
+          challenge_type: string
+          challenger_id: string | null
+          challenger_type: string
+          created_at: string
+          id: string
+          resolution: string | null
+          resolution_date: string | null
+          status: string
+          supporting_evidence: string | null
+          target_entity_id: string | null
+          target_entity_type: string
+          updated_at: string
+          urgency: string | null
+        }
+        Insert: {
+          appeal_available?: boolean | null
+          appealed?: boolean | null
+          assigned_council?: string | null
+          challenge_description: string
+          challenge_title: string
+          challenge_type: string
+          challenger_id?: string | null
+          challenger_type: string
+          created_at?: string
+          id?: string
+          resolution?: string | null
+          resolution_date?: string | null
+          status?: string
+          supporting_evidence?: string | null
+          target_entity_id?: string | null
+          target_entity_type: string
+          updated_at?: string
+          urgency?: string | null
+        }
+        Update: {
+          appeal_available?: boolean | null
+          appealed?: boolean | null
+          assigned_council?: string | null
+          challenge_description?: string
+          challenge_title?: string
+          challenge_type?: string
+          challenger_id?: string | null
+          challenger_type?: string
+          created_at?: string
+          id?: string
+          resolution?: string | null
+          resolution_date?: string | null
+          status?: string
+          supporting_evidence?: string | null
+          target_entity_id?: string | null
+          target_entity_type?: string
+          updated_at?: string
+          urgency?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_challenges_assigned_council_fkey"
+            columns: ["assigned_council"]
+            isOneToOne: false
+            referencedRelation: "governance_councils"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      compatibility_guarantees: {
+        Row: {
+          affected_users_estimate: number | null
+          breaking_change_policy: string | null
+          created_at: string
+          description: string
+          guarantee_type: string
+          guaranteed_until: string
+          id: string
+          migration_support_commitment: string | null
+          version: string
+        }
+        Insert: {
+          affected_users_estimate?: number | null
+          breaking_change_policy?: string | null
+          created_at?: string
+          description: string
+          guarantee_type: string
+          guaranteed_until: string
+          id?: string
+          migration_support_commitment?: string | null
+          version: string
+        }
+        Update: {
+          affected_users_estimate?: number | null
+          breaking_change_policy?: string | null
+          created_at?: string
+          description?: string
+          guarantee_type?: string
+          guaranteed_until?: string
+          id?: string
+          migration_support_commitment?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
       connection_requests: {
         Row: {
           created_at: string
@@ -374,6 +738,48 @@ export type Database = {
           recipient_id?: string
           requester_id?: string
           status?: string
+        }
+        Relationships: []
+      }
+      continuity_checkpoints: {
+        Row: {
+          checkpoint_date: string
+          checkpoint_type: string
+          created_at: string
+          id: string
+          integrity_hash: string
+          recovery_test_date: string | null
+          recovery_tested: boolean | null
+          recovery_time_objective: string | null
+          storage_nodes: string[] | null
+          systems_included: string[]
+          verification_status: string
+        }
+        Insert: {
+          checkpoint_date: string
+          checkpoint_type: string
+          created_at?: string
+          id?: string
+          integrity_hash: string
+          recovery_test_date?: string | null
+          recovery_tested?: boolean | null
+          recovery_time_objective?: string | null
+          storage_nodes?: string[] | null
+          systems_included: string[]
+          verification_status: string
+        }
+        Update: {
+          checkpoint_date?: string
+          checkpoint_type?: string
+          created_at?: string
+          id?: string
+          integrity_hash?: string
+          recovery_test_date?: string | null
+          recovery_tested?: boolean | null
+          recovery_time_objective?: string | null
+          storage_nodes?: string[] | null
+          systems_included?: string[]
+          verification_status?: string
         }
         Relationships: []
       }
@@ -423,6 +829,191 @@ export type Database = {
             columns: ["contract_id"]
             isOneToOne: false
             referencedRelation: "infrastructure_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      council_decisions: {
+        Row: {
+          affected_systems: string[] | null
+          challenge_reason: string | null
+          challenge_resolved_at: string | null
+          challenged: boolean | null
+          council_id: string
+          created_at: string
+          decision_outcome: string | null
+          decision_type: string
+          description: string
+          id: string
+          implementation_deadline: string | null
+          implemented_at: string | null
+          quorum_met: boolean | null
+          rationale: string | null
+          title: string
+          votes_abstain: number | null
+          votes_against: number | null
+          votes_for: number | null
+        }
+        Insert: {
+          affected_systems?: string[] | null
+          challenge_reason?: string | null
+          challenge_resolved_at?: string | null
+          challenged?: boolean | null
+          council_id: string
+          created_at?: string
+          decision_outcome?: string | null
+          decision_type: string
+          description: string
+          id?: string
+          implementation_deadline?: string | null
+          implemented_at?: string | null
+          quorum_met?: boolean | null
+          rationale?: string | null
+          title: string
+          votes_abstain?: number | null
+          votes_against?: number | null
+          votes_for?: number | null
+        }
+        Update: {
+          affected_systems?: string[] | null
+          challenge_reason?: string | null
+          challenge_resolved_at?: string | null
+          challenged?: boolean | null
+          council_id?: string
+          created_at?: string
+          decision_outcome?: string | null
+          decision_type?: string
+          description?: string
+          id?: string
+          implementation_deadline?: string | null
+          implemented_at?: string | null
+          quorum_met?: boolean | null
+          rationale?: string | null
+          title?: string
+          votes_abstain?: number | null
+          votes_against?: number | null
+          votes_for?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "council_decisions_council_id_fkey"
+            columns: ["council_id"]
+            isOneToOne: false
+            referencedRelation: "governance_councils"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      council_memberships: {
+        Row: {
+          appointed_by: string | null
+          appointment_reason: string | null
+          council_id: string
+          created_at: string
+          ends_at: string | null
+          external_member_name: string | null
+          external_member_org: string | null
+          id: string
+          is_active: boolean | null
+          recusal_topics: string[] | null
+          role_in_council: string
+          started_at: string
+          succession_priority: number | null
+          user_id: string | null
+          voting_power: number | null
+        }
+        Insert: {
+          appointed_by?: string | null
+          appointment_reason?: string | null
+          council_id: string
+          created_at?: string
+          ends_at?: string | null
+          external_member_name?: string | null
+          external_member_org?: string | null
+          id?: string
+          is_active?: boolean | null
+          recusal_topics?: string[] | null
+          role_in_council: string
+          started_at?: string
+          succession_priority?: number | null
+          user_id?: string | null
+          voting_power?: number | null
+        }
+        Update: {
+          appointed_by?: string | null
+          appointment_reason?: string | null
+          council_id?: string
+          created_at?: string
+          ends_at?: string | null
+          external_member_name?: string | null
+          external_member_org?: string | null
+          id?: string
+          is_active?: boolean | null
+          recusal_topics?: string[] | null
+          role_in_council?: string
+          started_at?: string
+          succession_priority?: number | null
+          user_id?: string | null
+          voting_power?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "council_memberships_appointed_by_fkey"
+            columns: ["appointed_by"]
+            isOneToOne: false
+            referencedRelation: "council_memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "council_memberships_council_id_fkey"
+            columns: ["council_id"]
+            isOneToOne: false
+            referencedRelation: "governance_councils"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      council_votes: {
+        Row: {
+          decision_id: string
+          id: string
+          member_id: string
+          reasoning: string | null
+          vote: string
+          vote_hash: string | null
+          voted_at: string
+        }
+        Insert: {
+          decision_id: string
+          id?: string
+          member_id: string
+          reasoning?: string | null
+          vote: string
+          vote_hash?: string | null
+          voted_at?: string
+        }
+        Update: {
+          decision_id?: string
+          id?: string
+          member_id?: string
+          reasoning?: string | null
+          vote?: string
+          vote_hash?: string | null
+          voted_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "council_votes_decision_id_fkey"
+            columns: ["decision_id"]
+            isOneToOne: false
+            referencedRelation: "council_decisions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "council_votes_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "council_memberships"
             referencedColumns: ["id"]
           },
         ]
@@ -567,6 +1158,63 @@ export type Database = {
         }
         Relationships: []
       }
+      data_custody_nodes: {
+        Row: {
+          access_protocol: string
+          continuity_priority: number | null
+          created_at: string
+          data_categories: string[]
+          encryption_standard: string
+          geographic_location: string
+          id: string
+          jurisdiction: string
+          last_sync_at: string | null
+          node_name: string
+          node_type: string
+          offline_capable: boolean | null
+          operator_organization: string | null
+          sovereignty_compliant: boolean | null
+          sync_frequency: string | null
+          updated_at: string
+        }
+        Insert: {
+          access_protocol: string
+          continuity_priority?: number | null
+          created_at?: string
+          data_categories: string[]
+          encryption_standard: string
+          geographic_location: string
+          id?: string
+          jurisdiction: string
+          last_sync_at?: string | null
+          node_name: string
+          node_type: string
+          offline_capable?: boolean | null
+          operator_organization?: string | null
+          sovereignty_compliant?: boolean | null
+          sync_frequency?: string | null
+          updated_at?: string
+        }
+        Update: {
+          access_protocol?: string
+          continuity_priority?: number | null
+          created_at?: string
+          data_categories?: string[]
+          encryption_standard?: string
+          geographic_location?: string
+          id?: string
+          jurisdiction?: string
+          last_sync_at?: string | null
+          node_name?: string
+          node_type?: string
+          offline_capable?: boolean | null
+          operator_organization?: string | null
+          sovereignty_compliant?: boolean | null
+          sync_frequency?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       data_escrow: {
         Row: {
           created_at: string
@@ -606,6 +1254,42 @@ export type Database = {
           retention_years?: number
           sync_frequency_hours?: number
           updated_at?: string
+        }
+        Relationships: []
+      }
+      data_format_versions: {
+        Row: {
+          backward_compatible_with: string[] | null
+          created_at: string
+          format_name: string
+          id: string
+          migration_scripts: Json | null
+          replacement_version: string | null
+          schema_definition: Json
+          sunset_date: string | null
+          version: string
+        }
+        Insert: {
+          backward_compatible_with?: string[] | null
+          created_at?: string
+          format_name: string
+          id?: string
+          migration_scripts?: Json | null
+          replacement_version?: string | null
+          schema_definition: Json
+          sunset_date?: string | null
+          version: string
+        }
+        Update: {
+          backward_compatible_with?: string[] | null
+          created_at?: string
+          format_name?: string
+          id?: string
+          migration_scripts?: Json | null
+          replacement_version?: string | null
+          schema_definition?: Json
+          sunset_date?: string | null
+          version?: string
         }
         Relationships: []
       }
@@ -822,6 +1506,213 @@ export type Database = {
         }
         Relationships: []
       }
+      emergency_activations: {
+        Row: {
+          actions_taken: Json | null
+          activated_at: string
+          activated_by: string
+          activation_reason: string
+          deactivated_at: string | null
+          deactivated_by: string | null
+          deactivation_reason: string | null
+          evidence: Json | null
+          id: string
+          protocol_id: string
+          review_notes: string | null
+          review_outcome: string | null
+          reviewed_by_council: string | null
+        }
+        Insert: {
+          actions_taken?: Json | null
+          activated_at?: string
+          activated_by: string
+          activation_reason: string
+          deactivated_at?: string | null
+          deactivated_by?: string | null
+          deactivation_reason?: string | null
+          evidence?: Json | null
+          id?: string
+          protocol_id: string
+          review_notes?: string | null
+          review_outcome?: string | null
+          reviewed_by_council?: string | null
+        }
+        Update: {
+          actions_taken?: Json | null
+          activated_at?: string
+          activated_by?: string
+          activation_reason?: string
+          deactivated_at?: string | null
+          deactivated_by?: string | null
+          deactivation_reason?: string | null
+          evidence?: Json | null
+          id?: string
+          protocol_id?: string
+          review_notes?: string | null
+          review_outcome?: string | null
+          reviewed_by_council?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emergency_activations_protocol_id_fkey"
+            columns: ["protocol_id"]
+            isOneToOne: false
+            referencedRelation: "emergency_protocols"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "emergency_activations_reviewed_by_council_fkey"
+            columns: ["reviewed_by_council"]
+            isOneToOne: false
+            referencedRelation: "governance_councils"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      emergency_protocols: {
+        Row: {
+          automatic_review_after_hours: number | null
+          created_at: string
+          deactivation_conditions: Json | null
+          id: string
+          is_active: boolean | null
+          powers_granted: Json
+          protocol_name: string
+          requires_council: string[] | null
+          severity_level: number
+          time_limit_hours: number | null
+          trigger_conditions: Json
+        }
+        Insert: {
+          automatic_review_after_hours?: number | null
+          created_at?: string
+          deactivation_conditions?: Json | null
+          id?: string
+          is_active?: boolean | null
+          powers_granted: Json
+          protocol_name: string
+          requires_council?: string[] | null
+          severity_level: number
+          time_limit_hours?: number | null
+          trigger_conditions: Json
+        }
+        Update: {
+          automatic_review_after_hours?: number | null
+          created_at?: string
+          deactivation_conditions?: Json | null
+          id?: string
+          is_active?: boolean | null
+          powers_granted?: Json
+          protocol_name?: string
+          requires_council?: string[] | null
+          severity_level?: number
+          time_limit_hours?: number | null
+          trigger_conditions?: Json
+        }
+        Relationships: []
+      }
+      endowment_funds: {
+        Row: {
+          created_at: string
+          currency: string | null
+          current_amount: number | null
+          custodian: string
+          donor_visibility: string | null
+          fund_name: string
+          id: string
+          investment_policy: string | null
+          purpose: string
+          restricted_uses: string[] | null
+          spending_rule: string | null
+          target_amount: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string | null
+          current_amount?: number | null
+          custodian: string
+          donor_visibility?: string | null
+          fund_name: string
+          id?: string
+          investment_policy?: string | null
+          purpose: string
+          restricted_uses?: string[] | null
+          spending_rule?: string | null
+          target_amount?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string | null
+          current_amount?: number | null
+          custodian?: string
+          donor_visibility?: string | null
+          fund_name?: string
+          id?: string
+          investment_policy?: string | null
+          purpose?: string
+          restricted_uses?: string[] | null
+          spending_rule?: string | null
+          target_amount?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ethics_reviews: {
+        Row: {
+          created_at: string
+          findings: string
+          id: string
+          management_response: string | null
+          public_summary: string | null
+          recommendations: string[] | null
+          remediated_at: string | null
+          remediation_deadline: string | null
+          review_scope: string
+          review_type: string
+          reviewer_name: string | null
+          reviewer_organization: string | null
+          reviewer_type: string
+          severity: string | null
+          subject: string
+        }
+        Insert: {
+          created_at?: string
+          findings: string
+          id?: string
+          management_response?: string | null
+          public_summary?: string | null
+          recommendations?: string[] | null
+          remediated_at?: string | null
+          remediation_deadline?: string | null
+          review_scope: string
+          review_type: string
+          reviewer_name?: string | null
+          reviewer_organization?: string | null
+          reviewer_type: string
+          severity?: string | null
+          subject: string
+        }
+        Update: {
+          created_at?: string
+          findings?: string
+          id?: string
+          management_response?: string | null
+          public_summary?: string | null
+          recommendations?: string[] | null
+          remediated_at?: string | null
+          remediation_deadline?: string | null
+          review_scope?: string
+          review_type?: string
+          reviewer_name?: string | null
+          reviewer_organization?: string | null
+          reviewer_type?: string
+          severity?: string | null
+          subject?: string
+        }
+        Relationships: []
+      }
       featured_listings: {
         Row: {
           amount_paid: number
@@ -956,6 +1847,48 @@ export type Database = {
           },
         ]
       }
+      funding_models: {
+        Row: {
+          activated_at: string | null
+          cost_structure: Json | null
+          created_at: string
+          description: string
+          id: string
+          is_active: boolean | null
+          model_name: string
+          model_type: string
+          revenue_sources: Json
+          sustainability_metrics: Json | null
+          transition_requirements: string | null
+        }
+        Insert: {
+          activated_at?: string | null
+          cost_structure?: Json | null
+          created_at?: string
+          description: string
+          id?: string
+          is_active?: boolean | null
+          model_name: string
+          model_type: string
+          revenue_sources: Json
+          sustainability_metrics?: Json | null
+          transition_requirements?: string | null
+        }
+        Update: {
+          activated_at?: string | null
+          cost_structure?: Json | null
+          created_at?: string
+          description?: string
+          id?: string
+          is_active?: boolean | null
+          model_name?: string
+          model_type?: string
+          revenue_sources?: Json
+          sustainability_metrics?: Json | null
+          transition_requirements?: string | null
+        }
+        Relationships: []
+      }
       governance_assignments: {
         Row: {
           assigned_at: string
@@ -1002,6 +1935,65 @@ export type Database = {
             columns: ["governance_role_id"]
             isOneToOne: false
             referencedRelation: "governance_roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      governance_councils: {
+        Row: {
+          authority_scope: Json | null
+          can_be_dissolved: boolean | null
+          council_type: string
+          created_at: string
+          description: string | null
+          dissolution_requires: string | null
+          id: string
+          max_members: number | null
+          min_members: number | null
+          name: string
+          quorum_requirement: number | null
+          reporting_to_id: string | null
+          term_length_months: number | null
+          updated_at: string
+        }
+        Insert: {
+          authority_scope?: Json | null
+          can_be_dissolved?: boolean | null
+          council_type: string
+          created_at?: string
+          description?: string | null
+          dissolution_requires?: string | null
+          id?: string
+          max_members?: number | null
+          min_members?: number | null
+          name: string
+          quorum_requirement?: number | null
+          reporting_to_id?: string | null
+          term_length_months?: number | null
+          updated_at?: string
+        }
+        Update: {
+          authority_scope?: Json | null
+          can_be_dissolved?: boolean | null
+          council_type?: string
+          created_at?: string
+          description?: string | null
+          dissolution_requires?: string | null
+          id?: string
+          max_members?: number | null
+          min_members?: number | null
+          name?: string
+          quorum_requirement?: number | null
+          reporting_to_id?: string | null
+          term_length_months?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_councils_reporting_to_id_fkey"
+            columns: ["reporting_to_id"]
+            isOneToOne: false
+            referencedRelation: "governance_councils"
             referencedColumns: ["id"]
           },
         ]
@@ -1255,6 +2247,59 @@ export type Database = {
           },
         ]
       }
+      idea_evolution: {
+        Row: {
+          contributors: string[] | null
+          created_at: string
+          description: string
+          evidence_links: string[] | null
+          evolution_type: string | null
+          field: string
+          id: string
+          idea_identifier: string
+          impact_assessment: string | null
+          originated_from: string | null
+          related_projects: string[] | null
+          title: string
+        }
+        Insert: {
+          contributors?: string[] | null
+          created_at?: string
+          description: string
+          evidence_links?: string[] | null
+          evolution_type?: string | null
+          field: string
+          id?: string
+          idea_identifier: string
+          impact_assessment?: string | null
+          originated_from?: string | null
+          related_projects?: string[] | null
+          title: string
+        }
+        Update: {
+          contributors?: string[] | null
+          created_at?: string
+          description?: string
+          evidence_links?: string[] | null
+          evolution_type?: string | null
+          field?: string
+          id?: string
+          idea_identifier?: string
+          impact_assessment?: string | null
+          originated_from?: string | null
+          related_projects?: string[] | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_evolution_originated_from_fkey"
+            columns: ["originated_from"]
+            isOneToOne: false
+            referencedRelation: "idea_evolution"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       infrastructure_contracts: {
         Row: {
           auto_renew: boolean
@@ -1433,6 +2478,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      knowledge_snapshots: {
+        Row: {
+          access_restrictions: Json | null
+          accessible_until: string | null
+          created_at: string
+          created_by: string | null
+          data_scope: string[] | null
+          description: string
+          format_version: string
+          id: string
+          snapshot_date: string
+          snapshot_type: string
+          storage_location: string
+          verification_hash: string
+        }
+        Insert: {
+          access_restrictions?: Json | null
+          accessible_until?: string | null
+          created_at?: string
+          created_by?: string | null
+          data_scope?: string[] | null
+          description: string
+          format_version: string
+          id?: string
+          snapshot_date: string
+          snapshot_type: string
+          storage_location: string
+          verification_hash: string
+        }
+        Update: {
+          access_restrictions?: Json | null
+          accessible_until?: string | null
+          created_at?: string
+          created_by?: string | null
+          data_scope?: string[] | null
+          description?: string
+          format_version?: string
+          id?: string
+          snapshot_date?: string
+          snapshot_type?: string
+          storage_location?: string
+          verification_hash?: string
+        }
+        Relationships: []
       }
       message_threads: {
         Row: {
@@ -1654,6 +2744,57 @@ export type Database = {
           updated_at?: string
           valid_from?: string | null
           valid_until?: string | null
+        }
+        Relationships: []
+      }
+      negative_results_archive: {
+        Row: {
+          actual_outcome: string
+          created_at: string
+          expected_outcome: string
+          field: string
+          future_implications: string | null
+          hypothesis: string
+          id: string
+          is_public: boolean | null
+          lessons_learned: string | null
+          methodology: string
+          project_id: string | null
+          replication_attempts: number | null
+          researcher_id: string
+          why_it_failed: string
+        }
+        Insert: {
+          actual_outcome: string
+          created_at?: string
+          expected_outcome: string
+          field: string
+          future_implications?: string | null
+          hypothesis: string
+          id?: string
+          is_public?: boolean | null
+          lessons_learned?: string | null
+          methodology: string
+          project_id?: string | null
+          replication_attempts?: number | null
+          researcher_id: string
+          why_it_failed: string
+        }
+        Update: {
+          actual_outcome?: string
+          created_at?: string
+          expected_outcome?: string
+          field?: string
+          future_implications?: string | null
+          hypothesis?: string
+          id?: string
+          is_public?: boolean | null
+          lessons_learned?: string | null
+          methodology?: string
+          project_id?: string | null
+          replication_attempts?: number | null
+          researcher_id?: string
+          why_it_failed?: string
         }
         Relationships: []
       }
@@ -2128,6 +3269,65 @@ export type Database = {
           },
         ]
       }
+      platform_charters: {
+        Row: {
+          amendment_process: string | null
+          charter_type: string
+          content: string
+          created_at: string
+          effective_from: string
+          id: string
+          is_active: boolean | null
+          ratification_threshold: number | null
+          ratified_by: string[] | null
+          rationale: string | null
+          supersedes_id: string | null
+          title: string
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          amendment_process?: string | null
+          charter_type: string
+          content: string
+          created_at?: string
+          effective_from?: string
+          id?: string
+          is_active?: boolean | null
+          ratification_threshold?: number | null
+          ratified_by?: string[] | null
+          rationale?: string | null
+          supersedes_id?: string | null
+          title: string
+          updated_at?: string
+          version: string
+        }
+        Update: {
+          amendment_process?: string | null
+          charter_type?: string
+          content?: string
+          created_at?: string
+          effective_from?: string
+          id?: string
+          is_active?: boolean | null
+          ratification_threshold?: number | null
+          ratified_by?: string[] | null
+          rationale?: string | null
+          supersedes_id?: string | null
+          title?: string
+          updated_at?: string
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_charters_supersedes_id_fkey"
+            columns: ["supersedes_id"]
+            isOneToOne: false
+            referencedRelation: "platform_charters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       platform_fee_rules: {
         Row: {
           created_at: string
@@ -2386,6 +3586,59 @@ export type Database = {
         }
         Relationships: []
       }
+      regional_governance: {
+        Row: {
+          autonomy_level: string
+          created_at: string
+          cultural_adaptations: Json | null
+          governance_council_id: string | null
+          id: string
+          language_requirements: string[] | null
+          local_policies: Json | null
+          region_code: string
+          region_name: string
+          regulatory_compliance: Json | null
+          reports_to_global: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          autonomy_level: string
+          created_at?: string
+          cultural_adaptations?: Json | null
+          governance_council_id?: string | null
+          id?: string
+          language_requirements?: string[] | null
+          local_policies?: Json | null
+          region_code: string
+          region_name: string
+          regulatory_compliance?: Json | null
+          reports_to_global?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          autonomy_level?: string
+          created_at?: string
+          cultural_adaptations?: Json | null
+          governance_council_id?: string | null
+          id?: string
+          language_requirements?: string[] | null
+          local_policies?: Json | null
+          region_code?: string
+          region_name?: string
+          regulatory_compliance?: Json | null
+          reports_to_global?: boolean | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regional_governance_governance_council_id_fkey"
+            columns: ["governance_council_id"]
+            isOneToOne: false
+            referencedRelation: "governance_councils"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reports: {
         Row: {
           admin_notes: string | null
@@ -2443,6 +3696,59 @@ export type Database = {
           },
         ]
       }
+      research_lineage: {
+        Row: {
+          contributions: string | null
+          created_at: string
+          ended_at: string | null
+          field_of_study: string | null
+          id: string
+          institution_id: string | null
+          mentor_id: string | null
+          relationship_type: string
+          researcher_id: string
+          started_at: string | null
+          verified: boolean | null
+          verified_by: string | null
+        }
+        Insert: {
+          contributions?: string | null
+          created_at?: string
+          ended_at?: string | null
+          field_of_study?: string | null
+          id?: string
+          institution_id?: string | null
+          mentor_id?: string | null
+          relationship_type: string
+          researcher_id: string
+          started_at?: string | null
+          verified?: boolean | null
+          verified_by?: string | null
+        }
+        Update: {
+          contributions?: string | null
+          created_at?: string
+          ended_at?: string | null
+          field_of_study?: string | null
+          id?: string
+          institution_id?: string | null
+          mentor_id?: string | null
+          relationship_type?: string
+          researcher_id?: string
+          started_at?: string | null
+          verified?: boolean | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_lineage_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       review_unlock_queue: {
         Row: {
           created_at: string
@@ -2486,6 +3792,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      service_abstractions: {
+        Row: {
+          abstraction_interface: string
+          alternative_providers: Json | null
+          created_at: string
+          current_provider: string
+          deprecation_timeline: string | null
+          id: string
+          last_provider_evaluation: string | null
+          migration_complexity: string | null
+          migration_plan_url: string | null
+          service_category: string
+          updated_at: string
+          vendor_lock_in_risk: string | null
+        }
+        Insert: {
+          abstraction_interface: string
+          alternative_providers?: Json | null
+          created_at?: string
+          current_provider: string
+          deprecation_timeline?: string | null
+          id?: string
+          last_provider_evaluation?: string | null
+          migration_complexity?: string | null
+          migration_plan_url?: string | null
+          service_category: string
+          updated_at?: string
+          vendor_lock_in_risk?: string | null
+        }
+        Update: {
+          abstraction_interface?: string
+          alternative_providers?: Json | null
+          created_at?: string
+          current_provider?: string
+          deprecation_timeline?: string | null
+          id?: string
+          last_provider_evaluation?: string | null
+          migration_complexity?: string | null
+          migration_plan_url?: string | null
+          service_category?: string
+          updated_at?: string
+          vendor_lock_in_risk?: string | null
+        }
+        Relationships: []
       }
       student_cohorts: {
         Row: {
