@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useRealityFeed, useConsequenceLedger } from "@/hooks/useAccountability";
 import { useOutcomeFeed, useWorkConnections, useProfileProofMetrics } from "@/hooks/useOutcomeFeed";
+import { useProfessionalSignalFeed } from "@/hooks/useProfessionalSignals";
 import { useMyTrustProfile } from "@/hooks/useMyTrustProfile";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,6 @@ import {
   OutcomeFeedCard,
   OutcomeFeedSkeleton,
   EmptyOutcomeFeed,
-  WorkGraphCard,
 } from "@/components/outcome";
 import {
   RealityFeedCard,
@@ -21,6 +21,7 @@ import {
   ConsequenceLedgerCard,
 } from "@/components/accountability";
 import { ProfileReadinessCard } from "@/components/opportunity";
+import { StructuredUpdateComposer, ProfessionalSignalCard } from "@/components/signals";
 import {
   Briefcase,
   Award,
@@ -32,12 +33,22 @@ import {
   Zap,
   Activity,
   Shield,
+  Radio,
 } from "lucide-react";
 
 export default function FeedPage() {
   const { user, profile, isLoading: authLoading } = useAuth();
-  const [activeTab, setActiveTab] = useState<"reality" | "opportunities">("reality");
+  const [activeTab, setActiveTab] = useState<"signals" | "reality" | "opportunities">("signals");
   
+  // Professional Signal Feed (new)
+  const {
+    signals,
+    isLoading: signalsLoading,
+    hasMore: signalsHasMore,
+    loadMore: loadMoreSignals,
+    refetch: refetchSignals,
+  } = useProfessionalSignalFeed();
+
   // Reality Feed (system events)
   const { 
     events: realityEvents, 
@@ -64,10 +75,14 @@ export default function FeedPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const loading = activeTab === "reality" ? realityLoading : outcomeLoading;
-  const hasMore = activeTab === "reality" ? realityHasMore : outcomeHasMore;
-  const loadMore = activeTab === "reality" ? loadMoreReality : loadMoreOutcome;
-  const refetch = activeTab === "reality" ? refetchReality : refetchOutcome;
+  const loading = activeTab === "signals" ? signalsLoading :
+                  activeTab === "reality" ? realityLoading : outcomeLoading;
+  const hasMore = activeTab === "signals" ? signalsHasMore :
+                  activeTab === "reality" ? realityHasMore : outcomeHasMore;
+  const loadMore = activeTab === "signals" ? loadMoreSignals :
+                   activeTab === "reality" ? loadMoreReality : loadMoreOutcome;
+  const refetch = activeTab === "signals" ? refetchSignals :
+                  activeTab === "reality" ? refetchReality : refetchOutcome;
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -135,10 +150,17 @@ export default function FeedPage() {
 
           {/* Main Feed */}
           <main className="lg:col-span-6 space-y-4">
+            {/* Structured Update Composer */}
+            <StructuredUpdateComposer />
+
             {/* Feed Tabs */}
-            <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "reality" | "opportunities")}>
+            <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)}>
               <div className="flex items-center justify-between">
-                <TabsList className="grid w-auto grid-cols-2">
+                <TabsList className="grid w-auto grid-cols-3">
+                  <TabsTrigger value="signals" className="gap-1.5">
+                    <Radio className="h-4 w-4" />
+                    Signals
+                  </TabsTrigger>
                   <TabsTrigger value="reality" className="gap-1.5">
                     <Activity className="h-4 w-4" />
                     Reality
@@ -158,7 +180,12 @@ export default function FeedPage() {
               <Card className="border-dashed bg-muted/30 mt-4">
                 <CardContent className="py-3 text-center">
                   <p className="text-sm text-muted-foreground">
-                    {activeTab === "reality" ? (
+                    {activeTab === "signals" ? (
+                      <>
+                        <span className="font-medium text-foreground">Professional signals only.</span>{" "}
+                        Work updates, outcomes, lessons. No opinions, no likes.
+                      </>
+                    ) : activeTab === "reality" ? (
                       <>
                         <span className="font-medium text-foreground">System events only.</span>{" "}
                         Projects. Money. Trust. Consequences. No opinions.
@@ -172,6 +199,36 @@ export default function FeedPage() {
                   </p>
                 </CardContent>
               </Card>
+
+              {/* Professional Signals Tab */}
+              <TabsContent value="signals" className="mt-4 space-y-4">
+                {signalsLoading && signals.length === 0 ? (
+                  <div className="space-y-4">
+                    {[1, 2, 3].map((i) => (
+                      <OutcomeFeedSkeleton key={i} />
+                    ))}
+                  </div>
+                ) : signals.length === 0 ? (
+                  <Card className="py-12">
+                    <CardContent className="text-center">
+                      <Radio className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
+                      <h3 className="font-semibold mb-2">No Professional Signals Yet</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Share your first work update, research milestone, or lesson learned.
+                      </p>
+                      <Button variant="outline" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                        Create Your First Signal
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="space-y-4">
+                    {signals.map((signal) => (
+                      <ProfessionalSignalCard key={signal.id} signal={signal} />
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
 
               {/* Reality Feed Tab */}
               <TabsContent value="reality" className="mt-4 space-y-4">
@@ -219,7 +276,11 @@ export default function FeedPage() {
                     <span className="text-sm">Loading more...</span>
                   </div>
                 )}
-                {!hasMore && (activeTab === "reality" ? realityEvents.length > 0 : feedItems.length > 0) && (
+                {!hasMore && (
+                  activeTab === "signals" ? signals.length > 0 :
+                  activeTab === "reality" ? realityEvents.length > 0 : 
+                  feedItems.length > 0
+                ) && (
                   <p className="text-sm text-muted-foreground">All loaded</p>
                 )}
               </div>
@@ -271,19 +332,19 @@ export default function FeedPage() {
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li className="flex items-start gap-2">
                       <span className="text-primary font-bold">✓</span>
-                      Shows <span className="font-medium text-foreground">failure</span>, not just success
+                      <span><span className="font-medium text-foreground">No likes</span> — professional reactions only</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-primary font-bold">✓</span>
-                      Shows <span className="font-medium text-foreground">money moved</span>, not likes
+                      <span>Shows <span className="font-medium text-foreground">failure</span>, not just success</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-primary font-bold">✓</span>
-                      Trust <span className="font-medium text-foreground">earned from work</span>
+                      <span>Trust <span className="font-medium text-foreground">earned from work</span></span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-primary font-bold">✓</span>
-                      <span className="font-medium text-foreground">Consequences</span> are permanent
+                      <span><span className="font-medium text-foreground">Peer review</span>, not comments</span>
                     </li>
                   </ul>
                 </CardContent>
