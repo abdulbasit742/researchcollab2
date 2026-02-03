@@ -40,6 +40,7 @@ import { PinnedMessagesBar } from "@/components/messages/PinnedMessagesBar";
 import { ConversationSummary } from "@/components/messages/ConversationSummary";
 import { ThreadNotesPanel } from "@/components/messages/ThreadNotesPanel";
 import { MessageContextMenu } from "@/components/messages/MessageContextMenu";
+import { SystemMessageBubble } from "@/components/messages/SystemMessageBubble";
 import { supabase } from "@/integrations/supabase/client";
 import { supportConfig } from "@/config/support";
 
@@ -362,6 +363,7 @@ Page: ${window.location.pathname}`;
       );
     }
 
+    // System message with connection request
     if (message.type === "system" && message.metadata?.connection_request_id) {
       return (
         <div
@@ -369,6 +371,18 @@ Page: ${window.location.pathname}`;
           ref={(el) => el && messageRefs.current.set(message.id, el)}
         >
           <ConnectionBubble requestId={message.metadata.connection_request_id} isMine={isMine} />
+        </div>
+      );
+    }
+
+    // Plain system message (like welcome message)
+    if (message.type === "system") {
+      return (
+        <div
+          key={message.id}
+          ref={(el) => el && messageRefs.current.set(message.id, el)}
+        >
+          <SystemMessageBubble body={message.body} createdAt={message.created_at} />
         </div>
       );
     }

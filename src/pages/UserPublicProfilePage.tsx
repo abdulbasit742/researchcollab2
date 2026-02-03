@@ -32,6 +32,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { QuickOfferModal } from "@/components/offers/QuickOfferModal";
+import { useStartConversation } from "@/hooks/useMessaging";
 import { 
   allUsers, 
   UserProfile, 
@@ -68,6 +69,7 @@ export default function UserPublicProfilePage() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user: authUser } = useAuth();
+  const { startConversation } = useStartConversation();
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [profileData, setProfileData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -119,10 +121,10 @@ export default function UserPublicProfilePage() {
   }, [id, authUser, navigate]);
 
   const handleMessage = () => {
-    toast({
-      title: "Message Sent!",
-      description: "Your message request has been sent.",
-    });
+    const targetId = profileData?.id || userFromMock?.id || id;
+    if (targetId) {
+      startConversation(targetId);
+    }
   };
 
   const handleConnect = () => {
