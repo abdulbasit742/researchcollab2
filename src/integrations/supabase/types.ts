@@ -1494,6 +1494,60 @@ export type Database = {
           },
         ]
       }
+      collaborative_workspaces: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          is_archived: boolean
+          research_timeline_id: string | null
+          settings: Json | null
+          title: string
+          updated_at: string
+          workspace_type: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          is_archived?: boolean
+          research_timeline_id?: string | null
+          settings?: Json | null
+          title: string
+          updated_at?: string
+          workspace_type: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          is_archived?: boolean
+          research_timeline_id?: string | null
+          settings?: Json | null
+          title?: string
+          updated_at?: string
+          workspace_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collaborative_workspaces_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collaborative_workspaces_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       comment_likes: {
         Row: {
           comment_id: string
@@ -1524,6 +1578,86 @@ export type Database = {
           {
             foreignKeyName: "comment_likes_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      commercialization_requests: {
+        Row: {
+          business_plan_summary: string | null
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          expected_revenue_share: number | null
+          id: string
+          intended_use: string
+          ip_record_id: string
+          market_description: string | null
+          proposed_terms: Json | null
+          requester_org_id: string | null
+          requester_user_id: string | null
+          review_notes: string | null
+          status: string
+        }
+        Insert: {
+          business_plan_summary?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          expected_revenue_share?: number | null
+          id?: string
+          intended_use: string
+          ip_record_id: string
+          market_description?: string | null
+          proposed_terms?: Json | null
+          requester_org_id?: string | null
+          requester_user_id?: string | null
+          review_notes?: string | null
+          status?: string
+        }
+        Update: {
+          business_plan_summary?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          expected_revenue_share?: number | null
+          id?: string
+          intended_use?: string
+          ip_record_id?: string
+          market_description?: string | null
+          proposed_terms?: Json | null
+          requester_org_id?: string | null
+          requester_user_id?: string | null
+          review_notes?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commercialization_requests_decided_by_fkey"
+            columns: ["decided_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commercialization_requests_ip_record_id_fkey"
+            columns: ["ip_record_id"]
+            isOneToOne: false
+            referencedRelation: "ip_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commercialization_requests_requester_org_id_fkey"
+            columns: ["requester_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commercialization_requests_requester_user_id_fkey"
+            columns: ["requester_user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -3038,6 +3172,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      discovery_signals: {
+        Row: {
+          computed_at: string
+          context: Json | null
+          entity_id: string
+          entity_type: string
+          id: string
+          signal_type: string
+          signal_value: number | null
+        }
+        Insert: {
+          computed_at?: string
+          context?: Json | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          signal_type: string
+          signal_value?: number | null
+        }
+        Update: {
+          computed_at?: string
+          context?: Json | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          signal_type?: string
+          signal_value?: number | null
+        }
+        Relationships: []
       }
       dispute_actions: {
         Row: {
@@ -4669,6 +4833,60 @@ export type Database = {
           },
         ]
       }
+      gaming_detection_events: {
+        Row: {
+          detected_at: string
+          detection_type: string
+          evidence_summary: string | null
+          id: string
+          related_users: string[] | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          detected_at?: string
+          detection_type: string
+          evidence_summary?: string | null
+          id?: string
+          related_users?: string[] | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          detected_at?: string
+          detection_type?: string
+          evidence_summary?: string | null
+          id?: string
+          related_users?: string[] | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gaming_detection_events_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gaming_detection_events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       governance_assignments: {
         Row: {
           assigned_at: string
@@ -6001,6 +6219,263 @@ export type Database = {
           },
         ]
       }
+      ip_contributors: {
+        Row: {
+          acknowledged_at: string | null
+          contribution_record_id: string | null
+          created_at: string
+          id: string
+          ip_record_id: string
+          ownership_percentage: number | null
+          rights_description: string | null
+          role: string
+          scholar_passport_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          contribution_record_id?: string | null
+          created_at?: string
+          id?: string
+          ip_record_id: string
+          ownership_percentage?: number | null
+          rights_description?: string | null
+          role: string
+          scholar_passport_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          contribution_record_id?: string | null
+          created_at?: string
+          id?: string
+          ip_record_id?: string
+          ownership_percentage?: number | null
+          rights_description?: string | null
+          role?: string
+          scholar_passport_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ip_contributors_contribution_record_id_fkey"
+            columns: ["contribution_record_id"]
+            isOneToOne: false
+            referencedRelation: "contribution_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ip_contributors_ip_record_id_fkey"
+            columns: ["ip_record_id"]
+            isOneToOne: false
+            referencedRelation: "ip_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ip_contributors_scholar_passport_id_fkey"
+            columns: ["scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ip_disputes: {
+        Row: {
+          created_at: string
+          description: string
+          dispute_type: string
+          evidence_summary: string | null
+          id: string
+          ip_record_id: string
+          mediator_id: string | null
+          raised_by: string
+          resolution_summary: string | null
+          resolved_at: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          dispute_type: string
+          evidence_summary?: string | null
+          id?: string
+          ip_record_id: string
+          mediator_id?: string | null
+          raised_by: string
+          resolution_summary?: string | null
+          resolved_at?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          dispute_type?: string
+          evidence_summary?: string | null
+          id?: string
+          ip_record_id?: string
+          mediator_id?: string | null
+          raised_by?: string
+          resolution_summary?: string | null
+          resolved_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ip_disputes_ip_record_id_fkey"
+            columns: ["ip_record_id"]
+            isOneToOne: false
+            referencedRelation: "ip_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ip_disputes_mediator_id_fkey"
+            columns: ["mediator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ip_disputes_raised_by_fkey"
+            columns: ["raised_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ip_licenses: {
+        Row: {
+          created_at: string
+          currency: string | null
+          duration_months: number | null
+          expires_at: string | null
+          id: string
+          ip_record_id: string
+          license_type: string
+          licensee_name: string | null
+          licensee_org_id: string | null
+          licensee_type: string | null
+          royalty_terms: Json | null
+          scope: string
+          signed_at: string | null
+          status: string
+          territory: string | null
+          updated_at: string
+          upfront_fee: number | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string | null
+          duration_months?: number | null
+          expires_at?: string | null
+          id?: string
+          ip_record_id: string
+          license_type: string
+          licensee_name?: string | null
+          licensee_org_id?: string | null
+          licensee_type?: string | null
+          royalty_terms?: Json | null
+          scope: string
+          signed_at?: string | null
+          status?: string
+          territory?: string | null
+          updated_at?: string
+          upfront_fee?: number | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string | null
+          duration_months?: number | null
+          expires_at?: string | null
+          id?: string
+          ip_record_id?: string
+          license_type?: string
+          licensee_name?: string | null
+          licensee_org_id?: string | null
+          licensee_type?: string | null
+          royalty_terms?: Json | null
+          scope?: string
+          signed_at?: string | null
+          status?: string
+          territory?: string | null
+          updated_at?: string
+          upfront_fee?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ip_licenses_ip_record_id_fkey"
+            columns: ["ip_record_id"]
+            isOneToOne: false
+            referencedRelation: "ip_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ip_licenses_licensee_org_id_fkey"
+            columns: ["licensee_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ip_records: {
+        Row: {
+          created_at: string
+          declared_at: string
+          declared_by: string
+          description: string | null
+          id: string
+          institution_policy_id: string | null
+          ip_regime: string
+          status: string
+          target_id: string
+          target_type: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          declared_at?: string
+          declared_by: string
+          description?: string | null
+          id?: string
+          institution_policy_id?: string | null
+          ip_regime: string
+          status?: string
+          target_id: string
+          target_type: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          declared_at?: string
+          declared_by?: string
+          description?: string | null
+          id?: string
+          institution_policy_id?: string | null
+          ip_regime?: string
+          status?: string
+          target_id?: string
+          target_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ip_records_declared_by_fkey"
+            columns: ["declared_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ip_records_institution_policy_id_fkey"
+            columns: ["institution_policy_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       job_applications: {
         Row: {
           cover_letter: string | null
@@ -6803,6 +7278,171 @@ export type Database = {
             columns: ["offer_id"]
             isOneToOne: false
             referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mobility_agreements: {
+        Row: {
+          agreement_summary: string
+          agreement_type: string
+          confidentiality_terms: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          ip_terms: string | null
+          mobility_request_id: string
+          obligations_home: string | null
+          obligations_host: string | null
+          scholar_rights: string | null
+          signed_at: string | null
+          status: string
+        }
+        Insert: {
+          agreement_summary: string
+          agreement_type: string
+          confidentiality_terms?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          ip_terms?: string | null
+          mobility_request_id: string
+          obligations_home?: string | null
+          obligations_host?: string | null
+          scholar_rights?: string | null
+          signed_at?: string | null
+          status?: string
+        }
+        Update: {
+          agreement_summary?: string
+          agreement_type?: string
+          confidentiality_terms?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          ip_terms?: string | null
+          mobility_request_id?: string
+          obligations_home?: string | null
+          obligations_host?: string | null
+          scholar_rights?: string | null
+          signed_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mobility_agreements_mobility_request_id_fkey"
+            columns: ["mobility_request_id"]
+            isOneToOne: false
+            referencedRelation: "research_mobility_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mobility_approvals: {
+        Row: {
+          approver_org_id: string | null
+          approver_type: string
+          approver_user_id: string | null
+          conditions: string | null
+          created_at: string
+          decided_at: string | null
+          decision: string | null
+          id: string
+          mobility_request_id: string
+          notes: string | null
+        }
+        Insert: {
+          approver_org_id?: string | null
+          approver_type: string
+          approver_user_id?: string | null
+          conditions?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decision?: string | null
+          id?: string
+          mobility_request_id: string
+          notes?: string | null
+        }
+        Update: {
+          approver_org_id?: string | null
+          approver_type?: string
+          approver_user_id?: string | null
+          conditions?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decision?: string | null
+          id?: string
+          mobility_request_id?: string
+          notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mobility_approvals_approver_org_id_fkey"
+            columns: ["approver_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mobility_approvals_approver_user_id_fkey"
+            columns: ["approver_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mobility_approvals_mobility_request_id_fkey"
+            columns: ["mobility_request_id"]
+            isOneToOne: false
+            referencedRelation: "research_mobility_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mobility_compliance_flags: {
+        Row: {
+          created_at: string
+          description: string | null
+          flag_type: string
+          id: string
+          mobility_request_id: string
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          flag_type: string
+          id?: string
+          mobility_request_id: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          flag_type?: string
+          id?: string
+          mobility_request_id?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mobility_compliance_flags_mobility_request_id_fkey"
+            columns: ["mobility_request_id"]
+            isOneToOne: false
+            referencedRelation: "research_mobility_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mobility_compliance_flags_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -9311,6 +9951,57 @@ export type Database = {
         }
         Relationships: []
       }
+      query_execution_logs: {
+        Row: {
+          executed_at: string
+          executed_by: string
+          execution_time_ms: number | null
+          filters_applied: Json | null
+          id: string
+          query_id: string | null
+          query_text: string
+          ranking_factors: Json | null
+          result_count: number | null
+        }
+        Insert: {
+          executed_at?: string
+          executed_by: string
+          execution_time_ms?: number | null
+          filters_applied?: Json | null
+          id?: string
+          query_id?: string | null
+          query_text: string
+          ranking_factors?: Json | null
+          result_count?: number | null
+        }
+        Update: {
+          executed_at?: string
+          executed_by?: string
+          execution_time_ms?: number | null
+          filters_applied?: Json | null
+          id?: string
+          query_id?: string | null
+          query_text?: string
+          ranking_factors?: Json | null
+          result_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "query_execution_logs_executed_by_fkey"
+            columns: ["executed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "query_execution_logs_query_id_fkey"
+            columns: ["query_id"]
+            isOneToOne: false
+            referencedRelation: "semantic_queries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rate_limits: {
         Row: {
           action_type: string
@@ -10295,6 +10986,86 @@ export type Database = {
           },
         ]
       }
+      research_mobility_requests: {
+        Row: {
+          applicant_scholar_passport_id: string
+          created_at: string
+          funding_details: Json | null
+          funding_source: string | null
+          home_institution_id: string | null
+          host_institution_id: string
+          id: string
+          mobility_type: string
+          proposed_end_date: string
+          proposed_start_date: string
+          purpose_statement: string | null
+          research_timeline_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          applicant_scholar_passport_id: string
+          created_at?: string
+          funding_details?: Json | null
+          funding_source?: string | null
+          home_institution_id?: string | null
+          host_institution_id: string
+          id?: string
+          mobility_type: string
+          proposed_end_date: string
+          proposed_start_date: string
+          purpose_statement?: string | null
+          research_timeline_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          applicant_scholar_passport_id?: string
+          created_at?: string
+          funding_details?: Json | null
+          funding_source?: string | null
+          home_institution_id?: string | null
+          host_institution_id?: string
+          id?: string
+          mobility_type?: string
+          proposed_end_date?: string
+          proposed_start_date?: string
+          purpose_statement?: string | null
+          research_timeline_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_mobility_requests_applicant_scholar_passport_id_fkey"
+            columns: ["applicant_scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_mobility_requests_home_institution_id_fkey"
+            columns: ["home_institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_mobility_requests_host_institution_id_fkey"
+            columns: ["host_institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_mobility_requests_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_timelines: {
         Row: {
           created_at: string
@@ -10879,6 +11650,95 @@ export type Database = {
         }
         Relationships: []
       }
+      search_indexes: {
+        Row: {
+          domains: string[] | null
+          embedding_version: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          keywords: string[] | null
+          last_indexed_at: string
+          owner_id: string | null
+          searchable_text: string
+          visibility_scope: string
+        }
+        Insert: {
+          domains?: string[] | null
+          embedding_version?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          keywords?: string[] | null
+          last_indexed_at?: string
+          owner_id?: string | null
+          searchable_text: string
+          visibility_scope?: string
+        }
+        Update: {
+          domains?: string[] | null
+          embedding_version?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          keywords?: string[] | null
+          last_indexed_at?: string
+          owner_id?: string | null
+          searchable_text?: string
+          visibility_scope?: string
+        }
+        Relationships: []
+      }
+      semantic_queries: {
+        Row: {
+          created_at: string
+          entity_types: string[] | null
+          filters: Json | null
+          id: string
+          is_alert_enabled: boolean
+          last_executed_at: string | null
+          parsed_structure: Json | null
+          query_name: string | null
+          query_text: string
+          scope: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          entity_types?: string[] | null
+          filters?: Json | null
+          id?: string
+          is_alert_enabled?: boolean
+          last_executed_at?: string | null
+          parsed_structure?: Json | null
+          query_name?: string | null
+          query_text: string
+          scope?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          entity_types?: string[] | null
+          filters?: Json | null
+          id?: string
+          is_alert_enabled?: boolean
+          last_executed_at?: string | null
+          parsed_structure?: Json | null
+          query_name?: string | null
+          query_text?: string
+          scope?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "semantic_queries_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_abstractions: {
         Row: {
           abstraction_interface: string
@@ -11317,6 +12177,159 @@ export type Database = {
         }
         Relationships: []
       }
+      trust_contexts: {
+        Row: {
+          computed_at: string
+          context_id: string
+          context_score: number | null
+          context_type: string
+          id: string
+          trust_state: string
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string
+          context_id: string
+          context_score?: number | null
+          context_type: string
+          id?: string
+          trust_state?: string
+          user_id: string
+        }
+        Update: {
+          computed_at?: string
+          context_id?: string
+          context_score?: number | null
+          context_type?: string
+          id?: string
+          trust_state?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trust_contexts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trust_interventions: {
+        Row: {
+          applied_at: string
+          applied_by: string | null
+          details: Json | null
+          expires_at: string | null
+          id: string
+          intervention_type: string
+          lift_reason: string | null
+          lifted_at: string | null
+          lifted_by: string | null
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string
+          applied_by?: string | null
+          details?: Json | null
+          expires_at?: string | null
+          id?: string
+          intervention_type: string
+          lift_reason?: string | null
+          lifted_at?: string | null
+          lifted_by?: string | null
+          reason: string
+          user_id: string
+        }
+        Update: {
+          applied_at?: string
+          applied_by?: string | null
+          details?: Json | null
+          expires_at?: string | null
+          id?: string
+          intervention_type?: string
+          lift_reason?: string | null
+          lifted_at?: string | null
+          lifted_by?: string | null
+          reason?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trust_interventions_applied_by_fkey"
+            columns: ["applied_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trust_interventions_lifted_by_fkey"
+            columns: ["lifted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trust_interventions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trust_profiles: {
+        Row: {
+          base_trust_level: string
+          created_at: string
+          is_manually_set: boolean
+          last_computed_at: string
+          manual_set_by: string | null
+          manual_set_reason: string | null
+          trust_score: number | null
+          user_id: string
+          verification_weight: number | null
+        }
+        Insert: {
+          base_trust_level?: string
+          created_at?: string
+          is_manually_set?: boolean
+          last_computed_at?: string
+          manual_set_by?: string | null
+          manual_set_reason?: string | null
+          trust_score?: number | null
+          user_id: string
+          verification_weight?: number | null
+        }
+        Update: {
+          base_trust_level?: string
+          created_at?: string
+          is_manually_set?: boolean
+          last_computed_at?: string
+          manual_set_by?: string | null
+          manual_set_reason?: string | null
+          trust_score?: number | null
+          user_id?: string
+          verification_weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trust_profiles_manual_set_by_fkey"
+            columns: ["manual_set_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trust_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trust_score_history: {
         Row: {
           change_reason: string
@@ -11349,6 +12362,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      trust_signals: {
+        Row: {
+          context_id: string | null
+          context_type: string | null
+          decays_at: string | null
+          generated_at: string
+          id: string
+          signal_type: string
+          signal_value: number
+          source_entity_id: string | null
+          source_entity_type: string | null
+          user_id: string
+          weight: number
+        }
+        Insert: {
+          context_id?: string | null
+          context_type?: string | null
+          decays_at?: string | null
+          generated_at?: string
+          id?: string
+          signal_type: string
+          signal_value: number
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          user_id: string
+          weight?: number
+        }
+        Update: {
+          context_id?: string | null
+          context_type?: string | null
+          decays_at?: string | null
+          generated_at?: string
+          id?: string
+          signal_type?: string
+          signal_value?: number
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          user_id?: string
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trust_signals_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       trust_tier_requirements: {
         Row: {
@@ -11873,6 +12936,77 @@ export type Database = {
         }
         Relationships: []
       }
+      visiting_scholar_records: {
+        Row: {
+          access_scope: string
+          active_from: string
+          active_until: string
+          created_at: string
+          host_institution_id: string
+          id: string
+          is_active: boolean
+          local_contact_id: string | null
+          mobility_request_id: string | null
+          office_location: string | null
+          scholar_passport_id: string
+        }
+        Insert: {
+          access_scope?: string
+          active_from: string
+          active_until: string
+          created_at?: string
+          host_institution_id: string
+          id?: string
+          is_active?: boolean
+          local_contact_id?: string | null
+          mobility_request_id?: string | null
+          office_location?: string | null
+          scholar_passport_id: string
+        }
+        Update: {
+          access_scope?: string
+          active_from?: string
+          active_until?: string
+          created_at?: string
+          host_institution_id?: string
+          id?: string
+          is_active?: boolean
+          local_contact_id?: string | null
+          mobility_request_id?: string | null
+          office_location?: string | null
+          scholar_passport_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visiting_scholar_records_host_institution_id_fkey"
+            columns: ["host_institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visiting_scholar_records_local_contact_id_fkey"
+            columns: ["local_contact_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visiting_scholar_records_mobility_request_id_fkey"
+            columns: ["mobility_request_id"]
+            isOneToOne: false
+            referencedRelation: "research_mobility_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visiting_scholar_records_scholar_passport_id_fkey"
+            columns: ["scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wallet_transactions: {
         Row: {
           amount: number
@@ -11970,6 +13104,301 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      workspace_block_versions: {
+        Row: {
+          block_id: string
+          change_note: string | null
+          change_type: string | null
+          content_snapshot: Json
+          created_at: string
+          edited_by: string
+          id: string
+          version_number: number
+        }
+        Insert: {
+          block_id: string
+          change_note?: string | null
+          change_type?: string | null
+          content_snapshot: Json
+          created_at?: string
+          edited_by: string
+          id?: string
+          version_number: number
+        }
+        Update: {
+          block_id?: string
+          change_note?: string | null
+          change_type?: string | null
+          content_snapshot?: Json
+          created_at?: string
+          edited_by?: string
+          id?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_block_versions_block_id_fkey"
+            columns: ["block_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_blocks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_block_versions_edited_by_fkey"
+            columns: ["edited_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_blocks: {
+        Row: {
+          block_type: string
+          content: Json
+          created_at: string
+          created_by: string
+          id: string
+          is_locked: boolean
+          last_edited_by: string | null
+          locked_by: string | null
+          parent_block_id: string | null
+          position: number
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          block_type: string
+          content?: Json
+          created_at?: string
+          created_by: string
+          id?: string
+          is_locked?: boolean
+          last_edited_by?: string | null
+          locked_by?: string | null
+          parent_block_id?: string | null
+          position?: number
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          block_type?: string
+          content?: Json
+          created_at?: string
+          created_by?: string
+          id?: string
+          is_locked?: boolean
+          last_edited_by?: string | null
+          locked_by?: string | null
+          parent_block_id?: string | null
+          position?: number
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_blocks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_blocks_last_edited_by_fkey"
+            columns: ["last_edited_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_blocks_locked_by_fkey"
+            columns: ["locked_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_blocks_parent_block_id_fkey"
+            columns: ["parent_block_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_blocks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_blocks_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "collaborative_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_discussions: {
+        Row: {
+          content: string
+          created_at: string
+          created_by: string
+          discussion_type: string
+          id: string
+          is_resolved: boolean
+          related_block_id: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          workspace_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          created_by: string
+          discussion_type: string
+          id?: string
+          is_resolved?: boolean
+          related_block_id?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          workspace_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          created_by?: string
+          discussion_type?: string
+          id?: string
+          is_resolved?: boolean
+          related_block_id?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_discussions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_discussions_related_block_id_fkey"
+            columns: ["related_block_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_blocks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_discussions_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_discussions_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "collaborative_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_members: {
+        Row: {
+          id: string
+          invited_by: string | null
+          joined_at: string
+          role: string
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          id?: string
+          invited_by?: string | null
+          joined_at?: string
+          role?: string
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          id?: string
+          invited_by?: string | null
+          joined_at?: string
+          role?: string
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_members_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_members_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "collaborative_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_presence: {
+        Row: {
+          current_block_id: string | null
+          cursor_position: Json | null
+          id: string
+          last_seen_at: string
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          current_block_id?: string | null
+          cursor_position?: Json | null
+          id?: string
+          last_seen_at?: string
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          current_block_id?: string | null
+          cursor_position?: Json | null
+          id?: string
+          last_seen_at?: string
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_presence_current_block_id_fkey"
+            columns: ["current_block_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_blocks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_presence_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_presence_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "collaborative_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
