@@ -10,7 +10,10 @@ import { NextActionCard } from "@/components/home/NextActionCard";
 import { QuickActionsCard } from "@/components/home/QuickActionsCard";
 import { WorkLedgerSummary } from "@/components/home/WorkLedgerSummary";
 import { NetworkContext } from "@/components/home/NetworkContext";
+import { OpportunityList } from "@/components/home/OpportunityList";
+import { RecentActivityCard } from "@/components/home/RecentActivityCard";
 import { OpportunityMatchCard } from "@/components/opportunity/OpportunityMatchCard";
+import { ProfileViewsCard } from "@/components/profile/ProfileViewsCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +24,7 @@ import {
   ArrowRight,
   Sparkles,
   TrendingUp,
+  BarChart3,
 } from "lucide-react";
 
 export default function HomeDashboard() {
@@ -81,7 +85,7 @@ export default function HomeDashboard() {
               <h1 className="text-2xl font-bold flex items-center gap-2">
                 Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""}
                 {isVerified && (
-                  <Badge variant="outline" className="text-emerald-600 border-emerald-200 gap-1">
+                  <Badge variant="outline" className="text-primary border-primary/30 gap-1">
                     <TrendingUp className="h-3 w-3" />
                     Verified
                   </Badge>
@@ -175,6 +179,25 @@ export default function HomeDashboard() {
               trustScore={trustScore}
               loading={loading}
             />
+
+            {/* Progress Link */}
+            <Card>
+              <CardContent className="py-4">
+                <Button variant="outline" className="w-full gap-2" asChild>
+                  <Link to="/progress">
+                    <BarChart3 className="h-4 w-4" />
+                    View Career Dashboard
+                    <ArrowRight className="h-3 w-3 ml-auto" />
+                  </Link>
+                </Button>
+                <p className="text-xs text-muted-foreground text-center mt-2">
+                  Track trust trajectory, economic outcomes & AI career guidance
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Profile Views */}
+            <ProfileViewsCard />
 
             {/* Network Context */}
             <NetworkContext
