@@ -14,6 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      academic_disputes: {
+        Row: {
+          confidentiality_level: string
+          created_at: string
+          description: string
+          dispute_type: string
+          id: string
+          priority: string
+          raised_by_user_id: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          confidentiality_level?: string
+          created_at?: string
+          description: string
+          dispute_type: string
+          id?: string
+          priority?: string
+          raised_by_user_id: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          confidentiality_level?: string
+          created_at?: string
+          description?: string
+          dispute_type?: string
+          id?: string
+          priority?: string
+          raised_by_user_id?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academic_disputes_raised_by_user_id_fkey"
+            columns: ["raised_by_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       academic_records: {
         Row: {
           created_at: string
@@ -1237,6 +1290,185 @@ export type Database = {
           },
         ]
       }
+      contribution_disputes: {
+        Row: {
+          contribution_record_id: string
+          created_at: string
+          id: string
+          raised_by: string
+          reason: string
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+        }
+        Insert: {
+          contribution_record_id: string
+          created_at?: string
+          id?: string
+          raised_by: string
+          reason: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+        }
+        Update: {
+          contribution_record_id?: string
+          created_at?: string
+          id?: string
+          raised_by?: string
+          reason?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contribution_disputes_contribution_record_id_fkey"
+            columns: ["contribution_record_id"]
+            isOneToOne: false
+            referencedRelation: "contribution_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contribution_disputes_raised_by_fkey"
+            columns: ["raised_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contribution_disputes_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contribution_graph_snapshots: {
+        Row: {
+          collaboration_depth_score: number
+          contribution_diversity_score: number
+          last_updated_at: string
+          total_contributions: number
+          user_id: string
+          validated_contributions: number
+        }
+        Insert: {
+          collaboration_depth_score?: number
+          contribution_diversity_score?: number
+          last_updated_at?: string
+          total_contributions?: number
+          user_id: string
+          validated_contributions?: number
+        }
+        Update: {
+          collaboration_depth_score?: number
+          contribution_diversity_score?: number
+          last_updated_at?: string
+          total_contributions?: number
+          user_id?: string
+          validated_contributions?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contribution_graph_snapshots_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contribution_records: {
+        Row: {
+          contribution_description: string | null
+          contribution_type: string
+          contributor_user_id: string
+          created_at: string
+          effort_weight: number | null
+          id: string
+          is_locked: boolean
+          target_id: string
+          target_type: string
+        }
+        Insert: {
+          contribution_description?: string | null
+          contribution_type: string
+          contributor_user_id: string
+          created_at?: string
+          effort_weight?: number | null
+          id?: string
+          is_locked?: boolean
+          target_id: string
+          target_type: string
+        }
+        Update: {
+          contribution_description?: string | null
+          contribution_type?: string
+          contributor_user_id?: string
+          created_at?: string
+          effort_weight?: number | null
+          id?: string
+          is_locked?: boolean
+          target_id?: string
+          target_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contribution_records_contributor_user_id_fkey"
+            columns: ["contributor_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contribution_validations: {
+        Row: {
+          comment: string | null
+          contribution_record_id: string
+          created_at: string
+          id: string
+          validation_type: string
+          validator_user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          contribution_record_id: string
+          created_at?: string
+          id?: string
+          validation_type: string
+          validator_user_id: string
+        }
+        Update: {
+          comment?: string | null
+          contribution_record_id?: string
+          created_at?: string
+          id?: string
+          validation_type?: string
+          validator_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contribution_validations_contribution_record_id_fkey"
+            columns: ["contribution_record_id"]
+            isOneToOne: false
+            referencedRelation: "contribution_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contribution_validations_validator_user_id_fkey"
+            columns: ["validator_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       council_decisions: {
         Row: {
           affected_systems: string[] | null
@@ -2043,6 +2275,141 @@ export type Database = {
             columns: ["related_record_id"]
             isOneToOne: false
             referencedRelation: "academic_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dispute_actions: {
+        Row: {
+          action_type: string
+          content: string
+          created_at: string
+          created_by: string
+          dispute_id: string
+          id: string
+          visibility: string
+        }
+        Insert: {
+          action_type: string
+          content: string
+          created_at?: string
+          created_by: string
+          dispute_id: string
+          id?: string
+          visibility?: string
+        }
+        Update: {
+          action_type?: string
+          content?: string
+          created_at?: string
+          created_by?: string
+          dispute_id?: string
+          id?: string
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dispute_actions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dispute_actions_dispute_id_fkey"
+            columns: ["dispute_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disputes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dispute_evidence: {
+        Row: {
+          content: string
+          created_at: string
+          dispute_id: string
+          evidence_type: string
+          file_url: string | null
+          id: string
+          submitted_by: string
+          title: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          dispute_id: string
+          evidence_type: string
+          file_url?: string | null
+          id?: string
+          submitted_by: string
+          title?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          dispute_id?: string
+          evidence_type?: string
+          file_url?: string | null
+          id?: string
+          submitted_by?: string
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dispute_evidence_dispute_id_fkey"
+            columns: ["dispute_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disputes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dispute_evidence_submitted_by_fkey"
+            columns: ["submitted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dispute_participants: {
+        Row: {
+          created_at: string
+          dispute_id: string
+          id: string
+          notified_at: string | null
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dispute_id: string
+          id?: string
+          notified_at?: string | null
+          role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dispute_id?: string
+          id?: string
+          notified_at?: string | null
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dispute_participants_dispute_id_fkey"
+            columns: ["dispute_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disputes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dispute_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -2875,6 +3242,209 @@ export type Database = {
           },
         ]
       }
+      funding_allocations: {
+        Row: {
+          allocation_status: string
+          approval_notes: string | null
+          approved_amount: number
+          approved_at: string
+          approved_by: string | null
+          created_at: string
+          escrow_wallet_id: string | null
+          funding_application_id: string
+          id: string
+          released_amount: number
+        }
+        Insert: {
+          allocation_status?: string
+          approval_notes?: string | null
+          approved_amount: number
+          approved_at?: string
+          approved_by?: string | null
+          created_at?: string
+          escrow_wallet_id?: string | null
+          funding_application_id: string
+          id?: string
+          released_amount?: number
+        }
+        Update: {
+          allocation_status?: string
+          approval_notes?: string | null
+          approved_amount?: number
+          approved_at?: string
+          approved_by?: string | null
+          created_at?: string
+          escrow_wallet_id?: string | null
+          funding_application_id?: string
+          id?: string
+          released_amount?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_allocations_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funding_allocations_escrow_wallet_id_fkey"
+            columns: ["escrow_wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funding_allocations_funding_application_id_fkey"
+            columns: ["funding_application_id"]
+            isOneToOne: true
+            referencedRelation: "funding_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funding_applications: {
+        Row: {
+          applicant_user_id: string
+          budget_breakdown: Json | null
+          created_at: string
+          detailed_proposal: string | null
+          duration_months: number | null
+          funding_program_id: string
+          id: string
+          proposal_summary: string
+          proposal_title: string
+          requested_amount: number
+          research_timeline_id: string | null
+          status: string
+          submitted_at: string | null
+          team_members: Json | null
+          updated_at: string
+        }
+        Insert: {
+          applicant_user_id: string
+          budget_breakdown?: Json | null
+          created_at?: string
+          detailed_proposal?: string | null
+          duration_months?: number | null
+          funding_program_id: string
+          id?: string
+          proposal_summary: string
+          proposal_title: string
+          requested_amount: number
+          research_timeline_id?: string | null
+          status?: string
+          submitted_at?: string | null
+          team_members?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          applicant_user_id?: string
+          budget_breakdown?: Json | null
+          created_at?: string
+          detailed_proposal?: string | null
+          duration_months?: number | null
+          funding_program_id?: string
+          id?: string
+          proposal_summary?: string
+          proposal_title?: string
+          requested_amount?: number
+          research_timeline_id?: string | null
+          status?: string
+          submitted_at?: string | null
+          team_members?: Json | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_applications_applicant_user_id_fkey"
+            columns: ["applicant_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funding_applications_funding_program_id_fkey"
+            columns: ["funding_program_id"]
+            isOneToOne: false
+            referencedRelation: "funding_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funding_applications_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funding_milestones: {
+        Row: {
+          created_at: string
+          deliverables: Json | null
+          due_date: string | null
+          funding_allocation_id: string
+          id: string
+          milestone_number: number
+          milestone_title: string
+          release_amount: number
+          required_outcome: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          submission_notes: string | null
+          submitted_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          deliverables?: Json | null
+          due_date?: string | null
+          funding_allocation_id: string
+          id?: string
+          milestone_number: number
+          milestone_title: string
+          release_amount: number
+          required_outcome: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submission_notes?: string | null
+          submitted_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          deliverables?: Json | null
+          due_date?: string | null
+          funding_allocation_id?: string
+          id?: string
+          milestone_number?: number
+          milestone_title?: string
+          release_amount?: number
+          required_outcome?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submission_notes?: string | null
+          submitted_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_milestones_funding_allocation_id_fkey"
+            columns: ["funding_allocation_id"]
+            isOneToOne: false
+            referencedRelation: "funding_allocations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funding_milestones_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       funding_models: {
         Row: {
           activated_at: string | null
@@ -2916,6 +3486,141 @@ export type Database = {
           transition_requirements?: string | null
         }
         Relationships: []
+      }
+      funding_programs: {
+        Row: {
+          application_deadline: string | null
+          created_at: string
+          created_by: string | null
+          currency: string
+          description: string | null
+          eligibility_criteria: Json | null
+          focus_areas: string[] | null
+          id: string
+          max_amount: number | null
+          min_amount: number | null
+          program_name: string
+          review_process: string
+          sponsor_name: string | null
+          sponsor_org_id: string | null
+          sponsor_type: string
+          status: string
+          total_budget: number | null
+          updated_at: string
+        }
+        Insert: {
+          application_deadline?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          description?: string | null
+          eligibility_criteria?: Json | null
+          focus_areas?: string[] | null
+          id?: string
+          max_amount?: number | null
+          min_amount?: number | null
+          program_name: string
+          review_process?: string
+          sponsor_name?: string | null
+          sponsor_org_id?: string | null
+          sponsor_type: string
+          status?: string
+          total_budget?: number | null
+          updated_at?: string
+        }
+        Update: {
+          application_deadline?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          description?: string | null
+          eligibility_criteria?: Json | null
+          focus_areas?: string[] | null
+          id?: string
+          max_amount?: number | null
+          min_amount?: number | null
+          program_name?: string
+          review_process?: string
+          sponsor_name?: string | null
+          sponsor_org_id?: string | null
+          sponsor_type?: string
+          status?: string
+          total_budget?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_programs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funding_programs_sponsor_org_id_fkey"
+            columns: ["sponsor_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funding_reviews: {
+        Row: {
+          created_at: string
+          feasibility_score: number | null
+          feedback: string | null
+          funding_application_id: string
+          id: string
+          impact_score: number | null
+          innovation_score: number | null
+          is_conflicted: boolean
+          recommendation: string | null
+          reviewer_user_id: string
+          score: number | null
+        }
+        Insert: {
+          created_at?: string
+          feasibility_score?: number | null
+          feedback?: string | null
+          funding_application_id: string
+          id?: string
+          impact_score?: number | null
+          innovation_score?: number | null
+          is_conflicted?: boolean
+          recommendation?: string | null
+          reviewer_user_id: string
+          score?: number | null
+        }
+        Update: {
+          created_at?: string
+          feasibility_score?: number | null
+          feedback?: string | null
+          funding_application_id?: string
+          id?: string
+          impact_score?: number | null
+          innovation_score?: number | null
+          is_conflicted?: boolean
+          recommendation?: string | null
+          reviewer_user_id?: string
+          score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_reviews_funding_application_id_fkey"
+            columns: ["funding_application_id"]
+            isOneToOne: false
+            referencedRelation: "funding_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funding_reviews_reviewer_user_id_fkey"
+            columns: ["reviewer_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       fyp_requests: {
         Row: {
@@ -4813,6 +5518,48 @@ export type Database = {
           },
         ]
       }
+      ombuds_assignments: {
+        Row: {
+          assigned_at: string
+          completed_at: string | null
+          dispute_id: string
+          id: string
+          ombuds_user_id: string
+          role: string
+        }
+        Insert: {
+          assigned_at?: string
+          completed_at?: string | null
+          dispute_id: string
+          id?: string
+          ombuds_user_id: string
+          role: string
+        }
+        Update: {
+          assigned_at?: string
+          completed_at?: string | null
+          dispute_id?: string
+          id?: string
+          ombuds_user_id?: string
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ombuds_assignments_dispute_id_fkey"
+            columns: ["dispute_id"]
+            isOneToOne: false
+            referencedRelation: "academic_disputes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ombuds_assignments_ombuds_user_id_fkey"
+            columns: ["ombuds_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       onboarding_progress: {
         Row: {
           created_at: string
@@ -5162,6 +5909,166 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      peer_review_ai_assists: {
+        Row: {
+          ai_feedback_summary: string | null
+          confidence_score: number | null
+          created_at: string
+          id: string
+          strengths_detected: Json | null
+          suggestions: Json | null
+          target_id: string
+          target_type: string
+          weaknesses_detected: Json | null
+        }
+        Insert: {
+          ai_feedback_summary?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          strengths_detected?: Json | null
+          suggestions?: Json | null
+          target_id: string
+          target_type: string
+          weaknesses_detected?: Json | null
+        }
+        Update: {
+          ai_feedback_summary?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          strengths_detected?: Json | null
+          suggestions?: Json | null
+          target_id?: string
+          target_type?: string
+          weaknesses_detected?: Json | null
+        }
+        Relationships: []
+      }
+      peer_review_requests: {
+        Row: {
+          created_at: string
+          id: string
+          instructions: string | null
+          requester_id: string
+          review_type: string
+          status: string
+          target_id: string
+          target_type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          instructions?: string | null
+          requester_id: string
+          review_type?: string
+          status?: string
+          target_id: string
+          target_type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          instructions?: string | null
+          requester_id?: string
+          review_type?: string
+          status?: string
+          target_id?: string
+          target_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "peer_review_requests_requester_id_fkey"
+            columns: ["requester_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      peer_review_sections: {
+        Row: {
+          created_at: string
+          feedback_text: string | null
+          id: string
+          peer_review_id: string
+          score: number | null
+          section_type: string
+        }
+        Insert: {
+          created_at?: string
+          feedback_text?: string | null
+          id?: string
+          peer_review_id: string
+          score?: number | null
+          section_type: string
+        }
+        Update: {
+          created_at?: string
+          feedback_text?: string | null
+          id?: string
+          peer_review_id?: string
+          score?: number | null
+          section_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "peer_review_sections_peer_review_id_fkey"
+            columns: ["peer_review_id"]
+            isOneToOne: false
+            referencedRelation: "peer_reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      peer_reviews: {
+        Row: {
+          created_at: string
+          id: string
+          is_anonymous: boolean
+          overall_score: number | null
+          review_request_id: string
+          reviewer_id: string
+          summary_feedback: string | null
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_anonymous?: boolean
+          overall_score?: number | null
+          review_request_id: string
+          reviewer_id: string
+          summary_feedback?: string | null
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_anonymous?: boolean
+          overall_score?: number | null
+          review_request_id?: string
+          reviewer_id?: string
+          summary_feedback?: string | null
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "peer_reviews_review_request_id_fkey"
+            columns: ["review_request_id"]
+            isOneToOne: false
+            referencedRelation: "peer_review_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "peer_reviews_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       pinned_messages: {
         Row: {
@@ -6745,6 +7652,148 @@ export type Database = {
           },
         ]
       }
+      research_artifacts: {
+        Row: {
+          artifact_type: string
+          created_at: string
+          file_name: string | null
+          file_size_bytes: number | null
+          file_url: string
+          id: string
+          related_entry_id: string | null
+          research_timeline_id: string
+          uploaded_by: string
+        }
+        Insert: {
+          artifact_type: string
+          created_at?: string
+          file_name?: string | null
+          file_size_bytes?: number | null
+          file_url: string
+          id?: string
+          related_entry_id?: string | null
+          research_timeline_id: string
+          uploaded_by: string
+        }
+        Update: {
+          artifact_type?: string
+          created_at?: string
+          file_name?: string | null
+          file_size_bytes?: number | null
+          file_url?: string
+          id?: string
+          related_entry_id?: string | null
+          research_timeline_id?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_artifacts_related_entry_id_fkey"
+            columns: ["related_entry_id"]
+            isOneToOne: false
+            referencedRelation: "research_entries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_artifacts_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_artifacts_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_collaborators: {
+        Row: {
+          added_at: string
+          id: string
+          research_timeline_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          added_at?: string
+          id?: string
+          research_timeline_id: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          added_at?: string
+          id?: string
+          research_timeline_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_collaborators_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_collaborators_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_entries: {
+        Row: {
+          content: string | null
+          created_at: string
+          created_by: string
+          entry_type: string
+          id: string
+          research_timeline_id: string
+          title: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          created_by: string
+          entry_type: string
+          id?: string
+          research_timeline_id: string
+          title: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          created_by?: string
+          entry_type?: string
+          id?: string
+          research_timeline_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_entries_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_entries_research_timeline_id_fkey"
+            columns: ["research_timeline_id"]
+            isOneToOne: false
+            referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_lineage: {
         Row: {
           contributions: string | null
@@ -6798,6 +7847,95 @@ export type Database = {
           },
         ]
       }
+      research_timelines: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          owner_user_id: string
+          research_domain: string | null
+          status: string
+          title: string
+          updated_at: string
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          owner_user_id: string
+          research_domain?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          owner_user_id?: string
+          research_domain?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_timelines_owner_user_id_fkey"
+            columns: ["owner_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_versions: {
+        Row: {
+          change_summary: string | null
+          content_snapshot: string
+          created_at: string
+          created_by: string
+          id: string
+          research_entry_id: string
+          version_number: number
+        }
+        Insert: {
+          change_summary?: string | null
+          content_snapshot: string
+          created_at?: string
+          created_by: string
+          id?: string
+          research_entry_id: string
+          version_number?: number
+        }
+        Update: {
+          change_summary?: string | null
+          content_snapshot?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          research_entry_id?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_versions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_versions_research_entry_id_fkey"
+            columns: ["research_entry_id"]
+            isOneToOne: false
+            referencedRelation: "research_entries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       review_unlock_queue: {
         Row: {
           created_at: string
@@ -6838,6 +7976,44 @@ export type Database = {
             columns: ["offer_id"]
             isOneToOne: true
             referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reviewer_profiles: {
+        Row: {
+          avg_review_quality_score: number | null
+          last_review_at: string | null
+          reviews_given: number
+          specialization_areas: string[] | null
+          total_review_words: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avg_review_quality_score?: number | null
+          last_review_at?: string | null
+          reviews_given?: number
+          specialization_areas?: string[] | null
+          total_review_words?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avg_review_quality_score?: number | null
+          last_review_at?: string | null
+          reviews_given?: number
+          specialization_areas?: string[] | null
+          total_review_words?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviewer_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -6963,6 +8139,208 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scholar_credentials: {
+        Row: {
+          created_at: string
+          credential_title: string
+          credential_type: string
+          expires_at: string | null
+          id: string
+          issued_date: string | null
+          issuing_body: string
+          issuing_body_verified: boolean
+          scholar_passport_id: string
+          verification_notes: string | null
+          verification_source: string | null
+          verification_status: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          credential_title: string
+          credential_type: string
+          expires_at?: string | null
+          id?: string
+          issued_date?: string | null
+          issuing_body: string
+          issuing_body_verified?: boolean
+          scholar_passport_id: string
+          verification_notes?: string | null
+          verification_source?: string | null
+          verification_status?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          credential_title?: string
+          credential_type?: string
+          expires_at?: string | null
+          id?: string
+          issued_date?: string | null
+          issuing_body?: string
+          issuing_body_verified?: boolean
+          scholar_passport_id?: string
+          verification_notes?: string | null
+          verification_source?: string | null
+          verification_status?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scholar_credentials_scholar_passport_id_fkey"
+            columns: ["scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scholar_credentials_verified_by_fkey"
+            columns: ["verified_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scholar_identity_links: {
+        Row: {
+          created_at: string
+          external_identifier: string
+          id: string
+          profile_url: string | null
+          provider: string
+          scholar_passport_id: string
+          verification_status: string
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          external_identifier: string
+          id?: string
+          profile_url?: string | null
+          provider: string
+          scholar_passport_id: string
+          verification_status?: string
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          external_identifier?: string
+          id?: string
+          profile_url?: string | null
+          provider?: string
+          scholar_passport_id?: string
+          verification_status?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scholar_identity_links_scholar_passport_id_fkey"
+            columns: ["scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scholar_passports: {
+        Row: {
+          academic_role: string | null
+          created_at: string
+          id: string
+          passport_status: string
+          primary_affiliation: string | null
+          public_scholar_id: string
+          research_interests: string[] | null
+          updated_at: string
+          user_id: string
+          verification_level: string
+        }
+        Insert: {
+          academic_role?: string | null
+          created_at?: string
+          id?: string
+          passport_status?: string
+          primary_affiliation?: string | null
+          public_scholar_id: string
+          research_interests?: string[] | null
+          updated_at?: string
+          user_id: string
+          verification_level?: string
+        }
+        Update: {
+          academic_role?: string | null
+          created_at?: string
+          id?: string
+          passport_status?: string
+          primary_affiliation?: string | null
+          public_scholar_id?: string
+          research_interests?: string[] | null
+          updated_at?: string
+          user_id?: string
+          verification_level?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scholar_passports_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scholar_verification_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          new_value: string | null
+          notes: string | null
+          performed_by: string | null
+          previous_value: string | null
+          scholar_passport_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          new_value?: string | null
+          notes?: string | null
+          performed_by?: string | null
+          previous_value?: string | null
+          scholar_passport_id: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          new_value?: string | null
+          notes?: string | null
+          performed_by?: string | null
+          previous_value?: string | null
+          scholar_passport_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scholar_verification_events_performed_by_fkey"
+            columns: ["performed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scholar_verification_events_scholar_passport_id_fkey"
+            columns: ["scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
             referencedColumns: ["id"]
           },
         ]
@@ -8207,6 +9585,7 @@ export type Database = {
         Returns: string
       }
       generate_credential_verification_code: { Args: never; Returns: string }
+      generate_scholar_id: { Args: never; Returns: string }
       get_connection_degree: {
         Args: { source_user: string; target_user: string }
         Returns: number
@@ -8280,6 +9659,10 @@ export type Database = {
           p_timeliness_rating: number
         }
         Returns: string
+      }
+      update_contribution_snapshot: {
+        Args: { p_user_id: string }
+        Returns: undefined
       }
       use_ai_credits: {
         Args: { p_amount: number; p_user_id: string }
