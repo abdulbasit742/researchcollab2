@@ -4,6 +4,7 @@ import { TrustTrajectoryChart } from "@/components/progress/TrustTrajectoryChart
 import { FailureRecoveryPanel } from "@/components/progress/FailureRecoveryPanel";
 import { OpportunityConversionPanel } from "@/components/progress/OpportunityConversionPanel";
 import { CareerTimeline } from "@/components/progress/CareerTimeline";
+import { NextBestActionPanel } from "@/components/progress/NextBestActionPanel";
 import { TrustGovernancePanel } from "@/components/governance/TrustGovernancePanel";
 import { EconomicVisibilityPanel } from "@/components/economic/EconomicVisibilityPanel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -89,8 +90,9 @@ export default function ProgressPage() {
                 <ProgressDashboard />
               </div>
 
-              {/* Right Column - Failures & Recovery */}
-              <div className="lg:col-span-3">
+              {/* Right Column - Actions & Recovery */}
+              <div className="lg:col-span-3 space-y-6">
+                <NextBestActionPanel />
                 <FailureRecoveryPanel />
               </div>
             </div>

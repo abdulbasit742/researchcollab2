@@ -108,6 +108,9 @@ import NotificationSettingsPage from "./pages/NotificationSettingsPage";
 import ProgressPage from "./pages/ProgressPage";
 import DealsPage from "./pages/DealsPage";
 import DealDetailPage from "./pages/DealDetailPage";
+import PremiumOnboardingPage from "./pages/PremiumOnboardingPage";
+import AdminPremiumAnalyticsPage from "./pages/admin/AdminPremiumAnalyticsPage";
+import AdminPricingPage from "./pages/admin/AdminPricingPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -174,6 +177,7 @@ const AppContent = () => {
             <Route path="/progress" element={<ProgressPage />} />
             <Route path="/deals" element={<DealsPage />} />
             <Route path="/deals/:dealId" element={<DealDetailPage />} />
+            <Route path="/premium/onboarding" element={<PremiumOnboardingPage />} />
             <Route path="/help" element={<HelpCenterPage />} />
             <Route path="/docs" element={<ApiDocsPage />} />
             <Route path="/pricing" element={<PricingPage />} />
@@ -218,6 +222,8 @@ const AppContent = () => {
             <Route path="/admin/reproducibility" element={<AdminReproducibilityPage />} />
             <Route path="/admin/federation" element={<AdminFederationPage />} />
             <Route path="/admin/stewardship" element={<AdminStewardshipPage />} />
+            <Route path="/admin/premium-analytics" element={<AdminPremiumAnalyticsPage />} />
+            <Route path="/admin/pricing" element={<AdminPricingPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
