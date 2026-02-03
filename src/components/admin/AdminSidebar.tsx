@@ -50,6 +50,11 @@ const navItems = [
   { icon: Vote, label: "Governance", href: "/admin/governance" },
   { icon: Database, label: "Resilience", href: "/admin/resilience" },
   { icon: BookOpen, label: "Knowledge", href: "/admin/knowledge" },
+  // Phase 7 - Security, AI, Reproducibility, Federation
+  { icon: Shield, label: "Security Audit", href: "/admin/security" },
+  { icon: Settings, label: "AI Governance", href: "/admin/ai-governance" },
+  { icon: Database, label: "Reproducibility", href: "/admin/reproducibility" },
+  { icon: Globe, label: "Federation", href: "/admin/federation" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 

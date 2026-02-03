@@ -86,6 +86,10 @@ import AdminSchemaPage from "./pages/admin/AdminSchemaPage";
 import AdminPermissionsPage from "./pages/admin/AdminPermissionsPage";
 import AdminHealthPage from "./pages/admin/AdminHealthPage";
 import AdminDeploymentPage from "./pages/admin/AdminDeploymentPage";
+import AdminSecurityPage from "./pages/admin/AdminSecurityPage";
+import AdminAIGovernancePage from "./pages/admin/AdminAIGovernancePage";
+import AdminReproducibilityPage from "./pages/admin/AdminReproducibilityPage";
+import AdminFederationPage from "./pages/admin/AdminFederationPage";
 import FeedPage from "./pages/FeedPage";
 import PostDetailPage from "./pages/PostDetailPage";
 import NetworkPage from "./pages/NetworkPage";
@@ -183,6 +187,10 @@ const AppContent = () => {
             <Route path="/admin/permissions" element={<AdminPermissionsPage />} />
             <Route path="/admin/health" element={<AdminHealthPage />} />
             <Route path="/admin/deployment" element={<AdminDeploymentPage />} />
+            <Route path="/admin/security" element={<AdminSecurityPage />} />
+            <Route path="/admin/ai-governance" element={<AdminAIGovernancePage />} />
+            <Route path="/admin/reproducibility" element={<AdminReproducibilityPage />} />
+            <Route path="/admin/federation" element={<AdminFederationPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>

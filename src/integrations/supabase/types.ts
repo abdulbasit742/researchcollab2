@@ -1084,6 +1084,66 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_kill_switches: {
+        Row: {
+          activated_at: string | null
+          activated_by: string | null
+          auto_deactivate_at: string | null
+          created_at: string | null
+          deactivated_at: string | null
+          deactivated_by: string | null
+          id: string
+          is_active: boolean | null
+          notification_sent: boolean | null
+          reason: string
+          switch_target: string | null
+          switch_type: string
+        }
+        Insert: {
+          activated_at?: string | null
+          activated_by?: string | null
+          auto_deactivate_at?: string | null
+          created_at?: string | null
+          deactivated_at?: string | null
+          deactivated_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          notification_sent?: boolean | null
+          reason: string
+          switch_target?: string | null
+          switch_type: string
+        }
+        Update: {
+          activated_at?: string | null
+          activated_by?: string | null
+          auto_deactivate_at?: string | null
+          created_at?: string | null
+          deactivated_at?: string | null
+          deactivated_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          notification_sent?: boolean | null
+          reason?: string
+          switch_target?: string | null
+          switch_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_kill_switches_activated_by_fkey"
+            columns: ["activated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_kill_switches_deactivated_by_fkey"
+            columns: ["deactivated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_match_results: {
         Row: {
           algorithm_version: string | null
@@ -1198,6 +1258,142 @@ export type Database = {
           },
         ]
       }
+      ai_models_registry: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          capabilities: string[] | null
+          cost_per_1k_tokens: number | null
+          created_at: string | null
+          data_retention_policy: string | null
+          enabled: boolean | null
+          id: string
+          max_tokens_per_request: number | null
+          model_identifier: string
+          model_name: string
+          model_version: string | null
+          provider: string
+          purpose: string
+          requires_human_review: boolean | null
+          risk_level: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          capabilities?: string[] | null
+          cost_per_1k_tokens?: number | null
+          created_at?: string | null
+          data_retention_policy?: string | null
+          enabled?: boolean | null
+          id?: string
+          max_tokens_per_request?: number | null
+          model_identifier: string
+          model_name: string
+          model_version?: string | null
+          provider: string
+          purpose: string
+          requires_human_review?: boolean | null
+          risk_level?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          capabilities?: string[] | null
+          cost_per_1k_tokens?: number | null
+          created_at?: string | null
+          data_retention_policy?: string | null
+          enabled?: boolean | null
+          id?: string
+          max_tokens_per_request?: number | null
+          model_identifier?: string
+          model_name?: string
+          model_version?: string | null
+          provider?: string
+          purpose?: string
+          requires_human_review?: boolean | null
+          risk_level?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_models_registry_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_policies: {
+        Row: {
+          allow_analysis: boolean | null
+          allow_co_authoring: boolean | null
+          allow_generation: boolean | null
+          allow_matching: boolean | null
+          allow_training: boolean | null
+          created_at: string | null
+          created_by: string | null
+          human_review_required: boolean | null
+          id: string
+          is_active: boolean | null
+          max_tokens_per_day: number | null
+          policy_name: string
+          priority: number | null
+          rules: Json
+          scope: string
+          scope_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          allow_analysis?: boolean | null
+          allow_co_authoring?: boolean | null
+          allow_generation?: boolean | null
+          allow_matching?: boolean | null
+          allow_training?: boolean | null
+          created_at?: string | null
+          created_by?: string | null
+          human_review_required?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          max_tokens_per_day?: number | null
+          policy_name: string
+          priority?: number | null
+          rules?: Json
+          scope: string
+          scope_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          allow_analysis?: boolean | null
+          allow_co_authoring?: boolean | null
+          allow_generation?: boolean | null
+          allow_matching?: boolean | null
+          allow_training?: boolean | null
+          created_at?: string | null
+          created_by?: string | null
+          human_review_required?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          max_tokens_per_day?: number | null
+          policy_name?: string
+          priority?: number | null
+          rules?: Json
+          scope?: string
+          scope_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_policies_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_policy_profiles: {
         Row: {
           allowed_uses: string[] | null
@@ -1239,6 +1435,71 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      ai_usage_logs: {
+        Row: {
+          cost_estimate: number | null
+          created_at: string | null
+          feature: string
+          id: string
+          input_hash: string
+          input_tokens: number | null
+          latency_ms: number | null
+          model_id: string | null
+          output_hash: string
+          output_tokens: number | null
+          rejection_reason: string | null
+          session_id: string | null
+          total_tokens: number | null
+          user_id: string
+          was_rejected: boolean | null
+          was_reviewed: boolean | null
+        }
+        Insert: {
+          cost_estimate?: number | null
+          created_at?: string | null
+          feature: string
+          id?: string
+          input_hash: string
+          input_tokens?: number | null
+          latency_ms?: number | null
+          model_id?: string | null
+          output_hash: string
+          output_tokens?: number | null
+          rejection_reason?: string | null
+          session_id?: string | null
+          total_tokens?: number | null
+          user_id: string
+          was_rejected?: boolean | null
+          was_reviewed?: boolean | null
+        }
+        Update: {
+          cost_estimate?: number | null
+          created_at?: string | null
+          feature?: string
+          id?: string
+          input_hash?: string
+          input_tokens?: number | null
+          latency_ms?: number | null
+          model_id?: string | null
+          output_hash?: string
+          output_tokens?: number | null
+          rejection_reason?: string | null
+          session_id?: string | null
+          total_tokens?: number | null
+          user_id?: string
+          was_rejected?: boolean | null
+          was_reviewed?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_usage_logs_model_id_fkey"
+            columns: ["model_id"]
+            isOneToOne: false
+            referencedRelation: "ai_models_registry"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ai_usage_quotas: {
         Row: {
@@ -1495,6 +1756,101 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      artifact_lineage: {
+        Row: {
+          child_artifact_id: string
+          confidence_level: string | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          parent_artifact_id: string
+          relationship: string
+          relationship_details: string | null
+        }
+        Insert: {
+          child_artifact_id: string
+          confidence_level?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          parent_artifact_id: string
+          relationship: string
+          relationship_details?: string | null
+        }
+        Update: {
+          child_artifact_id?: string
+          confidence_level?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          parent_artifact_id?: string
+          relationship?: string
+          relationship_details?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artifact_lineage_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      attack_surfaces: {
+        Row: {
+          authentication_required: boolean | null
+          authorization_level: string | null
+          component: string
+          created_at: string | null
+          data_sensitivity: string | null
+          entry_points: string[] | null
+          exposure_level: string | null
+          id: string
+          known_vulnerabilities: string[] | null
+          last_assessed_at: string | null
+          notes: string | null
+          risk_score: number | null
+          surface_name: string
+          surface_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          authentication_required?: boolean | null
+          authorization_level?: string | null
+          component: string
+          created_at?: string | null
+          data_sensitivity?: string | null
+          entry_points?: string[] | null
+          exposure_level?: string | null
+          id?: string
+          known_vulnerabilities?: string[] | null
+          last_assessed_at?: string | null
+          notes?: string | null
+          risk_score?: number | null
+          surface_name: string
+          surface_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          authentication_required?: boolean | null
+          authorization_level?: string | null
+          component?: string
+          created_at?: string | null
+          data_sensitivity?: string | null
+          entry_points?: string[] | null
+          exposure_level?: string | null
+          id?: string
+          known_vulnerabilities?: string[] | null
+          last_assessed_at?: string | null
+          notes?: string | null
+          risk_score?: number | null
+          surface_name?: string
+          surface_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       blog_posts: {
         Row: {
@@ -5571,6 +5927,233 @@ export type Database = {
         }
         Relationships: []
       }
+      federated_collaboration_requests: {
+        Row: {
+          artifact_reference: string | null
+          collaboration_type: string
+          expires_at: string | null
+          id: string
+          local_governance_approved: boolean | null
+          purpose: string
+          requested_at: string | null
+          requesting_instance_id: string
+          requesting_user_hash: string | null
+          response_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          scope: Json | null
+          status: string | null
+          target_instance_id: string
+        }
+        Insert: {
+          artifact_reference?: string | null
+          collaboration_type: string
+          expires_at?: string | null
+          id?: string
+          local_governance_approved?: boolean | null
+          purpose: string
+          requested_at?: string | null
+          requesting_instance_id: string
+          requesting_user_hash?: string | null
+          response_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          scope?: Json | null
+          status?: string | null
+          target_instance_id: string
+        }
+        Update: {
+          artifact_reference?: string | null
+          collaboration_type?: string
+          expires_at?: string | null
+          id?: string
+          local_governance_approved?: boolean | null
+          purpose?: string
+          requested_at?: string | null
+          requesting_instance_id?: string
+          requesting_user_hash?: string | null
+          response_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          scope?: Json | null
+          status?: string | null
+          target_instance_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_collaboration_requests_requesting_instance_id_fkey"
+            columns: ["requesting_instance_id"]
+            isOneToOne: false
+            referencedRelation: "federated_instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "federated_collaboration_requests_target_instance_id_fkey"
+            columns: ["target_instance_id"]
+            isOneToOne: false
+            referencedRelation: "federated_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federated_discovery_cache: {
+        Row: {
+          cached_at: string | null
+          expires_at: string | null
+          id: string
+          metadata: Json
+          resource_hash: string
+          resource_type: string
+          source_instance_id: string
+          visibility: string | null
+        }
+        Insert: {
+          cached_at?: string | null
+          expires_at?: string | null
+          id?: string
+          metadata: Json
+          resource_hash: string
+          resource_type: string
+          source_instance_id: string
+          visibility?: string | null
+        }
+        Update: {
+          cached_at?: string | null
+          expires_at?: string | null
+          id?: string
+          metadata?: Json
+          resource_hash?: string
+          resource_type?: string
+          source_instance_id?: string
+          visibility?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_discovery_cache_source_instance_id_fkey"
+            columns: ["source_instance_id"]
+            isOneToOne: false
+            referencedRelation: "federated_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federated_identities: {
+        Row: {
+          id: string
+          is_active: boolean | null
+          last_sync_at: string | null
+          linked_at: string | null
+          local_user_id: string
+          permissions: string[] | null
+          remote_instance_id: string
+          remote_user_hash: string
+          trust_score_snapshot: number | null
+          verification_level: string | null
+        }
+        Insert: {
+          id?: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          linked_at?: string | null
+          local_user_id: string
+          permissions?: string[] | null
+          remote_instance_id: string
+          remote_user_hash: string
+          trust_score_snapshot?: number | null
+          verification_level?: string | null
+        }
+        Update: {
+          id?: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          linked_at?: string | null
+          local_user_id?: string
+          permissions?: string[] | null
+          remote_instance_id?: string
+          remote_user_hash?: string
+          trust_score_snapshot?: number | null
+          verification_level?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_identities_local_user_id_fkey"
+            columns: ["local_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "federated_identities_remote_instance_id_fkey"
+            columns: ["remote_instance_id"]
+            isOneToOne: false
+            referencedRelation: "federated_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federated_instances: {
+        Row: {
+          agreement_signed_at: string | null
+          api_version: string | null
+          created_at: string | null
+          data_residency: string | null
+          federation_agreement_signed: boolean | null
+          governance_authority: string | null
+          health_status: string | null
+          id: string
+          instance_code: string
+          instance_name: string
+          instance_type: string
+          last_heartbeat_at: string | null
+          metadata: Json | null
+          public_endpoint: string
+          public_key: string | null
+          supported_features: string[] | null
+          trust_level: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          agreement_signed_at?: string | null
+          api_version?: string | null
+          created_at?: string | null
+          data_residency?: string | null
+          federation_agreement_signed?: boolean | null
+          governance_authority?: string | null
+          health_status?: string | null
+          id?: string
+          instance_code: string
+          instance_name: string
+          instance_type: string
+          last_heartbeat_at?: string | null
+          metadata?: Json | null
+          public_endpoint: string
+          public_key?: string | null
+          supported_features?: string[] | null
+          trust_level?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          agreement_signed_at?: string | null
+          api_version?: string | null
+          created_at?: string | null
+          data_residency?: string | null
+          federation_agreement_signed?: boolean | null
+          governance_authority?: string | null
+          health_status?: string | null
+          id?: string
+          instance_code?: string
+          instance_name?: string
+          instance_type?: string
+          last_heartbeat_at?: string | null
+          metadata?: Json | null
+          public_endpoint?: string
+          public_key?: string | null
+          supported_features?: string[] | null
+          trust_level?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       federated_nodes: {
         Row: {
           base_url: string
@@ -5612,6 +6195,62 @@ export type Database = {
           trust_level?: string
         }
         Relationships: []
+      }
+      federated_verification_attestations: {
+        Row: {
+          attestation_type: string
+          attested_at: string | null
+          attester_hash: string | null
+          id: string
+          invalidated_at: string | null
+          invalidation_reason: string | null
+          is_valid: boolean | null
+          local_artifact_id: string | null
+          proof_hash: string | null
+          proof_reference: string | null
+          remote_artifact_hash: string
+          remote_instance_id: string
+          verdict: string
+        }
+        Insert: {
+          attestation_type: string
+          attested_at?: string | null
+          attester_hash?: string | null
+          id?: string
+          invalidated_at?: string | null
+          invalidation_reason?: string | null
+          is_valid?: boolean | null
+          local_artifact_id?: string | null
+          proof_hash?: string | null
+          proof_reference?: string | null
+          remote_artifact_hash: string
+          remote_instance_id: string
+          verdict: string
+        }
+        Update: {
+          attestation_type?: string
+          attested_at?: string | null
+          attester_hash?: string | null
+          id?: string
+          invalidated_at?: string | null
+          invalidation_reason?: string | null
+          is_valid?: boolean | null
+          local_artifact_id?: string | null
+          proof_hash?: string | null
+          proof_reference?: string | null
+          remote_artifact_hash?: string
+          remote_instance_id?: string
+          verdict?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_verification_attestations_remote_instance_id_fkey"
+            columns: ["remote_instance_id"]
+            isOneToOne: false
+            referencedRelation: "federated_instances"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       feed_events: {
         Row: {
@@ -7636,6 +8275,57 @@ export type Database = {
             columns: ["research_timeline_id"]
             isOneToOne: false
             referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      incident_response_actions: {
+        Row: {
+          action_description: string
+          action_type: string
+          evidence: Json | null
+          id: string
+          incident_id: string
+          next_steps: string | null
+          outcome: string | null
+          performed_at: string | null
+          performed_by: string | null
+        }
+        Insert: {
+          action_description: string
+          action_type: string
+          evidence?: Json | null
+          id?: string
+          incident_id: string
+          next_steps?: string | null
+          outcome?: string | null
+          performed_at?: string | null
+          performed_by?: string | null
+        }
+        Update: {
+          action_description?: string
+          action_type?: string
+          evidence?: Json | null
+          id?: string
+          incident_id?: string
+          next_steps?: string | null
+          outcome?: string | null
+          performed_at?: string | null
+          performed_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_response_actions_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "security_incidents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "incident_response_actions_performed_by_fkey"
+            columns: ["performed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -12901,6 +13591,75 @@ export type Database = {
           },
         ]
       }
+      reproducibility_claims: {
+        Row: {
+          artifact_id: string
+          claim_level: string | null
+          claim_type: string
+          environment_specification: Json | null
+          estimated_cost: string | null
+          estimated_reproduction_time: string | null
+          id: string
+          limitations: string | null
+          requirements: Json | null
+          review_notes: string | null
+          review_status: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          submitted_at: string | null
+          submitted_by: string
+        }
+        Insert: {
+          artifact_id: string
+          claim_level?: string | null
+          claim_type: string
+          environment_specification?: Json | null
+          estimated_cost?: string | null
+          estimated_reproduction_time?: string | null
+          id?: string
+          limitations?: string | null
+          requirements?: Json | null
+          review_notes?: string | null
+          review_status?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          submitted_at?: string | null
+          submitted_by: string
+        }
+        Update: {
+          artifact_id?: string
+          claim_level?: string | null
+          claim_type?: string
+          environment_specification?: Json | null
+          estimated_cost?: string | null
+          estimated_reproduction_time?: string | null
+          id?: string
+          limitations?: string | null
+          requirements?: Json | null
+          review_notes?: string | null
+          review_status?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          submitted_at?: string | null
+          submitted_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reproducibility_claims_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reproducibility_claims_submitted_by_fkey"
+            columns: ["submitted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reproducibility_records: {
         Row: {
           code_available: boolean | null
@@ -14580,6 +15339,346 @@ export type Database = {
         }
         Relationships: []
       }
+      security_audit_events: {
+        Row: {
+          action: string
+          anomaly_detected: boolean | null
+          created_at: string | null
+          event_category: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          resource_id: string | null
+          resource_type: string | null
+          result: string
+          risk_score: number | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          anomaly_detected?: boolean | null
+          created_at?: string | null
+          event_category: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          result: string
+          risk_score?: number | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          anomaly_detected?: boolean | null
+          created_at?: string | null
+          event_category?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          result?: string
+          risk_score?: number | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      security_incidents: {
+        Row: {
+          affected_components: string[] | null
+          affected_users_count: number | null
+          closed_at: string | null
+          contained_at: string | null
+          created_at: string | null
+          data_compromised: boolean | null
+          data_types_affected: string[] | null
+          description: string
+          detected_at: string | null
+          detection_method: string | null
+          eradicated_at: string | null
+          id: string
+          incident_id: string
+          incident_type: string
+          lead_responder_id: string | null
+          lessons_learned: string | null
+          recovered_at: string | null
+          root_cause: string | null
+          severity: string
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          affected_components?: string[] | null
+          affected_users_count?: number | null
+          closed_at?: string | null
+          contained_at?: string | null
+          created_at?: string | null
+          data_compromised?: boolean | null
+          data_types_affected?: string[] | null
+          description: string
+          detected_at?: string | null
+          detection_method?: string | null
+          eradicated_at?: string | null
+          id?: string
+          incident_id: string
+          incident_type: string
+          lead_responder_id?: string | null
+          lessons_learned?: string | null
+          recovered_at?: string | null
+          root_cause?: string | null
+          severity: string
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          affected_components?: string[] | null
+          affected_users_count?: number | null
+          closed_at?: string | null
+          contained_at?: string | null
+          created_at?: string | null
+          data_compromised?: boolean | null
+          data_types_affected?: string[] | null
+          description?: string
+          detected_at?: string | null
+          detection_method?: string | null
+          eradicated_at?: string | null
+          id?: string
+          incident_id?: string
+          incident_type?: string
+          lead_responder_id?: string | null
+          lessons_learned?: string | null
+          recovered_at?: string | null
+          root_cause?: string | null
+          severity?: string
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "security_incidents_lead_responder_id_fkey"
+            columns: ["lead_responder_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      security_test_results: {
+        Row: {
+          component: string
+          evidence: Json | null
+          id: string
+          recommendation: string | null
+          reproduction_steps: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          result: string
+          severity: string | null
+          suite_id: string | null
+          test_name: string
+          test_type: string
+          tested_at: string | null
+          tested_by: string | null
+        }
+        Insert: {
+          component: string
+          evidence?: Json | null
+          id?: string
+          recommendation?: string | null
+          reproduction_steps?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          result: string
+          severity?: string | null
+          suite_id?: string | null
+          test_name: string
+          test_type: string
+          tested_at?: string | null
+          tested_by?: string | null
+        }
+        Update: {
+          component?: string
+          evidence?: Json | null
+          id?: string
+          recommendation?: string | null
+          reproduction_steps?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          result?: string
+          severity?: string | null
+          suite_id?: string | null
+          test_name?: string
+          test_type?: string
+          tested_at?: string | null
+          tested_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "security_test_results_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "security_test_results_suite_id_fkey"
+            columns: ["suite_id"]
+            isOneToOne: false
+            referencedRelation: "security_test_suites"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "security_test_results_tested_by_fkey"
+            columns: ["tested_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      security_test_suites: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          is_destructive: boolean | null
+          last_run_at: string | null
+          last_run_status: string | null
+          requires_approval: boolean | null
+          schedule: string | null
+          suite_name: string
+          suite_type: string
+          test_cases: Json
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_destructive?: boolean | null
+          last_run_at?: string | null
+          last_run_status?: string | null
+          requires_approval?: boolean | null
+          schedule?: string | null
+          suite_name: string
+          suite_type: string
+          test_cases?: Json
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_destructive?: boolean | null
+          last_run_at?: string | null
+          last_run_status?: string | null
+          requires_approval?: boolean | null
+          schedule?: string | null
+          suite_name?: string
+          suite_type?: string
+          test_cases?: Json
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      security_vulnerabilities: {
+        Row: {
+          attack_surface_id: string | null
+          component: string
+          created_at: string | null
+          cvss_score: number | null
+          description: string
+          discovered_at: string | null
+          discovered_by: string | null
+          id: string
+          remediation_deadline: string | null
+          remediation_plan: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          status: string | null
+          threat_model_id: string | null
+          title: string
+          updated_at: string | null
+          vulnerability_type: string
+        }
+        Insert: {
+          attack_surface_id?: string | null
+          component: string
+          created_at?: string | null
+          cvss_score?: number | null
+          description: string
+          discovered_at?: string | null
+          discovered_by?: string | null
+          id?: string
+          remediation_deadline?: string | null
+          remediation_plan?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity: string
+          status?: string | null
+          threat_model_id?: string | null
+          title: string
+          updated_at?: string | null
+          vulnerability_type: string
+        }
+        Update: {
+          attack_surface_id?: string | null
+          component?: string
+          created_at?: string | null
+          cvss_score?: number | null
+          description?: string
+          discovered_at?: string | null
+          discovered_by?: string | null
+          id?: string
+          remediation_deadline?: string | null
+          remediation_plan?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          status?: string | null
+          threat_model_id?: string | null
+          title?: string
+          updated_at?: string | null
+          vulnerability_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "security_vulnerabilities_attack_surface_id_fkey"
+            columns: ["attack_surface_id"]
+            isOneToOne: false
+            referencedRelation: "attack_surfaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "security_vulnerabilities_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "security_vulnerabilities_threat_model_id_fkey"
+            columns: ["threat_model_id"]
+            isOneToOne: false
+            referencedRelation: "threat_models"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       semantic_queries: {
         Row: {
           created_at: string
@@ -15271,6 +16370,81 @@ export type Database = {
             columns: ["thread_id"]
             isOneToOne: false
             referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      threat_models: {
+        Row: {
+          attack_vector: string | null
+          component: string
+          created_at: string | null
+          description: string
+          id: string
+          likelihood: string | null
+          mitigation: string | null
+          mitigation_status: string | null
+          owner_id: string | null
+          potential_impact: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          risk_level: string
+          threat_category: string | null
+          threat_type: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          attack_vector?: string | null
+          component: string
+          created_at?: string | null
+          description: string
+          id?: string
+          likelihood?: string | null
+          mitigation?: string | null
+          mitigation_status?: string | null
+          owner_id?: string | null
+          potential_impact?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          risk_level?: string
+          threat_category?: string | null
+          threat_type: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          attack_vector?: string | null
+          component?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          likelihood?: string | null
+          mitigation?: string | null
+          mitigation_status?: string | null
+          owner_id?: string | null
+          potential_impact?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          risk_level?: string
+          threat_category?: string | null
+          threat_type?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "threat_models_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "threat_models_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -16272,6 +17446,94 @@ export type Database = {
         }
         Relationships: []
       }
+      verification_attempts: {
+        Row: {
+          artifact_id: string
+          claim_id: string | null
+          conflict_details: string | null
+          conflict_of_interest_declared: boolean | null
+          cost_incurred: number | null
+          created_at: string | null
+          deviations_noted: string | null
+          environment_used: Json | null
+          evidence_checksums: string[] | null
+          evidence_links: string[] | null
+          id: string
+          is_public: boolean | null
+          methodology_followed: boolean | null
+          outcome: string
+          outcome_details: string | null
+          published_at: string | null
+          time_spent_hours: number | null
+          verifier_id: string
+          verifier_institution_id: string | null
+        }
+        Insert: {
+          artifact_id: string
+          claim_id?: string | null
+          conflict_details?: string | null
+          conflict_of_interest_declared?: boolean | null
+          cost_incurred?: number | null
+          created_at?: string | null
+          deviations_noted?: string | null
+          environment_used?: Json | null
+          evidence_checksums?: string[] | null
+          evidence_links?: string[] | null
+          id?: string
+          is_public?: boolean | null
+          methodology_followed?: boolean | null
+          outcome: string
+          outcome_details?: string | null
+          published_at?: string | null
+          time_spent_hours?: number | null
+          verifier_id: string
+          verifier_institution_id?: string | null
+        }
+        Update: {
+          artifact_id?: string
+          claim_id?: string | null
+          conflict_details?: string | null
+          conflict_of_interest_declared?: boolean | null
+          cost_incurred?: number | null
+          created_at?: string | null
+          deviations_noted?: string | null
+          environment_used?: Json | null
+          evidence_checksums?: string[] | null
+          evidence_links?: string[] | null
+          id?: string
+          is_public?: boolean | null
+          methodology_followed?: boolean | null
+          outcome?: string
+          outcome_details?: string | null
+          published_at?: string | null
+          time_spent_hours?: number | null
+          verifier_id?: string
+          verifier_institution_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_attempts_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "reproducibility_claims"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "verification_attempts_verifier_id_fkey"
+            columns: ["verifier_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "verification_attempts_verifier_institution_id_fkey"
+            columns: ["verifier_institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       verification_submissions: {
         Row: {
           created_at: string
@@ -16898,6 +18160,10 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { check_user_id: string }; Returns: boolean }
+      is_ai_feature_enabled: {
+        Args: { p_feature: string; p_user_id?: string }
+        Returns: boolean
+      }
       is_blocked: { Args: { user_a: string; user_b: string }; Returns: boolean }
       is_deployment_admin: {
         Args: { p_deployment_id: string; p_user_id: string }
