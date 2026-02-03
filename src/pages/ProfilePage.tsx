@@ -19,6 +19,7 @@ import {
   TrustEngineDisplay,
   WorkGraphCard,
 } from "@/components/outcome";
+import { ProfileViewsCard } from "@/components/profile";
 import { useWorkConnections } from "@/hooks/useOutcomeFeed";
 import {
   User,
@@ -283,6 +284,9 @@ export default function ProfilePage() {
 
               {/* Work Graph */}
               <WorkGraphCard connections={connections} maxDisplay={3} />
+
+              {/* Profile Views */}
+              <ProfileViewsCard />
 
               {/* Quick Actions */}
               <Card>

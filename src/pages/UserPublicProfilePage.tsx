@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ProfileSkeleton } from "@/components/skeletons";
 import {
   MapPin,
@@ -20,49 +19,26 @@ import {
   ArrowLeft,
   Building,
   Target,
-  Wrench,
   Award,
-  Calendar,
-  DollarSign,
-  Users,
   ArrowRight,
-  Sparkles,
+  ExternalLink,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { usePublicProfile } from "@/hooks/usePublicProfile";
+import { useRecordProfileView, useConnectionStatus, useSendConnectionRequest, useMutualConnectionsCount } from "@/hooks/useNetwork";
 import { QuickOfferModal } from "@/components/offers/QuickOfferModal";
 import { useStartConversation } from "@/hooks/useMessaging";
+import { useState } from "react";
+
+// Import new identity components
 import { 
-  allUsers, 
-  UserProfile, 
-  StudentProfile, 
-  ResearcherProfile 
-} from "@/data/users";
-
-// Mock collaborations for researchers
-const mockCollaborations = [
-  {
-    id: 1,
-    title: "Machine Learning Research for Climate Analysis",
-    description: "Looking for researchers with ML expertise to analyze climate data patterns.",
-    skills: ["Python", "TensorFlow", "Climate Science"],
-    location: "Remote",
-    deadline: "Dec 30, 2025",
-    budget: "$2,000 - $5,000",
-    applicants: 12,
-    featured: true,
-  },
-];
-
-interface PortfolioProject {
-  id: string;
-  title: string;
-  description: string | null;
-  link: string | null;
-  thumbnail_url: string | null;
-  display_order: number | null;
-}
+  ProfessionalIdentityHeader,
+  TrustScorePublicDisplay,
+  WorkHistoryTimeline,
+  SkillsSection,
+} from "@/components/identity";
+import { MutualConnectionsBadge } from "@/components/network/MutualConnectionsBadge";
 
 export default function UserPublicProfilePage() {
   const { id } = useParams<{ id: string }>();
@@ -71,10 +47,16 @@ export default function UserPublicProfilePage() {
   const { user: authUser } = useAuth();
   const { startConversation } = useStartConversation();
   const [showOfferModal, setShowOfferModal] = useState(false);
-  const [profileData, setProfileData] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [userFromMock, setUserFromMock] = useState<UserProfile | null>(null);
-  const [portfolioProjects, setPortfolioProjects] = useState<PortfolioProject[]>([]);
+  
+  // Fetch profile data
+  const { data: profileData, isLoading } = usePublicProfile(id);
+  
+  // Record profile view
+  const { mutate: recordView } = useRecordProfileView();
+  
+  // Connection status
+  const { data: connectionStatus } = useConnectionStatus(id);
+  const { mutate: sendConnectionRequest, isPending: isSendingRequest } = useSendConnectionRequest();
 
   useEffect(() => {
     // If viewing own profile, redirect to /profile
@@ -83,62 +65,47 @@ export default function UserPublicProfilePage() {
       return;
     }
 
-    const fetchProfile = async () => {
-      setIsLoading(true);
-      
-      // First try to fetch from Supabase
-      if (id) {
-        const [profileResult, portfolioResult] = await Promise.all([
-          supabase
-            .from("profiles")
-            .select("*")
-            .eq("id", id)
-            .maybeSingle(),
-          supabase
-            .from("portfolio_projects")
-            .select("*")
-            .eq("user_id", id)
-            .order("display_order", { ascending: true })
-        ]);
-
-        if (profileResult.data) {
-          setProfileData(profileResult.data);
-          setPortfolioProjects(portfolioResult.data || []);
-          setIsLoading(false);
-          return;
-        }
-      }
-
-      // Fall back to mock data
-      const mockUser = allUsers.find(u => u.id === id);
-      if (mockUser) {
-        setUserFromMock(mockUser);
-      }
-      setIsLoading(false);
-    };
-
-    fetchProfile();
-  }, [id, authUser, navigate]);
+    // Record profile view
+    if (id && authUser) {
+      recordView(id);
+    }
+  }, [id, authUser, navigate, recordView]);
 
   const handleMessage = () => {
-    const targetId = profileData?.id || userFromMock?.id || id;
-    if (targetId) {
-      startConversation(targetId);
+    if (id) {
+      startConversation(id);
     }
   };
 
   const handleConnect = () => {
-    toast({
-      title: "Connection Request Sent!",
-      description: "They will be notified of your request.",
-    });
+    if (!id) return;
+    
+    if (connectionStatus?.status === "none") {
+      sendConnectionRequest(id);
+    } else if (connectionStatus?.status === "connected") {
+      toast({
+        title: "Already Connected",
+        description: "You're already connected with this person.",
+      });
+    } else if (connectionStatus?.status === "pending_sent") {
+      toast({
+        title: "Request Pending",
+        description: "Your connection request is still pending.",
+      });
+    }
   };
 
-  const handleApply = (title: string) => {
-    toast({
-      title: "Application Submitted!",
-      description: `Your application for "${title}" has been sent.`,
-    });
+  const getConnectButtonText = () => {
+    switch (connectionStatus?.status) {
+      case "connected":
+        return "Connected";
+      case "pending_sent":
+        return "Pending";
+      case "pending_received":
+        return "Accept";
+      default:
+        return "Connect";
+    }
   };
 
   if (isLoading) {
@@ -149,185 +116,211 @@ export default function UserPublicProfilePage() {
     );
   }
 
-  // Render from mock data
-  if (userFromMock) {
-    const isStudent = userFromMock.type === "student";
-    const student = userFromMock as StudentProfile;
-    const researcher = userFromMock as ResearcherProfile;
-
+  if (!profileData) {
     return (
       <MainLayout>
-        {/* Hero Section */}
-        <div className="gradient-hero py-12 md:py-16">
-          <div className="container">
-            <Button
-              variant="ghost"
-              className="mb-6"
-              onClick={() => navigate(-1)}
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
-            </Button>
+        <div className="container py-16 text-center">
+          <h1 className="text-2xl font-bold">Profile not found</h1>
+          <p className="text-muted-foreground mt-2">
+            The profile you're looking for doesn't exist.
+          </p>
+          <Button className="mt-4" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Go Back
+          </Button>
+        </div>
+      </MainLayout>
+    );
+  }
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col md:flex-row gap-8 items-start"
-            >
-              <div className="relative">
-                <Avatar className="h-32 w-32 border-4 border-background shadow-xl">
-                  <AvatarImage src={userFromMock.avatar} />
-                  <AvatarFallback className="text-3xl">
-                    {userFromMock.name.split(" ").map((n) => n[0]).join("")}
-                  </AvatarFallback>
-                </Avatar>
-                {userFromMock.verified && (
-                  <div className="absolute bottom-2 right-2 bg-primary rounded-full p-1">
-                    <CheckCircle2 className="h-5 w-5 text-primary-foreground" />
+  return (
+    <MainLayout>
+      {/* Hero Section */}
+      <div className="gradient-hero py-12 md:py-16">
+        <div className="container">
+          <Button
+            variant="ghost"
+            className="mb-6"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col md:flex-row gap-8 items-start"
+          >
+            {/* Avatar with verification badge */}
+            <div className="relative">
+              <Avatar className="h-32 w-32 border-4 border-background shadow-xl">
+                <AvatarImage src={profileData.avatarUrl || undefined} />
+                <AvatarFallback className="text-3xl">
+                  {profileData.fullName
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
+              {profileData.isVerified && (
+                <div className="absolute bottom-2 right-2 bg-primary rounded-full p-1">
+                  <CheckCircle2 className="h-5 w-5 text-primary-foreground" />
+                </div>
+              )}
+            </div>
+
+            <div className="flex-1">
+              {/* Name and verification */}
+              <div className="flex items-center gap-3 flex-wrap">
+                <h1 className="text-3xl md:text-4xl font-bold">{profileData.fullName}</h1>
+                {profileData.isVerified && (
+                  <Badge variant="default" className="gap-1 bg-emerald-600">
+                    <CheckCircle2 className="h-3 w-3" />
+                    Verified
+                  </Badge>
+                )}
+                <Badge 
+                  variant="outline" 
+                  className="capitalize bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30"
+                >
+                  {profileData.trustTier}
+                </Badge>
+              </div>
+              
+              {/* Role */}
+              <p className="text-lg text-muted-foreground mt-1 flex items-center gap-2 capitalize">
+                {profileData.role === "researcher" ? (
+                  <>
+                    <Briefcase className="h-5 w-5" />
+                    Researcher
+                  </>
+                ) : (
+                  <>
+                    <GraduationCap className="h-5 w-5" />
+                    {profileData.role || "Student"}
+                  </>
+                )}
+              </p>
+              
+              {/* Location info */}
+              <div className="flex flex-wrap gap-4 mt-4 text-sm text-muted-foreground">
+                {profileData.university && (
+                  <div className="flex items-center gap-1">
+                    <Building className="h-4 w-4" />
+                    {profileData.university}
+                  </div>
+                )}
+                {profileData.department && (
+                  <div className="flex items-center gap-1">
+                    <BookOpen className="h-4 w-4" />
+                    {profileData.department}
+                  </div>
+                )}
+                {profileData.location && (
+                  <div className="flex items-center gap-1">
+                    <MapPin className="h-4 w-4" />
+                    {profileData.location}
                   </div>
                 )}
               </div>
 
-              <div className="flex-1">
-                <div className="flex items-center gap-3 flex-wrap">
-                  <h1 className="text-3xl md:text-4xl font-bold">{userFromMock.name}</h1>
-                  {userFromMock.verified && (
-                    <Badge variant="success" className="gap-1">
-                      <CheckCircle2 className="h-3 w-3" />
-                      Verified
-                    </Badge>
-                  )}
-                </div>
-                
-                <p className="text-lg text-muted-foreground mt-1 flex items-center gap-2">
-                  {isStudent ? (
-                    <>
-                      <GraduationCap className="h-5 w-5" />
-                      Student
-                    </>
-                  ) : (
-                    <>
-                      <Briefcase className="h-5 w-5" />
-                      {researcher.title}
-                    </>
-                  )}
-                </p>
-                
-                <div className="flex flex-wrap gap-4 mt-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Building className="h-4 w-4" />
-                    {userFromMock.university}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <BookOpen className="h-4 w-4" />
-                    {userFromMock.department}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <MapPin className="h-4 w-4" />
-                    {userFromMock.location}
-                  </div>
-                </div>
+              {/* Mutual connections */}
+              {authUser && id && (
+                <MutualConnectionsBadge userId={id} className="mt-3" />
+              )}
 
+              {/* Quick stats */}
+              <div className="flex flex-wrap gap-6 mt-4 text-sm">
+                <div>
+                  <span className="font-bold text-lg">{profileData.projectsCompleted}</span>
+                  <span className="text-muted-foreground ml-1">projects</span>
+                </div>
+                <div>
+                  <span className="font-bold text-lg">{Math.round(profileData.successRate)}%</span>
+                  <span className="text-muted-foreground ml-1">success</span>
+                </div>
+                <div>
+                  <span className="font-bold text-lg">{profileData.trustScore}</span>
+                  <span className="text-muted-foreground ml-1">trust</span>
+                </div>
+              </div>
+
+              {/* Actions */}
+              {authUser && authUser.id !== id && (
                 <div className="flex gap-3 mt-6 flex-wrap">
                   <Button onClick={handleMessage}>
                     <MessageSquare className="h-4 w-4 mr-2" />
                     Message
                   </Button>
-                  <Button variant="outline" onClick={handleConnect}>
+                  <Button 
+                    variant="outline" 
+                    onClick={handleConnect}
+                    disabled={isSendingRequest || connectionStatus?.status === "connected"}
+                  >
                     <UserPlus className="h-4 w-4 mr-2" />
-                    Connect
+                    {getConnectButtonText()}
                   </Button>
                   <Button variant="secondary" onClick={() => setShowOfferModal(true)}>
                     <Send className="h-4 w-4 mr-2" />
                     Send Offer
                   </Button>
                 </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-
-        <div className="container py-12">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Left Column */}
-            <div className="lg:col-span-1 space-y-6">
-              {/* About / Background */}
-              {isStudent && student.backgroundSummary && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                >
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg">About</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">{student.backgroundSummary}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
               )}
+            </div>
+          </motion.div>
+        </div>
+      </div>
 
-              {/* Academic Info */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.15 }}
-              >
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <GraduationCap className="h-5 w-5 text-primary" />
-                      Academic Info
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {isStudent ? (
-                      <>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Semester</span>
-                          <span className="font-medium">{student.semester}</span>
-                        </div>
-                        {student.cgpa && (
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">CGPA</span>
-                            <span className="font-medium">{student.cgpa}</span>
-                          </div>
-                        )}
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Research Level</span>
-                          <Badge variant="secondary" className="capitalize">
-                            {student.researchLevel}
-                          </Badge>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Discipline</span>
-                          <span className="font-medium">{researcher.discipline}</span>
-                        </div>
-                        {researcher.publications && (
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Publications</span>
-                            <span className="font-medium">{researcher.publications}</span>
-                          </div>
-                        )}
-                        {researcher.hIndex && (
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">h-Index</span>
-                            <span className="font-medium">{researcher.hIndex}</span>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
+      <div className="container py-12">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Left Column - Trust & Info */}
+          <div className="lg:col-span-1 space-y-6">
+            {/* Trust Score Display */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <TrustScorePublicDisplay
+                trustScore={profileData.trustScore}
+                trustTier={profileData.trustTier}
+                trustTrajectory={profileData.trustTrajectory}
+                isVerified={profileData.isVerified}
+                verificationLevel={profileData.verificationLevel || undefined}
+                projectsCompleted={profileData.projectsCompleted}
+                successRate={profileData.successRate}
+                escrowSuccessRate={profileData.escrowSuccessRate}
+                onTimeRate={profileData.onTimeRate}
+                disputeRate={profileData.disputeRate}
+              />
+            </motion.div>
 
-              {/* Research Interests */}
+            {/* Skills Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+            >
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Target className="h-5 w-5 text-primary" />
+                    Skills & Expertise
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <SkillsSection
+                    provenSkills={profileData.provenSkills}
+                    claimedSkills={profileData.claimedSkills}
+                  />
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Interests */}
+            {profileData.interests.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -336,13 +329,13 @@ export default function UserPublicProfilePage() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg flex items-center gap-2">
-                      <Target className="h-5 w-5 text-primary" />
+                      <BookOpen className="h-5 w-5 text-primary" />
                       Research Interests
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
-                      {userFromMock.researchInterests.map((interest) => (
+                      {profileData.interests.map((interest) => (
                         <Badge key={interest} variant="secondary">
                           {interest}
                         </Badge>
@@ -351,343 +344,44 @@ export default function UserPublicProfilePage() {
                   </CardContent>
                 </Card>
               </motion.div>
-
-              {/* Skills (Students only) */}
-              {isStudent && student.skills.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.25 }}
-                >
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <Wrench className="h-5 w-5 text-primary" />
-                        Skills
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-wrap gap-2">
-                        {student.skills.map((skill) => (
-                          <Badge key={skill} variant="outline">
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              )}
-            </div>
-
-            {/* Right Column */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Portfolio / Projects (Students) */}
-              {isStudent && student.projects.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                >
-                  <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                    <Award className="h-6 w-6 text-primary" />
-                    Portfolio
-                  </h2>
-                  <div className="grid gap-4">
-                    {student.projects.map((project, idx) => (
-                      <Card key={idx} variant="elevated">
-                        <CardContent className="p-5">
-                          <h3 className="font-semibold text-lg">{project.title}</h3>
-                          <p className="text-sm text-muted-foreground mt-2">
-                            {project.description}
-                          </p>
-                          {project.link && (
-                            <a 
-                              href={project.link} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 mt-3 text-sm text-primary hover:underline font-medium"
-                            >
-                              <Briefcase className="h-4 w-4" />
-                              View Project
-                              <ArrowRight className="h-3 w-3" />
-                            </a>
-                          )}
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Active Collaborations (Researchers) */}
-              {!isStudent && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                >
-                  <h2 className="text-2xl font-bold mb-4">Active Collaboration Calls</h2>
-                  <div className="space-y-4">
-                    {mockCollaborations.map((collab) => (
-                      <Card key={collab.id} variant="interactive" className="relative">
-                        {collab.featured && (
-                          <div className="absolute top-4 right-4">
-                            <Badge variant="premium">
-                              <Sparkles className="h-3 w-3 mr-1" />
-                              Featured
-                            </Badge>
-                          </div>
-                        )}
-                        <CardContent className="p-6 space-y-4">
-                          <h3 className="font-semibold text-lg pr-20">{collab.title}</h3>
-                          <p className="text-muted-foreground">{collab.description}</p>
-                          <div className="flex flex-wrap gap-2">
-                            {collab.skills.map((skill) => (
-                              <Badge key={skill} variant="secondary">
-                                {skill}
-                              </Badge>
-                            ))}
-                          </div>
-                          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <MapPin className="h-4 w-4" />
-                              {collab.location}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Calendar className="h-4 w-4" />
-                              Deadline: {collab.deadline}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <DollarSign className="h-4 w-4" />
-                              {collab.budget}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Users className="h-4 w-4" />
-                              {collab.applicants} applicants
-                            </div>
-                          </div>
-                          <Button onClick={() => handleApply(collab.title)}>
-                            Apply to Collaboration
-                            <ArrowRight className="h-4 w-4 ml-2" />
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Services Offered (Students) */}
-              {isStudent && student.servicesOffered.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.35 }}
-                >
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <Award className="h-5 w-5 text-primary" />
-                        Services Offered
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-wrap gap-2">
-                        {student.servicesOffered.map((service) => (
-                          <Badge key={service} variant="outline">
-                            {service}
-                          </Badge>
-                        ))}
-                      </div>
-                      {student.hourlyRate && (
-                        <p className="text-sm text-muted-foreground mt-4">
-                          Hourly Rate: <span className="font-medium text-foreground">${student.hourlyRate}/hr</span>
-                        </p>
-                      )}
-                      <p className="text-sm text-muted-foreground mt-1">
-                        Availability: <span className="font-medium text-foreground">{student.availability}</span>
-                      </p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              )}
-            </div>
+            )}
           </div>
-        </div>
 
-        <QuickOfferModal
-          open={showOfferModal}
-          onOpenChange={setShowOfferModal}
-          recipientName={userFromMock.name}
-          recipientId={userFromMock.id}
-        />
-      </MainLayout>
-    );
-  }
-
-  // Render from Supabase data
-  if (profileData) {
-    return (
-      <MainLayout>
-        <div className="gradient-hero py-12 md:py-16">
-          <div className="container">
-            <Button
-              variant="ghost"
-              className="mb-6"
-              onClick={() => navigate(-1)}
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
-            </Button>
-
+          {/* Right Column - Work History & Portfolio */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Work History Timeline */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col md:flex-row gap-8 items-start"
+              transition={{ duration: 0.5, delay: 0.25 }}
             >
-              <Avatar className="h-32 w-32 border-4 border-background shadow-xl">
-                <AvatarFallback className="text-3xl">
-                  {(profileData.full_name || profileData.first_name || "U")
-                    .split(" ")
-                    .map((n: string) => n[0])
-                    .join("")}
-                </AvatarFallback>
-              </Avatar>
-
-              <div className="flex-1">
-                <h1 className="text-3xl md:text-4xl font-bold">
-                  {profileData.full_name || `${profileData.first_name || ""} ${profileData.last_name || ""}`.trim() || "User"}
-                </h1>
-                
-                <p className="text-lg text-muted-foreground mt-1 flex items-center gap-2 capitalize">
-                  {profileData.role === "researcher" ? (
-                    <>
-                      <Briefcase className="h-5 w-5" />
-                      Researcher
-                    </>
-                  ) : (
-                    <>
-                      <GraduationCap className="h-5 w-5" />
-                      {profileData.role || "Student"}
-                    </>
-                  )}
-                </p>
-                
-                <div className="flex flex-wrap gap-4 mt-4 text-sm text-muted-foreground">
-                  {profileData.university && (
-                    <div className="flex items-center gap-1">
-                      <Building className="h-4 w-4" />
-                      {profileData.university}
-                    </div>
-                  )}
-                  {profileData.department && (
-                    <div className="flex items-center gap-1">
-                      <BookOpen className="h-4 w-4" />
-                      {profileData.department}
-                    </div>
-                  )}
-                  {profileData.location && (
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4" />
-                      {profileData.location}
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex gap-3 mt-6 flex-wrap">
-                  <Button onClick={handleMessage}>
-                    <MessageSquare className="h-4 w-4 mr-2" />
-                    Message
-                  </Button>
-                  <Button variant="outline" onClick={handleConnect}>
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Connect
-                  </Button>
-                  <Button variant="secondary" onClick={() => setShowOfferModal(true)}>
-                    <Send className="h-4 w-4 mr-2" />
-                    Send Offer
-                  </Button>
-                </div>
-              </div>
+              <WorkHistoryTimeline
+                records={profileData.workHistory}
+                userId={profileData.id}
+              />
             </motion.div>
-          </div>
-        </div>
 
-        <div className="container py-12">
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-1 space-y-6">
-              {/* Academic Info */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <GraduationCap className="h-5 w-5 text-primary" />
-                    Academic Info
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {profileData.education_level && (
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Education Level</span>
-                      <Badge variant="secondary">{profileData.education_level}</Badge>
-                    </div>
-                  )}
-                  {profileData.department && (
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Department</span>
-                      <span className="font-medium">{profileData.department}</span>
-                    </div>
-                  )}
-                  {profileData.research_level && (
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Research Level</span>
-                      <Badge variant="secondary" className="capitalize">
-                        {profileData.research_level}
-                      </Badge>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Research Interests */}
-              {profileData.interests && profileData.interests.length > 0 && (
+            {/* Portfolio Section */}
+            {profileData.portfolioProjects.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Target className="h-5 w-5 text-primary" />
-                      Interests
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <Award className="h-5 w-5 text-primary" />
+                      Portfolio Projects
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {profileData.interests.map((interest: string) => (
-                        <Badge key={interest} variant="secondary">
-                          {interest}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-
-            <div className="lg:col-span-2 space-y-6">
-              {/* Portfolio Section */}
-              {portfolioProjects.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                >
-                  <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                    <Award className="h-6 w-6 text-primary" />
-                    Portfolio
-                  </h2>
-                  <div className="grid gap-4">
-                    {portfolioProjects.map((project) => (
-                      <Card key={project.id} variant="elevated">
-                        <CardContent className="p-5">
+                    <div className="grid gap-4">
+                      {profileData.portfolioProjects.map((project) => (
+                        <div
+                          key={project.id}
+                          className="p-4 rounded-lg border bg-card hover:shadow-sm transition-shadow"
+                        >
                           <div className="flex gap-4">
                             {project.thumbnail_url && (
                               <img
@@ -710,55 +404,43 @@ export default function UserPublicProfilePage() {
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-1.5 mt-3 text-sm text-primary hover:underline font-medium"
                                 >
-                                  <Briefcase className="h-4 w-4" />
+                                  <ExternalLink className="h-4 w-4" />
                                   View Project
                                   <ArrowRight className="h-3 w-3" />
                                 </a>
                               )}
                             </div>
                           </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-
-              {portfolioProjects.length === 0 && (
-                <Card>
-                  <CardContent className="p-8 text-center text-muted-foreground">
-                    <Award className="h-12 w-12 mx-auto mb-3 opacity-30" />
-                    <p>No portfolio projects yet</p>
+                        </div>
+                      ))}
+                    </div>
                   </CardContent>
                 </Card>
-              )}
-            </div>
+              </motion.div>
+            )}
+
+            {/* Empty state for work history */}
+            {profileData.workHistory.length === 0 && profileData.portfolioProjects.length === 0 && (
+              <Card>
+                <CardContent className="p-12 text-center">
+                  <Briefcase className="h-16 w-16 mx-auto mb-4 text-muted-foreground/30" />
+                  <h3 className="text-lg font-medium">No Work History Yet</h3>
+                  <p className="text-muted-foreground mt-2">
+                    This user hasn't completed any projects on the platform yet.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
-
-        <QuickOfferModal
-          open={showOfferModal}
-          onOpenChange={setShowOfferModal}
-          recipientName={profileData.full_name || "User"}
-          recipientId={id || ""}
-        />
-      </MainLayout>
-    );
-  }
-
-  // Profile not found
-  return (
-    <MainLayout>
-      <div className="container py-16 text-center">
-        <h1 className="text-2xl font-bold">Profile not found</h1>
-        <p className="text-muted-foreground mt-2">
-          The profile you're looking for doesn't exist.
-        </p>
-        <Button className="mt-4" onClick={() => navigate(-1)}>
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Go Back
-        </Button>
       </div>
+
+      <QuickOfferModal
+        open={showOfferModal}
+        onOpenChange={setShowOfferModal}
+        recipientName={profileData.fullName}
+        recipientId={id || ""}
+      />
     </MainLayout>
   );
 }

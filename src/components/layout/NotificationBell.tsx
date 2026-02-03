@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { Bell } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Bell, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -14,27 +14,70 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function NotificationBell() {
   const { notifications, unreadCount, loading, markAsRead, markAllAsRead } = useNotifications();
+  const navigate = useNavigate();
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
-      case "match_request":
-        return "👋";
-      case "offer_received":
-        return "📩";
+      // Projects & Work
+      case "new_bid":
       case "bid_received":
         return "💰";
+      case "offer_received":
+        return "📩";
       case "offer_accepted":
         return "✅";
       case "offer_rejected":
         return "❌";
+      case "milestone_approved":
       case "milestone_completed":
         return "🎯";
+      case "escrow_released":
       case "payment_received":
         return "💵";
+      case "dispute_update":
+        return "⚠️";
+      // Trust & Verification
+      case "trust_score_changed":
+        return "📊";
       case "verification_approved":
+      case "verification_complete":
         return "✓";
+      case "profile_viewed":
+        return "👁️";
+      case "shortlisted":
+        return "⭐";
+      // Network & Social
+      case "match_request":
+      case "connection_request":
+        return "👋";
+      case "connection_accepted":
+        return "🤝";
+      case "new_follower":
+        return "➕";
+      case "mention":
+        return "📢";
+      // Messages
+      case "new_message":
       case "message":
         return "💬";
+      case "message_reaction":
+        return "❤️";
+      // Groups & Events
+      case "group_invitation":
+        return "👥";
+      case "event_invitation":
+      case "event_reminder":
+        return "📅";
+      // Publications
+      case "publication_verified":
+        return "📄";
+      case "publication_claimed":
+        return "📝";
+      // System
+      case "admin_notice":
+        return "📣";
+      case "opportunity_match":
+        return "🎯";
       default:
         return "🔔";
     }
@@ -92,16 +135,26 @@ export function NotificationBell() {
       <PopoverContent className="w-80 p-0" align="end">
         <div className="flex items-center justify-between p-4 border-b">
           <h4 className="font-semibold">Notifications</h4>
-          {unreadCount > 0 && (
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-xs h-7"
-              onClick={markAllAsRead}
+          <div className="flex items-center gap-1">
+            {unreadCount > 0 && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-xs h-7"
+                onClick={markAllAsRead}
+              >
+                Mark all read
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7"
+              onClick={() => navigate("/settings/notifications")}
             >
-              Mark all read
+              <Settings2 className="h-4 w-4" />
             </Button>
-          )}
+          </div>
         </div>
         <ScrollArea className="h-[300px]">
           {loading ? (
