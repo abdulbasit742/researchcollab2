@@ -105,6 +105,8 @@ import TermsOfServicePage from "./pages/TermsOfServicePage";
 import CookiePolicyPage from "./pages/CookiePolicyPage";
 import OpportunitiesPage from "./pages/OpportunitiesPage";
 import NotificationSettingsPage from "./pages/NotificationSettingsPage";
+import NotificationsPage from "./pages/NotificationsPage";
+import OrganizationPage from "./pages/OrganizationPage";
 import ProgressPage from "./pages/ProgressPage";
 import DealsPage from "./pages/DealsPage";
 import DealDetailPage from "./pages/DealDetailPage";
@@ -174,6 +176,8 @@ const AppContent = () => {
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/messages/:threadId" element={<MessageThreadPage />} />
             <Route path="/settings/notifications" element={<NotificationSettingsPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/org/:id" element={<OrganizationPage />} />
             <Route path="/progress" element={<ProgressPage />} />
             <Route path="/deals" element={<DealsPage />} />
             <Route path="/deals/:dealId" element={<DealDetailPage />} />
