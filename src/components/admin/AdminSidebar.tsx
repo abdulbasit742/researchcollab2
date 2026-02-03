@@ -20,7 +20,9 @@ import {
   BookOpen,
   Vote,
   Database,
-  Key
+  Key,
+  Sparkles,
+  TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -41,6 +43,9 @@ const navItems = [
   { icon: Package, label: "Fulfillment", href: "/admin/fulfillment" },
   { icon: DollarSign, label: "Subscriptions", href: "/admin/subscriptions" },
   { icon: Briefcase, label: "AI Pricing", href: "/admin/ai-pricing" },
+  // Premium & Pricing Intelligence
+  { icon: Sparkles, label: "Premium Analytics", href: "/admin/premium-analytics" },
+  { icon: TrendingUp, label: "Pricing", href: "/admin/pricing" },
   { icon: BarChart3, label: "Analytics", href: "/admin/analytics" },
   { icon: History, label: "Activity Log", href: "/admin/audit-log" },
   // Phase 5 & 6 - Infrastructure & Governance
