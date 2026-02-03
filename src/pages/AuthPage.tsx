@@ -14,7 +14,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { GraduationCap, Mail, Lock, ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
+import { GraduationCap, Mail, Lock, ArrowRight, Eye, EyeOff, Loader2, MessageCircle } from "lucide-react";
+import { supportConfig } from "@/config/support";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth, getRoleBasedRedirect } from "@/contexts/AuthContext";
 import { CelebrationOverlay } from "@/components/celebrations";
@@ -359,6 +360,20 @@ export default function AuthPage() {
                       </>
                     )}
                   </Button>
+
+                  {/* WhatsApp Support Link */}
+                  <div className="mt-4 text-center">
+                    <p className="text-sm text-muted-foreground mb-2">Need help signing up?</p>
+                    <a
+                      href={`https://wa.me/${supportConfig.phoneNumber}?text=${encodeURIComponent("Assalam o Alaikum, I need help with sign-up.")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      <span>WhatsApp: +92 318 178 1454</span>
+                    </a>
+                  </div>
                 </form>
               </TabsContent>
 
