@@ -5,3 +5,4 @@ export { MutualConnectionsBadge } from "./MutualConnectionsBadge";
 export { NetworkSuggestionCard } from "./NetworkSuggestionCard";
 export { ConnectionRequestCard } from "./ConnectionRequestCard";
 export { NetworkConnectionCard } from "./NetworkConnectionCard";
+export { NetworkHealthPanel, WeightedConnectionsList, NetworkSuggestionsPanel } from "./NetworkHealthPanel";

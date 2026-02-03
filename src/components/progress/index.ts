@@ -4,3 +4,5 @@ export { FailureRecoveryPanel } from "./FailureRecoveryPanel";
 export { OpportunityConversionPanel } from "./OpportunityConversionPanel";
 export { CareerTimeline } from "./CareerTimeline";
 export { NextBestActionPanel } from "./NextBestActionPanel";
+export { FailureRecoveryCard } from "./FailureRecoveryCard";
+export { CareerTrajectoryPanel } from "./CareerTrajectoryPanel";
