@@ -2028,6 +2028,50 @@ export type Database = {
           },
         ]
       }
+      dashboard_audit_logs: {
+        Row: {
+          action: string
+          created_at: string | null
+          dashboard_type: string
+          data_accessed: Json | null
+          id: string
+          ip_address: string | null
+          scope_id: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          dashboard_type: string
+          data_accessed?: Json | null
+          id?: string
+          ip_address?: string | null
+          scope_id: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          dashboard_type?: string
+          data_accessed?: Json | null
+          id?: string
+          ip_address?: string | null
+          scope_id?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dashboard_audit_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       data_access_requests: {
         Row: {
           created_at: string
@@ -4599,6 +4643,64 @@ export type Database = {
         }
         Relationships: []
       }
+      institution_dashboard_access: {
+        Row: {
+          access_level: string
+          created_at: string | null
+          expires_at: string | null
+          granted_at: string | null
+          granted_by: string | null
+          id: string
+          institution_id: string
+          is_active: boolean | null
+          user_id: string
+        }
+        Insert: {
+          access_level?: string
+          created_at?: string | null
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          institution_id: string
+          is_active?: boolean | null
+          user_id: string
+        }
+        Update: {
+          access_level?: string
+          created_at?: string | null
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          institution_id?: string
+          is_active?: boolean | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_dashboard_access_granted_by_fkey"
+            columns: ["granted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "institution_dashboard_access_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "institution_dashboard_access_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       institution_partnerships: {
         Row: {
           agreement_end_date: string | null
@@ -4646,6 +4748,157 @@ export type Database = {
             columns: ["institution_b_id"]
             isOneToOne: false
             referencedRelation: "international_institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institution_research_links: {
+        Row: {
+          created_at: string | null
+          department: string | null
+          end_date: string | null
+          id: string
+          institution_id: string
+          is_current: boolean | null
+          is_verified: boolean | null
+          role: string
+          scholar_passport_id: string
+          start_date: string
+          updated_at: string | null
+          user_id: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          department?: string | null
+          end_date?: string | null
+          id?: string
+          institution_id: string
+          is_current?: boolean | null
+          is_verified?: boolean | null
+          role: string
+          scholar_passport_id: string
+          start_date: string
+          updated_at?: string | null
+          user_id: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          department?: string | null
+          end_date?: string | null
+          id?: string
+          institution_id?: string
+          is_current?: boolean | null
+          is_verified?: boolean | null
+          role?: string
+          scholar_passport_id?: string
+          start_date?: string
+          updated_at?: string | null
+          user_id?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_research_links_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "institution_research_links_scholar_passport_id_fkey"
+            columns: ["scholar_passport_id"]
+            isOneToOne: false
+            referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "institution_research_links_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "institution_research_links_verified_by_fkey"
+            columns: ["verified_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institution_research_snapshots: {
+        Row: {
+          active_research_timelines: number | null
+          avg_project_completion_rate: number | null
+          collaborations_count: number | null
+          completed_research_timelines: number | null
+          created_at: string | null
+          external_collaborations: number | null
+          funding_received: number | null
+          funding_utilized: number | null
+          id: string
+          institution_id: string
+          interdisciplinary_score: number | null
+          last_updated_at: string | null
+          period_end: string
+          period_start: string
+          research_domains: Json | null
+          snapshot_period: string
+          total_publications: number | null
+          total_researchers: number | null
+        }
+        Insert: {
+          active_research_timelines?: number | null
+          avg_project_completion_rate?: number | null
+          collaborations_count?: number | null
+          completed_research_timelines?: number | null
+          created_at?: string | null
+          external_collaborations?: number | null
+          funding_received?: number | null
+          funding_utilized?: number | null
+          id?: string
+          institution_id: string
+          interdisciplinary_score?: number | null
+          last_updated_at?: string | null
+          period_end: string
+          period_start: string
+          research_domains?: Json | null
+          snapshot_period?: string
+          total_publications?: number | null
+          total_researchers?: number | null
+        }
+        Update: {
+          active_research_timelines?: number | null
+          avg_project_completion_rate?: number | null
+          collaborations_count?: number | null
+          completed_research_timelines?: number | null
+          created_at?: string | null
+          external_collaborations?: number | null
+          funding_received?: number | null
+          funding_utilized?: number | null
+          id?: string
+          institution_id?: string
+          interdisciplinary_score?: number | null
+          last_updated_at?: string | null
+          period_end?: string
+          period_start?: string
+          research_domains?: Json | null
+          snapshot_period?: string
+          total_publications?: number | null
+          total_researchers?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_research_snapshots_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -5078,6 +5331,60 @@ export type Database = {
           },
         ]
       }
+      national_dashboard_access: {
+        Row: {
+          access_level: string
+          country_code: string
+          created_at: string | null
+          expires_at: string | null
+          granted_at: string | null
+          granted_by: string | null
+          id: string
+          is_active: boolean | null
+          organization_affiliation: string | null
+          user_id: string
+        }
+        Insert: {
+          access_level?: string
+          country_code: string
+          created_at?: string | null
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          organization_affiliation?: string | null
+          user_id: string
+        }
+        Update: {
+          access_level?: string
+          country_code?: string
+          created_at?: string | null
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          organization_affiliation?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "national_dashboard_access_granted_by_fkey"
+            columns: ["granted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "national_dashboard_access_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       national_insights: {
         Row: {
           approved_at: string | null
@@ -5135,6 +5442,75 @@ export type Database = {
           updated_at?: string
           valid_from?: string | null
           valid_until?: string | null
+        }
+        Relationships: []
+      }
+      national_research_snapshots: {
+        Row: {
+          avg_funding_per_researcher: number | null
+          collaboration_density: number | null
+          computed_at: string | null
+          country_code: string
+          country_name: string
+          emerging_domains: Json | null
+          funding_distribution: Json | null
+          id: string
+          institution_participation: Json | null
+          international_collaboration_rate: number | null
+          period_end: string
+          period_start: string
+          research_domains: Json | null
+          snapshot_period: string
+          talent_flow_metrics: Json | null
+          top_research_areas: Json | null
+          total_active_research: number | null
+          total_institutions: number | null
+          total_publications: number | null
+          total_researchers: number | null
+        }
+        Insert: {
+          avg_funding_per_researcher?: number | null
+          collaboration_density?: number | null
+          computed_at?: string | null
+          country_code: string
+          country_name: string
+          emerging_domains?: Json | null
+          funding_distribution?: Json | null
+          id?: string
+          institution_participation?: Json | null
+          international_collaboration_rate?: number | null
+          period_end: string
+          period_start: string
+          research_domains?: Json | null
+          snapshot_period?: string
+          talent_flow_metrics?: Json | null
+          top_research_areas?: Json | null
+          total_active_research?: number | null
+          total_institutions?: number | null
+          total_publications?: number | null
+          total_researchers?: number | null
+        }
+        Update: {
+          avg_funding_per_researcher?: number | null
+          collaboration_density?: number | null
+          computed_at?: string | null
+          country_code?: string
+          country_name?: string
+          emerging_domains?: Json | null
+          funding_distribution?: Json | null
+          id?: string
+          institution_participation?: Json | null
+          international_collaboration_rate?: number | null
+          period_end?: string
+          period_start?: string
+          research_domains?: Json | null
+          snapshot_period?: string
+          talent_flow_metrics?: Json | null
+          top_research_areas?: Json | null
+          total_active_research?: number | null
+          total_institutions?: number | null
+          total_publications?: number | null
+          total_researchers?: number | null
         }
         Relationships: []
       }
@@ -6265,6 +6641,77 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      policy_insight_flags: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          affected_domains: string[] | null
+          confidence_score: number | null
+          created_at: string | null
+          data_sources: Json | null
+          detailed_analysis: Json | null
+          expires_at: string | null
+          generated_at: string | null
+          id: string
+          insight_type: string
+          is_active: boolean | null
+          recommendations: Json | null
+          scope: string
+          scope_id: string | null
+          severity: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          affected_domains?: string[] | null
+          confidence_score?: number | null
+          created_at?: string | null
+          data_sources?: Json | null
+          detailed_analysis?: Json | null
+          expires_at?: string | null
+          generated_at?: string | null
+          id?: string
+          insight_type: string
+          is_active?: boolean | null
+          recommendations?: Json | null
+          scope: string
+          scope_id?: string | null
+          severity?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          affected_domains?: string[] | null
+          confidence_score?: number | null
+          created_at?: string | null
+          data_sources?: Json | null
+          detailed_analysis?: Json | null
+          expires_at?: string | null
+          generated_at?: string | null
+          id?: string
+          insight_type?: string
+          is_active?: boolean | null
+          recommendations?: Json | null
+          scope?: string
+          scope_id?: string | null
+          severity?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_insight_flags_acknowledged_by_fkey"
+            columns: ["acknowledged_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       portfolio_projects: {
         Row: {
@@ -7745,6 +8192,44 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_domain_registry: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          domain_code: string
+          domain_name: string
+          id: string
+          is_interdisciplinary: boolean | null
+          parent_domain_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          domain_code: string
+          domain_name: string
+          id?: string
+          is_interdisciplinary?: boolean | null
+          parent_domain_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          domain_code?: string
+          domain_name?: string
+          id?: string
+          is_interdisciplinary?: boolean | null
+          parent_domain_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_domain_registry_parent_domain_id_fkey"
+            columns: ["parent_domain_id"]
+            isOneToOne: false
+            referencedRelation: "research_domain_registry"
             referencedColumns: ["id"]
           },
         ]

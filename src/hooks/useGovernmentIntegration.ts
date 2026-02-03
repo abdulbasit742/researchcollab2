@@ -282,3 +282,138 @@ export function useGovernmentIntegration() {
     updateCountryPolicy,
   };
 }
+
+// New hook for research capacity metrics
+export function useResearchCapacityMetrics(countryCode: string | undefined) {
+  const [metrics, setMetrics] = useState<{
+    totalResearchers: number;
+    researcherGrowthRate: number;
+    averagePublicationsPerResearcher: number;
+    fundingEfficiency: number;
+    collaborationIndex: number;
+    internationalCollaborationRate: number;
+    domainDiversity: number;
+    talentRetentionRate: number;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchMetrics = useCallback(async () => {
+    if (!countryCode) {
+      setMetrics(null);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from("national_research_snapshots")
+        .select("*")
+        .eq("country_code", countryCode)
+        .order("period_start", { ascending: false })
+        .limit(2);
+
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        const latest = data[0];
+        const previous = data[1];
+
+        const growthRate = previous 
+          ? ((latest.total_researchers - previous.total_researchers) / previous.total_researchers) * 100
+          : 0;
+
+        const talentFlow = latest.talent_flow_metrics as { inflow?: number; outflow?: number } || {};
+        const retentionRate = talentFlow.inflow && talentFlow.outflow
+          ? ((talentFlow.inflow - talentFlow.outflow) / (talentFlow.inflow + talentFlow.outflow)) * 100 + 50
+          : 50;
+
+        setMetrics({
+          totalResearchers: latest.total_researchers,
+          researcherGrowthRate: growthRate,
+          averagePublicationsPerResearcher: latest.total_researchers > 0 
+            ? latest.total_publications / latest.total_researchers 
+            : 0,
+          fundingEfficiency: latest.avg_funding_per_researcher > 0 
+            ? Math.min(100, (latest.total_publications / latest.total_researchers) * 10)
+            : 0,
+          collaborationIndex: latest.collaboration_density,
+          internationalCollaborationRate: latest.international_collaboration_rate,
+          domainDiversity: Object.keys(latest.research_domains || {}).length,
+          talentRetentionRate: retentionRate,
+        });
+      } else {
+        setMetrics(null);
+      }
+    } catch (err) {
+      console.error("Error fetching capacity metrics:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [countryCode]);
+
+  useEffect(() => {
+    fetchMetrics();
+  }, [fetchMetrics]);
+
+  return {
+    metrics,
+    loading,
+    refetch: fetchMetrics,
+  };
+}
+
+// Hook for checking government user status
+export function useGovernmentUserStatus() {
+  const { user } = useAuth();
+  const [isGovernmentUser, setIsGovernmentUser] = useState(false);
+  const [governmentAccess, setGovernmentAccess] = useState<Array<{
+    country_code: string;
+    access_level: string;
+    organization_affiliation: string | null;
+  }>>([]);
+  const [loading, setLoading] = useState(true);
+
+  const checkGovernmentStatus = useCallback(async () => {
+    if (!user) {
+      setIsGovernmentUser(false);
+      setGovernmentAccess([]);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Check national dashboard access with policy_maker or admin level
+      const { data, error } = await supabase
+        .from("national_dashboard_access")
+        .select("country_code, access_level, organization_affiliation")
+        .eq("user_id", user.id)
+        .eq("is_active", true)
+        .in("access_level", ["policy_maker", "admin"]);
+
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        setIsGovernmentUser(true);
+        setGovernmentAccess(data);
+      } else {
+        setIsGovernmentUser(false);
+        setGovernmentAccess([]);
+      }
+    } catch (err) {
+      console.error("Error checking government status:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    checkGovernmentStatus();
+  }, [checkGovernmentStatus]);
+
+  return {
+    isGovernmentUser,
+    governmentAccess,
+    loading,
+    refetch: checkGovernmentStatus,
+  };
+}
