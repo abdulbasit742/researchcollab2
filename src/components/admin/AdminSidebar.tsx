@@ -30,6 +30,8 @@ import {
   FolderKanban,
   Layers,
   Camera,
+  Lightbulb,
+  Brain,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -74,6 +76,8 @@ const navItems = [
 const platformItems = [
   { icon: Layers, label: "Features Showcase", href: "/features" },
   { icon: Camera, label: "Social Features", href: "/social" },
+  { icon: Lightbulb, label: "Ambient Intelligence", href: "/ambient" },
+  { icon: Brain, label: "Collective Intelligence", href: "/collective" },
   { icon: GraduationCap, label: "Learning", href: "/learning" },
   { icon: Calendar, label: "Events", href: "/events" },
   { icon: UserCog, label: "HR & Talent", href: "/hr" },
