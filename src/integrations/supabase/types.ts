@@ -5055,6 +5055,138 @@ export type Database = {
           },
         ]
       }
+      deal_health_metrics: {
+        Row: {
+          calculated_at: string
+          communication_score: number | null
+          confidence: number | null
+          days_since_activity: number | null
+          deal_id: string
+          health_score: number
+          id: string
+          last_activity_at: string | null
+          metadata: Json | null
+          milestone_velocity: number | null
+          predicted_outcome: string | null
+          risk_factors: Json | null
+          sentiment_trend: string | null
+        }
+        Insert: {
+          calculated_at?: string
+          communication_score?: number | null
+          confidence?: number | null
+          days_since_activity?: number | null
+          deal_id: string
+          health_score: number
+          id?: string
+          last_activity_at?: string | null
+          metadata?: Json | null
+          milestone_velocity?: number | null
+          predicted_outcome?: string | null
+          risk_factors?: Json | null
+          sentiment_trend?: string | null
+        }
+        Update: {
+          calculated_at?: string
+          communication_score?: number | null
+          confidence?: number | null
+          days_since_activity?: number | null
+          deal_id?: string
+          health_score?: number
+          id?: string
+          last_activity_at?: string | null
+          metadata?: Json | null
+          milestone_velocity?: number | null
+          predicted_outcome?: string | null
+          risk_factors?: Json | null
+          sentiment_trend?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_health_metrics_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deal_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deal_rooms: {
+        Row: {
+          agreed_amount: number | null
+          buyer_id: string
+          completed_at: string | null
+          created_at: string
+          escrow_amount: number | null
+          escrow_status: string | null
+          id: string
+          metadata: Json | null
+          milestones: Json | null
+          offer_id: string | null
+          seller_id: string
+          status: string
+          terms: Json | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          agreed_amount?: number | null
+          buyer_id: string
+          completed_at?: string | null
+          created_at?: string
+          escrow_amount?: number | null
+          escrow_status?: string | null
+          id?: string
+          metadata?: Json | null
+          milestones?: Json | null
+          offer_id?: string | null
+          seller_id: string
+          status?: string
+          terms?: Json | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          agreed_amount?: number | null
+          buyer_id?: string
+          completed_at?: string | null
+          created_at?: string
+          escrow_amount?: number | null
+          escrow_status?: string | null
+          id?: string
+          metadata?: Json | null
+          milestones?: Json | null
+          offer_id?: string | null
+          seller_id?: string
+          status?: string
+          terms?: Json | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_rooms_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deal_rooms_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deal_rooms_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       decision_classes: {
         Row: {
           ai_allowed_role: string
@@ -5888,6 +6020,138 @@ export type Database = {
             columns: ["milestone_id"]
             isOneToOne: false
             referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      due_diligence_contributions: {
+        Row: {
+          check_type: string
+          confidence_score: number | null
+          created_at: string
+          evidence_urls: string[] | null
+          findings: string
+          id: string
+          investigator_id: string
+          request_id: string
+          reward_earned: number | null
+          risk_level: string | null
+          updated_at: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          check_type: string
+          confidence_score?: number | null
+          created_at?: string
+          evidence_urls?: string[] | null
+          findings: string
+          id?: string
+          investigator_id: string
+          request_id: string
+          reward_earned?: number | null
+          risk_level?: string | null
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          check_type?: string
+          confidence_score?: number | null
+          created_at?: string
+          evidence_urls?: string[] | null
+          findings?: string
+          id?: string
+          investigator_id?: string
+          request_id?: string
+          reward_earned?: number | null
+          risk_level?: string | null
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "due_diligence_contributions_investigator_id_fkey"
+            columns: ["investigator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "due_diligence_contributions_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "due_diligence_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "due_diligence_contributions_verified_by_fkey"
+            columns: ["verified_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      due_diligence_requests: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          deadline: string | null
+          final_report: Json | null
+          id: string
+          max_investigators: number | null
+          metadata: Json | null
+          requester_id: string
+          required_checks: Json
+          reward_amount: number | null
+          scope: string
+          status: Database["public"]["Enums"]["due_diligence_status"]
+          target_id: string
+          target_type: string
+          title: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          deadline?: string | null
+          final_report?: Json | null
+          id?: string
+          max_investigators?: number | null
+          metadata?: Json | null
+          requester_id: string
+          required_checks?: Json
+          reward_amount?: number | null
+          scope: string
+          status?: Database["public"]["Enums"]["due_diligence_status"]
+          target_id: string
+          target_type: string
+          title: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          deadline?: string | null
+          final_report?: Json | null
+          id?: string
+          max_investigators?: number | null
+          metadata?: Json | null
+          requester_id?: string
+          required_checks?: Json
+          reward_amount?: number | null
+          scope?: string
+          status?: Database["public"]["Enums"]["due_diligence_status"]
+          target_id?: string
+          target_type?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "due_diligence_requests_requester_id_fkey"
+            columns: ["requester_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -12237,6 +12501,66 @@ export type Database = {
         }
         Relationships: []
       }
+      opportunity_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          deadline_distance_days: number | null
+          expires_at: string | null
+          id: string
+          is_dismissed: boolean | null
+          is_notified: boolean | null
+          match_reasons: Json | null
+          match_score: number
+          notified_at: string | null
+          opportunity_id: string
+          user_id: string
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string
+          deadline_distance_days?: number | null
+          expires_at?: string | null
+          id?: string
+          is_dismissed?: boolean | null
+          is_notified?: boolean | null
+          match_reasons?: Json | null
+          match_score: number
+          notified_at?: string | null
+          opportunity_id: string
+          user_id: string
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          deadline_distance_days?: number | null
+          expires_at?: string | null
+          id?: string
+          is_dismissed?: boolean | null
+          is_notified?: boolean | null
+          match_reasons?: Json | null
+          match_score?: number
+          notified_at?: string | null
+          opportunity_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_alerts_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunity_alerts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       org_bulk_licenses: {
         Row: {
           created_at: string | null
@@ -13547,6 +13871,190 @@ export type Database = {
           },
         ]
       }
+      prediction_markets: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          current_liquidity: number | null
+          description: string | null
+          id: string
+          initial_liquidity: number | null
+          market_type: string
+          metadata: Json | null
+          outcomes: Json
+          project_id: string | null
+          question: string
+          resolution_criteria: string | null
+          resolution_date: string | null
+          resolved_at: string | null
+          resolved_outcome: string | null
+          resolver_id: string | null
+          status: Database["public"]["Enums"]["prediction_market_status"]
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          current_liquidity?: number | null
+          description?: string | null
+          id?: string
+          initial_liquidity?: number | null
+          market_type?: string
+          metadata?: Json | null
+          outcomes?: Json
+          project_id?: string | null
+          question: string
+          resolution_criteria?: string | null
+          resolution_date?: string | null
+          resolved_at?: string | null
+          resolved_outcome?: string | null
+          resolver_id?: string | null
+          status?: Database["public"]["Enums"]["prediction_market_status"]
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          current_liquidity?: number | null
+          description?: string | null
+          id?: string
+          initial_liquidity?: number | null
+          market_type?: string
+          metadata?: Json | null
+          outcomes?: Json
+          project_id?: string | null
+          question?: string
+          resolution_criteria?: string | null
+          resolution_date?: string | null
+          resolved_at?: string | null
+          resolved_outcome?: string | null
+          resolver_id?: string | null
+          status?: Database["public"]["Enums"]["prediction_market_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prediction_markets_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prediction_markets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prediction_markets_resolver_id_fkey"
+            columns: ["resolver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prediction_positions: {
+        Row: {
+          average_price: number
+          created_at: string
+          id: string
+          market_id: string
+          outcome_id: string
+          realized_pnl: number | null
+          shares: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          average_price: number
+          created_at?: string
+          id?: string
+          market_id: string
+          outcome_id: string
+          realized_pnl?: number | null
+          shares?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          average_price?: number
+          created_at?: string
+          id?: string
+          market_id?: string
+          outcome_id?: string
+          realized_pnl?: number | null
+          shares?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prediction_positions_market_id_fkey"
+            columns: ["market_id"]
+            isOneToOne: false
+            referencedRelation: "prediction_markets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prediction_positions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prediction_trades: {
+        Row: {
+          created_at: string
+          id: string
+          market_id: string
+          outcome_id: string
+          price: number
+          shares: number
+          total_cost: number
+          trade_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          market_id: string
+          outcome_id: string
+          price: number
+          shares: number
+          total_cost: number
+          trade_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          market_id?: string
+          outcome_id?: string
+          price?: number
+          shares?: number
+          total_cost?: number
+          trade_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prediction_trades_market_id_fkey"
+            columns: ["market_id"]
+            isOneToOne: false
+            referencedRelation: "prediction_markets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prediction_trades_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       preservation_audit_logs: {
         Row: {
           action_type: string
@@ -14839,6 +15347,63 @@ export type Database = {
             columns: ["governance_council_id"]
             isOneToOne: false
             referencedRelation: "governance_councils"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      relationship_entropy: {
+        Row: {
+          calculated_at: string
+          connection_id: string
+          days_since_interaction: number | null
+          entropy_score: number
+          id: string
+          interaction_frequency: number | null
+          interaction_trend: string | null
+          last_interaction_at: string | null
+          relationship_value: number | null
+          suggested_action: string | null
+          user_id: string
+        }
+        Insert: {
+          calculated_at?: string
+          connection_id: string
+          days_since_interaction?: number | null
+          entropy_score: number
+          id?: string
+          interaction_frequency?: number | null
+          interaction_trend?: string | null
+          last_interaction_at?: string | null
+          relationship_value?: number | null
+          suggested_action?: string | null
+          user_id: string
+        }
+        Update: {
+          calculated_at?: string
+          connection_id?: string
+          days_since_interaction?: number | null
+          entropy_score?: number
+          id?: string
+          interaction_frequency?: number | null
+          interaction_trend?: string | null
+          last_interaction_at?: string | null
+          relationship_value?: number | null
+          suggested_action?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "relationship_entropy_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "relationship_entropy_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -17769,6 +18334,125 @@ export type Database = {
           },
         ]
       }
+      swarm_decisions: {
+        Row: {
+          closes_at: string
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          created_by: string | null
+          decision_type: string
+          description: string
+          id: string
+          metadata: Json | null
+          min_participants: number | null
+          opens_at: string
+          options: Json
+          quorum_percentage: number | null
+          result: Json | null
+          status: Database["public"]["Enums"]["swarm_decision_status"]
+          title: string
+          updated_at: string
+          voting_method: string
+        }
+        Insert: {
+          closes_at: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by?: string | null
+          decision_type?: string
+          description: string
+          id?: string
+          metadata?: Json | null
+          min_participants?: number | null
+          opens_at?: string
+          options?: Json
+          quorum_percentage?: number | null
+          result?: Json | null
+          status?: Database["public"]["Enums"]["swarm_decision_status"]
+          title: string
+          updated_at?: string
+          voting_method?: string
+        }
+        Update: {
+          closes_at?: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by?: string | null
+          decision_type?: string
+          description?: string
+          id?: string
+          metadata?: Json | null
+          min_participants?: number | null
+          opens_at?: string
+          options?: Json
+          quorum_percentage?: number | null
+          result?: Json | null
+          status?: Database["public"]["Enums"]["swarm_decision_status"]
+          title?: string
+          updated_at?: string
+          voting_method?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "swarm_decisions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      swarm_votes: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          decision_id: string
+          id: string
+          option_id: string
+          reasoning: string | null
+          voter_id: string
+          weight: number | null
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          decision_id: string
+          id?: string
+          option_id: string
+          reasoning?: string | null
+          voter_id: string
+          weight?: number | null
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          decision_id?: string
+          id?: string
+          option_id?: string
+          reasoning?: string | null
+          voter_id?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "swarm_votes_decision_id_fkey"
+            columns: ["decision_id"]
+            isOneToOne: false
+            referencedRelation: "swarm_decisions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "swarm_votes_voter_id_fkey"
+            columns: ["voter_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       system_scope_limits: {
         Row: {
           created_at: string
@@ -20170,6 +20854,7 @@ export type Database = {
       affiliate_type: "standard" | "institutional" | "ambassador"
       app_role: "student" | "researcher" | "admin"
       deployment_type: "saas" | "dedicated" | "sovereign"
+      due_diligence_status: "pending" | "in_progress" | "completed" | "flagged"
       feed_event_type:
         | "new_connection"
         | "new_publication"
@@ -20198,6 +20883,7 @@ export type Database = {
         | "followers"
         | "organization"
         | "private"
+      prediction_market_status: "active" | "resolved" | "cancelled"
       referral_outcome_type:
         | "signup"
         | "onboarding_complete"
@@ -20215,6 +20901,7 @@ export type Database = {
         | "copyright_violation"
         | "off_topic"
         | "other"
+      swarm_decision_status: "open" | "voting" | "closed" | "executed"
       trust_tier: "bronze" | "silver" | "gold" | "platinum"
       violation_severity: "warning" | "minor" | "major" | "critical"
     }
@@ -20357,6 +21044,7 @@ export const Constants = {
       affiliate_type: ["standard", "institutional", "ambassador"],
       app_role: ["student", "researcher", "admin"],
       deployment_type: ["saas", "dedicated", "sovereign"],
+      due_diligence_status: ["pending", "in_progress", "completed", "flagged"],
       feed_event_type: [
         "new_connection",
         "new_publication",
@@ -20388,6 +21076,7 @@ export const Constants = {
         "organization",
         "private",
       ],
+      prediction_market_status: ["active", "resolved", "cancelled"],
       referral_outcome_type: [
         "signup",
         "onboarding_complete",
@@ -20407,6 +21096,7 @@ export const Constants = {
         "off_topic",
         "other",
       ],
+      swarm_decision_status: ["open", "voting", "closed", "executed"],
       trust_tier: ["bronze", "silver", "gold", "platinum"],
       violation_severity: ["warning", "minor", "major", "critical"],
     },
