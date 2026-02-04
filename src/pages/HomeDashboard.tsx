@@ -15,6 +15,7 @@ import { ProfileViewsCard } from "@/components/profile/ProfileViewsCard";
 import { TrustExplainer } from "@/components/trust/TrustExplainer";
 import { PlatformTrustBanner } from "@/components/trust/TrustSignals";
 import { FirstTimeUserOverlay } from "@/components/onboarding/FirstTimeUserOverlay";
+import { AmbientWidget } from "@/components/ambient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +27,7 @@ import {
   Sparkles,
   TrendingUp,
   BarChart3,
+  Lightbulb,
 } from "lucide-react";
 
 export default function HomeDashboard() {
@@ -188,8 +190,27 @@ export default function HomeDashboard() {
 
           {/* Sidebar */}
           <aside className="lg:col-span-4 space-y-6">
+            {/* Ambient Intelligence Widget */}
+            <AmbientWidget />
+
             {/* Quick Actions */}
             <QuickActionsCard />
+
+            {/* Ambient Intelligence Link */}
+            <Card>
+              <CardContent className="py-4">
+                <Button variant="outline" className="w-full gap-2" asChild>
+                  <Link to="/ambient">
+                    <Lightbulb className="h-4 w-4" />
+                    Ambient Intelligence
+                    <ArrowRight className="h-3 w-3 ml-auto" />
+                  </Link>
+                </Button>
+                <p className="text-xs text-muted-foreground text-center mt-2">
+                  Proactive insights, deal health & network alerts
+                </p>
+              </CardContent>
+            </Card>
 
             {/* Trust Explainer - Shows WHY your trust is what it is */}
             <TrustExplainer
