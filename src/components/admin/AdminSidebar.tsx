@@ -23,9 +23,16 @@ import {
   Key,
   Sparkles,
   TrendingUp,
+  GraduationCap,
+  Calendar,
+  UserCog,
+  Workflow,
+  FolderKanban,
+  Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/admin" },
@@ -63,6 +70,15 @@ const navItems = [
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 
+const platformItems = [
+  { icon: Layers, label: "Features Showcase", href: "/features" },
+  { icon: GraduationCap, label: "Learning", href: "/learning" },
+  { icon: Calendar, label: "Events", href: "/events" },
+  { icon: UserCog, label: "HR & Talent", href: "/hr" },
+  { icon: Workflow, label: "Automation", href: "/automation" },
+  { icon: FolderKanban, label: "Project Management", href: "/projects" },
+];
+
 export function AdminSidebar() {
   const location = useLocation();
 
@@ -80,6 +96,31 @@ export function AdminSidebar() {
       <ScrollArea className="flex-1">
         <nav className="p-2 space-y-1">
           {navItems.map((item) => {
+            const Icon = item.icon;
+            const active = isActive(item.href);
+            return (
+              <Link
+                key={item.href}
+                to={item.href}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                  active
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                )}
+              >
+                <Icon className="h-4 w-4" />
+                {item.label}
+              </Link>
+            );
+          })}
+          
+          <Separator className="my-3" />
+          <p className="px-3 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            Platform Features
+          </p>
+          
+          {platformItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.href);
             return (
