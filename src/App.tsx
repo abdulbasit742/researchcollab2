@@ -114,6 +114,11 @@ import PremiumOnboardingPage from "./pages/PremiumOnboardingPage";
 import AdminPremiumAnalyticsPage from "./pages/admin/AdminPremiumAnalyticsPage";
 import AdminPricingPage from "./pages/admin/AdminPricingPage";
 import FeaturesShowcasePage from "./pages/FeaturesShowcasePage";
+import LearningPage from "./pages/LearningPage";
+import EventsPage from "./pages/EventsPage";
+import HRPage from "./pages/HRPage";
+import AutomationPage from "./pages/AutomationPage";
+import ProjectManagementPage from "./pages/ProjectManagementPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -194,6 +199,11 @@ const AppContent = () => {
             <Route path="/terms" element={<TermsOfServicePage />} />
             <Route path="/cookies" element={<CookiePolicyPage />} />
             <Route path="/features" element={<FeaturesShowcasePage />} />
+            <Route path="/learning" element={<LearningPage />} />
+            <Route path="/events" element={<EventsPage />} />
+            <Route path="/hr" element={<HRPage />} />
+            <Route path="/automation" element={<AutomationPage />} />
+            <Route path="/projects" element={<ProjectManagementPage />} />
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminPortalPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
