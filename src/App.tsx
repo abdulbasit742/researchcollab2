@@ -120,6 +120,8 @@ import HRPage from "./pages/HRPage";
 import AutomationPage from "./pages/AutomationPage";
 import ProjectManagementPage from "./pages/ProjectManagementPage";
 import SocialFeaturesPage from "./pages/SocialFeaturesPage";
+import AmbientPage from "./pages/AmbientPage";
+import CollectiveIntelligencePage from "./pages/CollectiveIntelligencePage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -206,6 +208,8 @@ const AppContent = () => {
             <Route path="/automation" element={<AutomationPage />} />
             <Route path="/projects" element={<ProjectManagementPage />} />
             <Route path="/social" element={<SocialFeaturesPage />} />
+            <Route path="/ambient" element={<AmbientPage />} />
+            <Route path="/collective" element={<CollectiveIntelligencePage />} />
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminPortalPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />

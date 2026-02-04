@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 
 export interface AmbientInsight {
   id: string;
@@ -252,7 +253,88 @@ export function useAmbientIntelligence() {
     return nudges.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
   }, [insights, opportunityAlerts, relationshipEntropy, dealHealth]);
 
+  // Initial fetch
   useEffect(() => { fetchAmbientData(); }, [fetchAmbientData]);
+
+  // Real-time subscriptions
+  const channelRef = useRef<RealtimeChannel | null>(null);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    // Clean up any existing channel
+    if (channelRef.current) {
+      supabase.removeChannel(channelRef.current);
+    }
+
+    const channel = supabase
+      .channel(`ambient-updates-${user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "ambient_insights",
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          const newInsight = payload.new as AmbientInsight;
+          setInsights((prev) => [
+            {
+              id: newInsight.id,
+              insight_type: newInsight.insight_type,
+              title: newInsight.title,
+              description: newInsight.description,
+              priority: newInsight.priority as AmbientInsight["priority"],
+              is_read: newInsight.is_read,
+              is_dismissed: newInsight.is_dismissed,
+              created_at: newInsight.created_at,
+              action_url: newInsight.action_url || undefined,
+              expires_at: newInsight.expires_at || undefined,
+            },
+            ...prev,
+          ]);
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "opportunity_alerts",
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          const newAlert = payload.new as OpportunityAlert;
+          setOpportunityAlerts((prev) => [
+            {
+              id: newAlert.id,
+              user_id: newAlert.user_id,
+              opportunity_id: newAlert.opportunity_id,
+              match_score: newAlert.match_score,
+              is_notified: newAlert.is_notified,
+              is_dismissed: newAlert.is_dismissed,
+              created_at: newAlert.created_at,
+              match_reasons: (newAlert.match_reasons as string[]) || [],
+              alert_type: newAlert.alert_type as OpportunityAlert["alert_type"],
+              deadline_distance_days: newAlert.deadline_distance_days || undefined,
+              expires_at: newAlert.expires_at || undefined,
+            },
+            ...prev,
+          ]);
+        }
+      )
+      .subscribe();
+
+    channelRef.current = channel;
+
+    return () => {
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
+    };
+  }, [user?.id]);
 
   return {
     insights, dealHealth, relationshipEntropy, opportunityAlerts,

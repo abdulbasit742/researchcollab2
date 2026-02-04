@@ -4,6 +4,9 @@ import { Footer } from "./Footer";
 import { FloatingSupportChat } from "@/components/support/FloatingSupportChat";
 import { MobileBottomNav } from "./MobileBottomNav";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { FloatingNudgeIndicator } from "@/components/ambient";
+import { useAmbientIntelligence } from "@/hooks/useAmbientIntelligence";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -11,6 +14,8 @@ interface MainLayoutProps {
 
 export function MainLayout({ children }: MainLayoutProps) {
   const isMobile = useIsMobile();
+  const { user } = useAuth();
+  const { unreadCount, highPriorityCount } = useAmbientIntelligence();
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -19,6 +24,12 @@ export function MainLayout({ children }: MainLayoutProps) {
       {!isMobile && <Footer />}
       <FloatingSupportChat />
       <MobileBottomNav />
+      {user && (unreadCount > 0 || highPriorityCount > 0) && (
+        <FloatingNudgeIndicator 
+          count={unreadCount} 
+          highPriorityCount={highPriorityCount} 
+        />
+      )}
     </div>
   );
 }

@@ -2,3 +2,6 @@ project_id = "nbwubopokajezkdkgiur"
 
 [functions.transcribe-voice-note]
 verify_jwt = false
+
+[functions.ambient-analyzer]
+verify_jwt = false
