@@ -113,6 +113,7 @@ import DealDetailPage from "./pages/DealDetailPage";
 import PremiumOnboardingPage from "./pages/PremiumOnboardingPage";
 import AdminPremiumAnalyticsPage from "./pages/admin/AdminPremiumAnalyticsPage";
 import AdminPricingPage from "./pages/admin/AdminPricingPage";
+import FeaturesShowcasePage from "./pages/FeaturesShowcasePage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -192,6 +193,7 @@ const AppContent = () => {
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/terms" element={<TermsOfServicePage />} />
             <Route path="/cookies" element={<CookiePolicyPage />} />
+            <Route path="/features" element={<FeaturesShowcasePage />} />
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminPortalPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
