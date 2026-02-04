@@ -21,6 +21,7 @@ import {
   Workflow,
   FolderKanban,
   Layers,
+  Camera,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -50,6 +51,7 @@ const navItems = [
 
 const platformItems = [
   { icon: Layers, label: "Features Showcase", href: "/features" },
+  { icon: Camera, label: "Social Features", href: "/social" },
   { icon: GraduationCap, label: "Learning", href: "/learning" },
   { icon: Calendar, label: "Events", href: "/events" },
   { icon: UserCog, label: "HR & Talent", href: "/hr" },

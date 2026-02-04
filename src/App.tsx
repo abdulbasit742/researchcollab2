@@ -119,6 +119,7 @@ import EventsPage from "./pages/EventsPage";
 import HRPage from "./pages/HRPage";
 import AutomationPage from "./pages/AutomationPage";
 import ProjectManagementPage from "./pages/ProjectManagementPage";
+import SocialFeaturesPage from "./pages/SocialFeaturesPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -204,6 +205,7 @@ const AppContent = () => {
             <Route path="/hr" element={<HRPage />} />
             <Route path="/automation" element={<AutomationPage />} />
             <Route path="/projects" element={<ProjectManagementPage />} />
+            <Route path="/social" element={<SocialFeaturesPage />} />
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminPortalPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
