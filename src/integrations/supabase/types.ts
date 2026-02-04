@@ -2078,6 +2078,59 @@ export type Database = {
           },
         ]
       }
+      ambient_insights: {
+        Row: {
+          action_url: string | null
+          created_at: string
+          description: string
+          expires_at: string | null
+          id: string
+          insight_type: string
+          is_dismissed: boolean
+          is_read: boolean
+          metadata: Json | null
+          priority: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          action_url?: string | null
+          created_at?: string
+          description: string
+          expires_at?: string | null
+          id?: string
+          insight_type: string
+          is_dismissed?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          priority?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          action_url?: string | null
+          created_at?: string
+          description?: string
+          expires_at?: string | null
+          id?: string
+          insight_type?: string
+          is_dismissed?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          priority?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ambient_insights_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       analytics_events: {
         Row: {
           created_at: string
@@ -19380,6 +19433,53 @@ export type Database = {
             columns: ["scholar_passport_id"]
             isOneToOne: false
             referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      voice_notes: {
+        Row: {
+          context_id: string | null
+          context_type: string
+          created_at: string
+          duration_seconds: number
+          id: string
+          metadata: Json | null
+          sentiment_score: number | null
+          storage_path: string
+          transcript: string | null
+          user_id: string
+        }
+        Insert: {
+          context_id?: string | null
+          context_type: string
+          created_at?: string
+          duration_seconds?: number
+          id?: string
+          metadata?: Json | null
+          sentiment_score?: number | null
+          storage_path: string
+          transcript?: string | null
+          user_id: string
+        }
+        Update: {
+          context_id?: string | null
+          context_type?: string
+          created_at?: string
+          duration_seconds?: number
+          id?: string
+          metadata?: Json | null
+          sentiment_score?: number | null
+          storage_path?: string
+          transcript?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "voice_notes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
