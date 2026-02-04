@@ -14089,6 +14089,9 @@ export type Database = {
       }
       profiles: {
         Row: {
+          audio_bio_duration_seconds: number | null
+          audio_bio_path: string | null
+          audio_bio_transcript: string | null
           created_at: string
           department: string | null
           education_level: string | null
@@ -14105,6 +14108,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          audio_bio_duration_seconds?: number | null
+          audio_bio_path?: string | null
+          audio_bio_transcript?: string | null
           created_at?: string
           department?: string | null
           education_level?: string | null
@@ -14121,6 +14127,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          audio_bio_duration_seconds?: number | null
+          audio_bio_path?: string | null
+          audio_bio_transcript?: string | null
           created_at?: string
           department?: string | null
           education_level?: string | null

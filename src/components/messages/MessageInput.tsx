@@ -2,22 +2,30 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { VoiceMessageInput } from "./VoiceMessageInput";
 import { cn } from "@/lib/utils";
+import type { VoiceNote } from "@/hooks/useVoiceNotes";
 
 interface MessageInputProps {
   onSend: (message: string) => void;
+  onVoiceNoteSent?: (voiceNote: VoiceNote) => void;
   onTyping?: () => void;
   onStopTyping?: () => void;
   disabled?: boolean;
   placeholder?: string;
+  threadId?: string;
+  showVoiceRecording?: boolean;
 }
 
 export function MessageInput({ 
-  onSend, 
+  onSend,
+  onVoiceNoteSent,
   onTyping,
   onStopTyping,
   disabled, 
-  placeholder = "Type a message..." 
+  placeholder = "Type a message...",
+  threadId,
+  showVoiceRecording = true,
 }: MessageInputProps) {
   const [message, setMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -55,6 +63,13 @@ export function MessageInput({
 
   return (
     <div className="flex items-end gap-2">
+      {showVoiceRecording && threadId && (
+        <VoiceMessageInput
+          threadId={threadId}
+          onVoiceNoteSent={onVoiceNoteSent}
+          disabled={disabled}
+        />
+      )}
       <Textarea
         ref={textareaRef}
         value={message}
