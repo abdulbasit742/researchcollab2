@@ -24,6 +24,30 @@
  // System 9: Extensibility & Composability
  export { useExtensibilitySystem } from "../useExtensibilitySystem";
  
+ // System 21: Autonomous Value Loops
+ export { useAutonomousValueLoops } from "../useAutonomousValueLoops";
+ 
+ // System 22: Context-Aware Notifications
+ export { useContextAwareNotifications } from "../useContextAwareNotifications";
+ 
+ // System 23: Silent Quality Control
+ export { useSilentQualityControl } from "../useSilentQualityControl";
+ 
+ // System 24: Market Balancer
+ export { useMarketBalancer } from "../useMarketBalancer";
+ 
+ // System 25: Personal Memory
+ export { usePersonalMemory } from "../usePersonalMemory";
+ 
+ // System 26: Institutional Feedback
+ export { useInstitutionalFeedback } from "../useInstitutionalFeedback";
+ 
+ // System 27: Power Dampening
+ export { usePowerDampening } from "../usePowerDampening";
+ 
+ // System 28: Change Explainer
+ export { useChangeExplainer } from "../useChangeExplainer";
+ 
  // Re-export types
  export type {
    // UPOM Types
@@ -114,3 +138,61 @@
    APIEndpoint,
    Webhook,
  } from "../useExtensibilitySystem";
+ 
+ export type {
+   // Autonomous Value Loops
+   LoopType,
+   LoopExecution,
+   LoopStep,
+   LoopOutcome,
+   LoopDefinition,
+ } from "../useAutonomousValueLoops";
+ 
+ export type {
+   // Silent Quality Control
+   ContentQualityFactors,
+   UserQualityFactors,
+   DealQualityFactors,
+ } from "../useSilentQualityControl";
+ 
+ export type {
+   // Market Balancer
+   SupplyMetrics,
+   DemandMetrics,
+   BalanceIndicators,
+   MarketAdjustment,
+   SkillGap,
+ } from "../useMarketBalancer";
+ 
+ export type {
+   // Personal Memory
+   SuccessPattern,
+   FailurePattern,
+   PreferenceLearning,
+   MemoryBasedRecommendation,
+ } from "../usePersonalMemory";
+ 
+ export type {
+   // Institutional Feedback
+   OutcomeQualityTrend,
+   MemberPerformanceAggregate,
+   OpportunityHealth,
+   InstitutionStandard,
+   InstitutionComparison,
+ } from "../useInstitutionalFeedback";
+ 
+ export type {
+   // Power Dampening
+   PowerLevel,
+   PowerFactors,
+   PowerRequirements,
+   PowerAuditEntry,
+   PowerCap,
+ } from "../usePowerDampening";
+ 
+ export type {
+   // Change Explainer
+   ChangeCategory,
+   SystemChange,
+   ChangeExplanation,
+ } from "../useChangeExplainer";
