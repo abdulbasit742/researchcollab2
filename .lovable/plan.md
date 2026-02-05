@@ -1,204 +1,544 @@
 
 
-# Phase 5: Feature Completion & Polish Implementation Plan
+# Systems 11-20: Infrastructure-to-Reality Implementation Plan
+
+## Executive Summary
+
+This plan transforms RCollab from a powerful infrastructure layer into a **daily-use operating system** for professional life. The key insight: raw systems power means nothing if users don't know "What should I do today?" and "What happened because I used this?"
+
+---
 
 ## Current State Assessment
 
-Based on exploration, Phase 4 features were partially implemented. This plan completes all remaining integration work and adds the final missing features.
+| System | Current Status | Gap |
+|--------|---------------|-----|
+| Daily Loop (11) | NextActionCard exists but shallow | No comprehensive daily state machine |
+| Cognitive Load (12) | No progressive disclosure | All features visible at once |
+| Feature Orchestration (13) | useExtensibilitySystem exists | Events not connected to features |
+| Career State Machine (14) | useCareerSimulation has mock states | Not driving UI/UX decisions |
+| Failure Recovery (15) | FailureRecoveryPanel exists | Not first-class, hidden |
+| Build Order (16) | useFeatureFlags exists | Not enforcing unlock progression |
+| Longitudinal Tracking (17) | useProgressDashboard exists | Missing time-series views |
+| Simulation Engine (18) | useCareerSimulation partial | No what-if UI |
+| Permission Minimization (19) | usePermissions exists | Not auditing power |
+| Self-Documentation (20) | None | No "why" explanations |
 
 ---
 
-## What Needs to Be Done
-
-| Feature | Status | Action Required |
-|---------|--------|-----------------|
-| Voice Search in Navbar | Component exists, not integrated | Add to Navbar.tsx |
-| Profile Settings Page | Missing (link exists, no page) | Create page with AudioBioSettings |
-| Deal Room Voice Notes | Not implemented | Add to DealRoomPanel |
-| Career Co-pilot Voice Input | Not implemented | Add voice button to ProgressDashboard |
-| Voice Notes in Search Results | Not showing | Display voice notes in search |
-
----
-
-## Implementation Tasks
-
-### 1. Integrate Voice Search into Navbar
-
-Add the VoiceSearchButton component to the navigation bar for hands-free search.
-
-**File:** `src/components/layout/Navbar.tsx`
-
-**Changes:**
-- Import `VoiceSearchButton` from `@/components/search`
-- Add collapsible search input with voice button
-- Connect transcript to search query state
-- Navigate to `/search?q=<transcript>` on voice input
-
-### 2. Create Profile Settings Page
-
-A dedicated settings page that links from the Profile page.
-
-**New File:** `src/pages/ProfileSettingsPage.tsx`
-
-**Contents:**
-- Audio Introduction section (using existing `AudioBioSettings` component)
-- Account settings (email, password change)
-- Privacy settings (profile visibility toggles)
-- Notification preferences link
-- Data export option
-
-**Route:** Add `/profile/settings` to App.tsx
-
-### 3. Add Voice Notes to Deal Room Panel
-
-Enable voice messaging in active deals for richer communication.
-
-**File:** `src/components/deals/DealRoomPanel.tsx`
-
-**Changes:**
-- Add message composer section at bottom
-- Include `VoiceRecorderTrigger` component
-- Display voice notes inline with waveform visualization
-- Store with `context_type: "deal_message"` and `context_id: deal_id`
-
-### 4. Add Voice Input to Career Co-pilot
-
-Allow users to ask career questions via voice.
-
-**File:** `src/components/progress/ProgressDashboard.tsx`
-
-**Changes:**
-- Add `VoiceSearchButton` next to the text input
-- Transcribe voice to text and populate question field
-- Auto-submit on speech completion (optional)
-
-### 5. Create Dedicated Career Co-pilot Page
-
-Standalone page for the AI co-pilot experience.
-
-**New File:** `src/pages/CareerPage.tsx`
-
-**Features:**
-- Full-screen conversational interface
-- Voice input with transcription display
-- Chat history with AI responses
-- Quick action buttons (analyze trust, get opportunities, failure recovery)
-- Integration with existing `useCareerCopilot` hook
-
-**Route:** Add `/career` to App.tsx
-
-### 6. Add Navigation Links
-
-Update sidebar to include new pages.
-
-**File:** `src/components/admin/AdminSidebar.tsx`
-
-**New Links:**
-- Career Co-pilot (`/career`) in Platform Features group
-
----
-
-## Technical Details
-
-### Navbar Voice Search Integration
+## Implementation Priority Order
 
 ```text
-Structure:
-- Collapsible search container (hidden on mobile by default)
-- Text input field
-- VoiceSearchButton (microphone icon)
-- On transcript: set search query + navigate to /search
-```
+Phase A: Daily Operating Loop (Foundation)
+  System 11: Daily Professional Operating Loop (DPOL)
+  System 12: Cognitive Load Reduction Engine
 
-### Profile Settings Page Structure
+Phase B: State & Orchestration
+  System 14: Career State Machine
+  System 13: Feature Orchestration Layer
 
-```text
-Tabs or sections:
-1. Audio Introduction - AudioBioSettings component
-2. Account - Email display, password change button
-3. Privacy - Profile visibility, contact preferences
-4. Notifications - Link to /settings/notifications
-5. Data - Export/download my data option
-```
+Phase C: Recovery & Progression
+  System 15: Failure, Recovery & Resilience Engine
+  System 16: Build Order Enforcement
 
-### Deal Room Voice Integration
+Phase D: Long-Term Value
+  System 17: Longitudinal Value Tracking
+  System 18: Simulation & What-If Engine
 
-```text
-Bottom composer area:
-- Text input for typed messages
-- Mic button (VoiceRecorderTrigger)
-- Send button
-- Display voice notes in message thread with VoicePlayer
-```
-
-### Career Co-pilot Voice Input
-
-```text
-Copilot tab changes:
-- Flex row: Input + VoiceSearchButton + Send button
-- onTranscript: setQuestion(transcript)
-- Visual indicator when listening
+Phase E: Trust & Transparency
+  System 19: Permission & Power Minimization
+  System 20: Self-Documenting Platform
 ```
 
 ---
 
-## Files to Create
+## System 11: Daily Professional Operating Loop (DPOL)
 
-| File | Purpose |
-|------|---------|
-| `src/pages/ProfileSettingsPage.tsx` | User profile settings with audio bio |
-| `src/pages/CareerPage.tsx` | Standalone Career Co-pilot interface |
-| `src/components/career/CareerCopilotChat.tsx` | Chat interface for co-pilot |
-| `src/components/deals/DealRoomComposer.tsx` | Message composer with voice |
+### Purpose
+Answer daily: "What should I do today?" / "What happened?" / "Am I progressing?"
 
-## Files to Update
+### New Files
+```text
+src/hooks/useDailyProfessionalLoop.ts
+src/components/daily/DailyStateCard.tsx
+src/components/daily/DailyActionsQueue.tsx
+src/components/daily/DailyOutcomesSummary.tsx
+src/components/daily/WeeklySummaryCard.tsx
+src/components/daily/MonthlyTrajectoryView.tsx
+src/components/daily/index.ts
+```
 
-| File | Changes |
-|------|---------|
-| `src/App.tsx` | Add `/profile/settings` and `/career` routes |
-| `src/components/layout/Navbar.tsx` | Add voice search button |
-| `src/components/deals/DealRoomPanel.tsx` | Add voice message composer |
-| `src/components/progress/ProgressDashboard.tsx` | Add voice input to co-pilot |
-| `src/components/admin/AdminSidebar.tsx` | Add Career Co-pilot nav link |
+### Hook Interface
+```text
+useDailyProfessionalLoop():
+  - currentState: {
+      trust: TrustSnapshot
+      work: ActiveWorkItems[]
+      obligations: Obligation[]
+      readiness: ReadinessLevel
+    }
+  - todayOpportunities: OpportunityMatch[]
+  - requiredActions: RequiredAction[]
+  - todayOutcomes: DailyOutcome[]
+  - weekSummary: WeekSummary
+  - monthTrajectory: MonthTrajectory
+```
+
+### HomeDashboard Integration
+Replace scattered cards with structured daily loop:
+1. Current State banner
+2. Required Actions queue (messages, reviews, milestones)
+3. Today's Opportunities (filtered to urgent + matched)
+4. Today's Outcomes achieved
 
 ---
 
-## User Experience Flow
+## System 12: Cognitive Load Reduction Engine
 
-### Voice Search
-1. User clicks microphone in navbar
-2. "Listening..." indicator appears with waveform
-3. User speaks: "machine learning researcher"
-4. Speech-to-text populates search
-5. User is navigated to search results
+### Purpose
+Make a massive platform feel simple. Users see only what they need.
 
-### Profile Audio Bio
-1. User navigates to Profile -> Settings
-2. Sees "Audio Introduction" section
-3. Can record, preview, and save 30-second intro
-4. Toggle visibility on/off
+### New Files
+```text
+src/hooks/useCognitiveLoadEngine.ts
+src/contexts/UIComplexityContext.tsx
+src/components/ui/AdvancedModeToggle.tsx
+src/components/ui/ProgressiveSection.tsx
+```
 
-### Deal Voice Messages
-1. User is in an active deal room
-2. Clicks microphone button in message area
-3. Records voice message (up to 5 min)
-4. Message appears in thread with waveform
-5. Other party can play voice note
+### Features
+1. **Role-based UI compression**: Students see student features, researchers see researcher features
+2. **Progressive disclosure**: Advanced features hidden until user reaches thresholds
+3. **Contextual hiding**: Hide irrelevant systems based on current activity
+4. **"Advanced mode" toggle**: Power users can unlock everything
 
-### Career Co-pilot Voice
-1. User opens Career Dashboard
-2. Goes to "AI Co-pilot" tab
-3. Clicks microphone next to question input
-4. Speaks question: "What should I work on next?"
-5. AI responds with personalized advice
+### Unlock Thresholds
+```text
+Level 1 (New User): Profile, Opportunities, Basic Trust
+Level 2 (Active): Add Deals, Messaging, Wallet
+Level 3 (Established): Add Analytics, Network, Briefings
+Level 4 (Power User): Add Infrastructure, Collective, AI Governance
+```
+
+### Implementation
+Wrap feature access with useCognitiveLoadEngine:
+```text
+const { shouldShow, unlockLevel, canShowAdvanced } = useCognitiveLoadEngine();
+
+if (shouldShow("ambient_intelligence")) {
+  // render ambient widget
+}
+```
+
+---
+
+## System 13: Feature Orchestration Layer
+
+### Purpose
+Connect all features to central event bus. No feature operates alone.
+
+### Enhancements to useExtensibilitySystem
+Add cross-system event handlers:
+```text
+Event: "deal.completed"
+  -> Update trust (useTrustComputationEngine)
+  -> Update profile outcomes (useOutcomeGraph)
+  -> Refresh opportunities (useContinuousMatchingEngine)
+  -> Add to timeline (useLongTermMemory)
+  -> Notify user (useNotifications)
+
+Event: "learning.completed"
+  -> Unlock new skill matches
+  -> Update readiness indicators
+
+Event: "dispute.resolved"
+  -> Adjust future visibility
+  -> Update trust with dispute factor
+```
+
+### New File
+```text
+src/hooks/useFeatureOrchestration.ts
+```
+
+### Central Registration
+```text
+useFeatureOrchestration():
+  - registerSystemHandler(system, eventTypes, handler)
+  - onSystemEvent(event): Promise<void>
+  - getActiveHandlers(): SystemHandler[]
+```
+
+---
+
+## System 14: Career State Machine
+
+### Purpose
+Represent every user as a state machine. State affects UI, opportunities, and advice.
+
+### States
+```text
+ONBOARDING -> LEARNING -> BUILDING -> EXECUTING -> SCALING -> TRANSITIONING
+                  ^                                     |
+                  |<---------PAUSED<--------------------|
+```
+
+### New Files
+```text
+src/hooks/useCareerStateMachine.ts
+src/components/career/CareerStateIndicator.tsx
+```
+
+### Hook Interface
+```text
+useCareerStateMachine():
+  - currentState: CareerState
+  - stateMetadata: {
+      enteredAt: Date
+      expectedDuration: string
+      triggers: StateTrigger[]
+    }
+  - transitionTo(newState, reason): Promise<void>
+  - getStateEffects(): StateEffects
+  - possibleTransitions: Transition[]
+```
+
+### UI Effects by State
+```text
+LEARNING: Show learning resources, hide deal complexity
+EXECUTING: Prioritize active deals, show milestone focus
+SCALING: Show team features, delegation options
+PAUSED: Reduced notifications, maintenance mode
+```
+
+---
+
+## System 15: Failure, Recovery & Resilience Engine
+
+### Purpose
+Make failure first-class. "You failed. Here is how to recover."
+
+### Enhancements
+- Make FailureRecoveryPanel a primary component, not hidden
+- Add failure recording (private by default)
+- Generate AI-powered recovery roadmaps
+- Trust stabilization periods (no further decay during recovery)
+
+### New Files
+```text
+src/hooks/useFailureResilience.ts
+src/components/recovery/FailureRecordCard.tsx
+src/components/recovery/RecoveryRoadmap.tsx
+src/components/recovery/StabilizationPeriodBanner.tsx
+```
+
+### Hook Interface
+```text
+useFailureResilience():
+  - activeFailures: FailureRecord[]
+  - recoveryPlan: RecoveryStep[]
+  - isInStabilization: boolean
+  - stabilizationEndsAt: Date | null
+  - recordFailure(type, details): Promise<void>
+  - generateRecoveryPlan(failureId): Promise<RecoveryPlan>
+  - markRecoveryStep(stepId): Promise<void>
+```
+
+---
+
+## System 16: Build Order Enforcement
+
+### Purpose
+Prevent feature overload and premature exposure.
+
+### Enhancement to useFeatureFlags
+Add progressive unlock logic:
+```text
+useFeatureBuildOrder():
+  - userTier: "core" | "advanced" | "power"
+  - unlockedFeatures: string[]
+  - lockedFeatures: LockedFeature[]
+  - unlockProgress: { feature: string, progress: number, requirements: string[] }[]
+  - canAccess(featureKey): boolean
+  - getUnlockRequirements(featureKey): Requirement[]
+```
+
+### Feature Tiers
+```text
+Core (Always On):
+  - Profile, Basic Trust, Opportunities, Messaging
+
+Advanced (Unlock after first deal):
+  - Analytics, Network Insights, Briefings, AI Co-pilot
+
+Power (Explicit opt-in):
+  - Infrastructure Dashboard, Collective Intelligence, Governance
+```
+
+---
+
+## System 17: Longitudinal Value Tracking
+
+### Purpose
+Track value over time. Make RCollab irreplaceable.
+
+### New Files
+```text
+src/hooks/useLongitudinalTracking.ts
+src/components/progress/ValueTrajectoryChart.tsx
+src/components/progress/SkillEvolutionTimeline.tsx
+src/components/progress/IncomeProgressionGraph.tsx
+```
+
+### Metrics Tracked
+```text
+Personal:
+  - Skills gained (with dates)
+  - Income generated (monthly)
+  - Outcomes completed (cumulative)
+  - Trust growth (trajectory)
+  - Network depth (connections over time)
+
+Aggregate (for institutions):
+  - Anonymized cohort progress
+  - National outcome dashboards
+```
+
+### Hook Interface
+```text
+useLongitudinalTracking():
+  - trajectoryData: TrajectoryPoint[]
+  - skillEvolution: SkillTimeline[]
+  - incomeProgression: IncomePoint[]
+  - networkGrowth: NetworkPoint[]
+  - compareTo(benchmark): Comparison
+```
+
+---
+
+## System 18: Simulation & What-If Engine
+
+### Purpose
+Turn anxiety into planning. "What if I...?"
+
+### Enhancement to useCareerSimulation
+Add UI and expand scenarios:
+```text
+Simulations:
+  - Career paths ("What if I focus on ML?")
+  - Skill investments ("What if I learn MLOps?")
+  - Opportunity choices ("What if I take this deal?")
+  - Pricing changes ("What if I increase my rate?")
+  - Time allocation ("What if I work 20 hours/week?")
+```
+
+### New Files
+```text
+src/pages/SimulationPage.tsx
+src/components/simulation/SimulationBuilder.tsx
+src/components/simulation/ScenarioComparisonCard.tsx
+src/components/simulation/OutcomeProjection.tsx
+```
+
+### Features
+- Non-binding (clearly labeled as simulation)
+- Explainable (show reasoning)
+- Data-backed (based on platform statistics)
+
+---
+
+## System 19: Permission & Power Minimization
+
+### Purpose
+Make abuse structurally hard. All power visible, logged, reversible.
+
+### New Files
+```text
+src/hooks/usePowerAudit.ts
+src/components/governance/PowerVisibilityPanel.tsx
+src/components/governance/AdminActionLog.tsx
+```
+
+### Audit Points
+```text
+- Separate read vs write permissions
+- Add oversight checkpoints for destructive actions
+- Log all admin actions with reversibility flags
+- Show power distribution dashboard
+```
+
+### Hook Interface
+```text
+usePowerAudit():
+  - currentPowers: PowerGrant[]
+  - recentActions: AuditedAction[]
+  - powerDistribution: { role: string, powers: string[] }[]
+  - canReverse(actionId): boolean
+  - reverseAction(actionId): Promise<void>
+```
+
+---
+
+## System 20: Self-Documenting Platform
+
+### Purpose
+No black boxes. Every user can ask "Why?"
+
+### New Files
+```text
+src/hooks/useSelfDocumentation.ts
+src/components/ui/WhyTooltip.tsx
+src/components/ui/ChangeExplainer.tsx
+src/components/ui/ActionPreview.tsx
+```
+
+### Features
+1. **"Why am I seeing this?"** - Explain every recommendation
+2. **"What changed?"** - Show diffs when state changes
+3. **"What happens if I do this?"** - Preview action consequences
+
+### Implementation
+```text
+<WhyTooltip content={explain("opportunity_match", { reason, factors })}>
+  <OpportunityCard />
+</WhyTooltip>
+
+<ChangeExplainer
+  before={previousTrust}
+  after={currentTrust}
+  reason="Completed project on-time"
+/>
+
+<ActionPreview
+  action="accept_deal"
+  consequences={["Escrow locked", "30-day commitment", "Trust at stake"]}
+/>
+```
+
+---
+
+## Files Summary
+
+### New Files to Create
+```text
+src/hooks/useDailyProfessionalLoop.ts
+src/hooks/useCognitiveLoadEngine.ts
+src/hooks/useCareerStateMachine.ts
+src/hooks/useFailureResilience.ts
+src/hooks/useFeatureBuildOrder.ts
+src/hooks/useFeatureOrchestration.ts
+src/hooks/useLongitudinalTracking.ts
+src/hooks/usePowerAudit.ts
+src/hooks/useSelfDocumentation.ts
+
+src/contexts/UIComplexityContext.tsx
+
+src/components/daily/DailyStateCard.tsx
+src/components/daily/DailyActionsQueue.tsx
+src/components/daily/DailyOutcomesSummary.tsx
+src/components/daily/WeeklySummaryCard.tsx
+src/components/daily/MonthlyTrajectoryView.tsx
+src/components/daily/index.ts
+
+src/components/ui/AdvancedModeToggle.tsx
+src/components/ui/ProgressiveSection.tsx
+src/components/ui/WhyTooltip.tsx
+src/components/ui/ChangeExplainer.tsx
+src/components/ui/ActionPreview.tsx
+
+src/components/career/CareerStateIndicator.tsx
+
+src/components/recovery/FailureRecordCard.tsx
+src/components/recovery/RecoveryRoadmap.tsx
+src/components/recovery/StabilizationPeriodBanner.tsx
+
+src/components/simulation/SimulationBuilder.tsx
+src/components/simulation/ScenarioComparisonCard.tsx
+src/components/simulation/OutcomeProjection.tsx
+
+src/components/governance/PowerVisibilityPanel.tsx
+src/components/governance/AdminActionLog.tsx
+
+src/pages/SimulationPage.tsx
+```
+
+### Files to Update
+```text
+src/pages/HomeDashboard.tsx - Replace with DPOL structure
+src/components/layout/Navbar.tsx - Add career state indicator
+src/components/layout/MainLayout.tsx - Add complexity context
+src/App.tsx - Add /simulation route, wrap with complexity context
+src/hooks/useExtensibilitySystem.ts - Add orchestration handlers
+src/components/admin/AdminSidebar.tsx - Add Simulation nav
+src/hooks/useFeatureFlags.ts - Add build order logic
+```
+
+---
+
+## UI Hierarchy Change
+
+### Current (Fragmented)
+```text
+Home -> [Identity, Next Action, Opportunities, Ambient, Quick Actions, Trust, Ledger, Progress, Views, Network]
+```
+
+### Proposed (Daily Loop)
+```text
+Home -> Daily Operating Loop:
+  1. State Banner (Trust + Readiness + Career Phase)
+  2. Required Actions (must-do queue)
+  3. Today's Opportunities (matched + urgent)
+  4. Outcomes Achieved (what happened today)
+  5. [Collapsed: Deep Dives -> Progress, Network, Analytics]
+```
+
+---
+
+## What Gets Hidden by Default
+
+```text
+Hidden until Advanced unlock:
+  - Infrastructure Dashboard
+  - Collective Intelligence
+  - API Marketplace
+  - Governance Panels
+  - Extensibility/Plugins
+
+Hidden until Established:
+  - Audio Briefings
+  - Career Simulation
+  - Advanced Analytics
+
+Always visible:
+  - Profile
+  - Opportunities
+  - Deals
+  - Messages
+  - Basic Trust Score
+```
 
 ---
 
 ## Success Criteria
 
-- Voice search accessible from every page via navbar
-- Profile settings page fully functional with audio bio management
-- Voice notes can be sent and received in deal rooms
-- Career co-pilot accepts both voice and text queries
-- All new pages accessible via navigation
+1. New users can answer "What should I do today?" within 5 seconds of logging in
+2. Users see max 5 decisions per screen
+3. Every feature change triggers cross-system updates
+4. Career state drives UI personalization
+5. Failure has clear recovery paths
+6. Power users can unlock advanced mode
+7. Every recommendation has "Why?" explanation
+8. Value trajectory visible over time
+
+---
+
+## Philosophy Lock
+
+**"RCollab is not used occasionally — it becomes how professionals run their lives."**
+
+This is achieved by:
+- Making the daily loop inevitable (you check it like email)
+- Reducing cognitive load (it's simple despite being powerful)
+- Showing progress (you see yourself growing)
+- Handling failure (you trust it won't abandon you)
+- Explaining itself (you understand it completely)
 
