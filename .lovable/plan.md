@@ -1,10 +1,10 @@
 
 
-# Systems 11-20: Infrastructure-to-Reality Implementation Plan
+# Systems 21-28: Autonomous Professional Ecosystem Implementation Plan
 
 ## Executive Summary
 
-This plan transforms RCollab from a powerful infrastructure layer into a **daily-use operating system** for professional life. The key insight: raw systems power means nothing if users don't know "What should I do today?" and "What happened because I used this?"
+This plan implements closed-loop autonomous systems that compound value over time without constant feature addition. The goal is to make RCollab "alive but not intrusive" - a platform that improves itself as usage increases, guides without nagging, and corrects misuse without drama.
 
 ---
 
@@ -12,533 +12,495 @@ This plan transforms RCollab from a powerful infrastructure layer into a **daily
 
 | System | Current Status | Gap |
 |--------|---------------|-----|
-| Daily Loop (11) | NextActionCard exists but shallow | No comprehensive daily state machine |
-| Cognitive Load (12) | No progressive disclosure | All features visible at once |
-| Feature Orchestration (13) | useExtensibilitySystem exists | Events not connected to features |
-| Career State Machine (14) | useCareerSimulation has mock states | Not driving UI/UX decisions |
-| Failure Recovery (15) | FailureRecoveryPanel exists | Not first-class, hidden |
-| Build Order (16) | useFeatureFlags exists | Not enforcing unlock progression |
-| Longitudinal Tracking (17) | useProgressDashboard exists | Missing time-series views |
-| Simulation Engine (18) | useCareerSimulation partial | No what-if UI |
-| Permission Minimization (19) | usePermissions exists | Not auditing power |
-| Self-Documentation (20) | None | No "why" explanations |
+| Autonomous Value Loops (21) | useAmbientIntelligence exists with nudges | No closed-loop action-outcome-signal chain |
+| Context-Aware Notifications (22) | useNotifications has basic types | Not context-aware, can repeat alerts |
+| Silent Quality Control (23) | useSafetyQuality has quality scoring | Not applied silently to ranking |
+| Supply-Demand Balancer (24) | useOpportunityEngine basic matching | No market equilibrium logic |
+| Long-Term User Memory (25) | useLongTermMemory exists | Not driving recommendations |
+| Institutional Feedback (26) | useInstitutionalDashboard exists | No feedback loops to opportunity quality |
+| Power & Risk Dampening (27) | usePermissions exists | No power scaling with trust |
+| Self-Explaining Changes (28) | None | No change explanations |
 
 ---
 
-## Implementation Priority Order
+## Implementation Architecture
 
+### System 21: Autonomous Value Loops (AVL)
+
+Create closed-loop engines that operate without admin intervention.
+
+**New Files:**
+- `src/hooks/useAutonomousValueLoops.ts`
+- `src/components/system/LoopStatusIndicator.tsx`
+
+**Hook Design:**
 ```text
-Phase A: Daily Operating Loop (Foundation)
-  System 11: Daily Professional Operating Loop (DPOL)
-  System 12: Cognitive Load Reduction Engine
-
-Phase B: State & Orchestration
-  System 14: Career State Machine
-  System 13: Feature Orchestration Layer
-
-Phase C: Recovery & Progression
-  System 15: Failure, Recovery & Resilience Engine
-  System 16: Build Order Enforcement
-
-Phase D: Long-Term Value
-  System 17: Longitudinal Value Tracking
-  System 18: Simulation & What-If Engine
-
-Phase E: Trust & Transparency
-  System 19: Permission & Power Minimization
-  System 20: Self-Documenting Platform
+useAutonomousValueLoops():
+  Loops:
+  1. DEAL_EXCELLENCE_LOOP
+     Action: User completes deal successfully
+     Signal: Trust score increases
+     Adjustment: Better opportunities become visible
+     Feedback: Higher-quality matches lead to better deals
+     
+  2. SKILL_GROWTH_LOOP
+     Action: Learning/certification completed
+     Signal: Skill validated
+     Adjustment: Matching engine weights skill higher
+     Feedback: More skill-relevant opportunities
+     
+  3. CORRECTION_LOOP
+     Action: Poor behavior detected (late delivery, dispute)
+     Signal: Trust penalty applied
+     Adjustment: Reduced visibility, corrective guidance shown
+     Feedback: Recovery path offered, not punishment
+     
+  4. RELATIONSHIP_VALUE_LOOP
+     Action: Successful collaboration
+     Signal: Relationship strength increases
+     Adjustment: Warm intro probability increases
+     Feedback: Network effects compound
 ```
+
+**Implementation Details:**
+- Subscribe to useExtensibilitySystem events
+- React to deal.completed, milestone.approved, deal.disputed
+- Automatically trigger trust recalculation
+- Push updated matching scores without user action
+- Store loop execution logs for debugging (not visible to users)
 
 ---
 
-## System 11: Daily Professional Operating Loop (DPOL)
+### System 22: Context-Aware Notification Engine
 
-### Purpose
-Answer daily: "What should I do today?" / "What happened?" / "Am I progressing?"
+Replace generic notifications with intelligent, non-repeating alerts.
 
-### New Files
+**Files to Modify:**
+- `src/hooks/useNotifications.ts` - Major enhancement
+
+**New Files:**
+- `src/hooks/useContextAwareNotifications.ts`
+- `src/types/notification-context.ts`
+
+**Rules Engine:**
 ```text
-src/hooks/useDailyProfessionalLoop.ts
-src/components/daily/DailyStateCard.tsx
-src/components/daily/DailyActionsQueue.tsx
-src/components/daily/DailyOutcomesSummary.tsx
-src/components/daily/WeeklySummaryCard.tsx
-src/components/daily/MonthlyTrajectoryView.tsx
-src/components/daily/index.ts
+1. No notification without clear action
+   - Every notification must have actionUrl or explicit next step
+   
+2. No repeated alerts without context change
+   - Hash notification type + entity ID + key context
+   - Block repeat within 24h unless context changes
+   - Context change examples: price changed, deadline moved, new applicant
+   
+3. Silent success acknowledgment
+   - Success states should NOT produce notifications
+   - Exception: milestone-level achievements
+   
+4. Urgency-based batching
+   - Urgent (deal risk, deadline <24h): Immediate
+   - High (opportunity match >90%): Within 1 hour
+   - Medium: Daily digest
+   - Low: Weekly summary
 ```
 
-### Hook Interface
+**Context Tracking:**
 ```text
-useDailyProfessionalLoop():
-  - currentState: {
-      trust: TrustSnapshot
-      work: ActiveWorkItems[]
-      obligations: Obligation[]
-      readiness: ReadinessLevel
-    }
-  - todayOpportunities: OpportunityMatch[]
-  - requiredActions: RequiredAction[]
-  - todayOutcomes: DailyOutcome[]
-  - weekSummary: WeekSummary
-  - monthTrajectory: MonthTrajectory
-```
-
-### HomeDashboard Integration
-Replace scattered cards with structured daily loop:
-1. Current State banner
-2. Required Actions queue (messages, reviews, milestones)
-3. Today's Opportunities (filtered to urgent + matched)
-4. Today's Outcomes achieved
-
----
-
-## System 12: Cognitive Load Reduction Engine
-
-### Purpose
-Make a massive platform feel simple. Users see only what they need.
-
-### New Files
-```text
-src/hooks/useCognitiveLoadEngine.ts
-src/contexts/UIComplexityContext.tsx
-src/components/ui/AdvancedModeToggle.tsx
-src/components/ui/ProgressiveSection.tsx
-```
-
-### Features
-1. **Role-based UI compression**: Students see student features, researchers see researcher features
-2. **Progressive disclosure**: Advanced features hidden until user reaches thresholds
-3. **Contextual hiding**: Hide irrelevant systems based on current activity
-4. **"Advanced mode" toggle**: Power users can unlock everything
-
-### Unlock Thresholds
-```text
-Level 1 (New User): Profile, Opportunities, Basic Trust
-Level 2 (Active): Add Deals, Messaging, Wallet
-Level 3 (Established): Add Analytics, Network, Briefings
-Level 4 (Power User): Add Infrastructure, Collective, AI Governance
-```
-
-### Implementation
-Wrap feature access with useCognitiveLoadEngine:
-```text
-const { shouldShow, unlockLevel, canShowAdvanced } = useCognitiveLoadEngine();
-
-if (shouldShow("ambient_intelligence")) {
-  // render ambient widget
+NotificationContext {
+  entityId: string
+  entityType: string
+  contextHash: string (computed from key fields)
+  lastNotifiedAt: Date
+  notificationCount: number
+  contextVersion: number
 }
 ```
 
 ---
 
-## System 13: Feature Orchestration Layer
+### System 23: Silent Quality Control (SQC)
 
-### Purpose
-Connect all features to central event bus. No feature operates alone.
+Invisible quality scoring that affects ranking without showing raw scores.
 
-### Enhancements to useExtensibilitySystem
-Add cross-system event handlers:
+**New Files:**
+- `src/hooks/useSilentQualityControl.ts`
+- Database function: `calculate_content_quality_score`
+- Database function: `calculate_user_quality_score`
+
+**Quality Signals:**
 ```text
-Event: "deal.completed"
-  -> Update trust (useTrustComputationEngine)
-  -> Update profile outcomes (useOutcomeGraph)
-  -> Refresh opportunities (useContinuousMatchingEngine)
-  -> Add to timeline (useLongTermMemory)
-  -> Notify user (useNotifications)
-
-Event: "learning.completed"
-  -> Unlock new skill matches
-  -> Update readiness indicators
-
-Event: "dispute.resolved"
-  -> Adjust future visibility
-  -> Update trust with dispute factor
+Content Quality (per post/update):
+  - Has linked entity (project, deal, outcome): +30
+  - Structured update type: +20
+  - Appropriate length (50-500 chars): +15
+  - Author trust score factor: +0-35
+  
+User Quality (aggregated):
+  - Completion rate: 0-100
+  - Dispute rate: 0 to -50
+  - Response time score: 0-30
+  - Consistency score: 0-20
+  
+Deal Quality:
+  - Communication frequency: 0-25
+  - Milestone velocity: 0-25
+  - Sentiment trend: 0-25
+  - Payment promptness: 0-25
 ```
 
-### New File
+**Actions (All Silent):**
 ```text
-src/hooks/useFeatureOrchestration.ts
+Low quality content (score <40):
+  - Reduce visibility in feeds
+  - Do NOT appear in "featured" sections
+  - Do NOT notify target users
+  
+Abusive patterns detected:
+  - Reduce rate limits (fewer posts/messages allowed)
+  - Extend cooling-off periods
+  - Block from recommendations
+  
+High quality users (score >80):
+  - Increase visibility in matching
+  - Priority in opportunity queues
+  - Unlock trust multipliers
 ```
 
-### Central Registration
+**Never Exposed:**
+- Raw quality scores
+- Quality tier labels
+- "You're being throttled" messages
+
+---
+
+### System 24: Opportunity Supply-Demand Balancer
+
+Continuous market monitoring to prevent overcrowded opportunities.
+
+**New Files:**
+- `src/hooks/useMarketBalancer.ts`
+- Backend edge function: `supabase/functions/market-balancer/index.ts`
+
+**Monitoring Metrics:**
 ```text
-useFeatureOrchestration():
-  - registerSystemHandler(system, eventTypes, handler)
-  - onSystemEvent(event): Promise<void>
-  - getActiveHandlers(): SystemHandler[]
+Supply Side:
+  - Open opportunities count
+  - Avg time-to-fill
+  - Opportunities per category
+  
+Demand Side:
+  - Active seekers count
+  - Readiness scores distribution
+  - Skills availability
+  
+Balance Indicators:
+  - Fill rate (applications / openings)
+  - Quality match rate
+  - Time-to-first-application
+```
+
+**Automatic Adjustments:**
+```text
+Oversaturated market (too many seekers):
+  - Increase matching threshold
+  - Reduce notification frequency
+  - Show "high competition" indicators
+  
+Undersaturated market (too few seekers):
+  - Expand matching criteria
+  - Increase opportunity visibility
+  - Proactive outreach to dormant users
+  
+Skill gaps detected:
+  - Surface learning recommendations
+  - Adjust AI guidance
 ```
 
 ---
 
-## System 14: Career State Machine
+### System 25: Long-Term User Memory Engine
 
-### Purpose
-Represent every user as a state machine. State affects UI, opportunities, and advice.
+Use accumulated history to personalize and reduce repeated mistakes.
 
-### States
+**Files to Enhance:**
+- `src/hooks/useLongTermMemory.ts` - Add recommendation integration
+
+**New Files:**
+- `src/hooks/usePersonalMemory.ts`
+
+**Memory Categories:**
 ```text
-ONBOARDING -> LEARNING -> BUILDING -> EXECUTING -> SCALING -> TRANSITIONING
-                  ^                                     |
-                  |<---------PAUSED<--------------------|
+Success Patterns:
+  - Project types completed successfully
+  - Collaboration styles that worked
+  - Skill applications that led to outcomes
+  
+Failure Patterns:
+  - Project types that led to disputes
+  - Timeline patterns that caused delays
+  - Collaboration mismatches
+  
+Preference Learning:
+  - Preferred project sizes
+  - Communication frequency preferences
+  - Risk tolerance indicators
 ```
 
-### New Files
+**Memory Usage:**
 ```text
-src/hooks/useCareerStateMachine.ts
-src/components/career/CareerStateIndicator.tsx
+Opportunity Matching:
+  - Boost opportunities matching success patterns
+  - Warn (gently) on opportunities matching failure patterns
+  
+AI Advice:
+  - Reference past successes in recommendations
+  - "Last time you did X, it worked because..."
+  
+Recovery Paths:
+  - Personalized based on what caused past recovery
+  - "You recovered from a similar situation by..."
 ```
 
-### Hook Interface
+**Privacy & Control:**
 ```text
-useCareerStateMachine():
-  - currentState: CareerState
-  - stateMetadata: {
-      enteredAt: Date
-      expectedDuration: string
-      triggers: StateTrigger[]
-    }
-  - transitionTo(newState, reason): Promise<void>
-  - getStateEffects(): StateEffects
-  - possibleTransitions: Transition[]
-```
-
-### UI Effects by State
-```text
-LEARNING: Show learning resources, hide deal complexity
-EXECUTING: Prioritize active deals, show milestone focus
-SCALING: Show team features, delegation options
-PAUSED: Reduced notifications, maintenance mode
-```
-
----
-
-## System 15: Failure, Recovery & Resilience Engine
-
-### Purpose
-Make failure first-class. "You failed. Here is how to recover."
-
-### Enhancements
-- Make FailureRecoveryPanel a primary component, not hidden
-- Add failure recording (private by default)
-- Generate AI-powered recovery roadmaps
-- Trust stabilization periods (no further decay during recovery)
-
-### New Files
-```text
-src/hooks/useFailureResilience.ts
-src/components/recovery/FailureRecordCard.tsx
-src/components/recovery/RecoveryRoadmap.tsx
-src/components/recovery/StabilizationPeriodBanner.tsx
-```
-
-### Hook Interface
-```text
-useFailureResilience():
-  - activeFailures: FailureRecord[]
-  - recoveryPlan: RecoveryStep[]
-  - isInStabilization: boolean
-  - stabilizationEndsAt: Date | null
-  - recordFailure(type, details): Promise<void>
-  - generateRecoveryPlan(failureId): Promise<RecoveryPlan>
-  - markRecoveryStep(stepId): Promise<void>
+- All memory private to user
+- User can view memory ("What do you know about me?")
+- User can reset memory (with confirmation)
+- Memory never shared externally
+- Explainable: "I'm suggesting this because..."
 ```
 
 ---
 
-## System 16: Build Order Enforcement
+### System 26: Institutional Feedback Loops
 
-### Purpose
-Prevent feature overload and premature exposure.
+Enable institutions to see and respond to outcome quality trends.
 
-### Enhancement to useFeatureFlags
-Add progressive unlock logic:
+**Files to Enhance:**
+- `src/hooks/useInstitutionalDashboard.ts`
+
+**New Files:**
+- `src/hooks/useInstitutionalFeedback.ts`
+- `src/components/institution/OutcomeQualityTrend.tsx`
+- `src/components/institution/OnboardingStandardsCard.tsx`
+
+**Feedback Metrics:**
 ```text
-useFeatureBuildOrder():
-  - userTier: "core" | "advanced" | "power"
-  - unlockedFeatures: string[]
-  - lockedFeatures: LockedFeature[]
-  - unlockProgress: { feature: string, progress: number, requirements: string[] }[]
-  - canAccess(featureKey): boolean
-  - getUnlockRequirements(featureKey): Requirement[]
+Outcome Quality Trends:
+  - Success rate over time
+  - Average trust impact per outcome
+  - Dispute rate changes
+  
+Member Performance:
+  - Aggregate (not individual) completion rates
+  - Average time-to-delivery
+  - Collaboration diversity
+  
+Opportunity Health:
+  - Fill rates for posted opportunities
+  - Applicant quality scores
+  - Time-to-first-qualified-applicant
 ```
 
-### Feature Tiers
+**Actionable Adjustments:**
 ```text
-Core (Always On):
-  - Profile, Basic Trust, Opportunities, Messaging
-
-Advanced (Unlock after first deal):
-  - Analytics, Network Insights, Briefings, AI Co-pilot
-
-Power (Explicit opt-in):
-  - Infrastructure Dashboard, Collective Intelligence, Governance
-```
-
----
-
-## System 17: Longitudinal Value Tracking
-
-### Purpose
-Track value over time. Make RCollab irreplaceable.
-
-### New Files
-```text
-src/hooks/useLongitudinalTracking.ts
-src/components/progress/ValueTrajectoryChart.tsx
-src/components/progress/SkillEvolutionTimeline.tsx
-src/components/progress/IncomeProgressionGraph.tsx
-```
-
-### Metrics Tracked
-```text
-Personal:
-  - Skills gained (with dates)
-  - Income generated (monthly)
-  - Outcomes completed (cumulative)
-  - Trust growth (trajectory)
-  - Network depth (connections over time)
-
-Aggregate (for institutions):
-  - Anonymized cohort progress
-  - National outcome dashboards
-```
-
-### Hook Interface
-```text
-useLongitudinalTracking():
-  - trajectoryData: TrajectoryPoint[]
-  - skillEvolution: SkillTimeline[]
-  - incomeProgression: IncomePoint[]
-  - networkGrowth: NetworkPoint[]
-  - compareTo(benchmark): Comparison
+Institutions can:
+  - Set minimum trust thresholds for posting
+  - Require outcome verification for visibility
+  - Adjust onboarding requirements based on trends
+  - View anonymized comparison with similar institutions
 ```
 
 ---
 
-## System 18: Simulation & What-If Engine
+### System 27: Power & Risk Dampening
 
-### Purpose
-Turn anxiety into planning. "What if I...?"
+Scale transparency and oversight with user power.
 
-### Enhancement to useCareerSimulation
-Add UI and expand scenarios:
+**New Files:**
+- `src/hooks/usePowerDampening.ts`
+- `src/components/governance/PowerTransparencyBadge.tsx`
+
+**Power Indicators:**
 ```text
-Simulations:
-  - Career paths ("What if I focus on ML?")
-  - Skill investments ("What if I learn MLOps?")
-  - Opportunity choices ("What if I take this deal?")
-  - Pricing changes ("What if I increase my rate?")
-  - Time allocation ("What if I work 20 hours/week?")
+Power factors:
+  - Trust score
+  - Network centrality (connections, warm intros)
+  - Deal volume
+  - Platform tenure
+  - Institutional roles
 ```
 
-### New Files
+**Scaling Rules:**
 ```text
-src/pages/SimulationPage.tsx
-src/components/simulation/SimulationBuilder.tsx
-src/components/simulation/ScenarioComparisonCard.tsx
-src/components/simulation/OutcomeProjection.tsx
+Power level: Low (score <40)
+  - Standard transparency
+  - Standard rate limits
+  - No special oversight
+  
+Power level: Medium (score 40-75)
+  - Actions logged with review possibility
+  - Some decisions require confirmation
+  - Visible activity to moderate connections
+  
+Power level: High (score >75)
+  - All significant actions logged
+  - Increased audit frequency
+  - Reduced unilateral control (e.g., can't single-handedly resolve disputes)
+  - Must explain high-impact decisions
 ```
 
-### Features
-- Non-binding (clearly labeled as simulation)
-- Explainable (show reasoning)
-- Data-backed (based on platform statistics)
+**Prevents:**
+- Trust monopolies (cap on trust benefits)
+- Network abuse (rate limits on introductions)
+- Platform capture (no single user can dominate categories)
 
 ---
 
-## System 19: Permission & Power Minimization
+### System 28: Self-Explaining Changes
 
-### Purpose
-Make abuse structurally hard. All power visible, logged, reversible.
+Every system change logged and explainable.
 
-### New Files
+**New Files:**
+- `src/hooks/useChangeExplainer.ts`
+- `src/components/ui/ChangeNotice.tsx`
+- `src/components/ui/SystemChangeLog.tsx`
+- Database table: `system_changes` (for tracking)
+
+**Change Categories:**
 ```text
-src/hooks/usePowerAudit.ts
-src/components/governance/PowerVisibilityPanel.tsx
-src/components/governance/AdminActionLog.tsx
+1. Trust Changes
+   - "Your trust score changed from X to Y"
+   - "Reason: Completed project on-time"
+   - "This affects: Opportunity visibility, matching priority"
+   
+2. Visibility Changes
+   - "Your profile visibility was adjusted"
+   - "Reason: Inactivity for 30+ days"
+   - "How to restore: Complete any activity"
+   
+3. Access Changes
+   - "Feature X is now available"
+   - "Reason: Reached 50% trust threshold"
+   
+4. Market Changes
+   - "Fewer opportunities in your category this week"
+   - "Reason: Market saturation in [domain]"
+   - "Suggestion: Consider adjacent skills"
 ```
 
-### Audit Points
+**Implementation:**
 ```text
-- Separate read vs write permissions
-- Add oversight checkpoints for destructive actions
-- Log all admin actions with reversibility flags
-- Show power distribution dashboard
-```
-
-### Hook Interface
-```text
-usePowerAudit():
-  - currentPowers: PowerGrant[]
-  - recentActions: AuditedAction[]
-  - powerDistribution: { role: string, powers: string[] }[]
-  - canReverse(actionId): boolean
-  - reverseAction(actionId): Promise<void>
-```
-
----
-
-## System 20: Self-Documenting Platform
-
-### Purpose
-No black boxes. Every user can ask "Why?"
-
-### New Files
-```text
-src/hooks/useSelfDocumentation.ts
-src/components/ui/WhyTooltip.tsx
-src/components/ui/ChangeExplainer.tsx
-src/components/ui/ActionPreview.tsx
-```
-
-### Features
-1. **"Why am I seeing this?"** - Explain every recommendation
-2. **"What changed?"** - Show diffs when state changes
-3. **"What happens if I do this?"** - Preview action consequences
-
-### Implementation
-```text
-<WhyTooltip content={explain("opportunity_match", { reason, factors })}>
-  <OpportunityCard />
-</WhyTooltip>
-
-<ChangeExplainer
-  before={previousTrust}
-  after={currentTrust}
-  reason="Completed project on-time"
-/>
-
-<ActionPreview
-  action="accept_deal"
-  consequences={["Escrow locked", "30-day commitment", "Trust at stake"]}
-/>
+ChangeExplainer:
+  - type: string
+  - previousValue: unknown
+  - newValue: unknown
+  - reason: string
+  - impact: string[]
+  - timestamp: Date
+  - acknowledged: boolean
+  
+User can:
+  - View all recent changes
+  - Acknowledge change (dismisses but keeps in log)
+  - Request more detail (links to relevant help)
 ```
 
 ---
 
-## Files Summary
+## New Files Summary
 
-### New Files to Create
+| File | Purpose |
+|------|---------|
+| `src/hooks/useAutonomousValueLoops.ts` | Closed-loop action-outcome-signal chains |
+| `src/hooks/useContextAwareNotifications.ts` | Smart, non-repeating notification engine |
+| `src/hooks/useSilentQualityControl.ts` | Invisible quality scoring and ranking |
+| `src/hooks/useMarketBalancer.ts` | Supply-demand equilibrium monitoring |
+| `src/hooks/usePersonalMemory.ts` | Memory-driven personalization |
+| `src/hooks/useInstitutionalFeedback.ts` | Outcome quality trends for institutions |
+| `src/hooks/usePowerDampening.ts` | Power scaling with trust |
+| `src/hooks/useChangeExplainer.ts` | Self-documenting system changes |
+| `src/types/notification-context.ts` | Notification context types |
+| `src/components/system/LoopStatusIndicator.tsx` | Debug component for loop status |
+| `src/components/ui/ChangeNotice.tsx` | Change explanation UI |
+| `src/components/ui/SystemChangeLog.tsx` | User-facing change history |
+| `src/components/institution/OutcomeQualityTrend.tsx` | Institution trend visualization |
+| `src/components/governance/PowerTransparencyBadge.tsx` | Power level indicator |
+| `supabase/functions/market-balancer/index.ts` | Backend market analysis |
+
+---
+
+## Files to Modify
+
+| File | Changes |
+|------|---------|
+| `src/hooks/useNotifications.ts` | Integrate context-aware logic |
+| `src/hooks/useLongTermMemory.ts` | Add recommendation integration |
+| `src/hooks/useInstitutionalDashboard.ts` | Add feedback loop metrics |
+| `src/hooks/useExtensibilitySystem.ts` | Register loop event handlers |
+| `src/hooks/useSafetyQuality.ts` | Connect to silent quality control |
+
+---
+
+## Safeguards Against Over-Correction
+
 ```text
-src/hooks/useDailyProfessionalLoop.ts
-src/hooks/useCognitiveLoadEngine.ts
-src/hooks/useCareerStateMachine.ts
-src/hooks/useFailureResilience.ts
-src/hooks/useFeatureBuildOrder.ts
-src/hooks/useFeatureOrchestration.ts
-src/hooks/useLongitudinalTracking.ts
-src/hooks/usePowerAudit.ts
-src/hooks/useSelfDocumentation.ts
-
-src/contexts/UIComplexityContext.tsx
-
-src/components/daily/DailyStateCard.tsx
-src/components/daily/DailyActionsQueue.tsx
-src/components/daily/DailyOutcomesSummary.tsx
-src/components/daily/WeeklySummaryCard.tsx
-src/components/daily/MonthlyTrajectoryView.tsx
-src/components/daily/index.ts
-
-src/components/ui/AdvancedModeToggle.tsx
-src/components/ui/ProgressiveSection.tsx
-src/components/ui/WhyTooltip.tsx
-src/components/ui/ChangeExplainer.tsx
-src/components/ui/ActionPreview.tsx
-
-src/components/career/CareerStateIndicator.tsx
-
-src/components/recovery/FailureRecordCard.tsx
-src/components/recovery/RecoveryRoadmap.tsx
-src/components/recovery/StabilizationPeriodBanner.tsx
-
-src/components/simulation/SimulationBuilder.tsx
-src/components/simulation/ScenarioComparisonCard.tsx
-src/components/simulation/OutcomeProjection.tsx
-
-src/components/governance/PowerVisibilityPanel.tsx
-src/components/governance/AdminActionLog.tsx
-
-src/pages/SimulationPage.tsx
-```
-
-### Files to Update
-```text
-src/pages/HomeDashboard.tsx - Replace with DPOL structure
-src/components/layout/Navbar.tsx - Add career state indicator
-src/components/layout/MainLayout.tsx - Add complexity context
-src/App.tsx - Add /simulation route, wrap with complexity context
-src/hooks/useExtensibilitySystem.ts - Add orchestration handlers
-src/components/admin/AdminSidebar.tsx - Add Simulation nav
-src/hooks/useFeatureFlags.ts - Add build order logic
+1. Rate Limiting on Adjustments
+   - No more than 1 trust adjustment per action
+   - No more than 3 visibility changes per week
+   - Cooling-off period after corrections
+   
+2. Stabilization Periods
+   - After dispute: 14-day stabilization (no further decay)
+   - After recovery action: 7-day observation
+   
+3. Human Escalation Triggers
+   - 3+ corrections in 30 days -> flag for review
+   - Trust drop >20 points -> human oversight
+   - Multiple low-quality flags -> manual review
+   
+4. Reversibility
+   - All automatic actions logged with reverse capability
+   - Admin can roll back any automatic adjustment
+   - User can appeal any restriction
 ```
 
 ---
 
-## UI Hierarchy Change
+## What Remains Manual vs Autonomous
 
-### Current (Fragmented)
-```text
-Home -> [Identity, Next Action, Opportunities, Ambient, Quick Actions, Trust, Ledger, Progress, Views, Network]
-```
-
-### Proposed (Daily Loop)
-```text
-Home -> Daily Operating Loop:
-  1. State Banner (Trust + Readiness + Career Phase)
-  2. Required Actions (must-do queue)
-  3. Today's Opportunities (matched + urgent)
-  4. Outcomes Achieved (what happened today)
-  5. [Collapsed: Deep Dives -> Progress, Network, Analytics]
-```
-
----
-
-## What Gets Hidden by Default
-
-```text
-Hidden until Advanced unlock:
-  - Infrastructure Dashboard
-  - Collective Intelligence
-  - API Marketplace
-  - Governance Panels
-  - Extensibility/Plugins
-
-Hidden until Established:
-  - Audio Briefings
-  - Career Simulation
-  - Advanced Analytics
-
-Always visible:
-  - Profile
-  - Opportunities
-  - Deals
-  - Messages
-  - Basic Trust Score
-```
+| Manual | Autonomous |
+|--------|-----------|
+| Account creation | Trust updates |
+| Profile editing | Opportunity matching |
+| Deal initiation | Quality scoring |
+| Dispute filing | Visibility adjustments |
+| Explicit feedback | Pattern detection |
+| Recovery actions | Notification batching |
+| Data export | Market balancing |
+| Policy settings | Loop execution |
 
 ---
 
 ## Success Criteria
 
-1. New users can answer "What should I do today?" within 5 seconds of logging in
-2. Users see max 5 decisions per screen
-3. Every feature change triggers cross-system updates
-4. Career state drives UI personalization
-5. Failure has clear recovery paths
-6. Power users can unlock advanced mode
-7. Every recommendation has "Why?" explanation
-8. Value trajectory visible over time
+1. Platform improves opportunity matching as usage increases (measurable via match-to-hire rate)
+2. Notification volume decreases while engagement increases
+3. No user sees raw quality scores or "you're being throttled" messages
+4. Institutions can see aggregate trends without individual surveillance
+5. High-trust users face more transparency, not less restriction
+6. Every system change has an explainable reason visible to the user
+7. Loops operate autonomously for 30+ days without admin intervention
 
 ---
 
 ## Philosophy Lock
 
-**"RCollab is not used occasionally — it becomes how professionals run their lives."**
+**"RCollab compounds integrity, not engagement."**
 
-This is achieved by:
-- Making the daily loop inevitable (you check it like email)
-- Reducing cognitive load (it's simple despite being powerful)
-- Showing progress (you see yourself growing)
-- Handling failure (you trust it won't abandon you)
-- Explaining itself (you understand it completely)
+Every autonomous system in this plan:
+- Rewards consistent, high-quality behavior
+- Corrects without shaming
+- Explains without overwhelming
+- Scales power with responsibility
+- Preserves user agency
 
