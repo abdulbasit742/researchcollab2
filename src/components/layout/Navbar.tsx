@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { NotificationBell } from "@/components/layout/NotificationBell";
+ import { VoiceSearchButton } from "@/components/search/VoiceSearchButton";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUnreadCount } from "@/hooks/useMessaging";
 import {
@@ -17,6 +18,7 @@ import {
   User,
   LogOut,
   TrendingUp,
+   Search,
 } from "lucide-react";
 
 // Simplified, focused navigation - only core actions
@@ -93,6 +95,7 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const { user, signOut } = useAuth();
+   const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -102,6 +105,12 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+   const handleVoiceSearch = (transcript: string) => {
+     if (transcript.trim()) {
+       navigate(`/search?q=${encodeURIComponent(transcript.trim())}`);
+     }
+   };
+ 
   const handleSignOut = async () => {
     await signOut();
     setIsOpen(false);
@@ -147,6 +156,10 @@ export function Navbar() {
 
         {/* Desktop Actions - Simplified */}
         <div className="hidden lg:flex items-center gap-2">
+           <VoiceSearchButton
+             onTranscript={handleVoiceSearch}
+             className="h-9 w-9"
+           />
           <NotificationBell />
           {user ? (
             <>
