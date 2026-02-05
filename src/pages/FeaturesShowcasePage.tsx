@@ -12,8 +12,9 @@ import {
   MessageSquare, Globe, FileCheck, Award, Target,
   Briefcase, LineChart, Network, Lock, Bell,
   Search, Wallet, Clock, BookOpen, BarChart3,
-  Settings, Database, Code, Cpu, Heart, Star,
-  Compass, Flame, Brain, Trophy, Lightbulb
+   Settings, Database, Code, Cpu, Heart, Star,
+   Compass, Flame, Brain, Trophy, Lightbulb,
+   Volume2, Mic, Radio
 } from "lucide-react";
 
 // Platform Components
@@ -178,6 +179,9 @@ const categories = [
   { id: "identity", label: "Identity & Portability", icon: Globe, count: 4 },
   { id: "messaging", label: "Communication", icon: MessageSquare, count: 3 },
   { id: "analytics", label: "Analytics & Insights", icon: BarChart3, count: 4 },
+   { id: "voice", label: "Voice & Audio", icon: Volume2, count: 4 },
+   { id: "ambient", label: "Ambient Intelligence", icon: Lightbulb, count: 5 },
+   { id: "collective", label: "Collective Intelligence", icon: Brain, count: 4 },
 ];
 
 function ComponentCard({ 

@@ -32,6 +32,7 @@ import {
   Camera,
   Lightbulb,
   Brain,
+   Volume2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -78,6 +79,7 @@ const platformItems = [
   { icon: Camera, label: "Social Features", href: "/social" },
   { icon: Lightbulb, label: "Ambient Intelligence", href: "/ambient" },
   { icon: Brain, label: "Collective Intelligence", href: "/collective" },
+   { icon: Volume2, label: "Audio Briefings", href: "/briefings" },
   { icon: GraduationCap, label: "Learning", href: "/learning" },
   { icon: Calendar, label: "Events", href: "/events" },
   { icon: UserCog, label: "HR & Talent", href: "/hr" },

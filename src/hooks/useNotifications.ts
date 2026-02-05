@@ -13,6 +13,22 @@ export interface Notification {
   created_at: string;
 }
 
+ // Ambient notification types for the intelligence system
+ export type AmbientNotificationType = 
+   | "ambient_opportunity"    // High-match opportunity alerts
+   | "ambient_relationship"   // Connection decay warnings  
+   | "ambient_deal"           // Deal health risk notifications
+   | "ambient_insight";       // General proactive insights
+ 
+ export interface AmbientNotificationData {
+   priority: "low" | "medium" | "high" | "urgent";
+   category: AmbientNotificationType;
+   entityId?: string;
+   entityType?: "opportunity" | "connection" | "deal" | "insight";
+   score?: number;
+   actionUrl?: string;
+ }
+ 
 export function useNotifications() {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -113,6 +129,32 @@ export function useNotifications() {
     }
   };
 
+   // Get high-priority ambient notifications
+   const getAmbientNotifications = () => {
+     return notifications.filter(n => 
+       n.type.startsWith("ambient_") && 
+       (n.data as AmbientNotificationData)?.priority === "high" ||
+       (n.data as AmbientNotificationData)?.priority === "urgent"
+     );
+   };
+ 
+   // Get notifications grouped by priority
+   const getNotificationsByPriority = () => {
+     const grouped = {
+       urgent: [] as Notification[],
+       high: [] as Notification[],
+       medium: [] as Notification[],
+       low: [] as Notification[],
+     };
+     
+     notifications.forEach(n => {
+       const priority = (n.data as AmbientNotificationData)?.priority || "low";
+       grouped[priority].push(n);
+     });
+     
+     return grouped;
+   };
+ 
   return {
     notifications,
     unreadCount,
@@ -120,6 +162,8 @@ export function useNotifications() {
     refetch: fetchNotifications,
     markAsRead,
     markAllAsRead,
+     getAmbientNotifications,
+     getNotificationsByPriority,
   };
 }
 
@@ -129,7 +173,7 @@ export function useCreateNotification() {
     type: string,
     title: string,
     message?: string,
-    data?: Record<string, any>
+     data?: Record<string, any>
   ) => {
     try {
       const { error } = await supabase

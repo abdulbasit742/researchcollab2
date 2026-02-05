@@ -122,6 +122,7 @@ import ProjectManagementPage from "./pages/ProjectManagementPage";
 import SocialFeaturesPage from "./pages/SocialFeaturesPage";
 import AmbientPage from "./pages/AmbientPage";
 import CollectiveIntelligencePage from "./pages/CollectiveIntelligencePage";
+ import BriefingsPage from "./pages/BriefingsPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -210,6 +211,7 @@ const AppContent = () => {
             <Route path="/social" element={<SocialFeaturesPage />} />
             <Route path="/ambient" element={<AmbientPage />} />
             <Route path="/collective" element={<CollectiveIntelligencePage />} />
+             <Route path="/briefings" element={<BriefingsPage />} />
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminPortalPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
