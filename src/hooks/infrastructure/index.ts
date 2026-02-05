@@ -110,6 +110,34 @@ export { useFairnessBiasEngine } from "../useFairnessBiasEngine";
 // System 54: National Human Capital
 export { useNationalHumanCapital } from "../useNationalHumanCapital";
 
+// ============================================
+// CRISIS COORDINATION LAYER (Systems 55-62)
+// ============================================
+
+// System 55: Collective Mobilization Engine
+export { useCollectiveMobilization } from "../useCollectiveMobilization";
+
+// System 56: Crisis Mode
+export { useCrisisMode } from "../useCrisisMode";
+
+// System 57: Real-Time Coordination Graph
+export { useCoordinationGraph } from "../useCoordinationGraph";
+
+// System 58: Decision Traceability Engine
+export { useDecisionTraceability } from "../useDecisionTraceability";
+
+// System 59: Resource & Capability Allocation
+export { useResourceAllocation } from "../useResourceAllocation";
+
+// System 60: Post-Crisis Learning & Reforms
+export { usePostCrisisLearning } from "../usePostCrisisLearning";
+
+// System 61: Ethical & Power Safeguards
+export { usePowerSafeguards } from "../usePowerSafeguards";
+
+// System 62: Global Coordination Interoperability
+export { useGlobalCoordination } from "../useGlobalCoordination";
+
  // Re-export types
  export type {
    // UPOM Types
