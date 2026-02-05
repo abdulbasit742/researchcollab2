@@ -78,7 +78,38 @@ export { useKnowledgePipeline } from "../useKnowledgePipeline";
 
 // System 45: Anti-Capture Safeguards
 export { useAntiCapture } from "../useAntiCapture";
- 
+
+// ============================================
+// HUMAN CAPITAL OS (Systems 46-54)
+// ============================================
+
+// System 46: Capability Graph
+export { useCapabilityGraph } from "../useCapabilityGraph";
+
+// System 47: Readiness & Responsibility Engine
+export { useReadinessEngine } from "../useReadinessEngine";
+
+// System 48: Talent Allocation Engine
+export { useTalentAllocation } from "../useTalentAllocation";
+
+// System 49: Skill Gap & Reskilling Engine
+export { useSkillGapEngine } from "../useSkillGapEngine";
+
+// System 50: Performance Without Surveillance
+export { usePerformanceOutcomes } from "../usePerformanceOutcomes";
+
+// System 51: Institutional Talent Strategy
+export { useTalentStrategyDashboard } from "../useTalentStrategyDashboard";
+
+// System 52: Career Evolution & Transition
+export { useCareerEvolution } from "../useCareerEvolution";
+
+// System 53: Fairness, Bias & Access
+export { useFairnessBiasEngine } from "../useFairnessBiasEngine";
+
+// System 54: National Human Capital
+export { useNationalHumanCapital } from "../useNationalHumanCapital";
+
  // Re-export types
  export type {
    // UPOM Types
