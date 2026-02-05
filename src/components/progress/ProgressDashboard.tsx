@@ -24,7 +24,9 @@ import {
   Lightbulb,
   ArrowRight,
   Rocket,
+   Mic,
 } from "lucide-react";
+ import { VoiceSearchButton } from "@/components/search/VoiceSearchButton";
 import { formatPKR } from "@/lib/currency";
 import { Link } from "react-router-dom";
 
@@ -281,7 +283,22 @@ export function ProgressDashboard() {
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleAskCopilot()}
+                   className="flex-1"
                 />
+                 <VoiceSearchButton
+                   onTranscript={(text) => {
+                     setQuestion(text);
+                     // Auto-submit after voice input
+                     setTimeout(() => {
+                       if (text.trim()) {
+                         askCopilot(text).then((response) => {
+                           setCopilotResponse(response);
+                         });
+                       }
+                     }, 100);
+                   }}
+                   className="shrink-0"
+                 />
                 <Button onClick={handleAskCopilot} disabled={copilotLoading || !question.trim()}>
                   {copilotLoading ? "..." : <Send className="h-4 w-4" />}
                 </Button>

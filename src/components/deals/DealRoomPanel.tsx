@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+ import { DealRoomComposer } from "./DealRoomComposer";
+ import type { VoiceNote } from "@/hooks/useVoiceNotes";
 
 interface DealRoomPanelProps {
   dealId: string;
@@ -245,6 +247,27 @@ export function DealRoomPanel({ dealId }: DealRoomPanelProps) {
           </div>
         </CardContent>
       </Card>
+ 
+       {/* Message Composer */}
+       <Card>
+         <CardHeader className="pb-2">
+           <CardTitle className="flex items-center gap-2">
+             <MessageSquare className="h-5 w-5 text-primary" />
+             Send Message
+           </CardTitle>
+         </CardHeader>
+         <CardContent className="p-0">
+           <DealRoomComposer
+             dealId={dealId}
+             onSendMessage={async (content) => {
+               console.log("Send text message:", content);
+             }}
+             onSendVoiceNote={async (voiceNote: VoiceNote) => {
+               console.log("Send voice note:", voiceNote);
+             }}
+           />
+         </CardContent>
+       </Card>
     </div>
   );
 }

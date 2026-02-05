@@ -123,6 +123,8 @@ import SocialFeaturesPage from "./pages/SocialFeaturesPage";
 import AmbientPage from "./pages/AmbientPage";
 import CollectiveIntelligencePage from "./pages/CollectiveIntelligencePage";
  import BriefingsPage from "./pages/BriefingsPage";
+ import ProfileSettingsPage from "./pages/ProfileSettingsPage";
+ import CareerPage from "./pages/CareerPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -145,6 +147,7 @@ const AppContent = () => {
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+             <Route path="/profile/settings" element={<ProfileSettingsPage />} />
             <Route path="/u/:id" element={<UserPublicProfilePage />} />
             <Route path="/dashboard/student" element={<StudentDashboard />} />
             <Route path="/dashboard/researcher" element={<ResearcherDashboard />} />
@@ -212,6 +215,7 @@ const AppContent = () => {
             <Route path="/ambient" element={<AmbientPage />} />
             <Route path="/collective" element={<CollectiveIntelligencePage />} />
              <Route path="/briefings" element={<BriefingsPage />} />
+             <Route path="/career" element={<CareerPage />} />
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminPortalPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
