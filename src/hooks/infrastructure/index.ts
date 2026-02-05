@@ -42,11 +42,42 @@
  // System 26: Institutional Feedback
  export { useInstitutionalFeedback } from "../useInstitutionalFeedback";
  
- // System 27: Power Dampening
- export { usePowerDampening } from "../usePowerDampening";
- 
- // System 28: Change Explainer
- export { useChangeExplainer } from "../useChangeExplainer";
+// System 27: Power Dampening
+export { usePowerDampening } from "../usePowerDampening";
+
+// System 28: Change Explainer
+export { useChangeExplainer } from "../useChangeExplainer";
+
+// ============================================
+// KNOWLEDGE CIVILIZATION LAYER (Systems 37-45)
+// ============================================
+
+// System 37: Knowledge Object Standard
+export { useKnowledgeObjects } from "../useKnowledgeObjects";
+
+// System 38: Knowledge Intelligence Graph
+export { useKnowledgeGraph } from "../useKnowledgeGraph";
+
+// System 39: Failure Preservation
+export { useFailurePreservation } from "../useFailurePreservation";
+
+// System 40: Institutional Vaults
+export { useInstitutionalVaults } from "../useInstitutionalVaults";
+
+// System 41: Knowledge Validation
+export { useKnowledgeValidation } from "../useKnowledgeValidation";
+
+// System 42: AI Historian
+export { useAIHistorian } from "../useAIHistorian";
+
+// System 43: Legacy & Succession
+export { useLegacySuccession } from "../useLegacySuccession";
+
+// System 44: Knowledge Pipeline
+export { useKnowledgePipeline } from "../useKnowledgePipeline";
+
+// System 45: Anti-Capture Safeguards
+export { useAntiCapture } from "../useAntiCapture";
  
  // Re-export types
  export type {
