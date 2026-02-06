@@ -174,13 +174,7 @@ export default function OnboardingPage() {
 
       // Redirect after celebration animation
       setTimeout(() => {
-        if (formData.role === "admin") {
-          navigate("/dashboard/admin");
-        } else if (formData.role === "researcher" || formData.role === "professional") {
-          navigate("/dashboard/researcher");
-        } else {
-          navigate("/dashboard/student");
-        }
+        navigate("/home");
       }, 2500);
     } catch (error: any) {
       console.error("Onboarding error:", error);

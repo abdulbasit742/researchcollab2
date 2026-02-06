@@ -12,6 +12,7 @@ import { QuickActionsCard } from "@/components/home/QuickActionsCard";
 import { OpportunityMatchCard } from "@/components/opportunity/OpportunityMatchCard";
 import { TrustExplainer } from "@/components/trust/TrustExplainer";
 import { PlatformTrustBanner } from "@/components/trust/TrustSignals";
+import { GettingStartedChecklist } from "@/components/home/GettingStartedChecklist";
 import { FirstTimeUserOverlay } from "@/components/onboarding/FirstTimeUserOverlay";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -105,6 +106,9 @@ export default function HomeDashboard() {
         <div className="grid lg:grid-cols-12 gap-6">
           {/* Main Content - Focused */}
           <div className="lg:col-span-8 space-y-4">
+            {/* Getting Started Checklist for new users */}
+            <GettingStartedChecklist />
+
             {/* System 71: What Matters Today - Step 2 & 3 */}
             <WhatMattersToday items={todayItems} loading={loading} />
 

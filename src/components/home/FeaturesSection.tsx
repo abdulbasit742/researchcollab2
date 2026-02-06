@@ -19,7 +19,7 @@ const features = [
   {
     icon: Users,
     title: "Find Collaborators",
-    description: "Connect with researchers, students, and experts from 80+ countries based on your interests.",
+    description: "Connect with researchers, students, and experts worldwide based on your interests and verified skills.",
     badge: "Smart Match",
     badgeVariant: "info" as const,
     href: "/collaborations",

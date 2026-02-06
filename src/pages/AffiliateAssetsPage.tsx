@@ -72,7 +72,7 @@ export default function AffiliateAssetsPage() {
     },
     {
       name: "Social Proof",
-      text: "Join thousands of researchers using AI to supercharge their work. Here's my referral link:",
+      text: "Discover a platform where researchers earn, collaborate, and build trust. Here's my referral link:",
     },
   ];
 

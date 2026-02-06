@@ -49,8 +49,8 @@ export function CTASection() {
             </h2>
 
             <p className="mx-auto mt-3 md:mt-4 max-w-2xl text-sm md:text-lg text-primary-foreground/90 px-2">
-              Join thousands of researchers, students, and experts already collaborating 
-              and earning on our platform.
+              Start collaborating with researchers, students, and professionals 
+              on a platform built for real outcomes.
             </p>
 
             <div className="mt-6 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
