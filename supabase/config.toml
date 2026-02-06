@@ -5,6 +5,12 @@ verify_jwt = false
 
 [functions.ambient-analyzer]
 verify_jwt = false
- 
- [functions.market-balancer]
- verify_jwt = false
+
+[functions.market-balancer]
+verify_jwt = false
+
+[functions.compute-trust]
+verify_jwt = false
+
+[functions.deal-runtime]
+verify_jwt = false
