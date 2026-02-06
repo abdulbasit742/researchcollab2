@@ -7,12 +7,12 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-type DealAction = 
+type DealAction =
   | "create_deal"
+  | "activate_deal"
   | "advance_milestone"
   | "submit_milestone"
   | "approve_milestone"
-  | "reject_milestone"
   | "release_payment"
   | "dispute"
   | "resolve_dispute"
@@ -28,7 +28,7 @@ interface DealRuntimeRequest {
 }
 
 // Valid state transitions for deals
-const DEAL_STATES = {
+const DEAL_STATES: Record<string, string[]> = {
   draft: ["proposed"],
   proposed: ["active", "cancelled"],
   active: ["disputed", "completed", "cancelled"],
@@ -39,7 +39,7 @@ const DEAL_STATES = {
 };
 
 // Valid state transitions for milestones
-const MILESTONE_STATES = {
+const MILESTONE_STATES: Record<string, string[]> = {
   pending: ["in_progress"],
   in_progress: ["submitted", "cancelled"],
   submitted: ["approved", "rejected", "disputed"],
@@ -68,12 +68,13 @@ serve(async (req: Request) => {
     let result: Record<string, unknown> = {};
 
     switch (action) {
+      // ─── CREATE DEAL ────────────────────────────────────────────
       case "create_deal": {
         const { offer_id, terms, amount, milestones } = data as {
           offer_id: string;
           terms: string;
           amount: number;
-          milestones: { title: string; amount: number; deadline: string }[];
+          milestones: { title: string; amount: number; deadline?: string }[];
         };
 
         // Validate offer exists and is open
@@ -86,12 +87,20 @@ serve(async (req: Request) => {
         if (offerError || !offer) throw new Error("Offer not found");
         if (offer.status !== "open") throw new Error("Offer is not open for deals");
 
-        // Create the deal (using offers table as deals)
+        // Validate milestones sum to total amount
+        if (milestones && milestones.length > 0) {
+          const milestoneSum = milestones.reduce((sum, m) => sum + m.amount, 0);
+          if (Math.abs(milestoneSum - amount) > 0.01) {
+            throw new Error(`Milestone amounts (${milestoneSum}) must equal deal amount (${amount})`);
+          }
+        }
+
+        // Update offer to proposed status with correct column names
         const { data: deal, error: dealError } = await supabase
           .from("offers")
           .update({
             status: "proposed",
-            amount,
+            price: amount,
             deal_terms: terms,
             updated_at: new Date().toISOString(),
           })
@@ -101,13 +110,13 @@ serve(async (req: Request) => {
 
         if (dealError) throw dealError;
 
-        // Create milestones
+        // Create milestones with correct column names
         if (milestones && milestones.length > 0) {
           const milestoneInserts = milestones.map((m, index) => ({
             offer_id: offer_id,
             title: m.title,
             amount: m.amount,
-            due_date: m.deadline,
+            expected_delivery: m.deadline || null,
             status: "pending",
             order_index: index,
           }));
@@ -119,13 +128,65 @@ serve(async (req: Request) => {
           if (milestoneError) throw milestoneError;
         }
 
-        // Log state transition
         await logStateTransition(supabase, "deal", offer_id, "open", "proposed", user_id, "Deal created");
-
         result = { success: true, deal_id: offer_id, status: "proposed" };
         break;
       }
 
+      // ─── ACTIVATE DEAL (LOCK ESCROW) ───────────────────────────
+      case "activate_deal": {
+        if (!deal_id) throw new Error("deal_id required");
+
+        const { data: deal, error: dealError } = await supabase
+          .from("offers")
+          .select("*")
+          .eq("id", deal_id)
+          .single();
+
+        if (dealError || !deal) throw new Error("Deal not found");
+        if (deal.status !== "proposed") throw new Error(`Cannot activate deal in ${deal.status} state`);
+
+        // recipient_id = buyer (the one who funds escrow)
+        const buyerId = deal.recipient_id;
+        const totalAmount = deal.price;
+
+        if (!totalAmount || totalAmount <= 0) {
+          throw new Error("Deal has no valid amount");
+        }
+
+        // Call atomic escrow lock function
+        const { data: lockResult, error: lockError } = await supabase
+          .rpc("execute_escrow_lock", {
+            p_offer_id: deal_id,
+            p_buyer_id: buyerId,
+            p_total_amount: totalAmount,
+          });
+
+        if (lockError) throw new Error(`Escrow lock failed: ${lockError.message}`);
+
+        // Update deal status to active
+        const { error: updateError } = await supabase
+          .from("offers")
+          .update({
+            status: "active",
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", deal_id);
+
+        if (updateError) throw updateError;
+
+        await logStateTransition(supabase, "deal", deal_id, "proposed", "active", user_id, "Deal activated, escrow locked");
+
+        result = {
+          success: true,
+          deal_id,
+          status: "active",
+          escrow: lockResult,
+        };
+        break;
+      }
+
+      // ─── ADVANCE MILESTONE ─────────────────────────────────────
       case "advance_milestone": {
         if (!deal_id || !milestone_id) throw new Error("deal_id and milestone_id required");
 
@@ -137,7 +198,6 @@ serve(async (req: Request) => {
 
         if (msError) throw msError;
 
-        // Validate state transition
         const currentState = milestone.status;
         if (!MILESTONE_STATES[currentState]?.includes("in_progress")) {
           throw new Error(`Cannot advance milestone from ${currentState}`);
@@ -155,11 +215,11 @@ serve(async (req: Request) => {
         if (updateError) throw updateError;
 
         await logStateTransition(supabase, "milestone", milestone_id, currentState, "in_progress", user_id, "Milestone started");
-
         result = { success: true, milestone_id, status: "in_progress" };
         break;
       }
 
+      // ─── SUBMIT MILESTONE ──────────────────────────────────────
       case "submit_milestone": {
         if (!milestone_id) throw new Error("milestone_id required");
 
@@ -181,8 +241,7 @@ serve(async (req: Request) => {
           .update({
             status: "submitted",
             submitted_at: new Date().toISOString(),
-            submission_notes: data?.notes as string,
-            auto_release_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days
+            submission_notes: (data?.notes as string) || null,
             updated_at: new Date().toISOString(),
           })
           .eq("id", milestone_id);
@@ -190,11 +249,11 @@ serve(async (req: Request) => {
         if (updateError) throw updateError;
 
         await logStateTransition(supabase, "milestone", milestone_id, currentState, "submitted", user_id, "Milestone submitted for review");
-
         result = { success: true, milestone_id, status: "submitted" };
         break;
       }
 
+      // ─── APPROVE MILESTONE ─────────────────────────────────────
       case "approve_milestone": {
         if (!milestone_id) throw new Error("milestone_id required");
 
@@ -229,87 +288,53 @@ serve(async (req: Request) => {
         if (updateError) throw updateError;
 
         await logStateTransition(supabase, "milestone", milestone_id, currentState, "approved", user_id, "Milestone approved");
-
         result = { success: true, milestone_id, status: "approved" };
         break;
       }
 
+      // ─── RELEASE PAYMENT (ATOMIC) ──────────────────────────────
       case "release_payment": {
         if (!milestone_id) throw new Error("milestone_id required");
 
-        const { data: milestone, error: msError } = await supabase
+        // Call atomic release function — handles escrow debit, provider credit, fee deduction
+        const { data: releaseResult, error: releaseError } = await supabase
+          .rpc("execute_milestone_release", {
+            p_milestone_id: milestone_id,
+            p_released_by: user_id,
+          });
+
+        if (releaseError) throw new Error(`Payment release failed: ${releaseError.message}`);
+
+        // Apply trust event for successful payment
+        const { data: msData } = await supabase
           .from("milestones")
-          .select("*, offers!inner(sender_id, recipient_id, id)")
+          .select("*, offers!inner(sender_id)")
           .eq("id", milestone_id)
           .single();
 
-        if (msError) throw msError;
-
-        if (milestone.status !== "approved") {
-          throw new Error("Milestone must be approved before payment release");
-        }
-
-        // Get provider's wallet
-        const { data: wallet, error: walletError } = await supabase
-          .from("wallets")
-          .select("*")
-          .eq("user_id", milestone.offers.sender_id)
-          .single();
-
-        if (walletError) throw walletError;
-
-        // Create wallet transaction
-        const { error: txError } = await supabase
-          .from("wallet_transactions")
-          .insert({
-            wallet_id: wallet.id,
-            user_id: milestone.offers.sender_id,
-            type: "credit",
-            amount: milestone.amount,
-            status: "completed",
-            description: `Payment for milestone: ${milestone.title}`,
+        if (msData) {
+          await applyTrustEvent(supabase, msData.offers.sender_id, {
+            event_type: "payment_received",
+            event_source: "deal_runtime",
+            trust_delta: 3,
             reference_type: "milestone",
             reference_id: milestone_id,
+            evidence_summary: `Payment of ${releaseResult.net_to_provider} released (fee: ${releaseResult.platform_fee})`,
           });
+        }
 
-        if (txError) throw txError;
+        await logStateTransition(supabase, "milestone", milestone_id, "approved", "released", user_id, "Payment released atomically");
 
-        // Update wallet balance
-        await supabase
-          .from("wallets")
-          .update({
-            available_balance: wallet.available_balance + milestone.amount,
-            total_earned: wallet.total_earned + milestone.amount,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", wallet.id);
-
-        // Update milestone status
-        await supabase
-          .from("milestones")
-          .update({
-            status: "released",
-            released_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", milestone_id);
-
-        // Apply trust event for successful payment
-        await applyTrustEvent(supabase, milestone.offers.sender_id, {
-          event_type: "payment_received",
-          event_source: "deal_runtime",
-          trust_delta: 3,
-          reference_type: "milestone",
-          reference_id: milestone_id,
-          evidence_summary: `Payment of ${milestone.amount} released for milestone`,
-        });
-
-        await logStateTransition(supabase, "milestone", milestone_id, "approved", "released", user_id, "Payment released");
-
-        result = { success: true, milestone_id, status: "released", amount: milestone.amount };
+        result = {
+          success: true,
+          milestone_id,
+          status: "released",
+          ...releaseResult,
+        };
         break;
       }
 
+      // ─── DISPUTE ───────────────────────────────────────────────
       case "dispute": {
         if (!deal_id) throw new Error("deal_id required");
 
@@ -325,14 +350,14 @@ serve(async (req: Request) => {
           throw new Error(`Cannot dispute deal in ${deal.status} state`);
         }
 
-        // Create dispute record
+        // Create dispute record with correct column names
         const { error: disputeError } = await supabase
           .from("disputes")
           .insert({
-            offer_id: deal_id,
             milestone_id: milestone_id || null,
-            raised_by_id: user_id,
-            reason: data?.reason as string,
+            offer_id: deal_id,
+            initiated_by: user_id,
+            reason: (data?.reason as string) || "No reason provided",
             status: "open",
           });
 
@@ -357,18 +382,18 @@ serve(async (req: Request) => {
           evidence_summary: "Raised a dispute",
         });
 
-        await logStateTransition(supabase, "deal", deal_id, deal.status, "disputed", user_id, data?.reason as string || "Dispute raised");
-
+        await logStateTransition(supabase, "deal", deal_id, deal.status, "disputed", user_id, (data?.reason as string) || "Dispute raised");
         result = { success: true, deal_id, status: "disputed" };
         break;
       }
 
+      // ─── RESOLVE DISPUTE ───────────────────────────────────────
       case "resolve_dispute": {
         if (!deal_id) throw new Error("deal_id required");
 
         const { resolution, winner_id } = data as { resolution: string; winner_id?: string };
 
-        // Update dispute
+        // Update dispute using correct column
         const { error: disputeError } = await supabase
           .from("disputes")
           .update({
@@ -403,11 +428,11 @@ serve(async (req: Request) => {
         }
 
         await logStateTransition(supabase, "deal", deal_id, "disputed", "resolved", user_id, resolution);
-
         result = { success: true, deal_id, status: "resolved", resolution };
         break;
       }
 
+      // ─── COMPLETE DEAL ─────────────────────────────────────────
       case "complete_deal": {
         if (!deal_id) throw new Error("deal_id required");
 
@@ -420,9 +445,9 @@ serve(async (req: Request) => {
         if (dealError) throw dealError;
 
         // Check all milestones are released
-        const unreleased = deal.milestones?.filter((m: { status: string }) => m.status !== "released");
+        const unreleased = deal.milestones?.filter((m: { status: string }) => m.status !== "released" && m.status !== "cancelled");
         if (unreleased && unreleased.length > 0) {
-          throw new Error(`${unreleased.length} milestone(s) not yet released`);
+          throw new Error(`${unreleased.length} milestone(s) not yet released or cancelled`);
         }
 
         // Update deal status
@@ -455,11 +480,11 @@ serve(async (req: Request) => {
         });
 
         await logStateTransition(supabase, "deal", deal_id, deal.status, "completed", user_id, "Deal completed successfully");
-
         result = { success: true, deal_id, status: "completed" };
         break;
       }
 
+      // ─── CANCEL DEAL (WITH REFUND) ─────────────────────────────
       case "cancel_deal": {
         if (!deal_id) throw new Error("deal_id required");
 
@@ -475,19 +500,75 @@ serve(async (req: Request) => {
           throw new Error(`Cannot cancel deal in ${deal.status} state`);
         }
 
+        // If deal was active (escrow was locked), refund unreleased funds
+        let refundResult = null;
+        if (deal.status === "active" || deal.status === "disputed") {
+          const { data: refund, error: refundError } = await supabase
+            .rpc("execute_escrow_refund", {
+              p_offer_id: deal_id,
+              p_refund_reason: (data?.reason as string) || "Deal cancelled",
+            });
+
+          if (refundError) throw new Error(`Refund failed: ${refundError.message}`);
+          refundResult = refund;
+        }
+
+        // Update deal status
         await supabase
           .from("offers")
           .update({
             status: "cancelled",
             cancelled_at: new Date().toISOString(),
-            cancellation_reason: data?.reason as string,
+            cancellation_reason: (data?.reason as string) || null,
             updated_at: new Date().toISOString(),
           })
           .eq("id", deal_id);
 
-        await logStateTransition(supabase, "deal", deal_id, deal.status, "cancelled", user_id, data?.reason as string || "Deal cancelled");
+        await logStateTransition(supabase, "deal", deal_id, deal.status, "cancelled", user_id, (data?.reason as string) || "Deal cancelled");
 
-        result = { success: true, deal_id, status: "cancelled" };
+        result = {
+          success: true,
+          deal_id,
+          status: "cancelled",
+          refund: refundResult,
+        };
+        break;
+      }
+
+      // ─── REJECT MILESTONE ──────────────────────────────────────
+      case "reject_milestone": {
+        if (!milestone_id) throw new Error("milestone_id required");
+
+        const { data: milestone, error: msError } = await supabase
+          .from("milestones")
+          .select("*, offers!inner(sender_id, recipient_id)")
+          .eq("id", milestone_id)
+          .single();
+
+        if (msError) throw msError;
+
+        // Only client (recipient) can reject
+        if (user_id !== milestone.offers.recipient_id) {
+          throw new Error("Only the client can reject milestones");
+        }
+
+        const currentState = milestone.status;
+        if (!MILESTONE_STATES[currentState]?.includes("rejected")) {
+          throw new Error(`Cannot reject milestone from ${currentState}`);
+        }
+
+        const { error: updateError } = await supabase
+          .from("milestones")
+          .update({
+            status: "rejected",
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", milestone_id);
+
+        if (updateError) throw updateError;
+
+        await logStateTransition(supabase, "milestone", milestone_id, currentState, "rejected", user_id, (data?.reason as string) || "Milestone rejected");
+        result = { success: true, milestone_id, status: "rejected" };
         break;
       }
 
@@ -499,7 +580,6 @@ serve(async (req: Request) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
-
   } catch (error) {
     console.error("Deal runtime error:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
@@ -510,6 +590,7 @@ serve(async (req: Request) => {
   }
 });
 
+// ─── Helper: Log state transitions ───────────────────────────────
 async function logStateTransition(
   supabase: ReturnType<typeof createClient>,
   entityType: string,
@@ -531,6 +612,7 @@ async function logStateTransition(
     });
 }
 
+// ─── Helper: Apply trust events ──────────────────────────────────
 async function applyTrustEvent(
   supabase: ReturnType<typeof createClient>,
   userId: string,

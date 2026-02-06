@@ -6050,6 +6050,7 @@ export type Database = {
           id: string
           initiated_by: string
           milestone_id: string
+          offer_id: string | null
           reason: string
           resolution: string | null
           resolved_at: string | null
@@ -6066,6 +6067,7 @@ export type Database = {
           id?: string
           initiated_by: string
           milestone_id: string
+          offer_id?: string | null
           reason: string
           resolution?: string | null
           resolved_at?: string | null
@@ -6082,6 +6084,7 @@ export type Database = {
           id?: string
           initiated_by?: string
           milestone_id?: string
+          offer_id?: string | null
           reason?: string
           resolution?: string | null
           resolved_at?: string | null
@@ -6095,6 +6098,13 @@ export type Database = {
             columns: ["milestone_id"]
             isOneToOne: false
             referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disputes_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
             referencedColumns: ["id"]
           },
         ]
@@ -11752,6 +11762,7 @@ export type Database = {
           amount: number
           approval_reminder_sent: boolean | null
           approved_at: string | null
+          approved_by: string | null
           auto_release_at: string | null
           created_at: string
           description: string | null
@@ -11760,8 +11771,11 @@ export type Database = {
           offer_id: string
           order_index: number
           partial_release_amount: number | null
+          platform_fee: number | null
           released_at: string | null
+          started_at: string | null
           status: string
+          submission_notes: string | null
           submitted_at: string | null
           title: string
           updated_at: string
@@ -11770,6 +11784,7 @@ export type Database = {
           amount: number
           approval_reminder_sent?: boolean | null
           approved_at?: string | null
+          approved_by?: string | null
           auto_release_at?: string | null
           created_at?: string
           description?: string | null
@@ -11778,8 +11793,11 @@ export type Database = {
           offer_id: string
           order_index?: number
           partial_release_amount?: number | null
+          platform_fee?: number | null
           released_at?: string | null
+          started_at?: string | null
           status?: string
+          submission_notes?: string | null
           submitted_at?: string | null
           title: string
           updated_at?: string
@@ -11788,6 +11806,7 @@ export type Database = {
           amount?: number
           approval_reminder_sent?: boolean | null
           approved_at?: string | null
+          approved_by?: string | null
           auto_release_at?: string | null
           created_at?: string
           description?: string | null
@@ -11796,8 +11815,11 @@ export type Database = {
           offer_id?: string
           order_index?: number
           partial_release_amount?: number | null
+          platform_fee?: number | null
           released_at?: string | null
+          started_at?: string | null
           status?: string
+          submission_notes?: string | null
           submitted_at?: string | null
           title?: string
           updated_at?: string
@@ -12643,8 +12665,12 @@ export type Database = {
       }
       offers: {
         Row: {
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          completed_at: string | null
           created_at: string
           currency: string
+          deal_terms: string | null
           delivery_days: number | null
           description: string | null
           id: string
@@ -12662,8 +12688,12 @@ export type Database = {
           visibility_penalty: number | null
         }
         Insert: {
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          completed_at?: string | null
           created_at?: string
           currency?: string
+          deal_terms?: string | null
           delivery_days?: number | null
           description?: string | null
           id?: string
@@ -12681,8 +12711,12 @@ export type Database = {
           visibility_penalty?: number | null
         }
         Update: {
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          completed_at?: string | null
           created_at?: string
           currency?: string
+          deal_terms?: string | null
           delivery_days?: number | null
           description?: string | null
           id?: string
@@ -21142,6 +21176,7 @@ export type Database = {
           reference_type: string | null
           status: string
           type: string
+          user_id: string | null
           wallet_id: string
         }
         Insert: {
@@ -21154,6 +21189,7 @@ export type Database = {
           reference_type?: string | null
           status?: string
           type: string
+          user_id?: string | null
           wallet_id: string
         }
         Update: {
@@ -21166,6 +21202,7 @@ export type Database = {
           reference_type?: string | null
           status?: string
           type?: string
+          user_id?: string | null
           wallet_id?: string
         }
         Relationships: [
@@ -21676,6 +21713,18 @@ export type Database = {
       create_academic_record_from_offer: {
         Args: { p_offer_id: string }
         Returns: string
+      }
+      execute_escrow_lock: {
+        Args: { p_buyer_id: string; p_offer_id: string; p_total_amount: number }
+        Returns: Json
+      }
+      execute_escrow_refund: {
+        Args: { p_offer_id: string; p_refund_reason?: string }
+        Returns: Json
+      }
+      execute_milestone_release: {
+        Args: { p_milestone_id: string; p_released_by: string }
+        Returns: Json
       }
       execute_state_transition: {
         Args: {

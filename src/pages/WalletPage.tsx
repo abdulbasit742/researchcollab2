@@ -28,12 +28,14 @@ const transactionTypeConfig: Record<string, {
   color: string;
 }> = {
   escrow_deposit: { label: "Escrow Deposit", icon: Shield, color: "text-amber-500" },
-  milestone_release: { label: "Milestone Release", icon: CheckCircle2, color: "text-emerald-500" },
+  escrow_release: { label: "Escrow Release", icon: Shield, color: "text-amber-500" },
+  milestone_release: { label: "Milestone Payment", icon: CheckCircle2, color: "text-emerald-500" },
   commission_deduction: { label: "Platform Fee", icon: DollarSign, color: "text-muted-foreground" },
   refund: { label: "Refund", icon: ArrowDownLeft, color: "text-blue-500" },
   withdrawal: { label: "Withdrawal", icon: ArrowUpRight, color: "text-primary" },
   tool_purchase: { label: "Tool Purchase", icon: CreditCard, color: "text-violet-500" },
   deposit: { label: "Deposit", icon: ArrowDownLeft, color: "text-emerald-500" },
+  credit: { label: "Credit", icon: ArrowDownLeft, color: "text-emerald-500" },
 };
 
 export default function WalletPage() {

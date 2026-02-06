@@ -266,6 +266,7 @@ export function useAcceptDeal() {
   return useMutation({
     mutationFn: async (data: {
       room_id: string;
+      offer_id: string;
       amount: number;
       deliverables: string[];
       deadline?: string;
@@ -273,6 +274,22 @@ export function useAcceptDeal() {
     }) => {
       if (!user) throw new Error("Not authenticated");
 
+      // Call deal-runtime edge function to atomically lock escrow
+      const { data: runtimeResult, error: runtimeError } = await supabase.functions.invoke(
+        "deal-runtime",
+        {
+          body: {
+            action: "activate_deal",
+            deal_id: data.offer_id,
+            user_id: user.id,
+          },
+        }
+      );
+
+      if (runtimeError) throw new Error(`Escrow lock failed: ${runtimeError.message}`);
+      if (runtimeResult?.error) throw new Error(runtimeResult.error);
+
+      // Update deal room to reflect locked status
       const { error } = await supabase
         .from("deal_rooms")
         .update({
@@ -289,10 +306,20 @@ export function useAcceptDeal() {
         .eq("id", data.room_id);
 
       if (error) throw error;
+
+      return runtimeResult;
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
       queryClient.invalidateQueries({ queryKey: ["dealRooms"] });
-      toast.success("Deal accepted and escrow locked");
+      const escrowInfo = result?.escrow;
+      toast.success(
+        escrowInfo
+          ? `Deal accepted! PKR ${escrowInfo.locked_amount?.toLocaleString()} locked in escrow.`
+          : "Deal accepted and escrow locked"
+      );
+    },
+    onError: (error) => {
+      toast.error(`Failed to accept deal: ${error.message}`);
     },
   });
 }
