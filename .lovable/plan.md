@@ -1,116 +1,217 @@
 
 
-# RCollab -- Next Phase: Remaining Credibility Fixes, Cold Start Solution, and Getting Started Flow
+# Money Safety P0: Atomic Escrow, Fee Deduction, and Refund Engine
 
-## Summary
+## Problem Statement
 
-The previous phase fixed the biggest credibility killers (HeroSection, StatsSection, EarnPage stats, auth/onboarding roles, navigation, profile title, search bar, deal hook). However, several issues from the Survival Report remain unaddressed. This phase closes every remaining gap.
+The `deal-runtime` edge function -- the core money movement engine -- is critically broken. It references **14 columns that don't exist** in the database, creates money from nothing during payment release, never deducts platform fees, and has no refund path when deals are cancelled. Every action in this function will fail silently or corrupt data.
 
----
-
-## Phase 1: Remove Remaining Fake Claims
-
-### 1A. Fix CTASection "Join thousands" Lie
-**File:** `src/components/home/CTASection.tsx` (line 52)
-
-Currently says: "Join thousands of researchers, students, and experts already collaborating and earning on our platform."
-
-**Change:** Replace with: "Start collaborating with researchers, students, and professionals on a platform built for real outcomes."
-
-Honest, aspirational, no false claims.
-
-### 1B. Fix FeaturesSection "80+ countries" Claim
-**File:** `src/components/home/FeaturesSection.tsx` (line 22)
-
-Currently says: "Connect with researchers, students, and experts from 80+ countries based on your interests."
-
-**Change:** Replace with: "Connect with researchers, students, and experts worldwide based on your interests and verified skills."
-
-### 1C. Fix ToolsPage "(1000+ users)" Claim
-**File:** `src/pages/ToolsPage.tsx` (line 252)
-
-Currently shows "(1000+ users)" next to a tool.
-
-**Change:** Remove the user count entirely, or replace with "Available" or "Try it now."
-
-### 1D. Fix AffiliateAssetsPage Social Proof Copy
-**File:** `src/pages/AffiliateAssetsPage.tsx` (line 75)
-
-Currently provides copy template: "Join thousands of researchers..."
-
-**Change:** Replace with: "Discover a platform where researchers earn, collaborate, and build trust. Here's my referral link:"
+This plan fixes the foundation so that every PKR is accounted for at every step.
 
 ---
 
-## Phase 2: Seed the Marketplace (Cold Start Solution)
+## Critical Bugs Found
 
-The database currently has **1 earning project**, **0 offers**, and **0 deals**. Users arrive and see an empty marketplace. This is the single biggest retention killer after the fake stats.
-
-### 2A. Seed 15 Realistic Earning Projects
-**Method:** Database migration inserting 15 starter projects into `earning_projects`.
-
-Projects will span disciplines and budget ranges, using the existing admin user as owner. Each project will have realistic titles, descriptions, tags, budget ranges, and deadline days. Examples:
-
-| Title | Tags | Budget (PKR) |
-|-------|------|-------------|
-| Literature Review: AI in Healthcare | AI, Healthcare, Literature Review | 5,000 - 15,000 |
-| Statistical Analysis for Survey Data | SPSS, Statistics, Data Analysis | 8,000 - 20,000 |
-| Python Script for Web Scraping | Python, Web Scraping, Automation | 3,000 - 10,000 |
-| Research Poster Design | Design, Academic, LaTeX | 2,000 - 8,000 |
-| Thesis Proofreading (Engineering) | Proofreading, Engineering, Academic Writing | 4,000 - 12,000 |
-| ...10 more covering Biology, Business, Environmental Science, etc. | | |
-
-All projects will use a real owner_id from existing profiles.
-
----
-
-## Phase 3: Getting Started Checklist on Dashboard
-
-New users land on the dashboard and see "All caught up!" with no guidance. They need a clear path forward.
-
-### 3A. Create GettingStartedChecklist Component
-**New file:** `src/components/home/GettingStartedChecklist.tsx`
-
-A card that appears on the HomeDashboard for users who haven't completed key actions. Shows progress like:
-
-- Complete your profile (name, university, department)
-- Browse available projects
-- Place your first bid or post a project
-- Send a message to a collaborator
-
-Each item links to the relevant page. The checklist disappears once all items are completed (tracked via profile completeness and activity counts).
-
-### 3B. Add Checklist to HomeDashboard
-**File:** `src/pages/HomeDashboard.tsx`
-
-Insert `GettingStartedChecklist` above the "What Matters Today" section, shown only when the user's profile is incomplete or they have zero activity.
+| Bug | Severity | Detail |
+|-----|----------|--------|
+| `offers.amount` doesn't exist | Fatal | Column is `price` |
+| `offers.deal_terms` doesn't exist | Fatal | No such column |
+| `offers.completed_at` doesn't exist | Fatal | No such column |
+| `offers.cancelled_at` doesn't exist | Fatal | No such column |
+| `offers.cancellation_reason` doesn't exist | Fatal | No such column |
+| `milestones.started_at` doesn't exist | Fatal | No such column |
+| `milestones.submission_notes` doesn't exist | Fatal | No such column |
+| `milestones.approved_by` doesn't exist | Fatal | No such column |
+| `milestones.due_date` doesn't exist | Fatal | Column is `expected_delivery` |
+| `disputes.offer_id` doesn't exist | Fatal | Column is `milestone_id` only |
+| `disputes.raised_by_id` doesn't exist | Fatal | Column is `initiated_by` |
+| `wallet_transactions.user_id` doesn't exist | Fatal | No such column |
+| `release_payment` creates money | Critical | Credits provider without debiting buyer escrow |
+| `release_payment` skips fees | Critical | `get_platform_fee()` never called |
+| `cancel_deal` doesn't refund | Critical | Sets status but leaves money in limbo |
 
 ---
 
-## Phase 4: Fix Onboarding Post-Completion Redirect
+## Solution Architecture
 
-### 4A. Redirect to /home Instead of Role-Specific Dashboards
-**File:** `src/pages/OnboardingPage.tsx` (lines 176-184)
+### Step 1: Database Migration -- Add Missing Columns
 
-Currently redirects to `/dashboard/student`, `/dashboard/researcher`, or `/dashboard/admin` based on role. These are separate dashboard pages that fragment the experience.
+Add the columns the deal lifecycle genuinely needs (rather than changing the edge function to avoid them, since they represent real business data):
 
-**Change:** Redirect all users to `/home` (the DPOL dashboard) after onboarding completion. This is the unified daily loop page that all navigation already points to.
+**`offers` table -- add:**
+- `deal_terms` (text, nullable) -- negotiated terms
+- `completed_at` (timestamptz, nullable)
+- `cancelled_at` (timestamptz, nullable)
+- `cancellation_reason` (text, nullable)
+
+**`milestones` table -- add:**
+- `started_at` (timestamptz, nullable) -- when work began
+- `submission_notes` (text, nullable) -- provider's submission notes
+- `approved_by` (uuid, nullable) -- who approved
+
+**`disputes` table -- add:**
+- `offer_id` (uuid, nullable, FK to offers) -- link dispute to deal
+
+**`wallet_transactions` table -- add:**
+- `user_id` (uuid, nullable) -- for quick lookup without joining through wallet
+
+### Step 2: Create Atomic Database Function -- `execute_milestone_release`
+
+A single SECURITY DEFINER function that handles the entire payment release atomically:
+
+```text
+INPUT: milestone_id, released_by_user_id
+
+1. Lock milestone row (SELECT FOR UPDATE)
+2. Verify status = 'approved'
+3. Get offer (sender_id = provider, recipient_id = buyer)
+4. Calculate platform fee via get_platform_fee(provider_id, amount)
+5. Net amount = milestone.amount - platform_fee
+6. Get buyer's wallet -> debit escrow_balance by milestone.amount
+7. Get provider's wallet -> credit available_balance by net_amount
+8. Get platform wallet -> credit available_balance by platform_fee
+9. Create 3 wallet_transactions:
+   - buyer: type='escrow_release', amount=-milestone.amount
+   - provider: type='milestone_release', amount=+net_amount
+   - platform: type='commission', amount=+platform_fee
+10. Update milestone status to 'released', set released_at
+11. Return success with fee breakdown
+
+FAILURE: Any step fails -> entire transaction rolls back
+```
+
+This ensures money never appears or disappears. Every debit has a matching credit.
+
+### Step 3: Create Atomic Database Function -- `execute_escrow_lock`
+
+Called when a deal moves from "proposed" to "active":
+
+```text
+INPUT: offer_id, buyer_id, total_amount
+
+1. Get buyer's wallet (SELECT FOR UPDATE)
+2. Verify available_balance >= total_amount
+3. Debit buyer available_balance by total_amount
+4. Credit buyer escrow_balance by total_amount
+5. Create wallet_transaction: type='escrow_deposit', amount=-total_amount
+6. Update buyer total_spent
+7. Return success
+
+FAILURE: Insufficient funds -> raise exception, no state change
+```
+
+### Step 4: Create Atomic Database Function -- `execute_escrow_refund`
+
+Called when a deal is cancelled or a dispute is resolved with refund:
+
+```text
+INPUT: offer_id, refund_reason
+
+1. Get all unreleased milestones for offer
+2. Calculate total refund = sum of unreleased milestone amounts
+3. Get buyer's wallet (SELECT FOR UPDATE)
+4. Debit buyer escrow_balance by refund amount
+5. Credit buyer available_balance by refund amount
+6. Create wallet_transaction: type='refund', amount=+refund_amount
+7. Update all unreleased milestones to 'cancelled'
+8. Return success with refund amount
+
+FAILURE: Rolls back entirely
+```
+
+### Step 5: Rewrite `deal-runtime` Edge Function
+
+Fix every action to use correct column names and call the new atomic functions:
+
+**`create_deal`:**
+- Use `price` instead of `amount`
+- Use existing columns only
+- Create milestones with `expected_delivery` instead of `due_date`
+
+**`advance_milestone`:**
+- Write to `updated_at` only (no `started_at` until migration adds it)
+- After migration: also set `started_at`
+
+**`submit_milestone`:**
+- Remove `submission_notes` reference until migration adds it
+- After migration: include it
+
+**`approve_milestone`:**
+- Remove `approved_by` reference until migration adds it  
+- After migration: include it
+
+**`release_payment` (CRITICAL REWRITE):**
+- Call `execute_milestone_release()` database function instead of manual wallet updates
+- Return fee breakdown to caller
+
+**`dispute`:**
+- Insert into `disputes` using `milestone_id` and `initiated_by` (correct columns)
+- Add `offer_id` after migration
+
+**`cancel_deal`:**
+- Call `execute_escrow_refund()` to return unreleased funds to buyer
+- Then update deal status
+
+**`complete_deal`:**
+- Verify all milestones released (no change needed, already correct)
+
+### Step 6: Create Platform Wallet
+
+Insert a system/platform wallet row for collecting fees. This wallet accumulates commission from every milestone release.
+
+### Step 7: Update `useAcceptDeal` Hook
+
+When a buyer clicks "Accept & Lock Escrow" in the Deal Detail Page, the hook should call the `deal-runtime` edge function with a new `activate_deal` action (or modify `create_deal`) that triggers `execute_escrow_lock`. Currently it just updates `deal_rooms.escrow_status` to "locked" without actually moving any wallet funds.
+
+### Step 8: Add Balance Verification to Wallet Page
+
+Update `WalletPage.tsx` to show fee breakdowns on completed transactions. The `wallet_transactions` table will now contain `commission_deduction` type entries that the existing `transactionTypeConfig` already handles.
 
 ---
 
-## Technical Summary
+## Money Flow After Fix
 
-| Change | File | Impact |
-|--------|------|--------|
-| Fix "Join thousands" | `CTASection.tsx` | Removes fake claim |
-| Fix "80+ countries" | `FeaturesSection.tsx` | Removes fake claim |
-| Fix "(1000+ users)" | `ToolsPage.tsx` | Removes fake claim |
-| Fix affiliate copy | `AffiliateAssetsPage.tsx` | Removes fake template |
-| Seed 15 projects | DB migration | Solves empty marketplace |
-| Getting Started checklist | New component + `HomeDashboard.tsx` | Guides new users |
-| Fix onboarding redirect | `OnboardingPage.tsx` | Unified experience |
+```text
+DEAL ACCEPTED:
+  Buyer wallet: available -10,000 | escrow +10,000
+  Net effect: 0 (money moved, not created/destroyed)
 
-**Total files modified:** 6 existing + 1 new component + 1 migration
+MILESTONE RELEASED (amount: 5,000, fee: 500 at 10%):
+  Buyer wallet: escrow -5,000
+  Provider wallet: available +4,500
+  Platform wallet: available +500
+  Net effect: 0 (5,000 out of escrow = 4,500 to provider + 500 to platform)
 
-This phase completes every item from the Survival Report. After this, the platform has zero fake claims, a populated marketplace, and a clear path for new users from signup through their first action.
+DEAL CANCELLED (remaining escrow: 5,000):
+  Buyer wallet: escrow -5,000 | available +5,000
+  Net effect: 0 (money returned)
+```
+
+Every transaction sums to zero. Money is never created or destroyed.
+
+---
+
+## Files Changed
+
+| File | Change |
+|------|--------|
+| Migration SQL | Add missing columns to offers, milestones, disputes, wallet_transactions |
+| Migration SQL | Create `execute_milestone_release()` function |
+| Migration SQL | Create `execute_escrow_lock()` function |
+| Migration SQL | Create `execute_escrow_refund()` function |
+| Migration SQL | Insert platform wallet row |
+| `supabase/functions/deal-runtime/index.ts` | Full rewrite with correct schema + atomic function calls |
+| `src/hooks/useDealRoom.ts` | Update `useAcceptDeal` to call deal-runtime for escrow lock |
+| `src/pages/WalletPage.tsx` | Add fee breakdown display for commission transactions |
+
+---
+
+## What This Does NOT Do (Deferred)
+
+- Stripe integration (Phase 2 -- requires enabling Stripe connector)
+- Webhook idempotency (not needed until Stripe is live)
+- Subscription billing (separate system)
+- Institutional funding flows (separate system)
+
+This plan focuses exclusively on making the internal money movement bulletproof so that when Stripe is added later, it connects to a system that already works correctly.
 
