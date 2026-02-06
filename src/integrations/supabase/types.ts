@@ -12528,6 +12528,7 @@ export type Database = {
           offer_type: string
           price: number
           recipient_id: string
+          required_skills: string[] | null
           sender_id: string
           status: string
           thread_id: string
@@ -12542,6 +12543,7 @@ export type Database = {
           offer_type: string
           price: number
           recipient_id: string
+          required_skills?: string[] | null
           sender_id: string
           status?: string
           thread_id: string
@@ -12556,6 +12558,7 @@ export type Database = {
           offer_type?: string
           price?: number
           recipient_id?: string
+          required_skills?: string[] | null
           sender_id?: string
           status?: string
           thread_id?: string
@@ -14962,6 +14965,7 @@ export type Database = {
           onboarding_completed: boolean | null
           research_level: string | null
           role: string | null
+          skills: string[] | null
           university: string | null
           updated_at: string
         }
@@ -14981,6 +14985,7 @@ export type Database = {
           onboarding_completed?: boolean | null
           research_level?: string | null
           role?: string | null
+          skills?: string[] | null
           university?: string | null
           updated_at?: string
         }
@@ -15000,6 +15005,7 @@ export type Database = {
           onboarding_completed?: boolean | null
           research_level?: string | null
           role?: string | null
+          skills?: string[] | null
           university?: string | null
           updated_at?: string
         }

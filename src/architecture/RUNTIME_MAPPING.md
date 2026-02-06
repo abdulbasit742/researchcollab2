@@ -210,17 +210,36 @@ archived  rejected
 
 ## Edge Functions Summary
 
-| Function | Purpose | Auth Required |
-|----------|---------|---------------|
-| `compute-trust` | Trust score computation, events, decay, freeze | No (service key) |
-| `deal-runtime` | Deal lifecycle management | No (service key) |
-| `market-balancer` | Supply/demand metrics | No |
-| `ambient-analyzer` | Context analysis | No |
-| `transcribe-voice-note` | Audio transcription | No |
-| `notify-new-bid` | Notification dispatch | No |
-| `career-copilot` | Career guidance | No |
-| `ai-platform-intelligence` | AI recommendations | No |
-| `generate-audio-briefing` | Audio content generation | No |
+| Function | Purpose | Auth Required | Status |
+|----------|---------|---------------|--------|
+| `compute-trust` | Trust score computation, events, decay, freeze | No (service key) | ✅ Verified |
+| `deal-runtime` | Deal lifecycle management | No (service key) | ✅ Verified |
+| `market-balancer` | Supply/demand metrics | No | ✅ Verified |
+| `ambient-analyzer` | Context analysis | No | ✅ Verified |
+| `transcribe-voice-note` | Audio transcription | No | ✅ Verified |
+| `notify-new-bid` | Notification dispatch | No | ✅ Verified |
+| `career-copilot` | Career guidance | No | ✅ Verified |
+| `ai-platform-intelligence` | AI recommendations | No | ✅ Verified |
+| `generate-audio-briefing` | Audio content generation | Yes (JWT) | ✅ Verified |
+
+---
+
+## Runtime Data Contracts
+
+All edge functions now have:
+
+1. **Precondition Guards** - Validate inputs and dependencies
+2. **Structured Errors** - Return error_code, missing, action fields
+3. **Schema Contracts** - Documented in `/supabase/contracts/edge_schema_contracts.md`
+4. **Seed Data** - Available in `/supabase/seed/runtime_seed.sql`
+5. **Smoke Tests** - Available in `/supabase/tests/edge_smoke_test.ts`
+
+### Required Schema Columns (Verified)
+
+| Table | Column | Used By |
+|-------|--------|---------|
+| `offers` | `required_skills` | `market-balancer`, `ambient-analyzer` |
+| `profiles` | `skills` | `market-balancer`, `ambient-analyzer` |
 
 ---
 
@@ -237,4 +256,4 @@ They will be implemented when needed for institutional clients.
 
 ---
 
-**"RCollab's architecture is now enforced by code, not intention."**
+**"Every Edge Function now fails only when it should — never accidentally."**
