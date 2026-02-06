@@ -1,16 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { useDealRoom, useAcceptDeal, useSubmitProposal } from "@/hooks/useDealRoom";
+import { useDealRoom, useAcceptDeal, useSubmitProposal, DealMilestone } from "@/hooks/useDealRoom";
 import { useMyTrustProfile } from "@/hooks/useMyTrustProfile";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,15 +26,11 @@ import {
   Clock,
   DollarSign,
   CheckCircle,
-  AlertTriangle,
   FileText,
   MessageSquare,
   Target,
-  TrendingUp,
   Lock,
-  Unlock,
   Plus,
-  Send,
 } from "lucide-react";
 import { formatPKR } from "@/lib/currency";
 import { DealMilestoneTracker } from "@/components/deals/DealMilestoneTracker";
@@ -96,11 +90,19 @@ export default function DealDetailPage() {
     );
   }
 
-  const isInitiator = user?.id === deal.initiator_id;
-  const isCounterparty = user?.id === deal.counterparty_id;
+  // Use deal_rooms schema: buyer_id, seller_id
+  const isBuyer = user?.id === deal.buyer_id;
+  const otherPartyId = isBuyer ? deal.seller_id : deal.buyer_id;
   const isInProgress = deal.status === "in_progress";
   const isNegotiating = deal.status === "negotiating";
   const isCompleted = deal.status === "completed";
+
+  // Extract data from terms JSON
+  const terms = deal.terms as Record<string, any> | null;
+  const deliverables: string[] = terms?.deliverables || [];
+  const agreedDeadline: string | null = terms?.deadline || null;
+  const escrowLocked = deal.escrow_amount || 0;
+  const escrowReleased = deal.escrow_status === "released" ? (deal.escrow_amount || 0) : 0;
 
   const handleAcceptDeal = async () => {
     if (!deal) return;
@@ -108,9 +110,9 @@ export default function DealDetailPage() {
     await acceptDeal.mutateAsync({
       room_id: deal.id,
       amount: deal.agreed_amount || 0,
-      deliverables: deal.deliverables,
-      deadline: deal.agreed_deadline || undefined,
-      counterparty_id: isInitiator ? deal.counterparty_id : deal.initiator_id,
+      deliverables,
+      deadline: agreedDeadline || undefined,
+      counterparty_id: otherPartyId,
     });
   };
 
@@ -150,7 +152,7 @@ export default function DealDetailPage() {
                     <div>
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
                         <DealStatusBadge status={deal.status} />
-                        {deal.escrow_locked > 0 && (
+                        {escrowLocked > 0 && (
                           <Badge variant="outline" className="gap-1 border-amber-500/50 text-amber-600">
                             <Lock className="h-3 w-3" />
                             Escrow Protected
@@ -159,7 +161,7 @@ export default function DealDetailPage() {
                       </div>
                       <CardTitle className="text-2xl">{deal.title}</CardTitle>
                       <CardDescription className="mt-2">
-                        Deal Room with {isInitiator ? deal.counterparty_name : deal.initiator_name}
+                        Deal Room
                       </CardDescription>
                     </div>
                   </div>
@@ -176,28 +178,28 @@ export default function DealDetailPage() {
                     <div className="p-4 rounded-lg bg-muted/50 text-center">
                       <Clock className="h-5 w-5 mx-auto text-primary mb-1" />
                       <p className="font-semibold">
-                        {deal.agreed_deadline 
-                          ? new Date(deal.agreed_deadline).toLocaleDateString() 
+                        {agreedDeadline 
+                          ? new Date(agreedDeadline).toLocaleDateString() 
                           : "TBD"}
                       </p>
                       <p className="text-xs text-muted-foreground">Deadline</p>
                     </div>
                     <div className="p-4 rounded-lg bg-muted/50 text-center">
                       <Target className="h-5 w-5 mx-auto text-primary mb-1" />
-                      <p className="font-semibold">{deal.deliverables.length}</p>
+                      <p className="font-semibold">{deliverables.length}</p>
                       <p className="text-xs text-muted-foreground">Deliverables</p>
                     </div>
                   </div>
 
                   {/* Deliverables */}
-                  {deal.deliverables.length > 0 && (
+                  {deliverables.length > 0 && (
                     <div>
                       <h4 className="font-medium mb-2 flex items-center gap-2">
                         <FileText className="h-4 w-4" />
                         Agreed Deliverables
                       </h4>
                       <ul className="space-y-1">
-                        {deal.deliverables.map((d, i) => (
+                        {deliverables.map((d, i) => (
                           <li key={i} className="flex items-start gap-2 text-sm">
                             <CheckCircle className="h-4 w-4 text-muted-foreground mt-0.5" />
                             <span>{d}</span>
@@ -280,21 +282,21 @@ export default function DealDetailPage() {
             {/* Milestones */}
             <DealMilestoneTracker 
               dealId={deal.id}
-              milestones={deal.milestones}
+              milestones={(deal.milestones as unknown as DealMilestone[]) || []}
               isInProgress={isInProgress}
-              userRole={isInitiator ? "initiator" : "executor"}
+              userRole={isBuyer ? "initiator" : "executor"}
             />
 
             {/* Decision Log */}
-            <DealDecisionLog decisions={deal.decision_log} />
+            <DealDecisionLog decisions={[]} />
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Escrow Status */}
             <EscrowStatusCard
-              lockedAmount={deal.escrow_locked}
-              releasedAmount={deal.escrow_released}
+              lockedAmount={escrowLocked}
+              releasedAmount={escrowReleased}
               totalAmount={deal.agreed_amount || 0}
               status={deal.status}
             />

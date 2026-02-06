@@ -22,10 +22,9 @@ import { CelebrationOverlay } from "@/components/celebrations";
 import { useCelebration, CELEBRATION_PRESETS } from "@/hooks/useCelebration";
 
 const roles = [
-  { value: "student", label: "Student", description: "Earn by helping with projects" },
-  { value: "researcher", label: "Researcher", description: "Collaborate on research" },
-  { value: "tool-buyer", label: "Tool Buyer", description: "Access AI tools" },
-  { value: "project-owner", label: "Project Owner", description: "Post projects & hire" },
+  { value: "student", label: "Student", description: "Learn, collaborate, and earn" },
+  { value: "researcher", label: "Researcher", description: "Lead projects and mentor" },
+  { value: "professional", label: "Professional", description: "Post projects, hire talent, access tools" },
 ];
 
 export default function AuthPage() {

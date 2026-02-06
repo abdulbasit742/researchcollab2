@@ -104,7 +104,7 @@ export default function ProfilePage() {
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold">Consequence Ledger</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Professional Profile</h1>
             <Button variant="outline" size="sm" asChild>
               <Link to="/profile/settings">
                 <Settings className="h-4 w-4 mr-2" />
