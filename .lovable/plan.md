@@ -1,506 +1,114 @@
 
+# RCollab -- Critical Fixes & Best Features Implementation
 
-# Systems 21-28: Autonomous Professional Ecosystem Implementation Plan
+## What This Plan Does
 
-## Executive Summary
-
-This plan implements closed-loop autonomous systems that compound value over time without constant feature addition. The goal is to make RCollab "alive but not intrusive" - a platform that improves itself as usage increases, guides without nagging, and corrects misuse without drama.
-
----
-
-## Current State Assessment
-
-| System | Current Status | Gap |
-|--------|---------------|-----|
-| Autonomous Value Loops (21) | useAmbientIntelligence exists with nudges | No closed-loop action-outcome-signal chain |
-| Context-Aware Notifications (22) | useNotifications has basic types | Not context-aware, can repeat alerts |
-| Silent Quality Control (23) | useSafetyQuality has quality scoring | Not applied silently to ranking |
-| Supply-Demand Balancer (24) | useOpportunityEngine basic matching | No market equilibrium logic |
-| Long-Term User Memory (25) | useLongTermMemory exists | Not driving recommendations |
-| Institutional Feedback (26) | useInstitutionalDashboard exists | No feedback loops to opportunity quality |
-| Power & Risk Dampening (27) | usePermissions exists | No power scaling with trust |
-| Self-Explaining Changes (28) | None | No change explanations |
+Based on the survival report and codebase audit, this plan fixes the top issues that would cause users to leave the platform, and adds the features that make RCollab genuinely usable. These are the highest-impact changes ranked by user retention impact.
 
 ---
 
-## Implementation Architecture
+## Priority 1: Remove All Fake Data (Credibility Killers)
 
-### System 21: Autonomous Value Loops (AVL)
+### 1A. Replace Fake Stats on Earn Hub with Real Database Counts
+**File:** `src/pages/EarnPage.tsx` (lines 76-81)
 
-Create closed-loop engines that operate without admin intervention.
+Currently shows hardcoded lies: "250+ Active Projects", "PKR 35M+ Paid", "500+ Active Earners". The database has 1 project, 0 transactions, 8 profiles.
 
-**New Files:**
-- `src/hooks/useAutonomousValueLoops.ts`
-- `src/components/system/LoopStatusIndicator.tsx`
+**Change:** Replace the static `earningStats` array with a hook that fetches real counts from `earning_projects`, `profiles`, and `wallet_transactions`. When counts are low (under 10), show honest labels like "Growing" or "New Platform" instead of inflated numbers.
 
-**Hook Design:**
-```text
-useAutonomousValueLoops():
-  Loops:
-  1. DEAL_EXCELLENCE_LOOP
-     Action: User completes deal successfully
-     Signal: Trust score increases
-     Adjustment: Better opportunities become visible
-     Feedback: Higher-quality matches lead to better deals
-     
-  2. SKILL_GROWTH_LOOP
-     Action: Learning/certification completed
-     Signal: Skill validated
-     Adjustment: Matching engine weights skill higher
-     Feedback: More skill-relevant opportunities
-     
-  3. CORRECTION_LOOP
-     Action: Poor behavior detected (late delivery, dispute)
-     Signal: Trust penalty applied
-     Adjustment: Reduced visibility, corrective guidance shown
-     Feedback: Recovery path offered, not punishment
-     
-  4. RELATIONSHIP_VALUE_LOOP
-     Action: Successful collaboration
-     Signal: Relationship strength increases
-     Adjustment: Warm intro probability increases
-     Feedback: Network effects compound
-```
+### 1B. Remove Fake Top Earners Section
+**File:** `src/pages/EarnPage.tsx` (lines 37-74, 342-386)
 
-**Implementation Details:**
-- Subscribe to useExtensibilitySystem events
-- React to deal.completed, milestone.approved, deal.disputed
-- Automatically trigger trust recalculation
-- Push updated matching scores without user action
-- Store loop execution logs for debugging (not visible to users)
+Hardcoded fake users with pravatar.cc avatars. Clicking them leads nowhere.
+
+**Change:** Replace the "Top Earners" tab with a "How It Works" explainer that describes the earning flow in 3 steps: Browse Projects, Place Bids, Complete Work & Get Paid. This builds understanding instead of false trust.
+
+### 1C. Remove "Trusted by 1000+ researchers" from Landing Page
+**File:** `src/components/home/HeroSection.tsx` (line 107)
+
+**Change:** Replace with "Built for researchers, by researchers" -- honest and aspirational without making false claims.
+
+### 1D. Replace Fake Stats Section on Landing Page
+**File:** `src/components/home/StatsSection.tsx` (lines 6-35)
+
+Shows "50+ Universities", "80+ Countries", "1000+ Members" -- all fabricated.
+
+**Change:** Replace with capability-focused messaging instead of vanity metrics. Show what the platform does ("AI-Powered Tools", "Secure Escrow", "Trust-Based Matching", "Global Access") rather than numbers that can be verified and found false.
 
 ---
 
-### System 22: Context-Aware Notification Engine
+## Priority 2: Fix Broken User Paths
 
-Replace generic notifications with intelligent, non-repeating alerts.
+### 2A. Align Auth Roles with Onboarding Roles
+**File:** `src/pages/AuthPage.tsx` (lines 24-29) and `src/pages/OnboardingPage.tsx` (lines 46-49)
 
-**Files to Modify:**
-- `src/hooks/useNotifications.ts` - Major enhancement
+Auth page offers 4 roles (Student, Researcher, Tool Buyer, Project Owner) but onboarding only supports 2 (Student, Researcher). Users who pick "Tool Buyer" or "Project Owner" hit a dead-end.
 
-**New Files:**
-- `src/hooks/useContextAwareNotifications.ts`
-- `src/types/notification-context.ts`
+**Change:** Consolidate to 3 roles that map to real platform capabilities:
+- **Student** -- "Learn, collaborate, and earn"
+- **Researcher** -- "Lead projects and mentor"  
+- **Professional** -- "Post projects, hire talent, access tools"
 
-**Rules Engine:**
-```text
-1. No notification without clear action
-   - Every notification must have actionUrl or explicit next step
-   
-2. No repeated alerts without context change
-   - Hash notification type + entity ID + key context
-   - Block repeat within 24h unless context changes
-   - Context change examples: price changed, deadline moved, new applicant
-   
-3. Silent success acknowledgment
-   - Success states should NOT produce notifications
-   - Exception: milestone-level achievements
-   
-4. Urgency-based batching
-   - Urgent (deal risk, deadline <24h): Immediate
-   - High (opportunity match >90%): Within 1 hour
-   - Medium: Daily digest
-   - Low: Weekly summary
-```
+Update both AuthPage and OnboardingPage to support all 3 roles with appropriate onboarding paths.
 
-**Context Tracking:**
-```text
-NotificationContext {
-  entityId: string
-  entityType: string
-  contextHash: string (computed from key fields)
-  lastNotifiedAt: Date
-  notificationCount: number
-  contextVersion: number
-}
-```
+### 2B. Unify Home Navigation
+**Files:** `src/components/layout/Navbar.tsx` (line 26) and `src/components/layout/MobileBottomNav.tsx` (line 22)
+
+Desktop Navbar "Home" links to `/feed`. Mobile bottom nav "Home" links to `/home`. Users see different pages depending on device.
+
+**Change:** Make both point to `/home` (the Daily Professional Operating Loop dashboard), since that is the core daily experience. The feed can be accessible from within the dashboard or via a separate nav item.
+
+### 2C. Rename "Consequence Ledger" to "Professional Profile"
+**File:** `src/pages/ProfilePage.tsx` (line 107)
+
+The title "Consequence Ledger" scares new users. They think it is a penalty page.
+
+**Change:** Rename the heading to "Professional Profile" while keeping the philosophy banner about successes and failures visible. The concept is excellent -- only the name needs to change.
 
 ---
 
-### System 23: Silent Quality Control (SQC)
+## Priority 3: Expand Onboarding Coverage
 
-Invisible quality scoring that affects ranking without showing raw scores.
+### 3A. Add More Departments + "Other" Option
+**File:** `src/pages/OnboardingPage.tsx` (lines 30-37)
 
-**New Files:**
-- `src/hooks/useSilentQualityControl.ts`
-- Database function: `calculate_content_quality_score`
-- Database function: `calculate_user_quality_score`
+Only 6 engineering-focused departments exist. Users in Biology, Chemistry, Mathematics, Business, Medicine, Social Sciences, etc. have no option.
 
-**Quality Signals:**
-```text
-Content Quality (per post/update):
-  - Has linked entity (project, deal, outcome): +30
-  - Structured update type: +20
-  - Appropriate length (50-500 chars): +15
-  - Author trust score factor: +0-35
-  
-User Quality (aggregated):
-  - Completion rate: 0-100
-  - Dispute rate: 0 to -50
-  - Response time score: 0-30
-  - Consistency score: 0-20
-  
-Deal Quality:
-  - Communication frequency: 0-25
-  - Milestone velocity: 0-25
-  - Sentiment trend: 0-25
-  - Payment promptness: 0-25
-```
-
-**Actions (All Silent):**
-```text
-Low quality content (score <40):
-  - Reduce visibility in feeds
-  - Do NOT appear in "featured" sections
-  - Do NOT notify target users
-  
-Abusive patterns detected:
-  - Reduce rate limits (fewer posts/messages allowed)
-  - Extend cooling-off periods
-  - Block from recommendations
-  
-High quality users (score >80):
-  - Increase visibility in matching
-  - Priority in opportunity queues
-  - Unlock trust multipliers
-```
-
-**Never Exposed:**
-- Raw quality scores
-- Quality tier labels
-- "You're being throttled" messages
+**Change:** Expand to 15+ departments covering major academic disciplines, plus an "Other" option with a free-text field. New departments to add: Biology, Chemistry, Mathematics, Business Administration, Medicine, Social Sciences, Environmental Science, Architecture, Agriculture, Law, Arts & Humanities.
 
 ---
 
-### System 24: Opportunity Supply-Demand Balancer
+## Priority 4: Wire the Hero Search Bar
+**File:** `src/components/home/HeroSection.tsx` (lines 154-202)
 
-Continuous market monitoring to prevent overcrowded opportunities.
+Beautiful search UI but no `onSubmit` handler. Users search, nothing happens.
 
-**New Files:**
-- `src/hooks/useMarketBalancer.ts`
-- Backend edge function: `supabase/functions/market-balancer/index.ts`
-
-**Monitoring Metrics:**
-```text
-Supply Side:
-  - Open opportunities count
-  - Avg time-to-fill
-  - Opportunities per category
-  
-Demand Side:
-  - Active seekers count
-  - Readiness scores distribution
-  - Skills availability
-  
-Balance Indicators:
-  - Fill rate (applications / openings)
-  - Quality match rate
-  - Time-to-first-application
-```
-
-**Automatic Adjustments:**
-```text
-Oversaturated market (too many seekers):
-  - Increase matching threshold
-  - Reduce notification frequency
-  - Show "high competition" indicators
-  
-Undersaturated market (too few seekers):
-  - Expand matching criteria
-  - Increase opportunity visibility
-  - Proactive outreach to dormant users
-  
-Skill gaps detected:
-  - Surface learning recommendations
-  - Adjust AI guidance
-```
+**Change:** Add form submission that navigates to `/search?q={keyword}&discipline={discipline}&location={location}` so the search bar actually works.
 
 ---
 
-### System 25: Long-Term User Memory Engine
+## Priority 5: Fix Deals Page Data Connection
+**Files:** `src/components/deals/DealRoomList.tsx`, `src/hooks/useDealRoom.ts`
 
-Use accumulated history to personalize and reduce repeated mistakes.
+The Deals page renders `DealRoomList` which queries `deal_rooms` table. The table exists but the hook uses a column mapping that does not match the actual schema (e.g., `initiator_id` vs `buyer_id`, `counterparty_id` vs `seller_id`).
 
-**Files to Enhance:**
-- `src/hooks/useLongTermMemory.ts` - Add recommendation integration
-
-**New Files:**
-- `src/hooks/usePersonalMemory.ts`
-
-**Memory Categories:**
-```text
-Success Patterns:
-  - Project types completed successfully
-  - Collaboration styles that worked
-  - Skill applications that led to outcomes
-  
-Failure Patterns:
-  - Project types that led to disputes
-  - Timeline patterns that caused delays
-  - Collaboration mismatches
-  
-Preference Learning:
-  - Preferred project sizes
-  - Communication frequency preferences
-  - Risk tolerance indicators
-```
-
-**Memory Usage:**
-```text
-Opportunity Matching:
-  - Boost opportunities matching success patterns
-  - Warn (gently) on opportunities matching failure patterns
-  
-AI Advice:
-  - Reference past successes in recommendations
-  - "Last time you did X, it worked because..."
-  
-Recovery Paths:
-  - Personalized based on what caused past recovery
-  - "You recovered from a similar situation by..."
-```
-
-**Privacy & Control:**
-```text
-- All memory private to user
-- User can view memory ("What do you know about me?")
-- User can reset memory (with confirmation)
-- Memory never shared externally
-- Explainable: "I'm suggesting this because..."
-```
+**Change:** Align the `useDealRooms` hook query with the actual `deal_rooms` table schema (using `buyer_id`, `seller_id`, `escrow_amount` instead of `initiator_id`, `counterparty_id`, `escrow_locked`). This will make the Deals page display real data when deals are created.
 
 ---
 
-### System 26: Institutional Feedback Loops
+## Technical Summary
 
-Enable institutions to see and respond to outcome quality trends.
+| Change | Files Modified | Impact |
+|--------|---------------|--------|
+| Real Earn stats from DB | `EarnPage.tsx` | Prevents instant credibility loss |
+| Remove fake earners | `EarnPage.tsx` | Removes lies, adds clarity |
+| Fix hero claim | `HeroSection.tsx` | Honest first impression |
+| Fix landing stats | `StatsSection.tsx` | Capability-focused, not vanity |
+| Align auth/onboarding roles | `AuthPage.tsx`, `OnboardingPage.tsx` | Eliminates dead-end signup paths |
+| Unify home navigation | `Navbar.tsx`, `MobileBottomNav.tsx` | Consistent experience across devices |
+| Rename profile page | `ProfilePage.tsx` | Removes intimidation for new users |
+| Expand departments | `OnboardingPage.tsx` | Includes all academic disciplines |
+| Wire search bar | `HeroSection.tsx` | Makes search functional |
+| Fix deals hook | `useDealRoom.ts` | Connects deals UI to real data |
 
-**Files to Enhance:**
-- `src/hooks/useInstitutionalDashboard.ts`
-
-**New Files:**
-- `src/hooks/useInstitutionalFeedback.ts`
-- `src/components/institution/OutcomeQualityTrend.tsx`
-- `src/components/institution/OnboardingStandardsCard.tsx`
-
-**Feedback Metrics:**
-```text
-Outcome Quality Trends:
-  - Success rate over time
-  - Average trust impact per outcome
-  - Dispute rate changes
-  
-Member Performance:
-  - Aggregate (not individual) completion rates
-  - Average time-to-delivery
-  - Collaboration diversity
-  
-Opportunity Health:
-  - Fill rates for posted opportunities
-  - Applicant quality scores
-  - Time-to-first-qualified-applicant
-```
-
-**Actionable Adjustments:**
-```text
-Institutions can:
-  - Set minimum trust thresholds for posting
-  - Require outcome verification for visibility
-  - Adjust onboarding requirements based on trends
-  - View anonymized comparison with similar institutions
-```
-
----
-
-### System 27: Power & Risk Dampening
-
-Scale transparency and oversight with user power.
-
-**New Files:**
-- `src/hooks/usePowerDampening.ts`
-- `src/components/governance/PowerTransparencyBadge.tsx`
-
-**Power Indicators:**
-```text
-Power factors:
-  - Trust score
-  - Network centrality (connections, warm intros)
-  - Deal volume
-  - Platform tenure
-  - Institutional roles
-```
-
-**Scaling Rules:**
-```text
-Power level: Low (score <40)
-  - Standard transparency
-  - Standard rate limits
-  - No special oversight
-  
-Power level: Medium (score 40-75)
-  - Actions logged with review possibility
-  - Some decisions require confirmation
-  - Visible activity to moderate connections
-  
-Power level: High (score >75)
-  - All significant actions logged
-  - Increased audit frequency
-  - Reduced unilateral control (e.g., can't single-handedly resolve disputes)
-  - Must explain high-impact decisions
-```
-
-**Prevents:**
-- Trust monopolies (cap on trust benefits)
-- Network abuse (rate limits on introductions)
-- Platform capture (no single user can dominate categories)
-
----
-
-### System 28: Self-Explaining Changes
-
-Every system change logged and explainable.
-
-**New Files:**
-- `src/hooks/useChangeExplainer.ts`
-- `src/components/ui/ChangeNotice.tsx`
-- `src/components/ui/SystemChangeLog.tsx`
-- Database table: `system_changes` (for tracking)
-
-**Change Categories:**
-```text
-1. Trust Changes
-   - "Your trust score changed from X to Y"
-   - "Reason: Completed project on-time"
-   - "This affects: Opportunity visibility, matching priority"
-   
-2. Visibility Changes
-   - "Your profile visibility was adjusted"
-   - "Reason: Inactivity for 30+ days"
-   - "How to restore: Complete any activity"
-   
-3. Access Changes
-   - "Feature X is now available"
-   - "Reason: Reached 50% trust threshold"
-   
-4. Market Changes
-   - "Fewer opportunities in your category this week"
-   - "Reason: Market saturation in [domain]"
-   - "Suggestion: Consider adjacent skills"
-```
-
-**Implementation:**
-```text
-ChangeExplainer:
-  - type: string
-  - previousValue: unknown
-  - newValue: unknown
-  - reason: string
-  - impact: string[]
-  - timestamp: Date
-  - acknowledged: boolean
-  
-User can:
-  - View all recent changes
-  - Acknowledge change (dismisses but keeps in log)
-  - Request more detail (links to relevant help)
-```
-
----
-
-## New Files Summary
-
-| File | Purpose |
-|------|---------|
-| `src/hooks/useAutonomousValueLoops.ts` | Closed-loop action-outcome-signal chains |
-| `src/hooks/useContextAwareNotifications.ts` | Smart, non-repeating notification engine |
-| `src/hooks/useSilentQualityControl.ts` | Invisible quality scoring and ranking |
-| `src/hooks/useMarketBalancer.ts` | Supply-demand equilibrium monitoring |
-| `src/hooks/usePersonalMemory.ts` | Memory-driven personalization |
-| `src/hooks/useInstitutionalFeedback.ts` | Outcome quality trends for institutions |
-| `src/hooks/usePowerDampening.ts` | Power scaling with trust |
-| `src/hooks/useChangeExplainer.ts` | Self-documenting system changes |
-| `src/types/notification-context.ts` | Notification context types |
-| `src/components/system/LoopStatusIndicator.tsx` | Debug component for loop status |
-| `src/components/ui/ChangeNotice.tsx` | Change explanation UI |
-| `src/components/ui/SystemChangeLog.tsx` | User-facing change history |
-| `src/components/institution/OutcomeQualityTrend.tsx` | Institution trend visualization |
-| `src/components/governance/PowerTransparencyBadge.tsx` | Power level indicator |
-| `supabase/functions/market-balancer/index.ts` | Backend market analysis |
-
----
-
-## Files to Modify
-
-| File | Changes |
-|------|---------|
-| `src/hooks/useNotifications.ts` | Integrate context-aware logic |
-| `src/hooks/useLongTermMemory.ts` | Add recommendation integration |
-| `src/hooks/useInstitutionalDashboard.ts` | Add feedback loop metrics |
-| `src/hooks/useExtensibilitySystem.ts` | Register loop event handlers |
-| `src/hooks/useSafetyQuality.ts` | Connect to silent quality control |
-
----
-
-## Safeguards Against Over-Correction
-
-```text
-1. Rate Limiting on Adjustments
-   - No more than 1 trust adjustment per action
-   - No more than 3 visibility changes per week
-   - Cooling-off period after corrections
-   
-2. Stabilization Periods
-   - After dispute: 14-day stabilization (no further decay)
-   - After recovery action: 7-day observation
-   
-3. Human Escalation Triggers
-   - 3+ corrections in 30 days -> flag for review
-   - Trust drop >20 points -> human oversight
-   - Multiple low-quality flags -> manual review
-   
-4. Reversibility
-   - All automatic actions logged with reverse capability
-   - Admin can roll back any automatic adjustment
-   - User can appeal any restriction
-```
-
----
-
-## What Remains Manual vs Autonomous
-
-| Manual | Autonomous |
-|--------|-----------|
-| Account creation | Trust updates |
-| Profile editing | Opportunity matching |
-| Deal initiation | Quality scoring |
-| Dispute filing | Visibility adjustments |
-| Explicit feedback | Pattern detection |
-| Recovery actions | Notification batching |
-| Data export | Market balancing |
-| Policy settings | Loop execution |
-
----
-
-## Success Criteria
-
-1. Platform improves opportunity matching as usage increases (measurable via match-to-hire rate)
-2. Notification volume decreases while engagement increases
-3. No user sees raw quality scores or "you're being throttled" messages
-4. Institutions can see aggregate trends without individual surveillance
-5. High-trust users face more transparency, not less restriction
-6. Every system change has an explainable reason visible to the user
-7. Loops operate autonomously for 30+ days without admin intervention
-
----
-
-## Philosophy Lock
-
-**"RCollab compounds integrity, not engagement."**
-
-Every autonomous system in this plan:
-- Rewards consistent, high-quality behavior
-- Corrects without shaming
-- Explains without overwhelming
-- Scales power with responsibility
-- Preserves user agency
-
+**No new features are added.** This plan only fixes what is broken and removes what is dishonest. It follows the platform's own principle: honesty over inflation.
