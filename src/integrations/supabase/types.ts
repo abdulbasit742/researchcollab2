@@ -6909,6 +6909,59 @@ export type Database = {
         }
         Relationships: []
       }
+      failure_records: {
+        Row: {
+          created_at: string
+          description: string
+          failure_type: string
+          id: string
+          lessons_learned: string | null
+          recovery_actions: Json | null
+          related_outcome_id: string | null
+          root_cause: string | null
+          trust_impact: number | null
+          updated_at: string
+          user_id: string | null
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          failure_type: string
+          id?: string
+          lessons_learned?: string | null
+          recovery_actions?: Json | null
+          related_outcome_id?: string | null
+          root_cause?: string | null
+          trust_impact?: number | null
+          updated_at?: string
+          user_id?: string | null
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          failure_type?: string
+          id?: string
+          lessons_learned?: string | null
+          recovery_actions?: Json | null
+          related_outcome_id?: string | null
+          root_cause?: string | null
+          trust_impact?: number | null
+          updated_at?: string
+          user_id?: string | null
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "failure_records_related_outcome_id_fkey"
+            columns: ["related_outcome_id"]
+            isOneToOne: false
+            referencedRelation: "outcomes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       feature_access_gates: {
         Row: {
           created_at: string
@@ -11008,6 +11061,77 @@ export type Database = {
           },
         ]
       }
+      knowledge_objects: {
+        Row: {
+          citation_count: number | null
+          content: Json
+          created_at: string
+          credibility_score: number | null
+          deleted_at: string | null
+          domain: string[] | null
+          id: string
+          knowledge_type: string
+          organization_id: string | null
+          owner_id: string | null
+          status: string
+          summary: string | null
+          superseded_by: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          usage_count: number | null
+          visibility: string
+        }
+        Insert: {
+          citation_count?: number | null
+          content?: Json
+          created_at?: string
+          credibility_score?: number | null
+          deleted_at?: string | null
+          domain?: string[] | null
+          id?: string
+          knowledge_type?: string
+          organization_id?: string | null
+          owner_id?: string | null
+          status?: string
+          summary?: string | null
+          superseded_by?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          usage_count?: number | null
+          visibility?: string
+        }
+        Update: {
+          citation_count?: number | null
+          content?: Json
+          created_at?: string
+          credibility_score?: number | null
+          deleted_at?: string | null
+          domain?: string[] | null
+          id?: string
+          knowledge_type?: string
+          organization_id?: string | null
+          owner_id?: string | null
+          status?: string
+          summary?: string | null
+          superseded_by?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          usage_count?: number | null
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_objects_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       knowledge_snapshots: {
         Row: {
           access_restrictions: Json | null
@@ -11093,6 +11217,75 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      knowledge_usage_events: {
+        Row: {
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          id: string
+          knowledge_object_id: string | null
+          metadata: Json | null
+          usage_type: string
+          user_id: string | null
+        }
+        Insert: {
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          id?: string
+          knowledge_object_id?: string | null
+          metadata?: Json | null
+          usage_type: string
+          user_id?: string | null
+        }
+        Update: {
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          id?: string
+          knowledge_object_id?: string | null
+          metadata?: Json | null
+          usage_type?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      knowledge_validations: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          evidence: Json | null
+          id: string
+          knowledge_object_id: string | null
+          outcome: string
+          reasoning: string | null
+          validation_type: string
+          validator_id: string | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          evidence?: Json | null
+          id?: string
+          knowledge_object_id?: string | null
+          outcome: string
+          reasoning?: string | null
+          validation_type: string
+          validator_id?: string | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          evidence?: Json | null
+          id?: string
+          knowledge_object_id?: string | null
+          outcome?: string
+          reasoning?: string | null
+          validation_type?: string
+          validator_id?: string | null
+        }
+        Relationships: []
       }
       knowledge_versions: {
         Row: {
@@ -12878,6 +13071,115 @@ export type Database = {
         }
         Relationships: []
       }
+      outcome_links: {
+        Row: {
+          contribution_weight: number | null
+          created_at: string
+          id: string
+          linked_entity_id: string
+          linked_entity_type: string
+          metadata: Json | null
+          outcome_id: string | null
+          relationship_type: string
+        }
+        Insert: {
+          contribution_weight?: number | null
+          created_at?: string
+          id?: string
+          linked_entity_id: string
+          linked_entity_type: string
+          metadata?: Json | null
+          outcome_id?: string | null
+          relationship_type: string
+        }
+        Update: {
+          contribution_weight?: number | null
+          created_at?: string
+          id?: string
+          linked_entity_id?: string
+          linked_entity_type?: string
+          metadata?: Json | null
+          outcome_id?: string | null
+          relationship_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outcome_links_outcome_id_fkey"
+            columns: ["outcome_id"]
+            isOneToOne: false
+            referencedRelation: "outcomes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      outcomes: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          deleted_at: string | null
+          description: string | null
+          evidence: Json | null
+          id: string
+          organization_id: string | null
+          outcome_type: string
+          primary_owner_id: string | null
+          status: string
+          title: string
+          trust_impact: number | null
+          updated_at: string
+          value_generated: number | null
+          verified_at: string | null
+          verified_by: string | null
+          visibility: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          description?: string | null
+          evidence?: Json | null
+          id?: string
+          organization_id?: string | null
+          outcome_type: string
+          primary_owner_id?: string | null
+          status?: string
+          title: string
+          trust_impact?: number | null
+          updated_at?: string
+          value_generated?: number | null
+          verified_at?: string | null
+          verified_by?: string | null
+          visibility?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          description?: string | null
+          evidence?: Json | null
+          id?: string
+          organization_id?: string | null
+          outcome_type?: string
+          primary_owner_id?: string | null
+          status?: string
+          title?: string
+          trust_impact?: number | null
+          updated_at?: string
+          value_generated?: number | null
+          verified_at?: string | null
+          verified_by?: string | null
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outcomes_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       paid_boosts: {
         Row: {
           boost_type: string
@@ -14140,6 +14442,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      pricing_snapshots: {
+        Row: {
+          category: string
+          confidence_level: number | null
+          created_at: string
+          id: string
+          max_price: number | null
+          median_price: number | null
+          metadata: Json | null
+          min_price: number | null
+          region: string | null
+          sample_size: number | null
+          snapshot_date: string
+          subcategory: string | null
+          trust_weighted_avg: number | null
+        }
+        Insert: {
+          category: string
+          confidence_level?: number | null
+          created_at?: string
+          id?: string
+          max_price?: number | null
+          median_price?: number | null
+          metadata?: Json | null
+          min_price?: number | null
+          region?: string | null
+          sample_size?: number | null
+          snapshot_date: string
+          subcategory?: string | null
+          trust_weighted_avg?: number | null
+        }
+        Update: {
+          category?: string
+          confidence_level?: number | null
+          created_at?: string
+          id?: string
+          max_price?: number | null
+          median_price?: number | null
+          metadata?: Json | null
+          min_price?: number | null
+          region?: string | null
+          sample_size?: number | null
+          snapshot_date?: string
+          subcategory?: string | null
+          trust_weighted_avg?: number | null
+        }
+        Relationships: []
       }
       profile_analytics: {
         Row: {
@@ -16549,6 +16899,59 @@ export type Database = {
           },
         ]
       }
+      revenue_shares: {
+        Row: {
+          beneficiary_id: string | null
+          beneficiary_org_id: string | null
+          created_at: string
+          effective_from: string
+          effective_until: string | null
+          id: string
+          is_active: boolean | null
+          share_percentage: number
+          share_type: string
+          source_entity_id: string
+          source_entity_type: string
+          updated_at: string
+        }
+        Insert: {
+          beneficiary_id?: string | null
+          beneficiary_org_id?: string | null
+          created_at?: string
+          effective_from?: string
+          effective_until?: string | null
+          id?: string
+          is_active?: boolean | null
+          share_percentage: number
+          share_type: string
+          source_entity_id: string
+          source_entity_type: string
+          updated_at?: string
+        }
+        Update: {
+          beneficiary_id?: string | null
+          beneficiary_org_id?: string | null
+          created_at?: string
+          effective_from?: string
+          effective_until?: string | null
+          id?: string
+          is_active?: boolean | null
+          share_percentage?: number
+          share_type?: string
+          source_entity_id?: string
+          source_entity_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "revenue_shares_beneficiary_org_id_fkey"
+            columns: ["beneficiary_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       revenue_streams: {
         Row: {
           created_at: string
@@ -17867,6 +18270,83 @@ export type Database = {
         }
         Relationships: []
       }
+      state_transition_logs: {
+        Row: {
+          created_at: string
+          entity_id: string
+          entity_type: string
+          from_state: string
+          id: string
+          metadata: Json | null
+          to_state: string
+          trigger_reason: string | null
+          triggered_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          from_state: string
+          id?: string
+          metadata?: Json | null
+          to_state: string
+          trigger_reason?: string | null
+          triggered_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          from_state?: string
+          id?: string
+          metadata?: Json | null
+          to_state?: string
+          trigger_reason?: string | null
+          triggered_by?: string | null
+        }
+        Relationships: []
+      }
+      state_transitions: {
+        Row: {
+          auto_trigger_condition: Json | null
+          created_at: string
+          from_state: string
+          id: string
+          required_role: string | null
+          requires_validation: boolean | null
+          state_machine_id: string | null
+          to_state: string
+        }
+        Insert: {
+          auto_trigger_condition?: Json | null
+          created_at?: string
+          from_state: string
+          id?: string
+          required_role?: string | null
+          requires_validation?: boolean | null
+          state_machine_id?: string | null
+          to_state: string
+        }
+        Update: {
+          auto_trigger_condition?: Json | null
+          created_at?: string
+          from_state?: string
+          id?: string
+          required_role?: string | null
+          requires_validation?: boolean | null
+          state_machine_id?: string | null
+          to_state?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "state_transitions_state_machine_id_fkey"
+            columns: ["state_machine_id"]
+            isOneToOne: false
+            referencedRelation: "system_state_machines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stewardship_entities: {
         Row: {
           activated_at: string | null
@@ -18453,6 +18933,57 @@ export type Database = {
           },
         ]
       }
+      system_recommendations: {
+        Row: {
+          action_data: Json | null
+          action_url: string | null
+          confidence_score: number | null
+          created_at: string
+          description: string | null
+          expires_at: string | null
+          id: string
+          is_acted_upon: boolean | null
+          is_dismissed: boolean | null
+          priority: number | null
+          reasoning: string | null
+          recommendation_type: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          action_data?: Json | null
+          action_url?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          is_acted_upon?: boolean | null
+          is_dismissed?: boolean | null
+          priority?: number | null
+          reasoning?: string | null
+          recommendation_type: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          action_data?: Json | null
+          action_url?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          is_acted_upon?: boolean | null
+          is_dismissed?: boolean | null
+          priority?: number | null
+          reasoning?: string | null
+          recommendation_type?: string
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       system_scope_limits: {
         Row: {
           created_at: string
@@ -18486,6 +19017,90 @@ export type Database = {
           next_review_at?: string | null
           rationale?: string
           reviewed_by?: string | null
+        }
+        Relationships: []
+      }
+      system_signals: {
+        Row: {
+          created_at: string
+          data: Json | null
+          expires_at: string | null
+          id: string
+          is_processed: boolean | null
+          message: string | null
+          processed_at: string | null
+          processed_by: string | null
+          severity: string
+          signal_type: string
+          source_system: string
+          target_entity_id: string | null
+          target_entity_type: string | null
+          target_user_id: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          expires_at?: string | null
+          id?: string
+          is_processed?: boolean | null
+          message?: string | null
+          processed_at?: string | null
+          processed_by?: string | null
+          severity?: string
+          signal_type: string
+          source_system: string
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+          target_user_id?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          expires_at?: string | null
+          id?: string
+          is_processed?: boolean | null
+          message?: string | null
+          processed_at?: string | null
+          processed_by?: string | null
+          severity?: string
+          signal_type?: string
+          source_system?: string
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+          target_user_id?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      system_state_machines: {
+        Row: {
+          created_at: string
+          entity_type: string
+          id: string
+          initial_state: string
+          states: string[]
+          terminal_states: string[]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          entity_type: string
+          id?: string
+          initial_state: string
+          states: string[]
+          terminal_states?: string[]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          entity_type?: string
+          id?: string
+          initial_state?: string
+          states?: string[]
+          terminal_states?: string[]
+          updated_at?: string
         }
         Relationships: []
       }
@@ -19929,6 +20544,45 @@ export type Database = {
         }
         Relationships: []
       }
+      value_units: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          last_activity_at: string | null
+          lifetime_earned: number
+          lifetime_spent: number
+          locked_amount: number
+          unit_type: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          id?: string
+          last_activity_at?: string | null
+          lifetime_earned?: number
+          lifetime_spent?: number
+          locked_amount?: number
+          unit_type: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          last_activity_at?: string | null
+          lifetime_earned?: number
+          lifetime_spent?: number
+          locked_amount?: number
+          unit_type?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       verification_attempts: {
         Row: {
           artifact_id: string
@@ -20705,6 +21359,17 @@ export type Database = {
         Args: { p_offer_id: string }
         Returns: string
       }
+      execute_state_transition: {
+        Args: {
+          p_entity_id: string
+          p_entity_type: string
+          p_from_state: string
+          p_metadata?: Json
+          p_reason?: string
+          p_to_state: string
+        }
+        Returns: boolean
+      }
       generate_credential_verification_code: { Args: never; Returns: string }
       generate_residency_proof: {
         Args: {
@@ -20807,6 +21472,15 @@ export type Database = {
         Args: { p_amount: number; p_milestone_id: string; p_reason: string }
         Returns: boolean
       }
+      register_outcome: {
+        Args: {
+          p_description?: string
+          p_outcome_type: string
+          p_title: string
+          p_value_generated?: number
+        }
+        Returns: string
+      }
       release_expired_embargoes: { Args: never; Returns: undefined }
       submit_review: {
         Args: {
@@ -20829,6 +21503,15 @@ export type Database = {
       }
       user_has_feature: {
         Args: { p_feature: string; p_user_id: string }
+        Returns: boolean
+      }
+      validate_state_transition: {
+        Args: {
+          p_entity_type: string
+          p_from_state: string
+          p_to_state: string
+          p_user_id?: string
+        }
         Returns: boolean
       }
       verify_deployment_isolation: {
@@ -20855,6 +21538,15 @@ export type Database = {
       app_role: "student" | "researcher" | "admin"
       deployment_type: "saas" | "dedicated" | "sovereign"
       due_diligence_status: "pending" | "in_progress" | "completed" | "flagged"
+      entity_lifecycle_state:
+        | "draft"
+        | "pending"
+        | "active"
+        | "paused"
+        | "restricted"
+        | "completed"
+        | "archived"
+        | "deleted"
       feed_event_type:
         | "new_connection"
         | "new_publication"
@@ -20869,6 +21561,27 @@ export type Database = {
         | "profile_updated"
       governance_mode: "platform" | "delegated" | "autonomous"
       isolation_level: "shared" | "logical" | "physical"
+      knowledge_status:
+        | "draft"
+        | "under_review"
+        | "validated"
+        | "superseded"
+        | "archived"
+      knowledge_type:
+        | "finding"
+        | "method"
+        | "dataset"
+        | "tool"
+        | "theory"
+        | "replication"
+        | "synthesis"
+      outcome_status:
+        | "pending"
+        | "in_progress"
+        | "completed"
+        | "validated"
+        | "disputed"
+        | "legacy"
       post_type:
         | "text"
         | "research_update"
@@ -20901,6 +21614,7 @@ export type Database = {
         | "copyright_violation"
         | "off_topic"
         | "other"
+      signal_severity: "info" | "low" | "medium" | "high" | "critical"
       swarm_decision_status: "open" | "voting" | "closed" | "executed"
       trust_tier: "bronze" | "silver" | "gold" | "platinum"
       violation_severity: "warning" | "minor" | "major" | "critical"
@@ -21045,6 +21759,16 @@ export const Constants = {
       app_role: ["student", "researcher", "admin"],
       deployment_type: ["saas", "dedicated", "sovereign"],
       due_diligence_status: ["pending", "in_progress", "completed", "flagged"],
+      entity_lifecycle_state: [
+        "draft",
+        "pending",
+        "active",
+        "paused",
+        "restricted",
+        "completed",
+        "archived",
+        "deleted",
+      ],
       feed_event_type: [
         "new_connection",
         "new_publication",
@@ -21060,6 +21784,30 @@ export const Constants = {
       ],
       governance_mode: ["platform", "delegated", "autonomous"],
       isolation_level: ["shared", "logical", "physical"],
+      knowledge_status: [
+        "draft",
+        "under_review",
+        "validated",
+        "superseded",
+        "archived",
+      ],
+      knowledge_type: [
+        "finding",
+        "method",
+        "dataset",
+        "tool",
+        "theory",
+        "replication",
+        "synthesis",
+      ],
+      outcome_status: [
+        "pending",
+        "in_progress",
+        "completed",
+        "validated",
+        "disputed",
+        "legacy",
+      ],
       post_type: [
         "text",
         "research_update",
@@ -21096,6 +21844,7 @@ export const Constants = {
         "off_topic",
         "other",
       ],
+      signal_severity: ["info", "low", "medium", "high", "critical"],
       swarm_decision_status: ["open", "voting", "closed", "executed"],
       trust_tier: ["bronze", "silver", "gold", "platinum"],
       violation_severity: ["warning", "minor", "major", "critical"],
