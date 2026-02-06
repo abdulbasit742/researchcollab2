@@ -1,114 +1,116 @@
 
-# RCollab -- Critical Fixes & Best Features Implementation
 
-## What This Plan Does
+# RCollab -- Next Phase: Remaining Credibility Fixes, Cold Start Solution, and Getting Started Flow
 
-Based on the survival report and codebase audit, this plan fixes the top issues that would cause users to leave the platform, and adds the features that make RCollab genuinely usable. These are the highest-impact changes ranked by user retention impact.
+## Summary
 
----
-
-## Priority 1: Remove All Fake Data (Credibility Killers)
-
-### 1A. Replace Fake Stats on Earn Hub with Real Database Counts
-**File:** `src/pages/EarnPage.tsx` (lines 76-81)
-
-Currently shows hardcoded lies: "250+ Active Projects", "PKR 35M+ Paid", "500+ Active Earners". The database has 1 project, 0 transactions, 8 profiles.
-
-**Change:** Replace the static `earningStats` array with a hook that fetches real counts from `earning_projects`, `profiles`, and `wallet_transactions`. When counts are low (under 10), show honest labels like "Growing" or "New Platform" instead of inflated numbers.
-
-### 1B. Remove Fake Top Earners Section
-**File:** `src/pages/EarnPage.tsx` (lines 37-74, 342-386)
-
-Hardcoded fake users with pravatar.cc avatars. Clicking them leads nowhere.
-
-**Change:** Replace the "Top Earners" tab with a "How It Works" explainer that describes the earning flow in 3 steps: Browse Projects, Place Bids, Complete Work & Get Paid. This builds understanding instead of false trust.
-
-### 1C. Remove "Trusted by 1000+ researchers" from Landing Page
-**File:** `src/components/home/HeroSection.tsx` (line 107)
-
-**Change:** Replace with "Built for researchers, by researchers" -- honest and aspirational without making false claims.
-
-### 1D. Replace Fake Stats Section on Landing Page
-**File:** `src/components/home/StatsSection.tsx` (lines 6-35)
-
-Shows "50+ Universities", "80+ Countries", "1000+ Members" -- all fabricated.
-
-**Change:** Replace with capability-focused messaging instead of vanity metrics. Show what the platform does ("AI-Powered Tools", "Secure Escrow", "Trust-Based Matching", "Global Access") rather than numbers that can be verified and found false.
+The previous phase fixed the biggest credibility killers (HeroSection, StatsSection, EarnPage stats, auth/onboarding roles, navigation, profile title, search bar, deal hook). However, several issues from the Survival Report remain unaddressed. This phase closes every remaining gap.
 
 ---
 
-## Priority 2: Fix Broken User Paths
+## Phase 1: Remove Remaining Fake Claims
 
-### 2A. Align Auth Roles with Onboarding Roles
-**File:** `src/pages/AuthPage.tsx` (lines 24-29) and `src/pages/OnboardingPage.tsx` (lines 46-49)
+### 1A. Fix CTASection "Join thousands" Lie
+**File:** `src/components/home/CTASection.tsx` (line 52)
 
-Auth page offers 4 roles (Student, Researcher, Tool Buyer, Project Owner) but onboarding only supports 2 (Student, Researcher). Users who pick "Tool Buyer" or "Project Owner" hit a dead-end.
+Currently says: "Join thousands of researchers, students, and experts already collaborating and earning on our platform."
 
-**Change:** Consolidate to 3 roles that map to real platform capabilities:
-- **Student** -- "Learn, collaborate, and earn"
-- **Researcher** -- "Lead projects and mentor"  
-- **Professional** -- "Post projects, hire talent, access tools"
+**Change:** Replace with: "Start collaborating with researchers, students, and professionals on a platform built for real outcomes."
 
-Update both AuthPage and OnboardingPage to support all 3 roles with appropriate onboarding paths.
+Honest, aspirational, no false claims.
 
-### 2B. Unify Home Navigation
-**Files:** `src/components/layout/Navbar.tsx` (line 26) and `src/components/layout/MobileBottomNav.tsx` (line 22)
+### 1B. Fix FeaturesSection "80+ countries" Claim
+**File:** `src/components/home/FeaturesSection.tsx` (line 22)
 
-Desktop Navbar "Home" links to `/feed`. Mobile bottom nav "Home" links to `/home`. Users see different pages depending on device.
+Currently says: "Connect with researchers, students, and experts from 80+ countries based on your interests."
 
-**Change:** Make both point to `/home` (the Daily Professional Operating Loop dashboard), since that is the core daily experience. The feed can be accessible from within the dashboard or via a separate nav item.
+**Change:** Replace with: "Connect with researchers, students, and experts worldwide based on your interests and verified skills."
 
-### 2C. Rename "Consequence Ledger" to "Professional Profile"
-**File:** `src/pages/ProfilePage.tsx` (line 107)
+### 1C. Fix ToolsPage "(1000+ users)" Claim
+**File:** `src/pages/ToolsPage.tsx` (line 252)
 
-The title "Consequence Ledger" scares new users. They think it is a penalty page.
+Currently shows "(1000+ users)" next to a tool.
 
-**Change:** Rename the heading to "Professional Profile" while keeping the philosophy banner about successes and failures visible. The concept is excellent -- only the name needs to change.
+**Change:** Remove the user count entirely, or replace with "Available" or "Try it now."
 
----
+### 1D. Fix AffiliateAssetsPage Social Proof Copy
+**File:** `src/pages/AffiliateAssetsPage.tsx` (line 75)
 
-## Priority 3: Expand Onboarding Coverage
+Currently provides copy template: "Join thousands of researchers..."
 
-### 3A. Add More Departments + "Other" Option
-**File:** `src/pages/OnboardingPage.tsx` (lines 30-37)
-
-Only 6 engineering-focused departments exist. Users in Biology, Chemistry, Mathematics, Business, Medicine, Social Sciences, etc. have no option.
-
-**Change:** Expand to 15+ departments covering major academic disciplines, plus an "Other" option with a free-text field. New departments to add: Biology, Chemistry, Mathematics, Business Administration, Medicine, Social Sciences, Environmental Science, Architecture, Agriculture, Law, Arts & Humanities.
+**Change:** Replace with: "Discover a platform where researchers earn, collaborate, and build trust. Here's my referral link:"
 
 ---
 
-## Priority 4: Wire the Hero Search Bar
-**File:** `src/components/home/HeroSection.tsx` (lines 154-202)
+## Phase 2: Seed the Marketplace (Cold Start Solution)
 
-Beautiful search UI but no `onSubmit` handler. Users search, nothing happens.
+The database currently has **1 earning project**, **0 offers**, and **0 deals**. Users arrive and see an empty marketplace. This is the single biggest retention killer after the fake stats.
 
-**Change:** Add form submission that navigates to `/search?q={keyword}&discipline={discipline}&location={location}` so the search bar actually works.
+### 2A. Seed 15 Realistic Earning Projects
+**Method:** Database migration inserting 15 starter projects into `earning_projects`.
+
+Projects will span disciplines and budget ranges, using the existing admin user as owner. Each project will have realistic titles, descriptions, tags, budget ranges, and deadline days. Examples:
+
+| Title | Tags | Budget (PKR) |
+|-------|------|-------------|
+| Literature Review: AI in Healthcare | AI, Healthcare, Literature Review | 5,000 - 15,000 |
+| Statistical Analysis for Survey Data | SPSS, Statistics, Data Analysis | 8,000 - 20,000 |
+| Python Script for Web Scraping | Python, Web Scraping, Automation | 3,000 - 10,000 |
+| Research Poster Design | Design, Academic, LaTeX | 2,000 - 8,000 |
+| Thesis Proofreading (Engineering) | Proofreading, Engineering, Academic Writing | 4,000 - 12,000 |
+| ...10 more covering Biology, Business, Environmental Science, etc. | | |
+
+All projects will use a real owner_id from existing profiles.
 
 ---
 
-## Priority 5: Fix Deals Page Data Connection
-**Files:** `src/components/deals/DealRoomList.tsx`, `src/hooks/useDealRoom.ts`
+## Phase 3: Getting Started Checklist on Dashboard
 
-The Deals page renders `DealRoomList` which queries `deal_rooms` table. The table exists but the hook uses a column mapping that does not match the actual schema (e.g., `initiator_id` vs `buyer_id`, `counterparty_id` vs `seller_id`).
+New users land on the dashboard and see "All caught up!" with no guidance. They need a clear path forward.
 
-**Change:** Align the `useDealRooms` hook query with the actual `deal_rooms` table schema (using `buyer_id`, `seller_id`, `escrow_amount` instead of `initiator_id`, `counterparty_id`, `escrow_locked`). This will make the Deals page display real data when deals are created.
+### 3A. Create GettingStartedChecklist Component
+**New file:** `src/components/home/GettingStartedChecklist.tsx`
+
+A card that appears on the HomeDashboard for users who haven't completed key actions. Shows progress like:
+
+- Complete your profile (name, university, department)
+- Browse available projects
+- Place your first bid or post a project
+- Send a message to a collaborator
+
+Each item links to the relevant page. The checklist disappears once all items are completed (tracked via profile completeness and activity counts).
+
+### 3B. Add Checklist to HomeDashboard
+**File:** `src/pages/HomeDashboard.tsx`
+
+Insert `GettingStartedChecklist` above the "What Matters Today" section, shown only when the user's profile is incomplete or they have zero activity.
+
+---
+
+## Phase 4: Fix Onboarding Post-Completion Redirect
+
+### 4A. Redirect to /home Instead of Role-Specific Dashboards
+**File:** `src/pages/OnboardingPage.tsx` (lines 176-184)
+
+Currently redirects to `/dashboard/student`, `/dashboard/researcher`, or `/dashboard/admin` based on role. These are separate dashboard pages that fragment the experience.
+
+**Change:** Redirect all users to `/home` (the DPOL dashboard) after onboarding completion. This is the unified daily loop page that all navigation already points to.
 
 ---
 
 ## Technical Summary
 
-| Change | Files Modified | Impact |
-|--------|---------------|--------|
-| Real Earn stats from DB | `EarnPage.tsx` | Prevents instant credibility loss |
-| Remove fake earners | `EarnPage.tsx` | Removes lies, adds clarity |
-| Fix hero claim | `HeroSection.tsx` | Honest first impression |
-| Fix landing stats | `StatsSection.tsx` | Capability-focused, not vanity |
-| Align auth/onboarding roles | `AuthPage.tsx`, `OnboardingPage.tsx` | Eliminates dead-end signup paths |
-| Unify home navigation | `Navbar.tsx`, `MobileBottomNav.tsx` | Consistent experience across devices |
-| Rename profile page | `ProfilePage.tsx` | Removes intimidation for new users |
-| Expand departments | `OnboardingPage.tsx` | Includes all academic disciplines |
-| Wire search bar | `HeroSection.tsx` | Makes search functional |
-| Fix deals hook | `useDealRoom.ts` | Connects deals UI to real data |
+| Change | File | Impact |
+|--------|------|--------|
+| Fix "Join thousands" | `CTASection.tsx` | Removes fake claim |
+| Fix "80+ countries" | `FeaturesSection.tsx` | Removes fake claim |
+| Fix "(1000+ users)" | `ToolsPage.tsx` | Removes fake claim |
+| Fix affiliate copy | `AffiliateAssetsPage.tsx` | Removes fake template |
+| Seed 15 projects | DB migration | Solves empty marketplace |
+| Getting Started checklist | New component + `HomeDashboard.tsx` | Guides new users |
+| Fix onboarding redirect | `OnboardingPage.tsx` | Unified experience |
 
-**No new features are added.** This plan only fixes what is broken and removes what is dishonest. It follows the platform's own principle: honesty over inflation.
+**Total files modified:** 6 existing + 1 new component + 1 migration
+
+This phase completes every item from the Survival Report. After this, the platform has zero fake claims, a populated marketplace, and a clear path for new users from signup through their first action.
+
