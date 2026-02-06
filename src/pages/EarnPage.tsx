@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
@@ -33,52 +32,8 @@ import { PostProjectModal } from "@/components/earn/PostProjectModal";
 import { EditProjectModal } from "@/components/earn/EditProjectModal";
 import { MyProjectCard } from "@/components/earn/MyProjectCard";
 import { MyProjectsFilterSort, StatusFilter, SortOption } from "@/components/earn/MyProjectsFilterSort";
+import { EarnStatsBar } from "@/components/earn/EarnStatsBar";
 
-const topEarners = [
-  {
-    id: "1",
-    name: "Alex Thompson",
-    avatar: "https://i.pravatar.cc/150?u=alex",
-    specialty: "Data Science",
-    earnings: "PKR 3,486,000",
-    rating: 4.9,
-    projects: 45,
-  },
-  {
-    id: "2",
-    name: "Maria Garcia",
-    avatar: "https://i.pravatar.cc/150?u=maria",
-    specialty: "Academic Writing",
-    earnings: "PKR 2,744,000",
-    rating: 4.8,
-    projects: 62,
-  },
-  {
-    id: "3",
-    name: "David Kim",
-    avatar: "https://i.pravatar.cc/150?u=kim",
-    specialty: "Statistical Analysis",
-    earnings: "PKR 2,296,000",
-    rating: 4.9,
-    projects: 38,
-  },
-  {
-    id: "4",
-    name: "Lisa Wang",
-    avatar: "https://i.pravatar.cc/150?u=lisa",
-    specialty: "Machine Learning",
-    earnings: "PKR 4,368,000",
-    rating: 5.0,
-    projects: 29,
-  },
-];
-
-const earningStats = [
-  { label: "Active Projects", value: "250+", icon: Briefcase },
-  { label: "Total Paid Out", value: "PKR 35M+", icon: DollarSign },
-  { label: "Active Earners", value: "500+", icon: Users },
-  { label: "Avg. Response", value: "< 2hrs", icon: Clock },
-];
 
 export default function EarnPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -147,23 +102,8 @@ export default function EarnPage() {
             </p>
           </motion.div>
 
-          {/* Earning Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-8 md:mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
-          >
-            {earningStats.map((stat) => (
-              <Card key={stat.label} variant="glass">
-                <CardContent className="p-4 md:p-6 text-center">
-                  <stat.icon className="h-6 w-6 md:h-8 md:w-8 mx-auto text-primary mb-2" />
-                  <div className="text-xl md:text-2xl font-bold">{stat.value}</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">{stat.label}</div>
-                </CardContent>
-              </Card>
-            ))}
-          </motion.div>
+          {/* Earning Stats - Real Data */}
+          <EarnStatsBar />
         </div>
       </div>
 
@@ -176,8 +116,8 @@ export default function EarnPage() {
                 <TabsTrigger value="projects" className="whitespace-nowrap">
                   Available Projects
                 </TabsTrigger>
-                <TabsTrigger value="earners" className="whitespace-nowrap">
-                  Top Earners
+                <TabsTrigger value="how-it-works" className="whitespace-nowrap">
+                  How It Works
                 </TabsTrigger>
                 <TabsTrigger value="my-bids" className="whitespace-nowrap">
                   My Bids
@@ -339,45 +279,42 @@ export default function EarnPage() {
             )}
           </TabsContent>
 
-          <TabsContent value="earners">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {topEarners.map((earner, index) => (
+          <TabsContent value="how-it-works">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+              {[
+                {
+                  step: "1",
+                  title: "Browse Projects",
+                  description: "Explore available research and academic projects that match your skills. Filter by discipline, budget, and deadline.",
+                  icon: Search,
+                },
+                {
+                  step: "2",
+                  title: "Place Your Bid",
+                  description: "Submit a proposal with your rate and timeline. Include your relevant experience and approach to the work.",
+                  icon: FileText,
+                },
+                {
+                  step: "3",
+                  title: "Complete & Get Paid",
+                  description: "Deliver quality work on time. Payment is secured through escrow — you get paid when the client approves.",
+                  icon: CheckCircle2,
+                },
+              ].map((item, index) => (
                 <motion.div
-                  key={earner.id}
+                  key={item.step}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <Card variant="interactive">
-                    <CardContent className="p-4 md:p-6">
-                      <div className="flex items-center gap-3 md:gap-4">
-                        <Avatar className="h-12 w-12 md:h-16 md:w-16 shrink-0">
-                          <AvatarImage src={earner.avatar} />
-                          <AvatarFallback>
-                            {earner.name.split(" ").map((n) => n[0]).join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-base md:text-lg truncate">{earner.name}</h3>
-                          <p className="text-muted-foreground text-sm truncate">{earner.specialty}</p>
-                          <div className="flex items-center gap-3 md:gap-4 mt-1 md:mt-2">
-                            <div className="flex items-center gap-1">
-                              <Star className="h-3 w-3 md:h-4 md:w-4 fill-amber-400 text-amber-400" />
-                              <span className="font-medium text-sm">{earner.rating}</span>
-                            </div>
-                            <div className="flex items-center gap-1 text-xs md:text-sm text-muted-foreground">
-                              <CheckCircle2 className="h-3 w-3 md:h-4 md:w-4" />
-                              {earner.projects} projects
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-right shrink-0">
-                          <div className="text-lg md:text-2xl font-bold text-gradient">
-                            {earner.earnings}
-                          </div>
-                          <div className="text-xs md:text-sm text-muted-foreground">Total earned</div>
-                        </div>
+                  <Card className="h-full">
+                    <CardContent className="p-6 text-center">
+                      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+                        <item.icon className="h-7 w-7 text-primary" />
                       </div>
+                      <Badge variant="secondary" className="mb-3">Step {item.step}</Badge>
+                      <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground">{item.description}</p>
                     </CardContent>
                   </Card>
                 </motion.div>

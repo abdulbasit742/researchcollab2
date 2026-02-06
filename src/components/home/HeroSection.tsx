@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,6 +48,11 @@ const floatingIcons = [
 ];
 
 export function HeroSection() {
+  const navigate = useNavigate();
+  const [keyword, setKeyword] = useState("");
+  const [discipline, setDiscipline] = useState("");
+  const [location, setLocation] = useState("");
+
   // Parallax for different layers
   const { scrollY, isDisabled } = useParallax({ speed: 0.3 });
   
@@ -55,6 +61,15 @@ export function HeroSection() {
   const gradientY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.08));
   const contentY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.1));
   const searchY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.12));
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (keyword.trim()) params.set("q", keyword.trim());
+    if (discipline) params.set("discipline", discipline);
+    if (location) params.set("location", location);
+    navigate(`/search?${params.toString()}`);
+  };
 
   return (
     <section className="relative overflow-hidden gradient-hero min-h-[600px] md:min-h-[700px]">
@@ -104,7 +119,7 @@ export function HeroSection() {
           >
             <div className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium text-primary border border-primary/20 backdrop-blur-sm">
               <Sparkles className="h-3 w-3 md:h-4 md:w-4 animate-pulse" />
-              Trusted by 1000+ researchers worldwide
+              Built for researchers, by researchers
             </div>
           </motion.div>
 
@@ -159,9 +174,9 @@ export function HeroSection() {
             style={{ y: searchY }}
             className="mt-8 md:mt-16 mx-auto max-w-3xl px-2"
           >
-            <div className="rounded-xl md:rounded-2xl bg-card/80 backdrop-blur-xl p-3 md:p-4 shadow-xl border border-border/50 glow-focus transition-all duration-300 hover:shadow-2xl hover:border-primary/20">
+            <form onSubmit={handleSearch} className="rounded-xl md:rounded-2xl bg-card/80 backdrop-blur-xl p-3 md:p-4 shadow-xl border border-border/50 glow-focus transition-all duration-300 hover:shadow-2xl hover:border-primary/20">
               <div className="flex flex-col gap-3 md:flex-row md:gap-4">
-                <Select>
+                <Select value={discipline} onValueChange={setDiscipline}>
                   <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation bg-background/50">
                     <SelectValue placeholder="Discipline" />
                   </SelectTrigger>
@@ -174,7 +189,7 @@ export function HeroSection() {
                   </SelectContent>
                 </Select>
 
-                <Select>
+                <Select value={location} onValueChange={setLocation}>
                   <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation bg-background/50">
                     <SelectValue placeholder="Location" />
                   </SelectTrigger>
@@ -191,14 +206,16 @@ export function HeroSection() {
                   <Input
                     placeholder="Keywords (e.g., machine learning)"
                     className="flex-1 h-11 bg-background/50"
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
                   />
-                  <Button size="default" className="h-11 px-6 w-full xs:w-auto touch-manipulation">
+                  <Button type="submit" size="default" className="h-11 px-6 w-full xs:w-auto touch-manipulation">
                     <Search className="h-4 w-4 mr-2" />
                     Search
                   </Button>
                 </div>
               </div>
-            </div>
+            </form>
           </motion.div>
         </motion.div>
       </div>

@@ -10,33 +10,38 @@ import { toast } from "sonner";
 
 export interface DealRoom {
   id: string;
-  project_id: string | null;
+  offer_id: string | null;
   title: string;
   status: "negotiating" | "agreed" | "in_progress" | "completed" | "cancelled" | "disputed";
-  initiator_id: string;
-  counterparty_id: string;
+  buyer_id: string;
+  seller_id: string;
   created_at: string;
   updated_at: string;
-  // Scope
-  scope_description: string | null;
-  deliverables: string[];
   // Financial
   agreed_amount: number | null;
+  escrow_amount: number | null;
+  escrow_status: string | null;
+  // Timeline
+  completed_at: string | null;
+  // Structured data
+  milestones: any[];
+  terms: Record<string, any> | null;
+  metadata: Record<string, any> | null;
+  // Derived display fields
+  counterparty_name?: string;
+  deliverables: string[];
   escrow_locked: number;
   escrow_released: number;
-  // Timeline
   agreed_deadline: string | null;
-  actual_completion: string | null;
-  // Decision log
-  decision_log: DealDecision[];
-  // Files
-  files: DealFile[];
-  // Milestones
-  milestones: DealMilestone[];
-  // Joined data
-  initiator_name?: string;
-  counterparty_name?: string;
   project_title?: string;
+  initiator_name?: string;
+  decision_log: any[];
+  files: any[];
+  initiator_id: string;
+  counterparty_id: string;
+  project_id: string | null;
+  actual_completion: string | null;
+  scope_description: string | null;
 }
 
 export interface DealDecision {
@@ -79,11 +84,11 @@ export function useDealRooms() {
     queryFn: async (): Promise<DealRoom[]> => {
       if (!user) return [];
 
-      // Fetch accountability records as deal rooms
-      const { data: records, error } = await supabase
-        .from("accountability_records")
+      // Query the actual deal_rooms table
+      const { data: rooms, error } = await supabase
+        .from("deal_rooms")
         .select("*")
-        .or(`initiator_id.eq.${user.id},executor_id.eq.${user.id}`)
+        .or(`buyer_id.eq.${user.id},seller_id.eq.${user.id}`)
         .order("created_at", { ascending: false })
         .limit(20);
 
@@ -91,10 +96,10 @@ export function useDealRooms() {
 
       // Enrich with profile data
       const dealRooms: DealRoom[] = await Promise.all(
-        (records || []).map(async (record: any) => {
-          const isInitiator = record.initiator_id === user.id;
-          const otherParticipantId = isInitiator ? record.executor_id : record.initiator_id;
-          
+        (rooms || []).map(async (room: any) => {
+          const isBuyer = room.buyer_id === user.id;
+          const otherParticipantId = isBuyer ? room.seller_id : room.buyer_id;
+
           // Get other participant's name
           const { data: otherProfile } = await supabase
             .from("profiles")
@@ -102,45 +107,44 @@ export function useDealRooms() {
             .eq("id", otherParticipantId)
             .maybeSingle();
 
-          // Get project info if exists
-          let projectTitle = null;
-          if (record.project_id) {
-            const { data: project } = await supabase
-              .from("earning_projects")
-              .select("title")
-              .eq("id", record.project_id)
-              .maybeSingle();
-            projectTitle = project?.title;
-          }
+          // Map DB status to our status type
+          const status = (room.status || "negotiating") as DealRoom["status"];
 
-          const status = record.outcome_status === "completed" ? "completed" :
-            record.outcome_status === "failed" ? "disputed" :
-            record.outcome_status === "disputed" ? "disputed" :
-            record.escrow_locked_at ? "in_progress" :
-            "negotiating";
+          // Extract deliverables from terms if available
+          const terms = room.terms as Record<string, any> | null;
+          const deliverables: string[] = terms?.deliverables || [];
 
           return {
-            id: record.id,
-            project_id: record.project_id,
-            title: projectTitle || `Deal with ${otherProfile?.full_name || "Unknown"}`,
-            status: status as DealRoom["status"],
-            initiator_id: record.initiator_id,
-            counterparty_id: otherParticipantId,
-            created_at: record.created_at,
-            updated_at: record.updated_at,
-            scope_description: null,
-            deliverables: record.promised_deliverables || [],
-            agreed_amount: record.escrow_amount,
-            escrow_locked: record.escrow_amount || 0,
-            escrow_released: record.total_paid || 0,
-            agreed_deadline: record.deadline,
-            actual_completion: record.escrow_released_at,
+            id: room.id,
+            offer_id: room.offer_id,
+            title: room.title,
+            status,
+            buyer_id: room.buyer_id,
+            seller_id: room.seller_id,
+            created_at: room.created_at,
+            updated_at: room.updated_at,
+            agreed_amount: room.agreed_amount,
+            escrow_amount: room.escrow_amount,
+            escrow_status: room.escrow_status,
+            completed_at: room.completed_at,
+            milestones: (room.milestones as any[]) || [],
+            terms: terms,
+            metadata: room.metadata as Record<string, any> | null,
+            // Derived fields for backward compatibility
+            counterparty_name: isBuyer ? (otherProfile?.full_name || "Unknown") : "You",
+            initiator_name: isBuyer ? "You" : (otherProfile?.full_name || "Unknown"),
+            deliverables,
+            escrow_locked: room.escrow_amount || 0,
+            escrow_released: room.escrow_status === "released" ? (room.escrow_amount || 0) : 0,
+            agreed_deadline: terms?.deadline || null,
+            project_title: room.title,
             decision_log: [],
             files: [],
-            milestones: [],
-            initiator_name: isInitiator ? "You" : otherProfile?.full_name || "Unknown",
-            counterparty_name: isInitiator ? (otherProfile?.full_name || "Unknown") : "You",
-            project_title: projectTitle,
+            initiator_id: room.buyer_id,
+            counterparty_id: room.seller_id,
+            project_id: room.offer_id,
+            actual_completion: room.completed_at,
+            scope_description: terms?.scope || null,
           } as DealRoom;
         })
       );
@@ -159,9 +163,14 @@ export function useDealRoom(roomId: string) {
     queryFn: async () => {
       if (!user || !roomId) return null;
 
-      // This would fetch from a dedicated deal_rooms table when implemented
-      // For now, return null
-      return null;
+      const { data, error } = await supabase
+        .from("deal_rooms")
+        .select("*")
+        .eq("id", roomId)
+        .maybeSingle();
+
+      if (error) throw error;
+      return data;
     },
     enabled: !!user && !!roomId,
   });
@@ -183,18 +192,20 @@ export function useCreateDealRoom() {
     }) => {
       if (!user) throw new Error("Not authenticated");
 
-      // Create accountability record as the deal room
       const { data: record, error } = await supabase
-        .from("accountability_records")
+        .from("deal_rooms")
         .insert({
-          initiator_id: user.id,
-          executor_id: data.counterparty_id,
-          project_id: data.project_id || null,
-          collaboration_type: "deal",
-          promised_deliverables: data.deliverables,
-          deadline: data.deadline || null,
-          escrow_amount: data.proposed_amount,
-          outcome_status: "pending",
+          buyer_id: user.id,
+          seller_id: data.counterparty_id,
+          offer_id: data.project_id || null,
+          title: data.title,
+          status: "negotiating",
+          agreed_amount: data.proposed_amount,
+          terms: {
+            scope: data.scope_description,
+            deliverables: data.deliverables,
+            deadline: data.deadline || null,
+          },
         })
         .select()
         .single();
@@ -204,7 +215,6 @@ export function useCreateDealRoom() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["dealRooms"] });
-      queryClient.invalidateQueries({ queryKey: ["accountabilityRecords"] });
       toast.success("Deal room created");
     },
     onError: (error) => {
@@ -227,13 +237,15 @@ export function useSubmitProposal() {
     }) => {
       if (!user) throw new Error("Not authenticated");
 
-      // Update the accountability record with new proposal
       const { error } = await supabase
-        .from("accountability_records")
+        .from("deal_rooms")
         .update({
-          escrow_amount: data.amount,
-          promised_deliverables: data.deliverables,
-          deadline: data.deadline || null,
+          agreed_amount: data.amount,
+          terms: {
+            deliverables: data.deliverables,
+            deadline: data.deadline || null,
+            message: data.message || null,
+          },
           updated_at: new Date().toISOString(),
         })
         .eq("id", data.room_id);
@@ -242,7 +254,6 @@ export function useSubmitProposal() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["dealRooms"] });
-      queryClient.invalidateQueries({ queryKey: ["accountabilityRecords"] });
       toast.success("Proposal submitted");
     },
   });
@@ -262,15 +273,17 @@ export function useAcceptDeal() {
     }) => {
       if (!user) throw new Error("Not authenticated");
 
-      // Update the existing accountability record to lock escrow
       const { error } = await supabase
-        .from("accountability_records")
+        .from("deal_rooms")
         .update({
+          agreed_amount: data.amount,
           escrow_amount: data.amount,
-          escrow_locked_at: new Date().toISOString(),
-          outcome_status: "in_progress",
-          promised_deliverables: data.deliverables,
-          deadline: data.deadline || null,
+          escrow_status: "locked",
+          status: "in_progress",
+          terms: {
+            deliverables: data.deliverables,
+            deadline: data.deadline || null,
+          },
           updated_at: new Date().toISOString(),
         })
         .eq("id", data.room_id);
@@ -279,7 +292,6 @@ export function useAcceptDeal() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["dealRooms"] });
-      queryClient.invalidateQueries({ queryKey: ["accountabilityRecords"] });
       toast.success("Deal accepted and escrow locked");
     },
   });

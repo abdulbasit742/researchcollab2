@@ -28,12 +28,24 @@ const educationLevels = [
 ];
 
 const departments = [
-  { value: "MME", label: "MME - Materials & Metallurgical Engineering" },
-  { value: "CIS", label: "CIS - Computer & Information Sciences" },
-  { value: "PHYSICS", label: "Physics" },
-  { value: "ME", label: "ME - Mechanical Engineering" },
+  { value: "CIS", label: "Computer & Information Sciences" },
+  { value: "EE", label: "Electrical Engineering" },
+  { value: "ME", label: "Mechanical Engineering" },
+  { value: "MME", label: "Materials & Metallurgical Engineering" },
   { value: "CHM_ENG", label: "Chemical Engineering" },
-  { value: "EE", label: "EE - Electrical Engineering" },
+  { value: "PHYSICS", label: "Physics" },
+  { value: "CHEMISTRY", label: "Chemistry" },
+  { value: "MATH", label: "Mathematics" },
+  { value: "BIOLOGY", label: "Biology / Life Sciences" },
+  { value: "MEDICINE", label: "Medicine / Health Sciences" },
+  { value: "BUSINESS", label: "Business Administration" },
+  { value: "SOCIAL_SCI", label: "Social Sciences" },
+  { value: "ENV_SCI", label: "Environmental Science" },
+  { value: "ARCHITECTURE", label: "Architecture" },
+  { value: "AGRICULTURE", label: "Agriculture" },
+  { value: "LAW", label: "Law" },
+  { value: "ARTS", label: "Arts & Humanities" },
+  { value: "OTHER", label: "Other" },
 ];
 
 const researchLevels = [
@@ -46,6 +58,7 @@ const researchLevels = [
 const roles = [
   { value: "student", label: "Student", description: "Learn, collaborate, and earn" },
   { value: "researcher", label: "Researcher", description: "Lead projects and mentor" },
+  { value: "professional", label: "Professional", description: "Post projects, hire talent, access tools" },
 ];
 
 const interestOptions = [
@@ -142,9 +155,11 @@ export default function OnboardingPage() {
       if (error) throw error;
 
       // Also update user_roles if role changed
+      // Map professional role to a valid user_roles value
+      const dbRole = formData.role === "professional" ? "researcher" : formData.role;
       await supabase
         .from("user_roles")
-        .update({ role: formData.role as "student" | "researcher" | "admin" })
+        .update({ role: dbRole as "student" | "researcher" | "admin" })
         .eq("user_id", user.id);
 
       await refreshProfile();
@@ -161,7 +176,7 @@ export default function OnboardingPage() {
       setTimeout(() => {
         if (formData.role === "admin") {
           navigate("/dashboard/admin");
-        } else if (formData.role === "researcher") {
+        } else if (formData.role === "researcher" || formData.role === "professional") {
           navigate("/dashboard/researcher");
         } else {
           navigate("/dashboard/student");
@@ -260,19 +275,19 @@ export default function OnboardingPage() {
                   {/* Role */}
                   <div className="space-y-2">
                     <Label>I am a...</Label>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-3 gap-3">
                       {roles.map((role) => (
                         <button
                           key={role.value}
                           type="button"
                           onClick={() => setFormData({ ...formData, role: role.value })}
-                          className={`p-4 rounded-lg border-2 text-left transition-all ${
+                          className={`p-3 rounded-lg border-2 text-left transition-all ${
                             formData.role === role.value
                               ? "border-primary bg-primary/5"
                               : "border-border hover:border-primary/50"
                           }`}
                         >
-                          <div className="font-medium">{role.label}</div>
+                          <div className="font-medium text-sm">{role.label}</div>
                           <div className="text-xs text-muted-foreground">{role.description}</div>
                         </button>
                       ))}
