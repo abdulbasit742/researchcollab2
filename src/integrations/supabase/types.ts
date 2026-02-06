@@ -14,6 +14,81 @@ export type Database = {
   }
   public: {
     Tables: {
+      abuse_detections: {
+        Row: {
+          auto_action_taken: string | null
+          created_at: string | null
+          detection_source: string
+          evidence: Json | null
+          id: string
+          pattern_type: string
+          resolution_notes: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          user_id: string
+        }
+        Insert: {
+          auto_action_taken?: string | null
+          created_at?: string | null
+          detection_source: string
+          evidence?: Json | null
+          id?: string
+          pattern_type: string
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity: string
+          user_id: string
+        }
+        Update: {
+          auto_action_taken?: string | null
+          created_at?: string | null
+          detection_source?: string
+          evidence?: Json | null
+          id?: string
+          pattern_type?: string
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      abuse_thresholds: {
+        Row: {
+          description: string | null
+          id: string
+          is_active: boolean | null
+          threshold_key: string
+          threshold_value: number
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          threshold_key: string
+          threshold_value: number
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          threshold_key?: string
+          threshold_value?: number
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       academic_courses: {
         Row: {
           course_code: string
@@ -6233,6 +6308,54 @@ export type Database = {
           status?: string | null
           tags?: string[] | null
           title?: string
+        }
+        Relationships: []
+      }
+      economic_velocity_tracking: {
+        Row: {
+          avg_transaction_size: number | null
+          circular_flow_score: number | null
+          created_at: string | null
+          flags: Json | null
+          id: string
+          is_suspicious: boolean | null
+          micro_transaction_count: number | null
+          period_end: string
+          period_start: string
+          total_volume: number | null
+          transaction_count: number | null
+          unique_counterparties: number | null
+          user_id: string
+        }
+        Insert: {
+          avg_transaction_size?: number | null
+          circular_flow_score?: number | null
+          created_at?: string | null
+          flags?: Json | null
+          id?: string
+          is_suspicious?: boolean | null
+          micro_transaction_count?: number | null
+          period_end: string
+          period_start: string
+          total_volume?: number | null
+          transaction_count?: number | null
+          unique_counterparties?: number | null
+          user_id: string
+        }
+        Update: {
+          avg_transaction_size?: number | null
+          circular_flow_score?: number | null
+          created_at?: string | null
+          flags?: Json | null
+          id?: string
+          is_suspicious?: boolean | null
+          micro_transaction_count?: number | null
+          period_end?: string
+          period_start?: string
+          total_volume?: number | null
+          transaction_count?: number | null
+          unique_counterparties?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -12525,14 +12648,18 @@ export type Database = {
           delivery_days: number | null
           description: string | null
           id: string
+          is_rate_limited: boolean | null
           offer_type: string
           price: number
+          proof_of_work_required: boolean | null
           recipient_id: string
           required_skills: string[] | null
           sender_id: string
+          spam_score: number | null
           status: string
           thread_id: string
           title: string
+          visibility_penalty: number | null
         }
         Insert: {
           created_at?: string
@@ -12540,14 +12667,18 @@ export type Database = {
           delivery_days?: number | null
           description?: string | null
           id?: string
+          is_rate_limited?: boolean | null
           offer_type: string
           price: number
+          proof_of_work_required?: boolean | null
           recipient_id: string
           required_skills?: string[] | null
           sender_id: string
+          spam_score?: number | null
           status?: string
           thread_id: string
           title: string
+          visibility_penalty?: number | null
         }
         Update: {
           created_at?: string
@@ -12555,14 +12686,18 @@ export type Database = {
           delivery_days?: number | null
           description?: string | null
           id?: string
+          is_rate_limited?: boolean | null
           offer_type?: string
           price?: number
+          proof_of_work_required?: boolean | null
           recipient_id?: string
           required_skills?: string[] | null
           sender_id?: string
+          spam_score?: number | null
           status?: string
           thread_id?: string
           title?: string
+          visibility_penalty?: number | null
         }
         Relationships: [
           {
@@ -15555,6 +15690,51 @@ export type Database = {
           trust_impact?: number | null
           verified_by?: string | null
           visibility?: string | null
+        }
+        Relationships: []
+      }
+      reciprocal_relationships: {
+        Row: {
+          created_at: string | null
+          first_interaction_at: string | null
+          flag_reason: string | null
+          id: string
+          is_flagged: boolean | null
+          last_interaction_at: string | null
+          mutual_collaborations: number | null
+          mutual_transactions: number | null
+          mutual_trust_events: number | null
+          relationship_score: number | null
+          user_a_id: string
+          user_b_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          first_interaction_at?: string | null
+          flag_reason?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          last_interaction_at?: string | null
+          mutual_collaborations?: number | null
+          mutual_transactions?: number | null
+          mutual_trust_events?: number | null
+          relationship_score?: number | null
+          user_a_id: string
+          user_b_id: string
+        }
+        Update: {
+          created_at?: string | null
+          first_interaction_at?: string | null
+          flag_reason?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          last_interaction_at?: string | null
+          mutual_collaborations?: number | null
+          mutual_transactions?: number | null
+          mutual_trust_events?: number | null
+          relationship_score?: number | null
+          user_a_id?: string
+          user_b_id?: string
         }
         Relationships: []
       }
@@ -20069,6 +20249,51 @@ export type Database = {
         }
         Relationships: []
       }
+      trust_velocity_tracking: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_suspicious: boolean | null
+          negative_events: number | null
+          period_end: string
+          period_start: string
+          positive_events: number | null
+          reciprocal_events: number | null
+          total_delta: number | null
+          unique_counterparties: number | null
+          user_id: string
+          velocity_score: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_suspicious?: boolean | null
+          negative_events?: number | null
+          period_end: string
+          period_start: string
+          positive_events?: number | null
+          reciprocal_events?: number | null
+          total_delta?: number | null
+          unique_counterparties?: number | null
+          user_id: string
+          velocity_score?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_suspicious?: boolean | null
+          negative_events?: number | null
+          period_end?: string
+          period_start?: string
+          positive_events?: number | null
+          reciprocal_events?: number | null
+          total_delta?: number | null
+          unique_counterparties?: number | null
+          user_id?: string
+          velocity_score?: number | null
+        }
+        Relationships: []
+      }
       user_ai_credits: {
         Row: {
           balance: number
@@ -20321,6 +20546,51 @@ export type Database = {
           },
         ]
       }
+      user_rate_limits: {
+        Row: {
+          action_count: number
+          action_type: string
+          blocked_reason: string | null
+          blocked_until: string | null
+          created_at: string | null
+          id: string
+          is_blocked: boolean | null
+          max_allowed: number
+          updated_at: string | null
+          user_id: string
+          window_hours: number
+          window_start: string
+        }
+        Insert: {
+          action_count?: number
+          action_type: string
+          blocked_reason?: string | null
+          blocked_until?: string | null
+          created_at?: string | null
+          id?: string
+          is_blocked?: boolean | null
+          max_allowed: number
+          updated_at?: string | null
+          user_id: string
+          window_hours?: number
+          window_start?: string
+        }
+        Update: {
+          action_count?: number
+          action_type?: string
+          blocked_reason?: string | null
+          blocked_until?: string | null
+          created_at?: string | null
+          id?: string
+          is_blocked?: boolean | null
+          max_allowed?: number
+          updated_at?: string | null
+          user_id?: string
+          window_hours?: number
+          window_start?: string
+        }
+        Relationships: []
+      }
       user_restrictions: {
         Row: {
           applied_by: string
@@ -20484,16 +20754,24 @@ export type Database = {
           frozen_reason: string | null
           id: string
           is_frozen: boolean | null
+          is_under_review: boolean | null
           is_verified_partner: boolean
           is_verified_researcher: boolean
           is_verified_student: boolean
           last_activity_at: string | null
+          last_dormant_at: string | null
+          reciprocal_ratio: number | null
           response_time_hours: number | null
+          resurrection_cooldown_until: string | null
+          review_reason: string | null
           successful_rate: number | null
           total_projects_completed: number
           total_projects_posted: number
           trust_score: number
           trust_tier: Database["public"]["Enums"]["trust_tier"] | null
+          trust_velocity_24h: number | null
+          trust_velocity_7d: number | null
+          unique_counterparties_30d: number | null
           updated_at: string
           user_id: string
           verification_level: string
@@ -20509,16 +20787,24 @@ export type Database = {
           frozen_reason?: string | null
           id?: string
           is_frozen?: boolean | null
+          is_under_review?: boolean | null
           is_verified_partner?: boolean
           is_verified_researcher?: boolean
           is_verified_student?: boolean
           last_activity_at?: string | null
+          last_dormant_at?: string | null
+          reciprocal_ratio?: number | null
           response_time_hours?: number | null
+          resurrection_cooldown_until?: string | null
+          review_reason?: string | null
           successful_rate?: number | null
           total_projects_completed?: number
           total_projects_posted?: number
           trust_score?: number
           trust_tier?: Database["public"]["Enums"]["trust_tier"] | null
+          trust_velocity_24h?: number | null
+          trust_velocity_7d?: number | null
+          unique_counterparties_30d?: number | null
           updated_at?: string
           user_id: string
           verification_level?: string
@@ -20534,16 +20820,24 @@ export type Database = {
           frozen_reason?: string | null
           id?: string
           is_frozen?: boolean | null
+          is_under_review?: boolean | null
           is_verified_partner?: boolean
           is_verified_researcher?: boolean
           is_verified_student?: boolean
           last_activity_at?: string | null
+          last_dormant_at?: string | null
+          reciprocal_ratio?: number | null
           response_time_hours?: number | null
+          resurrection_cooldown_until?: string | null
+          review_reason?: string | null
           successful_rate?: number | null
           total_projects_completed?: number
           total_projects_posted?: number
           trust_score?: number
           trust_tier?: Database["public"]["Enums"]["trust_tier"] | null
+          trust_velocity_24h?: number | null
+          trust_velocity_7d?: number | null
+          unique_counterparties_30d?: number | null
           updated_at?: string
           user_id?: string
           verification_level?: string
@@ -20887,6 +21181,7 @@ export type Database = {
       wallets: {
         Row: {
           available_balance: number
+          circular_flow_score: number | null
           created_at: string
           currency: string
           escrow_balance: number
@@ -20894,15 +21189,21 @@ export type Database = {
           frozen_reason: string | null
           id: string
           is_frozen: boolean | null
+          is_under_review: boolean | null
+          micro_transaction_count_24h: number | null
           pending_balance: number
+          review_reason: string | null
           risk_score: number | null
           total_earned: number
           total_spent: number
+          transaction_velocity_1h: number | null
+          transaction_velocity_24h: number | null
           updated_at: string
           user_id: string
         }
         Insert: {
           available_balance?: number
+          circular_flow_score?: number | null
           created_at?: string
           currency?: string
           escrow_balance?: number
@@ -20910,15 +21211,21 @@ export type Database = {
           frozen_reason?: string | null
           id?: string
           is_frozen?: boolean | null
+          is_under_review?: boolean | null
+          micro_transaction_count_24h?: number | null
           pending_balance?: number
+          review_reason?: string | null
           risk_score?: number | null
           total_earned?: number
           total_spent?: number
+          transaction_velocity_1h?: number | null
+          transaction_velocity_24h?: number | null
           updated_at?: string
           user_id: string
         }
         Update: {
           available_balance?: number
+          circular_flow_score?: number | null
           created_at?: string
           currency?: string
           escrow_balance?: number
@@ -20926,10 +21233,15 @@ export type Database = {
           frozen_reason?: string | null
           id?: string
           is_frozen?: boolean | null
+          is_under_review?: boolean | null
+          micro_transaction_count_24h?: number | null
           pending_balance?: number
+          review_reason?: string | null
           risk_score?: number | null
           total_earned?: number
           total_spent?: number
+          transaction_velocity_1h?: number | null
+          transaction_velocity_24h?: number | null
           updated_at?: string
           user_id?: string
         }
