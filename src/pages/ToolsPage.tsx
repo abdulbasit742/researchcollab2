@@ -243,13 +243,13 @@ Please guide me through the subscription process. JazakAllah!`;
                     </CardHeader>
 
                     <CardContent className="flex-1 p-4 pt-0 md:p-6 md:pt-0">
-                      <div className="flex items-center gap-2 mb-3 md:mb-4">
+                        <div className="flex items-center gap-2 mb-3 md:mb-4">
                         <div className="flex items-center">
                           <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
                           <span className="ml-1 font-medium text-sm">4.8</span>
                         </div>
                         <span className="text-muted-foreground text-xs md:text-sm">
-                          (1000+ users)
+                          Available now
                         </span>
                       </div>
 
