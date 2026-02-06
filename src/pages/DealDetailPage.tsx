@@ -109,6 +109,7 @@ export default function DealDetailPage() {
     
     await acceptDeal.mutateAsync({
       room_id: deal.id,
+      offer_id: deal.offer_id || deal.id,
       amount: deal.agreed_amount || 0,
       deliverables,
       deadline: agreedDeadline || undefined,
