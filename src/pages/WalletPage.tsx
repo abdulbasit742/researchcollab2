@@ -13,14 +13,23 @@ import {
   DollarSign,
   Clock,
   CheckCircle2,
-  AlertCircle,
   CreditCard,
   TrendingUp,
-  FileText
+  FileText,
+  Activity,
+  GitBranch,
 } from "lucide-react";
 import { useWallet, WalletTransaction } from "@/hooks/useWallet";
+import { useEscrowMonitor } from "@/hooks/useEscrowMonitor";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  MoneyFlowSummary,
+  MoneyFlowTimeline,
+  EscrowPositionsCard,
+  EscrowStateMachine,
+  FeeTransparencyCard,
+} from "@/components/escrow";
 
 const transactionTypeConfig: Record<string, {
   label: string;
@@ -41,6 +50,7 @@ const transactionTypeConfig: Record<string, {
 export default function WalletPage() {
   const { toast } = useToast();
   const { wallet, transactions, loading, requestWithdrawal } = useWallet();
+  const { summary, loading: escrowLoading } = useEscrowMonitor();
 
   const handleWithdraw = async () => {
     if (wallet && wallet.available_balance > 0) {
@@ -66,19 +76,31 @@ export default function WalletPage() {
           >
             <Badge variant="secondary" className="mb-3 sm:mb-4">
               <Wallet className="h-3 w-3 mr-1" />
-              My Wallet
+              Financial Command Center
             </Badge>
             <h1 className="text-2xl sm:text-3xl font-bold md:text-4xl">
-              Manage Your <span className="text-gradient">Funds</span>
+              Money Flow <span className="text-gradient">Dashboard</span>
             </h1>
             <p className="mt-2 text-sm sm:text-base text-muted-foreground">
-              Track earnings, escrow balances, and transactions
+              Real-time escrow tracking, fee transparency, and complete money audit trail
             </p>
           </motion.div>
         </div>
       </div>
 
-      <div className="container px-4 py-6 sm:py-8">
+      <div className="container px-4 py-6 sm:py-8 space-y-6">
+        {/* Money Flow Summary Cards */}
+        {escrowLoading ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            {[...Array(6)].map((_, i) => (
+              <Skeleton key={i} className="h-24 rounded-lg" />
+            ))}
+          </div>
+        ) : (
+          <MoneyFlowSummary summary={summary} />
+        )}
+
+        {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           <div className="lg:col-span-2 space-y-5 sm:space-y-6">
             {/* Wallet Summary Card */}
@@ -107,14 +129,14 @@ export default function WalletPage() {
                   <CardContent className="p-6">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                        <div className="flex items-center gap-2 text-amber-600 mb-1">
+                        <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 mb-1">
                           <Shield className="h-4 w-4" />
                           <span className="text-xs font-medium">In Escrow</span>
                         </div>
                         <p className="text-xl font-bold">PKR {wallet.escrow_balance.toLocaleString()}</p>
                       </div>
                       <div className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                        <div className="flex items-center gap-2 text-emerald-600 mb-1">
+                        <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 mb-1">
                           <TrendingUp className="h-4 w-4" />
                           <span className="text-xs font-medium">Total Earned</span>
                         </div>
@@ -134,7 +156,7 @@ export default function WalletPage() {
               )}
             </motion.div>
 
-            {/* Action Buttons - Full width on mobile */}
+            {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-3">
               <Button 
                 onClick={handleWithdraw} 
@@ -155,48 +177,43 @@ export default function WalletPage() {
               </Link>
             </div>
 
-            {/* Mobile Quick Stats - Show on mobile only */}
-            <div className="lg:hidden grid grid-cols-2 gap-3">
-              <Card className="bg-card/50">
-                <CardContent className="p-4 text-center">
-                  <TrendingUp className="h-5 w-5 mx-auto text-emerald-500 mb-1" />
-                  <div className="text-lg font-bold text-emerald-500">
-                    PKR {wallet?.total_earned?.toLocaleString() || 0}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Total Earned</div>
-                </CardContent>
-              </Card>
-              <Card className="bg-card/50">
-                <CardContent className="p-4 text-center">
-                  <CheckCircle2 className="h-5 w-5 mx-auto text-primary mb-1" />
-                  <div className="text-lg font-bold">{transactions.length}</div>
-                  <div className="text-xs text-muted-foreground">Transactions</div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Tabs - Scrollable on mobile */}
-            <Tabs defaultValue="transactions" className="space-y-4 sm:space-y-6">
-              <TabsList className="w-full grid grid-cols-2">
-                <TabsTrigger 
-                  value="transactions" 
-                  className="text-sm touch-manipulation"
-                >
-                  Transactions
+            {/* Tabs */}
+            <Tabs defaultValue="flows" className="space-y-4 sm:space-y-6">
+              <TabsList className="w-full grid grid-cols-4">
+                <TabsTrigger value="flows" className="text-xs sm:text-sm touch-manipulation">
+                  <Activity className="h-3 w-3 mr-1 hidden sm:inline" />
+                  Flows
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="escrow" 
-                  className="text-sm touch-manipulation"
-                >
-                  Escrow Funds
+                <TabsTrigger value="escrow" className="text-xs sm:text-sm touch-manipulation">
+                  <Shield className="h-3 w-3 mr-1 hidden sm:inline" />
+                  Escrow
+                </TabsTrigger>
+                <TabsTrigger value="transactions" className="text-xs sm:text-sm touch-manipulation">
+                  <FileText className="h-3 w-3 mr-1 hidden sm:inline" />
+                  History
+                </TabsTrigger>
+                <TabsTrigger value="machine" className="text-xs sm:text-sm touch-manipulation">
+                  <GitBranch className="h-3 w-3 mr-1 hidden sm:inline" />
+                  States
                 </TabsTrigger>
               </TabsList>
 
+              {/* Money Flow Timeline */}
+              <TabsContent value="flows">
+                <MoneyFlowTimeline flows={summary.recent_flows} />
+              </TabsContent>
+
+              {/* Active Escrow Positions */}
+              <TabsContent value="escrow">
+                <EscrowPositionsCard positions={summary.positions} />
+              </TabsContent>
+
+              {/* Transaction History */}
               <TabsContent value="transactions" className="space-y-4">
                 <Card>
                   <CardHeader className="pb-3 sm:pb-4">
-                    <CardTitle className="text-base sm:text-lg">Recent Transactions</CardTitle>
-                    <CardDescription className="text-sm">Your wallet activity</CardDescription>
+                    <CardTitle className="text-base sm:text-lg">Transaction History</CardTitle>
+                    <CardDescription className="text-sm">Complete audit trail</CardDescription>
                   </CardHeader>
                   <CardContent className="px-3 sm:px-6">
                     {loading ? (
@@ -263,42 +280,21 @@ export default function WalletPage() {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="escrow" className="space-y-4">
-                <Card>
-                  <CardHeader className="pb-3 sm:pb-4">
-                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                      <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-amber-500" />
-                      Funds in Escrow
-                    </CardTitle>
-                    <CardDescription className="text-sm">
-                      Protected funds awaiting milestone completion
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="px-3 sm:px-6">
-                    {wallet && wallet.escrow_balance > 0 ? (
-                      <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-semibold">Total in Escrow</p>
-                            <p className="text-sm text-muted-foreground">Protected until milestone approval</p>
-                          </div>
-                          <p className="text-2xl font-bold">PKR {wallet.escrow_balance.toLocaleString()}</p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-center py-8 text-muted-foreground">
-                        <Shield className="h-10 w-10 mx-auto mb-2 opacity-50" />
-                        <p className="text-sm">No active escrow projects</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+              {/* Escrow State Machine */}
+              <TabsContent value="machine">
+                <EscrowStateMachine 
+                  activeState={
+                    summary.positions.length > 0
+                      ? summary.positions[0].status === "in_progress" ? "locked" : "uninitialized"
+                      : "uninitialized"
+                  } 
+                />
               </TabsContent>
             </Tabs>
           </div>
 
-          {/* Sidebar - Hidden on mobile (shown as quick stats above) */}
-          <div className="hidden lg:block space-y-6">
+          {/* Sidebar */}
+          <div className="space-y-6">
             {/* Quick Stats */}
             <Card>
               <CardHeader>
@@ -316,11 +312,18 @@ export default function WalletPage() {
                   <span className="font-semibold">PKR {wallet?.total_spent?.toLocaleString() || 0}</span>
                 </div>
                 <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Active Deals</span>
+                  <span className="font-semibold">{summary.active_deals}</span>
+                </div>
+                <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Transactions</span>
                   <span className="font-semibold">{transactions.length}</span>
                 </div>
               </CardContent>
             </Card>
+
+            {/* Fee Transparency */}
+            <FeeTransparencyCard totalFeesPaid={summary.total_fees_paid} />
 
             {/* Escrow Protection Info */}
             <Card className="bg-amber-500/5 border-amber-500/20">
@@ -328,10 +331,10 @@ export default function WalletPage() {
                 <div className="flex items-start gap-3">
                   <Shield className="h-8 w-8 text-amber-500 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold text-sm">Escrow Protection</h4>
+                    <h4 className="font-semibold text-sm">Atomic Escrow</h4>
                     <p className="text-xs text-muted-foreground mt-1">
-                      All project funds are held securely in escrow until milestones are approved. 
-                      This protects both clients and service providers.
+                      Every fund movement is atomic — money can never be lost, duplicated, or trapped.
+                      All transactions are logged with full audit trails.
                     </p>
                   </div>
                 </div>
@@ -351,23 +354,6 @@ export default function WalletPage() {
               </CardContent>
             </Card>
           </div>
-        </div>
-
-        {/* Mobile Help Section */}
-        <div className="lg:hidden mt-6 space-y-4">
-          <Card className="bg-amber-500/5 border-amber-500/20">
-            <CardContent className="p-4">
-              <div className="flex items-start gap-3">
-                <Shield className="h-6 w-6 text-amber-500 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-sm">Escrow Protection</h4>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    All funds are held securely until milestones are approved.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </MainLayout>
