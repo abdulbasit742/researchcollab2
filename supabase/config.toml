@@ -14,3 +14,6 @@ verify_jwt = false
 
 [functions.deal-runtime]
 verify_jwt = false
+
+[functions.abuse-resistance]
+verify_jwt = false
