@@ -99,6 +99,7 @@ import SearchPage from "./pages/SearchPage";
 import OutcomeFeedPage from "./pages/OutcomeFeedPage";
 import RealityFeedPage from "./pages/RealityFeedPage";
 import AdminStewardshipPage from "./pages/admin/AdminStewardshipPage";
+import AdminOperationsPage from "./pages/admin/AdminOperationsPage";
 import PressKitPage from "./pages/PressKitPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsOfServicePage from "./pages/TermsOfServicePage";
@@ -252,6 +253,7 @@ const AppContent = () => {
             <Route path="/admin/stewardship" element={<AdminStewardshipPage />} />
             <Route path="/admin/premium-analytics" element={<AdminPremiumAnalyticsPage />} />
             <Route path="/admin/pricing" element={<AdminPricingPage />} />
+            <Route path="/admin/operations" element={<AdminOperationsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>

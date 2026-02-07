@@ -34,6 +34,7 @@ import {
   Brain,
    Volume2,
    Bot,
+   Radio,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -41,6 +42,7 @@ import { Separator } from "@/components/ui/separator";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/admin" },
+  { icon: Radio, label: "Operations Center", href: "/admin/operations" },
   { icon: Users, label: "Users", href: "/admin/users" },
   { icon: Key, label: "Permissions", href: "/admin/permissions" },
   { icon: MessageSquare, label: "Feed Moderation", href: "/admin/feed" },

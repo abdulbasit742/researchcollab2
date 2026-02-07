@@ -2854,6 +2854,56 @@ export type Database = {
           },
         ]
       }
+      change_freeze_policy: {
+        Row: {
+          allowed_changes: string[] | null
+          created_at: string
+          end_date: string
+          enforced_by: string | null
+          exceptions: string[] | null
+          freeze_type: string
+          id: string
+          is_active: boolean
+          policy_name: string
+          reason: string
+          start_date: string
+        }
+        Insert: {
+          allowed_changes?: string[] | null
+          created_at?: string
+          end_date: string
+          enforced_by?: string | null
+          exceptions?: string[] | null
+          freeze_type: string
+          id?: string
+          is_active?: boolean
+          policy_name: string
+          reason: string
+          start_date?: string
+        }
+        Update: {
+          allowed_changes?: string[] | null
+          created_at?: string
+          end_date?: string
+          enforced_by?: string | null
+          exceptions?: string[] | null
+          freeze_type?: string
+          id?: string
+          is_active?: boolean
+          policy_name?: string
+          reason?: string
+          start_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "change_freeze_policy_enforced_by_fkey"
+            columns: ["enforced_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       civilizational_principles: {
         Row: {
           change_requirements: Json
@@ -7656,6 +7706,81 @@ export type Database = {
           },
         ]
       }
+      feedback_triage: {
+        Row: {
+          affects_outcomes: boolean | null
+          category: string | null
+          classification: string
+          created_at: string
+          frequency: number | null
+          id: string
+          is_blocking: boolean | null
+          priority: string | null
+          raw_feedback: string
+          resolution_notes: string | null
+          resolution_status: string | null
+          source: string
+          submitted_by: string | null
+          triaged_at: string | null
+          triaged_by: string | null
+          updated_at: string
+          user_count: number | null
+        }
+        Insert: {
+          affects_outcomes?: boolean | null
+          category?: string | null
+          classification?: string
+          created_at?: string
+          frequency?: number | null
+          id?: string
+          is_blocking?: boolean | null
+          priority?: string | null
+          raw_feedback: string
+          resolution_notes?: string | null
+          resolution_status?: string | null
+          source: string
+          submitted_by?: string | null
+          triaged_at?: string | null
+          triaged_by?: string | null
+          updated_at?: string
+          user_count?: number | null
+        }
+        Update: {
+          affects_outcomes?: boolean | null
+          category?: string | null
+          classification?: string
+          created_at?: string
+          frequency?: number | null
+          id?: string
+          is_blocking?: boolean | null
+          priority?: string | null
+          raw_feedback?: string
+          resolution_notes?: string | null
+          resolution_status?: string | null
+          source?: string
+          submitted_by?: string | null
+          triaged_at?: string | null
+          triaged_by?: string | null
+          updated_at?: string
+          user_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feedback_triage_submitted_by_fkey"
+            columns: ["submitted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "feedback_triage_triaged_by_fkey"
+            columns: ["triaged_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       field_translation_records: {
         Row: {
           created_at: string
@@ -7954,6 +8079,78 @@ export type Database = {
             columns: ["archival_object_id"]
             isOneToOne: false
             referencedRelation: "archival_objects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      founder_discipline: {
+        Row: {
+          cooling_expires_at: string
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_reason: string | null
+          has_incident_report: boolean | null
+          has_usage_proof: boolean | null
+          id: string
+          idea_description: string | null
+          idea_title: string
+          idea_type: string
+          requires_schema_change: boolean | null
+          status: string
+          submitted_at: string
+          submitted_by: string | null
+          supporting_data: string | null
+        }
+        Insert: {
+          cooling_expires_at?: string
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_reason?: string | null
+          has_incident_report?: boolean | null
+          has_usage_proof?: boolean | null
+          id?: string
+          idea_description?: string | null
+          idea_title: string
+          idea_type: string
+          requires_schema_change?: boolean | null
+          status?: string
+          submitted_at?: string
+          submitted_by?: string | null
+          supporting_data?: string | null
+        }
+        Update: {
+          cooling_expires_at?: string
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_reason?: string | null
+          has_incident_report?: boolean | null
+          has_usage_proof?: boolean | null
+          id?: string
+          idea_description?: string | null
+          idea_title?: string
+          idea_type?: string
+          requires_schema_change?: boolean | null
+          status?: string
+          submitted_at?: string
+          submitted_by?: string | null
+          supporting_data?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "founder_discipline_decided_by_fkey"
+            columns: ["decided_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "founder_discipline_submitted_by_fkey"
+            columns: ["submitted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -9678,6 +9875,90 @@ export type Database = {
           {
             foreignKeyName: "incident_response_actions_performed_by_fkey"
             columns: ["performed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      incidents: {
+        Row: {
+          acknowledged_at: string | null
+          affected_system: string
+          assigned_to: string | null
+          communication_sent: boolean | null
+          created_at: string
+          description: string
+          detected_at: string
+          id: string
+          impact_summary: string | null
+          money_at_risk: number | null
+          postmortem_url: string | null
+          reported_by: string | null
+          resolved_at: string | null
+          root_cause: string | null
+          severity: string
+          status: string
+          systems_frozen: string[] | null
+          title: string
+          updated_at: string
+          users_affected: number | null
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          affected_system: string
+          assigned_to?: string | null
+          communication_sent?: boolean | null
+          created_at?: string
+          description: string
+          detected_at?: string
+          id?: string
+          impact_summary?: string | null
+          money_at_risk?: number | null
+          postmortem_url?: string | null
+          reported_by?: string | null
+          resolved_at?: string | null
+          root_cause?: string | null
+          severity: string
+          status?: string
+          systems_frozen?: string[] | null
+          title: string
+          updated_at?: string
+          users_affected?: number | null
+        }
+        Update: {
+          acknowledged_at?: string | null
+          affected_system?: string
+          assigned_to?: string | null
+          communication_sent?: boolean | null
+          created_at?: string
+          description?: string
+          detected_at?: string
+          id?: string
+          impact_summary?: string | null
+          money_at_risk?: number | null
+          postmortem_url?: string | null
+          reported_by?: string | null
+          resolved_at?: string | null
+          root_cause?: string | null
+          severity?: string
+          status?: string
+          systems_frozen?: string[] | null
+          title?: string
+          updated_at?: string
+          users_affected?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incidents_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "incidents_reported_by_fkey"
+            columns: ["reported_by"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -12866,6 +13147,50 @@ export type Database = {
         }
         Relationships: []
       }
+      operating_log: {
+        Row: {
+          action_items: string[] | null
+          created_at: string
+          do_not_touch: string[] | null
+          findings: Json | null
+          id: string
+          log_date: string
+          log_type: string
+          logged_by: string | null
+          summary: string
+        }
+        Insert: {
+          action_items?: string[] | null
+          created_at?: string
+          do_not_touch?: string[] | null
+          findings?: Json | null
+          id?: string
+          log_date?: string
+          log_type: string
+          logged_by?: string | null
+          summary: string
+        }
+        Update: {
+          action_items?: string[] | null
+          created_at?: string
+          do_not_touch?: string[] | null
+          findings?: Json | null
+          id?: string
+          log_date?: string
+          log_type?: string
+          logged_by?: string | null
+          summary?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "operating_log_logged_by_fkey"
+            columns: ["logged_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunity_alerts: {
         Row: {
           alert_type: string
@@ -12925,6 +13250,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ops_metrics_snapshots: {
+        Row: {
+          completed_outcomes: number
+          created_at: string
+          dau: number | null
+          deals_closed_cleanly: number
+          id: string
+          money_flow_incidents: number
+          notes: string | null
+          organic_return_rate: number
+          snapshot_date: string
+          time_spent_avg_minutes: number | null
+          trust_variance: number
+        }
+        Insert: {
+          completed_outcomes?: number
+          created_at?: string
+          dau?: number | null
+          deals_closed_cleanly?: number
+          id?: string
+          money_flow_incidents?: number
+          notes?: string | null
+          organic_return_rate?: number
+          snapshot_date?: string
+          time_spent_avg_minutes?: number | null
+          trust_variance?: number
+        }
+        Update: {
+          completed_outcomes?: number
+          created_at?: string
+          dau?: number | null
+          deals_closed_cleanly?: number
+          id?: string
+          money_flow_incidents?: number
+          notes?: string | null
+          organic_return_rate?: number
+          snapshot_date?: string
+          time_spent_avg_minutes?: number | null
+          trust_variance?: number
+        }
+        Relationships: []
       }
       org_bulk_licenses: {
         Row: {
