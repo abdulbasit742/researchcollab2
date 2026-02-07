@@ -36,7 +36,7 @@ export default function CookiePolicyPage() {
                 how you use the site.
               </p>
               <p>
-                ResearcherCollab Pro ("RCollab") uses cookies and similar technologies to provide, 
+                RCollab uses cookies and similar technologies to provide, 
                 protect, and improve our platform.
               </p>
             </CardContent>
@@ -216,10 +216,10 @@ export default function CookiePolicyPage() {
               <p>
                 If you have questions about our use of cookies, contact us:
               </p>
-              <ul>
-                <li>Email: privacy@researchercollab.com</li>
-                <li>Help Center: /help</li>
-              </ul>
+              <p>
+                Reach us through the <a href="/help" className="text-primary hover:underline">Help Center</a> or 
+                <a href="/contact" className="text-primary hover:underline"> Contact page</a>.
+              </p>
             </CardContent>
           </Card>
         </div>

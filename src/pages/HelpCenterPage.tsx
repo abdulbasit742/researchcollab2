@@ -284,9 +284,9 @@ export default function HelpCenterPage() {
                   We'll respond within 24 hours
                 </p>
                 <Button variant="outline" className="w-full" asChild>
-                  <a href="mailto:support@researchercollab.com">
+                  <a href="/contact">
                     <Mail className="h-4 w-4 mr-2" />
-                    Send Email
+                    Contact Us
                   </a>
                 </Button>
               </CardContent>

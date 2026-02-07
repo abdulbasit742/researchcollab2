@@ -126,7 +126,7 @@ export function Navbar() {
     >
       <div className="container flex h-14 items-center justify-between px-4">
         {/* Logo */}
-        <Link to="/home" className="flex items-center gap-2">
+        <Link to={user ? "/home" : "/"} className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
             <GraduationCap className="h-4 w-4 text-primary-foreground" />
           </div>

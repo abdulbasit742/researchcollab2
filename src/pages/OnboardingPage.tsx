@@ -169,7 +169,7 @@ export default function OnboardingPage() {
 
       toast({
         title: "Profile Complete!",
-        description: "Welcome to ResearcherCollab!",
+        description: "Welcome to RCollab! Your profile is ready.",
       });
 
       // Redirect after celebration animation
@@ -216,7 +216,7 @@ export default function OnboardingPage() {
             <GraduationCap className="h-6 w-6 text-primary-foreground" />
           </div>
           <span className="text-2xl font-bold">
-            Researcher<span className="text-primary">Collab</span>
+            R<span className="text-primary">Collab</span>
           </span>
         </div>
 

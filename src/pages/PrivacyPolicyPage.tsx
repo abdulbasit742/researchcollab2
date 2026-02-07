@@ -30,7 +30,7 @@ export default function PrivacyPolicyPage() {
             </CardHeader>
             <CardContent className="prose prose-sm dark:prose-invert max-w-none">
               <p>
-                ResearcherCollab Pro ("RCollab," "we," "us," or "our") is committed to protecting your privacy. 
+                RCollab ("we," "us," or "our") is committed to protecting your privacy. 
                 This Privacy Policy explains how we collect, use, disclose, and safeguard your information when 
                 you use our platform.
               </p>
@@ -173,10 +173,10 @@ export default function PrivacyPolicyPage() {
               <p>
                 For privacy-related inquiries, contact our Data Protection Officer:
               </p>
-              <ul>
-                <li>Email: privacy@researchercollab.com</li>
-                <li>Address: ResearcherCollab Pro, Privacy Office</li>
-              </ul>
+              <p>
+                Reach us through the <a href="/help" className="text-primary hover:underline">Help Center</a> or 
+                <a href="/contact" className="text-primary hover:underline"> Contact page</a>.
+              </p>
               <p>
                 We will respond to all legitimate requests within 30 days.
               </p>

@@ -91,11 +91,8 @@ const AIProjectScopePage = () => {
       setAdjustedPrice(price.recommendedPrice);
       
       // Generate talent suggestions
-      setTalentSuggestions([
-        { userId: 'user-1', name: 'Hassan Ahmed', matchScore: 92, trustScore: 88, skills: techTools.split(',').slice(0, 3).map(t => t.trim()), completedProjects: 15, isVerified: true, hourlyRate: 18 },
-        { userId: 'user-2', name: 'Ayesha Malik', matchScore: 87, trustScore: 92, skills: techTools.split(',').slice(0, 2).map(t => t.trim()), completedProjects: 12, isVerified: true, hourlyRate: 20 },
-        { userId: 'user-3', name: 'Usman Khan', matchScore: 82, trustScore: 85, skills: techTools.split(',').slice(0, 2).map(t => t.trim()), completedProjects: 8, isVerified: true, hourlyRate: 15 }
-      ]);
+      // Talent suggestions will come from real profiles in production
+      setTalentSuggestions([]);
       
       // Generate tool recommendations based on project type
       const recommendedTools: ToolRecommendation[] = [];
