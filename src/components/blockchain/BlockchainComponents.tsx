@@ -41,7 +41,7 @@ export function CryptoWalletDashboard() {
 
 export function NFTGallery() {
   const nfts = [
-    { name: "Achievement #1", collection: "RCollab", rarity: "rare" },
+    { name: "Achievement #1", collection: "ResearchCollabPro", rarity: "rare" },
     { name: "Top Performer", collection: "Badges", rarity: "legendary" },
   ];
 

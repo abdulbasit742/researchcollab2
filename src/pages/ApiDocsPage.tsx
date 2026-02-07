@@ -80,7 +80,7 @@ const headers = {
   'Content-Type': 'application/json'
 };
 
-fetch('https://api.researchercollab.com/v1/tools', {
+fetch('https://api.researchcollabpro.com/v1/tools', {
   method: 'GET',
   headers: headers
 })
@@ -88,7 +88,7 @@ fetch('https://api.researchercollab.com/v1/tools', {
 .then(data => console.log(data));`,
   
   listTools: `// List all available tools
-const response = await fetch('https://api.researchercollab.com/v1/tools', {
+const response = await fetch('https://api.researchcollabpro.com/v1/tools', {
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY'
   }
@@ -110,7 +110,7 @@ const tools = await response.json();
 // }`,
 
   createSubscription: `// Create a new subscription
-const response = await fetch('https://api.researchercollab.com/v1/subscriptions', {
+const response = await fetch('https://api.researchcollabpro.com/v1/subscriptions', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -204,7 +204,7 @@ export default function ApiDocsPage() {
               Build with our <span className="text-gradient">API</span>
             </h1>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Integrate ResearcherCollab services into your applications with our RESTful API.
+              Integrate ResearchCollabPro services into your applications with our RESTful API.
             </p>
           </motion.div>
 
