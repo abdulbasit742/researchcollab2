@@ -131,7 +131,7 @@ export function Navbar() {
             <GraduationCap className="h-4 w-4 text-primary-foreground" />
           </div>
           <span className="text-lg font-bold">
-            <span className="text-primary">ResearcherCollab</span> Pro
+            <span className="text-primary">ResearchCollabPro</span>
           </span>
         </Link>
 

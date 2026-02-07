@@ -143,7 +143,7 @@ export default function AboutPage() {
               <Badge variant="outline" className="mb-4">Our Approach</Badge>
               <h2 className="text-3xl font-bold mb-4">Built with Discipline</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                RCollab isn't built for hype. Every feature is earned through real usage,
+                ResearchCollabPro isn't built for hype. Every feature is earned through real usage,
                 every metric reflects actual outcomes, and every system is designed to
                 protect the people who use it.
               </p>

@@ -50,7 +50,7 @@ export default function ProgressPage() {
         <div className="container px-4 py-3">
           <p className="text-sm text-center text-muted-foreground">
             <span className="font-medium text-foreground">LinkedIn shows activity.</span>{" "}
-            ResearcherCollab Pro shows <span className="font-medium text-foreground">progress</span>.
+            ResearchCollabPro shows <span className="font-medium text-foreground">progress</span>.
           </p>
         </div>
       </div>

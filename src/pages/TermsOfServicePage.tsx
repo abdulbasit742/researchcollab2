@@ -30,11 +30,11 @@ export default function TermsOfServicePage() {
             </CardHeader>
             <CardContent className="prose prose-sm dark:prose-invert max-w-none">
               <p>
-                By accessing or using ResearcherCollab Pro, you agree to be bound by these Terms of Service. 
+                By accessing or using ResearchCollabPro, you agree to be bound by these Terms of Service. 
                 If you do not agree to these terms, you may not use our platform.
               </p>
               <p>
-                ResearcherCollab Pro is an outcome-based professional platform for researchers, students, and institutions. 
+                ResearchCollabPro is an outcome-based professional platform for researchers, students, and institutions. 
                 We prioritize trust, verified work, and professional accountability.
               </p>
             </CardContent>
@@ -51,7 +51,7 @@ export default function TermsOfServicePage() {
             <CardContent className="prose prose-sm dark:prose-invert max-w-none">
               <h4>Eligibility</h4>
               <ul>
-                <li>You must be at least 18 years old to use ResearcherCollab Pro</li>
+                <li>You must be at least 18 years old to use ResearchCollabPro</li>
                 <li>You must provide accurate and complete registration information</li>
                 <li>You are responsible for maintaining account security</li>
               </ul>
@@ -76,7 +76,7 @@ export default function TermsOfServicePage() {
             </CardHeader>
             <CardContent className="prose prose-sm dark:prose-invert max-w-none">
               <h4>Trust-First Conduct</h4>
-              <p>ResearcherCollab Pro is built on trust and accountability. You agree to:</p>
+              <p>ResearchCollabPro is built on trust and accountability. You agree to:</p>
               <ul>
                 <li>Provide truthful information about your credentials and experience</li>
                 <li>Honor project commitments and deadlines</li>
@@ -139,13 +139,13 @@ export default function TermsOfServicePage() {
               <h4>Your Content</h4>
               <ul>
                 <li>You retain ownership of content you create</li>
-                <li>You grant ResearcherCollab Pro a license to display and process your content</li>
+                <li>You grant ResearchCollabPro a license to display and process your content</li>
                 <li>Project deliverables are governed by individual project agreements</li>
               </ul>
 
               <h4>Platform Content</h4>
               <ul>
-                <li>ResearcherCollab Pro owns all platform designs, features, and systems</li>
+                <li>ResearchCollabPro owns all platform designs, features, and systems</li>
                 <li>You may not copy, modify, or distribute platform elements</li>
               </ul>
             </CardContent>
@@ -168,7 +168,7 @@ export default function TermsOfServicePage() {
               </ul>
 
               <h4>Enforcement</h4>
-              <p>ResearcherCollab Pro may suspend or terminate accounts for:</p>
+              <p>ResearchCollabPro may suspend or terminate accounts for:</p>
               <ul>
                 <li>Violation of these terms</li>
                 <li>Fraudulent or deceptive behavior</li>
@@ -185,7 +185,7 @@ export default function TermsOfServicePage() {
             </CardHeader>
             <CardContent className="prose prose-sm dark:prose-invert max-w-none">
               <ul>
-                <li>ResearcherCollab Pro is provided "as is" without warranties</li>
+                <li>ResearchCollabPro is provided "as is" without warranties</li>
                 <li>We do not guarantee specific outcomes from using the platform</li>
                 <li>We are not responsible for disputes between users</li>
                 <li>Our liability is limited to the extent permitted by law</li>

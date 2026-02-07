@@ -9,7 +9,7 @@ export function PostLaunchRules() {
       <Card className="bg-primary/5 border-primary/20">
         <CardContent className="p-6 text-center">
           <p className="text-lg font-semibold italic text-primary">
-            "ResearcherCollab Pro grows by staying calm while others panic."
+            "ResearchCollabPro grows by staying calm while others panic."
           </p>
           <p className="text-sm text-muted-foreground mt-2">
             For the first 90 days: Nothing critical breaks. No panic decisions. Signal separated from noise.

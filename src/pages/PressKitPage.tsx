@@ -23,6 +23,21 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 
+const pressQuotes = [
+  {
+    quote: "ResearchCollabPro is not where professionals are seen. It is where professionals are proven, measured, and trusted.",
+    attribution: "Platform Philosophy",
+  },
+  {
+    quote: "The first professional platform where trust is computed, not claimed.",
+    attribution: "Mission Statement",
+  },
+  {
+    quote: "LinkedIn shows who you claim to be. ResearchCollabPro proves what you've done.",
+    attribution: "Brand Tagline",
+  },
+];
+
 const brandColors = [
   { name: "Primary Purple", hex: "#8B5CF6", hsl: "hsl(262, 83%, 58%)", usage: "Primary actions, links, accents" },
   { name: "Primary Foreground", hex: "#FFFFFF", hsl: "hsl(0, 0%, 100%)", usage: "Text on primary backgrounds" },
@@ -37,21 +52,6 @@ const platformCapabilities = [
   { label: "Trust-Based Matching", value: "✓", icon: Users },
   { label: "Verified Outcomes", value: "✓", icon: Briefcase },
   { label: "Institutional Support", value: "✓", icon: Building2 },
-];
-
-const pressQuotes = [
-  {
-    quote: "ResearcherCollab Pro is not where professionals are seen. It is where professionals are proven, measured, and trusted.",
-    attribution: "Platform Philosophy",
-  },
-  {
-    quote: "The first professional platform where trust is computed, not claimed.",
-    attribution: "Mission Statement",
-  },
-  {
-    quote: "LinkedIn shows who you claim to be. ResearcherCollab Pro proves what you've done.",
-    attribution: "Brand Tagline",
-  },
 ];
 
 const mediaAssets = [
@@ -82,7 +82,7 @@ export default function PressKitPage() {
           <h1 className="text-4xl font-bold mb-4">Press Kit</h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
             Official brand assets, platform information, and media resources for journalists, 
-            partners, and institutions covering ResearcherCollab Pro.
+            partners, and institutions covering ResearchCollabPro.
           </p>
         </div>
 
@@ -111,14 +111,14 @@ export default function PressKitPage() {
         <section className="mb-12">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <GraduationCap className="h-5 w-5 text-primary" />
-            About ResearcherCollab Pro
+            About ResearchCollabPro
           </h2>
           <Card>
             <CardContent className="pt-6 space-y-4">
               <p className="text-muted-foreground leading-relaxed">
-                <strong className="text-foreground">ResearcherCollab Pro</strong> is an outcome-driven 
+                <strong className="text-foreground">ResearchCollabPro</strong> is an outcome-driven 
                 professional platform built for researchers, students, and institutions. Unlike traditional 
-                professional networks that optimize for visibility and engagement, ResearcherCollab Pro focuses on 
+                professional networks that optimize for visibility and engagement, ResearchCollabPro focuses on 
                 reliability, accountability, and verified outcomes.
               </p>
               <p className="text-muted-foreground leading-relaxed">
@@ -128,7 +128,7 @@ export default function PressKitPage() {
                 recorded permanently.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                ResearcherCollab Pro serves academic institutions, research laboratories, and individual researchers 
+                ResearchCollabPro serves academic institutions, research laboratories, and individual researchers 
                 who need a platform where credibility is earned through work, not marketing.
               </p>
             </CardContent>
@@ -256,7 +256,7 @@ export default function PressKitPage() {
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li>• Use official logos without modification</li>
                     <li>• Maintain minimum clear space around logos</li>
-                    <li>• Reference platform as "ResearcherCollab Pro"</li>
+                    <li>• Reference platform as "ResearchCollabPro"</li>
                     <li>• Use approved quotes and statistics</li>
                     <li>• Contact press team for custom assets</li>
                   </ul>
