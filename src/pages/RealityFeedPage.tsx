@@ -221,7 +221,7 @@ export default function RealityFeedPage() {
                 <CardContent className="p-4 text-center">
                   <p className="text-xs text-muted-foreground italic">
                     "LinkedIn shows who you claim to be.<br />
-                    <span className="font-semibold text-foreground">RCollab proves what you've done.</span>"
+                    <span className="font-semibold text-foreground">ResearcherCollab Pro proves what you've done.</span>"
                   </p>
                 </CardContent>
               </Card>

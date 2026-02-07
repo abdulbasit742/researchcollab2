@@ -41,7 +41,7 @@ const platformCapabilities = [
 
 const pressQuotes = [
   {
-    quote: "RCollab is not where professionals are seen. It is where professionals are proven, measured, and trusted.",
+    quote: "ResearcherCollab Pro is not where professionals are seen. It is where professionals are proven, measured, and trusted.",
     attribution: "Platform Philosophy",
   },
   {
@@ -49,7 +49,7 @@ const pressQuotes = [
     attribution: "Mission Statement",
   },
   {
-    quote: "LinkedIn shows who you claim to be. RCollab proves what you've done.",
+    quote: "LinkedIn shows who you claim to be. ResearcherCollab Pro proves what you've done.",
     attribution: "Brand Tagline",
   },
 ];
@@ -82,7 +82,7 @@ export default function PressKitPage() {
           <h1 className="text-4xl font-bold mb-4">Press Kit</h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
             Official brand assets, platform information, and media resources for journalists, 
-            partners, and institutions covering ResearcherCollab.
+            partners, and institutions covering ResearcherCollab Pro.
           </p>
         </div>
 
@@ -111,14 +111,14 @@ export default function PressKitPage() {
         <section className="mb-12">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <GraduationCap className="h-5 w-5 text-primary" />
-            About ResearcherCollab
+            About ResearcherCollab Pro
           </h2>
           <Card>
             <CardContent className="pt-6 space-y-4">
               <p className="text-muted-foreground leading-relaxed">
-                <strong className="text-foreground">ResearcherCollab (RCollab)</strong> is an outcome-driven 
+                <strong className="text-foreground">ResearcherCollab Pro</strong> is an outcome-driven 
                 professional platform built for researchers, students, and institutions. Unlike traditional 
-                professional networks that optimize for visibility and engagement, RCollab focuses on 
+                professional networks that optimize for visibility and engagement, ResearcherCollab Pro focuses on 
                 reliability, accountability, and verified outcomes.
               </p>
               <p className="text-muted-foreground leading-relaxed">
@@ -128,7 +128,7 @@ export default function PressKitPage() {
                 recorded permanently.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                RCollab serves academic institutions, research laboratories, and individual researchers 
+                ResearcherCollab Pro serves academic institutions, research laboratories, and individual researchers 
                 who need a platform where credibility is earned through work, not marketing.
               </p>
             </CardContent>
@@ -236,7 +236,7 @@ export default function PressKitPage() {
                 ))}
               </div>
               <p className="text-xs text-muted-foreground mt-4">
-                * Asset downloads will be available soon. Contact press@rcollab.com for immediate access.
+                * Asset downloads will be available soon. Contact us through the Help Center for immediate access.
               </p>
             </CardContent>
           </Card>
@@ -256,7 +256,7 @@ export default function PressKitPage() {
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li>• Use official logos without modification</li>
                     <li>• Maintain minimum clear space around logos</li>
-                    <li>• Reference platform as "ResearcherCollab" or "RCollab"</li>
+                    <li>• Reference platform as "ResearcherCollab Pro"</li>
                     <li>• Use approved quotes and statistics</li>
                     <li>• Contact press team for custom assets</li>
                   </ul>
@@ -292,11 +292,11 @@ export default function PressKitPage() {
                   <p className="text-muted-foreground text-sm mb-2">
                     For interviews, partnership announcements, and media inquiries
                   </p>
-                  <a 
-                    href="mailto:press@rcollab.com" 
+                   <a 
+                    href="/contact" 
                     className="text-primary hover:underline font-medium"
                   >
-                    press@rcollab.com
+                    Contact us through the platform
                   </a>
                 </div>
                 <div className="flex gap-2">

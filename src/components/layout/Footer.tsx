@@ -41,7 +41,7 @@ export function Footer() {
               <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
                 <GraduationCap className="h-4 w-4 text-primary-foreground" />
               </div>
-              <span className="font-bold text-lg">RCollab</span>
+              <span className="font-bold text-lg">ResearcherCollab Pro</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Professional infrastructure where trust, work, and opportunity compound over time.
@@ -122,7 +122,7 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© {currentYear} RCollab. All rights reserved.</p>
+          <p>© {currentYear} ResearcherCollab Pro. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
               <Building2 className="h-3.5 w-3.5" />

@@ -93,7 +93,7 @@ export function MultiPartyDealRoom() {
               <p className="text-xs text-muted-foreground">Parties</p>
             </div>
             <div className="text-center p-3 rounded-lg bg-muted/50">
-              <p className="text-2xl font-bold">${totalValue.toLocaleString()}</p>
+              <p className="text-2xl font-bold">PKR {totalValue.toLocaleString()}</p>
               <p className="text-xs text-muted-foreground">Total Value</p>
             </div>
             <div className="text-center p-3 rounded-lg bg-green-500/10">
@@ -136,7 +136,7 @@ export function MultiPartyDealRoom() {
                         {party.role}
                       </Badge>
                     </div>
-                    <span>${Math.round(totalValue * party.paymentShare / 100).toLocaleString()}</span>
+                    <span>PKR {Math.round(totalValue * party.paymentShare / 100).toLocaleString()}</span>
                   </div>
                   <div className="flex gap-2">
                     <Progress value={party.contribution} className="h-2 flex-1" />
@@ -157,7 +157,7 @@ export function MultiPartyDealRoom() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Escrow Balance</p>
-                    <p className="text-lg font-bold">${(totalValue * 0.2).toLocaleString()}</p>
+                    <p className="text-lg font-bold">PKR {(totalValue * 0.2).toLocaleString()}</p>
                   </div>
                 </div>
               </CardContent>
@@ -256,7 +256,7 @@ export function MultiPartyDealRoom() {
                         {milestone.status.replace("_", " ")}
                       </Badge>
                     </div>
-                    <span className="font-bold">${milestone.value.toLocaleString()}</span>
+                    <span className="font-bold">PKR {milestone.value.toLocaleString()}</span>
                   </div>
 
                   {/* Approval Status */}

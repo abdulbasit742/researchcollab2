@@ -85,7 +85,7 @@ export function DAOGovernance() {
       <CardContent className="space-y-4">
         <div className="p-3 rounded-lg bg-muted/50 text-center">
           <p className="font-medium">{dao.name}</p>
-          <p className="text-2xl font-bold mt-1">${dao.treasury}M Treasury</p>
+          <p className="text-2xl font-bold mt-1">PKR {dao.treasury}M Treasury</p>
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div className="p-3 rounded border text-center">
@@ -126,7 +126,7 @@ export function DeFiPositions() {
                 <p className="text-sm text-muted-foreground">{pos.type}</p>
               </div>
               <div className="text-right">
-                <p className="font-bold">${pos.value.toLocaleString()}</p>
+                <p className="font-bold">PKR {pos.value.toLocaleString()}</p>
                 <p className="text-sm text-green-600">{pos.apy}% APY</p>
               </div>
             </div>

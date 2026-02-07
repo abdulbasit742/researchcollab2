@@ -399,7 +399,7 @@ function AccountabilityRecordRow({
       </div>
       <div className="text-right flex-shrink-0">
         {record.escrow_amount > 0 && (
-          <p className="text-sm font-medium">${record.escrow_amount.toLocaleString()}</p>
+          <p className="text-sm font-medium">PKR {record.escrow_amount.toLocaleString()}</p>
         )}
         <Badge variant={record.outcome_status === 'completed' ? 'default' : 'secondary'} className="text-[10px]">
           {record.outcome_status}

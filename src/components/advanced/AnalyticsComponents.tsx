@@ -50,7 +50,7 @@ export function CareerMetricsDashboard() {
               <span className="text-xs text-muted-foreground">Earnings</span>
               <DollarSign className="h-3 w-3 text-amber-500" />
             </div>
-            <p className="text-2xl font-bold">${(metrics.totalEarnings / 1000).toFixed(0)}k</p>
+            <p className="text-2xl font-bold">PKR {metrics.totalEarnings.toLocaleString()}</p>
             <p className="text-xs text-emerald-500">+{metrics.earningsTrend}% this quarter</p>
           </div>
           <div className="p-3 bg-blue-500/10 rounded-lg">
@@ -208,7 +208,7 @@ export function MarketIntelligencePanel() {
                         forecast.budgetTrend === "decreasing" ? "text-destructive" : ""
                       )}>
                         {forecast.budgetTrend === "increasing" ? <TrendingUp className="h-3 w-3 mr-1" /> : null}
-                        ${forecast.averageBudget.toLocaleString()} avg
+                        PKR {forecast.averageBudget.toLocaleString()} avg
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2 mb-2">

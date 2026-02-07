@@ -417,7 +417,7 @@ const AdminAIPricingPage = () => {
                   <div className="space-y-4">
                     <div className="text-center p-4 bg-green-50 dark:bg-green-950 rounded-lg">
                       <p className="text-3xl font-bold text-green-600">
-                        ${dummyAIScopedProjects.reduce((sum, p) => sum + (p.adjustedPrice || p.pricing.recommendedPrice), 0).toLocaleString()}
+                        PKR {dummyAIScopedProjects.reduce((sum, p) => sum + (p.adjustedPrice || p.pricing.recommendedPrice), 0).toLocaleString()}
                       </p>
                       <p className="text-sm text-muted-foreground">Total Revenue from AI-Priced Projects</p>
                     </div>

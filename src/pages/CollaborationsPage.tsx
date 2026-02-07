@@ -125,7 +125,7 @@ export default function CollaborationsPage() {
               ? `${project.deadline_days} days`
               : "Flexible",
             budget: project.budget_min && project.budget_max 
-              ? `$${project.budget_min.toLocaleString()} - $${project.budget_max.toLocaleString()}`
+              ? `PKR ${project.budget_min.toLocaleString()} - PKR ${project.budget_max.toLocaleString()}`
               : "Negotiable",
             applicants: bidCounts[project.id] || 0,
             featured: false,

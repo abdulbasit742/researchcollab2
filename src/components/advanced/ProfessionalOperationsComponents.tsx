@@ -124,11 +124,11 @@ export function InvoiceManager() {
         <div className="grid grid-cols-2 gap-4">
           <div className="p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/30">
             <p className="text-xs text-muted-foreground">Total Earned</p>
-            <p className="text-2xl font-bold text-emerald-600">${totalEarned.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-emerald-600">PKR {totalEarned.toLocaleString()}</p>
           </div>
           <div className="p-4 bg-amber-500/10 rounded-lg border border-amber-500/30">
             <p className="text-xs text-muted-foreground">Outstanding</p>
-            <p className="text-2xl font-bold text-amber-600">${totalOutstanding.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-amber-600">PKR {totalOutstanding.toLocaleString()}</p>
           </div>
         </div>
 
@@ -146,7 +146,7 @@ export function InvoiceManager() {
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="font-medium">${invoice.total.toLocaleString()}</span>
+                  <span className="font-medium">PKR {invoice.total.toLocaleString()}</span>
                   <span className="text-xs text-muted-foreground">
                     Due {format(invoice.dueDate, "MMM d, yyyy")}
                   </span>
@@ -214,7 +214,7 @@ export function ContractManager() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium">${contract.value.toLocaleString()}</p>
+                    <p className="font-medium">PKR {contract.value.toLocaleString()}</p>
                     <p className="text-xs text-muted-foreground">{contract.currency}</p>
                   </div>
                 </div>
@@ -310,7 +310,7 @@ export function TimeTracker() {
             <p className="text-xs text-muted-foreground">Billable</p>
           </div>
           <div className="p-3 bg-primary/10 rounded-lg text-center">
-            <p className="text-2xl font-bold text-primary">${report.totalEarnings.toFixed(0)}</p>
+            <p className="text-2xl font-bold text-primary">PKR {report.totalEarnings.toFixed(0)}</p>
             <p className="text-xs text-muted-foreground">Earned</p>
           </div>
         </div>
@@ -325,7 +325,7 @@ export function TimeTracker() {
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-mono">{Math.floor(entry.duration / 60)}h {entry.duration % 60}m</p>
-                  <p className="text-xs text-muted-foreground">${((entry.duration / 60) * entry.rate).toFixed(0)}</p>
+                  <p className="text-xs text-muted-foreground">PKR {((entry.duration / 60) * entry.rate).toFixed(0)}</p>
                 </div>
               </div>
             ))}
@@ -375,7 +375,7 @@ export function ProposalManager() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="font-medium">${proposal.totalValue.toLocaleString()}</span>
+                  <span className="font-medium">PKR {proposal.totalValue.toLocaleString()}</span>
                   <span className="text-xs text-muted-foreground">
                     Valid until {format(proposal.validUntil, "MMM d")}
                   </span>

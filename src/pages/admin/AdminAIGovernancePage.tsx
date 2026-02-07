@@ -222,7 +222,7 @@ export default function AdminAIGovernancePage() {
                 <div>
                   <p className="text-sm text-muted-foreground">Cost Today</p>
                   <p className="text-2xl font-bold">
-                    ${stats.totalCostToday.toFixed(4)}
+                    PKR {stats.totalCostToday.toFixed(4)}
                   </p>
                 </div>
                 <DollarSign className="h-8 w-8 text-green-500 opacity-50" />
