@@ -32,11 +32,11 @@ const brandColors = [
   { name: "Accent", hex: "#3F3F46", hsl: "hsl(240, 4%, 26%)", usage: "Borders, subtle highlights" },
 ];
 
-const platformStats = [
-  { label: "Researchers & Students", value: "10,000+", icon: Users },
-  { label: "Projects Completed", value: "2,500+", icon: Briefcase },
-  { label: "Institutions Verified", value: "150+", icon: Building2 },
-  { label: "Trust Score Accuracy", value: "99.2%", icon: Shield },
+const platformCapabilities = [
+  { label: "Atomic Escrow Payments", value: "✓", icon: Shield },
+  { label: "Trust-Based Matching", value: "✓", icon: Users },
+  { label: "Verified Outcomes", value: "✓", icon: Briefcase },
+  { label: "Institutional Support", value: "✓", icon: Building2 },
 ];
 
 const pressQuotes = [
@@ -90,15 +90,15 @@ export default function PressKitPage() {
         <section className="mb-12">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
-            Platform at a Glance
+            Platform Capabilities
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {platformStats.map((stat) => (
-              <Card key={stat.label} className="text-center">
+            {platformCapabilities.map((cap) => (
+              <Card key={cap.label} className="text-center">
                 <CardContent className="pt-6">
-                  <stat.icon className="h-8 w-8 mx-auto mb-3 text-primary" />
-                  <div className="text-3xl font-bold mb-1">{stat.value}</div>
-                  <p className="text-sm text-muted-foreground">{stat.label}</p>
+                  <cap.icon className="h-8 w-8 mx-auto mb-3 text-primary" />
+                  <div className="text-3xl font-bold mb-1">{cap.value}</div>
+                  <p className="text-sm text-muted-foreground">{cap.label}</p>
                 </CardContent>
               </Card>
             ))}

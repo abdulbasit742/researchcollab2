@@ -152,8 +152,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const roleMap: Record<string, string> = {
       "student": "student",
       "researcher": "researcher",
-      "tool-buyer": "student",
-      "project-owner": "researcher",
+      "professional": "researcher",
     };
     
     const mappedRole = roleMap[metadata.role] || "student";
