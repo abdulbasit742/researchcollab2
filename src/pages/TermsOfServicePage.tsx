@@ -30,7 +30,7 @@ export default function TermsOfServicePage() {
             </CardHeader>
             <CardContent className="prose prose-sm dark:prose-invert max-w-none">
               <p>
-                By accessing or using ResearcherCollab Pro ("RCollab"), you agree to be bound by these Terms of Service. 
+                By accessing or using RCollab, you agree to be bound by these Terms of Service. 
                 If you do not agree to these terms, you may not use our platform.
               </p>
               <p>
@@ -202,10 +202,10 @@ export default function TermsOfServicePage() {
               <p>
                 For questions about these Terms:
               </p>
-              <ul>
-                <li>Email: legal@researchercollab.com</li>
-                <li>Help Center: /help</li>
-              </ul>
+              <p>
+                Reach us through the <a href="/help" className="text-primary hover:underline">Help Center</a> or 
+                <a href="/contact" className="text-primary hover:underline"> Contact page</a>.
+              </p>
             </CardContent>
           </Card>
         </div>

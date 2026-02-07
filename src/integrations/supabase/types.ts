@@ -3594,6 +3594,42 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_submissions: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          inquiry_type: string
+          message: string
+          name: string
+          organization: string | null
+          status: string | null
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          inquiry_type: string
+          message: string
+          name: string
+          organization?: string | null
+          status?: string | null
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          inquiry_type?: string
+          message?: string
+          name?: string
+          organization?: string | null
+          status?: string | null
+          subject?: string | null
+        }
+        Relationships: []
+      }
       contextual_permissions: {
         Row: {
           action_key: string

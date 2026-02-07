@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Home, Search } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const NotFound = () => {
+  const { user } = useAuth();
+  const homeLink = user ? "/home" : "/";
+
   return (
     <div className="min-h-screen gradient-hero flex items-center justify-center p-4">
       <div className="absolute inset-0 overflow-hidden">
@@ -29,7 +33,7 @@ const NotFound = () => {
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link to="/">
+          <Link to={homeLink}>
             <Button size="lg">
               <Home className="h-4 w-4" />
               Back to Home

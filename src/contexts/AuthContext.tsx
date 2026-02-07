@@ -247,10 +247,7 @@ export function getRoleBasedRedirect(role: string | undefined): string {
   switch (role) {
     case "admin":
       return "/admin";
-    case "researcher":
-      return "/dashboard/researcher";
-    case "student":
     default:
-      return "/dashboard/student";
+      return "/home";
   }
 }

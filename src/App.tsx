@@ -11,6 +11,7 @@ import { LoadingScreen } from "@/components/loading";
 import { useAppLoading } from "@/hooks/useAppLoading";
 import Index from "./pages/Index";
 import AuthPage from "./pages/AuthPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ProfilePage from "./pages/ProfilePage";
 import OnboardingPage from "./pages/OnboardingPage";
 import StudentDashboard from "./pages/dashboard/StudentDashboard";
@@ -146,6 +147,7 @@ const AppContent = () => {
             <Route path="/network" element={<NetworkPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/profile" element={<ProfilePage />} />
              <Route path="/profile/settings" element={<ProfileSettingsPage />} />

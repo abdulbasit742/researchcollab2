@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MainLayout } from "@/components/layout/MainLayout";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import { MainLayout } from "@/components/layout/MainLayout";
 import { Mail, Phone, MapPin, Clock, Building2, Users, Handshake, MessageSquare, Send } from "lucide-react";
 
 const ContactPage = () => {
@@ -46,43 +47,54 @@ const ContactPage = () => {
 
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const { error } = await supabase
+        .from("contact_submissions")
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          organization: formData.organization || null,
+          inquiry_type: formData.inquiryType,
+          subject: formData.subject || null,
+          message: formData.message,
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Message Sent!",
+        description: "We'll get back to you within 24-48 hours.",
+      });
+      
+      setFormData({
+        name: "",
+        email: "",
+        organization: "",
+        inquiryType: "",
+        subject: "",
+        message: "",
+      });
+    } catch (err: any) {
+      console.error("Contact form error:", err);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
     
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you within 24-48 hours.",
-    });
-    
-    setFormData({
-      name: "",
-      email: "",
-      organization: "",
-      inquiryType: "",
-      subject: "",
-      message: "",
-    });
+    // Remove fake contact data that doesn't exist
     setIsSubmitting(false);
   };
 
   const contactInfo = [
     {
-      icon: Mail,
-      label: "Email",
-      value: "support@researchhub.pk",
-      description: "For general inquiries",
-    },
-    {
-      icon: Phone,
-      label: "Phone",
-      value: "+92 300 1234567",
-      description: "Mon-Fri, 9am-6pm PKT",
-    },
-    {
       icon: MapPin,
-      label: "Office",
-      value: "Lahore, Pakistan",
-      description: "By appointment only",
+      label: "Location",
+      value: "Pakistan",
+      description: "Remote-first platform",
     },
     {
       icon: Clock,
