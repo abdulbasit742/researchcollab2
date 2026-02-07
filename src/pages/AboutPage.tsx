@@ -51,39 +51,27 @@ const teamMembers = [
 
 const milestones = [
   {
-    year: "2020",
+    year: "2024",
     title: "The Beginning",
     description: "Founded with a mission to connect students with researchers across Pakistan.",
     icon: Rocket
   },
   {
-    year: "2021",
-    title: "First 1,000 Users",
-    description: "Reached our first milestone of 1,000 active researchers and students.",
-    icon: Users
-  },
-  {
-    year: "2022",
-    title: "University Partnerships",
-    description: "Partnered with 25+ leading universities across Pakistan.",
-    icon: Award
-  },
-  {
-    year: "2023",
-    title: "AI Integration",
-    description: "Launched AI-powered project scoping and smart matching features.",
+    year: "2025",
+    title: "Platform Launch",
+    description: "Launched trust-based collaboration with AI tools, escrow payments, and verified outcomes.",
     icon: Lightbulb
   },
   {
-    year: "2024",
-    title: "Global Expansion",
-    description: "Expanded to serve researchers in 10+ countries with localized support.",
-    icon: Globe
+    year: "2025",
+    title: "Institutional Partnerships",
+    description: "Opened the platform to universities and research institutions.",
+    icon: Award
   },
   {
-    year: "2025",
-    title: "10,000+ Collaborations",
-    description: "Facilitated over 10,000 successful research collaborations.",
+    year: "Next",
+    title: "Growing Together",
+    description: "Building the most trusted research collaboration platform — one verified outcome at a time.",
     icon: Target
   }
 ];
@@ -291,16 +279,16 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Stats Section */}
+        {/* Capabilities Section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                { number: "10,000+", label: "Active Users" },
-                { number: "50+", label: "Partner Universities" },
-                { number: "15,000+", label: "Projects Completed" },
-                { number: "98%", label: "Satisfaction Rate" }
-              ].map((stat, index) => (
+                { icon: Shield, label: "Atomic Escrow", description: "Every payment is locked, verified, and released through database-level transactions." },
+                { icon: Target, label: "Trust Engine", description: "Reputation computed from real outcomes — not followers, likes, or self-reported claims." },
+                { icon: Users, label: "Verified Matching", description: "AI-powered matching based on skills, trust scores, and verified academic records." },
+                { icon: Lightbulb, label: "AI Research Tools", description: "Built-in AI assistance for project scoping, literature review, and methodology." },
+              ].map((cap, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -309,8 +297,11 @@ export default function AboutPage() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="text-center"
                 >
-                  <div className="text-3xl md:text-4xl font-bold text-primary mb-2">{stat.number}</div>
-                  <div className="text-muted-foreground">{stat.label}</div>
+                  <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                    <cap.icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="font-semibold mb-1">{cap.label}</div>
+                  <div className="text-sm text-muted-foreground">{cap.description}</div>
                 </motion.div>
               ))}
             </div>

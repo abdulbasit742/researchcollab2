@@ -122,8 +122,9 @@ export function GlobalSearchBar() {
         />
         <CommandList>
           <CommandEmpty>
-            {isLoading ? "Searching..." : "No results found."}
+            {isLoading ? "Searching..." : query.length < 2 ? "Type at least 2 characters..." : "No results found."}
           </CommandEmpty>
+          
           
           {results && results.length > 0 && (
             <CommandGroup heading="Results">
