@@ -1,217 +1,205 @@
 
 
-# Money Safety P0: Atomic Escrow, Fee Deduction, and Refund Engine
+# Launch Readiness Audit and Fix Plan
 
-## Problem Statement
+## Executive Summary
 
-The `deal-runtime` edge function -- the core money movement engine -- is critically broken. It references **14 columns that don't exist** in the database, creates money from nothing during payment release, never deducts platform fees, and has no refund path when deals are cancelled. Every action in this function will fail silently or corrupt data.
-
-This plan fixes the foundation so that every PKR is accounted for at every step.
+After a comprehensive audit of the entire codebase (100+ files reviewed), I identified **23 issues across 7 categories** that must be fixed before launch. The platform has strong infrastructure (atomic escrow, trust engine, state machines) but has accumulated credibility gaps, broken links, branding inconsistencies, and fake data that would damage user trust on Day 1.
 
 ---
 
-## Critical Bugs Found
+## Category 1: CRITICAL -- Broken Navigation and Dead Links
 
-| Bug | Severity | Detail |
-|-----|----------|--------|
-| `offers.amount` doesn't exist | Fatal | Column is `price` |
-| `offers.deal_terms` doesn't exist | Fatal | No such column |
-| `offers.completed_at` doesn't exist | Fatal | No such column |
-| `offers.cancelled_at` doesn't exist | Fatal | No such column |
-| `offers.cancellation_reason` doesn't exist | Fatal | No such column |
-| `milestones.started_at` doesn't exist | Fatal | No such column |
-| `milestones.submission_notes` doesn't exist | Fatal | No such column |
-| `milestones.approved_by` doesn't exist | Fatal | No such column |
-| `milestones.due_date` doesn't exist | Fatal | Column is `expected_delivery` |
-| `disputes.offer_id` doesn't exist | Fatal | Column is `milestone_id` only |
-| `disputes.raised_by_id` doesn't exist | Fatal | Column is `initiated_by` |
-| `wallet_transactions.user_id` doesn't exist | Fatal | No such column |
-| `release_payment` creates money | Critical | Credits provider without debiting buyer escrow |
-| `release_payment` skips fees | Critical | `get_platform_fee()` never called |
-| `cancel_deal` doesn't refund | Critical | Sets status but leaves money in limbo |
+### Issue 1.1: "Forgot Password" leads to 404
+The Auth page links to `/forgot-password` but no route or page exists for it. Users who forget their password have no recovery path.
+
+**Fix:** Create a `ForgotPasswordPage.tsx` that uses `supabase.auth.resetPasswordForEmail()` and add the route to `App.tsx`.
+
+### Issue 1.2: Footer links to `/api-docs` -- route is `/docs`
+The footer "API Documentation" link points to `/api-docs`, but the route is actually `/docs` (ApiDocsPage).
+
+**Fix:** Change the footer link from `/api-docs` to `/docs`.
+
+### Issue 1.3: Post-login redirect goes to role-specific dashboards, not `/home`
+`getRoleBasedRedirect()` sends students to `/dashboard/student` and researchers to `/dashboard/researcher` instead of the unified Daily Professional Operating Loop at `/home`. These legacy dashboards duplicate functionality and confuse navigation.
+
+**Fix:** Update `getRoleBasedRedirect()` to always return `/home` for non-admin users.
+
+### Issue 1.4: Navbar logo links to `/home` for unauthenticated users
+When a logged-out user clicks the logo, they go to `/home` which immediately redirects to `/`. This works but causes a flash. The logo should point to `/` for unauthenticated users.
+
+**Fix:** Conditionally link logo to `/` or `/home` based on auth state.
 
 ---
 
-## Solution Architecture
+## Category 2: CRITICAL -- Fake Team Data and Credibility Issues
 
-### Step 1: Database Migration -- Add Missing Columns
+### Issue 2.1: About Page has fake team members with stock photos
+Six fictional team members (Sarah Ahmed, Usman Khan, etc.) with Unsplash stock photos are displayed. This is a credibility destroyer -- anyone doing basic due diligence will find these are fake.
 
-Add the columns the deal lifecycle genuinely needs (rather than changing the edge function to avoid them, since they represent real business data):
+**Fix:** Remove the fake team section entirely. Replace with the founder's actual information or a "Built by a Solo Founder" section that emphasizes the platform's mission and technology.
 
-**`offers` table -- add:**
-- `deal_terms` (text, nullable) -- negotiated terms
-- `completed_at` (timestamptz, nullable)
-- `cancelled_at` (timestamptz, nullable)
-- `cancellation_reason` (text, nullable)
+### Issue 2.2: About Page has fake company milestones
+Timeline shows "2024 - The Beginning" through future milestones that haven't happened. This claims history that doesn't exist.
 
-**`milestones` table -- add:**
-- `started_at` (timestamptz, nullable) -- when work began
-- `submission_notes` (text, nullable) -- provider's submission notes
-- `approved_by` (uuid, nullable) -- who approved
+**Fix:** Replace with honest milestones: actual development timeline, architecture decisions, and the launch itself.
 
-**`disputes` table -- add:**
-- `offer_id` (uuid, nullable, FK to offers) -- link dispute to deal
+---
 
-**`wallet_transactions` table -- add:**
-- `user_id` (uuid, nullable) -- for quick lookup without joining through wallet
+## Category 3: HIGH -- Branding Inconsistencies
 
-### Step 2: Create Atomic Database Function -- `execute_milestone_release`
+### Issue 3.1: Mixed branding -- "ResearcherCollab" vs "RCollab"
+The platform uses "RCollab" in the Navbar and Footer, but "ResearcherCollab" in:
+- Auth page logo and success toasts
+- Onboarding page logo and toasts
+- Loading screen
+- Onboarding popup
+- Legal pages (Privacy, Terms, Cookies)
+- Help center email addresses
 
-A single SECURITY DEFINER function that handles the entire payment release atomically:
+This makes the platform look unprofessional.
 
+**Fix:** Standardize all instances to "RCollab" (the short, professional brand used in the Navbar).
+
+### Issue 3.2: Fake email addresses in legal pages
+`privacy@researchercollab.com`, `legal@researchercollab.com`, `support@researchercollab.com` are referenced but likely don't exist.
+
+**Fix:** Replace with the actual support contact (WhatsApp number already in config) or a generic "Contact us through the platform's Help Center" link.
+
+---
+
+## Category 4: HIGH -- Non-Functional Features
+
+### Issue 4.1: Contact form doesn't actually send anything
+`ContactPage.tsx` simulates form submission with `setTimeout` -- data goes nowhere.
+
+**Fix:** Create a `contact_submissions` table in the database and persist the form data. Admin can review submissions from the admin portal.
+
+### Issue 4.2: Blog page shows hardcoded data
+The blog system likely uses static data rather than the `blog_posts` database table.
+
+**Fix:** Wire blog to database or remove the blog link from navigation/footer until it has real content.
+
+### Issue 4.3: "People You May Know" shows hardcoded fake profiles
+`PeopleYouMayKnow.tsx` uses hardcoded names like "Dr. Sarah Ahmed" from fake data.
+
+**Fix:** Either wire this to real profile data from the database or hide the component until real users exist.
+
+---
+
+## Category 5: MEDIUM -- Auth and Onboarding Polish
+
+### Issue 5.1: Sign-up success message says "Welcome to ResearcherCollab!" before email verification
+Users see a success toast immediately, but they still need to verify their email. This is confusing.
+
+**Fix:** Change the toast to "Check your email to verify your account" since auto-confirm is not enabled.
+
+### Issue 5.2: Google OAuth button shows alongside a disabled GitHub button
+The disabled GitHub button looks broken and unprofessional.
+
+**Fix:** Remove the disabled GitHub button entirely. Show only Google OAuth.
+
+---
+
+## Category 6: MEDIUM -- Data Integrity Cleanup
+
+### Issue 6.1: Static data files contain fake user data
+Files like `src/data/offers.ts`, `src/data/subscriptions.ts`, `src/data/organizations.ts` contain hardcoded fake users (Ali Raza, Hassan Nawaz, etc.) that may bleed into the UI.
+
+**Fix:** Audit all data imports. Components using these static files should either be wired to real database tables or show empty states.
+
+### Issue 6.2: AI Project Scope page generates fake talent suggestions
+`AIProjectScopePage.tsx` hardcodes fake talent like "Hassan Ahmed" and "Usman Khan" with fabricated trust scores.
+
+**Fix:** Replace with real database queries or clearly label as "Example Results" with a disclaimer.
+
+---
+
+## Category 7: POLISH -- UI and UX Consistency
+
+### Issue 7.1: 404 page "Back to Home" links to `/` instead of `/home`
+Authenticated users hitting a 404 get sent to the landing page rather than their dashboard.
+
+**Fix:** Check auth state and link to `/home` for authenticated users, `/` for others.
+
+### Issue 7.2: Inconsistent "Explore AI Tools" secondary CTA
+Multiple sections (Hero, CTA, 404) link to `/tools` as a secondary action. This is fine but should be validated to ensure the Tools page works without authentication.
+
+### Issue 7.3: Loading screen shows "ResearcherCollab Pro"
+The app loading screen still uses the old branding.
+
+**Fix:** Update to "RCollab".
+
+---
+
+## Implementation Sequence
+
+The fixes are ordered by impact and dependency:
+
+| Step | What | Files | Priority |
+|------|------|-------|----------|
+| 1 | Unify branding to "RCollab" everywhere | AuthPage, OnboardingPage, LoadingScreen, OnboardingPopup, Privacy/Terms/Cookies, HelpCenter | Critical |
+| 2 | Fix post-login redirect to `/home` | AuthContext.tsx | Critical |
+| 3 | Create Forgot Password page + route | New ForgotPasswordPage.tsx, App.tsx | Critical |
+| 4 | Fix footer dead link `/api-docs` to `/docs` | Footer.tsx | Critical |
+| 5 | Remove fake team members from About page | AboutPage.tsx | Critical |
+| 6 | Fix fake email addresses in legal pages | PrivacyPolicyPage, TermsOfServicePage, CookiePolicyPage, HelpCenterPage | High |
+| 7 | Fix signup toast (email verification message) | AuthPage.tsx | High |
+| 8 | Remove disabled GitHub OAuth button | AuthPage.tsx | High |
+| 9 | Wire Contact form to database | ContactPage.tsx + migration | High |
+| 10 | Fix 404 page smart redirect | NotFound.tsx | Medium |
+| 11 | Fix Navbar logo for unauthenticated users | Navbar.tsx | Medium |
+| 12 | Remove/hide fake "People You May Know" data | PeopleYouMayKnow.tsx | Medium |
+| 13 | Clean up static data file references | Various data files and components | Medium |
+
+---
+
+## Technical Details
+
+### Database Migration (Step 9)
 ```text
-INPUT: milestone_id, released_by_user_id
+CREATE TABLE contact_submissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  organization TEXT,
+  inquiry_type TEXT NOT NULL,
+  subject TEXT,
+  message TEXT NOT NULL,
+  status TEXT DEFAULT 'new',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
 
-1. Lock milestone row (SELECT FOR UPDATE)
-2. Verify status = 'approved'
-3. Get offer (sender_id = provider, recipient_id = buyer)
-4. Calculate platform fee via get_platform_fee(provider_id, amount)
-5. Net amount = milestone.amount - platform_fee
-6. Get buyer's wallet -> debit escrow_balance by milestone.amount
-7. Get provider's wallet -> credit available_balance by net_amount
-8. Get platform wallet -> credit available_balance by platform_fee
-9. Create 3 wallet_transactions:
-   - buyer: type='escrow_release', amount=-milestone.amount
-   - provider: type='milestone_release', amount=+net_amount
-   - platform: type='commission', amount=+platform_fee
-10. Update milestone status to 'released', set released_at
-11. Return success with fee breakdown
-
-FAILURE: Any step fails -> entire transaction rolls back
+-- Allow anyone to submit (public-facing form)
+ALTER TABLE contact_submissions ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can submit contact form" ON contact_submissions
+  FOR INSERT WITH CHECK (true);
+CREATE POLICY "Admins can view submissions" ON contact_submissions
+  FOR SELECT USING (is_admin(auth.uid()));
 ```
 
-This ensures money never appears or disappears. Every debit has a matching credit.
+### Forgot Password Page (Step 3)
+A minimal page with an email input that calls `supabase.auth.resetPasswordForEmail(email)` and shows a success message. Route: `/forgot-password`.
 
-### Step 3: Create Atomic Database Function -- `execute_escrow_lock`
-
-Called when a deal moves from "proposed" to "active":
-
-```text
-INPUT: offer_id, buyer_id, total_amount
-
-1. Get buyer's wallet (SELECT FOR UPDATE)
-2. Verify available_balance >= total_amount
-3. Debit buyer available_balance by total_amount
-4. Credit buyer escrow_balance by total_amount
-5. Create wallet_transaction: type='escrow_deposit', amount=-total_amount
-6. Update buyer total_spent
-7. Return success
-
-FAILURE: Insufficient funds -> raise exception, no state change
-```
-
-### Step 4: Create Atomic Database Function -- `execute_escrow_refund`
-
-Called when a deal is cancelled or a dispute is resolved with refund:
-
-```text
-INPUT: offer_id, refund_reason
-
-1. Get all unreleased milestones for offer
-2. Calculate total refund = sum of unreleased milestone amounts
-3. Get buyer's wallet (SELECT FOR UPDATE)
-4. Debit buyer escrow_balance by refund amount
-5. Credit buyer available_balance by refund amount
-6. Create wallet_transaction: type='refund', amount=+refund_amount
-7. Update all unreleased milestones to 'cancelled'
-8. Return success with refund amount
-
-FAILURE: Rolls back entirely
-```
-
-### Step 5: Rewrite `deal-runtime` Edge Function
-
-Fix every action to use correct column names and call the new atomic functions:
-
-**`create_deal`:**
-- Use `price` instead of `amount`
-- Use existing columns only
-- Create milestones with `expected_delivery` instead of `due_date`
-
-**`advance_milestone`:**
-- Write to `updated_at` only (no `started_at` until migration adds it)
-- After migration: also set `started_at`
-
-**`submit_milestone`:**
-- Remove `submission_notes` reference until migration adds it
-- After migration: include it
-
-**`approve_milestone`:**
-- Remove `approved_by` reference until migration adds it  
-- After migration: include it
-
-**`release_payment` (CRITICAL REWRITE):**
-- Call `execute_milestone_release()` database function instead of manual wallet updates
-- Return fee breakdown to caller
-
-**`dispute`:**
-- Insert into `disputes` using `milestone_id` and `initiated_by` (correct columns)
-- Add `offer_id` after migration
-
-**`cancel_deal`:**
-- Call `execute_escrow_refund()` to return unreleased funds to buyer
-- Then update deal status
-
-**`complete_deal`:**
-- Verify all milestones released (no change needed, already correct)
-
-### Step 6: Create Platform Wallet
-
-Insert a system/platform wallet row for collecting fees. This wallet accumulates commission from every milestone release.
-
-### Step 7: Update `useAcceptDeal` Hook
-
-When a buyer clicks "Accept & Lock Escrow" in the Deal Detail Page, the hook should call the `deal-runtime` edge function with a new `activate_deal` action (or modify `create_deal`) that triggers `execute_escrow_lock`. Currently it just updates `deal_rooms.escrow_status` to "locked" without actually moving any wallet funds.
-
-### Step 8: Add Balance Verification to Wallet Page
-
-Update `WalletPage.tsx` to show fee breakdowns on completed transactions. The `wallet_transactions` table will now contain `commission_deduction` type entries that the existing `transactionTypeConfig` already handles.
-
----
-
-## Money Flow After Fix
-
-```text
-DEAL ACCEPTED:
-  Buyer wallet: available -10,000 | escrow +10,000
-  Net effect: 0 (money moved, not created/destroyed)
-
-MILESTONE RELEASED (amount: 5,000, fee: 500 at 10%):
-  Buyer wallet: escrow -5,000
-  Provider wallet: available +4,500
-  Platform wallet: available +500
-  Net effect: 0 (5,000 out of escrow = 4,500 to provider + 500 to platform)
-
-DEAL CANCELLED (remaining escrow: 5,000):
-  Buyer wallet: escrow -5,000 | available +5,000
-  Net effect: 0 (money returned)
-```
-
-Every transaction sums to zero. Money is never created or destroyed.
-
----
-
-## Files Changed
-
-| File | Change |
-|------|--------|
-| Migration SQL | Add missing columns to offers, milestones, disputes, wallet_transactions |
-| Migration SQL | Create `execute_milestone_release()` function |
-| Migration SQL | Create `execute_escrow_lock()` function |
-| Migration SQL | Create `execute_escrow_refund()` function |
-| Migration SQL | Insert platform wallet row |
-| `supabase/functions/deal-runtime/index.ts` | Full rewrite with correct schema + atomic function calls |
-| `src/hooks/useDealRoom.ts` | Update `useAcceptDeal` to call deal-runtime for escrow lock |
-| `src/pages/WalletPage.tsx` | Add fee breakdown display for commission transactions |
-
----
-
-## What This Does NOT Do (Deferred)
-
-- Stripe integration (Phase 2 -- requires enabling Stripe connector)
-- Webhook idempotency (not needed until Stripe is live)
-- Subscription billing (separate system)
-- Institutional funding flows (separate system)
-
-This plan focuses exclusively on making the internal money movement bulletproof so that when Stripe is added later, it connects to a system that already works correctly.
+### Files Changed Summary
+| File | Change Type |
+|------|-------------|
+| `src/contexts/AuthContext.tsx` | Edit (redirect logic) |
+| `src/pages/AuthPage.tsx` | Edit (branding, toast, GitHub button) |
+| `src/pages/OnboardingPage.tsx` | Edit (branding) |
+| `src/pages/AboutPage.tsx` | Edit (remove fake team) |
+| `src/pages/NotFound.tsx` | Edit (smart redirect) |
+| `src/pages/ContactPage.tsx` | Edit (wire to DB) |
+| `src/pages/PrivacyPolicyPage.tsx` | Edit (emails) |
+| `src/pages/TermsOfServicePage.tsx` | Edit (emails) |
+| `src/pages/CookiePolicyPage.tsx` | Edit (emails) |
+| `src/pages/HelpCenterPage.tsx` | Edit (emails) |
+| `src/components/layout/Footer.tsx` | Edit (dead link) |
+| `src/components/layout/Navbar.tsx` | Edit (logo link) |
+| `src/components/loading/LoadingScreen.tsx` | Edit (branding) |
+| `src/components/onboarding/OnboardingPopup.tsx` | Edit (branding) |
+| `src/components/feed/PeopleYouMayKnow.tsx` | Edit (remove fake data) |
+| `src/pages/ForgotPasswordPage.tsx` | New file |
+| `src/App.tsx` | Edit (add route) |
+| Migration SQL | New (contact_submissions table) |
 
