@@ -24,7 +24,7 @@ export function CareerPathSimulator() {
               <p className="text-xs text-muted-foreground">Trust Score</p>
             </div>
             <div className="p-3 rounded-lg bg-muted/50">
-              <p className="text-2xl font-bold">${(currentState.monthlyEarnings/1000).toFixed(1)}k</p>
+              <p className="text-2xl font-bold">PKR {currentState.monthlyEarnings.toLocaleString()}</p>
               <p className="text-xs text-muted-foreground">Monthly</p>
             </div>
             <div className="p-3 rounded-lg bg-muted/50">

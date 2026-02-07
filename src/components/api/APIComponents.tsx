@@ -113,7 +113,7 @@ export function IntegrationHub() {
 export function APIMarketplace() {
   const apis = [
     { name: "Research Data API", rating: 4.8, subscribers: 5000, price: "Free tier" },
-    { name: "AI Analysis API", rating: 4.6, subscribers: 3200, price: "$0.01/call" },
+    { name: "AI Analysis API", rating: 4.6, subscribers: 3200, price: "PKR 2/call" },
   ];
 
   return (

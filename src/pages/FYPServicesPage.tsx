@@ -214,7 +214,7 @@ export default function FYPServicesPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="budget">Budget</Label>
-                        <Input id="budget" placeholder="$500" />
+                        <Input id="budget" placeholder="PKR 50,000" />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="deadline">Deadline</Label>

@@ -170,15 +170,15 @@ export function ConsequenceLedgerCard({ ledger, isCompact = false }: Consequence
           <div className="grid grid-cols-3 gap-3">
             <div className="p-3 rounded-lg bg-muted/50 text-center">
               <p className="text-xs text-muted-foreground mb-1">Escrow Handled</p>
-              <p className="font-bold">${ledger.total_escrow_handled.toLocaleString()}</p>
+              <p className="font-bold">PKR {ledger.total_escrow_handled.toLocaleString()}</p>
             </div>
             <div className="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-center">
               <p className="text-xs text-emerald-600 mb-1">Released</p>
-              <p className="font-bold text-emerald-700">${ledger.total_escrow_released.toLocaleString()}</p>
+              <p className="font-bold text-emerald-700">PKR {ledger.total_escrow_released.toLocaleString()}</p>
             </div>
             <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-center">
               <p className="text-xs text-red-600 mb-1">Disputed</p>
-              <p className="font-bold text-red-700">${ledger.total_escrow_disputed.toLocaleString()}</p>
+              <p className="font-bold text-red-700">PKR {ledger.total_escrow_disputed.toLocaleString()}</p>
             </div>
           </div>
 

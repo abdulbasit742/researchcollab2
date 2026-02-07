@@ -134,7 +134,7 @@ export default function OutcomeFeedPage() {
                             <DollarSign className="h-3 w-3" />
                             Total Earned
                           </span>
-                          <span className="font-semibold">${metrics.total_earnings.toLocaleString()}</span>
+                          <span className="font-semibold">PKR {metrics.total_earnings.toLocaleString()}</span>
                         </div>
                       )}
                     </div>

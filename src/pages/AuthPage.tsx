@@ -157,7 +157,7 @@ export default function AuthPage() {
             <GraduationCap className="h-6 w-6 text-primary-foreground" />
           </div>
           <span className="text-2xl font-bold">
-            R<span className="text-primary">Collab</span>
+            <span className="text-primary">ResearcherCollab</span> Pro
           </span>
         </Link>
 
