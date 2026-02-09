@@ -22020,7 +22020,39 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      user_trust_profiles_public: {
+        Row: {
+          is_verified_researcher: boolean | null
+          is_verified_student: boolean | null
+          total_projects_completed: number | null
+          total_projects_posted: number | null
+          trust_score: number | null
+          trust_tier: Database["public"]["Enums"]["trust_tier"] | null
+          user_id: string | null
+          verification_level: string | null
+        }
+        Insert: {
+          is_verified_researcher?: boolean | null
+          is_verified_student?: boolean | null
+          total_projects_completed?: number | null
+          total_projects_posted?: number | null
+          trust_score?: number | null
+          trust_tier?: Database["public"]["Enums"]["trust_tier"] | null
+          user_id?: string | null
+          verification_level?: string | null
+        }
+        Update: {
+          is_verified_researcher?: boolean | null
+          is_verified_student?: boolean | null
+          total_projects_completed?: number | null
+          total_projects_posted?: number | null
+          trust_score?: number | null
+          trust_tier?: Database["public"]["Enums"]["trust_tier"] | null
+          user_id?: string | null
+          verification_level?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       admin_freeze_trust_profile: {
