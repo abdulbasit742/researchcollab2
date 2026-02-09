@@ -1,76 +1,45 @@
 
 
-# Rebrand to "ResearcherCollab Pro" + Standardize All Currency to PKR
+# Fix: Enable RLS on `policy_acceptances` Table
 
-## What Changes
+## Problem
 
-Two platform-wide fixes:
+The `policy_acceptances` table is the **only** table in the public schema without Row Level Security enabled. This means anyone with the anon key can read, insert, update, or delete policy acceptance records for any user -- a direct data exposure and tampering risk.
 
-1. **Branding**: Every instance of "RCollab" becomes **"ResearcherCollab Pro"** -- in the Navbar, Footer, Loading Screen, Auth Page, Onboarding Popup, Legal Pages, Press Kit, and HTML meta tags.
+## Solution
 
-2. **Currency**: Every dollar sign (`$`) display becomes **PKR** format (e.g., `$5,000` becomes `PKR 5,000`) across all components and pages.
+Enable RLS and add two simple policies:
 
----
+1. **SELECT**: Users can only read their own policy acceptances.
+2. **INSERT**: Users can only insert records where `user_id` matches their own auth ID.
 
-## Part 1: Branding Updates (RCollab --> ResearcherCollab Pro)
+No UPDATE or DELETE policies are needed -- policy acceptances should be immutable (once accepted, the record stays).
 
-### Files to Update
+Admins can also read all records for compliance auditing.
 
-| File | Current | New |
-|------|---------|-----|
-| `index.html` | Already says "ResearcherCollab Pro" in title/meta -- keep as-is | No change needed |
-| `src/components/layout/Navbar.tsx` | `R<span>Collab</span>` | `ResearcherCollab Pro` |
-| `src/components/layout/Footer.tsx` | `RCollab` | `ResearcherCollab Pro` |
-| `src/components/loading/LoadingScreen.tsx` | `R` + `Collab` | `ResearcherCollab Pro` |
-| `src/pages/AuthPage.tsx` | `R<span>Collab</span>` | `ResearcherCollab Pro` |
-| `src/pages/OnboardingPage.tsx` | `Welcome to RCollab!` toast | `Welcome to ResearcherCollab Pro!` |
-| `src/components/onboarding/OnboardingPopup.tsx` | `Welcome to RCollab!` | `Welcome to ResearcherCollab Pro!` |
-| `src/pages/PressKitPage.tsx` | Mixed references | Standardize to "ResearcherCollab Pro" |
-| `src/pages/TermsOfServicePage.tsx` | `RCollab` references | `ResearcherCollab Pro` |
-| `src/pages/CookiePolicyPage.tsx` | `RCollab` references | `ResearcherCollab Pro` |
-| `src/pages/ProgressPage.tsx` | `RCollab shows progress` | `ResearcherCollab Pro shows progress` |
-| `src/pages/RealityFeedPage.tsx` | `RCollab proves...` | `ResearcherCollab Pro proves...` |
-| `src/components/operations/PostLaunchRules.tsx` | `RCollab grows by...` | `ResearcherCollab Pro grows by...` |
-| `src/components/portability/ReputationExport.tsx` | `RCollab Trust Authority` | `ResearcherCollab Pro Trust Authority` |
-| `src/components/portability/PortableIdentityExport.tsx` | `depending on RCollab` | `depending on ResearcherCollab Pro` |
-| `src/components/onboarding/FirstTimeUserOverlay.tsx` | `rcollab_first_time_seen` localStorage key | Keep internal key as-is (not user-facing) |
+## Technical Details
 
----
+A single database migration with:
 
-## Part 2: Currency Updates ($ --> PKR)
+```text
+-- Enable RLS
+ALTER TABLE public.policy_acceptances ENABLE ROW LEVEL SECURITY;
 
-All dollar-formatted amounts will use the existing `formatPKR()` utility from `src/lib/currency.ts` where possible, or be manually changed to `PKR X,XXX` format.
+-- Users can view their own acceptances
+CREATE POLICY "Users can view own policy acceptances"
+ON public.policy_acceptances FOR SELECT TO authenticated
+USING (auth.uid() = user_id);
 
-### Files to Update
+-- Admins can view all acceptances
+CREATE POLICY "Admins can view all policy acceptances"
+ON public.policy_acceptances FOR SELECT TO authenticated
+USING (public.is_admin(auth.uid()));
 
-| File | What Changes |
-|------|-------------|
-| `src/pages/ProfilePage.tsx` (line 402) | `$${record.escrow_amount.toLocaleString()}` --> `PKR ${record.escrow_amount.toLocaleString()}` |
-| `src/pages/CollaborationsPage.tsx` (line 128) | `$${project.budget_min.toLocaleString()} - $${project.budget_max.toLocaleString()}` --> `PKR ${...} - PKR ${...}` |
-| `src/pages/OutcomeFeedPage.tsx` (line 137) | `$${metrics.total_earnings.toLocaleString()}` --> `PKR ${...}` |
-| `src/pages/AdminPortalPage.tsx` (lines 32-33) | Revenue and Escrow Balance from `$` to `PKR` |
-| `src/pages/GrantsPage.tsx` (lines 31, 75) | `$37,000/year`, `$60,000` --> `PKR 5,500,000/year`, `PKR 9,000,000` (approximate conversions for grants) |
-| `src/pages/ResearcherPublicProfilePage.tsx` (6 budgets) | All `$2,000 - $5,000` style --> `PKR 500,000 - PKR 1,500,000` style |
-| `src/pages/FYPServicesPage.tsx` (line 217) | `$500` placeholder --> `PKR 50,000` |
-| `src/pages/AdminAIPricingPage.tsx` (line 420) | `$${...}` --> `PKR ${...}` |
-| `src/pages/admin/AdminAIGovernancePage.tsx` (line 225) | `$${stats.totalCostToday.toFixed(4)}` --> `PKR ${...}` |
-| `src/components/career/CareerPathSimulator.tsx` (line 27) | `$${(currentState.monthlyEarnings/1000).toFixed(1)}k` --> `PKR ${currentState.monthlyEarnings.toLocaleString()}` |
-| `src/components/advanced/ProfessionalOperationsComponents.tsx` (lines 127, 131, 149, 217, 313, 328, 378) | All `$` prefixed amounts --> `PKR` |
-| `src/components/advanced/AnalyticsComponents.tsx` (lines 53, 211) | `$` formatted earnings and budgets --> `PKR` |
-| `src/components/deals/MultiPartyDealRoom.tsx` (lines 96, 139, 160, 259) | All deal values from `$` to `PKR` |
-| `src/components/accountability/ConsequenceLedgerCard.tsx` (lines 173, 177, 181) | Escrow amounts from `$` to `PKR` |
-| `src/components/blockchain/BlockchainComponents.tsx` (lines 88, 129) | `$` amounts --> `PKR` |
-| `src/components/api/APIComponents.tsx` (line 116) | `$0.01/call` --> `PKR 2/call` |
+-- Users can insert their own acceptances
+CREATE POLICY "Users can insert own policy acceptances"
+ON public.policy_acceptances FOR INSERT TO authenticated
+WITH CHECK (auth.uid() = user_id);
+```
 
----
-
-## Implementation Order
-
-1. Update branding in layout components (Navbar, Footer, Loading Screen)
-2. Update branding in auth and onboarding pages
-3. Update branding in legal and content pages
-4. Convert all dollar amounts to PKR across all component files
-5. Convert all dollar amounts to PKR across all page files
-
-Total files affected: approximately 28 files.
+No frontend code changes required.
 
