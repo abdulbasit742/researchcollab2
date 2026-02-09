@@ -1,45 +1,22 @@
 
 
-# Fix: Enable RLS on `policy_acceptances` Table
+# Fix: Update react-router-dom to Patch XSS Vulnerability
 
 ## Problem
 
-The `policy_acceptances` table is the **only** table in the public schema without Row Level Security enabled. This means anyone with the anon key can read, insert, update, or delete policy acceptance records for any user -- a direct data exposure and tampering risk.
+The current `react-router-dom` version **6.30.1** has a known XSS vulnerability via open redirects in `@remix-run/router`.
 
 ## Solution
 
-Enable RLS and add two simple policies:
-
-1. **SELECT**: Users can only read their own policy acceptances.
-2. **INSERT**: Users can only insert records where `user_id` matches their own auth ID.
-
-No UPDATE or DELETE policies are needed -- policy acceptances should be immutable (once accepted, the record stays).
-
-Admins can also read all records for compliance auditing.
+Update `react-router-dom` to the latest patched version (`6.31.0` or newer) which resolves this advisory.
 
 ## Technical Details
 
-A single database migration with:
+Update `package.json`:
 
 ```text
--- Enable RLS
-ALTER TABLE public.policy_acceptances ENABLE ROW LEVEL SECURITY;
-
--- Users can view their own acceptances
-CREATE POLICY "Users can view own policy acceptances"
-ON public.policy_acceptances FOR SELECT TO authenticated
-USING (auth.uid() = user_id);
-
--- Admins can view all acceptances
-CREATE POLICY "Admins can view all policy acceptances"
-ON public.policy_acceptances FOR SELECT TO authenticated
-USING (public.is_admin(auth.uid()));
-
--- Users can insert their own acceptances
-CREATE POLICY "Users can insert own policy acceptances"
-ON public.policy_acceptances FOR INSERT TO authenticated
-WITH CHECK (auth.uid() = user_id);
+"react-router-dom": "^6.31.0"
 ```
 
-No frontend code changes required.
+This is a minor version bump with no breaking changes -- no code modifications needed.
 
