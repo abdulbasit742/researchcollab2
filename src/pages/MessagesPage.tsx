@@ -13,6 +13,7 @@ import { useThreadSearch, useThreadArchive, useThreadMute } from "@/hooks/useCha
 import { useStarThread } from "@/hooks/useChatFeatures";
 import { ThreadListItem } from "@/components/messages/ThreadListItem";
 import { ThreadListSkeleton } from "@/components/skeletons/MessagesSkeleton";
+import { AISuggestionCard } from "@/components/ai/AISuggestionCard";
 import { toast } from "sonner";
 
 export default function MessagesPage() {
@@ -150,6 +151,17 @@ export default function MessagesPage() {
             Swipe left to archive • Swipe right to star
           </p>
         </div>
+
+        {inboxThreads.length > 0 && (
+          <AISuggestionCard
+            title="AI Conversation Summary"
+            domain="messages"
+            action="summary"
+            context={{ threadCount: inboxThreads.length }}
+            compact
+            className="mb-3"
+          />
+        )}
 
         <Card className="overflow-hidden border-0 sm:border shadow-none sm:shadow-sm">
           {isLoading ? (

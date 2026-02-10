@@ -15,6 +15,7 @@ import {
   ConsequenceLedgerCard,
   TrustTrajectoryChart,
 } from "@/components/accountability";
+import { AISuggestionCard } from "@/components/ai/AISuggestionCard";
 import {
   TrustEngineDisplay,
   WorkGraphCard,
@@ -284,6 +285,20 @@ export default function ProfilePage() {
 
               {/* Work Graph */}
               <WorkGraphCard connections={connections} maxDisplay={3} />
+
+              {/* AI Profile Score */}
+              <AISuggestionCard
+                title="AI Profile Score"
+                domain="profile"
+                action="optimize"
+                context={{
+                  name: profile?.full_name,
+                  university: profile?.university,
+                  department: profile?.department,
+                  trustScore,
+                }}
+                compact
+              />
 
               {/* Profile Views */}
               <ProfileViewsCard />
