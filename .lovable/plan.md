@@ -1,63 +1,82 @@
 
 
-# Add Testimonials and "Why Choose Us" Sections to Landing Page
+# Enhance Earn Page -- Advanced Features
 
-## Overview
-Add two new sections to the landing page: a **Testimonials** section with researcher/student quotes and a **"Why Choose ResearchCollabPro"** section highlighting key differentiators. Both sections will follow the existing design patterns (framer-motion animations, parallax effects, card variants, responsive layout).
+## Current State
+The Earn page has: hero section with stats, project browsing with search, bid submission, "How It Works" tab, "My Bids" tracking, "My Projects" management with filter/sort, post/edit project modals, real-time bid notifications, and email notifications.
 
-## What Gets Built
+## What's Missing / Next-Level Features
 
-### 1. "Why Choose ResearchCollabPro" Section
-A visually distinct section with 4-6 compelling reasons to choose the platform, presented as icon-driven cards with concise copy. Positioned between the FeaturesSection and TestimonialsSection.
+### 1. Category Filters
+Currently only free-text search exists. Add horizontal scrollable category chips (e.g., "Data Analysis", "Writing", "Programming", "Design", "Research", "Translation") above the project list so users can filter by discipline instantly.
 
-Reasons include:
-- **Verified Trust System** -- Every collaborator is scored on real outcomes, not self-reported claims
-- **Escrow-Protected Payments** -- Funds are locked until deliverables are verified
-- **AI-Powered Research Tools** -- Built-in AI for summarization, analysis, and literature review
-- **Global Researcher Network** -- Connect with academics across disciplines and borders
-- **No Vanity Metrics** -- Every statistic reflects actual platform activity
-- **Institutional-Grade Security** -- Enterprise-level encryption and access controls
+### 2. Saved / Bookmarked Projects
+Let users bookmark interesting projects they want to bid on later. Add a heart/bookmark icon on each project card and a "Saved" tab alongside the existing tabs. Stored in localStorage for non-logged-in users, or in the database for logged-in users.
 
-### 2. Testimonials Section
-A carousel or grid of 6 testimonials from different user personas (PhD student, postdoc, professor, independent researcher, industry collaborator, undergraduate). Each testimonial card shows:
-- Quote text
-- Name, role, and institution
-- Avatar placeholder (initials-based)
-- Star rating or a highlight badge (e.g., "Verified User")
+### 3. Bid Status Tracking with Timeline
+Currently "My Bids" only shows "Pending" status. Add proper bid statuses (Pending, Viewed, Shortlisted, Accepted, Rejected) with a visual timeline/progress indicator on each bid card. The project owner can update bid status from the project detail page.
 
-Uses sample data (clearly representative, not deceptive -- personas reflect real use cases).
+### 4. Recommended Projects Sidebar
+An "AI Recommended" section that appears at the top of the projects tab showing 2-3 projects matched to the user's profile skills and past bid history. Uses a simple keyword matching algorithm (no AI call needed -- match user profile tags against project tags).
+
+### 5. Earnings Dashboard Card
+A compact card in the "My Bids" tab header showing: total earnings (from completed projects), active contracts count, success rate (accepted bids / total bids), and average bid amount. Computed from existing data.
+
+### 6. Quick Bid Feature
+For returning users, add a "Quick Bid" button that pre-fills the bid form with their last used rate and delivery time, reducing friction. One-click to submit with default values.
+
+---
 
 ## Technical Details
 
 ### New Files
-- **`src/components/home/WhyChooseSection.tsx`** -- "Why Choose" section with icon cards, motion animations, and parallax consistent with existing sections
-- **`src/components/home/TestimonialsSection.tsx`** -- Testimonials grid/carousel with avatar, quote, and role display
+
+**`src/components/earn/CategoryFilter.tsx`**
+- Horizontal scrollable chip bar with preset categories
+- "All" option to reset filter
+- Accepts `selected` and `onSelect` props
+
+**`src/components/earn/EarningsDashboardCard.tsx`**
+- Compact stats card showing total earnings, success rate, active contracts
+- Uses data from `useMyBids` and `useMyProjects`
+
+**`src/components/earn/SavedProjectsTab.tsx`**
+- Content for the "Saved" tab
+- Uses localStorage for persistence (keeps it simple, no DB changes)
+
+**`src/components/earn/RecommendedProjects.tsx`**
+- Shows 2-3 tag-matched projects at top of "Available Projects"
+- Matches user profile skills against project tags
+- Falls back to most recent projects if no match
 
 ### Modified Files
-- **`src/pages/Index.tsx`** -- Import and place both sections between `FeaturesSection` and `CTASection`
-- **`src/components/home/index.ts`** -- Export new components
 
-### Design Patterns
-- Uses existing `Card` component variants (`premium`, `glass`)
-- Framer Motion `whileInView` animations with stagger
-- `useParallax` hook for subtle scroll effects
-- Responsive grid: 1 column on mobile, 2 on tablet, 3 on desktop
-- Consistent with existing `StatsSection` and `FeaturesSection` styling
+**`src/hooks/useEarning.ts`**
+- Add `useSavedProjects` hook (localStorage-based bookmarking)
+- Add `useEarningsDashboard` hook (computed stats from bids/projects)
 
-### Page Order After Changes
-1. HeroSection
-2. StatsSection
-3. FeaturesSection
-4. **WhyChooseSection (new)**
-5. **TestimonialsSection (new)**
-6. CTASection
+**`src/pages/EarnPage.tsx`**
+- Add `CategoryFilter` below search bar
+- Add "Saved" tab to TabsList
+- Add `RecommendedProjects` section at top of projects tab (for logged-in users)
+- Add `EarningsDashboardCard` at top of "My Bids" tab
+- Wire category filter state to project filtering
+
+**`src/components/earn/MyProjectCard.tsx`** (minor)
+- No changes needed
+
+### Project Card Updates (in EarnPage.tsx inline)
+- Add bookmark/save icon button on each project card
+- Visual indicator for already-saved projects
 
 ### No Database Changes
-Both sections use static/sample data. No backend modifications needed.
+All new features use existing data or localStorage. No migrations needed.
 
 ### Build Order
-1. Create `WhyChooseSection.tsx`
-2. Create `TestimonialsSection.tsx`
-3. Update `Index.tsx` to include both sections
-4. Update `src/components/home/index.ts` exports
+1. Create `CategoryFilter.tsx` component
+2. Create `EarningsDashboardCard.tsx` component  
+3. Add `useSavedProjects` and `useEarningsDashboard` to `useEarning.ts`
+4. Create `RecommendedProjects.tsx` component
+5. Create `SavedProjectsTab.tsx` component
+6. Update `EarnPage.tsx` with all integrations (categories, saved tab, recommendations, dashboard card)
 
