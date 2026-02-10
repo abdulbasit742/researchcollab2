@@ -21,9 +21,11 @@ import {
   RefreshCw,
   PlusCircle,
   FolderOpen,
+  Bookmark,
+  BookmarkCheck,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useEarningProjects, useMyBids, useMyProjects, EarningProject } from "@/hooks/useEarning";
+import { useEarningProjects, useMyBids, useMyProjects, useSavedProjects, EarningProject } from "@/hooks/useEarning";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatPKRRange, formatPKR } from "@/lib/currency";
 import { ProjectListSkeleton } from "@/components/skeletons/ProjectListSkeleton";
@@ -33,10 +35,15 @@ import { EditProjectModal } from "@/components/earn/EditProjectModal";
 import { MyProjectCard } from "@/components/earn/MyProjectCard";
 import { MyProjectsFilterSort, StatusFilter, SortOption } from "@/components/earn/MyProjectsFilterSort";
 import { EarnStatsBar } from "@/components/earn/EarnStatsBar";
+import { CategoryFilter } from "@/components/earn/CategoryFilter";
+import { EarningsDashboardCard } from "@/components/earn/EarningsDashboardCard";
+import { SavedProjectsTab } from "@/components/earn/SavedProjectsTab";
+import { RecommendedProjects } from "@/components/earn/RecommendedProjects";
 
 
 export default function EarnPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [postModalOpen, setPostModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [projectToEdit, setProjectToEdit] = useState<EarningProject | null>(null);
@@ -53,17 +60,22 @@ export default function EarnPage() {
   const { projects, loading: projectsLoading, error: projectsError, refetch: refetchProjects } = useEarningProjects();
   const { bids: myBids, loading: bidsLoading, refetch: refetchBids } = useMyBids();
   const { projects: myProjects, loading: myProjectsLoading, refetch: refetchMyProjects } = useMyProjects();
+  const { savedIds, toggleSave, isSaved } = useSavedProjects();
 
   const handleEditProject = (project: EarningProject) => {
     setProjectToEdit(project);
     setEditModalOpen(true);
   };
 
-  const filteredProjects = projects.filter(
-    (p) =>
+  const filteredProjects = projects.filter((p) => {
+    const matchesSearch =
       p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (p.tags || []).some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+      (p.tags || []).some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesCategory =
+      selectedCategory === "All" ||
+      (p.tags || []).some((t) => t.toLowerCase().includes(selectedCategory.toLowerCase()));
+    return matchesSearch && matchesCategory;
+  });
 
   const formatTimeAgo = (dateString: string) => {
     try {
@@ -116,6 +128,10 @@ export default function EarnPage() {
                 <TabsTrigger value="projects" className="whitespace-nowrap">
                   Available Projects
                 </TabsTrigger>
+                <TabsTrigger value="saved" className="whitespace-nowrap">
+                  <Bookmark className="h-3.5 w-3.5 mr-1" />
+                  Saved ({savedIds.length})
+                </TabsTrigger>
                 <TabsTrigger value="how-it-works" className="whitespace-nowrap">
                   How It Works
                 </TabsTrigger>
@@ -153,9 +169,17 @@ export default function EarnPage() {
                 Post Project
               </Button>
             </div>
+
+            {/* Category Filter Chips */}
+            <CategoryFilter selected={selectedCategory} onSelect={setSelectedCategory} />
           </div>
 
           <TabsContent value="projects" className="space-y-4 md:space-y-6">
+            {/* Recommended Projects for logged-in users */}
+            {user && !projectsLoading && projects.length > 0 && (
+              <RecommendedProjects projects={projects} userSkills={[]} />
+            )}
+
             {projectsLoading ? (
               <ProjectListSkeleton count={4} />
             ) : projectsError ? (
@@ -173,15 +197,15 @@ export default function EarnPage() {
                 <CardContent className="p-8 md:p-12 text-center">
                   <Search className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-xl font-semibold mb-2">
-                    {searchQuery ? "No Projects Found" : "No Projects Available Yet"}
+                    {searchQuery || selectedCategory !== "All" ? "No Projects Found" : "No Projects Available Yet"}
                   </h3>
                   <p className="text-muted-foreground mb-6">
-                    {searchQuery 
-                      ? "Try adjusting your search criteria."
+                    {searchQuery || selectedCategory !== "All"
+                      ? "Try adjusting your search or category filter."
                       : "Be the first to post a project and find talented freelancers."
                     }
                   </p>
-                  {!searchQuery && (
+                  {!searchQuery && selectedCategory === "All" && (
                     <Button onClick={() => navigate("/auth?tab=signup")}>
                       Post a Project
                     </Button>
@@ -211,13 +235,30 @@ export default function EarnPage() {
                             {project.owner_name && ` by ${project.owner_name}`}
                           </CardDescription>
                         </div>
-                        <Badge 
-                          variant={project.status === "open" ? "success" : "secondary"}
-                          className="cursor-pointer hover:opacity-80 transition-opacity self-start shrink-0 capitalize"
-                          onClick={() => navigate(`/earn/projects/${project.id}`)}
-                        >
-                          {project.status || "Open"}
-                        </Badge>
+                        <div className="flex items-center gap-2 self-start shrink-0">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleSave(project.id);
+                            }}
+                          >
+                            {isSaved(project.id) ? (
+                              <BookmarkCheck className="h-4 w-4 text-primary" />
+                            ) : (
+                              <Bookmark className="h-4 w-4 text-muted-foreground" />
+                            )}
+                          </Button>
+                          <Badge 
+                            variant={project.status === "open" ? "success" : "secondary"}
+                            className="cursor-pointer hover:opacity-80 transition-opacity capitalize"
+                            onClick={() => navigate(`/earn/projects/${project.id}`)}
+                          >
+                            {project.status || "Open"}
+                          </Badge>
+                        </div>
                       </div>
                     </CardHeader>
 
@@ -279,6 +320,15 @@ export default function EarnPage() {
             )}
           </TabsContent>
 
+          {/* Saved Projects Tab */}
+          <TabsContent value="saved">
+            <SavedProjectsTab
+              projects={projects}
+              savedIds={savedIds}
+              onToggleSave={toggleSave}
+            />
+          </TabsContent>
+
           <TabsContent value="how-it-works">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
               {[
@@ -338,64 +388,71 @@ export default function EarnPage() {
               </Card>
             ) : bidsLoading ? (
               <ProjectListSkeleton count={3} />
-            ) : myBids.length === 0 ? (
-              <Card>
-                <CardContent className="p-8 md:p-12 text-center">
-                  <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">No Bids Yet</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Start bidding on projects to track your submissions here.
-                  </p>
-                  <Button onClick={() => navigate("/earn")}>
-                    Browse Projects
-                  </Button>
-                </CardContent>
-              </Card>
             ) : (
-              <div className="space-y-4">
-                {myBids.map((bid, index) => (
-                  <motion.div
-                    key={bid.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                  >
-                    <Card variant="interactive">
-                      <CardContent className="p-4 md:p-6">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                          <div className="flex-1 min-w-0">
-                            <h3 
-                              className="font-semibold text-lg cursor-pointer hover:text-primary truncate"
-                              onClick={() => navigate(`/earn/projects/${bid.project_id}`)}
-                            >
-                              {bid.project_title || "Project"}
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              Submitted {formatTimeAgo(bid.created_at)}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <div className="text-right">
-                              <p className="font-semibold text-primary">{formatPKR(bid.amount)}</p>
-                              <p className="text-xs text-muted-foreground">
-                                in {bid.delivery_days} days
-                              </p>
+              <>
+                {/* Earnings Dashboard */}
+                <EarningsDashboardCard bids={myBids} />
+
+                {myBids.length === 0 ? (
+                  <Card>
+                    <CardContent className="p-8 md:p-12 text-center">
+                      <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                      <h3 className="text-xl font-semibold mb-2">No Bids Yet</h3>
+                      <p className="text-muted-foreground mb-6">
+                        Start bidding on projects to track your submissions here.
+                      </p>
+                      <Button onClick={() => navigate("/earn")}>
+                        Browse Projects
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="space-y-4">
+                    {myBids.map((bid, index) => (
+                      <motion.div
+                        key={bid.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.05 }}
+                      >
+                        <Card variant="interactive">
+                          <CardContent className="p-4 md:p-6">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                              <div className="flex-1 min-w-0">
+                                <h3 
+                                  className="font-semibold text-lg cursor-pointer hover:text-primary truncate"
+                                  onClick={() => navigate(`/earn/projects/${bid.project_id}`)}
+                                >
+                                  {bid.project_title || "Project"}
+                                </h3>
+                                <p className="text-sm text-muted-foreground">
+                                  Submitted {formatTimeAgo(bid.created_at)}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-4">
+                                <div className="text-right">
+                                  <p className="font-semibold text-primary">{formatPKR(bid.amount)}</p>
+                                  <p className="text-xs text-muted-foreground">
+                                    in {bid.delivery_days} days
+                                  </p>
+                                </div>
+                                <Badge variant="secondary">
+                                  Pending
+                                </Badge>
+                              </div>
                             </div>
-                            <Badge variant="secondary">
-                              Pending
-                            </Badge>
-                          </div>
-                        </div>
-                        {bid.message && (
-                          <p className="mt-3 text-sm text-muted-foreground line-clamp-2">
-                            {bid.message}
-                          </p>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
+                            {bid.message && (
+                              <p className="mt-3 text-sm text-muted-foreground line-clamp-2">
+                                {bid.message}
+                              </p>
+                            )}
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </TabsContent>
 
