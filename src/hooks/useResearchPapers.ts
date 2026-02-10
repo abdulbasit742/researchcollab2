@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from "react";
 import { useUniversalAI, AIDomain } from "@/hooks/useUniversalAI";
+import { toast } from "sonner";
 
 export type PaperType =
   | "Journal Article"
@@ -16,6 +17,8 @@ export type PaperType =
   | "Patent";
 
 export type AccessLevel = "Open Access" | "Restricted";
+
+export type SortOption = "citations-desc" | "year-desc" | "year-asc" | "title-asc" | "analyzed";
 
 export interface ResearchPaper {
   id: string;
@@ -41,6 +44,14 @@ export interface PaperSummary {
   relevanceScore: number;
 }
 
+export interface PaperComparison {
+  methodology: string;
+  findings: string;
+  citationImpact: string;
+  complementary: string;
+  recommendation: string;
+}
+
 export type ResearchLevel =
   | "Beginner"
   | "Emerging"
@@ -55,6 +66,13 @@ export interface ResearchMetrics {
   hIndex: number;
   papersRead: number;
   peerReviews: number;
+}
+
+export interface ReadingStats {
+  byField: Record<string, number>;
+  topField: string | null;
+  streak: number;
+  totalAnalyzed: number;
 }
 
 const LEVEL_THRESHOLDS: { level: ResearchLevel; min: number }[] = [
@@ -160,8 +178,11 @@ export function useResearchPapers() {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<PaperType | "All">("All");
   const [fieldFilter, setFieldFilter] = useState<string>("All");
+  const [sortBy, setSortBy] = useState<SortOption>("citations-desc");
+  const [showBookmarked, setShowBookmarked] = useState(false);
   const [readingHistory, setReadingHistory] = useState<string[]>([]);
   const [summaries, setSummaries] = useState<Record<string, PaperSummary>>({});
+  const [selectedForCompare, setSelectedForCompare] = useState<string[]>([]);
   const { ask, loading: aiLoading } = useUniversalAI();
 
   const [metrics] = useState<ResearchMetrics>({
@@ -180,28 +201,62 @@ export function useResearchPapers() {
   const fields = useMemo(() => [...new Set(papers.map((p) => p.field))].sort(), [papers]);
   const paperTypes = useMemo(() => [...new Set(papers.map((p) => p.type))].sort(), [papers]);
 
+  const readingStats = useMemo<ReadingStats>(() => {
+    const byField: Record<string, number> = {};
+    for (const id of readingHistory) {
+      const paper = papers.find((p) => p.id === id);
+      if (paper) byField[paper.field] = (byField[paper.field] || 0) + 1;
+    }
+    const topField = Object.entries(byField).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
+    return { byField, topField, streak: Math.min(readingHistory.length, 7), totalAnalyzed: readingHistory.length };
+  }, [readingHistory, papers]);
+
   const filtered = useMemo(() => {
-    return papers.filter((p) => {
+    let result = papers.filter((p) => {
+      if (showBookmarked && !p.bookmarked) return false;
       if (search && !p.title.toLowerCase().includes(search.toLowerCase()) && !p.authors.some((a) => a.toLowerCase().includes(search.toLowerCase()))) return false;
       if (typeFilter !== "All" && p.type !== typeFilter) return false;
       if (fieldFilter !== "All" && p.field !== fieldFilter) return false;
       return true;
     });
-  }, [papers, search, typeFilter, fieldFilter]);
+
+    result.sort((a, b) => {
+      switch (sortBy) {
+        case "citations-desc": return b.citations - a.citations;
+        case "year-desc": return b.year - a.year;
+        case "year-asc": return a.year - b.year;
+        case "title-asc": return a.title.localeCompare(b.title);
+        case "analyzed": {
+          const aAnalyzed = readingHistory.includes(a.id) ? 1 : 0;
+          const bAnalyzed = readingHistory.includes(b.id) ? 1 : 0;
+          return bAnalyzed - aAnalyzed;
+        }
+        default: return 0;
+      }
+    });
+
+    return result;
+  }, [papers, search, typeFilter, fieldFilter, sortBy, showBookmarked, readingHistory]);
 
   const toggleBookmark = useCallback((id: string) => {
     setPapers((prev) => prev.map((p) => (p.id === id ? { ...p, bookmarked: !p.bookmarked } : p)));
   }, []);
 
+  const toggleCompareSelect = useCallback((id: string) => {
+    setSelectedForCompare((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id);
+      if (prev.length >= 3) { toast.info("You can compare up to 3 papers"); return prev; }
+      return [...prev, id];
+    });
+  }, []);
+
+  const clearCompareSelection = useCallback(() => setSelectedForCompare([]), []);
+
   const summarizePaper = useCallback(
     async (paper: ResearchPaper): Promise<PaperSummary | null> => {
       const result = await ask<PaperSummary>("research" as AIDomain, "summarize-paper", {
-        title: paper.title,
-        abstract: paper.abstract,
-        authors: paper.authors,
-        journal: paper.journal,
-        type: paper.type,
-        field: paper.field,
+        title: paper.title, abstract: paper.abstract, authors: paper.authors,
+        journal: paper.journal, type: paper.type, field: paper.field,
       });
       if (result) {
         setSummaries((prev) => ({ ...prev, [paper.id]: result }));
@@ -213,29 +268,56 @@ export function useResearchPapers() {
     [ask]
   );
 
+  const comparePapers = useCallback(
+    async (paperIds: string[]): Promise<PaperComparison | null> => {
+      const papersToCompare = papers.filter((p) => paperIds.includes(p.id));
+      if (papersToCompare.length < 2) return null;
+      return ask<PaperComparison>("research" as AIDomain, "compare-papers", {
+        papers: papersToCompare.map((p) => ({ title: p.title, abstract: p.abstract, authors: p.authors, field: p.field, citations: p.citations, year: p.year })),
+      });
+    },
+    [ask, papers]
+  );
+
+  const getRelatedPapers = useCallback(
+    async (paper: ResearchPaper): Promise<string[] | null> => {
+      const result = await ask<{ relatedIds: string[] }>("research" as AIDomain, "related-papers", {
+        paper: { title: paper.title, field: paper.field, abstract: paper.abstract },
+        availablePapers: papers.filter((p) => p.id !== paper.id).map((p) => ({ id: p.id, title: p.title, field: p.field })),
+      });
+      return result?.relatedIds || null;
+    },
+    [ask, papers]
+  );
+
+  const exportCitations = useCallback(() => {
+    const toExport = papers.filter((p) => p.bookmarked || p.summarized);
+    if (toExport.length === 0) { toast.info("No bookmarked or analyzed papers to export"); return; }
+    const citations = toExport.map((p) => {
+      const authors = p.authors.join(", ");
+      return `${authors} (${p.year}). ${p.title}. ${p.journal}. https://doi.org/${p.doi}`;
+    }).join("\n\n");
+    navigator.clipboard.writeText(citations);
+    toast.success(`${toExport.length} citation(s) copied to clipboard`);
+  }, [papers]);
+
   const getImprovementPlan = useCallback(async () => {
     return ask("research" as AIDomain, "improve-level", {
-      currentLevel: level,
-      ...metrics,
+      currentLevel: level, ...metrics,
       papersRead: metrics.papersRead + readingHistory.length,
       readingHistory: readingHistory.length,
     });
   }, [ask, level, metrics, readingHistory]);
 
   return {
-    papers: filtered,
-    allPapers: papers,
-    search, setSearch,
-    typeFilter, setTypeFilter,
-    fieldFilter, setFieldFilter,
+    papers: filtered, allPapers: papers,
+    search, setSearch, typeFilter, setTypeFilter, fieldFilter, setFieldFilter,
+    sortBy, setSortBy, showBookmarked, setShowBookmarked,
     fields, paperTypes,
-    toggleBookmark,
-    summarizePaper,
-    summaries,
-    aiLoading,
+    toggleBookmark, summarizePaper, summaries, aiLoading,
     metrics: { ...metrics, papersRead: metrics.papersRead + readingHistory.length },
-    score, level, nextLevel, progress,
-    readingHistory,
-    getImprovementPlan,
+    score, level, nextLevel, progress, readingHistory, readingStats,
+    getImprovementPlan, comparePapers, getRelatedPapers, exportCitations,
+    selectedForCompare, toggleCompareSelect, clearCompareSelection,
   };
 }

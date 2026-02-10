@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Sparkles, Target, FlaskConical, AlertTriangle, CheckCircle } from "lucide-react";
+import { Sparkles, Target, FlaskConical, AlertTriangle, CheckCircle, Link2 } from "lucide-react";
 import type { ResearchPaper, PaperSummary } from "@/hooks/useResearchPapers";
 import ReactMarkdown from "react-markdown";
 
@@ -11,10 +13,26 @@ interface PaperSummaryDialogProps {
   paper: ResearchPaper | null;
   summary: PaperSummary | null;
   loading: boolean;
+  onGetRelated?: (paper: ResearchPaper) => Promise<string[] | null>;
+  allPapers?: ResearchPaper[];
+  onSummarize?: (paper: ResearchPaper) => void;
 }
 
-export function PaperSummaryDialog({ open, onOpenChange, paper, summary, loading }: PaperSummaryDialogProps) {
+export function PaperSummaryDialog({ open, onOpenChange, paper, summary, loading, onGetRelated, allPapers, onSummarize }: PaperSummaryDialogProps) {
+  const [relatedIds, setRelatedIds] = useState<string[] | null>(null);
+  const [loadingRelated, setLoadingRelated] = useState(false);
+
+  useEffect(() => {
+    if (open && summary && paper && onGetRelated && !relatedIds) {
+      setLoadingRelated(true);
+      onGetRelated(paper).then((ids) => { setRelatedIds(ids); setLoadingRelated(false); });
+    }
+    if (!open) setRelatedIds(null);
+  }, [open, summary, paper, onGetRelated, relatedIds]);
+
   if (!paper) return null;
+
+  const relatedPapers = relatedIds && allPapers ? allPapers.filter((p) => relatedIds.includes(p.id)) : [];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -39,7 +57,6 @@ export function PaperSummaryDialog({ open, onOpenChange, paper, summary, loading
 
         {summary && !loading && (
           <div className="space-y-4">
-            {/* Relevance Score */}
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">Relevance Score:</span>
               <Badge variant={summary.relevanceScore >= 8 ? "success" : summary.relevanceScore >= 5 ? "warning" : "secondary"}>
@@ -47,47 +64,57 @@ export function PaperSummaryDialog({ open, onOpenChange, paper, summary, loading
               </Badge>
             </div>
 
-            {/* Summary */}
             <div className="space-y-1.5">
               <h4 className="text-sm font-semibold flex items-center gap-1.5">
-                <CheckCircle className="h-3.5 w-3.5 text-primary" />
-                Summary
+                <CheckCircle className="h-3.5 w-3.5 text-primary" /> Summary
               </h4>
               <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert">
                 <ReactMarkdown>{summary.summary}</ReactMarkdown>
               </div>
             </div>
 
-            {/* Key Findings */}
             <div className="space-y-1.5">
               <h4 className="text-sm font-semibold flex items-center gap-1.5">
-                <Target className="h-3.5 w-3.5 text-primary" />
-                Key Findings
+                <Target className="h-3.5 w-3.5 text-primary" /> Key Findings
               </h4>
               <ul className="text-sm text-muted-foreground space-y-1 pl-4 list-disc">
-                {summary.keyFindings.map((f, i) => (
-                  <li key={i}>{f}</li>
-                ))}
+                {summary.keyFindings.map((f, i) => <li key={i}>{f}</li>)}
               </ul>
             </div>
 
-            {/* Methodology */}
             <div className="space-y-1.5">
               <h4 className="text-sm font-semibold flex items-center gap-1.5">
-                <FlaskConical className="h-3.5 w-3.5 text-primary" />
-                Methodology
+                <FlaskConical className="h-3.5 w-3.5 text-primary" /> Methodology
               </h4>
               <p className="text-sm text-muted-foreground">{summary.methodology}</p>
             </div>
 
-            {/* Limitations */}
             <div className="space-y-1.5">
               <h4 className="text-sm font-semibold flex items-center gap-1.5">
-                <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
-                Limitations
+                <AlertTriangle className="h-3.5 w-3.5 text-amber-500" /> Limitations
               </h4>
               <p className="text-sm text-muted-foreground">{summary.limitations}</p>
             </div>
+
+            {/* Related Papers */}
+            {(loadingRelated || relatedPapers.length > 0) && (
+              <div className="space-y-2 pt-2 border-t">
+                <h4 className="text-sm font-semibold flex items-center gap-1.5">
+                  <Link2 className="h-3.5 w-3.5 text-primary" /> Related Papers
+                </h4>
+                {loadingRelated && <Skeleton className="h-12 w-full" />}
+                {relatedPapers.map((rp) => (
+                  <button
+                    key={rp.id}
+                    className="w-full text-left p-2 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
+                    onClick={() => { onSummarize?.(rp); }}
+                  >
+                    <p className="text-sm font-medium">{rp.title}</p>
+                    <p className="text-xs text-muted-foreground">{rp.authors[0]} · {rp.year} · {rp.field}</p>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </DialogContent>

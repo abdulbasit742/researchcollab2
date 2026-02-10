@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Bookmark, BookmarkCheck, Sparkles, ExternalLink, Users, Calendar, Quote } from "lucide-react";
 import type { ResearchPaper } from "@/hooks/useResearchPapers";
 
@@ -25,20 +25,32 @@ interface PaperCardProps {
   onSummarize: (paper: ResearchPaper) => void;
   onToggleBookmark: (id: string) => void;
   isLoading?: boolean;
+  selectable?: boolean;
+  selected?: boolean;
+  onSelect?: (id: string) => void;
 }
 
-export function PaperCard({ paper, onSummarize, onToggleBookmark, isLoading }: PaperCardProps) {
+export function PaperCard({ paper, onSummarize, onToggleBookmark, isLoading, selectable, selected, onSelect }: PaperCardProps) {
   return (
-    <Card variant="elevated" className="group">
+    <Card variant="elevated" className={`group ${selected ? "ring-2 ring-primary" : ""}`}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <Badge variant={(TYPE_COLORS[paper.type] as any) || "default"}>{paper.type}</Badge>
-              <Badge variant={paper.access === "Open Access" ? "success" : "outline"}>{paper.access}</Badge>
-              {paper.summarized && <Badge variant="premium">AI Analyzed</Badge>}
+          <div className="flex items-start gap-2 flex-1 min-w-0">
+            {selectable && (
+              <Checkbox
+                checked={selected}
+                onCheckedChange={() => onSelect?.(paper.id)}
+                className="mt-1 shrink-0"
+              />
+            )}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <Badge variant={(TYPE_COLORS[paper.type] as any) || "default"}>{paper.type}</Badge>
+                <Badge variant={paper.access === "Open Access" ? "success" : "outline"}>{paper.access}</Badge>
+                {paper.summarized && <Badge variant="premium">AI Analyzed</Badge>}
+              </div>
+              <CardTitle className="text-base leading-snug">{paper.title}</CardTitle>
             </div>
-            <CardTitle className="text-base leading-snug">{paper.title}</CardTitle>
           </div>
           <Button
             variant="ghost"
