@@ -586,6 +586,31 @@ export function useUpdateProject() {
   };
 }
 
+export function useSavedProjects() {
+  const STORAGE_KEY = "earn_saved_projects";
+  const [savedIds, setSavedIds] = useState<string[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  });
+
+  const toggleSave = (projectId: string) => {
+    setSavedIds((prev) => {
+      const next = prev.includes(projectId)
+        ? prev.filter((id) => id !== projectId)
+        : [...prev, projectId];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const isSaved = (projectId: string) => savedIds.includes(projectId);
+
+  return { savedIds, toggleSave, isSaved };
+}
+
 export function useUpdateProjectStatus() {
   const { user } = useAuth();
   const { toast } = useToast();
