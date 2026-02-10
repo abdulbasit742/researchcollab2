@@ -5,3 +5,5 @@ export { RecentActivityCard } from "./RecentActivityCard";
 export { QuickActionsCard } from "./QuickActionsCard";
 export { WorkLedgerSummary } from "./WorkLedgerSummary";
 export { NetworkContext } from "./NetworkContext";
+export { WhyChooseSection } from "./WhyChooseSection";
+export { TestimonialsSection } from "./TestimonialsSection";
