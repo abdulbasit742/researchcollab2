@@ -14,6 +14,7 @@ import { TrustExplainer } from "@/components/trust/TrustExplainer";
 import { PlatformTrustBanner } from "@/components/trust/TrustSignals";
 import { GettingStartedChecklist } from "@/components/home/GettingStartedChecklist";
 import { FirstTimeUserOverlay } from "@/components/onboarding/FirstTimeUserOverlay";
+import { AISuggestionCard } from "@/components/ai/AISuggestionCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -179,6 +180,15 @@ export default function HomeDashboard() {
               breakdown={trustBreakdown}
               trend="stable"
               showActions={!profileComplete}
+            />
+
+            {/* AI Daily Brief */}
+            <AISuggestionCard
+              title="AI Daily Brief"
+              domain="general"
+              action="daily-brief"
+              context={{ trustScore, activeDeals: currentState.activeDeals, pendingActions: currentState.pendingActions }}
+              compact
             />
 
             {/* Platform Trust */}

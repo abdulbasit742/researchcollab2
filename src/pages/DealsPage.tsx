@@ -1,5 +1,6 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { DealRoomList } from "@/components/deals/DealRoomList";
+import { AISuggestionCard } from "@/components/ai/AISuggestionCard";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Briefcase } from "lucide-react";
@@ -29,7 +30,13 @@ export default function DealsPage() {
         </div>
       </div>
 
-      <div className="container px-4 py-6 sm:py-8">
+      <div className="container px-4 py-6 sm:py-8 space-y-6">
+        <AISuggestionCard
+          title="AI Deal Advisor"
+          domain="deals"
+          action="advisor"
+          context={{}}
+        />
         <DealRoomList />
       </div>
     </MainLayout>

@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { AISuggestionCard } from "@/components/ai/AISuggestionCard";
 import {
   TrendingUp,
   Scale,
@@ -78,6 +79,13 @@ export default function ProgressPage() {
 
           {/* Progress Tab - Main Career Dashboard */}
           <TabsContent value="progress">
+            <AISuggestionCard
+              title="AI Career Forecast"
+              domain="career"
+              action="forecast"
+              context={{}}
+              className="mb-6"
+            />
             <div className="grid lg:grid-cols-12 gap-6">
               {/* Left Column - Trust & Conversion */}
               <div className="lg:col-span-4 space-y-6">
