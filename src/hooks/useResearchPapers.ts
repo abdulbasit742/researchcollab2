@@ -309,6 +309,72 @@ export function useResearchPapers() {
     });
   }, [ask, level, metrics, readingHistory]);
 
+  // AI Chat with Document
+  const chatWithPaper = useCallback(
+    async (paper: ResearchPaper, question: string): Promise<string | null> => {
+      const result = await ask<{ answer: string }>("research" as AIDomain, "chat-with-paper", {
+        paper: { title: paper.title, abstract: paper.abstract, authors: paper.authors, field: paper.field, methodology: summaries[paper.id]?.methodology },
+        question,
+      });
+      return result?.answer || null;
+    },
+    [ask, summaries]
+  );
+
+  // Plain English Summary
+  const simplifySummary = useCallback(
+    async (paper: ResearchPaper): Promise<string | null> => {
+      const summary = summaries[paper.id];
+      if (!summary) return null;
+      const result = await ask<{ simplified: string }>("research" as AIDomain, "simplify-summary", {
+        title: paper.title, summary: summary.summary, findings: summary.keyFindings,
+      });
+      return result?.simplified || null;
+    },
+    [ask, summaries]
+  );
+
+  // Research Gap Finder
+  const findResearchGaps = useCallback(async () => {
+    const analyzed = papers.filter((p) => readingHistory.includes(p.id));
+    if (analyzed.length < 2) return null;
+    return ask<{ gaps: string[]; contradictions: string[]; connections: string[]; recommendations: string[] }>(
+      "research" as AIDomain, "find-research-gaps", {
+        papers: analyzed.map((p) => ({ title: p.title, field: p.field, abstract: p.abstract, year: p.year })),
+      }
+    );
+  }, [ask, papers, readingHistory]);
+
+  // Literature Review Outline
+  const generateLitReview = useCallback(
+    async (topic: string): Promise<string | null> => {
+      const analyzed = papers.filter((p) => readingHistory.includes(p.id) || p.summarized);
+      const result = await ask<{ outline: string }>("research" as AIDomain, "lit-review-outline", {
+        topic,
+        papers: analyzed.map((p) => ({
+          title: p.title, authors: p.authors, year: p.year, field: p.field,
+          abstract: p.abstract, journal: p.journal,
+        })),
+      });
+      return result?.outline || null;
+    },
+    [ask, papers, readingHistory]
+  );
+
+  // Annotated Bibliography
+  const generateAnnotatedBib = useCallback(async (): Promise<string | null> => {
+    const toExport = papers.filter((p) => p.bookmarked || p.summarized);
+    if (toExport.length === 0) { toast.info("No bookmarked or analyzed papers"); return null; }
+    const result = await ask<{ bibliography: string }>("research" as AIDomain, "annotated-bibliography", {
+      papers: toExport.map((p) => ({
+        title: p.title, authors: p.authors, year: p.year, journal: p.journal,
+        doi: p.doi, abstract: p.abstract, field: p.field,
+        summary: summaries[p.id]?.summary,
+      })),
+    });
+    return result?.bibliography || null;
+  }, [ask, papers, summaries]);
+
   return {
     papers: filtered, allPapers: papers,
     search, setSearch, typeFilter, setTypeFilter, fieldFilter, setFieldFilter,
@@ -319,5 +385,6 @@ export function useResearchPapers() {
     score, level, nextLevel, progress, readingHistory, readingStats,
     getImprovementPlan, comparePapers, getRelatedPapers, exportCitations,
     selectedForCompare, toggleCompareSelect, clearCompareSelection,
+    chatWithPaper, simplifySummary, findResearchGaps, generateLitReview, generateAnnotatedBib,
   };
 }

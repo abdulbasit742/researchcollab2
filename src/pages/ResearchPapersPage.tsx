@@ -10,8 +10,11 @@ import { ResearchLevelCard } from "@/components/research/ResearchLevelCard";
 import { PaperSummaryDialog } from "@/components/research/PaperSummaryDialog";
 import { CompareDialog } from "@/components/research/CompareDialog";
 import { ReadingStatsCard } from "@/components/research/ReadingStatsCard";
+import { ResearchGapCard } from "@/components/research/ResearchGapCard";
+import { LitReviewDialog } from "@/components/research/LitReviewDialog";
+import { AnnotatedBibDialog } from "@/components/research/AnnotatedBibDialog";
 import { useResearchPapers, type ResearchPaper, type PaperComparison } from "@/hooks/useResearchPapers";
-import { Search, BookOpen, FileText, GitCompareArrows, X } from "lucide-react";
+import { Search, BookOpen, FileText, GitCompareArrows, X, FileEdit, BookMarked } from "lucide-react";
 
 export default function ResearchPapersPage() {
   const {
@@ -21,6 +24,7 @@ export default function ResearchPapersPage() {
     metrics, score, level, nextLevel, progress, readingHistory, readingStats,
     getImprovementPlan, comparePapers, getRelatedPapers, exportCitations,
     selectedForCompare, toggleCompareSelect, clearCompareSelection,
+    chatWithPaper, simplifySummary, findResearchGaps, generateLitReview, generateAnnotatedBib,
   } = useResearchPapers();
 
   const [selectedPaper, setSelectedPaper] = useState<ResearchPaper | null>(null);
@@ -30,6 +34,8 @@ export default function ResearchPapersPage() {
   const [compareDialogOpen, setCompareDialogOpen] = useState(false);
   const [comparison, setComparison] = useState<PaperComparison | null>(null);
   const [comparing, setComparing] = useState(false);
+  const [litReviewOpen, setLitReviewOpen] = useState(false);
+  const [annotatedBibOpen, setAnnotatedBibOpen] = useState(false);
 
   const handleSummarize = async (paper: ResearchPaper) => {
     if (summaries[paper.id]) {
@@ -54,6 +60,7 @@ export default function ResearchPapersPage() {
   };
 
   const comparePaperObjects = allPapers.filter((p) => selectedForCompare.includes(p.id));
+  const bookmarkedOrAnalyzedCount = allPapers.filter((p) => p.bookmarked || p.summarized).length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -70,15 +77,25 @@ export default function ResearchPapersPage() {
               Browse, analyze, and track research papers with AI-powered insights
             </p>
           </div>
-          <Button
-            variant={compareMode ? "default" : "outline"}
-            size="sm"
-            className="gap-2"
-            onClick={() => { setCompareMode(!compareMode); if (compareMode) clearCompareSelection(); }}
-          >
-            <GitCompareArrows className="h-4 w-4" />
-            {compareMode ? "Exit Compare" : "Compare Papers"}
-          </Button>
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button variant="outline" size="sm" className="gap-2" onClick={() => setLitReviewOpen(true)}>
+              <FileEdit className="h-4 w-4" />
+              Lit Review Outline
+            </Button>
+            <Button variant="outline" size="sm" className="gap-2" onClick={() => setAnnotatedBibOpen(true)}>
+              <BookMarked className="h-4 w-4" />
+              Annotated Bibliography
+            </Button>
+            <Button
+              variant={compareMode ? "default" : "outline"}
+              size="sm"
+              className="gap-2"
+              onClick={() => { setCompareMode(!compareMode); if (compareMode) clearCompareSelection(); }}
+            >
+              <GitCompareArrows className="h-4 w-4" />
+              {compareMode ? "Exit Compare" : "Compare Papers"}
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
@@ -181,6 +198,11 @@ export default function ResearchPapersPage() {
               aiLoading={aiLoading}
             />
             <ReadingStatsCard stats={readingStats} onExport={exportCitations} />
+            <ResearchGapCard
+              onAnalyze={findResearchGaps}
+              totalPapers={allPapers.length}
+              analyzedCount={readingHistory.length}
+            />
           </div>
         </div>
       </main>
@@ -209,6 +231,9 @@ export default function ResearchPapersPage() {
         onGetRelated={getRelatedPapers}
         allPapers={allPapers}
         onSummarize={handleSummarize}
+        onChatWithPaper={chatWithPaper}
+        onSimplify={simplifySummary}
+        chatLoading={aiLoading}
       />
 
       {/* Compare Dialog */}
@@ -218,6 +243,24 @@ export default function ResearchPapersPage() {
         papers={comparePaperObjects}
         comparison={comparison}
         loading={comparing}
+      />
+
+      {/* Lit Review Dialog */}
+      <LitReviewDialog
+        open={litReviewOpen}
+        onOpenChange={setLitReviewOpen}
+        onGenerate={generateLitReview}
+        loading={aiLoading}
+        analyzedCount={readingHistory.length}
+      />
+
+      {/* Annotated Bibliography Dialog */}
+      <AnnotatedBibDialog
+        open={annotatedBibOpen}
+        onOpenChange={setAnnotatedBibOpen}
+        onGenerate={generateAnnotatedBib}
+        loading={aiLoading}
+        paperCount={bookmarkedOrAnalyzedCount}
       />
     </div>
   );
