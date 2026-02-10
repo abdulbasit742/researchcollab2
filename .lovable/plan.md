@@ -1,110 +1,86 @@
 
-# Research Papers Hub with AI Analysis and Research Level Tracker
 
-## Overview
+# Enhance Research Papers Hub -- New Features
 
-Create a dedicated **Research Papers** page (`/research-papers`) where researchers can browse, search, and discover all types of research papers. The page integrates AI-powered summarization and analysis that automatically feeds into the researcher's profile and research impact. A **Research Level** section shows the user's current research standing and provides AI-driven improvement recommendations.
+## Current State
+The Research Papers page has paper browsing with search/filters, AI summarization, bookmarking, and a research level tracker. Here are 6 high-impact features to add.
 
-## What Gets Built
+## Features to Build
 
-### 1. Research Papers Page (`/research-papers`)
+### 1. Bookmarked Papers Tab / Filter
+Currently bookmarking works but there's no way to view only bookmarked papers. Add a tab bar ("All Papers" / "Bookmarked") or a toggle filter so researchers can quickly access their saved library.
 
-A full-featured page with:
+### 2. Sort Options
+Papers currently have no sorting. Add a sort dropdown with options: Most Cited, Newest First, Oldest First, Recently Analyzed, Alphabetical. This is essential for navigating a growing paper collection.
 
-- **Paper Discovery**: Browse papers by type -- Journal Articles, Conference Papers, Preprints, Theses, Technical Reports, Reviews, Case Studies, Working Papers, Book Chapters
-- **Search and Filters**: Search by title/keyword, filter by type, field, year, access level (open/restricted)
-- **Paper Cards**: Each paper shows title, authors, abstract preview, journal/venue, year, citation count, DOI link, type badge
-- **AI Summarize Button**: One-click AI summarization of any paper -- generates a concise summary, key findings, methodology notes, and relevance score
-- **Auto-Add to Research**: When a paper is summarized/analyzed, it gets logged to the user's reading history and contributes to their research metrics
-- **Save/Bookmark**: Save papers to personal library for later reading
+### 3. AI Compare Papers
+Add a "Compare" mode where researchers select 2-3 papers and get an AI-generated comparison: how methodologies differ, which has stronger findings, complementary insights, and citation impact analysis. A floating action bar appears when papers are selected.
 
-### 2. AI Paper Analysis (via existing `ai-universal` edge function)
+### 4. AI Reading Streak and Stats Panel
+Add a reading activity section to the sidebar showing:
+- Reading streak (days with at least one paper analyzed)
+- Papers analyzed by field (mini bar chart via Recharts)
+- Most-read field badge
+- "Analyze one paper to keep your streak" nudge
 
-Uses the existing Universal AI infrastructure with a new `research` domain action:
+### 5. Related Papers Suggestions
+After summarizing a paper, show an "AI Suggested Related Papers" section inside the summary dialog. The AI recommends 2-3 papers from the existing collection that are thematically connected, helping researchers discover relevant work.
 
-- `summarize-paper`: AI generates structured summary (abstract, key findings, methodology, limitations, relevance)
-- `analyze-reading`: AI analyzes the user's reading patterns and suggests gaps
-- `improve-level`: AI provides personalized recommendations to improve research level
+### 6. Export Reading List
+A button to export the user's bookmarked/analyzed papers as a formatted citation list (copy to clipboard) in a common academic format, useful for literature reviews.
 
-### 3. Research Level Section
-
-A prominent section on the page (and optionally on the profile) showing:
-
-- **Current Research Level**: Beginner, Emerging, Intermediate, Advanced, Expert, Distinguished (based on publications, citations, h-index, reading activity)
-- **Level Progress Bar**: Visual progress toward next level
-- **Breakdown**: What contributes to the level (publications, citations, peer reviews, datasets, reading breadth)
-- **AI Improvement Plan**: Personalized AI recommendations to level up (e.g., "Publish 2 more papers in Q1", "Expand reading into adjacent fields", "Increase citation impact by collaborating with high-impact authors")
-
-### 4. Reading History and Analytics
-
-- Papers the user has read/summarized are tracked
-- Reading stats: papers read this month, fields covered, AI summaries generated
-- This data feeds into the Research Level calculation
+---
 
 ## Technical Details
 
-### New Files
-
-- **`src/pages/ResearchPapersPage.tsx`** -- Main page with paper browser, search/filters, AI actions, and research level section
-- **`src/components/research/PaperCard.tsx`** -- Reusable paper card with AI summarize action
-- **`src/components/research/ResearchLevelCard.tsx`** -- Research level display with progress and AI improvement tips
-- **`src/components/research/PaperSummaryDialog.tsx`** -- Dialog showing AI-generated paper summary
-- **`src/hooks/useResearchPapers.ts`** -- Hook managing paper data, reading history, and research level state
-
 ### Modified Files
 
-- **`src/App.tsx`** -- Add route `/research-papers` pointing to `ResearchPapersPage`
-- **`src/components/layout/Navbar.tsx`** -- Optionally add a link in the "More" menu or leave discoverable via search
-- **`src/components/research/index.ts`** -- Export new components
+**`src/hooks/useResearchPapers.ts`**
+- Add `sortBy` state (enum: `citations-desc`, `year-desc`, `year-asc`, `title-asc`, `analyzed`)
+- Add `showBookmarked` boolean toggle
+- Add `comparePapers` function calling `ask("research", "compare-papers", { papers })`
+- Add `getRelatedPapers` function calling `ask("research", "related-papers", { paper, availablePapers })`
+- Add `exportCitations` function that formats bookmarked/analyzed papers as APA citations
+- Add `readingStats` computed value (papers by field, streak info)
+- Update `filtered` memo to respect `showBookmarked` and `sortBy`
+
+**`src/pages/ResearchPapersPage.tsx`**
+- Add tab bar for All / Bookmarked view
+- Add sort dropdown next to existing filters
+- Add compare mode: checkbox on each card, floating compare bar at bottom
+- Wire new dialog for comparison results
+
+**`src/components/research/PaperCard.tsx`**
+- Add optional `selectable` prop with checkbox for compare mode
+- Add `selected` and `onSelect` props
+
+**`src/components/research/ResearchLevelCard.tsx`**
+- Add reading stats section below metrics (field distribution, streak)
+
+**`src/components/research/PaperSummaryDialog.tsx`**
+- Add "Related Papers" section at bottom of dialog after AI summary loads
+
+### New Files
+
+**`src/components/research/CompareDialog.tsx`**
+- Dialog showing AI-generated side-by-side comparison of selected papers
+- Sections: Methodology comparison, Findings contrast, Citation impact, Complementary insights
+
+**`src/components/research/ReadingStatsCard.tsx`**
+- Small card with reading streak counter, field distribution mini-chart (Recharts BarChart), and export button
 
 ### AI Integration
-
-Uses the existing `useUniversalAI` hook with domain `"research"`:
-
-```text
-// Summarize a paper
-const summary = await ask("research", "summarize-paper", { 
-  title, abstract, authors, journal 
-});
-
-// Get improvement recommendations
-const plan = await ask("research", "improve-level", { 
-  currentLevel, publications, citations, hIndex, readingHistory 
-});
-
-// Analyze reading patterns
-const analysis = await ask("research", "analyze-reading", { 
-  papersRead, fieldsExplored, recentTopics 
-});
-```
-
-### Paper Types Supported
-
-Journal Article, Conference Paper, Preprint, Thesis/Dissertation, Technical Report, Systematic Review, Meta-Analysis, Case Study, Working Paper, Book Chapter, White Paper, Patent
-
-### Research Level Calculation
-
-Levels are computed client-side based on weighted metrics:
-- Publications count (30%)
-- Total citations (25%)
-- h-index (20%)
-- Reading activity / papers analyzed (15%)
-- Peer review contributions (10%)
-
-### Sample Data
-
-The page ships with sample papers across multiple types so it's immediately useful. Real paper data can be persisted to the database in a future iteration.
+Uses existing `useUniversalAI` with domain `"research"`:
+- `compare-papers` -- new action for paper comparison
+- `related-papers` -- new action for recommendations
 
 ### No Database Changes
-
-Phase 1 uses local state with sample data. The AI calls go through the existing `ai-universal` edge function. A future iteration can add a `research_papers` and `reading_history` table for persistence.
+All state remains client-side. The AI calls go through the existing `ai-universal` edge function.
 
 ### Build Order
-
-1. Create `useResearchPapers` hook with paper types, sample data, and level calculation
-2. Create `PaperCard` component with AI summarize button
-3. Create `ResearchLevelCard` component with progress and AI tips
-4. Create `PaperSummaryDialog` for AI summary display
-5. Create `ResearchPapersPage` assembling everything
-6. Add route in `App.tsx`
-7. Export from `research/index.ts`
+1. Update hook with sort, bookmark filter, compare, related, export, and stats logic
+2. Update PaperCard with selectable mode
+3. Create ReadingStatsCard component
+4. Create CompareDialog component
+5. Update PaperSummaryDialog with related papers section
+6. Update ResearchPapersPage with tabs, sort, compare mode, and new sidebar cards
