@@ -1,70 +1,110 @@
 
-# Phase 4: Embedded AI Widgets on Key Pages
+# Research Papers Hub with AI Analysis and Research Level Tracker
 
-Now that the Universal AI backend, hook, and global chat are in place, the next best step is Phase 4 -- adding embedded AI widgets to the 5 most impactful pages. These are small, context-aware AI-powered cards that provide proactive intelligence without requiring the user to open the chat.
+## Overview
+
+Create a dedicated **Research Papers** page (`/research-papers`) where researchers can browse, search, and discover all types of research papers. The page integrates AI-powered summarization and analysis that automatically feeds into the researcher's profile and research impact. A **Research Level** section shows the user's current research standing and provides AI-driven improvement recommendations.
 
 ## What Gets Built
 
-### 1. AI Insight Card Component (Reusable)
-A shared `AISuggestionCard` component that any page can drop in. It takes a domain, action, and context, calls the Universal AI, and renders the response as a compact card with a sparkle icon.
+### 1. Research Papers Page (`/research-papers`)
 
-### 2. Home Dashboard -- "AI Daily Brief"
-- Add a card in the sidebar that generates a short AI summary of the user's day: trust changes, pending actions, top opportunity.
-- Uses domain `"general"`, action `"daily-brief"` with trust score, active deals, and pending actions as context.
+A full-featured page with:
 
-### 3. Deals Page -- "AI Deal Advisor"  
-- Add a collapsible card above the deal list with AI-generated advice: negotiation tips, pricing suggestions, risk flags for active deals.
-- Uses domain `"deals"`, action `"advisor"`.
+- **Paper Discovery**: Browse papers by type -- Journal Articles, Conference Papers, Preprints, Theses, Technical Reports, Reviews, Case Studies, Working Papers, Book Chapters
+- **Search and Filters**: Search by title/keyword, filter by type, field, year, access level (open/restricted)
+- **Paper Cards**: Each paper shows title, authors, abstract preview, journal/venue, year, citation count, DOI link, type badge
+- **AI Summarize Button**: One-click AI summarization of any paper -- generates a concise summary, key findings, methodology notes, and relevance score
+- **Auto-Add to Research**: When a paper is summarized/analyzed, it gets logged to the user's reading history and contributes to their research metrics
+- **Save/Bookmark**: Save papers to personal library for later reading
 
-### 4. Profile Page -- "AI Profile Score"
-- Add a card in the sidebar that analyzes the user's profile completeness, suggests improvements, and estimates visibility impact.
-- Uses domain `"profile"`, action `"optimize"`.
+### 2. AI Paper Analysis (via existing `ai-universal` edge function)
 
-### 5. Messages Page -- "AI Conversation Summary"
-- Add a small banner above the thread list summarizing unread conversations and suggesting priority responses.
-- Uses domain `"messages"`, action `"summary"`.
+Uses the existing Universal AI infrastructure with a new `research` domain action:
 
-### 6. Progress Page -- "AI Career Forecast"
-- Enhance the existing NextBestActionPanel by adding an AI-powered insight at the top that provides a narrative career forecast.
-- Uses domain `"career"`, action `"forecast"`.
+- `summarize-paper`: AI generates structured summary (abstract, key findings, methodology, limitations, relevance)
+- `analyze-reading`: AI analyzes the user's reading patterns and suggests gaps
+- `improve-level`: AI provides personalized recommendations to improve research level
+
+### 3. Research Level Section
+
+A prominent section on the page (and optionally on the profile) showing:
+
+- **Current Research Level**: Beginner, Emerging, Intermediate, Advanced, Expert, Distinguished (based on publications, citations, h-index, reading activity)
+- **Level Progress Bar**: Visual progress toward next level
+- **Breakdown**: What contributes to the level (publications, citations, peer reviews, datasets, reading breadth)
+- **AI Improvement Plan**: Personalized AI recommendations to level up (e.g., "Publish 2 more papers in Q1", "Expand reading into adjacent fields", "Increase citation impact by collaborating with high-impact authors")
+
+### 4. Reading History and Analytics
+
+- Papers the user has read/summarized are tracked
+- Reading stats: papers read this month, fields covered, AI summaries generated
+- This data feeds into the Research Level calculation
 
 ## Technical Details
 
 ### New Files
-- `src/components/ai/AISuggestionCard.tsx` -- Reusable widget that calls `useUniversalAI().ask()` on mount with provided domain/action/context, shows loading skeleton, then renders the AI response with markdown.
+
+- **`src/pages/ResearchPapersPage.tsx`** -- Main page with paper browser, search/filters, AI actions, and research level section
+- **`src/components/research/PaperCard.tsx`** -- Reusable paper card with AI summarize action
+- **`src/components/research/ResearchLevelCard.tsx`** -- Research level display with progress and AI improvement tips
+- **`src/components/research/PaperSummaryDialog.tsx`** -- Dialog showing AI-generated paper summary
+- **`src/hooks/useResearchPapers.ts`** -- Hook managing paper data, reading history, and research level state
 
 ### Modified Files
-- `src/pages/HomeDashboard.tsx` -- Import and add `AISuggestionCard` to the sidebar with daily-brief config.
-- `src/pages/DealsPage.tsx` -- Add AI Deal Advisor card above `DealRoomList`.
-- `src/pages/ProfilePage.tsx` -- Add AI Profile Score card in the sidebar.
-- `src/pages/MessagesPage.tsx` -- Add AI summary banner above the thread list.
-- `src/pages/ProgressPage.tsx` -- Add AI Career Forecast card in the overview tab.
 
-### How AISuggestionCard Works
+- **`src/App.tsx`** -- Add route `/research-papers` pointing to `ResearchPapersPage`
+- **`src/components/layout/Navbar.tsx`** -- Optionally add a link in the "More" menu or leave discoverable via search
+- **`src/components/research/index.ts`** -- Export new components
+
+### AI Integration
+
+Uses the existing `useUniversalAI` hook with domain `"research"`:
 
 ```text
-<AISuggestionCard
-  title="AI Daily Brief"
-  domain="general"
-  action="daily-brief"
-  context={{ trustScore: 45, activeDeals: 2, pendingActions: 3 }}
-/>
+// Summarize a paper
+const summary = await ask("research", "summarize-paper", { 
+  title, abstract, authors, journal 
+});
+
+// Get improvement recommendations
+const plan = await ask("research", "improve-level", { 
+  currentLevel, publications, citations, hIndex, readingHistory 
+});
+
+// Analyze reading patterns
+const analysis = await ask("research", "analyze-reading", { 
+  papersRead, fieldsExplored, recentTopics 
+});
 ```
 
-- On mount, calls `ask(domain, action, context)` via `useUniversalAI`
-- Shows a skeleton while loading
-- Renders the AI response text with markdown support
-- Has a refresh button to re-generate
-- Compact card design with a sparkle/bot icon
-- Gracefully handles errors with a retry option
+### Paper Types Supported
+
+Journal Article, Conference Paper, Preprint, Thesis/Dissertation, Technical Report, Systematic Review, Meta-Analysis, Case Study, Working Paper, Book Chapter, White Paper, Patent
+
+### Research Level Calculation
+
+Levels are computed client-side based on weighted metrics:
+- Publications count (30%)
+- Total citations (25%)
+- h-index (20%)
+- Reading activity / papers analyzed (15%)
+- Peer review contributions (10%)
+
+### Sample Data
+
+The page ships with sample papers across multiple types so it's immediately useful. Real paper data can be persisted to the database in a future iteration.
 
 ### No Database Changes
-All widgets use the existing `ai-universal` edge function. No new tables or migrations needed.
+
+Phase 1 uses local state with sample data. The AI calls go through the existing `ai-universal` edge function. A future iteration can add a `research_papers` and `reading_history` table for persistence.
 
 ### Build Order
-1. Create `AISuggestionCard` reusable component
-2. Add to Home Dashboard sidebar
-3. Add to Deals Page
-4. Add to Profile Page sidebar
-5. Add to Messages Page
-6. Add to Progress Page
+
+1. Create `useResearchPapers` hook with paper types, sample data, and level calculation
+2. Create `PaperCard` component with AI summarize button
+3. Create `ResearchLevelCard` component with progress and AI tips
+4. Create `PaperSummaryDialog` for AI summary display
+5. Create `ResearchPapersPage` assembling everything
+6. Add route in `App.tsx`
+7. Export from `research/index.ts`
