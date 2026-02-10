@@ -4,3 +4,7 @@ export { ResearchLevelCard } from "./ResearchLevelCard";
 export { PaperSummaryDialog } from "./PaperSummaryDialog";
 export { CompareDialog } from "./CompareDialog";
 export { ReadingStatsCard } from "./ReadingStatsCard";
+export { PaperChatSection } from "./PaperChatSection";
+export { ResearchGapCard } from "./ResearchGapCard";
+export { LitReviewDialog } from "./LitReviewDialog";
+export { AnnotatedBibDialog } from "./AnnotatedBibDialog";
