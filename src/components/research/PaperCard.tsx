@@ -1,0 +1,99 @@
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Bookmark, BookmarkCheck, Sparkles, ExternalLink, Users, Calendar, Quote } from "lucide-react";
+import type { ResearchPaper } from "@/hooks/useResearchPapers";
+
+const TYPE_COLORS: Record<string, string> = {
+  "Journal Article": "default",
+  "Conference Paper": "info",
+  "Preprint": "warning",
+  "Thesis/Dissertation": "secondary",
+  "Technical Report": "outline",
+  "Systematic Review": "success",
+  "Meta-Analysis": "success",
+  "Case Study": "secondary",
+  "Working Paper": "warning",
+  "Book Chapter": "outline",
+  "White Paper": "info",
+  "Patent": "default",
+};
+
+interface PaperCardProps {
+  paper: ResearchPaper;
+  onSummarize: (paper: ResearchPaper) => void;
+  onToggleBookmark: (id: string) => void;
+  isLoading?: boolean;
+}
+
+export function PaperCard({ paper, onSummarize, onToggleBookmark, isLoading }: PaperCardProps) {
+  return (
+    <Card variant="elevated" className="group">
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
+              <Badge variant={(TYPE_COLORS[paper.type] as any) || "default"}>{paper.type}</Badge>
+              <Badge variant={paper.access === "Open Access" ? "success" : "outline"}>{paper.access}</Badge>
+              {paper.summarized && <Badge variant="premium">AI Analyzed</Badge>}
+            </div>
+            <CardTitle className="text-base leading-snug">{paper.title}</CardTitle>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="shrink-0"
+            onClick={() => onToggleBookmark(paper.id)}
+          >
+            {paper.bookmarked ? (
+              <BookmarkCheck className="h-4 w-4 text-primary" />
+            ) : (
+              <Bookmark className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
+          <span className="flex items-center gap-1">
+            <Users className="h-3 w-3" />
+            {paper.authors.slice(0, 3).join(", ")}
+            {paper.authors.length > 3 && ` +${paper.authors.length - 3}`}
+          </span>
+          <span className="flex items-center gap-1">
+            <Calendar className="h-3 w-3" />
+            {paper.year}
+          </span>
+          <span className="flex items-center gap-1">
+            <Quote className="h-3 w-3" />
+            {paper.citations.toLocaleString()} citations
+          </span>
+        </div>
+
+        <p className="text-sm text-muted-foreground line-clamp-3">{paper.abstract}</p>
+
+        <div className="text-xs text-muted-foreground">{paper.journal}</div>
+
+        <div className="flex items-center gap-2 pt-1">
+          <Button
+            size="sm"
+            variant="default"
+            className="gap-1.5"
+            onClick={() => onSummarize(paper)}
+            disabled={isLoading}
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            {paper.summarized ? "View Summary" : "AI Summarize"}
+          </Button>
+          <Button size="sm" variant="outline" className="gap-1.5" asChild>
+            <a href={`https://doi.org/${paper.doi}`} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="h-3.5 w-3.5" />
+              DOI
+            </a>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
