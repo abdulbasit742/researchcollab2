@@ -127,6 +127,7 @@ import CollectiveIntelligencePage from "./pages/CollectiveIntelligencePage";
  import BriefingsPage from "./pages/BriefingsPage";
  import ProfileSettingsPage from "./pages/ProfileSettingsPage";
  import CareerPage from "./pages/CareerPage";
+import ResearchPapersPage from "./pages/ResearchPapersPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -219,6 +220,7 @@ const AppContent = () => {
             <Route path="/collective" element={<CollectiveIntelligencePage />} />
              <Route path="/briefings" element={<BriefingsPage />} />
              <Route path="/career" element={<CareerPage />} />
+             <Route path="/research-papers" element={<ResearchPapersPage />} />
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminPortalPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
