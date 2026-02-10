@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useUniversalAI } from "@/hooks/useUniversalAI";
 
 // =====================================================
 // KNOWLEDGE MANAGEMENT SYSTEM (Features 11-20)
@@ -11,7 +12,7 @@ export interface KnowledgeNode {
   id: string;
   type: 'concept' | 'skill' | 'project' | 'person' | 'resource';
   label: string;
-  strength: number; // 0-100
+  strength: number;
   last_accessed: string;
   connections: { target_id: string; relationship: string; weight: number }[];
 }
@@ -126,20 +127,19 @@ export interface CertificationPath {
 export function useKnowledgeManagement() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { ask, loading: aiLoading } = useUniversalAI();
   const [knowledgeGraph, setKnowledgeGraph] = useState<KnowledgeNode[]>([]);
   const [expertiseEvolution, setExpertiseEvolution] = useState<ExpertiseEvolution[]>([]);
   const [insights, setInsights] = useState<CapturedInsight[]>([]);
   const [learningPaths, setLearningPaths] = useState<LearningPath[]>([]);
 
-  // Feature 11: Build Knowledge Graph
+  // Feature 11: Build Knowledge Graph (local, fast)
   const buildKnowledgeGraph = useCallback((
     skills: string[],
     projects: { id: string; skills: string[] }[],
     connections: { id: string; expertise: string[] }[]
   ): KnowledgeNode[] => {
     const nodes: KnowledgeNode[] = [];
-    
-    // Add skill nodes
     skills.forEach(skill => {
       const relatedProjects = projects.filter(p => p.skills.includes(skill));
       nodes.push({
@@ -155,39 +155,48 @@ export function useKnowledgeManagement() {
         }))
       });
     });
-
     return nodes;
   }, []);
 
-  // Feature 14: Analyze Knowledge Gaps
-  const analyzeKnowledgeGaps = useCallback((
+  // Feature 14: AI-powered Knowledge Gap Analysis
+  const analyzeKnowledgeGaps = useCallback(async (
     currentSkills: { skill: string; level: number }[],
     targetRole: { required_skills: { skill: string; min_level: number }[] }
-  ): KnowledgeGap[] => {
+  ): Promise<KnowledgeGap[]> => {
+    const result = await ask<{ gaps: any[] }>("knowledge", "analyze-gaps", {
+      current_skills: currentSkills,
+      target_role: targetRole,
+    });
+
+    if (result?.gaps) {
+      return result.gaps.map((g: any) => ({
+        domain: g.domain,
+        required_for: [targetRole.required_skills[0]?.skill || "target role"],
+        current_coverage: g.current_coverage ?? 0,
+        gap_severity: g.gap_severity || "moderate",
+        recommended_actions: g.recommended_actions || [],
+        peer_comparison: 50,
+      }));
+    }
+
+    // Fallback to local logic
     const gaps: KnowledgeGap[] = [];
-    
     targetRole.required_skills.forEach(req => {
       const current = currentSkills.find(s => s.skill === req.skill);
       const coverage = current ? (current.level / req.min_level) * 100 : 0;
-      
       if (coverage < 100) {
         gaps.push({
           domain: req.skill,
           required_for: [targetRole.required_skills[0].skill],
           current_coverage: coverage,
           gap_severity: coverage < 30 ? 'critical' : coverage < 70 ? 'moderate' : 'minor',
-          recommended_actions: [
-            `Complete ${req.skill} certification`,
-            `Work on project requiring ${req.skill}`,
-            `Find mentor with ${req.skill} expertise`
-          ],
-          peer_comparison: 50 // Placeholder
+          recommended_actions: [`Complete ${req.skill} certification`, `Work on project requiring ${req.skill}`],
+          peer_comparison: 50,
         });
       }
     });
-
     return gaps;
-  }, []);
+  }, [ask]);
 
   // Feature 15: Capture Insight
   const captureInsight = useCallback((
@@ -207,77 +216,99 @@ export function useKnowledgeManagement() {
       revisit_count: 0,
       usefulness_rating: 0
     };
-
     setInsights(prev => [...prev, insight]);
     toast({ title: "Insight Captured", description: "Your insight has been saved" });
     return insight;
   }, [toast]);
 
-  // Feature 17: Check Decay Status
-  const checkDecayStatus = useCallback((
+  // Feature 17: AI-powered Decay Check
+  const checkDecayStatus = useCallback(async (
     skill: string,
     lastUsed: string,
     baseRetention: number
-  ): DecayPrevention => {
-    const daysSinceUse = Math.floor(
-      (Date.now() - new Date(lastUsed).getTime()) / (1000 * 60 * 60 * 24)
-    );
-    const decayRate = 0.5; // 0.5% per day
-    const currentRetention = Math.max(0, baseRetention - (daysSinceUse * decayRate));
-    
-    return {
+  ): Promise<DecayPrevention> => {
+    const result = await ask<any>("knowledge", "check-decay", {
       skill,
       last_used: lastUsed,
-      decay_rate: decayRate,
-      current_retention: currentRetention,
-      refresh_needed_by: new Date(Date.now() + (currentRetention / decayRate) * 24 * 60 * 60 * 1000).toISOString(),
-      refresh_activities: [
-        'Review documentation',
-        'Complete a small project',
-        'Teach someone else'
-      ]
-    };
-  }, []);
+      base_retention: baseRetention,
+    });
 
-  // Feature 13: Generate Learning Path
-  const generateLearningPath = useCallback((
+    if (result?.current_retention !== undefined) {
+      return {
+        skill,
+        last_used: lastUsed,
+        decay_rate: result.decay_rate_per_day ?? 0.5,
+        current_retention: result.current_retention,
+        refresh_needed_by: result.refresh_needed_by || new Date(Date.now() + 30 * 86400000).toISOString(),
+        refresh_activities: (result.refresh_activities || []).map((a: any) => typeof a === "string" ? a : a.activity),
+      };
+    }
+
+    // Fallback
+    const daysSinceUse = Math.floor((Date.now() - new Date(lastUsed).getTime()) / 86400000);
+    const decayRate = 0.5;
+    const currentRetention = Math.max(0, baseRetention - daysSinceUse * decayRate);
+    return {
+      skill, last_used: lastUsed, decay_rate: decayRate, current_retention: currentRetention,
+      refresh_needed_by: new Date(Date.now() + (currentRetention / decayRate) * 86400000).toISOString(),
+      refresh_activities: ['Review documentation', 'Complete a small project', 'Teach someone else'],
+    };
+  }, [ask]);
+
+  // Feature 13: AI-powered Learning Path
+  const generateLearningPath = useCallback(async (
     goal: string,
     currentLevel: number,
     targetLevel: number
-  ): LearningPath => {
+  ): Promise<LearningPath> => {
+    const result = await ask<any>("knowledge", "generate-learning-path", {
+      goal, current_level: currentLevel, target_level: targetLevel,
+    });
+
+    if (result?.steps) {
+      const path: LearningPath = {
+        goal,
+        current_level: currentLevel,
+        target_level: targetLevel,
+        steps: result.steps.map((s: any, i: number) => ({
+          step: s.step ?? i + 1,
+          resource_type: s.resource_type || "course",
+          title: s.title || `Step ${i + 1}`,
+          estimated_hours: s.estimated_hours ?? 10,
+          prerequisites: s.prerequisites || [],
+        })),
+        estimated_completion: new Date(Date.now() + (result.estimated_completion_weeks || 8) * 7 * 86400000).toISOString(),
+        success_probability: result.success_probability ?? 75,
+      };
+      setLearningPaths(prev => [...prev, path]);
+      return path;
+    }
+
+    // Fallback
     const levelGap = targetLevel - currentLevel;
     const steps = [];
-    
     for (let i = 0; i < Math.ceil(levelGap * 2); i++) {
       steps.push({
         step: i + 1,
         resource_type: i % 2 === 0 ? 'course' : 'project' as const,
         title: `${goal} - Step ${i + 1}`,
-        estimated_hours: 10 + (i * 5),
-        prerequisites: i > 0 ? [`Step ${i}`] : []
+        estimated_hours: 10 + i * 5,
+        prerequisites: i > 0 ? [`Step ${i}`] : [],
       });
     }
-
-    return {
-      goal,
-      current_level: currentLevel,
-      target_level: targetLevel,
-      steps,
-      estimated_completion: new Date(Date.now() + steps.length * 7 * 24 * 60 * 60 * 1000).toISOString(),
-      success_probability: Math.max(50, 90 - levelGap * 10)
+    const path: LearningPath = {
+      goal, current_level: currentLevel, target_level: targetLevel, steps,
+      estimated_completion: new Date(Date.now() + steps.length * 7 * 86400000).toISOString(),
+      success_probability: Math.max(50, 90 - levelGap * 10),
     };
-  }, []);
+    setLearningPaths(prev => [...prev, path]);
+    return path;
+  }, [ask]);
 
   return {
-    knowledgeGraph,
-    expertiseEvolution,
-    insights,
-    learningPaths,
-    buildKnowledgeGraph,
-    analyzeKnowledgeGaps,
-    captureInsight,
-    checkDecayStatus,
-    generateLearningPath,
-    setKnowledgeGraph
+    knowledgeGraph, expertiseEvolution, insights, learningPaths,
+    buildKnowledgeGraph, analyzeKnowledgeGaps, captureInsight,
+    checkDecayStatus, generateLearningPath, setKnowledgeGraph,
+    aiLoading,
   };
 }

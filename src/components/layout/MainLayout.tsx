@@ -7,6 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { FloatingNudgeIndicator } from "@/components/ambient";
 import { useAmbientIntelligence } from "@/hooks/useAmbientIntelligence";
 import { useAuth } from "@/contexts/AuthContext";
+import { GlobalAIChatButton } from "@/components/ai/GlobalAIChatButton";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -23,6 +24,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       <main className={`flex-1 ${isMobile ? 'pb-16' : ''}`}>{children}</main>
       {!isMobile && <Footer />}
       <FloatingSupportChat />
+      <GlobalAIChatButton />
       <MobileBottomNav />
       {user && (unreadCount > 0 || highPriorityCount > 0) && (
         <FloatingNudgeIndicator 
