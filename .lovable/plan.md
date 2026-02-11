@@ -1,35 +1,35 @@
 
 
-# Earn Pages -- Next Level Polish and Power Features
+# Earn Pages -- Deep Polish Round
 
 ## Overview
-The Earn pages now have core features (categories, saved projects, bid tracking, recommendations, dashboard, quick bid) and are mobile-friendly. This next round adds polish, engagement, and workflow improvements.
+This round focuses on making the Earn pages feel production-grade: real-time notifications, smarter dashboards, better sorting, and micro-interactions that elevate the user experience.
 
-## New Features
+## Features
 
-### 1. Search Debounce and Result Count
-Currently search filters on every keystroke. Add a 300ms debounce and show a result count badge (e.g., "12 projects found") below the search bar for instant feedback.
+### 1. Live Dashboard Stats Using Real Bid Statuses
+The `EarningsDashboardCard` currently hardcodes `activeBids = totalBids` and `successRate = 0%`. Now that bids have a real `status` column, calculate these properly: Active = pending + viewed + shortlisted, Accepted count, and Success Rate = accepted / total.
 
-### 2. Project Urgency Indicators
-Show visual urgency on projects where the deadline is approaching (less than 3 days left). Add a pulsing "Urgent" badge and sort these higher when no other sort is active.
+### 2. Sort Options for Available Projects
+Add a sort dropdown next to the search bar on the "Available Projects" tab. Options: Newest, Budget (High to Low), Budget (Low to High), Most Bids, Deadline (Soonest). Currently only urgency sorting exists.
 
-### 3. Share Project Button
-Add a share button on each project card and detail page. Uses the Web Share API on mobile (native share sheet) and copies the link to clipboard on desktop with a toast confirmation.
+### 3. Bid Status Filter in My Bids Tab
+Add filter chips (All, Pending, Viewed, Shortlisted, Accepted, Rejected) above the My Bids list so users can quickly find bids by status.
 
-### 4. Bid Count Badge on "My Bids" Tab
-Show an unread/total count badge on the "My Bids" tab trigger so users can see at a glance how many bids they have. Same for "My Projects" tab.
+### 4. Real-Time Bid Status Notifications
+Subscribe to bid status changes via realtime. When a project owner updates a bid's status, the bidder sees a toast notification and the My Bids tab auto-refreshes.
 
-### 5. Related Projects Section on Detail Page
-At the bottom of `EarnProjectDetailPage`, show 2-3 related projects matched by tags. Encourages browsing and keeps users engaged.
+### 5. Animated Number Counters on Stats Bar
+The `EarnStatsBar` numbers pop in statically. Add a counting-up animation using `framer-motion` so numbers animate from 0 to their value when first visible.
 
-### 6. Pagination / "Load More" for Project Lists
-If there are more than 10 projects, show a "Load More" button instead of rendering everything at once. Improves initial load performance.
+### 6. Confirmation Toast on Bid Status Changes (Owner Side)
+When a project owner changes a bid status (Accept, Reject, Shortlist), show a success toast confirming the action with the bidder's name.
 
-### 7. Enhanced Empty States
-Replace plain text empty states with illustrated icons, better copy, and action buttons. Add a subtle animation on empty state icons.
+### 7. Bidder Profile Links
+On the project detail page, make bidder names clickable -- link to `/u/{bidder_id}` so project owners can review bidder profiles before accepting.
 
-### 8. Pull-to-Refresh Indicator
-Add a visual refresh indicator at the top of project lists. On mobile, show a refresh button that's always accessible. Auto-refetch data when tab becomes visible again (using `visibilitychange` event).
+### 8. Project Card Hover Effects and Micro-interactions
+Add subtle scale-on-hover and shadow transitions to project cards. Add a slide-in animation for the "Urgent" badge.
 
 ---
 
@@ -39,44 +39,30 @@ Add a visual refresh indicator at the top of project lists. On mobile, show a re
 
 | File | Changes |
 |------|---------|
-| `EarnPage.tsx` | Add debounced search, result count display, tab badges for My Bids/My Projects counts, "Load More" pagination, visibility-based auto-refresh, urgency sorting |
-| `EarnProjectDetailPage.tsx` | Add share button in header, related projects section at bottom using tag matching |
-| `CategoryFilter.tsx` | Add result count prop to show filtered count next to "All" |
-| `useEarning.ts` | Add pagination support (limit/offset) to `useEarningProjects`, add `useRelatedProjects` hook |
-| New: `src/components/earn/ShareProjectButton.tsx` | Reusable share button using Web Share API with clipboard fallback |
-| New: `src/components/earn/RelatedProjects.tsx` | Shows 2-3 tag-matched projects at bottom of detail page |
-| `SavedProjectsTab.tsx` | Enhanced empty state with animation |
-| `EarningsDashboardCard.tsx` | No changes needed |
-
-### New Files (2)
-
-**`src/components/earn/ShareProjectButton.tsx`**
-- Props: `projectId`, `projectTitle`
-- Uses `navigator.share()` on mobile, `navigator.clipboard.writeText()` on desktop
-- Shows toast on success
-
-**`src/components/earn/RelatedProjects.tsx`**
-- Props: `currentProjectId`, `currentTags`, `projects` (or fetches its own)
-- Filters out current project, scores by tag overlap, shows top 3
-- Compact card layout with "View" button
+| `EarningsDashboardCard.tsx` | Calculate real active/accepted/success stats from bid `status` field |
+| `EarnPage.tsx` | Add sort dropdown for projects tab, add bid status filter chips in My Bids tab, add realtime subscription for bid status changes |
+| `EarnStatsBar.tsx` | Add animated number counter using framer-motion `useMotionValue` + `useTransform` |
+| `EarnProjectDetailPage.tsx` | Add bidder profile links, add success toast on status change, confirmation on accept/reject |
+| `useEarning.ts` | Add realtime subscription to `useMyBids` for bid status updates |
 
 ### Key Implementation Details
 
-- **Debounce**: Use existing `debounce` utility from `src/lib/utils.ts` for search input
-- **Urgency**: Calculate from `deadline_days` and `created_at` -- if `created_at + deadline_days` is within 3 days of now, mark as urgent
-- **Pagination**: Add `page` state, fetch 10 at a time, append on "Load More"
-- **Tab badges**: Use the existing `myBids.length` and `myProjects.length` values already fetched
-- **Auto-refresh**: Add `useEffect` with `document.addEventListener('visibilitychange', ...)` to refetch when user returns to tab
-- **Share**: Feature-detect `navigator.share` for mobile native share vs clipboard fallback
+- **Dashboard Stats**: Filter `bids` by status: `active = bids.filter(b => ['pending','viewed','shortlisted'].includes(b.status)).length`, `accepted = bids.filter(b => b.status === 'accepted').length`, `successRate = (accepted / total) * 100`
+- **Sort Dropdown**: Add a `sortBy` state to EarnPage, apply in `filteredProjects` useMemo alongside urgency sort
+- **Bid Status Filters**: Array of filter chips rendered above myBids list, filter using `myBids.filter(b => activeFilter === 'all' || b.status === activeFilter)`
+- **Realtime**: In `useMyBids`, subscribe to `earning_bids` changes filtered by `bidder_id=eq.{userId}`, on UPDATE event refetch and show toast
+- **Animated Counters**: Create a small `AnimatedNumber` component using `useSpring` from framer-motion that animates from 0 to target value over 1s
+- **Profile Links**: Wrap bidder name in `<Link to={/u/${bid.bidder_id}}>` on the detail page bid rows
+- **Hover Effects**: Add `hover:scale-[1.01] hover:shadow-md transition-all duration-200` to project Card wrappers
 
 ### Build Order
-1. Create `ShareProjectButton.tsx`
-2. Create `RelatedProjects.tsx`
-3. Update `useEarning.ts` with pagination support
-4. Update `EarnPage.tsx` (debounce, counts, badges, pagination, urgency, auto-refresh)
-5. Update `EarnProjectDetailPage.tsx` (share button, related projects)
-6. Update `SavedProjectsTab.tsx` (enhanced empty state)
+1. Update `EarningsDashboardCard.tsx` with real stats
+2. Update `EarnStatsBar.tsx` with animated counters
+3. Update `EarnPage.tsx` with sort dropdown and bid status filters
+4. Update `useEarning.ts` with realtime bid status subscription
+5. Update `EarnProjectDetailPage.tsx` with profile links and confirmation toasts
+6. Add hover effects to project cards across pages
 
 ### No Database Changes
-All changes are frontend-only using existing data.
+All changes use existing data and the `status` column already added.
 
