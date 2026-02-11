@@ -53,3 +53,6 @@ verify_jwt = false
 
 [functions.governance-decision-engine]
 verify_jwt = false
+
+[functions.run-constitutional-audit]
+verify_jwt = false

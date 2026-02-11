@@ -76,6 +76,7 @@ const navItems = [
   { icon: Globe, label: "Federation", href: "/admin/federation" },
   { icon: ShieldCheck, label: "Systemic Risk", href: "/admin/systemic-risk" },
   { icon: Vote, label: "Governance Oversight", href: "/admin/governance-oversight" },
+  { icon: Shield, label: "Constitutional Guardian", href: "/admin/constitutional-guardian" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 
