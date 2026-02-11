@@ -1,82 +1,61 @@
 
 
-# Enhance Earn Page -- Advanced Features
+# Bid Status Tracking with Timeline + Quick Bid Feature
 
-## Current State
-The Earn page has: hero section with stats, project browsing with search, bid submission, "How It Works" tab, "My Bids" tracking, "My Projects" management with filter/sort, post/edit project modals, real-time bid notifications, and email notifications.
+## Overview
+The approved plan included **Bid Status Tracking** and **Quick Bid** as features 3 and 6, but they were not implemented in the last round. This plan delivers both, adding a `status` column to the `earning_bids` table and building the UI for project owners to manage bid statuses and for bidders to see visual progress.
 
-## What's Missing / Next-Level Features
+## What Gets Built
 
-### 1. Category Filters
-Currently only free-text search exists. Add horizontal scrollable category chips (e.g., "Data Analysis", "Writing", "Programming", "Design", "Research", "Translation") above the project list so users can filter by discipline instantly.
+### 1. Bid Status System (Database)
+Add a `status` column to `earning_bids` with values: `pending`, `viewed`, `shortlisted`, `accepted`, `rejected`. Project owners can update bid statuses from the project detail page. Bidders see a visual timeline on their "My Bids" tab.
 
-### 2. Saved / Bookmarked Projects
-Let users bookmark interesting projects they want to bid on later. Add a heart/bookmark icon on each project card and a "Saved" tab alongside the existing tabs. Stored in localStorage for non-logged-in users, or in the database for logged-in users.
+### 2. Bid Status Timeline (Bidder View)
+In the "My Bids" tab on EarnPage, each bid card gets a horizontal step indicator showing progress through: Pending -> Viewed -> Shortlisted -> Accepted/Rejected. Color-coded dots and connecting lines show where the bid stands.
 
-### 3. Bid Status Tracking with Timeline
-Currently "My Bids" only shows "Pending" status. Add proper bid statuses (Pending, Viewed, Shortlisted, Accepted, Rejected) with a visual timeline/progress indicator on each bid card. The project owner can update bid status from the project detail page.
+### 3. Bid Management for Project Owners
+On `EarnProjectDetailPage`, when the logged-in user is the project owner, each bid row shows action buttons: "Shortlist", "Accept", "Reject". Status badges update in real-time.
 
-### 4. Recommended Projects Sidebar
-An "AI Recommended" section that appears at the top of the projects tab showing 2-3 projects matched to the user's profile skills and past bid history. Uses a simple keyword matching algorithm (no AI call needed -- match user profile tags against project tags).
-
-### 5. Earnings Dashboard Card
-A compact card in the "My Bids" tab header showing: total earnings (from completed projects), active contracts count, success rate (accepted bids / total bids), and average bid amount. Computed from existing data.
-
-### 6. Quick Bid Feature
-For returning users, add a "Quick Bid" button that pre-fills the bid form with their last used rate and delivery time, reducing friction. One-click to submit with default values.
-
----
+### 4. Quick Bid Feature
+A "Quick Bid" button on project cards that pre-fills the bid form with the user's last used amount and delivery days (stored in localStorage). One click navigates to the project detail page with the form pre-filled.
 
 ## Technical Details
 
+### Database Migration
+```sql
+ALTER TABLE earning_bids
+ADD COLUMN status text NOT NULL DEFAULT 'pending';
+```
+No new RLS policies needed -- existing policies on `earning_bids` already cover reads/writes. The project owner updates bids via a new hook that checks ownership.
+
 ### New Files
 
-**`src/components/earn/CategoryFilter.tsx`**
-- Horizontal scrollable chip bar with preset categories
-- "All" option to reset filter
-- Accepts `selected` and `onSelect` props
-
-**`src/components/earn/EarningsDashboardCard.tsx`**
-- Compact stats card showing total earnings, success rate, active contracts
-- Uses data from `useMyBids` and `useMyProjects`
-
-**`src/components/earn/SavedProjectsTab.tsx`**
-- Content for the "Saved" tab
-- Uses localStorage for persistence (keeps it simple, no DB changes)
-
-**`src/components/earn/RecommendedProjects.tsx`**
-- Shows 2-3 tag-matched projects at top of "Available Projects"
-- Matches user profile skills against project tags
-- Falls back to most recent projects if no match
+**`src/components/earn/BidStatusTimeline.tsx`**
+- Horizontal step indicator component
+- Props: `status: string`
+- Steps: Pending, Viewed, Shortlisted, Accepted (or Rejected as alternate end state)
+- Uses colored dots and lines; green for completed steps, gray for future
 
 ### Modified Files
 
 **`src/hooks/useEarning.ts`**
-- Add `useSavedProjects` hook (localStorage-based bookmarking)
-- Add `useEarningsDashboard` hook (computed stats from bids/projects)
+- Add `useUpdateBidStatus(projectId)` hook -- allows project owner to update bid status
+- Add `useQuickBidDefaults()` hook -- reads/writes last bid values from localStorage
+- Update `EarningBid` interface to include `status` field
 
 **`src/pages/EarnPage.tsx`**
-- Add `CategoryFilter` below search bar
-- Add "Saved" tab to TabsList
-- Add `RecommendedProjects` section at top of projects tab (for logged-in users)
-- Add `EarningsDashboardCard` at top of "My Bids" tab
-- Wire category filter state to project filtering
+- Replace hardcoded "Pending" badge with `BidStatusTimeline` component in My Bids tab
+- Add Quick Bid button on project cards (for logged-in users who have bid before)
 
-**`src/components/earn/MyProjectCard.tsx`** (minor)
-- No changes needed
-
-### Project Card Updates (in EarnPage.tsx inline)
-- Add bookmark/save icon button on each project card
-- Visual indicator for already-saved projects
-
-### No Database Changes
-All new features use existing data or localStorage. No migrations needed.
+**`src/pages/EarnProjectDetailPage.tsx`**
+- When logged-in user is the project owner: show status management buttons on each bid
+- Dropdown or button group: Mark as Viewed / Shortlist / Accept / Reject
+- Update `useSubmitBid` to save last-used values for Quick Bid
 
 ### Build Order
-1. Create `CategoryFilter.tsx` component
-2. Create `EarningsDashboardCard.tsx` component  
-3. Add `useSavedProjects` and `useEarningsDashboard` to `useEarning.ts`
-4. Create `RecommendedProjects.tsx` component
-5. Create `SavedProjectsTab.tsx` component
-6. Update `EarnPage.tsx` with all integrations (categories, saved tab, recommendations, dashboard card)
+1. Database migration: add `status` column to `earning_bids`
+2. Create `BidStatusTimeline.tsx` component
+3. Add `useUpdateBidStatus` and `useQuickBidDefaults` hooks to `useEarning.ts`
+4. Update `EarnProjectDetailPage.tsx` with owner bid management
+5. Update `EarnPage.tsx` My Bids tab with timeline and Quick Bid integration
 
