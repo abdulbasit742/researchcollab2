@@ -45,6 +45,7 @@ const navItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/admin" },
   { icon: Radio, label: "Operations Center", href: "/admin/operations" },
   { icon: Activity, label: "Operational Health", href: "/admin/operational-health" },
+  { icon: TrendingUp, label: "Conversion Metrics", href: "/admin/conversion-metrics" },
   { icon: Users, label: "Users", href: "/admin/users" },
   { icon: Key, label: "Permissions", href: "/admin/permissions" },
   { icon: MessageSquare, label: "Feed Moderation", href: "/admin/feed" },
