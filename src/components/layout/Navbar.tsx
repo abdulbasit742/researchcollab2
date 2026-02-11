@@ -18,8 +18,10 @@ import {
   User,
   LogOut,
   TrendingUp,
-   Search,
+  Search,
+  DollarSign,
 } from "lucide-react";
+import { useEarnNotificationCount } from "@/hooks/useEarning";
 
 // Simplified, focused navigation - only core actions
 const navItems = [
@@ -28,6 +30,67 @@ const navItems = [
   { label: "Opportunities", href: "/offers", icon: Target },
   { label: "Deals", href: "/deals", icon: Briefcase },
 ];
+
+function EarnNavItem({ onClick }: { onClick?: () => void }) {
+  const location = useLocation();
+  const earnCount = useEarnNotificationCount();
+  const isActive = location.pathname.startsWith("/earn");
+
+  return (
+    <Link
+      to="/earn"
+      onClick={onClick}
+      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors relative ${
+        isActive
+          ? "bg-primary/10 text-primary"
+          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+      }`}
+    >
+      <div className="relative">
+        <DollarSign className="h-4 w-4" />
+        {earnCount > 0 && (
+          <span className="absolute -top-1.5 -right-1.5 h-4 w-4 flex items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-medium">
+            {earnCount > 9 ? "9+" : earnCount}
+          </span>
+        )}
+      </div>
+      Earn
+    </Link>
+  );
+}
+
+function MobileEarnNavItem({ onClick }: { onClick?: () => void }) {
+  const location = useLocation();
+  const earnCount = useEarnNotificationCount();
+  const isActive = location.pathname.startsWith("/earn");
+
+  return (
+    <Link
+      to="/earn"
+      onClick={onClick}
+      className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+        isActive
+          ? "bg-primary/10 text-primary"
+          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+      }`}
+    >
+      <div className="relative">
+        <DollarSign className="h-5 w-5" />
+        {earnCount > 0 && (
+          <span className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-medium">
+            {earnCount > 9 ? "9+" : earnCount}
+          </span>
+        )}
+      </div>
+      Earn
+      {earnCount > 0 && (
+        <span className="ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
+          {earnCount}
+        </span>
+      )}
+    </Link>
+  );
+}
 
 function MessagesNavItem({ onClick }: { onClick?: () => void }) {
   const location = useLocation();
@@ -152,6 +215,7 @@ export function Navbar() {
             </Link>
           ))}
           <MessagesNavItem />
+          <EarnNavItem />
         </nav>
 
         {/* Desktop Actions - Simplified */}
@@ -230,6 +294,7 @@ export function Navbar() {
                 </Link>
               ))}
               <MobileMessagesNavItem onClick={() => setIsOpen(false)} />
+              <MobileEarnNavItem onClick={() => setIsOpen(false)} />
               
               <div className="pt-3 border-t space-y-2">
                 {user ? (

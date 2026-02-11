@@ -35,7 +35,7 @@ import {
   ArrowUpDown,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useEarningProjects, useMyBids, useMyProjects, useSavedProjects, useWithdrawBid, useUpdateMyBid, EarningProject } from "@/hooks/useEarning";
+import { useEarningProjects, useMyBids, useMyProjects, useSavedProjects, useWithdrawBid, useUpdateMyBid, useAcceptedBidForProjects, markEarnSeen, EarningProject } from "@/hooks/useEarning";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatPKRRange, formatPKR } from "@/lib/currency";
 import { ProjectListSkeleton } from "@/components/skeletons/ProjectListSkeleton";
@@ -66,6 +66,25 @@ import { Textarea } from "@/components/ui/textarea";
 import { Pencil, Trash2 } from "lucide-react";
 
 const PAGE_SIZE = 10;
+
+function CompletedProjectsList({ projects, onEdit, onStatusChange }: { projects: EarningProject[]; onEdit: (p: EarningProject) => void; onStatusChange: () => void }) {
+  const acceptedAmounts = useAcceptedBidForProjects(projects.map(p => p.id));
+  
+  return (
+    <>
+      {projects.map((project, index) => (
+        <MyProjectCard
+          key={project.id}
+          project={project}
+          index={index}
+          onEdit={onEdit}
+          onStatusChange={onStatusChange}
+          acceptedBidAmount={acceptedAmounts[project.id] ?? null}
+        />
+      ))}
+    </>
+  );
+}
 
 type ProjectSortOption = "urgency" | "newest" | "budget-high" | "budget-low" | "most-bids" | "deadline-soonest";
 type BidFilterStatus = "all" | "pending" | "viewed" | "shortlisted" | "accepted" | "rejected";
@@ -241,7 +260,7 @@ export default function EarnPage() {
       </div>
 
       <div className="container py-8 md:py-16 px-4 md:px-6">
-        <Tabs defaultValue="projects" className="space-y-6 md:space-y-8">
+        <Tabs defaultValue="projects" className="space-y-6 md:space-y-8" onValueChange={(v) => { if (v === "my-bids") markEarnSeen(); }}>
           <div className="flex flex-col gap-4">
             {/* Scrollable Tabs for Mobile */}
             <ScrollArea className="w-full">
@@ -878,27 +897,44 @@ export default function EarnPage() {
                     }
                   });
 
-                  if (filtered.length === 0) {
-                    return (
-                      <Card>
-                        <CardContent className="p-8 text-center">
-                          <p className="text-muted-foreground">
-                            No projects match the current filters.
-                          </p>
-                        </CardContent>
-                      </Card>
-                    );
-                  }
+                  const closedProjects = filtered.filter(p => (p.status || "open") === "closed");
+                  const activeProjects = filtered.filter(p => (p.status || "open") !== "closed");
 
-                  return filtered.map((project, index) => (
-                    <MyProjectCard
-                      key={project.id}
-                      project={project}
-                      index={index}
-                      onEdit={handleEditProject}
-                      onStatusChange={refetchMyProjects}
-                    />
-                  ));
+                  return (
+                    <>
+                      {activeProjects.length > 0 && activeProjects.map((project, index) => (
+                        <MyProjectCard
+                          key={project.id}
+                          project={project}
+                          index={index}
+                          onEdit={handleEditProject}
+                          onStatusChange={refetchMyProjects}
+                        />
+                      ))}
+
+                      {closedProjects.length > 0 && (
+                        <>
+                          <div className="pt-4 border-t mt-4">
+                            <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                              <CheckCircle2 className="h-5 w-5 text-primary" />
+                              Completed Projects
+                            </h3>
+                          </div>
+                          <CompletedProjectsList projects={closedProjects} onEdit={handleEditProject} onStatusChange={refetchMyProjects} />
+                        </>
+                      )}
+
+                      {activeProjects.length === 0 && closedProjects.length === 0 && (
+                        <Card>
+                          <CardContent className="p-8 text-center">
+                            <p className="text-muted-foreground">
+                              No projects match the current filters.
+                            </p>
+                          </CardContent>
+                        </Card>
+                      )}
+                    </>
+                  );
                 })()}
               </div>
             )}

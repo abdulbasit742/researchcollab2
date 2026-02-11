@@ -24,6 +24,7 @@ interface MyProjectCardProps {
   index: number;
   onEdit: (project: EarningProject) => void;
   onStatusChange: () => void;
+  acceptedBidAmount?: number | null;
 }
 
 const statusColors: Record<string, "success" | "secondary" | "default" | "outline"> = {
@@ -33,7 +34,7 @@ const statusColors: Record<string, "success" | "secondary" | "default" | "outlin
   completed: "outline",
 };
 
-export function MyProjectCard({ project, index, onEdit, onStatusChange }: MyProjectCardProps) {
+export function MyProjectCard({ project, index, onEdit, onStatusChange, acceptedBidAmount }: MyProjectCardProps) {
   const navigate = useNavigate();
   const { updateStatus, updating } = useUpdateProjectStatus();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -109,12 +110,19 @@ export function MyProjectCard({ project, index, onEdit, onStatusChange }: MyProj
                 Posted {formatTimeAgo(project.created_at)}
               </CardDescription>
             </div>
-            <Badge 
-              variant={statusColors[status] || "secondary"}
-              className="self-start shrink-0 capitalize"
-            >
-              {status.replace("_", " ")}
-            </Badge>
+            <div className="flex items-center gap-2 self-start shrink-0">
+              {status === "closed" && acceptedBidAmount != null && (
+                <Badge variant="success" className="capitalize">
+                  Earned: {formatPKR(acceptedBidAmount)}
+                </Badge>
+              )}
+              <Badge 
+                variant={statusColors[status] || "secondary"}
+                className="capitalize"
+              >
+                {status.replace("_", " ")}
+              </Badge>
+            </div>
           </div>
         </CardHeader>
 
