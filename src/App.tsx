@@ -145,6 +145,7 @@ import GovernancePage from "./pages/GovernancePage";
 import AdminGovernanceOversightPage from "./pages/admin/AdminGovernanceOversightPage";
 import ConstitutionalHealthPage from "./pages/ConstitutionalHealthPage";
 import AdminConstitutionalGuardianPage from "./pages/admin/AdminConstitutionalGuardianPage";
+import AdminConversionMetricsPage from "./pages/admin/AdminConversionMetricsPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -292,6 +293,7 @@ const AppContent = () => {
             <Route path="/constitutional-health" element={<ConstitutionalHealthPage />} />
             <Route path="/admin/constitutional-guardian" element={<AdminConstitutionalGuardianPage />} />
             <Route path="/admin/operational-health" element={<AdminOperationalHealthPage />} />
+            <Route path="/admin/conversion-metrics" element={<AdminConversionMetricsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>

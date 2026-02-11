@@ -14,6 +14,7 @@ import { TrustExplainer } from "@/components/trust/TrustExplainer";
 import { PlatformTrustBanner } from "@/components/trust/TrustSignals";
 import { GettingStartedChecklist } from "@/components/home/GettingStartedChecklist";
 import { FirstTimeUserOverlay } from "@/components/onboarding/FirstTimeUserOverlay";
+import { PostSignupIntentSelector } from "@/components/onboarding/PostSignupIntentSelector";
 import { AISuggestionCard } from "@/components/ai/AISuggestionCard";
 import { EarnActivityWidget } from "@/components/home/EarnActivityWidget";
 import { OIEWidget } from "@/components/home/OIEWidget";
@@ -74,6 +75,7 @@ export default function HomeDashboard() {
   return (
     <MainLayout>
       <FirstTimeUserOverlay />
+      <PostSignupIntentSelector />
       
       <div className="container py-6 max-w-5xl">
         {/* Header - Simplified */}
