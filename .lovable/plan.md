@@ -1,23 +1,23 @@
 
 
-# Earn Pages -- Navigation and Discoverability Round
+# Earn-to-Deal Pipeline and Bug Fixes Round
 
 ## Overview
-The Earn pages have all major features built and polished. This round focuses on connecting the Earn section to the rest of the platform through navigation, notifications, and a completed projects / earnings history view -- the last items from previous plans that remain unwired.
+The Earn module is fully built with all planned features. This round focuses on two things: (1) fixing active console warnings that affect every page load, and (2) connecting the Earn flow to the existing Deals system so that accepted bids automatically create Deal Rooms -- completing the end-to-end transaction lifecycle.
 
 ## Features
 
-### 1. Add "Earn" to Desktop Navbar
-The Earn page is accessible via the mobile bottom nav but missing from the desktop navbar's `navItems` array. Add it so desktop users can reach it directly.
+### 1. Fix React Ref Warnings on EarnNavItem and MobileBottomNav
+The console shows "Function components cannot be given refs" warnings for `EarnNavItem` and `MobileBottomNav` on every page load. These need `React.forwardRef` wrappers to resolve.
 
-### 2. Bid Notification Badge on Earn Nav Link
-When a bidder has bids whose status changed (e.g., accepted, shortlisted, rejected) since they last viewed the My Bids tab, show a notification dot/count on the "Earn" link in both desktop and mobile nav. Uses a simple `last_seen_bid_status_at` timestamp stored in localStorage, compared against bid `created_at` timestamps of status-bearing bids.
+### 2. Earn-to-Deal Room Bridge
+When a project owner accepts a bid, automatically create a Deal Room linking the owner and the winning bidder. This connects the Earn workflow to the existing `deal_rooms` system, giving users a structured space to manage the work, track milestones, and handle payment.
 
-### 3. Completed / Earnings History Section
-Add a "Completed" sub-tab or section inside the My Projects tab that filters for `status === "closed"` projects. For each closed project, display the accepted bid amount as the "Earned" figure. This creates a visible earnings ledger for project owners.
+### 3. Offers Page -- Replace Dummy Data with Real Opportunities
+The Opportunities page (`/offers`) currently uses hardcoded `dummyOffers` from `src/data/offers.ts`. Replace this with real data from `earning_projects` (open projects) so users see actual opportunities they can bid on, creating a second entry point into the Earn system.
 
-### 4. Accepted Bid Amount on MyProjectCard
-When a project is closed and has an accepted bid, show the accepted bid amount prominently on the `MyProjectCard` as a green "Earned: PKR X" badge.
+### 4. Home Dashboard Earn Widget
+Add a small "Active Earn Projects" card to the Home Dashboard showing the user's active bids count, any status updates, and a link to the Earn page. Surfaces Earn activity on the main dashboard.
 
 ---
 
@@ -27,27 +27,28 @@ When a project is closed and has an accepted bid, show the accepted bid amount p
 
 | File | Changes |
 |------|---------|
-| `src/components/layout/Navbar.tsx` | Add `{ label: "Earn", href: "/earn", icon: DollarSign }` to `navItems` array |
-| `src/components/layout/MobileBottomNav.tsx` | Add bid notification badge count to Earn nav item |
-| `src/hooks/useEarning.ts` | Add `useEarnNotificationCount` hook: fetches bids with status != "pending" whose updated_at > localStorage `earn_last_seen`, returns count. Add `markEarnSeen` function. Also add `useAcceptedBidForProject(projectId)` hook. |
-| `src/pages/EarnPage.tsx` | Call `markEarnSeen()` when My Bids tab is active. Add "Completed" section in My Projects tab below active projects list, filtering closed projects and showing accepted bid amounts. |
-| `src/components/earn/MyProjectCard.tsx` | Accept optional `acceptedBidAmount` prop. When project status is "closed" and amount exists, show green "Earned" badge. |
+| `src/components/layout/Navbar.tsx` | Wrap `EarnNavItem` and `MobileEarnNavItem` with `React.forwardRef` to fix ref warning |
+| `src/components/layout/MobileBottomNav.tsx` | Wrap component with `React.forwardRef` to fix ref warning |
+| `src/hooks/useEarning.ts` | Add `useCreateDealFromBid` hook that creates a `deal_rooms` entry when a bid is accepted |
+| `src/pages/EarnProjectDetailPage.tsx` | Call `useCreateDealFromBid` after bid acceptance, add "Go to Deal Room" link on accepted bids |
+| `src/pages/OffersPage.tsx` | Replace `dummyOffers` import with `useEarningProjects`, render real open projects as opportunity cards |
+| `src/pages/HomeDashboard.tsx` | Add `EarnActivityWidget` showing active bid count and recent status changes |
+| New: `src/components/home/EarnActivityWidget.tsx` | Small card component for Home Dashboard with earn stats |
 
-### No Database Changes
-All data is already available via existing tables. The notification count uses localStorage for "last seen" tracking to avoid adding a new column.
+### Database Changes
+None. Uses existing `deal_rooms` table structure. The bridge hook inserts into `deal_rooms` using the accepted bid's data (owner as `buyer_id`, bidder as `seller_id`, bid amount as `agreed_amount`).
 
 ### Key Implementation Details
 
-- **Desktop Navbar**: Simply add `{ label: "Earn", href: "/earn", icon: DollarSign }` to the `navItems` array on line 26 of `Navbar.tsx`. Import `DollarSign` from lucide-react (already imported in EarnPage).
-- **Notification Count**: New `useEarnNotificationCount` hook queries `earning_bids` for the current user where `status` is not `pending` and `created_at` is more recent than `localStorage.getItem("earn_last_seen")`. Returns the count. `markEarnSeen` sets the timestamp to `new Date().toISOString()`.
-- **Navbar Badge**: In `Navbar.tsx`, create an `EarnNavItem` component (similar to `MessagesNavItem`) that uses `useEarnNotificationCount` and shows a badge. In `MobileBottomNav.tsx`, pass the count as the `badge` property on the Earn item.
-- **Completed Projects**: In `EarnPage.tsx` My Projects tab, after the active projects list, add a "Completed Projects" section header and render `myProjects.filter(p => p.status === "closed")` with their accepted bid amounts. Query accepted bids in batch inside the My Projects tab render.
-- **MyProjectCard Earned Badge**: When `acceptedBidAmount` is provided and status is "closed", render a `<Badge variant="success">Earned: PKR {amount}</Badge>` in the card header next to the status badge.
+- **Ref Fix**: Simply wrap `EarnNavItem`, `MobileEarnNavItem`, and `MobileBottomNav` with `React.forwardRef`. The components don't use refs internally, so just forward them to the root element.
+- **Earn-to-Deal Bridge**: When `useUpdateBidStatus` sets a bid to "accepted", also call `supabase.from('deal_rooms').insert({ buyer_id: project.owner_id, seller_id: bid.bidder_id, status: 'agreed', agreed_amount: bid.amount, title: project.title })`. Show a "View Deal Room" link on the accepted bid card.
+- **Offers Page Migration**: Replace the `dummyOffers` import with `useEarningProjects()`. Map each `EarningProject` to a card showing title, budget range, deadline, tags, and a "Bid Now" button linking to `/earn/projects/:id`. Keep the same card layout style.
+- **Home Dashboard Widget**: New `EarnActivityWidget` component that uses `useMyBids()` to show: (a) number of active bids, (b) any recently accepted/rejected bids, (c) link to Earn page. Placed alongside existing dashboard cards.
 
 ### Build Order
-1. Add `useEarnNotificationCount` and `markEarnSeen` to `useEarning.ts`
-2. Update `Navbar.tsx` with Earn link + notification badge
-3. Update `MobileBottomNav.tsx` with notification count
-4. Update `MyProjectCard.tsx` with accepted bid amount display
-5. Update `EarnPage.tsx` with completed projects section and `markEarnSeen` call
+1. Fix ref warnings in Navbar.tsx and MobileBottomNav.tsx
+2. Add `useCreateDealFromBid` hook to useEarning.ts
+3. Update EarnProjectDetailPage.tsx with deal room creation on acceptance
+4. Replace dummy data in OffersPage.tsx with real earning projects
+5. Create EarnActivityWidget.tsx and add to HomeDashboard.tsx
 
