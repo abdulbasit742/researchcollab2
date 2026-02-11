@@ -20,13 +20,23 @@ export function SavedProjectsTab({ projects, savedIds, onToggleSave }: SavedProj
 
   if (savedProjects.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-8 md:p-12 text-center">
-          <Bookmark className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-          <h3 className="text-xl font-semibold mb-2">No Saved Projects</h3>
-          <p className="text-muted-foreground mb-6">
+      <Card className="border-dashed">
+        <CardContent className="py-12 px-6 text-center">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            className="mx-auto rounded-full bg-muted flex items-center justify-center mb-4 w-14 h-14"
+          >
+            <Bookmark className="h-7 w-7 text-muted-foreground" />
+          </motion.div>
+          <h3 className="text-base font-semibold mb-2">No Saved Projects</h3>
+          <p className="text-sm text-muted-foreground max-w-sm mx-auto mb-4">
             Bookmark projects you're interested in to find them here later.
           </p>
+          <Button variant="outline" onClick={() => navigate("/earn")}>
+            Browse Projects
+          </Button>
         </CardContent>
       </Card>
     );

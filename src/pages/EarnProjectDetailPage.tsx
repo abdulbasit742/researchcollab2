@@ -35,9 +35,11 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStartConversation } from "@/hooks/useMessaging";
-import { useEarningProject, useSubmitBid, useUpdateBidStatus, useQuickBidDefaults } from "@/hooks/useEarning";
+import { useEarningProject, useEarningProjects, useSubmitBid, useUpdateBidStatus, useQuickBidDefaults } from "@/hooks/useEarning";
 import { formatPKR } from "@/lib/currency";
 import { formatDistanceToNow } from "date-fns";
+import { ShareProjectButton } from "@/components/earn/ShareProjectButton";
+import { RelatedProjects } from "@/components/earn/RelatedProjects";
 
 export default function EarnProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -46,6 +48,7 @@ export default function EarnProjectDetailPage() {
   const { user, isLoading: authLoading } = useAuth();
   
   const { project, bids, loading, refetch } = useEarningProject(id);
+  const { projects: allProjects } = useEarningProjects();
   const { submitBid, submitting } = useSubmitBid();
   const { startConversation } = useStartConversation();
   const { updateBidStatus, updating: updatingBid } = useUpdateBidStatus();
@@ -167,17 +170,19 @@ export default function EarnProjectDetailPage() {
   return (
     <MainLayout>
       <div className="container py-6 md:py-8 max-w-4xl px-4 md:px-6">
-        {/* Back Button */}
+        {/* Back Button + Share */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
+          className="flex items-center justify-between mb-4 md:mb-6"
         >
           <Link to="/earn">
-            <Button variant="ghost" size="sm" className="mb-4 md:mb-6">
+            <Button variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Projects
             </Button>
           </Link>
+          <ShareProjectButton projectId={project.id} projectTitle={project.title} />
         </motion.div>
 
         {/* Project Header */}
@@ -422,7 +427,7 @@ export default function EarnProjectDetailPage() {
           transition={{ delay: 0.7 }}
           id="bid-section"
         >
-          <Card>
+          <Card className="mb-6">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Send className="h-5 w-5" />
@@ -498,6 +503,21 @@ export default function EarnProjectDetailPage() {
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* Related Projects */}
+        {project.tags && project.tags.length > 0 && allProjects.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <RelatedProjects
+              currentProjectId={project.id}
+              currentTags={project.tags}
+              projects={allProjects}
+            />
+          </motion.div>
+        )}
       </div>
     </MainLayout>
   );
