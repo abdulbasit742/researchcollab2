@@ -20,3 +20,6 @@ verify_jwt = false
 
 [functions.ai-universal]
 verify_jwt = false
+
+[functions.opportunity-intelligence]
+verify_jwt = false

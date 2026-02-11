@@ -35,6 +35,7 @@ import OffersPage from "./pages/OffersPage";
 import OfferRedirectPage from "./pages/OfferRedirectPage";
 import WorkRoomPage from "./pages/WorkRoomPage";
 
+import OpportunityIntelligencePage from "./pages/OpportunityIntelligencePage";
 import WalletPage from "./pages/WalletPage";
 import SubscriptionsPage from "./pages/SubscriptionsPage";
 import AffiliateDashboardPage from "./pages/AffiliateDashboardPage";
@@ -162,6 +163,7 @@ const AppContent = () => {
             <Route path="/earn" element={<EarnPage />} />
             <Route path="/earn/projects/:id" element={<EarnProjectDetailPage />} />
             <Route path="/earn/jobs" element={<Navigate to="/offers" replace />} />
+            <Route path="/opportunity-intelligence" element={<OpportunityIntelligencePage />} />
             <Route path="/fyp-services" element={<FYPServicesPage />} />
             <Route path="/grants" element={<GrantsPage />} />
             <Route path="/matches" element={<MatchesPage />} />
