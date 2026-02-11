@@ -130,6 +130,8 @@ import CollectiveIntelligencePage from "./pages/CollectiveIntelligencePage";
  import CareerPage from "./pages/CareerPage";
 import ResearchPapersPage from "./pages/ResearchPapersPage";
 import AdminVisibilityAnalyticsPage from "./pages/admin/AdminVisibilityAnalyticsPage";
+import InstitutionalCommandCenterPage from "./pages/InstitutionalCommandCenterPage";
+import AdminGlobalTalentAnalyticsPage from "./pages/admin/AdminGlobalTalentAnalyticsPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -262,6 +264,8 @@ const AppContent = () => {
             <Route path="/admin/pricing" element={<AdminPricingPage />} />
             <Route path="/admin/operations" element={<AdminOperationsPage />} />
             <Route path="/admin/visibility-analytics" element={<AdminVisibilityAnalyticsPage />} />
+            <Route path="/admin/global-talent-analytics" element={<AdminGlobalTalentAnalyticsPage />} />
+            <Route path="/org/:id/command-center" element={<InstitutionalCommandCenterPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
