@@ -357,7 +357,7 @@ export default function EarnProjectDetailPage() {
                   {bids.slice(0, 10).map((bid) => (
                     <div
                       key={bid.id}
-                      className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-muted/50 rounded-lg gap-2"
+                      className="flex flex-col sm:flex-row sm:items-center justify-between p-2 sm:p-3 bg-muted/50 rounded-lg gap-2"
                     >
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
@@ -373,7 +373,7 @@ export default function EarnProjectDetailPage() {
                           </Badge>
                         </div>
                       </div>
-                      <div className="flex items-center gap-4 text-sm pl-11 sm:pl-0">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm pl-11 sm:pl-0">
                         <span className="font-semibold text-primary">
                           {formatPKR(bid.amount)}
                         </span>

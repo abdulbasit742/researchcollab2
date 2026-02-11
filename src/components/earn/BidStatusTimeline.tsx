@@ -36,7 +36,7 @@ export function BidStatusTimeline({ status }: BidStatusTimelineProps) {
   }
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-0.5 sm:gap-1">
       {STEPS.map((step, i) => {
         const isCompleted = i <= currentIndex;
         const isCurrent = i === currentIndex;
@@ -46,19 +46,19 @@ export function BidStatusTimeline({ status }: BidStatusTimelineProps) {
           <div key={step.key} className="flex items-center">
             <div
               className={cn(
-                "flex items-center justify-center h-6 w-6 rounded-full transition-colors",
+                "flex items-center justify-center h-5 w-5 sm:h-6 sm:w-6 rounded-full transition-colors",
                 isCompleted
                   ? "bg-primary/15 text-primary"
                   : "bg-muted text-muted-foreground"
               )}
               title={step.label}
             >
-              <StepIcon className="h-3 w-3" />
+              <StepIcon className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             </div>
             {i < STEPS.length - 1 && (
               <div
                 className={cn(
-                  "w-4 h-0.5 mx-0.5",
+                  "w-2 sm:w-4 h-0.5 mx-0.5",
                   i < currentIndex ? "bg-primary/40" : "bg-muted"
                 )}
               />
@@ -66,7 +66,7 @@ export function BidStatusTimeline({ status }: BidStatusTimelineProps) {
           </div>
         );
       })}
-      <span className="ml-2 text-xs font-medium text-muted-foreground capitalize">
+      <span className="ml-1 sm:ml-2 text-xs font-medium text-muted-foreground capitalize hidden sm:inline">
         {status}
       </span>
     </div>
