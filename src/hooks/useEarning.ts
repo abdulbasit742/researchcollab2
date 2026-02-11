@@ -155,41 +155,39 @@ export function useEarningProject(projectId: string | undefined) {
           owner_avatar: undefined,
         } as EarningProject);
 
-        // Fetch bids
+        // Fetch bids with explicit columns
         const { data: bidsData, error: bidsError } = await supabase
           .from("earning_bids")
-          .select("*")
+          .select("id, project_id, bidder_id, amount, delivery_days, message, status, created_at")
           .eq("project_id", projectId)
-          .order("created_at", { ascending: false });
+          .order("created_at", { ascending: false })
+          .limit(100);
 
         if (bidsError) throw bidsError;
 
-        // Fetch bidder profiles and trust scores
-        const bidsWithProfiles = await Promise.all(
-          (bidsData || []).map(async (bid) => {
-            const [{ data: bidderProfile }, { data: trustProfile }] = await Promise.all([
-              supabase
-                .from("profiles")
-                .select("full_name")
-                .eq("id", bid.bidder_id)
-                .maybeSingle(),
-              supabase
-                .from("user_trust_profiles")
-                .select("trust_score")
-                .eq("user_id", bid.bidder_id)
-                .maybeSingle(),
-            ]);
+        if (bidsData && bidsData.length > 0) {
+          // Batch fetch bidder profiles and trust scores
+          const bidderIds = [...new Set(bidsData.map(b => b.bidder_id))];
+          const [profilesRes, trustRes] = await Promise.all([
+            supabase.from("profiles").select("id, full_name").in("id", bidderIds),
+            supabase.from("user_trust_profiles").select("user_id, trust_score").in("user_id", bidderIds),
+          ]);
 
-            return {
-              ...bid,
-              bidder_name: bidderProfile?.full_name || "Anonymous",
-              bidder_avatar: undefined,
-              bidder_trust_score: trustProfile?.trust_score ?? null,
-            };
-          })
-        );
+          const profileMap: Record<string, string> = {};
+          (profilesRes.data || []).forEach(p => { profileMap[p.id] = p.full_name || "Anonymous"; });
 
-        setBids(bidsWithProfiles as EarningBid[]);
+          const trustMap: Record<string, number | null> = {};
+          (trustRes.data || []).forEach(t => { trustMap[t.user_id] = t.trust_score; });
+
+          setBids(bidsData.map(bid => ({
+            ...bid,
+            bidder_name: profileMap[bid.bidder_id] || "Anonymous",
+            bidder_avatar: undefined,
+            bidder_trust_score: trustMap[bid.bidder_id] ?? null,
+          })) as EarningBid[]);
+        } else {
+          setBids([]);
+        }
       }
     } catch (err) {
       console.error("Error fetching project:", err);
@@ -219,29 +217,26 @@ export function useMyBids() {
     try {
       const { data: bidsData, error } = await supabase
         .from("earning_bids")
-        .select("*")
+        .select("id, project_id, bidder_id, amount, delivery_days, message, status, created_at")
         .eq("bidder_id", user.id)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(50);
 
       if (error) throw error;
 
-      // Fetch project titles
-      const bidsWithProjects = await Promise.all(
-        (bidsData || []).map(async (bid) => {
-          const { data: project } = await supabase
-            .from("earning_projects")
-            .select("title")
-            .eq("id", bid.project_id)
-            .maybeSingle();
+      // Batch fetch project titles
+      const projectIds = [...new Set((bidsData || []).map(b => b.project_id))];
+      const { data: projectsData } = projectIds.length
+        ? await supabase.from("earning_projects").select("id, title").in("id", projectIds)
+        : { data: [] };
 
-          return {
-            ...bid,
-            project_title: project?.title || "Unknown Project",
-          };
-        })
-      );
+      const titleMap: Record<string, string> = {};
+      (projectsData || []).forEach(p => { titleMap[p.id] = p.title; });
 
-      setBids(bidsWithProjects as EarningBid[]);
+      setBids((bidsData || []).map(bid => ({
+        ...bid,
+        project_title: titleMap[bid.project_id] || "Unknown Project",
+      })) as EarningBid[]);
     } catch (err) {
       console.error("Error fetching my bids:", err);
     } finally {
