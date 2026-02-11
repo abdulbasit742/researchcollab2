@@ -18527,6 +18527,75 @@ export type Database = {
           },
         ]
       }
+      risk_metrics: {
+        Row: {
+          calculated_at: string
+          capital_concentration_index: number | null
+          centralization_risk: number | null
+          composite_risk_score: number | null
+          dispute_spike_rate: number | null
+          entity_id: string
+          entity_type: string
+          id: string
+          liquidity_distortion: number | null
+          pricing_anomaly_score: number | null
+          risk_level: string
+          trust_volatility: number | null
+        }
+        Insert: {
+          calculated_at?: string
+          capital_concentration_index?: number | null
+          centralization_risk?: number | null
+          composite_risk_score?: number | null
+          dispute_spike_rate?: number | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          liquidity_distortion?: number | null
+          pricing_anomaly_score?: number | null
+          risk_level?: string
+          trust_volatility?: number | null
+        }
+        Update: {
+          calculated_at?: string
+          capital_concentration_index?: number | null
+          centralization_risk?: number | null
+          composite_risk_score?: number | null
+          dispute_spike_rate?: number | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          liquidity_distortion?: number | null
+          pricing_anomaly_score?: number | null
+          risk_level?: string
+          trust_volatility?: number | null
+        }
+        Relationships: []
+      }
+      risk_trends: {
+        Row: {
+          entity_id: string
+          entity_type: string
+          id: string
+          recorded_at: string
+          risk_score: number | null
+        }
+        Insert: {
+          entity_id: string
+          entity_type: string
+          id?: string
+          recorded_at?: string
+          risk_score?: number | null
+        }
+        Update: {
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          recorded_at?: string
+          risk_score?: number | null
+        }
+        Relationships: []
+      }
       rls_audit_checklist: {
         Row: {
           admin_access_tested: boolean | null
@@ -20592,6 +20661,39 @@ export type Database = {
           states?: string[]
           terminal_states?: string[]
           updated_at?: string
+        }
+        Relationships: []
+      }
+      systemic_alerts: {
+        Row: {
+          alert_type: string
+          description: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          resolved_at: string | null
+          severity: string
+          triggered_at: string
+        }
+        Insert: {
+          alert_type: string
+          description?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          resolved_at?: string | null
+          severity?: string
+          triggered_at?: string
+        }
+        Update: {
+          alert_type?: string
+          description?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          resolved_at?: string | null
+          severity?: string
+          triggered_at?: string
         }
         Relationships: []
       }
