@@ -1,26 +1,29 @@
 
 
-# Earn Pages -- Workflow Completion and Trust Round
+# Earn Pages -- Final Completeness Round
 
 ## Overview
-The Earn pages now have strong discovery, bidding, and management features. This round focuses on completing critical user workflows and adding trust-building features: bid management for bidders, advanced budget/deadline filters, project attachment support, and an activity timeline on the project detail page.
+The Earn pages have nearly every feature built. This round closes remaining gaps and adds engagement/trust features that tie the Earn experience into the broader platform.
 
 ## Features
 
-### 1. Bid Management for Bidders (Edit and Withdraw)
-Bidders currently cannot modify or withdraw their bids after submission. Add an "Edit Bid" and "Withdraw Bid" option on each bid card in the "My Bids" tab. Editing opens an inline form to update amount, delivery days, and message. Withdrawing shows a confirmation dialog and deletes the bid.
+### 1. File Upload in EditProjectModal
+The PostProjectModal supports file attachments, but EditProjectModal does not yet. Add the same file upload field plus a list of existing attachments with delete buttons so project owners can manage files when editing.
 
-### 2. Advanced Filters Panel for Available Projects
-Add expandable advanced filters below the sort bar on the "Available Projects" tab: Budget Range (min/max inputs), Deadline Range (max days), and Minimum Bids toggle (show projects with 0 bids for less competition). These collapse into a "Filters" button on mobile.
+### 2. Bid Notifications via Badge on Navbar
+Add a notification indicator on the "Earn" nav link when a user has bids with updated statuses they haven't seen. Uses the realtime subscription already in place -- just surface the count in the navigation.
 
-### 3. Project File Attachments
-Allow project owners to attach files (briefs, specs, sample data) when posting or editing a project. Files are stored in backend storage. On the project detail page, show an "Attachments" section with download links.
+### 3. Project Status Transitions (Close / Reopen)
+Allow project owners to manually close a project (mark as "closed") or reopen it from the detail page. Closed projects stop accepting new bids and show a "Closed" badge.
 
-### 4. Activity Timeline on Project Detail Page
-Add a chronological activity log on the project detail page visible to the project owner. Shows events like "Project posted", "New bid from Ahmad", "Bid shortlisted", "Bid accepted". Built from bid data timestamps.
+### 4. Bidder Trust Score Display
+Show the bidder's trust score next to their name on bid cards (both in the detail page and comparison table). Helps project owners make trust-informed decisions.
 
-### 5. Bid Comparison Table for Project Owners
-On the project detail page, add a "Compare Bids" view that shows all bids in a sortable table format (columns: Bidder, Amount, Delivery, Status, Date). Helps owners make informed decisions at a glance.
+### 5. Earnings History / Completed Projects Log
+Add a new "Completed" sub-section in the My Projects tab that shows projects marked as closed/completed with final accepted bid amount, creating a visible earning history.
+
+### 6. EditProjectModal Attachment Management
+Show existing attachments in the edit modal with delete capability, plus the ability to add new files.
 
 ---
 
@@ -30,36 +33,26 @@ On the project detail page, add a "Compare Bids" view that shows all bids in a s
 
 | File | Changes |
 |------|---------|
-| `useEarning.ts` | Add `useWithdrawBid` hook (delete bid), add `useUpdateMyBid` hook (update amount/days/message) |
-| `EarnPage.tsx` | Add edit/withdraw controls on My Bids cards, add advanced filters panel on Projects tab |
-| `EarnProjectDetailPage.tsx` | Add activity timeline section, add bid comparison table toggle, add attachments section |
-| `PostProjectModal.tsx` | Add file upload field using backend storage |
-| `EditProjectModal.tsx` | Add file upload/manage field |
-| New: `src/components/earn/AdvancedFilters.tsx` | Collapsible filter panel with budget range, deadline, and competition filters |
-| New: `src/components/earn/BidComparisonTable.tsx` | Sortable table view of all bids for project owners |
-| New: `src/components/earn/ProjectActivityTimeline.tsx` | Chronological event log built from bid data |
+| `EditProjectModal.tsx` | Add file upload input, show existing attachments with delete buttons, integrate `useProjectAttachments`, `useUploadAttachment`, `useDeleteAttachment` hooks |
+| `EarnProjectDetailPage.tsx` | Add Close/Reopen project button for owners, show bidder trust scores on bid cards |
+| `BidComparisonTable.tsx` | Add trust score column |
+| `useEarning.ts` | Add `useCloseProject` hook (update status to "closed"/"open"), add trust score join to bid queries |
+| `EarnPage.tsx` | Add "Completed" filter in My Projects tab showing closed projects with accepted bid amounts |
+| `MyProjectCard.tsx` | Show accepted bid amount on completed project cards |
 
 ### Database Changes
-- Create a `earning_project_attachments` table: `id`, `project_id` (FK), `file_name`, `file_url`, `file_size`, `uploaded_by`, `created_at`
-- Create a storage bucket `earning-attachments` for file uploads
-- RLS: Only project owner can insert/delete attachments; anyone authenticated can read attachments for open projects
+None -- uses existing `status` column on `earning_projects` and existing trust profile data.
 
 ### Key Implementation Details
 
-- **Withdraw Bid**: `supabase.from('earning_bids').delete().eq('id', bidId).eq('bidder_id', user.id)` with confirmation dialog
-- **Edit Bid**: Inline form toggle on the bid card, calls `supabase.from('earning_bids').update({ amount, delivery_days, message }).eq('id', bidId).eq('bidder_id', user.id)`
-- **Advanced Filters**: State stored in EarnPage, applied in `filteredProjects` useMemo. Budget filter: `budget_min >= filterMin && budget_max <= filterMax`. Collapsible with `Collapsible` from Radix
-- **File Upload**: Use backend storage `supabase.storage.from('earning-attachments').upload(...)`, store metadata in `earning_project_attachments` table
-- **Activity Timeline**: Derive events from bids array -- map each bid to events based on its status and timestamps (`created_at` for submission, infer status change times). Show in reverse-chronological order
-- **Bid Comparison Table**: Simple `<table>` with sortable column headers using local state, renders all bids with key metrics side by side
+- **EditProjectModal attachments**: Import `useProjectAttachments`, `useUploadAttachment`, `useDeleteAttachment`. Show existing files as a list with X delete buttons. Add file input below for new uploads. On submit, upload new files after project update.
+- **Close/Reopen**: New `useCloseProject` hook calls `supabase.from('earning_projects').update({ status: newStatus }).eq('id', projectId).eq('owner_id', user.id)`. Button on detail page toggles between "Close Project" and "Reopen Project".
+- **Trust Score on Bids**: Join `trust_profiles.trust_score` when fetching bids via the `bidder_id`. Display as a small shield icon with score next to bidder name.
+- **Completed Projects**: Filter `myProjects` by `status === "closed"` and show the accepted bid's amount as "Earned" on each card.
 
 ### Build Order
-1. Database migration: create `earning_project_attachments` table + storage bucket
-2. Create `AdvancedFilters.tsx`
-3. Create `BidComparisonTable.tsx`
-4. Create `ProjectActivityTimeline.tsx`
-5. Update `useEarning.ts` with withdraw/edit bid hooks
-6. Update `EarnPage.tsx` with advanced filters and bid edit/withdraw
-7. Update `EarnProjectDetailPage.tsx` with activity timeline, comparison table, attachments
-8. Update `PostProjectModal.tsx` and `EditProjectModal.tsx` with file upload
-
+1. Add `useCloseProject` hook to `useEarning.ts`, add trust score to bid queries
+2. Update `EditProjectModal.tsx` with attachment management
+3. Update `EarnProjectDetailPage.tsx` with close/reopen and trust scores
+4. Update `BidComparisonTable.tsx` with trust score column
+5. Update `EarnPage.tsx` and `MyProjectCard.tsx` with completed projects view
