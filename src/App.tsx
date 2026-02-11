@@ -132,6 +132,12 @@ import ResearchPapersPage from "./pages/ResearchPapersPage";
 import AdminVisibilityAnalyticsPage from "./pages/admin/AdminVisibilityAnalyticsPage";
 import InstitutionalCommandCenterPage from "./pages/InstitutionalCommandCenterPage";
 import AdminGlobalTalentAnalyticsPage from "./pages/admin/AdminGlobalTalentAnalyticsPage";
+import PassportPage from "./pages/PassportPage";
+import MarketLiquidityPage from "./pages/MarketLiquidityPage";
+import AdminPassportAnalyticsPage from "./pages/admin/AdminPassportAnalyticsPage";
+import AdminGlobalLiquidityPage from "./pages/admin/AdminGlobalLiquidityPage";
+import AdminPodAnalyticsPage from "./pages/admin/AdminPodAnalyticsPage";
+import AdminDealIntelligencePage from "./pages/admin/AdminDealIntelligencePage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -265,7 +271,13 @@ const AppContent = () => {
             <Route path="/admin/operations" element={<AdminOperationsPage />} />
             <Route path="/admin/visibility-analytics" element={<AdminVisibilityAnalyticsPage />} />
             <Route path="/admin/global-talent-analytics" element={<AdminGlobalTalentAnalyticsPage />} />
+            <Route path="/admin/passport-analytics" element={<AdminPassportAnalyticsPage />} />
+            <Route path="/admin/global-liquidity" element={<AdminGlobalLiquidityPage />} />
+            <Route path="/admin/pod-analytics" element={<AdminPodAnalyticsPage />} />
+            <Route path="/admin/deal-intelligence" element={<AdminDealIntelligencePage />} />
             <Route path="/org/:id/command-center" element={<InstitutionalCommandCenterPage />} />
+            <Route path="/passport" element={<PassportPage />} />
+            <Route path="/market-liquidity" element={<MarketLiquidityPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
