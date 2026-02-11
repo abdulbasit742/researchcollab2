@@ -138,6 +138,8 @@ import AdminPassportAnalyticsPage from "./pages/admin/AdminPassportAnalyticsPage
 import AdminGlobalLiquidityPage from "./pages/admin/AdminGlobalLiquidityPage";
 import AdminPodAnalyticsPage from "./pages/admin/AdminPodAnalyticsPage";
 import AdminDealIntelligencePage from "./pages/admin/AdminDealIntelligencePage";
+import MacroRiskPage from "./pages/MacroRiskPage";
+import AdminSystemicRiskPage from "./pages/admin/AdminSystemicRiskPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -278,6 +280,8 @@ const AppContent = () => {
             <Route path="/org/:id/command-center" element={<InstitutionalCommandCenterPage />} />
             <Route path="/passport" element={<PassportPage />} />
             <Route path="/market-liquidity" element={<MarketLiquidityPage />} />
+            <Route path="/macro-risk" element={<MacroRiskPage />} />
+            <Route path="/admin/systemic-risk" element={<AdminSystemicRiskPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>

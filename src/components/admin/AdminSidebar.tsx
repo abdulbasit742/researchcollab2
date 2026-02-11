@@ -74,6 +74,7 @@ const navItems = [
   { icon: Settings, label: "AI Governance", href: "/admin/ai-governance" },
   { icon: Database, label: "Reproducibility", href: "/admin/reproducibility" },
   { icon: Globe, label: "Federation", href: "/admin/federation" },
+  { icon: ShieldCheck, label: "Systemic Risk", href: "/admin/systemic-risk" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 
