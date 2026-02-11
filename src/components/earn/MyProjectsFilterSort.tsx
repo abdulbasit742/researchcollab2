@@ -23,14 +23,14 @@ export function MyProjectsFilterSort({
   hasActiveFilters,
 }: MyProjectsFilterSortProps) {
   return (
-    <div className="flex flex-wrap items-center gap-3 p-4 bg-muted/30 rounded-lg border">
+    <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 p-3 sm:p-4 bg-muted/30 rounded-lg border">
       <div className="flex items-center gap-2">
         <Filter className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm font-medium text-muted-foreground">Filters:</span>
+        <span className="text-sm font-medium text-muted-foreground hidden sm:inline">Filters:</span>
       </div>
       
       <Select value={statusFilter} onValueChange={(v) => onStatusFilterChange(v as StatusFilter)}>
-        <SelectTrigger className="w-[140px] h-9">
+        <SelectTrigger className="w-full sm:w-[140px] h-9">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
         <SelectContent>
@@ -42,13 +42,13 @@ export function MyProjectsFilterSort({
         </SelectContent>
       </Select>
 
-      <div className="flex items-center gap-2 ml-2">
+      <div className="flex items-center gap-2">
         <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm font-medium text-muted-foreground">Sort:</span>
+        <span className="text-sm font-medium text-muted-foreground hidden sm:inline">Sort:</span>
       </div>
 
       <Select value={sortOption} onValueChange={(v) => onSortChange(v as SortOption)}>
-        <SelectTrigger className="w-[160px] h-9">
+        <SelectTrigger className="w-full sm:w-[160px] h-9">
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent>
@@ -66,7 +66,7 @@ export function MyProjectsFilterSort({
           variant="ghost" 
           size="sm" 
           onClick={onReset}
-          className="h-9 px-3 text-muted-foreground hover:text-foreground"
+          className="h-9 px-3 text-muted-foreground hover:text-foreground w-full sm:w-auto"
         >
           <X className="h-4 w-4 mr-1" />
           Reset

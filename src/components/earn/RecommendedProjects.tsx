@@ -48,7 +48,7 @@ export function RecommendedProjects({ projects, userSkills = [] }: RecommendedPr
               className="cursor-pointer"
               onClick={() => navigate(`/earn/projects/${project.id}`)}
             >
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <h4 className="font-medium text-sm truncate mb-2">{project.title}</h4>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
                   <DollarSign className="h-3 w-3 text-primary" />

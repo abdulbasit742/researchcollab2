@@ -157,10 +157,11 @@ export function MyProjectCard({ project, index, onEdit, onStatusChange }: MyProj
           )}
         </CardContent>
 
-        <CardFooter className="flex flex-wrap gap-2 pt-0">
+        <CardFooter className="flex flex-col sm:flex-row gap-2 pt-0">
           <Button 
             variant="outline"
             size="sm"
+            className="w-full sm:w-auto"
             onClick={() => navigate(`/earn/projects/${project.id}`)}
           >
             <Eye className="h-4 w-4 mr-1" />
@@ -169,6 +170,7 @@ export function MyProjectCard({ project, index, onEdit, onStatusChange }: MyProj
           <Button 
             variant="outline"
             size="sm"
+            className="w-full sm:w-auto"
             onClick={() => onEdit(project)}
           >
             <Pencil className="h-4 w-4 mr-1" />
@@ -177,6 +179,7 @@ export function MyProjectCard({ project, index, onEdit, onStatusChange }: MyProj
           <Button 
             variant={status === "open" ? "secondary" : "default"}
             size="sm"
+            className="w-full sm:w-auto"
             onClick={() => setShowConfirmDialog(true)}
             disabled={updating}
           >
