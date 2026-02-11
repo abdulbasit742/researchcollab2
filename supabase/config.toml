@@ -29,3 +29,18 @@ verify_jwt = false
 
 [functions.compute-institutional-intelligence]
 verify_jwt = false
+
+[functions.generate-reputation-passport]
+verify_jwt = false
+
+[functions.verify-reputation-passport]
+verify_jwt = false
+
+[functions.compute-liquidity-index]
+verify_jwt = false
+
+[functions.generate-collaboration-pod]
+verify_jwt = false
+
+[functions.ai-deal-intelligence]
+verify_jwt = false

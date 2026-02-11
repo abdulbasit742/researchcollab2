@@ -3008,6 +3008,39 @@ export type Database = {
         }
         Relationships: []
       }
+      collaboration_history_matrix: {
+        Row: {
+          avg_deal_health: number | null
+          completed_projects: number | null
+          dispute_rate: number | null
+          id: string
+          synergy_score: number | null
+          updated_at: string
+          user_a: string
+          user_b: string
+        }
+        Insert: {
+          avg_deal_health?: number | null
+          completed_projects?: number | null
+          dispute_rate?: number | null
+          id?: string
+          synergy_score?: number | null
+          updated_at?: string
+          user_a: string
+          user_b: string
+        }
+        Update: {
+          avg_deal_health?: number | null
+          completed_projects?: number | null
+          dispute_rate?: number | null
+          id?: string
+          synergy_score?: number | null
+          updated_at?: string
+          user_a?: string
+          user_b?: string
+        }
+        Relationships: []
+      }
       collaboration_members: {
         Row: {
           collaboration_id: string
@@ -3046,6 +3079,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      collaboration_pods: {
+        Row: {
+          created_at: string
+          historical_synergy_score: number | null
+          id: string
+          overall_execution_probability: number | null
+          pod_score: number | null
+          pricing_alignment_score: number | null
+          project_id: string
+          skill_completeness_score: number | null
+          trust_compatibility_score: number | null
+        }
+        Insert: {
+          created_at?: string
+          historical_synergy_score?: number | null
+          id?: string
+          overall_execution_probability?: number | null
+          pod_score?: number | null
+          pricing_alignment_score?: number | null
+          project_id: string
+          skill_completeness_score?: number | null
+          trust_compatibility_score?: number | null
+        }
+        Update: {
+          created_at?: string
+          historical_synergy_score?: number | null
+          id?: string
+          overall_execution_probability?: number | null
+          pod_score?: number | null
+          pricing_alignment_score?: number | null
+          project_id?: string
+          skill_completeness_score?: number | null
+          trust_compatibility_score?: number | null
+        }
+        Relationships: []
       }
       collaborations: {
         Row: {
@@ -6126,6 +6195,30 @@ export type Database = {
           },
         ]
       }
+      dispute_prediction_logs: {
+        Row: {
+          contributing_factors: Json | null
+          created_at: string
+          deal_id: string
+          id: string
+          predicted_risk_score: number | null
+        }
+        Insert: {
+          contributing_factors?: Json | null
+          created_at?: string
+          deal_id: string
+          id?: string
+          predicted_risk_score?: number | null
+        }
+        Update: {
+          contributing_factors?: Json | null
+          created_at?: string
+          deal_id?: string
+          id?: string
+          predicted_risk_score?: number | null
+        }
+        Relationships: []
+      }
       disputes: {
         Row: {
           arbitration_deadline: string | null
@@ -6517,6 +6610,36 @@ export type Database = {
           recovery_history?: Json
           stability_score?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      economic_velocity_index: {
+        Row: {
+          growth_rate: number | null
+          id: string
+          income_last_30_days: number | null
+          income_last_90_days: number | null
+          skill_name: string
+          updated_at: string
+          volatility_score: number | null
+        }
+        Insert: {
+          growth_rate?: number | null
+          id?: string
+          income_last_30_days?: number | null
+          income_last_90_days?: number | null
+          skill_name: string
+          updated_at?: string
+          volatility_score?: number | null
+        }
+        Update: {
+          growth_rate?: number | null
+          id?: string
+          income_last_30_days?: number | null
+          income_last_90_days?: number | null
+          skill_name?: string
+          updated_at?: string
+          volatility_score?: number | null
         }
         Relationships: []
       }
@@ -7240,6 +7363,35 @@ export type Database = {
           status?: string
         }
         Relationships: []
+      }
+      external_verification_logs: {
+        Row: {
+          access_timestamp: string
+          external_platform: string
+          id: string
+          passport_id: string
+        }
+        Insert: {
+          access_timestamp?: string
+          external_platform: string
+          id?: string
+          passport_id: string
+        }
+        Update: {
+          access_timestamp?: string
+          external_platform?: string
+          id?: string
+          passport_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_verification_logs_passport_id_fkey"
+            columns: ["passport_id"]
+            isOneToOne: false
+            referencedRelation: "reputation_passports"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       failure_records: {
         Row: {
@@ -10503,6 +10655,33 @@ export type Database = {
         }
         Relationships: []
       }
+      institutional_liquidity_metrics: {
+        Row: {
+          avg_conversion_rate: number | null
+          economic_velocity: number | null
+          id: string
+          institution_id: string
+          total_skill_liquidity: number | null
+          updated_at: string
+        }
+        Insert: {
+          avg_conversion_rate?: number | null
+          economic_velocity?: number | null
+          id?: string
+          institution_id: string
+          total_skill_liquidity?: number | null
+          updated_at?: string
+        }
+        Update: {
+          avg_conversion_rate?: number | null
+          economic_velocity?: number | null
+          id?: string
+          institution_id?: string
+          total_skill_liquidity?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       institutional_performance_metrics: {
         Row: {
           calculated_at: string
@@ -12979,6 +13158,45 @@ export type Database = {
         }
         Relationships: []
       }
+      negotiation_sessions: {
+        Row: {
+          created_at: string
+          deal_id: string
+          dispute_probability: number | null
+          id: string
+          initiated_by: string
+          negotiation_status: string
+          risk_score: number | null
+          suggested_milestones: Json | null
+          suggested_price_range: Json | null
+          trust_impact_projection: number | null
+        }
+        Insert: {
+          created_at?: string
+          deal_id: string
+          dispute_probability?: number | null
+          id?: string
+          initiated_by: string
+          negotiation_status?: string
+          risk_score?: number | null
+          suggested_milestones?: Json | null
+          suggested_price_range?: Json | null
+          trust_impact_projection?: number | null
+        }
+        Update: {
+          created_at?: string
+          deal_id?: string
+          dispute_probability?: number | null
+          id?: string
+          initiated_by?: string
+          negotiation_status?: string
+          risk_score?: number | null
+          suggested_milestones?: Json | null
+          suggested_price_range?: Json | null
+          trust_impact_projection?: number | null
+        }
+        Relationships: []
+      }
       network_suggestions: {
         Row: {
           created_at: string
@@ -14116,6 +14334,67 @@ export type Database = {
         }
         Relationships: []
       }
+      passport_exports: {
+        Row: {
+          export_type: string
+          exported_at: string
+          id: string
+          passport_id: string
+        }
+        Insert: {
+          export_type: string
+          exported_at?: string
+          id?: string
+          passport_id: string
+        }
+        Update: {
+          export_type?: string
+          exported_at?: string
+          id?: string
+          passport_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "passport_exports_passport_id_fkey"
+            columns: ["passport_id"]
+            isOneToOne: false
+            referencedRelation: "reputation_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      passport_verifications: {
+        Row: {
+          id: string
+          passport_id: string
+          verification_status: string
+          verified_at: string | null
+          verifier_entity: string
+        }
+        Insert: {
+          id?: string
+          passport_id: string
+          verification_status?: string
+          verified_at?: string | null
+          verifier_entity: string
+        }
+        Update: {
+          id?: string
+          passport_id?: string
+          verification_status?: string
+          verified_at?: string | null
+          verifier_entity?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "passport_verifications_passport_id_fkey"
+            columns: ["passport_id"]
+            isOneToOne: false
+            referencedRelation: "reputation_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       peer_review_ai_assists: {
         Row: {
           ai_feedback_summary: string | null
@@ -14612,6 +14891,85 @@ export type Database = {
             columns: ["updated_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pod_execution_metrics: {
+        Row: {
+          completion_time: number | null
+          deal_success: boolean | null
+          economic_output: number | null
+          id: string
+          pod_id: string
+          recorded_at: string
+          trust_delta: number | null
+        }
+        Insert: {
+          completion_time?: number | null
+          deal_success?: boolean | null
+          economic_output?: number | null
+          id?: string
+          pod_id: string
+          recorded_at?: string
+          trust_delta?: number | null
+        }
+        Update: {
+          completion_time?: number | null
+          deal_success?: boolean | null
+          economic_output?: number | null
+          id?: string
+          pod_id?: string
+          recorded_at?: string
+          trust_delta?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pod_execution_metrics_pod_id_fkey"
+            columns: ["pod_id"]
+            isOneToOne: false
+            referencedRelation: "collaboration_pods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pod_members: {
+        Row: {
+          assigned_role: string
+          availability_status: string | null
+          created_at: string
+          id: string
+          pod_id: string
+          role_skill_match_score: number | null
+          trust_score_snapshot: number | null
+          user_id: string
+        }
+        Insert: {
+          assigned_role: string
+          availability_status?: string | null
+          created_at?: string
+          id?: string
+          pod_id: string
+          role_skill_match_score?: number | null
+          trust_score_snapshot?: number | null
+          user_id: string
+        }
+        Update: {
+          assigned_role?: string
+          availability_status?: string | null
+          created_at?: string
+          id?: string
+          pod_id?: string
+          role_skill_match_score?: number | null
+          trust_score_snapshot?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pod_members_pod_id_fkey"
+            columns: ["pod_id"]
+            isOneToOne: false
+            referencedRelation: "collaboration_pods"
             referencedColumns: ["id"]
           },
         ]
@@ -15288,6 +15646,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      pricing_intelligence_logs: {
+        Row: {
+          avg_market_price: number | null
+          id: string
+          liquidity_score: number | null
+          recommended_price_high: number | null
+          recommended_price_low: number | null
+          recorded_at: string
+          skill_name: string
+          volatility_score: number | null
+        }
+        Insert: {
+          avg_market_price?: number | null
+          id?: string
+          liquidity_score?: number | null
+          recommended_price_high?: number | null
+          recommended_price_low?: number | null
+          recorded_at?: string
+          skill_name: string
+          volatility_score?: number | null
+        }
+        Update: {
+          avg_market_price?: number | null
+          id?: string
+          liquidity_score?: number | null
+          recommended_price_high?: number | null
+          recommended_price_low?: number | null
+          recorded_at?: string
+          skill_name?: string
+          volatility_score?: number | null
+        }
+        Relationships: []
       }
       pricing_models: {
         Row: {
@@ -16649,6 +17040,39 @@ export type Database = {
           },
         ]
       }
+      regional_skill_metrics: {
+        Row: {
+          avg_trust: number | null
+          demand_count: number | null
+          gap_score: number | null
+          id: string
+          region: string
+          skill_name: string
+          supply_count: number | null
+          updated_at: string
+        }
+        Insert: {
+          avg_trust?: number | null
+          demand_count?: number | null
+          gap_score?: number | null
+          id?: string
+          region: string
+          skill_name: string
+          supply_count?: number | null
+          updated_at?: string
+        }
+        Update: {
+          avg_trust?: number | null
+          demand_count?: number | null
+          gap_score?: number | null
+          id?: string
+          region?: string
+          skill_name?: string
+          supply_count?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       relationship_entropy: {
         Row: {
           calculated_at: string
@@ -16951,6 +17375,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      reputation_passports: {
+        Row: {
+          capability_summary: Json | null
+          deal_summary: Json | null
+          expires_at: string
+          id: string
+          institutional_affiliations: Json | null
+          issued_at: string
+          outcome_summary: Json | null
+          passport_version: number
+          signed_hash: string
+          trust_score_snapshot: number
+          user_id: string
+          visibility_score_snapshot: number
+        }
+        Insert: {
+          capability_summary?: Json | null
+          deal_summary?: Json | null
+          expires_at?: string
+          id?: string
+          institutional_affiliations?: Json | null
+          issued_at?: string
+          outcome_summary?: Json | null
+          passport_version?: number
+          signed_hash: string
+          trust_score_snapshot?: number
+          user_id: string
+          visibility_score_snapshot?: number
+        }
+        Update: {
+          capability_summary?: Json | null
+          deal_summary?: Json | null
+          expires_at?: string
+          id?: string
+          institutional_affiliations?: Json | null
+          issued_at?: string
+          outcome_summary?: Json | null
+          passport_version?: number
+          signed_hash?: string
+          trust_score_snapshot?: number
+          user_id?: string
+          visibility_score_snapshot?: number
+        }
+        Relationships: []
       }
       research_artifacts: {
         Row: {
@@ -17896,6 +18365,41 @@ export type Database = {
             columns: ["beneficiary_org_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      revenue_split_simulations: {
+        Row: {
+          created_at: string
+          fairness_score: number | null
+          id: string
+          pod_id: string | null
+          suggested_distribution: Json | null
+          trust_projection: number | null
+        }
+        Insert: {
+          created_at?: string
+          fairness_score?: number | null
+          id?: string
+          pod_id?: string | null
+          suggested_distribution?: Json | null
+          trust_projection?: number | null
+        }
+        Update: {
+          created_at?: string
+          fairness_score?: number | null
+          id?: string
+          pod_id?: string | null
+          suggested_distribution?: Json | null
+          trust_projection?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "revenue_split_simulations_pod_id_fkey"
+            columns: ["pod_id"]
+            isOneToOne: false
+            referencedRelation: "collaboration_pods"
             referencedColumns: ["id"]
           },
         ]
@@ -19137,6 +19641,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      skill_market_metrics: {
+        Row: {
+          avg_bid_price: number | null
+          avg_project_budget: number | null
+          deal_conversion_rate: number | null
+          id: string
+          liquidity_score: number | null
+          skill_name: string
+          total_active_bids: number | null
+          total_active_projects: number | null
+          trust_weighted_success_rate: number | null
+          updated_at: string
+        }
+        Insert: {
+          avg_bid_price?: number | null
+          avg_project_budget?: number | null
+          deal_conversion_rate?: number | null
+          id?: string
+          liquidity_score?: number | null
+          skill_name: string
+          total_active_bids?: number | null
+          total_active_projects?: number | null
+          trust_weighted_success_rate?: number | null
+          updated_at?: string
+        }
+        Update: {
+          avg_bid_price?: number | null
+          avg_project_budget?: number | null
+          deal_conversion_rate?: number | null
+          id?: string
+          liquidity_score?: number | null
+          skill_name?: string
+          total_active_bids?: number | null
+          total_active_projects?: number | null
+          trust_weighted_success_rate?: number | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       sovereign_data_controls: {
         Row: {
