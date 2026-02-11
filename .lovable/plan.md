@@ -1,61 +1,65 @@
 
 
-# Bid Status Tracking with Timeline + Quick Bid Feature
+# Make Earn Pages 100% Mobile Friendly
 
-## Overview
-The approved plan included **Bid Status Tracking** and **Quick Bid** as features 3 and 6, but they were not implemented in the last round. This plan delivers both, adding a `status` column to the `earning_bids` table and building the UI for project owners to manage bid statuses and for bidders to see visual progress.
+## Issues Found
 
-## What Gets Built
+1. **MyProjectsFilterSort** - Fixed-width Select triggers (`w-[140px]`, `w-[160px]`) overflow on small screens. "Filters:" and "Sort:" labels waste space on mobile.
+2. **BidStatusTimeline** - The 4-step horizontal timeline with connecting lines gets cramped on narrow screens.
+3. **EarnProjectDetailPage bid rows** - Bid info (amount, days, time, dropdown) is `flex` with `gap-4` and doesn't stack properly on mobile. Owner dropdown menu items need touch-friendly sizing.
+4. **RecommendedProjects** - Grid is `grid-cols-1 md:grid-cols-3` which is fine, but cards could use slightly more compact padding on mobile.
+5. **EarningsDashboardCard** - Uses a local `cn()` function instead of the shared one from `@/lib/utils` (won't break but is inconsistent).
+6. **EarnPage hero** - `py-12 md:py-24` is fine but the heading `text-3xl md:text-5xl lg:text-6xl` could use better line-height on mobile.
+7. **EarnProjectDetailPage bid section** - The bid row layout `flex-col sm:flex-row` is okay but the inner stats row (`flex items-center gap-4`) overflows on very small screens.
+8. **Bottom nav padding** - The page already has `pb-16` via MainLayout for mobile, which is correct.
 
-### 1. Bid Status System (Database)
-Add a `status` column to `earning_bids` with values: `pending`, `viewed`, `shortlisted`, `accepted`, `rejected`. Project owners can update bid statuses from the project detail page. Bidders see a visual timeline on their "My Bids" tab.
+## Changes
 
-### 2. Bid Status Timeline (Bidder View)
-In the "My Bids" tab on EarnPage, each bid card gets a horizontal step indicator showing progress through: Pending -> Viewed -> Shortlisted -> Accepted/Rejected. Color-coded dots and connecting lines show where the bid stands.
+### 1. `src/components/earn/MyProjectsFilterSort.tsx`
+- Make the filter bar stack vertically on mobile: change to `flex flex-col sm:flex-row` for the overall layout
+- Remove fixed widths on SelectTriggers, use `w-full sm:w-[140px]` and `w-full sm:w-[160px]`
+- Hide "Filters:" and "Sort:" text labels on mobile (use `hidden sm:inline`)
 
-### 3. Bid Management for Project Owners
-On `EarnProjectDetailPage`, when the logged-in user is the project owner, each bid row shows action buttons: "Shortlist", "Accept", "Reject". Status badges update in real-time.
+### 2. `src/components/earn/BidStatusTimeline.tsx`
+- Make the timeline more compact on small screens: reduce connector width from `w-4` to `w-2 sm:w-4`
+- Reduce icon container from `h-6 w-6` to `h-5 w-5 sm:h-6 sm:w-6` 
+- Hide status text label on very small screens (`hidden sm:inline`)
 
-### 4. Quick Bid Feature
-A "Quick Bid" button on project cards that pre-fills the bid form with the user's last used amount and delivery days (stored in localStorage). One click navigates to the project detail page with the form pre-filled.
+### 3. `src/pages/EarnProjectDetailPage.tsx` (bid rows)
+- Make the bid info section stack on mobile: change inner stats to `flex flex-wrap items-center gap-2 sm:gap-4`
+- Ensure the owner dropdown is always accessible (already uses icon button, just ensure touch target)
+- Make the bid row padding smaller on mobile: `p-2 sm:p-3`
+
+### 4. `src/components/earn/EarningsDashboardCard.tsx`
+- Import `cn` from `@/lib/utils` instead of the local function
+- Make stat items slightly more compact on mobile with `gap-2 sm:gap-3`
+
+### 5. `src/components/earn/RecommendedProjects.tsx`
+- Already responsive, just tighten padding on mobile: `p-3 sm:p-4` on inner cards
+
+### 6. `src/pages/EarnPage.tsx`
+- The hero heading line-height is fine
+- Ensure the tab list doesn't clip: already uses ScrollArea which handles this
+- No major changes needed -- it's already well-structured
+
+### 7. `src/components/earn/MyProjectCard.tsx`
+- Footer buttons: add `w-full sm:w-auto` to each button on mobile so they stack nicely
+- Change footer to `flex flex-col sm:flex-row` for button stacking
 
 ## Technical Details
 
-### Database Migration
-```sql
-ALTER TABLE earning_bids
-ADD COLUMN status text NOT NULL DEFAULT 'pending';
-```
-No new RLS policies needed -- existing policies on `earning_bids` already cover reads/writes. The project owner updates bids via a new hook that checks ownership.
+### Files Modified (7 files)
 
-### New Files
+| File | Change |
+|------|--------|
+| `MyProjectsFilterSort.tsx` | Stack layout vertically on mobile, full-width selects |
+| `BidStatusTimeline.tsx` | Compact sizes, hide text on xs screens |
+| `EarnProjectDetailPage.tsx` | Wrap bid info, smaller padding on bid rows |
+| `EarningsDashboardCard.tsx` | Use shared `cn`, tighter mobile gaps |
+| `RecommendedProjects.tsx` | Tighter card padding on mobile |
+| `EarnPage.tsx` | Minor touch-up on spacing |
+| `MyProjectCard.tsx` | Stack footer buttons on mobile |
 
-**`src/components/earn/BidStatusTimeline.tsx`**
-- Horizontal step indicator component
-- Props: `status: string`
-- Steps: Pending, Viewed, Shortlisted, Accepted (or Rejected as alternate end state)
-- Uses colored dots and lines; green for completed steps, gray for future
-
-### Modified Files
-
-**`src/hooks/useEarning.ts`**
-- Add `useUpdateBidStatus(projectId)` hook -- allows project owner to update bid status
-- Add `useQuickBidDefaults()` hook -- reads/writes last bid values from localStorage
-- Update `EarningBid` interface to include `status` field
-
-**`src/pages/EarnPage.tsx`**
-- Replace hardcoded "Pending" badge with `BidStatusTimeline` component in My Bids tab
-- Add Quick Bid button on project cards (for logged-in users who have bid before)
-
-**`src/pages/EarnProjectDetailPage.tsx`**
-- When logged-in user is the project owner: show status management buttons on each bid
-- Dropdown or button group: Mark as Viewed / Shortlist / Accept / Reject
-- Update `useSubmitBid` to save last-used values for Quick Bid
-
-### Build Order
-1. Database migration: add `status` column to `earning_bids`
-2. Create `BidStatusTimeline.tsx` component
-3. Add `useUpdateBidStatus` and `useQuickBidDefaults` hooks to `useEarning.ts`
-4. Update `EarnProjectDetailPage.tsx` with owner bid management
-5. Update `EarnPage.tsx` My Bids tab with timeline and Quick Bid integration
+### No Database Changes
+All changes are CSS/layout only.
 
