@@ -140,6 +140,8 @@ import AdminPodAnalyticsPage from "./pages/admin/AdminPodAnalyticsPage";
 import AdminDealIntelligencePage from "./pages/admin/AdminDealIntelligencePage";
 import MacroRiskPage from "./pages/MacroRiskPage";
 import AdminSystemicRiskPage from "./pages/admin/AdminSystemicRiskPage";
+import GovernancePage from "./pages/GovernancePage";
+import AdminGovernanceOversightPage from "./pages/admin/AdminGovernanceOversightPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -282,6 +284,8 @@ const AppContent = () => {
             <Route path="/market-liquidity" element={<MarketLiquidityPage />} />
             <Route path="/macro-risk" element={<MacroRiskPage />} />
             <Route path="/admin/systemic-risk" element={<AdminSystemicRiskPage />} />
+            <Route path="/governance" element={<GovernancePage />} />
+            <Route path="/admin/governance-oversight" element={<AdminGovernanceOversightPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
