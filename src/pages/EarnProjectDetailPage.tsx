@@ -35,14 +35,25 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStartConversation } from "@/hooks/useMessaging";
-import { useEarningProject, useEarningProjects, useSubmitBid, useUpdateBidStatus, useQuickBidDefaults, useProjectAttachments } from "@/hooks/useEarning";
+import { useEarningProject, useEarningProjects, useSubmitBid, useUpdateBidStatus, useQuickBidDefaults, useProjectAttachments, useUpdateProjectStatus } from "@/hooks/useEarning";
 import { formatPKR } from "@/lib/currency";
 import { formatDistanceToNow } from "date-fns";
 import { ShareProjectButton } from "@/components/earn/ShareProjectButton";
 import { RelatedProjects } from "@/components/earn/RelatedProjects";
 import { BidComparisonTable } from "@/components/earn/BidComparisonTable";
 import { ProjectActivityTimeline } from "@/components/earn/ProjectActivityTimeline";
-import { Paperclip, Download } from "lucide-react";
+import { TrustBadge } from "@/components/trust/TrustBadge";
+import { Paperclip, Download, XCircle as XCircleIcon, RotateCcw, Loader2 as Loader2Icon } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function EarnProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -57,12 +68,16 @@ export default function EarnProjectDetailPage() {
   const { attachments, loading: attachmentsLoading } = useProjectAttachments(id);
   const { updateBidStatus, updating: updatingBid } = useUpdateBidStatus();
   const { getDefaults, saveDefaults } = useQuickBidDefaults();
+  const { updateStatus, updating: updatingStatus } = useUpdateProjectStatus();
   
   const [bidAmount, setBidAmount] = useState("");
   const [deliveryDays, setDeliveryDays] = useState("");
   const [message, setMessage] = useState("");
+  const [showStatusDialog, setShowStatusDialog] = useState(false);
 
   const isOwner = user && project?.owner_id === user.id;
+  const projectStatus = project?.status || "open";
+  const isClosing = projectStatus === "open";
 
   // Pre-fill from quick bid defaults
   useEffect(() => {
@@ -186,8 +201,60 @@ export default function EarnProjectDetailPage() {
               Back to Projects
             </Button>
           </Link>
-          <ShareProjectButton projectId={project.id} projectTitle={project.title} />
+          <div className="flex items-center gap-2">
+            {isOwner && (
+              <Button
+                variant={projectStatus === "open" ? "secondary" : "default"}
+                size="sm"
+                onClick={() => setShowStatusDialog(true)}
+                disabled={updatingStatus}
+              >
+                {updatingStatus ? (
+                  <Loader2Icon className="h-4 w-4 mr-1 animate-spin" />
+                ) : projectStatus === "open" ? (
+                  <XCircleIcon className="h-4 w-4 mr-1" />
+                ) : (
+                  <RotateCcw className="h-4 w-4 mr-1" />
+                )}
+                {projectStatus === "open" ? "Close Project" : "Reopen Project"}
+              </Button>
+            )}
+            <ShareProjectButton projectId={project.id} projectTitle={project.title} />
+          </div>
         </motion.div>
+
+        {/* Status Change Dialog */}
+        <AlertDialog open={showStatusDialog} onOpenChange={setShowStatusDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {isClosing ? "Close this project?" : "Reopen this project?"}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                {isClosing
+                  ? "Closing this project will hide it from public listings. No new bids can be submitted. You can reopen it anytime."
+                  : "Reopening this project will make it visible again and allow new bids."}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                disabled={updatingStatus}
+                onClick={async () => {
+                  const newStatus = isClosing ? "closed" : "open";
+                  const result = await updateStatus(project.id, newStatus);
+                  if (result.success) {
+                    setShowStatusDialog(false);
+                    refetch();
+                  }
+                }}
+              >
+                {updatingStatus && <Loader2Icon className="h-4 w-4 mr-1 animate-spin" />}
+                {isClosing ? "Close Project" : "Reopen Project"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         {/* Project Header */}
         <motion.div
@@ -375,11 +442,14 @@ export default function EarnProjectDetailPage() {
                             {(bid.bidder_name || "U")[0]}
                           </AvatarFallback>
                         </Avatar>
-                        <div>
+                        <div className="flex items-center gap-1.5 flex-wrap">
                           <Link to={`/u/${bid.bidder_id}`} className="font-medium hover:text-primary hover:underline transition-colors">
                             {bid.bidder_name || "Anonymous"}
                           </Link>
-                          <Badge variant="outline" className="ml-2 capitalize text-xs">
+                          {bid.bidder_trust_score != null && (
+                            <TrustBadge score={bid.bidder_trust_score} size="sm" />
+                          )}
+                          <Badge variant="outline" className="capitalize text-xs">
                             {(bid as any).status || "pending"}
                           </Badge>
                         </div>

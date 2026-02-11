@@ -23,8 +23,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { X, Plus, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
-import { useUpdateProject, EarningProject } from "@/hooks/useEarning";
+import { X, Plus, Loader2, CheckCircle2, AlertCircle, Paperclip, Trash2 } from "lucide-react";
+import { useUpdateProject, useProjectAttachments, useUploadAttachment, useDeleteAttachment, EarningProject } from "@/hooks/useEarning";
 import { cn } from "@/lib/utils";
 
 const projectSchema = z.object({
@@ -95,7 +95,11 @@ export function EditProjectModal({ open, onOpenChange, project, onSuccess }: Edi
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { updateProject, updating } = useUpdateProject();
+  const { attachments, loading: attachmentsLoading, refetch: refetchAttachments } = useProjectAttachments(project?.id);
+  const { uploadAttachment, uploading } = useUploadAttachment();
+  const { deleteAttachment } = useDeleteAttachment();
 
   const form = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
@@ -164,6 +168,11 @@ export function EditProjectModal({ open, onOpenChange, project, onSuccess }: Edi
     });
 
     if (result.success) {
+      // Upload new files if any
+      for (const file of selectedFiles) {
+        await uploadAttachment(project.id, file);
+      }
+      setSelectedFiles([]);
       setShowSuccess(true);
       onSuccess?.();
       setTimeout(() => {
@@ -440,9 +449,57 @@ export function EditProjectModal({ open, onOpenChange, project, onSuccess }: Edi
                     </AnimatePresence>
                   </div>
 
+                  {/* Existing Attachments */}
+                  {attachments.length > 0 && (
+                    <div className="space-y-2">
+                      <FormLabel className="flex items-center gap-1.5">
+                        <Paperclip className="h-3.5 w-3.5" />
+                        Current Attachments
+                      </FormLabel>
+                      <div className="space-y-1.5">
+                        {attachments.map((att) => (
+                          <div key={att.id} className="flex items-center justify-between p-2 rounded-md border bg-muted/30 text-sm">
+                            <a href={att.file_url} target="_blank" rel="noopener noreferrer" className="truncate hover:text-primary transition-colors flex-1 min-w-0">
+                              {att.file_name}
+                            </a>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7 shrink-0 text-destructive hover:text-destructive"
+                              onClick={async () => {
+                                const res = await deleteAttachment(att.id);
+                                if (res.success) refetchAttachments();
+                              }}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* New File Upload */}
+                  <div className="space-y-2">
+                    <FormLabel className="flex items-center gap-1.5">
+                      <Paperclip className="h-3.5 w-3.5" />
+                      Add Attachments
+                    </FormLabel>
+                    <Input
+                      type="file"
+                      multiple
+                      onChange={(e) => setSelectedFiles(Array.from(e.target.files || []))}
+                      className="text-xs"
+                    />
+                    {selectedFiles.length > 0 && (
+                      <p className="text-xs text-muted-foreground">{selectedFiles.length} new file(s) selected</p>
+                    )}
+                  </div>
+
                   <div className="flex gap-3 pt-4">
-                    <Button type="submit" className="flex-1" disabled={updating}>
-                      {updating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    <Button type="submit" className="flex-1" disabled={updating || uploading}>
+                      {(updating || uploading) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       Save Changes
                     </Button>
                     <Button type="button" variant="outline" onClick={handleClose}>
