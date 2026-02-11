@@ -1,35 +1,26 @@
 
 
-# Earn Pages -- Deep Polish Round
+# Earn Pages -- Workflow Completion and Trust Round
 
 ## Overview
-This round focuses on making the Earn pages feel production-grade: real-time notifications, smarter dashboards, better sorting, and micro-interactions that elevate the user experience.
+The Earn pages now have strong discovery, bidding, and management features. This round focuses on completing critical user workflows and adding trust-building features: bid management for bidders, advanced budget/deadline filters, project attachment support, and an activity timeline on the project detail page.
 
 ## Features
 
-### 1. Live Dashboard Stats Using Real Bid Statuses
-The `EarningsDashboardCard` currently hardcodes `activeBids = totalBids` and `successRate = 0%`. Now that bids have a real `status` column, calculate these properly: Active = pending + viewed + shortlisted, Accepted count, and Success Rate = accepted / total.
+### 1. Bid Management for Bidders (Edit and Withdraw)
+Bidders currently cannot modify or withdraw their bids after submission. Add an "Edit Bid" and "Withdraw Bid" option on each bid card in the "My Bids" tab. Editing opens an inline form to update amount, delivery days, and message. Withdrawing shows a confirmation dialog and deletes the bid.
 
-### 2. Sort Options for Available Projects
-Add a sort dropdown next to the search bar on the "Available Projects" tab. Options: Newest, Budget (High to Low), Budget (Low to High), Most Bids, Deadline (Soonest). Currently only urgency sorting exists.
+### 2. Advanced Filters Panel for Available Projects
+Add expandable advanced filters below the sort bar on the "Available Projects" tab: Budget Range (min/max inputs), Deadline Range (max days), and Minimum Bids toggle (show projects with 0 bids for less competition). These collapse into a "Filters" button on mobile.
 
-### 3. Bid Status Filter in My Bids Tab
-Add filter chips (All, Pending, Viewed, Shortlisted, Accepted, Rejected) above the My Bids list so users can quickly find bids by status.
+### 3. Project File Attachments
+Allow project owners to attach files (briefs, specs, sample data) when posting or editing a project. Files are stored in backend storage. On the project detail page, show an "Attachments" section with download links.
 
-### 4. Real-Time Bid Status Notifications
-Subscribe to bid status changes via realtime. When a project owner updates a bid's status, the bidder sees a toast notification and the My Bids tab auto-refreshes.
+### 4. Activity Timeline on Project Detail Page
+Add a chronological activity log on the project detail page visible to the project owner. Shows events like "Project posted", "New bid from Ahmad", "Bid shortlisted", "Bid accepted". Built from bid data timestamps.
 
-### 5. Animated Number Counters on Stats Bar
-The `EarnStatsBar` numbers pop in statically. Add a counting-up animation using `framer-motion` so numbers animate from 0 to their value when first visible.
-
-### 6. Confirmation Toast on Bid Status Changes (Owner Side)
-When a project owner changes a bid status (Accept, Reject, Shortlist), show a success toast confirming the action with the bidder's name.
-
-### 7. Bidder Profile Links
-On the project detail page, make bidder names clickable -- link to `/u/{bidder_id}` so project owners can review bidder profiles before accepting.
-
-### 8. Project Card Hover Effects and Micro-interactions
-Add subtle scale-on-hover and shadow transitions to project cards. Add a slide-in animation for the "Urgent" badge.
+### 5. Bid Comparison Table for Project Owners
+On the project detail page, add a "Compare Bids" view that shows all bids in a sortable table format (columns: Bidder, Amount, Delivery, Status, Date). Helps owners make informed decisions at a glance.
 
 ---
 
@@ -39,30 +30,36 @@ Add subtle scale-on-hover and shadow transitions to project cards. Add a slide-i
 
 | File | Changes |
 |------|---------|
-| `EarningsDashboardCard.tsx` | Calculate real active/accepted/success stats from bid `status` field |
-| `EarnPage.tsx` | Add sort dropdown for projects tab, add bid status filter chips in My Bids tab, add realtime subscription for bid status changes |
-| `EarnStatsBar.tsx` | Add animated number counter using framer-motion `useMotionValue` + `useTransform` |
-| `EarnProjectDetailPage.tsx` | Add bidder profile links, add success toast on status change, confirmation on accept/reject |
-| `useEarning.ts` | Add realtime subscription to `useMyBids` for bid status updates |
+| `useEarning.ts` | Add `useWithdrawBid` hook (delete bid), add `useUpdateMyBid` hook (update amount/days/message) |
+| `EarnPage.tsx` | Add edit/withdraw controls on My Bids cards, add advanced filters panel on Projects tab |
+| `EarnProjectDetailPage.tsx` | Add activity timeline section, add bid comparison table toggle, add attachments section |
+| `PostProjectModal.tsx` | Add file upload field using backend storage |
+| `EditProjectModal.tsx` | Add file upload/manage field |
+| New: `src/components/earn/AdvancedFilters.tsx` | Collapsible filter panel with budget range, deadline, and competition filters |
+| New: `src/components/earn/BidComparisonTable.tsx` | Sortable table view of all bids for project owners |
+| New: `src/components/earn/ProjectActivityTimeline.tsx` | Chronological event log built from bid data |
+
+### Database Changes
+- Create a `earning_project_attachments` table: `id`, `project_id` (FK), `file_name`, `file_url`, `file_size`, `uploaded_by`, `created_at`
+- Create a storage bucket `earning-attachments` for file uploads
+- RLS: Only project owner can insert/delete attachments; anyone authenticated can read attachments for open projects
 
 ### Key Implementation Details
 
-- **Dashboard Stats**: Filter `bids` by status: `active = bids.filter(b => ['pending','viewed','shortlisted'].includes(b.status)).length`, `accepted = bids.filter(b => b.status === 'accepted').length`, `successRate = (accepted / total) * 100`
-- **Sort Dropdown**: Add a `sortBy` state to EarnPage, apply in `filteredProjects` useMemo alongside urgency sort
-- **Bid Status Filters**: Array of filter chips rendered above myBids list, filter using `myBids.filter(b => activeFilter === 'all' || b.status === activeFilter)`
-- **Realtime**: In `useMyBids`, subscribe to `earning_bids` changes filtered by `bidder_id=eq.{userId}`, on UPDATE event refetch and show toast
-- **Animated Counters**: Create a small `AnimatedNumber` component using `useSpring` from framer-motion that animates from 0 to target value over 1s
-- **Profile Links**: Wrap bidder name in `<Link to={/u/${bid.bidder_id}}>` on the detail page bid rows
-- **Hover Effects**: Add `hover:scale-[1.01] hover:shadow-md transition-all duration-200` to project Card wrappers
+- **Withdraw Bid**: `supabase.from('earning_bids').delete().eq('id', bidId).eq('bidder_id', user.id)` with confirmation dialog
+- **Edit Bid**: Inline form toggle on the bid card, calls `supabase.from('earning_bids').update({ amount, delivery_days, message }).eq('id', bidId).eq('bidder_id', user.id)`
+- **Advanced Filters**: State stored in EarnPage, applied in `filteredProjects` useMemo. Budget filter: `budget_min >= filterMin && budget_max <= filterMax`. Collapsible with `Collapsible` from Radix
+- **File Upload**: Use backend storage `supabase.storage.from('earning-attachments').upload(...)`, store metadata in `earning_project_attachments` table
+- **Activity Timeline**: Derive events from bids array -- map each bid to events based on its status and timestamps (`created_at` for submission, infer status change times). Show in reverse-chronological order
+- **Bid Comparison Table**: Simple `<table>` with sortable column headers using local state, renders all bids with key metrics side by side
 
 ### Build Order
-1. Update `EarningsDashboardCard.tsx` with real stats
-2. Update `EarnStatsBar.tsx` with animated counters
-3. Update `EarnPage.tsx` with sort dropdown and bid status filters
-4. Update `useEarning.ts` with realtime bid status subscription
-5. Update `EarnProjectDetailPage.tsx` with profile links and confirmation toasts
-6. Add hover effects to project cards across pages
-
-### No Database Changes
-All changes use existing data and the `status` column already added.
+1. Database migration: create `earning_project_attachments` table + storage bucket
+2. Create `AdvancedFilters.tsx`
+3. Create `BidComparisonTable.tsx`
+4. Create `ProjectActivityTimeline.tsx`
+5. Update `useEarning.ts` with withdraw/edit bid hooks
+6. Update `EarnPage.tsx` with advanced filters and bid edit/withdraw
+7. Update `EarnProjectDetailPage.tsx` with activity timeline, comparison table, attachments
+8. Update `PostProjectModal.tsx` and `EditProjectModal.tsx` with file upload
 
