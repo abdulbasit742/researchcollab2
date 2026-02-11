@@ -75,6 +75,7 @@ const navItems = [
   { icon: Database, label: "Reproducibility", href: "/admin/reproducibility" },
   { icon: Globe, label: "Federation", href: "/admin/federation" },
   { icon: ShieldCheck, label: "Systemic Risk", href: "/admin/systemic-risk" },
+  { icon: Vote, label: "Governance Oversight", href: "/admin/governance-oversight" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 

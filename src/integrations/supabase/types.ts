@@ -1092,6 +1092,182 @@ export type Database = {
         }
         Relationships: []
       }
+      agp_audit_logs: {
+        Row: {
+          action_type: string
+          actor_id: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          pod_id: string
+        }
+        Insert: {
+          action_type: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          pod_id: string
+        }
+        Update: {
+          action_type?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          pod_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agp_audit_logs_pod_id_fkey"
+            columns: ["pod_id"]
+            isOneToOne: false
+            referencedRelation: "agp_pods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agp_decisions: {
+        Row: {
+          created_at: string
+          decision_summary: string
+          executed_at: string | null
+          execution_required: boolean | null
+          id: string
+          issue_reference_id: string | null
+          pod_id: string
+        }
+        Insert: {
+          created_at?: string
+          decision_summary: string
+          executed_at?: string | null
+          execution_required?: boolean | null
+          id?: string
+          issue_reference_id?: string | null
+          pod_id: string
+        }
+        Update: {
+          created_at?: string
+          decision_summary?: string
+          executed_at?: string | null
+          execution_required?: boolean | null
+          id?: string
+          issue_reference_id?: string | null
+          pod_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agp_decisions_pod_id_fkey"
+            columns: ["pod_id"]
+            isOneToOne: false
+            referencedRelation: "agp_pods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agp_members: {
+        Row: {
+          id: string
+          institution_id: string | null
+          joined_at: string
+          pod_id: string
+          trust_snapshot: number | null
+          user_id: string
+          voting_weight: number | null
+        }
+        Insert: {
+          id?: string
+          institution_id?: string | null
+          joined_at?: string
+          pod_id: string
+          trust_snapshot?: number | null
+          user_id: string
+          voting_weight?: number | null
+        }
+        Update: {
+          id?: string
+          institution_id?: string | null
+          joined_at?: string
+          pod_id?: string
+          trust_snapshot?: number | null
+          user_id?: string
+          voting_weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agp_members_pod_id_fkey"
+            columns: ["pod_id"]
+            isOneToOne: false
+            referencedRelation: "agp_pods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agp_pods: {
+        Row: {
+          created_at: string
+          formation_method: string
+          id: string
+          pod_type: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          formation_method?: string
+          id?: string
+          pod_type: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          formation_method?: string
+          id?: string
+          pod_type?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      agp_votes: {
+        Row: {
+          created_at: string
+          id: string
+          issue_reference_id: string | null
+          issue_type: string
+          pod_id: string
+          vote_decision: string
+          voter_id: string
+          weighted_score: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          issue_reference_id?: string | null
+          issue_type: string
+          pod_id: string
+          vote_decision: string
+          voter_id: string
+          weighted_score?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          issue_reference_id?: string | null
+          issue_type?: string
+          pod_id?: string
+          vote_decision?: string
+          voter_id?: string
+          weighted_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agp_votes_pod_id_fkey"
+            columns: ["pod_id"]
+            isOneToOne: false
+            referencedRelation: "agp_pods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_advisory_records: {
         Row: {
           ai_model_id: string | null
@@ -14718,6 +14894,50 @@ export type Database = {
             columns: ["supersedes_id"]
             isOneToOne: false
             referencedRelation: "platform_charters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_constitution: {
+        Row: {
+          enacted_at: string
+          enacted_by_pod_id: string | null
+          id: string
+          is_active: boolean | null
+          rationale: string | null
+          rule_category: string
+          rule_key: string
+          rule_value: Json
+          superseded_at: string | null
+        }
+        Insert: {
+          enacted_at?: string
+          enacted_by_pod_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          rationale?: string | null
+          rule_category: string
+          rule_key: string
+          rule_value: Json
+          superseded_at?: string | null
+        }
+        Update: {
+          enacted_at?: string
+          enacted_by_pod_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          rationale?: string | null
+          rule_category?: string
+          rule_key?: string
+          rule_value?: Json
+          superseded_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_constitution_enacted_by_pod_id_fkey"
+            columns: ["enacted_by_pod_id"]
+            isOneToOne: false
+            referencedRelation: "agp_pods"
             referencedColumns: ["id"]
           },
         ]

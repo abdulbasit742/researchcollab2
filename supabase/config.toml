@@ -47,3 +47,9 @@ verify_jwt = false
 
 [functions.compute-risk-index]
 verify_jwt = false
+
+[functions.assemble-governance-pod]
+verify_jwt = false
+
+[functions.governance-decision-engine]
+verify_jwt = false
