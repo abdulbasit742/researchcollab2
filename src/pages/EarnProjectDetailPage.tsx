@@ -11,6 +11,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   DollarSign,
   Clock,
   MapPin,
@@ -20,11 +26,16 @@ import {
   User,
   MessageSquare,
   RefreshCw,
+  MoreHorizontal,
+  Eye,
+  Star,
+  CheckCircle2,
+  XCircle,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStartConversation } from "@/hooks/useMessaging";
-import { useEarningProject, useSubmitBid } from "@/hooks/useEarning";
+import { useEarningProject, useSubmitBid, useUpdateBidStatus, useQuickBidDefaults } from "@/hooks/useEarning";
 import { formatPKR } from "@/lib/currency";
 import { formatDistanceToNow } from "date-fns";
 
@@ -37,10 +48,23 @@ export default function EarnProjectDetailPage() {
   const { project, bids, loading, refetch } = useEarningProject(id);
   const { submitBid, submitting } = useSubmitBid();
   const { startConversation } = useStartConversation();
+  const { updateBidStatus, updating: updatingBid } = useUpdateBidStatus();
+  const { getDefaults, saveDefaults } = useQuickBidDefaults();
   
   const [bidAmount, setBidAmount] = useState("");
   const [deliveryDays, setDeliveryDays] = useState("");
   const [message, setMessage] = useState("");
+
+  const isOwner = user && project?.owner_id === user.id;
+
+  // Pre-fill from quick bid defaults
+  useEffect(() => {
+    const defaults = getDefaults();
+    if (defaults && !bidAmount && !deliveryDays) {
+      setBidAmount(defaults.amount);
+      setDeliveryDays(defaults.deliveryDays);
+    }
+  }, []);
 
   // Scroll to bid section if hash is present
   useEffect(() => {
@@ -82,6 +106,7 @@ export default function EarnProjectDetailPage() {
     );
 
     if (result.success) {
+      saveDefaults(bidAmount, deliveryDays);
       setBidAmount("");
       setDeliveryDays("");
       setMessage("");
@@ -341,7 +366,12 @@ export default function EarnProjectDetailPage() {
                             {(bid.bidder_name || "U")[0]}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="font-medium">{bid.bidder_name || "Anonymous"}</span>
+                        <div>
+                          <span className="font-medium">{bid.bidder_name || "Anonymous"}</span>
+                          <Badge variant="outline" className="ml-2 capitalize text-xs">
+                            {(bid as any).status || "pending"}
+                          </Badge>
+                        </div>
                       </div>
                       <div className="flex items-center gap-4 text-sm pl-11 sm:pl-0">
                         <span className="font-semibold text-primary">
@@ -353,6 +383,29 @@ export default function EarnProjectDetailPage() {
                         <span className="text-muted-foreground text-xs hidden sm:inline">
                           {formatTimeAgo(bid.created_at)}
                         </span>
+                        {isOwner && id && (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon" className="h-7 w-7" disabled={updatingBid}>
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "viewed").then(() => refetch())}>
+                                <Eye className="h-4 w-4 mr-2" /> Mark Viewed
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "shortlisted").then(() => refetch())}>
+                                <Star className="h-4 w-4 mr-2" /> Shortlist
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "accepted").then(() => refetch())}>
+                                <CheckCircle2 className="h-4 w-4 mr-2" /> Accept
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "rejected").then(() => refetch())} className="text-destructive">
+                                <XCircle className="h-4 w-4 mr-2" /> Reject
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        )}
                       </div>
                     </div>
                   ))}

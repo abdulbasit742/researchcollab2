@@ -39,6 +39,7 @@ import { CategoryFilter } from "@/components/earn/CategoryFilter";
 import { EarningsDashboardCard } from "@/components/earn/EarningsDashboardCard";
 import { SavedProjectsTab } from "@/components/earn/SavedProjectsTab";
 import { RecommendedProjects } from "@/components/earn/RecommendedProjects";
+import { BidStatusTimeline } from "@/components/earn/BidStatusTimeline";
 
 
 export default function EarnPage() {
@@ -436,10 +437,10 @@ export default function EarnPage() {
                                     in {bid.delivery_days} days
                                   </p>
                                 </div>
-                                <Badge variant="secondary">
-                                  Pending
-                                </Badge>
                               </div>
+                            </div>
+                            <div className="mt-3">
+                              <BidStatusTimeline status={bid.status || "pending"} />
                             </div>
                             {bid.message && (
                               <p className="mt-3 text-sm text-muted-foreground line-clamp-2">

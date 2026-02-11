@@ -1,0 +1,1 @@
+ALTER TABLE public.earning_bids ADD COLUMN status text NOT NULL DEFAULT 'pending';
