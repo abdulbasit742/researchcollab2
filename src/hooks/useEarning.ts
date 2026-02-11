@@ -184,17 +184,9 @@ export function useEarningProject(projectId: string | undefined) {
 
 export function useMyBids() {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [bids, setBids] = useState<EarningBid[]>([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (user) {
-      fetchMyBids();
-    } else {
-      setBids([]);
-      setLoading(false);
-    }
-  }, [user]);
 
   const fetchMyBids = async () => {
     if (!user) return;
@@ -232,6 +224,44 @@ export function useMyBids() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchMyBids();
+
+      // Subscribe to real-time bid status changes
+      const channel = supabase
+        .channel('my-bids-status')
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'earning_bids',
+            filter: `bidder_id=eq.${user.id}`,
+          },
+          (payload) => {
+            const newStatus = (payload.new as any)?.status;
+            const oldStatus = (payload.old as any)?.status;
+            if (newStatus && newStatus !== oldStatus) {
+              toast({
+                title: "Bid Status Updated",
+                description: `Your bid has been marked as "${newStatus}".`,
+              });
+              fetchMyBids();
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    } else {
+      setBids([]);
+      setLoading(false);
+    }
+  }, [user]);
 
   return {
     bids,

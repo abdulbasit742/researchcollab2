@@ -372,7 +372,9 @@ export default function EarnProjectDetailPage() {
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <span className="font-medium">{bid.bidder_name || "Anonymous"}</span>
+                          <Link to={`/u/${bid.bidder_id}`} className="font-medium hover:text-primary hover:underline transition-colors">
+                            {bid.bidder_name || "Anonymous"}
+                          </Link>
                           <Badge variant="outline" className="ml-2 capitalize text-xs">
                             {(bid as any).status || "pending"}
                           </Badge>
@@ -396,16 +398,16 @@ export default function EarnProjectDetailPage() {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "viewed").then(() => refetch())}>
+                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "viewed").then((res) => { if (res.success) toast({ title: "Marked Viewed", description: `${bid.bidder_name}'s bid marked as viewed.` }); refetch(); })}>
                                 <Eye className="h-4 w-4 mr-2" /> Mark Viewed
                               </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "shortlisted").then(() => refetch())}>
+                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "shortlisted").then((res) => { if (res.success) toast({ title: "Shortlisted ⭐", description: `${bid.bidder_name} has been shortlisted.` }); refetch(); })}>
                                 <Star className="h-4 w-4 mr-2" /> Shortlist
                               </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "accepted").then(() => refetch())}>
+                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "accepted").then((res) => { if (res.success) toast({ title: "Bid Accepted ✅", description: `You accepted ${bid.bidder_name}'s bid for ${formatPKR(bid.amount)}.` }); refetch(); })}>
                                 <CheckCircle2 className="h-4 w-4 mr-2" /> Accept
                               </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "rejected").then(() => refetch())} className="text-destructive">
+                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "rejected").then((res) => { if (res.success) toast({ title: "Bid Rejected", description: `${bid.bidder_name}'s bid has been rejected.` }); refetch(); })} className="text-destructive">
                                 <XCircle className="h-4 w-4 mr-2" /> Reject
                               </DropdownMenuItem>
                             </DropdownMenuContent>

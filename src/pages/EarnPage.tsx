@@ -9,6 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Search,
   DollarSign,
   Star,
@@ -25,6 +32,7 @@ import {
   BookmarkCheck,
   Zap,
   Loader2,
+  ArrowUpDown,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useEarningProjects, useMyBids, useMyProjects, useSavedProjects, EarningProject } from "@/hooks/useEarning";
@@ -46,11 +54,23 @@ import { ShareProjectButton } from "@/components/earn/ShareProjectButton";
 
 const PAGE_SIZE = 10;
 
+type ProjectSortOption = "urgency" | "newest" | "budget-high" | "budget-low" | "most-bids" | "deadline-soonest";
+type BidFilterStatus = "all" | "pending" | "viewed" | "shortlisted" | "accepted" | "rejected";
+
 function isUrgent(project: EarningProject): boolean {
   if (!project.deadline_days || !project.created_at) return false;
   const deadline = addDays(new Date(project.created_at), project.deadline_days);
   return differenceInDays(deadline, new Date()) <= 3 && differenceInDays(deadline, new Date()) >= 0;
 }
+
+const BID_FILTER_OPTIONS: { value: BidFilterStatus; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "pending", label: "Pending" },
+  { value: "viewed", label: "Viewed" },
+  { value: "shortlisted", label: "Shortlisted" },
+  { value: "accepted", label: "Accepted" },
+  { value: "rejected", label: "Rejected" },
+];
 
 export default function EarnPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -60,6 +80,8 @@ export default function EarnPage() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [projectToEdit, setProjectToEdit] = useState<EarningProject | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [projectSort, setProjectSort] = useState<ProjectSortOption>("urgency");
+  const [bidFilter, setBidFilter] = useState<BidFilterStatus>("all");
   
   // My Projects filter/sort state
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -113,13 +135,33 @@ export default function EarnPage() {
       return matchesSearch && matchesCategory;
     });
 
-    // Sort urgent projects first
     return filtered.sort((a, b) => {
+      // Always float urgent to top first
       const aUrgent = isUrgent(a) ? 1 : 0;
       const bUrgent = isUrgent(b) ? 1 : 0;
-      return bUrgent - aUrgent;
+      if (aUrgent !== bUrgent) return bUrgent - aUrgent;
+
+      switch (projectSort) {
+        case "newest":
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        case "budget-high":
+          return (b.budget_max || b.budget_min || 0) - (a.budget_max || a.budget_min || 0);
+        case "budget-low":
+          return (a.budget_max || a.budget_min || 0) - (b.budget_max || b.budget_min || 0);
+        case "most-bids":
+          return (b.bid_count || 0) - (a.bid_count || 0);
+        case "deadline-soonest":
+          return (a.deadline_days || 999) - (b.deadline_days || 999);
+        default:
+          return 0;
+      }
     });
-  }, [projects, debouncedSearch, selectedCategory]);
+  }, [projects, debouncedSearch, selectedCategory, projectSort]);
+
+  const filteredBids = useMemo(() => {
+    if (bidFilter === "all") return myBids;
+    return myBids.filter(b => b.status === bidFilter);
+  }, [myBids, bidFilter]);
 
   const visibleProjects = filteredProjects.slice(0, visibleCount);
   const hasMore = visibleCount < filteredProjects.length;
@@ -241,8 +283,24 @@ export default function EarnPage() {
           </div>
 
           <TabsContent value="projects" className="space-y-4 md:space-y-6">
-            {/* Refresh button */}
-            <div className="flex justify-end">
+            {/* Sort & Refresh */}
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+                <Select value={projectSort} onValueChange={(v) => setProjectSort(v as ProjectSortOption)}>
+                  <SelectTrigger className="w-[160px] h-9">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="urgency">Urgency First</SelectItem>
+                    <SelectItem value="newest">Newest</SelectItem>
+                    <SelectItem value="budget-high">Budget (High→Low)</SelectItem>
+                    <SelectItem value="budget-low">Budget (Low→High)</SelectItem>
+                    <SelectItem value="most-bids">Most Bids</SelectItem>
+                    <SelectItem value="deadline-soonest">Deadline (Soonest)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <Button variant="ghost" size="sm" onClick={() => refetchProjects()}>
                 <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
                 Refresh
@@ -505,6 +563,31 @@ export default function EarnPage() {
                 {/* Earnings Dashboard */}
                 <EarningsDashboardCard bids={myBids} />
 
+                {/* Bid Status Filter Chips */}
+                {myBids.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {BID_FILTER_OPTIONS.map((opt) => {
+                      const count = opt.value === "all" ? myBids.length : myBids.filter(b => b.status === opt.value).length;
+                      return (
+                        <Button
+                          key={opt.value}
+                          variant={bidFilter === opt.value ? "default" : "outline"}
+                          size="sm"
+                          className="h-8 text-xs"
+                          onClick={() => setBidFilter(opt.value)}
+                        >
+                          {opt.label}
+                          {count > 0 && (
+                            <Badge variant={bidFilter === opt.value ? "secondary" : "outline"} className="ml-1.5 h-5 min-w-[20px] px-1 text-[10px]">
+                              {count}
+                            </Badge>
+                          )}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                )}
+
                 {myBids.length === 0 ? (
                   <Card className="border-dashed">
                     <CardContent className="py-12 px-6 text-center">
@@ -525,9 +608,17 @@ export default function EarnPage() {
                       </Button>
                     </CardContent>
                   </Card>
+                ) : filteredBids.length === 0 ? (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <p className="text-muted-foreground">
+                        No bids match the "{bidFilter}" filter.
+                      </p>
+                    </CardContent>
+                  </Card>
                 ) : (
                   <div className="space-y-4">
-                    {myBids.map((bid, index) => (
+                    {filteredBids.map((bid, index) => (
                       <motion.div
                         key={bid.id}
                         initial={{ opacity: 0, y: 20 }}
