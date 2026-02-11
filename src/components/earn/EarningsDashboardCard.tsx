@@ -12,9 +12,9 @@ export function EarningsDashboardCard({ bids }: EarningsDashboardCardProps) {
   const totalBids = bids.length;
   const totalBidAmount = bids.reduce((sum, b) => sum + (b.amount || 0), 0);
   const avgBid = totalBids > 0 ? Math.round(totalBidAmount / totalBids) : 0;
-  // For now, accepted/completed stats are mocked since we don't have bid status yet
-  const activeBids = totalBids;
-  const successRate = totalBids > 0 ? Math.round((0 / totalBids) * 100) : 0;
+  const activeBids = bids.filter(b => ['pending', 'viewed', 'shortlisted'].includes(b.status)).length;
+  const acceptedBids = bids.filter(b => b.status === 'accepted').length;
+  const successRate = totalBids > 0 ? Math.round((acceptedBids / totalBids) * 100) : 0;
 
   const stats = [
     { label: "Total Bids", value: totalBids.toString(), icon: Briefcase, color: "text-primary" },
