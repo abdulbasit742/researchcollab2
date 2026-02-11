@@ -1018,3 +1018,62 @@ export function useAcceptedBidForProjects(projectIds: string[]) {
 
   return acceptedAmounts;
 }
+
+export function useCreateDealFromBid() {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [creating, setCreating] = useState(false);
+
+  const createDealFromBid = async (
+    projectTitle: string,
+    projectOwnerId: string,
+    bidderId: string,
+    amount: number
+  ): Promise<{ success: boolean; dealId?: string }> => {
+    if (!user) return { success: false };
+
+    setCreating(true);
+    try {
+      // Check if deal already exists for this pair + title
+      const { data: existing } = await supabase
+        .from("deal_rooms")
+        .select("id")
+        .eq("buyer_id", projectOwnerId)
+        .eq("seller_id", bidderId)
+        .eq("title", projectTitle)
+        .maybeSingle();
+
+      if (existing) {
+        return { success: true, dealId: existing.id };
+      }
+
+      const { data, error } = await supabase
+        .from("deal_rooms")
+        .insert({
+          buyer_id: projectOwnerId,
+          seller_id: bidderId,
+          title: projectTitle,
+          agreed_amount: amount,
+          status: "agreed",
+        })
+        .select("id")
+        .single();
+
+      if (error) throw error;
+
+      toast({
+        title: "Deal Room Created",
+        description: "A deal room has been set up for this project.",
+      });
+
+      return { success: true, dealId: data.id };
+    } catch (err: any) {
+      console.error("Error creating deal from bid:", err);
+      return { success: false };
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  return { createDealFromBid, creating };
+}
