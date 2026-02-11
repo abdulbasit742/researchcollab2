@@ -6713,6 +6713,7 @@ export type Database = {
           created_at: string
           delivery_days: number
           id: string
+          idempotency_key: string | null
           message: string | null
           project_id: string
           status: string
@@ -6723,6 +6724,7 @@ export type Database = {
           created_at?: string
           delivery_days: number
           id?: string
+          idempotency_key?: string | null
           message?: string | null
           project_id: string
           status?: string
@@ -6733,6 +6735,7 @@ export type Database = {
           created_at?: string
           delivery_days?: number
           id?: string
+          idempotency_key?: string | null
           message?: string | null
           project_id?: string
           status?: string
@@ -22182,6 +22185,63 @@ export type Database = {
         }
         Relationships: []
       }
+      user_behavior_metrics: {
+        Row: {
+          bid_to_deal_hours: number | null
+          computed_at: string
+          deal_completion_rate: number
+          first_bid_at: string | null
+          first_completion_at: string | null
+          first_deal_at: string | null
+          id: string
+          last_active_at: string | null
+          repeat_project_count: number
+          signup_to_bid_hours: number | null
+          total_abandonments: number
+          total_bids: number
+          total_completions: number
+          total_deals: number
+          trust_growth_velocity: number
+          user_id: string
+        }
+        Insert: {
+          bid_to_deal_hours?: number | null
+          computed_at?: string
+          deal_completion_rate?: number
+          first_bid_at?: string | null
+          first_completion_at?: string | null
+          first_deal_at?: string | null
+          id?: string
+          last_active_at?: string | null
+          repeat_project_count?: number
+          signup_to_bid_hours?: number | null
+          total_abandonments?: number
+          total_bids?: number
+          total_completions?: number
+          total_deals?: number
+          trust_growth_velocity?: number
+          user_id: string
+        }
+        Update: {
+          bid_to_deal_hours?: number | null
+          computed_at?: string
+          deal_completion_rate?: number
+          first_bid_at?: string | null
+          first_completion_at?: string | null
+          first_deal_at?: string | null
+          id?: string
+          last_active_at?: string | null
+          repeat_project_count?: number
+          signup_to_bid_hours?: number | null
+          total_abandonments?: number
+          total_bids?: number
+          total_completions?: number
+          total_deals?: number
+          trust_growth_velocity?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_blocks: {
         Row: {
           blocked_id: string
@@ -23525,6 +23585,20 @@ export type Database = {
       }
     }
     Views: {
+      mv_operational_health: {
+        Row: {
+          abandoned_deals: number | null
+          avg_trust: number | null
+          completed_deals: number | null
+          open_disputes: number | null
+          open_projects: number | null
+          refreshed_at: string | null
+          total_bids: number | null
+          total_deals: number | null
+          trust_volatility: number | null
+        }
+        Relationships: []
+      }
       user_trust_profiles_public: {
         Row: {
           is_verified_researcher: boolean | null

@@ -51,38 +51,53 @@ export function useEarningProjects() {
     setError(null);
 
     try {
-      // Fetch projects
+      // Fetch projects with explicit columns
       const { data: projectsData, error: projectsError } = await supabase
         .from("earning_projects")
-        .select("*")
+        .select("id, owner_id, title, description, budget_min, budget_max, deadline_days, tags, location, status, created_at")
         .eq("status", "open")
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(50);
 
       if (projectsError) throw projectsError;
 
-      // Fetch bid counts for each project
-      const projectsWithCounts = await Promise.all(
-        (projectsData || []).map(async (project) => {
-          const { count } = await supabase
-            .from("earning_bids")
-            .select("*", { count: "exact", head: true })
-            .eq("project_id", project.id);
+      if (!projectsData?.length) {
+        setProjects([]);
+        setLoading(false);
+        return;
+      }
 
-          // Fetch owner profile
-          const { data: ownerProfile } = await supabase
-            .from("profiles")
-            .select("full_name")
-            .eq("id", project.owner_id)
-            .maybeSingle();
+      // Batch fetch bid counts and owner profiles
+      const projectIds = projectsData.map(p => p.id);
+      const ownerIds = [...new Set(projectsData.map(p => p.owner_id))];
 
-          return {
+      const [bidsRes, profilesRes] = await Promise.all([
+        supabase
+          .from("earning_bids")
+          .select("project_id")
+          .in("project_id", projectIds),
+        supabase
+          .from("profiles")
+          .select("id, full_name")
+          .in("id", ownerIds),
+      ]);
+
+      const bidCountMap: Record<string, number> = {};
+      (bidsRes.data || []).forEach(b => {
+        bidCountMap[b.project_id] = (bidCountMap[b.project_id] || 0) + 1;
+      });
+
+      const profileMap: Record<string, string> = {};
+      (profilesRes.data || []).forEach(p => {
+        profileMap[p.id] = p.full_name || "Unknown";
+      });
+
+      const projectsWithCounts = projectsData.map(project => ({
             ...project,
-            bid_count: count || 0,
-            owner_name: ownerProfile?.full_name || "Anonymous",
+            bid_count: bidCountMap[project.id] || 0,
+            owner_name: profileMap[project.owner_id] || "Anonymous",
             owner_avatar: undefined,
-          };
-        })
-      );
+      }));
 
       setProjects(projectsWithCounts as EarningProject[]);
     } catch (err: any) {
@@ -463,28 +478,29 @@ export function useMyProjects() {
     try {
       const { data: projectsData, error } = await supabase
         .from("earning_projects")
-        .select("*")
+        .select("id, owner_id, title, description, budget_min, budget_max, deadline_days, tags, location, status, created_at")
         .eq("owner_id", user.id)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
 
-      // Fetch bid counts for each project
-      const projectsWithCounts = await Promise.all(
-        (projectsData || []).map(async (project) => {
-          const { count } = await supabase
-            .from("earning_bids")
-            .select("*", { count: "exact", head: true })
-            .eq("project_id", project.id);
+      // Batch fetch bid counts
+      const projectIds = (projectsData || []).map(p => p.id);
+      const { data: bidsData } = projectIds.length
+        ? await supabase.from("earning_bids").select("project_id").in("project_id", projectIds)
+        : { data: [] };
 
-          return {
+      const bidCountMap: Record<string, number> = {};
+      (bidsData || []).forEach(b => {
+        bidCountMap[b.project_id] = (bidCountMap[b.project_id] || 0) + 1;
+      });
+
+      const projectsWithCounts = (projectsData || []).map(project => ({
             ...project,
-            bid_count: count || 0,
+            bid_count: bidCountMap[project.id] || 0,
             owner_name: "You",
             owner_avatar: undefined,
-          };
-        })
-      );
+      }));
 
       setProjects(projectsWithCounts as EarningProject[]);
     } catch (err) {

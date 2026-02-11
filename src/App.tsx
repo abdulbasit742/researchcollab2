@@ -102,6 +102,7 @@ import OutcomeFeedPage from "./pages/OutcomeFeedPage";
 import RealityFeedPage from "./pages/RealityFeedPage";
 import AdminStewardshipPage from "./pages/admin/AdminStewardshipPage";
 import AdminOperationsPage from "./pages/admin/AdminOperationsPage";
+import AdminOperationalHealthPage from "./pages/admin/AdminOperationalHealthPage";
 import PressKitPage from "./pages/PressKitPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsOfServicePage from "./pages/TermsOfServicePage";
@@ -290,6 +291,7 @@ const AppContent = () => {
             <Route path="/admin/governance-oversight" element={<AdminGovernanceOversightPage />} />
             <Route path="/constitutional-health" element={<ConstitutionalHealthPage />} />
             <Route path="/admin/constitutional-guardian" element={<AdminConstitutionalGuardianPage />} />
+            <Route path="/admin/operational-health" element={<AdminOperationalHealthPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
