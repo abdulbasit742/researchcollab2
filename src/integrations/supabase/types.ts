@@ -13328,6 +13328,53 @@ export type Database = {
           },
         ]
       }
+      opportunity_insights: {
+        Row: {
+          created_at: string
+          id: string
+          market_heat_map: Json
+          opportunity_score: number
+          projected_income: number
+          recommended_actions: Json
+          skill_gap_json: Json
+          snapshot_version: number
+          trust_growth_potential: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          market_heat_map?: Json
+          opportunity_score?: number
+          projected_income?: number
+          recommended_actions?: Json
+          skill_gap_json?: Json
+          snapshot_version?: number
+          trust_growth_potential?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          market_heat_map?: Json
+          opportunity_score?: number
+          projected_income?: number
+          recommended_actions?: Json
+          skill_gap_json?: Json
+          snapshot_version?: number
+          trust_growth_potential?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_insights_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ops_metrics_snapshots: {
         Row: {
           completed_outcomes: number
