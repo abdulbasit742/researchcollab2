@@ -934,3 +934,87 @@ export function useDeleteAttachment() {
 
   return { deleteAttachment };
 }
+
+const EARN_LAST_SEEN_KEY = "earn_last_seen";
+
+export function useEarnNotificationCount() {
+  const { user } = useAuth();
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!user) {
+      setCount(0);
+      return;
+    }
+
+    const fetchCount = async () => {
+      const lastSeen = localStorage.getItem(EARN_LAST_SEEN_KEY) || "1970-01-01T00:00:00.000Z";
+
+      const { count: unseenCount, error } = await supabase
+        .from("earning_bids")
+        .select("*", { count: "exact", head: true })
+        .eq("bidder_id", user.id)
+        .neq("status", "pending")
+        .gt("updated_at", lastSeen);
+
+      if (!error && unseenCount !== null) {
+        setCount(unseenCount);
+      }
+    };
+
+    fetchCount();
+
+    // Re-check on bid status changes
+    const channel = supabase
+      .channel("earn-notif-count")
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "earning_bids",
+          filter: `bidder_id=eq.${user.id}`,
+        },
+        () => fetchCount()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
+  return count;
+}
+
+export function markEarnSeen() {
+  localStorage.setItem(EARN_LAST_SEEN_KEY, new Date().toISOString());
+}
+
+export function useAcceptedBidForProjects(projectIds: string[]) {
+  const [acceptedAmounts, setAcceptedAmounts] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    if (projectIds.length === 0) return;
+
+    const fetch = async () => {
+      const { data, error } = await supabase
+        .from("earning_bids")
+        .select("project_id, amount")
+        .in("project_id", projectIds)
+        .eq("status", "accepted");
+
+      if (!error && data) {
+        const map: Record<string, number> = {};
+        data.forEach((b: any) => {
+          map[b.project_id] = b.amount;
+        });
+        setAcceptedAmounts(map);
+      }
+    };
+
+    fetch();
+  }, [projectIds.join(",")]);
+
+  return acceptedAmounts;
+}
