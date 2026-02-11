@@ -15628,6 +15628,7 @@ export type Database = {
           skills: string[] | null
           university: string | null
           updated_at: string
+          visibility_score: number | null
         }
         Insert: {
           audio_bio_duration_seconds?: number | null
@@ -15648,6 +15649,7 @@ export type Database = {
           skills?: string[] | null
           university?: string | null
           updated_at?: string
+          visibility_score?: number | null
         }
         Update: {
           audio_bio_duration_seconds?: number | null
@@ -15668,6 +15670,7 @@ export type Database = {
           skills?: string[] | null
           university?: string | null
           updated_at?: string
+          visibility_score?: number | null
         }
         Relationships: []
       }
@@ -21535,6 +21538,33 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_type?: string
+        }
+        Relationships: []
+      }
+      visibility_scores: {
+        Row: {
+          breakdown: Json
+          calculated_at: string
+          created_at: string
+          id: string
+          user_id: string
+          visibility_score: number
+        }
+        Insert: {
+          breakdown?: Json
+          calculated_at?: string
+          created_at?: string
+          id?: string
+          user_id: string
+          visibility_score?: number
+        }
+        Update: {
+          breakdown?: Json
+          calculated_at?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+          visibility_score?: number
         }
         Relationships: []
       }

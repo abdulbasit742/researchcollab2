@@ -21,6 +21,7 @@ import {
   WorkGraphCard,
 } from "@/components/outcome";
 import { ProfileViewsCard } from "@/components/profile";
+import { VisibilityScoreCard } from "@/components/profile/VisibilityScoreCard";
 import { useWorkConnections } from "@/hooks/useOutcomeFeed";
 import {
   User,
@@ -299,6 +300,9 @@ export default function ProfilePage() {
                 }}
                 compact
               />
+
+              {/* Visibility Score */}
+              <VisibilityScoreCard />
 
               {/* Profile Views */}
               <ProfileViewsCard />
