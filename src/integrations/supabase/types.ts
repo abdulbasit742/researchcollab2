@@ -2689,6 +2689,30 @@ export type Database = {
         }
         Relationships: []
       }
+      bias_monitoring_records: {
+        Row: {
+          affected_group: string | null
+          algorithm_name: string
+          bias_score: number
+          detected_at: string
+          id: string
+        }
+        Insert: {
+          affected_group?: string | null
+          algorithm_name: string
+          bias_score?: number
+          detected_at?: string
+          id?: string
+        }
+        Update: {
+          affected_group?: string | null
+          algorithm_name?: string
+          bias_score?: number
+          detected_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author_id: string
@@ -3665,6 +3689,27 @@ export type Database = {
         }
         Relationships: []
       }
+      concentration_metrics: {
+        Row: {
+          concentration_index: number
+          detected_at: string
+          id: string
+          metric_type: string
+        }
+        Insert: {
+          concentration_index?: number
+          detected_at?: string
+          id?: string
+          metric_type: string
+        }
+        Update: {
+          concentration_index?: number
+          detected_at?: string
+          id?: string
+          metric_type?: string
+        }
+        Relationships: []
+      }
       connection_degrees: {
         Row: {
           computed_at: string
@@ -3838,6 +3883,71 @@ export type Database = {
           verified_associations?: number | null
         }
         Relationships: []
+      }
+      constitutional_invariants: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          invariant_name: string
+          monitoring_metric: string
+          threshold_value: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          invariant_name: string
+          monitoring_metric: string
+          threshold_value: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          invariant_name?: string
+          monitoring_metric?: string
+          threshold_value?: number
+        }
+        Relationships: []
+      }
+      constitutional_violations: {
+        Row: {
+          created_at: string
+          detected_value: number
+          flagged_by: string
+          id: string
+          invariant_id: string
+          resolved_at: string | null
+          severity_level: string
+        }
+        Insert: {
+          created_at?: string
+          detected_value: number
+          flagged_by?: string
+          id?: string
+          invariant_id: string
+          resolved_at?: string | null
+          severity_level?: string
+        }
+        Update: {
+          created_at?: string
+          detected_value?: number
+          flagged_by?: string
+          id?: string
+          invariant_id?: string
+          resolved_at?: string | null
+          severity_level?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "constitutional_violations_invariant_id_fkey"
+            columns: ["invariant_id"]
+            isOneToOne: false
+            referencedRelation: "constitutional_invariants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       contact_submissions: {
         Row: {
@@ -10074,6 +10184,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      guardian_audit_logs: {
+        Row: {
+          anomaly_score: number
+          created_at: string
+          explanation: Json | null
+          id: string
+          system_checked: string
+        }
+        Insert: {
+          anomaly_score?: number
+          created_at?: string
+          explanation?: Json | null
+          id?: string
+          system_checked: string
+        }
+        Update: {
+          anomaly_score?: number
+          created_at?: string
+          explanation?: Json | null
+          id?: string
+          system_checked?: string
+        }
+        Relationships: []
       }
       idea_evolution: {
         Row: {

@@ -142,6 +142,8 @@ import MacroRiskPage from "./pages/MacroRiskPage";
 import AdminSystemicRiskPage from "./pages/admin/AdminSystemicRiskPage";
 import GovernancePage from "./pages/GovernancePage";
 import AdminGovernanceOversightPage from "./pages/admin/AdminGovernanceOversightPage";
+import ConstitutionalHealthPage from "./pages/ConstitutionalHealthPage";
+import AdminConstitutionalGuardianPage from "./pages/admin/AdminConstitutionalGuardianPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -286,6 +288,8 @@ const AppContent = () => {
             <Route path="/admin/systemic-risk" element={<AdminSystemicRiskPage />} />
             <Route path="/governance" element={<GovernancePage />} />
             <Route path="/admin/governance-oversight" element={<AdminGovernanceOversightPage />} />
+            <Route path="/constitutional-health" element={<ConstitutionalHealthPage />} />
+            <Route path="/admin/constitutional-guardian" element={<AdminConstitutionalGuardianPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
