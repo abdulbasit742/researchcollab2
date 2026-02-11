@@ -10503,6 +10503,135 @@ export type Database = {
         }
         Relationships: []
       }
+      institutional_performance_metrics: {
+        Row: {
+          calculated_at: string
+          collaboration_score: number
+          dispute_ratio: number
+          economic_velocity: number
+          id: string
+          institution_id: string
+          knowledge_output_score: number
+          reliability_score: number
+        }
+        Insert: {
+          calculated_at?: string
+          collaboration_score?: number
+          dispute_ratio?: number
+          economic_velocity?: number
+          id?: string
+          institution_id: string
+          knowledge_output_score?: number
+          reliability_score?: number
+        }
+        Update: {
+          calculated_at?: string
+          collaboration_score?: number
+          dispute_ratio?: number
+          economic_velocity?: number
+          id?: string
+          institution_id?: string
+          knowledge_output_score?: number
+          reliability_score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institutional_performance_metrics_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institutional_skill_gaps: {
+        Row: {
+          created_at: string
+          demand_index: number
+          gap_score: number
+          id: string
+          institution_id: string
+          skill_name: string
+          supply_index: number
+        }
+        Insert: {
+          created_at?: string
+          demand_index?: number
+          gap_score?: number
+          id?: string
+          institution_id: string
+          skill_name: string
+          supply_index?: number
+        }
+        Update: {
+          created_at?: string
+          demand_index?: number
+          gap_score?: number
+          id?: string
+          institution_id?: string
+          skill_name?: string
+          supply_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institutional_skill_gaps_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institutional_talent_snapshots: {
+        Row: {
+          avg_deal_health: number
+          avg_trust_score: number
+          avg_visibility_score: number
+          calculated_at: string
+          id: string
+          income_generated_last_90_days: number
+          institution_id: string
+          skill_distribution: Json
+          total_active_deals: number
+          total_completed_deals: number
+          total_members: number
+        }
+        Insert: {
+          avg_deal_health?: number
+          avg_trust_score?: number
+          avg_visibility_score?: number
+          calculated_at?: string
+          id?: string
+          income_generated_last_90_days?: number
+          institution_id: string
+          skill_distribution?: Json
+          total_active_deals?: number
+          total_completed_deals?: number
+          total_members?: number
+        }
+        Update: {
+          avg_deal_health?: number
+          avg_trust_score?: number
+          avg_visibility_score?: number
+          calculated_at?: string
+          id?: string
+          income_generated_last_90_days?: number
+          institution_id?: string
+          skill_distribution?: Json
+          total_active_deals?: number
+          total_completed_deals?: number
+          total_members?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institutional_talent_snapshots_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       integration_mappings: {
         Row: {
           created_at: string
@@ -19923,6 +20052,82 @@ export type Database = {
         }
         Relationships: []
       }
+      talent_allocation_logs: {
+        Row: {
+          allocated_user_id: string | null
+          allocation_reason: string | null
+          created_at: string
+          id: string
+          institution_id: string
+          project_id: string | null
+          success_outcome: boolean | null
+        }
+        Insert: {
+          allocated_user_id?: string | null
+          allocation_reason?: string | null
+          created_at?: string
+          id?: string
+          institution_id: string
+          project_id?: string | null
+          success_outcome?: boolean | null
+        }
+        Update: {
+          allocated_user_id?: string | null
+          allocation_reason?: string | null
+          created_at?: string
+          id?: string
+          institution_id?: string
+          project_id?: string | null
+          success_outcome?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "talent_allocation_logs_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      talent_forecasts: {
+        Row: {
+          created_at: string
+          id: string
+          institution_id: string
+          projected_growth_90_days: number
+          projected_income_90_days: number
+          projected_trust_growth: number
+          risk_alert_level: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution_id: string
+          projected_growth_90_days?: number
+          projected_income_90_days?: number
+          projected_trust_growth?: number
+          risk_alert_level?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution_id?: string
+          projected_growth_90_days?: number
+          projected_income_90_days?: number
+          projected_trust_growth?: number
+          risk_alert_level?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "talent_forecasts_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       teaching_research_outputs: {
         Row: {
           course_id: string
@@ -22542,6 +22747,10 @@ export type Database = {
       }
       is_following: {
         Args: { follower: string; following: string }
+        Returns: boolean
+      }
+      is_institution_admin: {
+        Args: { _institution_id: string; _user_id: string }
         Returns: boolean
       }
       is_shadow_banned: { Args: { check_user_id: string }; Returns: boolean }
