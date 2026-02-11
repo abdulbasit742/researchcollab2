@@ -1,46 +1,100 @@
 
 
-# Console Warning Fixes and Legacy Page Cleanup
+## Global Talent Risk Index (GTRI) - Implementation Plan
 
-## Overview
-Two remaining ref warnings fire on every page load, and two legacy pages still use hardcoded dummy data instead of the real Earn system. This round fixes those warnings and redirects the legacy pages to their real-data equivalents.
-
-## Features
-
-### 1. Fix Remaining Ref Warnings
-Two console warnings appear on every page:
-- `FloatingSupportChat` -- rendered inside `MainLayout`, the `TooltipTrigger asChild` passes a ref to the component's child `div`, but the warning points to the Tooltip wrapping. The fix is to ensure the trigger element properly receives the ref.
-- `GlobalAIChatButton` -- rendered in `MainLayout`, but it's a plain function component that doesn't accept a ref. Wrapping with `forwardRef` resolves this.
-
-### 2. Redirect Legacy Dummy-Data Pages
-Two pages still use `dummyOffers` from `src/data/offers.ts`:
-- **`OfferDetailPage` (`/offers/:id`)** -- Uses dummy data. Since individual project details are now handled by `/earn/projects/:id`, redirect `/offers/:id` to `/earn/projects/:id`.
-- **`JobsPage` (`/earn/jobs`)** -- Uses dummy data. The Offers/Opportunities page already shows real data. Redirect `/earn/jobs` to `/offers`.
-
-This eliminates all references to dummy data from active routes.
+### Overview
+Build a macro-level risk monitoring system that continuously calculates ecosystem stability indicators across skills, institutions, capital allocation, liquidity, and trust. This is the defensive counterpart to the growth-prediction systems already built.
 
 ---
 
-## Technical Details
+### Phase 1: Database Schema (Migration)
 
-### Files Modified
+Create 3 new tables with full RLS:
 
-| File | Changes |
-|------|---------|
-| `src/components/support/FloatingSupportChat.tsx` | Wrap with `forwardRef`, forward ref to root `div` inside `TooltipTrigger` |
-| `src/components/ai/GlobalAIChatButton.tsx` | Wrap with `forwardRef`, forward ref to the Fragment's first rendered element (the button) |
-| `src/App.tsx` | Replace `OfferDetailPage` route with a redirect to `/earn/projects/:id`. Replace `JobsPage` route with a redirect to `/offers`. Remove the imports for both pages. |
+**`risk_metrics`** - Core risk scores per entity
+- `id` (uuid, PK), `entity_type` (text: skill/institution/region/platform), `entity_id` (text), `trust_volatility` (numeric), `dispute_spike_rate` (numeric), `liquidity_distortion` (numeric), `capital_concentration_index` (numeric), `pricing_anomaly_score` (numeric), `centralization_risk` (numeric), `composite_risk_score` (numeric), `risk_level` (text: stable/elevated/high/critical), `calculated_at` (timestamptz)
+- Indexes on `entity_type`, `entity_id`, and `(entity_type, entity_id)`
+- RLS: Platform admins can read all; authenticated users can read skill/region/platform-level (public macro data); institution-level restricted to institution admins
 
-### No Database Changes
+**`systemic_alerts`** - Triggered warnings when thresholds crossed
+- `id` (uuid, PK), `entity_type` (text), `entity_id` (text), `alert_type` (text), `severity` (text: info/warning/critical), `description` (text), `triggered_at` (timestamptz), `resolved_at` (timestamptz nullable)
+- RLS: Admin-only read/write
 
-### Key Implementation Details
+**`risk_trends`** - Historical risk score snapshots
+- `id` (uuid, PK), `entity_type` (text), `entity_id` (text), `risk_score` (numeric), `recorded_at` (timestamptz)
+- Indexes on `(entity_type, entity_id, recorded_at)`
+- RLS: Same as risk_metrics (public for skill/region/platform; restricted for institution)
 
-- **FloatingSupportChat**: The `TooltipTrigger asChild` expects its child to accept a ref. Wrap the component with `forwardRef` and forward the ref to the outer `div` inside the trigger.
-- **GlobalAIChatButton**: Wrap with `forwardRef`. Forward ref to the floating button element.
-- **Route Redirects**: Replace `<Route path="/offers/:id" element={<OfferDetailPage />} />` with `<Route path="/offers/:id" element={<Navigate to="/earn/projects/:id" replace />} />` (using a small wrapper to extract the param). Replace `<Route path="/earn/jobs" element={<JobsPage />} />` with a `Navigate` to `/offers`.
+---
 
-### Build Order
-1. Fix `FloatingSupportChat.tsx` with `forwardRef`
-2. Fix `GlobalAIChatButton.tsx` with `forwardRef`
-3. Update `App.tsx` routes to redirect legacy pages
+### Phase 2: Edge Function - `compute-risk-index`
+
+New edge function that:
+1. Accepts optional `entity_type` and `entity_id` filters (defaults to computing all)
+2. Pulls trust score volatility from `user_trust_profiles` and `trust_score_history`
+3. Pulls dispute frequency from `disputes` table
+4. Pulls liquidity data from `skill_market_metrics`
+5. Pulls capital data from `wallet_transactions` / `wallets`
+6. Pulls pricing variance from `earning_bids`
+7. Computes weighted composite score:
+   - trust_volatility (25%) + dispute_spike_rate (20%) + liquidity_distortion (15%) + capital_concentration_index (15%) + pricing_anomaly_score (15%) + centralization_risk (10%)
+8. Assigns risk_level thresholds (0-25 Stable, 25-50 Elevated, 50-75 High, 75+ Critical)
+9. Generates systemic_alerts when crossing from one level to another
+10. Stores results in `risk_metrics` and appends to `risk_trends`
+11. Applies smoothing (EMA) to avoid false spikes
+
+Config: `verify_jwt = false` in `supabase/config.toml` with in-code auth check.
+
+---
+
+### Phase 3: React Hook - `useRiskIndex`
+
+`useRiskIndex(entityType?, entityId?)`
+- Fetches latest risk_metrics for entity
+- Fetches risk_trends for historical chart
+- Fetches active systemic_alerts
+- Provides `computeRisk()` trigger function
+- Loading/error states via TanStack Query
+
+---
+
+### Phase 4: UI Pages
+
+**Public page: `/macro-risk`**
+- Global Ecosystem Risk Overview panel (composite score gauge, trend line)
+- Skill Risk Explorer (table of skills sorted by risk, color-coded severity)
+- Capital Risk Heatmap (bar chart of concentration)
+- Active Alerts list with severity badges
+- Uses Recharts: RadialBarChart for composite score, LineChart for trends, BarChart for breakdown
+
+**Admin page: `/admin/systemic-risk`**
+- Full alert management (view/resolve)
+- Institution comparative risk table
+- Skill bubble detection dashboard
+- Dispute hotspot analysis
+- National-level risk score
+
+---
+
+### Phase 5: Integration Points
+
+- Add route imports and `<Route>` entries in `App.tsx`
+- Add sidebar links in `AdminSidebar.tsx` (systemic-risk under admin nav)
+- Deploy edge function via config.toml entry
+
+---
+
+### Technical Details
+
+**Files to create:**
+1. `supabase/migrations/[timestamp]_gtri_schema.sql` - 3 tables + RLS + indexes
+2. `supabase/functions/compute-risk-index/index.ts` - Edge function
+3. `src/hooks/useRiskIndex.ts` - React hook
+4. `src/pages/MacroRiskPage.tsx` - Public risk dashboard
+5. `src/pages/admin/AdminSystemicRiskPage.tsx` - Admin risk panel
+
+**Files to edit:**
+1. `supabase/config.toml` - Add `[functions.compute-risk-index]`
+2. `src/App.tsx` - Import pages + add routes
+3. `src/components/admin/AdminSidebar.tsx` - Add "Systemic Risk" nav item
 
