@@ -6448,6 +6448,78 @@ export type Database = {
         }
         Relationships: []
       }
+      economic_safety_profiles: {
+        Row: {
+          cooldowns: Json
+          flags: Json
+          id: string
+          manual_review_required: boolean
+          risk_level: string
+          risk_score: number
+          throttles: Json
+          updated_at: string
+          user_id: string
+          verification_level: string
+        }
+        Insert: {
+          cooldowns?: Json
+          flags?: Json
+          id?: string
+          manual_review_required?: boolean
+          risk_level?: string
+          risk_score?: number
+          throttles?: Json
+          updated_at?: string
+          user_id: string
+          verification_level?: string
+        }
+        Update: {
+          cooldowns?: Json
+          flags?: Json
+          id?: string
+          manual_review_required?: boolean
+          risk_level?: string
+          risk_score?: number
+          throttles?: Json
+          updated_at?: string
+          user_id?: string
+          verification_level?: string
+        }
+        Relationships: []
+      }
+      economic_trajectories: {
+        Row: {
+          computed_at: string
+          id: string
+          lifetime_metrics: Json
+          period_metrics: Json
+          projections: Json
+          recovery_history: Json
+          stability_score: number
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string
+          id?: string
+          lifetime_metrics?: Json
+          period_metrics?: Json
+          projections?: Json
+          recovery_history?: Json
+          stability_score?: number
+          user_id: string
+        }
+        Update: {
+          computed_at?: string
+          id?: string
+          lifetime_metrics?: Json
+          period_metrics?: Json
+          projections?: Json
+          recovery_history?: Json
+          stability_score?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       economic_velocity_tracking: {
         Row: {
           avg_transaction_size: number | null
@@ -9906,6 +9978,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      incentive_alignment_state: {
+        Row: {
+          active_penalties: Json
+          active_rewards: Json
+          id: string
+          overall_alignment: number
+          recommendations: Json
+          stakeholder_scores: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_penalties?: Json
+          active_rewards?: Json
+          id?: string
+          overall_alignment?: number
+          recommendations?: Json
+          stakeholder_scores?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_penalties?: Json
+          active_rewards?: Json
+          id?: string
+          overall_alignment?: number
+          recommendations?: Json
+          stakeholder_scores?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       incident_response_actions: {
         Row: {
@@ -21369,6 +21474,84 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_level?: string
+        }
+        Relationships: []
+      }
+      value_unit_balances: {
+        Row: {
+          category_breakdown: Json
+          current_balance: number
+          decayed_amount: number
+          id: string
+          last_contribution_at: string | null
+          next_tier_threshold: number
+          percent_to_next_tier: number
+          tier: string
+          total_accumulated: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category_breakdown?: Json
+          current_balance?: number
+          decayed_amount?: number
+          id?: string
+          last_contribution_at?: string | null
+          next_tier_threshold?: number
+          percent_to_next_tier?: number
+          tier?: string
+          total_accumulated?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category_breakdown?: Json
+          current_balance?: number
+          decayed_amount?: number
+          id?: string
+          last_contribution_at?: string | null
+          next_tier_threshold?: number
+          percent_to_next_tier?: number
+          tier?: string
+          total_accumulated?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      value_unit_sources: {
+        Row: {
+          amount: number
+          category: string
+          earned_at: string
+          entity_id: string
+          entity_type: string
+          expires_at: string | null
+          id: string
+          multiplier: number
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          category: string
+          earned_at?: string
+          entity_id: string
+          entity_type: string
+          expires_at?: string | null
+          id?: string
+          multiplier?: number
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category?: string
+          earned_at?: string
+          entity_id?: string
+          entity_type?: string
+          expires_at?: string | null
+          id?: string
+          multiplier?: number
+          user_id?: string
         }
         Relationships: []
       }
