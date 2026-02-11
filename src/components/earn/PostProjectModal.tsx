@@ -23,8 +23,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { X, Plus, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
-import { useCreateProject } from "@/hooks/useEarning";
+import { X, Plus, Loader2, CheckCircle2, AlertCircle, Paperclip } from "lucide-react";
+import { useCreateProject, useUploadAttachment } from "@/hooks/useEarning";
 import { cn } from "@/lib/utils";
 
 const projectSchema = z.object({
@@ -126,7 +126,9 @@ export function PostProjectModal({ open, onOpenChange, onSuccess }: PostProjectM
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { createProject, creating } = useCreateProject();
+  const { uploadAttachment } = useUploadAttachment();
 
   const form = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
@@ -166,6 +168,7 @@ export function PostProjectModal({ open, onOpenChange, onSuccess }: PostProjectM
     setShowSuccess(false);
     form.reset();
     setTags([]);
+    setSelectedFiles([]);
     onOpenChange(false);
   };
 
@@ -180,10 +183,13 @@ export function PostProjectModal({ open, onOpenChange, onSuccess }: PostProjectM
       location: data.location,
     });
 
-    if (result.success) {
+    if (result.success && result.project) {
+      // Upload files if any
+      for (const file of selectedFiles) {
+        await uploadAttachment(result.project.id, file);
+      }
       setShowSuccess(true);
       onSuccess?.();
-      // Auto-close after delay
       setTimeout(() => {
         handleClose();
       }, 3000);
@@ -475,6 +481,23 @@ export function PostProjectModal({ open, onOpenChange, onSuccess }: PostProjectM
                         </motion.div>
                       )}
                     </AnimatePresence>
+                  </div>
+
+                  {/* File Attachments */}
+                  <div className="space-y-2">
+                    <FormLabel className="flex items-center gap-1.5">
+                      <Paperclip className="h-3.5 w-3.5" />
+                      Attachments (optional)
+                    </FormLabel>
+                    <Input
+                      type="file"
+                      multiple
+                      onChange={(e) => setSelectedFiles(Array.from(e.target.files || []))}
+                      className="text-xs"
+                    />
+                    {selectedFiles.length > 0 && (
+                      <p className="text-xs text-muted-foreground">{selectedFiles.length} file(s) selected</p>
+                    )}
                   </div>
 
                   <div className="flex gap-3 pt-4">

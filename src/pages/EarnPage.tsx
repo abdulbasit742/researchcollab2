@@ -35,7 +35,7 @@ import {
   ArrowUpDown,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useEarningProjects, useMyBids, useMyProjects, useSavedProjects, EarningProject } from "@/hooks/useEarning";
+import { useEarningProjects, useMyBids, useMyProjects, useSavedProjects, useWithdrawBid, useUpdateMyBid, EarningProject } from "@/hooks/useEarning";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatPKRRange, formatPKR } from "@/lib/currency";
 import { ProjectListSkeleton } from "@/components/skeletons/ProjectListSkeleton";
@@ -51,6 +51,19 @@ import { SavedProjectsTab } from "@/components/earn/SavedProjectsTab";
 import { RecommendedProjects } from "@/components/earn/RecommendedProjects";
 import { BidStatusTimeline } from "@/components/earn/BidStatusTimeline";
 import { ShareProjectButton } from "@/components/earn/ShareProjectButton";
+import { AdvancedFilters, AdvancedFilterState, DEFAULT_FILTERS } from "@/components/earn/AdvancedFilters";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Pencil, Trash2 } from "lucide-react";
 
 const PAGE_SIZE = 10;
 
@@ -82,6 +95,12 @@ export default function EarnPage() {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [projectSort, setProjectSort] = useState<ProjectSortOption>("urgency");
   const [bidFilter, setBidFilter] = useState<BidFilterStatus>("all");
+  const [advancedFilters, setAdvancedFilters] = useState<AdvancedFilterState>(DEFAULT_FILTERS);
+  const [withdrawConfirmId, setWithdrawConfirmId] = useState<string | null>(null);
+  const [editingBidId, setEditingBidId] = useState<string | null>(null);
+  const [editBidAmount, setEditBidAmount] = useState("");
+  const [editBidDays, setEditBidDays] = useState("");
+  const [editBidMessage, setEditBidMessage] = useState("");
   
   // My Projects filter/sort state
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -96,6 +115,8 @@ export default function EarnPage() {
   const { bids: myBids, loading: bidsLoading, refetch: refetchBids } = useMyBids();
   const { projects: myProjects, loading: myProjectsLoading, refetch: refetchMyProjects } = useMyProjects();
   const { savedIds, toggleSave, isSaved } = useSavedProjects();
+  const { withdrawBid, withdrawing } = useWithdrawBid();
+  const { updateMyBid, updating: updatingMyBid } = useUpdateMyBid();
 
   // Debounced search
   useEffect(() => {
@@ -132,7 +153,18 @@ export default function EarnPage() {
       const matchesCategory =
         selectedCategory === "All" ||
         (p.tags || []).some((t) => t.toLowerCase().includes(selectedCategory.toLowerCase()));
-      return matchesSearch && matchesCategory;
+      
+      // Advanced filters
+      const minBudget = advancedFilters.budgetMin ? parseFloat(advancedFilters.budgetMin) : null;
+      const maxBudget = advancedFilters.budgetMax ? parseFloat(advancedFilters.budgetMax) : null;
+      const maxDeadline = advancedFilters.maxDeadlineDays ? parseInt(advancedFilters.maxDeadlineDays) : null;
+
+      const matchesBudgetMin = minBudget === null || (p.budget_min !== null && p.budget_min >= minBudget);
+      const matchesBudgetMax = maxBudget === null || (p.budget_max !== null && p.budget_max <= maxBudget);
+      const matchesDeadline = maxDeadline === null || (p.deadline_days !== null && p.deadline_days <= maxDeadline);
+      const matchesZeroBids = !advancedFilters.zeroBidsOnly || (p.bid_count || 0) === 0;
+
+      return matchesSearch && matchesCategory && matchesBudgetMin && matchesBudgetMax && matchesDeadline && matchesZeroBids;
     });
 
     return filtered.sort((a, b) => {
@@ -156,7 +188,7 @@ export default function EarnPage() {
           return 0;
       }
     });
-  }, [projects, debouncedSearch, selectedCategory, projectSort]);
+  }, [projects, debouncedSearch, selectedCategory, projectSort, advancedFilters]);
 
   const filteredBids = useMemo(() => {
     if (bidFilter === "all") return myBids;
@@ -306,6 +338,9 @@ export default function EarnPage() {
                 Refresh
               </Button>
             </div>
+
+            {/* Advanced Filters */}
+            <AdvancedFilters filters={advancedFilters} onChange={setAdvancedFilters} />
 
             {/* Recommended Projects for logged-in users */}
             {user && !projectsLoading && projects.length > 0 && (
@@ -646,15 +681,106 @@ export default function EarnPage() {
                                     in {bid.delivery_days} days
                                   </p>
                                 </div>
+                                {/* Edit & Withdraw buttons */}
+                                {(bid.status === "pending" || bid.status === "viewed") && (
+                                  <div className="flex gap-1">
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className="h-8 w-8"
+                                      onClick={() => {
+                                        if (editingBidId === bid.id) {
+                                          setEditingBidId(null);
+                                        } else {
+                                          setEditingBidId(bid.id);
+                                          setEditBidAmount(String(bid.amount));
+                                          setEditBidDays(String(bid.delivery_days));
+                                          setEditBidMessage(bid.message || "");
+                                        }
+                                      }}
+                                    >
+                                      <Pencil className="h-3.5 w-3.5" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className="h-8 w-8 text-destructive hover:text-destructive"
+                                      onClick={() => setWithdrawConfirmId(bid.id)}
+                                    >
+                                      <Trash2 className="h-3.5 w-3.5" />
+                                    </Button>
+                                  </div>
+                                )}
                               </div>
                             </div>
                             <div className="mt-3">
                               <BidStatusTimeline status={bid.status || "pending"} />
                             </div>
-                            {bid.message && (
+                            {bid.message && editingBidId !== bid.id && (
                               <p className="mt-3 text-sm text-muted-foreground line-clamp-2">
                                 {bid.message}
                               </p>
+                            )}
+                            {/* Inline Edit Form */}
+                            {editingBidId === bid.id && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="mt-4 p-3 rounded-lg border bg-muted/30 space-y-3"
+                              >
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div className="space-y-1">
+                                    <label className="text-xs font-medium text-muted-foreground">Amount (PKR)</label>
+                                    <Input
+                                      type="number"
+                                      value={editBidAmount}
+                                      onChange={(e) => setEditBidAmount(e.target.value)}
+                                      className="h-8 text-sm"
+                                    />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <label className="text-xs font-medium text-muted-foreground">Delivery (days)</label>
+                                    <Input
+                                      type="number"
+                                      value={editBidDays}
+                                      onChange={(e) => setEditBidDays(e.target.value)}
+                                      className="h-8 text-sm"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="space-y-1">
+                                  <label className="text-xs font-medium text-muted-foreground">Message</label>
+                                  <Textarea
+                                    value={editBidMessage}
+                                    onChange={(e) => setEditBidMessage(e.target.value)}
+                                    rows={2}
+                                    className="text-sm"
+                                  />
+                                </div>
+                                <div className="flex gap-2">
+                                  <Button
+                                    size="sm"
+                                    disabled={updatingMyBid}
+                                    onClick={async () => {
+                                      const result = await updateMyBid(bid.id, {
+                                        amount: parseFloat(editBidAmount),
+                                        delivery_days: parseInt(editBidDays),
+                                        message: editBidMessage,
+                                      });
+                                      if (result.success) {
+                                        setEditingBidId(null);
+                                        refetchBids();
+                                      }
+                                    }}
+                                  >
+                                    {updatingMyBid ? "Saving..." : "Save Changes"}
+                                  </Button>
+                                  <Button variant="ghost" size="sm" onClick={() => setEditingBidId(null)}>
+                                    Cancel
+                                  </Button>
+                                </div>
+                              </motion.div>
                             )}
                           </CardContent>
                         </Card>
@@ -797,6 +923,36 @@ export default function EarnPage() {
         project={projectToEdit}
         onSuccess={refetchMyProjects}
       />
+
+      {/* Withdraw Bid Confirmation */}
+      <AlertDialog open={!!withdrawConfirmId} onOpenChange={(open) => !open && setWithdrawConfirmId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Withdraw Bid?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently remove your bid from this project. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={withdrawing}
+              onClick={async () => {
+                if (withdrawConfirmId) {
+                  const result = await withdrawBid(withdrawConfirmId);
+                  if (result.success) {
+                    setWithdrawConfirmId(null);
+                    refetchBids();
+                  }
+                }
+              }}
+            >
+              {withdrawing ? "Withdrawing..." : "Withdraw Bid"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </MainLayout>
   );
 }
