@@ -1,29 +1,23 @@
 
 
-# Earn Pages -- Final Completeness Round
+# Earn Pages -- Navigation and Discoverability Round
 
 ## Overview
-The Earn pages have nearly every feature built. This round closes remaining gaps and adds engagement/trust features that tie the Earn experience into the broader platform.
+The Earn pages have all major features built and polished. This round focuses on connecting the Earn section to the rest of the platform through navigation, notifications, and a completed projects / earnings history view -- the last items from previous plans that remain unwired.
 
 ## Features
 
-### 1. File Upload in EditProjectModal
-The PostProjectModal supports file attachments, but EditProjectModal does not yet. Add the same file upload field plus a list of existing attachments with delete buttons so project owners can manage files when editing.
+### 1. Add "Earn" to Desktop Navbar
+The Earn page is accessible via the mobile bottom nav but missing from the desktop navbar's `navItems` array. Add it so desktop users can reach it directly.
 
-### 2. Bid Notifications via Badge on Navbar
-Add a notification indicator on the "Earn" nav link when a user has bids with updated statuses they haven't seen. Uses the realtime subscription already in place -- just surface the count in the navigation.
+### 2. Bid Notification Badge on Earn Nav Link
+When a bidder has bids whose status changed (e.g., accepted, shortlisted, rejected) since they last viewed the My Bids tab, show a notification dot/count on the "Earn" link in both desktop and mobile nav. Uses a simple `last_seen_bid_status_at` timestamp stored in localStorage, compared against bid `created_at` timestamps of status-bearing bids.
 
-### 3. Project Status Transitions (Close / Reopen)
-Allow project owners to manually close a project (mark as "closed") or reopen it from the detail page. Closed projects stop accepting new bids and show a "Closed" badge.
+### 3. Completed / Earnings History Section
+Add a "Completed" sub-tab or section inside the My Projects tab that filters for `status === "closed"` projects. For each closed project, display the accepted bid amount as the "Earned" figure. This creates a visible earnings ledger for project owners.
 
-### 4. Bidder Trust Score Display
-Show the bidder's trust score next to their name on bid cards (both in the detail page and comparison table). Helps project owners make trust-informed decisions.
-
-### 5. Earnings History / Completed Projects Log
-Add a new "Completed" sub-section in the My Projects tab that shows projects marked as closed/completed with final accepted bid amount, creating a visible earning history.
-
-### 6. EditProjectModal Attachment Management
-Show existing attachments in the edit modal with delete capability, plus the ability to add new files.
+### 4. Accepted Bid Amount on MyProjectCard
+When a project is closed and has an accepted bid, show the accepted bid amount prominently on the `MyProjectCard` as a green "Earned: PKR X" badge.
 
 ---
 
@@ -33,26 +27,27 @@ Show existing attachments in the edit modal with delete capability, plus the abi
 
 | File | Changes |
 |------|---------|
-| `EditProjectModal.tsx` | Add file upload input, show existing attachments with delete buttons, integrate `useProjectAttachments`, `useUploadAttachment`, `useDeleteAttachment` hooks |
-| `EarnProjectDetailPage.tsx` | Add Close/Reopen project button for owners, show bidder trust scores on bid cards |
-| `BidComparisonTable.tsx` | Add trust score column |
-| `useEarning.ts` | Add `useCloseProject` hook (update status to "closed"/"open"), add trust score join to bid queries |
-| `EarnPage.tsx` | Add "Completed" filter in My Projects tab showing closed projects with accepted bid amounts |
-| `MyProjectCard.tsx` | Show accepted bid amount on completed project cards |
+| `src/components/layout/Navbar.tsx` | Add `{ label: "Earn", href: "/earn", icon: DollarSign }` to `navItems` array |
+| `src/components/layout/MobileBottomNav.tsx` | Add bid notification badge count to Earn nav item |
+| `src/hooks/useEarning.ts` | Add `useEarnNotificationCount` hook: fetches bids with status != "pending" whose updated_at > localStorage `earn_last_seen`, returns count. Add `markEarnSeen` function. Also add `useAcceptedBidForProject(projectId)` hook. |
+| `src/pages/EarnPage.tsx` | Call `markEarnSeen()` when My Bids tab is active. Add "Completed" section in My Projects tab below active projects list, filtering closed projects and showing accepted bid amounts. |
+| `src/components/earn/MyProjectCard.tsx` | Accept optional `acceptedBidAmount` prop. When project status is "closed" and amount exists, show green "Earned" badge. |
 
-### Database Changes
-None -- uses existing `status` column on `earning_projects` and existing trust profile data.
+### No Database Changes
+All data is already available via existing tables. The notification count uses localStorage for "last seen" tracking to avoid adding a new column.
 
 ### Key Implementation Details
 
-- **EditProjectModal attachments**: Import `useProjectAttachments`, `useUploadAttachment`, `useDeleteAttachment`. Show existing files as a list with X delete buttons. Add file input below for new uploads. On submit, upload new files after project update.
-- **Close/Reopen**: New `useCloseProject` hook calls `supabase.from('earning_projects').update({ status: newStatus }).eq('id', projectId).eq('owner_id', user.id)`. Button on detail page toggles between "Close Project" and "Reopen Project".
-- **Trust Score on Bids**: Join `trust_profiles.trust_score` when fetching bids via the `bidder_id`. Display as a small shield icon with score next to bidder name.
-- **Completed Projects**: Filter `myProjects` by `status === "closed"` and show the accepted bid's amount as "Earned" on each card.
+- **Desktop Navbar**: Simply add `{ label: "Earn", href: "/earn", icon: DollarSign }` to the `navItems` array on line 26 of `Navbar.tsx`. Import `DollarSign` from lucide-react (already imported in EarnPage).
+- **Notification Count**: New `useEarnNotificationCount` hook queries `earning_bids` for the current user where `status` is not `pending` and `created_at` is more recent than `localStorage.getItem("earn_last_seen")`. Returns the count. `markEarnSeen` sets the timestamp to `new Date().toISOString()`.
+- **Navbar Badge**: In `Navbar.tsx`, create an `EarnNavItem` component (similar to `MessagesNavItem`) that uses `useEarnNotificationCount` and shows a badge. In `MobileBottomNav.tsx`, pass the count as the `badge` property on the Earn item.
+- **Completed Projects**: In `EarnPage.tsx` My Projects tab, after the active projects list, add a "Completed Projects" section header and render `myProjects.filter(p => p.status === "closed")` with their accepted bid amounts. Query accepted bids in batch inside the My Projects tab render.
+- **MyProjectCard Earned Badge**: When `acceptedBidAmount` is provided and status is "closed", render a `<Badge variant="success">Earned: PKR {amount}</Badge>` in the card header next to the status badge.
 
 ### Build Order
-1. Add `useCloseProject` hook to `useEarning.ts`, add trust score to bid queries
-2. Update `EditProjectModal.tsx` with attachment management
-3. Update `EarnProjectDetailPage.tsx` with close/reopen and trust scores
-4. Update `BidComparisonTable.tsx` with trust score column
-5. Update `EarnPage.tsx` and `MyProjectCard.tsx` with completed projects view
+1. Add `useEarnNotificationCount` and `markEarnSeen` to `useEarning.ts`
+2. Update `Navbar.tsx` with Earn link + notification badge
+3. Update `MobileBottomNav.tsx` with notification count
+4. Update `MyProjectCard.tsx` with accepted bid amount display
+5. Update `EarnPage.tsx` with completed projects section and `markEarnSeen` call
+
