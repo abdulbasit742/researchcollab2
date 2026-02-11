@@ -6336,6 +6336,7 @@ export type Database = {
           id: string
           message: string | null
           project_id: string
+          status: string
         }
         Insert: {
           amount: number
@@ -6345,6 +6346,7 @@ export type Database = {
           id?: string
           message?: string | null
           project_id: string
+          status?: string
         }
         Update: {
           amount?: number
@@ -6354,6 +6356,7 @@ export type Database = {
           id?: string
           message?: string | null
           project_id?: string
+          status?: string
         }
         Relationships: [
           {

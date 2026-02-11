@@ -28,6 +28,7 @@ export interface EarningBid {
   amount: number;
   delivery_days: number;
   message: string | null;
+  status: string;
   created_at: string;
   // Joined/computed data
   project_title?: string;
@@ -659,4 +660,65 @@ export function useUpdateProjectStatus() {
     updateStatus,
     updating,
   };
+}
+
+export function useUpdateBidStatus() {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [updating, setUpdating] = useState(false);
+
+  const updateBidStatus = async (bidId: string, projectId: string, status: string) => {
+    if (!user) return { success: false };
+
+    setUpdating(true);
+    try {
+      // Verify ownership
+      const { data: project } = await supabase
+        .from("earning_projects")
+        .select("owner_id")
+        .eq("id", projectId)
+        .maybeSingle();
+
+      if (project?.owner_id !== user.id) {
+        toast({ title: "Not Authorized", description: "Only the project owner can update bid status.", variant: "destructive" });
+        return { success: false };
+      }
+
+      const { error } = await supabase
+        .from("earning_bids")
+        .update({ status } as any)
+        .eq("id", bidId);
+
+      if (error) throw error;
+
+      toast({ title: "Bid Updated", description: `Bid marked as ${status}.` });
+      return { success: true };
+    } catch (err: any) {
+      toast({ title: "Update Failed", description: err.message, variant: "destructive" });
+      return { success: false };
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  return { updateBidStatus, updating };
+}
+
+export function useQuickBidDefaults() {
+  const KEY = "earn_quick_bid_defaults";
+
+  const getDefaults = (): { amount: string; deliveryDays: string } | null => {
+    try {
+      const stored = localStorage.getItem(KEY);
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const saveDefaults = (amount: string, deliveryDays: string) => {
+    localStorage.setItem(KEY, JSON.stringify({ amount, deliveryDays }));
+  };
+
+  return { getDefaults, saveDefaults };
 }
