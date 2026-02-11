@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef } from "react";
  import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -31,13 +31,14 @@ const navItems = [
   { label: "Deals", href: "/deals", icon: Briefcase },
 ];
 
-function EarnNavItem({ onClick }: { onClick?: () => void }) {
+const EarnNavItem = forwardRef<HTMLAnchorElement, { onClick?: () => void }>(({ onClick }, ref) => {
   const location = useLocation();
   const earnCount = useEarnNotificationCount();
   const isActive = location.pathname.startsWith("/earn");
 
   return (
     <Link
+      ref={ref}
       to="/earn"
       onClick={onClick}
       className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors relative ${
@@ -57,15 +58,17 @@ function EarnNavItem({ onClick }: { onClick?: () => void }) {
       Earn
     </Link>
   );
-}
+});
+EarnNavItem.displayName = "EarnNavItem";
 
-function MobileEarnNavItem({ onClick }: { onClick?: () => void }) {
+const MobileEarnNavItem = forwardRef<HTMLAnchorElement, { onClick?: () => void }>(({ onClick }, ref) => {
   const location = useLocation();
   const earnCount = useEarnNotificationCount();
   const isActive = location.pathname.startsWith("/earn");
 
   return (
     <Link
+      ref={ref}
       to="/earn"
       onClick={onClick}
       className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
@@ -90,7 +93,8 @@ function MobileEarnNavItem({ onClick }: { onClick?: () => void }) {
       )}
     </Link>
   );
-}
+});
+MobileEarnNavItem.displayName = "MobileEarnNavItem";
 
 function MessagesNavItem({ onClick }: { onClick?: () => void }) {
   const location = useLocation();

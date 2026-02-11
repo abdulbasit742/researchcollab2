@@ -1,101 +1,76 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { 
   Search, 
   DollarSign, 
   Clock, 
   ArrowRight, 
   FileText,
-  Send,
-  CheckCircle2,
-  XCircle,
-  Loader2,
-  Package
+  Users,
+  MapPin,
+  Target,
 } from "lucide-react";
-import { dummyOffers, Offer, OfferStatus } from "@/data/offers";
-
-const statusConfig: Record<OfferStatus, { label: string; variant: "default" | "secondary" | "success" | "warning" | "destructive" }> = {
-  draft: { label: "Draft", variant: "secondary" },
-  sent: { label: "Sent", variant: "default" },
-  accepted: { label: "Accepted", variant: "success" },
-  rejected: { label: "Rejected", variant: "destructive" },
-  in_progress: { label: "In Progress", variant: "warning" },
-  delivered: { label: "Delivered", variant: "default" },
-  completed: { label: "Completed", variant: "success" },
-  disputed: { label: "Disputed", variant: "destructive" },
-  cancelled: { label: "Cancelled", variant: "secondary" },
-};
+import { useEarningProjects, EarningProject } from "@/hooks/useEarning";
+import { formatPKRRange, formatPKR } from "@/lib/currency";
 
 export default function OffersPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const navigate = useNavigate();
+  const { projects, loading, error } = useEarningProjects();
 
-  // Simulate current user viewing their offers
-  const sentOffers = dummyOffers.filter(o => o.senderId.includes("researcher"));
-  const receivedOffers = dummyOffers.filter(o => o.receiverId && o.visibility === "private");
+  const filteredProjects = projects.filter((p) => {
+    const q = searchQuery.toLowerCase();
+    return (
+      p.title.toLowerCase().includes(q) ||
+      (p.tags || []).some((t) => t.toLowerCase().includes(q))
+    );
+  });
 
-  const filterOffers = (offers: Offer[]) => {
-    return offers.filter(offer => {
-      const matchesSearch = offer.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        offer.category.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesStatus = statusFilter === "all" || offer.status === statusFilter;
-      return matchesSearch && matchesStatus;
-    });
-  };
-
-  const renderOfferCard = (offer: Offer, type: "sent" | "received") => (
+  const renderProjectCard = (project: EarningProject, index: number) => (
     <motion.div
-      key={offer.id}
+      key={project.id}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
     >
       <Card variant="interactive">
         <CardHeader>
           <div className="flex justify-between items-start gap-4">
-            <div className="flex items-start gap-3">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={type === "sent" ? offer.receiverAvatar : offer.senderAvatar} />
-                <AvatarFallback>
-                  {(type === "sent" ? offer.receiverName : offer.senderName)?.charAt(0) || "?"}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <CardTitle className="text-lg">{offer.title}</CardTitle>
-                <CardDescription className="mt-1">
-                  {type === "sent" ? `To: ${offer.receiverName || "Public"}` : `From: ${offer.senderName}`}
-                </CardDescription>
-              </div>
+            <div>
+              <CardTitle className="text-lg">{project.title}</CardTitle>
+              <CardDescription className="mt-1">
+                By {project.owner_name || "Anonymous"}
+              </CardDescription>
             </div>
-            <Badge variant={statusConfig[offer.status].variant}>
-              {statusConfig[offer.status].label}
+            <Badge variant="success" className="capitalize">
+              {project.status || "Open"}
             </Badge>
           </div>
         </CardHeader>
 
         <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {offer.description}
-          </p>
+          {project.description && (
+            <p className="text-sm text-muted-foreground line-clamp-2">
+              {project.description}
+            </p>
+          )}
 
           <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">{offer.category}</Badge>
-            {offer.requiredSkills.slice(0, 2).map((skill) => (
-              <Badge key={skill} variant="outline">
-                {skill}
+            {(project.tags || []).slice(0, 3).map((tag) => (
+              <Badge key={tag} variant="secondary">
+                {tag}
               </Badge>
             ))}
-            {offer.requiredSkills.length > 2 && (
-              <Badge variant="outline">+{offer.requiredSkills.length - 2}</Badge>
+            {(project.tags || []).length > 3 && (
+              <Badge variant="outline">+{(project.tags || []).length - 3}</Badge>
             )}
           </div>
 
@@ -103,37 +78,42 @@ export default function OffersPage() {
             <div className="flex items-center gap-2">
               <DollarSign className="h-4 w-4 text-primary" />
               <span className="font-semibold">
-                PKR {offer.budget.toLocaleString()}{offer.budgetType === "hourly" ? "/hr" : ""}
+                {project.budget_min && project.budget_max
+                  ? formatPKRRange(project.budget_min, project.budget_max)
+                  : project.budget_min
+                    ? formatPKR(project.budget_min)
+                    : "Budget TBD"}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-muted-foreground" />
-              <span>Due: {new Date(offer.deadline).toLocaleDateString()}</span>
+              <span>{project.deadline_days ? `${project.deadline_days} days` : "Flexible"}</span>
             </div>
             <div className="flex items-center gap-2">
-              {offer.visibility === "private" ? (
-                <Badge variant="secondary" className="text-xs">Private</Badge>
-              ) : (
-                <Badge variant="outline" className="text-xs">Public</Badge>
-              )}
+              <Users className="h-4 w-4 text-muted-foreground" />
+              <span>{project.bid_count || 0} bids</span>
             </div>
+            {project.location && (
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-muted-foreground" />
+                <span>{project.location}</span>
+              </div>
+            )}
           </div>
         </CardContent>
 
         <CardFooter className="gap-3">
-          <Link to={`/offers/${offer.id}`} className="flex-1">
-            <Button variant="outline" className="w-full">
-              View Details
-            </Button>
-          </Link>
-          {offer.status === "accepted" || offer.status === "in_progress" ? (
-            <Link to={`/workroom/${offer.id}`}>
-              <Button>
-                Open Work Room
-                <ArrowRight className="h-4 w-4 ml-1" />
-              </Button>
-            </Link>
-          ) : null}
+          <Button 
+            variant="outline" 
+            className="flex-1"
+            onClick={() => navigate(`/earn/projects/${project.id}`)}
+          >
+            View Details
+          </Button>
+          <Button onClick={() => navigate(`/earn/projects/${project.id}#bid`)}>
+            Bid Now
+            <ArrowRight className="h-4 w-4 ml-1" />
+          </Button>
         </CardFooter>
       </Card>
     </motion.div>
@@ -150,103 +130,67 @@ export default function OffersPage() {
             className="text-center"
           >
             <Badge variant="secondary" className="mb-4">
-              <FileText className="h-3 w-3 mr-1" />
-              Offers Management
+              <Target className="h-3 w-3 mr-1" />
+              Live Opportunities
             </Badge>
             <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
-              Manage Your{" "}
-              <span className="text-gradient">Project Offers</span>
+              Find Your Next{" "}
+              <span className="text-gradient">Opportunity</span>
             </h1>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Track offers you've sent and received. Manage bids, accept projects, 
-              and collaborate with researchers and students.
+              Browse open projects posted by researchers and professionals.
+              Bid on work that matches your skills and earn real income.
             </p>
           </motion.div>
         </div>
       </div>
 
       <div className="container py-16">
-        <Tabs defaultValue="received" className="space-y-8">
+        <div className="space-y-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <TabsList>
-              <TabsTrigger value="received" className="gap-2">
-                <Package className="h-4 w-4" />
-                Received ({receivedOffers.length})
-              </TabsTrigger>
-              <TabsTrigger value="sent" className="gap-2">
-                <Send className="h-4 w-4" />
-                Sent ({sentOffers.length})
-              </TabsTrigger>
-            </TabsList>
-
-            <div className="flex gap-3">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search offers..."
-                  className="pl-10 w-64"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="sent">Sent</SelectItem>
-                  <SelectItem value="accepted">Accepted</SelectItem>
-                  <SelectItem value="in_progress">In Progress</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="rejected">Rejected</SelectItem>
-                </SelectContent>
-              </Select>
+            <h2 className="text-xl font-semibold">
+              {loading ? "Loading..." : `${filteredProjects.length} Open Projects`}
+            </h2>
+            <div className="relative w-full md:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search opportunities..."
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
           </div>
 
-          <TabsContent value="received" className="space-y-6">
-            {filterOffers(receivedOffers).length === 0 ? (
-              <Card>
-                <CardContent className="p-12 text-center">
-                  <Package className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">No Offers Received</h3>
-                  <p className="text-muted-foreground mb-6">
-                    You haven't received any offers yet. Complete your profile to get matched!
-                  </p>
-                  <Link to="/matches">
-                    <Button>Find Matches</Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                {filterOffers(receivedOffers).map((offer) => renderOfferCard(offer, "received"))}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="sent" className="space-y-6">
-            {filterOffers(sentOffers).length === 0 ? (
-              <Card>
-                <CardContent className="p-12 text-center">
-                  <Send className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">No Offers Sent</h3>
-                  <p className="text-muted-foreground mb-6">
-                    You haven't sent any offers yet. Find matches and send your first offer!
-                  </p>
-                  <Link to="/matches">
-                    <Button>Find Matches</Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                {filterOffers(sentOffers).map((offer) => renderOfferCard(offer, "sent"))}
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
+          {loading ? (
+            <div className="space-y-4">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-48 w-full rounded-lg" />
+              ))}
+            </div>
+          ) : filteredProjects.length === 0 ? (
+            <Card>
+              <CardContent className="p-12 text-center">
+                <Target className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <h3 className="text-xl font-semibold mb-2">
+                  {searchQuery ? "No Matching Projects" : "No Open Projects Yet"}
+                </h3>
+                <p className="text-muted-foreground mb-6">
+                  {searchQuery
+                    ? "Try adjusting your search terms."
+                    : "Be the first to post a project on the platform!"}
+                </p>
+                <Link to="/earn">
+                  <Button>Go to Earn Hub</Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-4">
+              {filteredProjects.map((project, index) => renderProjectCard(project, index))}
+            </div>
+          )}
+        </div>
       </div>
     </MainLayout>
   );

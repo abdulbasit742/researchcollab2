@@ -35,7 +35,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStartConversation } from "@/hooks/useMessaging";
-import { useEarningProject, useEarningProjects, useSubmitBid, useUpdateBidStatus, useQuickBidDefaults, useProjectAttachments, useUpdateProjectStatus } from "@/hooks/useEarning";
+import { useEarningProject, useEarningProjects, useSubmitBid, useUpdateBidStatus, useQuickBidDefaults, useProjectAttachments, useUpdateProjectStatus, useCreateDealFromBid } from "@/hooks/useEarning";
 import { formatPKR } from "@/lib/currency";
 import { formatDistanceToNow } from "date-fns";
 import { ShareProjectButton } from "@/components/earn/ShareProjectButton";
@@ -69,6 +69,7 @@ export default function EarnProjectDetailPage() {
   const { updateBidStatus, updating: updatingBid } = useUpdateBidStatus();
   const { getDefaults, saveDefaults } = useQuickBidDefaults();
   const { updateStatus, updating: updatingStatus } = useUpdateProjectStatus();
+  const { createDealFromBid } = useCreateDealFromBid();
   
   const [bidAmount, setBidAmount] = useState("");
   const [deliveryDays, setDeliveryDays] = useState("");
@@ -478,7 +479,7 @@ export default function EarnProjectDetailPage() {
                               <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "shortlisted").then((res) => { if (res.success) toast({ title: "Shortlisted ⭐", description: `${bid.bidder_name} has been shortlisted.` }); refetch(); })}>
                                 <Star className="h-4 w-4 mr-2" /> Shortlist
                               </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "accepted").then((res) => { if (res.success) toast({ title: "Bid Accepted ✅", description: `You accepted ${bid.bidder_name}'s bid for ${formatPKR(bid.amount)}.` }); refetch(); })}>
+                              <DropdownMenuItem onClick={async () => { const res = await updateBidStatus(bid.id, id, "accepted"); if (res.success) { toast({ title: "Bid Accepted ✅", description: `You accepted ${bid.bidder_name}'s bid for ${formatPKR(bid.amount)}.` }); if (project) { await createDealFromBid(project.title, project.owner_id, bid.bidder_id, bid.amount); } refetch(); } }}>
                                 <CheckCircle2 className="h-4 w-4 mr-2" /> Accept
                               </DropdownMenuItem>
                               <DropdownMenuItem onClick={() => updateBidStatus(bid.id, id, "rejected").then((res) => { if (res.success) toast({ title: "Bid Rejected", description: `${bid.bidder_name}'s bid has been rejected.` }); refetch(); })} className="text-destructive">

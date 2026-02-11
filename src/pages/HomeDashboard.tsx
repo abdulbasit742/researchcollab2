@@ -15,6 +15,7 @@ import { PlatformTrustBanner } from "@/components/trust/TrustSignals";
 import { GettingStartedChecklist } from "@/components/home/GettingStartedChecklist";
 import { FirstTimeUserOverlay } from "@/components/onboarding/FirstTimeUserOverlay";
 import { AISuggestionCard } from "@/components/ai/AISuggestionCard";
+import { EarnActivityWidget } from "@/components/home/EarnActivityWidget";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -190,6 +191,9 @@ export default function HomeDashboard() {
               context={{ trustScore, activeDeals: currentState.activeDeals, pendingActions: currentState.pendingActions }}
               compact
             />
+
+            {/* Earn Activity Widget */}
+            <EarnActivityWidget />
 
             {/* Platform Trust */}
             <PlatformTrustBanner />
