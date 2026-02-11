@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, forwardRef } from "react";
 import { Bot, X, Send, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -20,7 +20,7 @@ function getPageContext(pathname: string): string {
   return "general platform usage";
 }
 
-export function GlobalAIChatButton() {
+export const GlobalAIChatButton = forwardRef<HTMLButtonElement>((_props, ref) => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -76,6 +76,7 @@ export function GlobalAIChatButton() {
     <>
       {/* Floating button */}
       <button
+        ref={ref}
         onClick={() => setOpen((o) => !o)}
         className={cn(
           "fixed z-50 bottom-20 md:bottom-6 right-4 md:right-6 h-14 w-14 rounded-full",
@@ -163,4 +164,6 @@ export function GlobalAIChatButton() {
       )}
     </>
   );
-}
+});
+
+GlobalAIChatButton.displayName = "GlobalAIChatButton";
