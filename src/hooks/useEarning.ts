@@ -752,3 +752,176 @@ export function useQuickBidDefaults() {
 
   return { getDefaults, saveDefaults };
 }
+
+export function useWithdrawBid() {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [withdrawing, setWithdrawing] = useState(false);
+
+  const withdrawBid = async (bidId: string) => {
+    if (!user) return { success: false };
+
+    setWithdrawing(true);
+    try {
+      const { error } = await supabase
+        .from("earning_bids")
+        .delete()
+        .eq("id", bidId)
+        .eq("bidder_id", user.id);
+
+      if (error) throw error;
+
+      toast({ title: "Bid Withdrawn", description: "Your bid has been removed." });
+      return { success: true };
+    } catch (err: any) {
+      toast({ title: "Withdraw Failed", description: err.message, variant: "destructive" });
+      return { success: false };
+    } finally {
+      setWithdrawing(false);
+    }
+  };
+
+  return { withdrawBid, withdrawing };
+}
+
+export function useUpdateMyBid() {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [updating, setUpdating] = useState(false);
+
+  const updateMyBid = async (
+    bidId: string,
+    data: { amount?: number; delivery_days?: number; message?: string }
+  ) => {
+    if (!user) return { success: false };
+
+    setUpdating(true);
+    try {
+      const { error } = await supabase
+        .from("earning_bids")
+        .update(data as any)
+        .eq("id", bidId)
+        .eq("bidder_id", user.id);
+
+      if (error) throw error;
+
+      toast({ title: "Bid Updated", description: "Your bid has been updated." });
+      return { success: true };
+    } catch (err: any) {
+      toast({ title: "Update Failed", description: err.message, variant: "destructive" });
+      return { success: false };
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  return { updateMyBid, updating };
+}
+
+export function useProjectAttachments(projectId: string | undefined) {
+  const [attachments, setAttachments] = useState<Array<{
+    id: string;
+    file_name: string;
+    file_url: string;
+    file_size: number | null;
+    created_at: string;
+  }>>([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchAttachments = async () => {
+    if (!projectId) return;
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("earning_project_attachments" as any)
+        .select("*")
+        .eq("project_id", projectId)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setAttachments((data as any) || []);
+    } catch (err) {
+      console.error("Error fetching attachments:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (projectId) fetchAttachments();
+  }, [projectId]);
+
+  return { attachments, loading, refetch: fetchAttachments };
+}
+
+export function useUploadAttachment() {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [uploading, setUploading] = useState(false);
+
+  const uploadAttachment = async (projectId: string, file: File) => {
+    if (!user) return { success: false };
+
+    setUploading(true);
+    try {
+      const filePath = `${user.id}/${projectId}/${Date.now()}_${file.name}`;
+      const { error: uploadError } = await supabase.storage
+        .from("earning-attachments")
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: urlData } = supabase.storage
+        .from("earning-attachments")
+        .getPublicUrl(filePath);
+
+      const { error: insertError } = await supabase
+        .from("earning_project_attachments" as any)
+        .insert({
+          project_id: projectId,
+          file_name: file.name,
+          file_url: urlData.publicUrl,
+          file_size: file.size,
+          uploaded_by: user.id,
+        } as any);
+
+      if (insertError) throw insertError;
+
+      toast({ title: "File Uploaded", description: `${file.name} attached successfully.` });
+      return { success: true };
+    } catch (err: any) {
+      toast({ title: "Upload Failed", description: err.message, variant: "destructive" });
+      return { success: false };
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return { uploadAttachment, uploading };
+}
+
+export function useDeleteAttachment() {
+  const { user } = useAuth();
+  const { toast } = useToast();
+
+  const deleteAttachment = async (attachmentId: string) => {
+    if (!user) return { success: false };
+
+    try {
+      const { error } = await supabase
+        .from("earning_project_attachments" as any)
+        .delete()
+        .eq("id", attachmentId);
+
+      if (error) throw error;
+
+      toast({ title: "File Removed", description: "Attachment deleted." });
+      return { success: true };
+    } catch (err: any) {
+      toast({ title: "Delete Failed", description: err.message, variant: "destructive" });
+      return { success: false };
+    }
+  };
+
+  return { deleteAttachment };
+}

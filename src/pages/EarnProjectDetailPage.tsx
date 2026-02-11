@@ -35,11 +35,14 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStartConversation } from "@/hooks/useMessaging";
-import { useEarningProject, useEarningProjects, useSubmitBid, useUpdateBidStatus, useQuickBidDefaults } from "@/hooks/useEarning";
+import { useEarningProject, useEarningProjects, useSubmitBid, useUpdateBidStatus, useQuickBidDefaults, useProjectAttachments } from "@/hooks/useEarning";
 import { formatPKR } from "@/lib/currency";
 import { formatDistanceToNow } from "date-fns";
 import { ShareProjectButton } from "@/components/earn/ShareProjectButton";
 import { RelatedProjects } from "@/components/earn/RelatedProjects";
+import { BidComparisonTable } from "@/components/earn/BidComparisonTable";
+import { ProjectActivityTimeline } from "@/components/earn/ProjectActivityTimeline";
+import { Paperclip, Download } from "lucide-react";
 
 export default function EarnProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -51,6 +54,7 @@ export default function EarnProjectDetailPage() {
   const { projects: allProjects } = useEarningProjects();
   const { submitBid, submitting } = useSubmitBid();
   const { startConversation } = useStartConversation();
+  const { attachments, loading: attachmentsLoading } = useProjectAttachments(id);
   const { updateBidStatus, updating: updatingBid } = useUpdateBidStatus();
   const { getDefaults, saveDefaults } = useQuickBidDefaults();
   
@@ -421,6 +425,73 @@ export default function EarnProjectDetailPage() {
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* Attachments Section */}
+        {attachments.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65 }}
+          >
+            <Card className="mb-6">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Paperclip className="h-5 w-5" />
+                  Attachments ({attachments.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {attachments.map((att) => (
+                    <a
+                      key={att.id}
+                      href={att.file_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors group"
+                    >
+                      <Download className="h-4 w-4 text-muted-foreground group-hover:text-primary shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate group-hover:text-primary transition-colors">
+                          {att.file_name}
+                        </p>
+                        {att.file_size && (
+                          <p className="text-xs text-muted-foreground">
+                            {(att.file_size / 1024).toFixed(1)} KB
+                          </p>
+                        )}
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Bid Comparison Table (Owner only) */}
+        {isOwner && bids.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.68 }}
+            className="mb-6"
+          >
+            <BidComparisonTable bids={bids} />
+          </motion.div>
+        )}
+
+        {/* Activity Timeline (Owner only) */}
+        {isOwner && project && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="mb-6"
+          >
+            <ProjectActivityTimeline project={project} bids={bids} />
+          </motion.div>
+        )}
 
         {/* Bid Form */}
         <motion.div
