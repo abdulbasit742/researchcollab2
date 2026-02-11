@@ -15,6 +15,7 @@ import { ArrowUpDown, BarChart3 } from "lucide-react";
 import { formatPKR } from "@/lib/currency";
 import { formatDistanceToNow } from "date-fns";
 import { EarningBid } from "@/hooks/useEarning";
+import { TrustBadge } from "@/components/trust/TrustBadge";
 
 type SortKey = "bidder" | "amount" | "delivery" | "status" | "date";
 type SortDir = "asc" | "desc";
@@ -106,6 +107,7 @@ export function BidComparisonTable({ bids }: BidComparisonTableProps) {
             <TableHeader>
               <TableRow>
                 <TableHead><SortHeader label="Bidder" sortKeyVal="bidder" /></TableHead>
+                <TableHead>Trust</TableHead>
                 <TableHead><SortHeader label="Amount" sortKeyVal="amount" /></TableHead>
                 <TableHead><SortHeader label="Delivery" sortKeyVal="delivery" /></TableHead>
                 <TableHead><SortHeader label="Status" sortKeyVal="status" /></TableHead>
@@ -119,6 +121,13 @@ export function BidComparisonTable({ bids }: BidComparisonTableProps) {
                     <Link to={`/u/${bid.bidder_id}`} className="font-medium hover:text-primary hover:underline transition-colors">
                       {bid.bidder_name || "Anonymous"}
                     </Link>
+                  </TableCell>
+                  <TableCell>
+                    {bid.bidder_trust_score != null ? (
+                      <TrustBadge score={bid.bidder_trust_score} size="sm" />
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
                   </TableCell>
                   <TableCell className="font-semibold text-primary">{formatPKR(bid.amount)}</TableCell>
                   <TableCell>{bid.delivery_days} days</TableCell>

@@ -34,6 +34,7 @@ export interface EarningBid {
   project_title?: string;
   bidder_name?: string;
   bidder_avatar?: string;
+  bidder_trust_score?: number | null;
 }
 
 export function useEarningProjects() {
@@ -148,19 +149,27 @@ export function useEarningProject(projectId: string | undefined) {
 
         if (bidsError) throw bidsError;
 
-        // Fetch bidder profiles
+        // Fetch bidder profiles and trust scores
         const bidsWithProfiles = await Promise.all(
           (bidsData || []).map(async (bid) => {
-            const { data: bidderProfile } = await supabase
-              .from("profiles")
-              .select("full_name")
-              .eq("id", bid.bidder_id)
-              .maybeSingle();
+            const [{ data: bidderProfile }, { data: trustProfile }] = await Promise.all([
+              supabase
+                .from("profiles")
+                .select("full_name")
+                .eq("id", bid.bidder_id)
+                .maybeSingle(),
+              supabase
+                .from("user_trust_profiles")
+                .select("trust_score")
+                .eq("user_id", bid.bidder_id)
+                .maybeSingle(),
+            ]);
 
             return {
               ...bid,
               bidder_name: bidderProfile?.full_name || "Anonymous",
               bidder_avatar: undefined,
+              bidder_trust_score: trustProfile?.trust_score ?? null,
             };
           })
         );
