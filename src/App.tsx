@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ScrollRestoration } from "@/components/ScrollRestoration";
 import { RouteProgress } from "@/components/layout/RouteProgress";
@@ -32,9 +32,9 @@ import UserPublicProfilePage from "./pages/UserPublicProfilePage";
 import BlogPage from "./pages/BlogPage";
 import BlogArticlePage from "./pages/BlogArticlePage";
 import OffersPage from "./pages/OffersPage";
-import OfferDetailPage from "./pages/OfferDetailPage";
+import OfferRedirectPage from "./pages/OfferRedirectPage";
 import WorkRoomPage from "./pages/WorkRoomPage";
-import JobsPage from "./pages/JobsPage";
+
 import WalletPage from "./pages/WalletPage";
 import SubscriptionsPage from "./pages/SubscriptionsPage";
 import AffiliateDashboardPage from "./pages/AffiliateDashboardPage";
@@ -161,7 +161,7 @@ const AppContent = () => {
             <Route path="/researcher/:id" element={<ResearcherPublicProfilePage />} />
             <Route path="/earn" element={<EarnPage />} />
             <Route path="/earn/projects/:id" element={<EarnProjectDetailPage />} />
-            <Route path="/earn/jobs" element={<JobsPage />} />
+            <Route path="/earn/jobs" element={<Navigate to="/offers" replace />} />
             <Route path="/fyp-services" element={<FYPServicesPage />} />
             <Route path="/grants" element={<GrantsPage />} />
             <Route path="/matches" element={<MatchesPage />} />
@@ -173,7 +173,7 @@ const AppContent = () => {
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogArticlePage />} />
             <Route path="/offers" element={<OpportunitiesPage />} />
-            <Route path="/offers/:id" element={<OfferDetailPage />} />
+            <Route path="/offers/:id" element={<OfferRedirectPage />} />
             <Route path="/workroom/:offerId" element={<WorkRoomPage />} />
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/subscriptions" element={<SubscriptionsPage />} />
