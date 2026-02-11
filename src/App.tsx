@@ -129,6 +129,7 @@ import CollectiveIntelligencePage from "./pages/CollectiveIntelligencePage";
  import ProfileSettingsPage from "./pages/ProfileSettingsPage";
  import CareerPage from "./pages/CareerPage";
 import ResearchPapersPage from "./pages/ResearchPapersPage";
+import AdminVisibilityAnalyticsPage from "./pages/admin/AdminVisibilityAnalyticsPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -260,6 +261,7 @@ const AppContent = () => {
             <Route path="/admin/premium-analytics" element={<AdminPremiumAnalyticsPage />} />
             <Route path="/admin/pricing" element={<AdminPricingPage />} />
             <Route path="/admin/operations" element={<AdminOperationsPage />} />
+            <Route path="/admin/visibility-analytics" element={<AdminVisibilityAnalyticsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
