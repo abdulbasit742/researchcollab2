@@ -227,6 +227,56 @@ export type Database = {
           },
         ]
       }
+      academic_output_metrics: {
+        Row: {
+          active_fyps: number | null
+          active_research: number | null
+          completed_fyps: number | null
+          economic_output: number | null
+          fyp_completion_rate: number | null
+          id: string
+          institution_id: string | null
+          period: string
+          research_velocity: number | null
+          trust_stability: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          active_fyps?: number | null
+          active_research?: number | null
+          completed_fyps?: number | null
+          economic_output?: number | null
+          fyp_completion_rate?: number | null
+          id?: string
+          institution_id?: string | null
+          period: string
+          research_velocity?: number | null
+          trust_stability?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          active_fyps?: number | null
+          active_research?: number | null
+          completed_fyps?: number | null
+          economic_output?: number | null
+          fyp_completion_rate?: number | null
+          id?: string
+          institution_id?: string | null
+          period?: string
+          research_velocity?: number | null
+          trust_stability?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academic_output_metrics_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       academic_records: {
         Row: {
           created_at: string
@@ -9672,6 +9722,62 @@ export type Database = {
             columns: ["reviewer_user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fyp_projects: {
+        Row: {
+          created_at: string | null
+          domain: string | null
+          economic_value: number | null
+          final_score: number | null
+          id: string
+          institution_id: string | null
+          milestones: Json | null
+          project_title: string
+          status: string
+          student_id: string
+          supervisor_id: string | null
+          trust_weight: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          domain?: string | null
+          economic_value?: number | null
+          final_score?: number | null
+          id?: string
+          institution_id?: string | null
+          milestones?: Json | null
+          project_title: string
+          status?: string
+          student_id: string
+          supervisor_id?: string | null
+          trust_weight?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          domain?: string | null
+          economic_value?: number | null
+          final_score?: number | null
+          id?: string
+          institution_id?: string | null
+          milestones?: Json | null
+          project_title?: string
+          status?: string
+          student_id?: string
+          supervisor_id?: string | null
+          trust_weight?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_projects_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -19865,6 +19971,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      research_validation_records: {
+        Row: {
+          created_at: string | null
+          id: string
+          impact_rating: string | null
+          notes: string | null
+          outcome_score: number | null
+          project_id: string
+          reviewer_id: string
+          validation_score: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          impact_rating?: string | null
+          notes?: string | null
+          outcome_score?: number | null
+          project_id: string
+          reviewer_id: string
+          validation_score?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          impact_rating?: string | null
+          notes?: string | null
+          outcome_score?: number | null
+          project_id?: string
+          reviewer_id?: string
+          validation_score?: number | null
+        }
+        Relationships: []
       }
       research_versions: {
         Row: {

@@ -91,6 +91,9 @@ const navItems = [
   { icon: Layers, label: "Feature Governance", href: "/admin/feature-governance" },
   { icon: Shield, label: "Crisis Mode", href: "/admin/crisis-mode" },
   { icon: Sparkles, label: "Evolution Simulator", href: "/admin/evolution-simulator" },
+  { icon: GraduationCap, label: "FYP Hub", href: "/fyp/dashboard" },
+  { icon: UserCog, label: "Supervisor Panel", href: "/faculty/supervisor-dashboard" },
+  { icon: Activity, label: "Academic Output", href: "/analytics/academic-output" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 

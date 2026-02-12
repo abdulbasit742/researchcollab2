@@ -168,6 +168,9 @@ import AdminPowerAuditPage from "./pages/admin/AdminPowerAuditPage";
 import AdminFeatureGovernancePage from "./pages/admin/AdminFeatureGovernancePage";
 import AdminCrisisModePage from "./pages/admin/AdminCrisisModePage";
 import AdminEvolutionSimulatorPage from "./pages/admin/AdminEvolutionSimulatorPage";
+import FYPDashboardPage from "./pages/FYPDashboardPage";
+import SupervisorDashboardPage from "./pages/SupervisorDashboardPage";
+import AcademicOutputAnalyticsPage from "./pages/AcademicOutputAnalyticsPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -338,6 +341,9 @@ const AppContent = () => {
             <Route path="/admin/feature-governance" element={<AdminFeatureGovernancePage />} />
             <Route path="/admin/crisis-mode" element={<AdminCrisisModePage />} />
             <Route path="/admin/evolution-simulator" element={<AdminEvolutionSimulatorPage />} />
+            <Route path="/fyp/dashboard" element={<FYPDashboardPage />} />
+            <Route path="/faculty/supervisor-dashboard" element={<SupervisorDashboardPage />} />
+            <Route path="/analytics/academic-output" element={<AcademicOutputAnalyticsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
