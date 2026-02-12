@@ -5571,6 +5571,39 @@ export type Database = {
           },
         ]
       }
+      deal_efficiency_metrics: {
+        Row: {
+          created_at: string | null
+          deal_id: string
+          dispute_probability_score: number | null
+          id: string
+          milestone_delay_ratio: number | null
+          time_to_accept: unknown
+          time_to_first_milestone: unknown
+          total_duration: unknown
+        }
+        Insert: {
+          created_at?: string | null
+          deal_id: string
+          dispute_probability_score?: number | null
+          id?: string
+          milestone_delay_ratio?: number | null
+          time_to_accept?: unknown
+          time_to_first_milestone?: unknown
+          total_duration?: unknown
+        }
+        Update: {
+          created_at?: string | null
+          deal_id?: string
+          dispute_probability_score?: number | null
+          id?: string
+          milestone_delay_ratio?: number | null
+          time_to_accept?: unknown
+          time_to_first_milestone?: unknown
+          total_duration?: unknown
+        }
+        Relationships: []
+      }
       deal_health_metrics: {
         Row: {
           calculated_at: string
@@ -6505,6 +6538,30 @@ export type Database = {
         }
         Relationships: []
       }
+      dispute_risk_model: {
+        Row: {
+          contributing_factors: Json | null
+          id: string
+          last_updated: string | null
+          risk_score: number | null
+          user_id: string
+        }
+        Insert: {
+          contributing_factors?: Json | null
+          id?: string
+          last_updated?: string | null
+          risk_score?: number | null
+          user_id: string
+        }
+        Update: {
+          contributing_factors?: Json | null
+          id?: string
+          last_updated?: string | null
+          risk_score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       disputes: {
         Row: {
           arbitration_deadline: string | null
@@ -6705,6 +6762,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      dynamic_fee_rules: {
+        Row: {
+          condition_label: string | null
+          condition_type: string
+          created_at: string | null
+          fee_adjustment: number | null
+          id: string
+          is_active: boolean | null
+          threshold: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          condition_label?: string | null
+          condition_type: string
+          created_at?: string | null
+          fee_adjustment?: number | null
+          id?: string
+          is_active?: boolean | null
+          threshold?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          condition_label?: string | null
+          condition_type?: string
+          created_at?: string | null
+          fee_adjustment?: number | null
+          id?: string
+          is_active?: boolean | null
+          threshold?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       earning_bids: {
         Row: {
@@ -7774,6 +7864,39 @@ export type Database = {
           minimum_trust_score?: number
           requires_escrow_history?: boolean
           requires_verification?: boolean
+        }
+        Relationships: []
+      }
+      feature_complexity_registry: {
+        Row: {
+          archived_at: string | null
+          complexity_score: number | null
+          created_at: string | null
+          feature_name: string
+          id: string
+          is_active: boolean | null
+          revenue_impact: number | null
+          usage_rate: number | null
+        }
+        Insert: {
+          archived_at?: string | null
+          complexity_score?: number | null
+          created_at?: string | null
+          feature_name: string
+          id?: string
+          is_active?: boolean | null
+          revenue_impact?: number | null
+          usage_rate?: number | null
+        }
+        Update: {
+          archived_at?: string | null
+          complexity_score?: number | null
+          created_at?: string | null
+          feature_name?: string
+          id?: string
+          is_active?: boolean | null
+          revenue_impact?: number | null
+          usage_rate?: number | null
         }
         Relationships: []
       }
@@ -15693,6 +15816,51 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_profit_metrics: {
+        Row: {
+          active_users: number | null
+          created_at: string | null
+          date: string
+          gross_revenue: number | null
+          id: string
+          infrastructure_cost_estimate: number | null
+          intelligence_revenue: number | null
+          net_margin: number | null
+          platform_fee_revenue: number | null
+          revenue_per_institution: number | null
+          revenue_per_user: number | null
+          subscription_revenue: number | null
+        }
+        Insert: {
+          active_users?: number | null
+          created_at?: string | null
+          date: string
+          gross_revenue?: number | null
+          id?: string
+          infrastructure_cost_estimate?: number | null
+          intelligence_revenue?: number | null
+          net_margin?: number | null
+          platform_fee_revenue?: number | null
+          revenue_per_institution?: number | null
+          revenue_per_user?: number | null
+          subscription_revenue?: number | null
+        }
+        Update: {
+          active_users?: number | null
+          created_at?: string | null
+          date?: string
+          gross_revenue?: number | null
+          id?: string
+          infrastructure_cost_estimate?: number | null
+          intelligence_revenue?: number | null
+          net_margin?: number | null
+          platform_fee_revenue?: number | null
+          revenue_per_institution?: number | null
+          revenue_per_user?: number | null
+          subscription_revenue?: number | null
+        }
+        Relationships: []
+      }
       platform_settings: {
         Row: {
           id: string
@@ -19145,6 +19313,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      revenue_distribution_metrics: {
+        Row: {
+          created_at: string | null
+          date: string
+          freelancer_share: number | null
+          id: string
+          institutional_share: number | null
+          risk_flag: boolean | null
+          top_1_percent_revenue: number | null
+          top_10_percent_revenue: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          freelancer_share?: number | null
+          id?: string
+          institutional_share?: number | null
+          risk_flag?: boolean | null
+          top_1_percent_revenue?: number | null
+          top_10_percent_revenue?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          freelancer_share?: number | null
+          id?: string
+          institutional_share?: number | null
+          risk_flag?: boolean | null
+          top_1_percent_revenue?: number | null
+          top_10_percent_revenue?: number | null
+        }
+        Relationships: []
       }
       revenue_shares: {
         Row: {
@@ -22945,6 +23146,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_ltv_metrics: {
+        Row: {
+          churn_risk_score: number | null
+          deal_completion_count: number | null
+          id: string
+          projected_lifetime_value: number | null
+          subscription_spend: number | null
+          total_fees_paid: number | null
+          total_revenue_generated: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          churn_risk_score?: number | null
+          deal_completion_count?: number | null
+          id?: string
+          projected_lifetime_value?: number | null
+          subscription_spend?: number | null
+          total_fees_paid?: number | null
+          total_revenue_generated?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          churn_risk_score?: number | null
+          deal_completion_count?: number | null
+          id?: string
+          projected_lifetime_value?: number | null
+          subscription_spend?: number | null
+          total_fees_paid?: number | null
+          total_revenue_generated?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       user_rate_limits: {
         Row: {
