@@ -36,6 +36,9 @@ import {
   Bot,
   Radio,
   Activity,
+  Clock,
+  Star,
+  Trophy,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -94,6 +97,12 @@ const navItems = [
   { icon: GraduationCap, label: "FYP Hub", href: "/fyp/dashboard" },
   { icon: UserCog, label: "Supervisor Panel", href: "/faculty/supervisor-dashboard" },
   { icon: Activity, label: "Academic Output", href: "/analytics/academic-output" },
+  { icon: Clock, label: "Review Queue", href: "/faculty/review-queue" },
+  { icon: BarChart3, label: "Student Performance", href: "/profile/performance" },
+  { icon: Briefcase, label: "Academic Tasks", href: "/academic/tasks" },
+  { icon: Star, label: "Supervisor Performance", href: "/faculty/performance" },
+  { icon: GraduationCap, label: "Employability Export", href: "/profile/employability" },
+  { icon: Trophy, label: "Academic Rankings", href: "/academic/rankings" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 

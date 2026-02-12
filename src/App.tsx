@@ -171,6 +171,12 @@ import AdminEvolutionSimulatorPage from "./pages/admin/AdminEvolutionSimulatorPa
 import FYPDashboardPage from "./pages/FYPDashboardPage";
 import SupervisorDashboardPage from "./pages/SupervisorDashboardPage";
 import AcademicOutputAnalyticsPage from "./pages/AcademicOutputAnalyticsPage";
+import SupervisorReviewQueuePage from "./pages/SupervisorReviewQueuePage";
+import StudentPerformancePage from "./pages/StudentPerformancePage";
+import AcademicTaskMarketplacePage from "./pages/AcademicTaskMarketplacePage";
+import SupervisorPerformancePage from "./pages/SupervisorPerformancePage";
+import EmployabilityExportPage from "./pages/EmployabilityExportPage";
+import AcademicRankingsPage from "./pages/AcademicRankingsPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -344,6 +350,12 @@ const AppContent = () => {
             <Route path="/fyp/dashboard" element={<FYPDashboardPage />} />
             <Route path="/faculty/supervisor-dashboard" element={<SupervisorDashboardPage />} />
             <Route path="/analytics/academic-output" element={<AcademicOutputAnalyticsPage />} />
+            <Route path="/faculty/review-queue" element={<SupervisorReviewQueuePage />} />
+            <Route path="/profile/performance" element={<StudentPerformancePage />} />
+            <Route path="/academic/tasks" element={<AcademicTaskMarketplacePage />} />
+            <Route path="/faculty/performance" element={<SupervisorPerformancePage />} />
+            <Route path="/profile/employability" element={<EmployabilityExportPage />} />
+            <Route path="/academic/rankings" element={<AcademicRankingsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
