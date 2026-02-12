@@ -156,6 +156,11 @@ import InstitutionContractPage from "./pages/InstitutionContractPage";
 import AdminProfitDashboardPage from "./pages/admin/AdminProfitDashboardPage";
 import AdminPricingOptimizerPage from "./pages/admin/AdminPricingOptimizerPage";
 import AdminInfrastructureCostsPage from "./pages/admin/AdminInfrastructureCostsPage";
+import GlobalRankingsPage from "./pages/GlobalRankingsPage";
+import GlobalLiquidityAnalyticsPage from "./pages/GlobalLiquidityAnalyticsPage";
+import DeveloperApiDashboardPage from "./pages/DeveloperApiDashboardPage";
+import ReputationExportPage from "./pages/ReputationExportPage";
+import AdminGlobalExpansionPage from "./pages/admin/AdminGlobalExpansionPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -314,6 +319,11 @@ const AppContent = () => {
             <Route path="/admin/profit-dashboard" element={<AdminProfitDashboardPage />} />
             <Route path="/admin/pricing-optimizer" element={<AdminPricingOptimizerPage />} />
             <Route path="/admin/infrastructure-costs" element={<AdminInfrastructureCostsPage />} />
+            <Route path="/rankings/global" element={<GlobalRankingsPage />} />
+            <Route path="/analytics/global-liquidity" element={<GlobalLiquidityAnalyticsPage />} />
+            <Route path="/developer/api-dashboard" element={<DeveloperApiDashboardPage />} />
+            <Route path="/profile/reputation-export" element={<ReputationExportPage />} />
+            <Route path="/admin/global-expansion" element={<AdminGlobalExpansionPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
