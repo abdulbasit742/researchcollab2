@@ -148,6 +148,9 @@ import AdminGovernanceOversightPage from "./pages/admin/AdminGovernanceOversight
 import ConstitutionalHealthPage from "./pages/ConstitutionalHealthPage";
 import AdminConstitutionalGuardianPage from "./pages/admin/AdminConstitutionalGuardianPage";
 import AdminConversionMetricsPage from "./pages/admin/AdminConversionMetricsPage";
+import AdminInstitutionActivationPage from "./pages/admin/AdminInstitutionActivationPage";
+import InstitutionRankingsPage from "./pages/InstitutionRankingsPage";
+import FacultyMonitorPage from "./pages/FacultyMonitorPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -298,6 +301,9 @@ const AppContent = () => {
             <Route path="/admin/conversion-metrics" element={<AdminConversionMetricsPage />} />
             <Route path="/admin/institution-intelligence" element={<AdminInstitutionIntelligencePage />} />
             <Route path="/institution/apply" element={<InstitutionApplyPage />} />
+            <Route path="/institutions/rankings" element={<InstitutionRankingsPage />} />
+            <Route path="/org/:id/faculty-monitor" element={<FacultyMonitorPage />} />
+            <Route path="/admin/institution-activation" element={<AdminInstitutionActivationPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>

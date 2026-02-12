@@ -8,9 +8,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { 
   Users, Package, FolderKanban, CreditCard, BarChart3, Settings,
-  Building2, UserPlus, Eye, ArrowRight, TrendingUp, Calendar
+  Building2, UserPlus, Eye, ArrowRight, TrendingUp, Calendar, GraduationCap
 } from "lucide-react";
 import { InstitutionEconomicPanels } from "@/components/institution/InstitutionEconomicPanels";
+import { InstitutionActivationPanel } from "@/components/institution/InstitutionActivationPanel";
 import { 
   getOrganizationById, getOrgStats, getOrgMembers, getOrgLicenses, 
   getOrgProjects, getOrgInvoices, getOrgTypeLabel, getRoleLabel 
@@ -130,12 +131,23 @@ const OrganizationDashboardPage = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="activation">Activation</TabsTrigger>
             <TabsTrigger value="economics">Economics</TabsTrigger>
             <TabsTrigger value="members">Members</TabsTrigger>
             <TabsTrigger value="tools">Tools</TabsTrigger>
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="payments">Payments</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="activation">
+            <InstitutionActivationPanel orgId={org.id} />
+            <div className="mt-4">
+              <Button variant="outline" onClick={() => navigate(`/org/${id}/faculty-monitor`)}>
+                <GraduationCap className="h-4 w-4 mr-2" />
+                Open Faculty Monitor
+              </Button>
+            </div>
+          </TabsContent>
 
           <TabsContent value="economics">
             <InstitutionEconomicPanels 
