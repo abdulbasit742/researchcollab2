@@ -10,6 +10,7 @@ import {
   Users, Package, FolderKanban, CreditCard, BarChart3, Settings,
   Building2, UserPlus, Eye, ArrowRight, TrendingUp, Calendar
 } from "lucide-react";
+import { InstitutionEconomicPanels } from "@/components/institution/InstitutionEconomicPanels";
 import { 
   getOrganizationById, getOrgStats, getOrgMembers, getOrgLicenses, 
   getOrgProjects, getOrgInvoices, getOrgTypeLabel, getRoleLabel 
@@ -129,11 +130,25 @@ const OrganizationDashboardPage = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="economics">Economics</TabsTrigger>
             <TabsTrigger value="members">Members</TabsTrigger>
             <TabsTrigger value="tools">Tools</TabsTrigger>
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="payments">Payments</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="economics">
+            <InstitutionEconomicPanels 
+              orgId={org.id}
+              stats={{
+                totalEarnings: stats?.totalSpend || 0,
+                completedDeals: stats?.ongoingProjects || 0,
+                activeDeals: stats?.ongoingProjects || 0,
+                avgTrustScore: 62,
+                memberCount: stats?.activeMembers || 0,
+              }}
+            />
+          </TabsContent>
 
           <TabsContent value="overview">
             <div className="grid md:grid-cols-2 gap-6">

@@ -10681,6 +10681,60 @@ export type Database = {
         }
         Relationships: []
       }
+      institution_applications: {
+        Row: {
+          contact_email: string
+          country: string
+          created_at: string
+          domain_focus: string
+          estimated_members: number
+          id: string
+          institution_code: string | null
+          institution_name: string
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          submitted_by: string | null
+          updated_at: string
+          verification_doc_url: string | null
+        }
+        Insert: {
+          contact_email: string
+          country: string
+          created_at?: string
+          domain_focus: string
+          estimated_members?: number
+          id?: string
+          institution_code?: string | null
+          institution_name: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_by?: string | null
+          updated_at?: string
+          verification_doc_url?: string | null
+        }
+        Update: {
+          contact_email?: string
+          country?: string
+          created_at?: string
+          domain_focus?: string
+          estimated_members?: number
+          id?: string
+          institution_code?: string | null
+          institution_name?: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_by?: string | null
+          updated_at?: string
+          verification_doc_url?: string | null
+        }
+        Relationships: []
+      }
       institution_dashboard_access: {
         Row: {
           access_level: string
@@ -10934,6 +10988,56 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "institution_research_snapshots_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institution_rewards: {
+        Row: {
+          awarded_at: string
+          created_at: string
+          description: string | null
+          expires_at: string | null
+          id: string
+          institution_id: string
+          is_active: boolean
+          metadata: Json | null
+          reward_type: string
+          title: string
+          trigger_type: string
+        }
+        Insert: {
+          awarded_at?: string
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          institution_id: string
+          is_active?: boolean
+          metadata?: Json | null
+          reward_type: string
+          title: string
+          trigger_type: string
+        }
+        Update: {
+          awarded_at?: string
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          institution_id?: string
+          is_active?: boolean
+          metadata?: Json | null
+          reward_type?: string
+          title?: string
+          trigger_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_rewards_institution_id_fkey"
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -23585,6 +23689,28 @@ export type Database = {
       }
     }
     Views: {
+      mv_campus_leaderboard: {
+        Row: {
+          first_name: string | null
+          full_name: string | null
+          institution_id: string | null
+          last_name: string | null
+          projects_completed: number | null
+          success_rate: number | null
+          total_earned: number | null
+          trust_score: number | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_members_org_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mv_operational_health: {
         Row: {
           abandoned_deals: number | null
