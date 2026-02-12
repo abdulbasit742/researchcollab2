@@ -1,100 +1,155 @@
 
+# Professional Opportunity Operating System - Implementation Plan
 
-## Global Talent Risk Index (GTRI) - Implementation Plan
+## Overview
 
-### Overview
-Build a macro-level risk monitoring system that continuously calculates ecosystem stability indicators across skills, institutions, capital allocation, liquidity, and trust. This is the defensive counterpart to the growth-prediction systems already built.
+This plan builds 5 integrated systems on top of existing architecture. No duplicate tables or hooks -- we extend what exists and add only what's missing.
 
----
+## Architecture Audit (What Already Exists)
 
-### Phase 1: Database Schema (Migration)
+- `useOpportunityEngine.ts` -- fetches earning_projects, scores by skill/location/university
+- `useOpportunityIntelligence.ts` -- calls edge function for opportunity_score, projected_income, skill gaps
+- `useOutcomeGraph.ts` -- mock-based People-Work-Results-Impact graph
+- `useTrustEngine.ts` -- 5-dimension trust scoring with DB backing
+- `useSkillGapEngine.ts` -- mock-based gap detection
+- `useCareerEvolution.ts` -- mock-based career trajectory
+- `useEconomicEngine.ts` -- full economic subsystem (830 lines)
+- `useRiskIndex.ts` -- entity risk scoring from DB
+- `useInstitutionalDashboard.ts` -- institution metrics, members, policies
+- `OpportunitiesPage.tsx` at `/opportunities` -- basic listing page
+- No `/opportunities/dashboard`, no `/my-os`, no strategic feed, no `opportunity_graph` table
 
-Create 3 new tables with full RLS:
-
-**`risk_metrics`** - Core risk scores per entity
-- `id` (uuid, PK), `entity_type` (text: skill/institution/region/platform), `entity_id` (text), `trust_volatility` (numeric), `dispute_spike_rate` (numeric), `liquidity_distortion` (numeric), `capital_concentration_index` (numeric), `pricing_anomaly_score` (numeric), `centralization_risk` (numeric), `composite_risk_score` (numeric), `risk_level` (text: stable/elevated/high/critical), `calculated_at` (timestamptz)
-- Indexes on `entity_type`, `entity_id`, and `(entity_type, entity_id)`
-- RLS: Platform admins can read all; authenticated users can read skill/region/platform-level (public macro data); institution-level restricted to institution admins
-
-**`systemic_alerts`** - Triggered warnings when thresholds crossed
-- `id` (uuid, PK), `entity_type` (text), `entity_id` (text), `alert_type` (text), `severity` (text: info/warning/critical), `description` (text), `triggered_at` (timestamptz), `resolved_at` (timestamptz nullable)
-- RLS: Admin-only read/write
-
-**`risk_trends`** - Historical risk score snapshots
-- `id` (uuid, PK), `entity_type` (text), `entity_id` (text), `risk_score` (numeric), `recorded_at` (timestamptz)
-- Indexes on `(entity_type, entity_id, recorded_at)`
-- RLS: Same as risk_metrics (public for skill/region/platform; restricted for institution)
+## What Gets Built
 
 ---
 
-### Phase 2: Edge Function - `compute-risk-index`
+### System 1: Opportunity Graph Engine
 
-New edge function that:
-1. Accepts optional `entity_type` and `entity_id` filters (defaults to computing all)
-2. Pulls trust score volatility from `user_trust_profiles` and `trust_score_history`
-3. Pulls dispute frequency from `disputes` table
-4. Pulls liquidity data from `skill_market_metrics`
-5. Pulls capital data from `wallet_transactions` / `wallets`
-6. Pulls pricing variance from `earning_bids`
-7. Computes weighted composite score:
-   - trust_volatility (25%) + dispute_spike_rate (20%) + liquidity_distortion (15%) + capital_concentration_index (15%) + pricing_anomaly_score (15%) + centralization_risk (10%)
-8. Assigns risk_level thresholds (0-25 Stable, 25-50 Elevated, 50-75 High, 75+ Critical)
-9. Generates systemic_alerts when crossing from one level to another
-10. Stores results in `risk_metrics` and appends to `risk_trends`
-11. Applies smoothing (EMA) to avoid false spikes
+**Database Migration:**
+- `opportunity_graph` table: `id, user_id, opportunity_type (project|job|grant|collaboration|advisory|cofounder|institutional_funding), title, description, source_entity_type, source_entity_id, relevance_score, skill_match_score, trust_match_score, outcome_match_score, network_proximity_score, readiness_score, composite_score, status (active|applied|matched|expired), created_at, updated_at`
+- `opportunity_edges` table: `id, user_id, opportunity_id (FK), edge_type (skill_match|trust_fit|network_link|outcome_history|readiness_match), weight, metadata JSONB, created_at`
+- RLS: users see only their own rows
+- Indexes on `user_id`, `composite_score`, `opportunity_type`
 
-Config: `verify_jwt = false` in `supabase/config.toml` with in-code auth check.
+**Hook:** `src/hooks/useOpportunityGraph.ts`
+- Fetches from `opportunity_graph` with filters
+- Computes composite score client-side from 5 dimensions (skill, trust, outcomes, network, readiness)
+- Reuses `useAuth` for profile context
+- Exports `useOpportunityGraph`, `useOpportunityPipeline`, `useOpportunityScore`
 
----
+**UI Components:**
+- `src/components/opportunity/OpportunityDashboard.tsx` -- main dashboard with pipeline view, score card, and trajectory
+- `src/components/opportunity/OpportunityScoreCard.tsx` -- radial score display with 5 dimension breakdown
+- `src/components/opportunity/OpportunityTrajectory.tsx` -- line chart of composite score over time using Recharts
 
-### Phase 3: React Hook - `useRiskIndex`
-
-`useRiskIndex(entityType?, entityId?)`
-- Fetches latest risk_metrics for entity
-- Fetches risk_trends for historical chart
-- Fetches active systemic_alerts
-- Provides `computeRisk()` trigger function
-- Loading/error states via TanStack Query
+**Route:** `/opportunities/dashboard`
 
 ---
 
-### Phase 4: UI Pages
+### System 2: Reputation-to-Opportunity Converter
 
-**Public page: `/macro-risk`**
-- Global Ecosystem Risk Overview panel (composite score gauge, trend line)
-- Skill Risk Explorer (table of skills sorted by risk, color-coded severity)
-- Capital Risk Heatmap (bar chart of concentration)
-- Active Alerts list with severity badges
-- Uses Recharts: RadialBarChart for composite score, LineChart for trends, BarChart for breakdown
+**Database Migration:**
+- Add `opportunity_visibility_multiplier NUMERIC DEFAULT 1.0` column to `profiles` table
+- `opportunity_multiplier_log` table: `id, user_id, previous_multiplier, new_multiplier, trigger_type, trigger_details JSONB, created_at`
+- RLS: users read own logs, admins read all
 
-**Admin page: `/admin/systemic-risk`**
-- Full alert management (view/resolve)
-- Institution comparative risk table
-- Skill bubble detection dashboard
-- Dispute hotspot analysis
-- National-level risk score
+**Hook:** `src/hooks/useOpportunityMultiplier.ts`
+- Reads multiplier from profile
+- Provides `computeMultiplier(trustScore, dealSuccessRate, outcomeValue)` utility
+- Admin override function
+
+**Integration:** The `OpportunityScoreCard` component will display the multiplier badge. The multiplier logic will be documented for future edge function integration with compute-trust.
 
 ---
 
-### Phase 5: Integration Points
+### System 3: Strategic Feed
 
-- Add route imports and `<Route>` entries in `App.tsx`
-- Add sidebar links in `AdminSidebar.tsx` (systemic-risk under admin nav)
-- Deploy edge function via config.toml entry
+**Hook:** `src/hooks/useStrategicFeed.ts`
+- Wraps `useProfessionalSignalFeed` with additional ranking logic
+- Ranks by: outcome_value, credibility_score (from trust), skill relevance, opportunity signals
+- Deprioritizes low-trust accounts and empty engagement
+- Supports mode toggle: "social" vs "opportunity"
+
+**Page:** `src/pages/StrategicFeedPage.tsx`
+- Reuses existing `ProfessionalSignalCard` for rendering
+- Adds mode toggle in header ("Social Mode" / "Opportunity Mode")
+- In opportunity mode: intersperses `OpportunityMatchCard` items between signals
+- Clean, minimal layout following existing feed patterns
+
+**Route:** `/feed/strategic`
 
 ---
 
-### Technical Details
+### System 4: Personal Operating System Dashboard (/my-os)
 
-**Files to create:**
-1. `supabase/migrations/[timestamp]_gtri_schema.sql` - 3 tables + RLS + indexes
-2. `supabase/functions/compute-risk-index/index.ts` - Edge function
-3. `src/hooks/useRiskIndex.ts` - React hook
-4. `src/pages/MacroRiskPage.tsx` - Public risk dashboard
-5. `src/pages/admin/AdminSystemicRiskPage.tsx` - Admin risk panel
+**Page:** `src/pages/MyOSPage.tsx`
+- Single dashboard pulling from existing hooks:
+  - `useTrustProfile` -- trust trajectory (score + level)
+  - `useLiquidityIndex` -- economic velocity
+  - `useOpportunityGraph` -- pipeline count + top 5 matches
+  - `useSkillGapEngine` -- radar chart of gaps
+  - `useCareerEvolution` -- career projection phase
+  - `useRiskIndex` -- economic risk indicator
+- Layout: 2-column grid on desktop, single column mobile
+- Top row: 4 KPI cards (Trust Score, Income Velocity, Pipeline Size, Risk Level)
+- Middle: Opportunity Pipeline (top 5 matches) + Skill Gap Radar (RadarChart)
+- Bottom: Career Projection timeline + Next Best Action card
+- Progressive disclosure: collapsed sections expand on click
 
-**Files to edit:**
-1. `supabase/config.toml` - Add `[functions.compute-risk-index]`
-2. `src/App.tsx` - Import pages + add routes
-3. `src/components/admin/AdminSidebar.tsx` - Add "Systemic Risk" nav item
+**Route:** `/my-os`
 
+---
+
+### System 5: Institutional Layer (Enterprise Moat)
+
+**Database Migration:**
+- `institutional_metrics` table: `id, institution_id, talent_count, avg_trust_score, skill_distribution JSONB, economic_contribution NUMERIC, deal_volume INTEGER, active_risk_signals INTEGER, period_start DATE, period_end DATE, computed_at TIMESTAMPTZ, created_at TIMESTAMPTZ`
+- RLS: institution admins can read their own metrics
+- Index on `institution_id, period_start`
+
+**Component:** `src/components/institution/InstitutionDashboardV2.tsx`
+- Talent heatmap (skill distribution bar chart)
+- Trust averages gauge
+- Economic contribution trend line
+- Deal volume bar chart
+- Risk signals alert list
+- Reuses `useInstitutionalDashboard` for member/policy data
+- New `useInstitutionalMetrics` hook for the metrics table
+
+**Route:** Enhances existing `/org/:id/dashboard` with new metrics tab
+
+---
+
+## Technical Details
+
+### Migration SQL (single migration file)
+1. CREATE `opportunity_graph` with RLS (owner-only SELECT/INSERT/UPDATE)
+2. CREATE `opportunity_edges` with RLS (owner-only)
+3. ALTER `profiles` ADD COLUMN `opportunity_visibility_multiplier`
+4. CREATE `opportunity_multiplier_log` with RLS
+5. CREATE `institutional_metrics` with RLS (institution admin check)
+6. CREATE indexes on scoring columns
+
+### New Files (8 total)
+1. `supabase/migrations/[timestamp]_opportunity_os.sql`
+2. `src/hooks/useOpportunityGraph.ts`
+3. `src/hooks/useOpportunityMultiplier.ts`
+4. `src/hooks/useStrategicFeed.ts`
+5. `src/components/opportunity/OpportunityScoreCard.tsx`
+6. `src/components/opportunity/OpportunityTrajectory.tsx`
+7. `src/pages/OpportunityDashboardPage.tsx`
+8. `src/pages/StrategicFeedPage.tsx`
+9. `src/pages/MyOSPage.tsx`
+10. `src/components/institution/InstitutionDashboardV2.tsx`
+
+### Modified Files (3 total)
+1. `src/App.tsx` -- add 3 routes: `/opportunities/dashboard`, `/my-os`, `/feed/strategic`
+2. `src/components/opportunity/index.ts` -- export new components
+3. `src/components/admin/AdminSidebar.tsx` -- add My OS nav link
+
+### No Duplications
+- Reuses `useOpportunityEngine` data as source for graph population
+- Reuses `useTrustProfile` instead of creating new trust hooks
+- Reuses `useProfessionalSignalFeed` as base for strategic feed
+- Reuses `useInstitutionalDashboard` for institution member data
+- Reuses existing `RadarChart`, `LineChart`, `BarChart` from Recharts
