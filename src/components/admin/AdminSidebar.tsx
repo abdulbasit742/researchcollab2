@@ -87,6 +87,10 @@ const navItems = [
   { icon: Vote, label: "Governance Oversight", href: "/admin/governance-oversight" },
   { icon: Shield, label: "Constitutional Guardian", href: "/admin/constitutional-guardian" },
   { icon: Globe, label: "Global Expansion", href: "/admin/global-expansion" },
+  { icon: ShieldCheck, label: "Power Audit", href: "/admin/power-audit" },
+  { icon: Layers, label: "Feature Governance", href: "/admin/feature-governance" },
+  { icon: Shield, label: "Crisis Mode", href: "/admin/crisis-mode" },
+  { icon: Sparkles, label: "Evolution Simulator", href: "/admin/evolution-simulator" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 

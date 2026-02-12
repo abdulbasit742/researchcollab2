@@ -161,6 +161,13 @@ import GlobalLiquidityAnalyticsPage from "./pages/GlobalLiquidityAnalyticsPage";
 import DeveloperApiDashboardPage from "./pages/DeveloperApiDashboardPage";
 import ReputationExportPage from "./pages/ReputationExportPage";
 import AdminGlobalExpansionPage from "./pages/admin/AdminGlobalExpansionPage";
+import GovernanceConstitutionPage from "./pages/GovernanceConstitutionPage";
+import GovernanceDecisionsPage from "./pages/GovernanceDecisionsPage";
+import EconomicFairnessPage from "./pages/EconomicFairnessPage";
+import AdminPowerAuditPage from "./pages/admin/AdminPowerAuditPage";
+import AdminFeatureGovernancePage from "./pages/admin/AdminFeatureGovernancePage";
+import AdminCrisisModePage from "./pages/admin/AdminCrisisModePage";
+import AdminEvolutionSimulatorPage from "./pages/admin/AdminEvolutionSimulatorPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -324,6 +331,13 @@ const AppContent = () => {
             <Route path="/developer/api-dashboard" element={<DeveloperApiDashboardPage />} />
             <Route path="/profile/reputation-export" element={<ReputationExportPage />} />
             <Route path="/admin/global-expansion" element={<AdminGlobalExpansionPage />} />
+            <Route path="/governance/constitution" element={<GovernanceConstitutionPage />} />
+            <Route path="/governance/decisions" element={<GovernanceDecisionsPage />} />
+            <Route path="/analytics/fairness" element={<EconomicFairnessPage />} />
+            <Route path="/admin/power-audit" element={<AdminPowerAuditPage />} />
+            <Route path="/admin/feature-governance" element={<AdminFeatureGovernancePage />} />
+            <Route path="/admin/crisis-mode" element={<AdminCrisisModePage />} />
+            <Route path="/admin/evolution-simulator" element={<AdminEvolutionSimulatorPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
