@@ -1825,6 +1825,48 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_credit_wallets: {
+        Row: {
+          balance: number
+          created_at: string
+          id: string
+          institution_id: string | null
+          lifetime_consumed: number
+          lifetime_purchased: number
+          monthly_quota: number
+          quota_reset_at: string | null
+          subscription_tier: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          lifetime_consumed?: number
+          lifetime_purchased?: number
+          monthly_quota?: number
+          quota_reset_at?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          lifetime_consumed?: number
+          lifetime_purchased?: number
+          monthly_quota?: number
+          quota_reset_at?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_governance_logs: {
         Row: {
           bias_flag: boolean | null
@@ -3699,6 +3741,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      commission_rules: {
+        Row: {
+          bonus_multiplier: number
+          commission_rate: number
+          created_at: string
+          id: string
+          is_active: boolean
+          max_trust_score: number | null
+          max_volume: number | null
+          min_trust_score: number
+          min_volume: number
+          rule_name: string
+          updated_at: string
+        }
+        Insert: {
+          bonus_multiplier?: number
+          commission_rate?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          max_trust_score?: number | null
+          max_volume?: number | null
+          min_trust_score?: number
+          min_volume?: number
+          rule_name: string
+          updated_at?: string
+        }
+        Update: {
+          bonus_multiplier?: number
+          commission_rate?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          max_trust_score?: number | null
+          max_volume?: number | null
+          min_trust_score?: number
+          min_volume?: number
+          rule_name?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       community_challenges: {
         Row: {
@@ -7517,6 +7601,57 @@ export type Database = {
           restricted_uses?: string[] | null
           spending_rule?: string | null
           target_amount?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      enterprise_contracts: {
+        Row: {
+          contract_name: string
+          contract_value: number
+          created_at: string
+          currency: string
+          custom_modules: Json | null
+          id: string
+          institution_id: string
+          intelligence_access: boolean
+          pricing_model: string
+          renewal_date: string | null
+          seats: number
+          start_date: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          contract_name: string
+          contract_value?: number
+          created_at?: string
+          currency?: string
+          custom_modules?: Json | null
+          id?: string
+          institution_id: string
+          intelligence_access?: boolean
+          pricing_model: string
+          renewal_date?: string | null
+          seats?: number
+          start_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          contract_name?: string
+          contract_value?: number
+          created_at?: string
+          currency?: string
+          custom_modules?: Json | null
+          id?: string
+          institution_id?: string
+          intelligence_access?: boolean
+          pricing_model?: string
+          renewal_date?: string | null
+          seats?: number
+          start_date?: string
+          status?: string
           updated_at?: string
         }
         Relationships: []
@@ -11874,6 +12009,45 @@ export type Database = {
           },
         ]
       }
+      institution_usage_metrics: {
+        Row: {
+          active_seats: number
+          ai_credits_consumed: number
+          api_calls: number
+          created_at: string
+          deals_executed: number
+          id: string
+          institution_id: string
+          period: string
+          revenue_generated: number
+          storage_used_mb: number
+        }
+        Insert: {
+          active_seats?: number
+          ai_credits_consumed?: number
+          api_calls?: number
+          created_at?: string
+          deals_executed?: number
+          id?: string
+          institution_id: string
+          period: string
+          revenue_generated?: number
+          storage_used_mb?: number
+        }
+        Update: {
+          active_seats?: number
+          ai_credits_consumed?: number
+          api_calls?: number
+          created_at?: string
+          deals_executed?: number
+          id?: string
+          institution_id?: string
+          period?: string
+          revenue_generated?: number
+          storage_used_mb?: number
+        }
+        Relationships: []
+      }
       institutional_badges: {
         Row: {
           awarded_at: string
@@ -13850,6 +14024,51 @@ export type Database = {
           secondary_languages?: string[] | null
           translation_assist_enabled?: boolean | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      leakage_detection: {
+        Row: {
+          created_at: string
+          detection_type: string
+          evidence: Json | null
+          flagged_entity_id: string | null
+          flagged_entity_type: string | null
+          id: string
+          resolution_notes: string | null
+          resolved: boolean
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          detection_type: string
+          evidence?: Json | null
+          flagged_entity_id?: string | null
+          flagged_entity_type?: string | null
+          id?: string
+          resolution_notes?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          detection_type?: string
+          evidence?: Json | null
+          flagged_entity_id?: string | null
+          flagged_entity_type?: string | null
+          id?: string
+          resolution_notes?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
           user_id?: string
         }
         Relationships: []
@@ -16833,6 +17052,45 @@ export type Database = {
           revenue_per_institution?: number | null
           revenue_per_user?: number | null
           subscription_revenue?: number | null
+        }
+        Relationships: []
+      }
+      platform_revenue_ledger: {
+        Row: {
+          created_at: string
+          currency: string
+          gross_amount: number
+          id: string
+          institution_id: string | null
+          net_amount: number
+          platform_cut: number
+          revenue_type: string
+          source_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          gross_amount?: number
+          id?: string
+          institution_id?: string | null
+          net_amount?: number
+          platform_cut?: number
+          revenue_type: string
+          source_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          gross_amount?: number
+          id?: string
+          institution_id?: string | null
+          net_amount?: number
+          platform_cut?: number
+          revenue_type?: string
+          source_id?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -20506,6 +20764,90 @@ export type Database = {
           risk_flag?: boolean | null
           top_1_percent_revenue?: number | null
           top_10_percent_revenue?: number | null
+        }
+        Relationships: []
+      }
+      revenue_forecasts: {
+        Row: {
+          churn_risk: number
+          confidence_score: number
+          created_at: string
+          enterprise_pipeline_value: number
+          forecast_date: string
+          id: string
+          model_version: string | null
+          projected_ai_revenue: number
+          projected_enterprise_revenue: number
+          projected_mrr: number
+          projected_transaction_volume: number
+        }
+        Insert: {
+          churn_risk?: number
+          confidence_score?: number
+          created_at?: string
+          enterprise_pipeline_value?: number
+          forecast_date: string
+          id?: string
+          model_version?: string | null
+          projected_ai_revenue?: number
+          projected_enterprise_revenue?: number
+          projected_mrr?: number
+          projected_transaction_volume?: number
+        }
+        Update: {
+          churn_risk?: number
+          confidence_score?: number
+          created_at?: string
+          enterprise_pipeline_value?: number
+          forecast_date?: string
+          id?: string
+          model_version?: string | null
+          projected_ai_revenue?: number
+          projected_enterprise_revenue?: number
+          projected_mrr?: number
+          projected_transaction_volume?: number
+        }
+        Relationships: []
+      }
+      revenue_metrics_daily: {
+        Row: {
+          active_users: number
+          affiliate_revenue: number
+          ai_revenue: number
+          boost_revenue: number
+          created_at: string
+          date: string
+          enterprise_revenue: number
+          id: string
+          subscription_revenue: number
+          total_revenue: number
+          transaction_revenue: number
+        }
+        Insert: {
+          active_users?: number
+          affiliate_revenue?: number
+          ai_revenue?: number
+          boost_revenue?: number
+          created_at?: string
+          date: string
+          enterprise_revenue?: number
+          id?: string
+          subscription_revenue?: number
+          total_revenue?: number
+          transaction_revenue?: number
+        }
+        Update: {
+          active_users?: number
+          affiliate_revenue?: number
+          ai_revenue?: number
+          boost_revenue?: number
+          created_at?: string
+          date?: string
+          enterprise_revenue?: number
+          id?: string
+          subscription_revenue?: number
+          total_revenue?: number
+          transaction_revenue?: number
         }
         Relationships: []
       }
@@ -25010,6 +25352,48 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_type?: string
+        }
+        Relationships: []
+      }
+      visibility_boosts: {
+        Row: {
+          boost_type: string
+          cost: number
+          created_at: string
+          currency: string
+          expires_at: string
+          id: string
+          multiplier: number
+          starts_at: string
+          status: string
+          target_id: string | null
+          user_id: string
+        }
+        Insert: {
+          boost_type: string
+          cost?: number
+          created_at?: string
+          currency?: string
+          expires_at?: string
+          id?: string
+          multiplier?: number
+          starts_at?: string
+          status?: string
+          target_id?: string | null
+          user_id: string
+        }
+        Update: {
+          boost_type?: string
+          cost?: number
+          created_at?: string
+          currency?: string
+          expires_at?: string
+          id?: string
+          multiplier?: number
+          starts_at?: string
+          status?: string
+          target_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }

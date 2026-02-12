@@ -64,6 +64,7 @@ const navItems = [
   { icon: Building2, label: "Institution Activation", href: "/admin/institution-activation" },
   { icon: DollarSign, label: "Revenue Dashboard", href: "/admin/revenue-dashboard" },
   { icon: TrendingUp, label: "Profit Dashboard", href: "/admin/profit-dashboard" },
+  { icon: BarChart3, label: "Revenue Intelligence", href: "/admin/revenue-intelligence" },
   { icon: Settings, label: "Pricing Optimizer", href: "/admin/pricing-optimizer" },
   { icon: Database, label: "Infrastructure Costs", href: "/admin/infrastructure-costs" },
   { icon: Package, label: "Fulfillment", href: "/admin/fulfillment" },
