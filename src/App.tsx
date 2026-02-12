@@ -151,6 +151,8 @@ import AdminConversionMetricsPage from "./pages/admin/AdminConversionMetricsPage
 import AdminInstitutionActivationPage from "./pages/admin/AdminInstitutionActivationPage";
 import InstitutionRankingsPage from "./pages/InstitutionRankingsPage";
 import FacultyMonitorPage from "./pages/FacultyMonitorPage";
+import AdminRevenueDashboardPage from "./pages/admin/AdminRevenueDashboardPage";
+import InstitutionContractPage from "./pages/InstitutionContractPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -304,6 +306,8 @@ const AppContent = () => {
             <Route path="/institutions/rankings" element={<InstitutionRankingsPage />} />
             <Route path="/org/:id/faculty-monitor" element={<FacultyMonitorPage />} />
             <Route path="/admin/institution-activation" element={<AdminInstitutionActivationPage />} />
+            <Route path="/admin/revenue-dashboard" element={<AdminRevenueDashboardPage />} />
+            <Route path="/org/:id/contract" element={<InstitutionContractPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>

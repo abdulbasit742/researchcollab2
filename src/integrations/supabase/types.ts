@@ -8246,6 +8246,39 @@ export type Database = {
           },
         ]
       }
+      fee_evasion_logs: {
+        Row: {
+          created_at: string
+          details: Json | null
+          detection_type: string
+          id: string
+          resolved: boolean | null
+          resolved_by: string | null
+          severity: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          detection_type: string
+          id?: string
+          resolved?: boolean | null
+          resolved_by?: string | null
+          severity?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          detection_type?: string
+          id?: string
+          resolved?: boolean | null
+          resolved_by?: string | null
+          severity?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       feed_events: {
         Row: {
           actor_id: string
@@ -11104,6 +11137,57 @@ export type Database = {
           id?: string
           limits?: Json | null
           organization_id?: string
+        }
+        Relationships: []
+      }
+      institutional_contracts: {
+        Row: {
+          base_fee: number
+          contract_type: string
+          created_at: string
+          end_date: string | null
+          id: string
+          institution_id: string
+          notes: string | null
+          revenue_share_percentage: number | null
+          start_date: string
+          status: string
+          total_fees_collected: number | null
+          total_revenue_generated: number | null
+          trust_average: number | null
+          updated_at: string
+        }
+        Insert: {
+          base_fee?: number
+          contract_type?: string
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          institution_id: string
+          notes?: string | null
+          revenue_share_percentage?: number | null
+          start_date?: string
+          status?: string
+          total_fees_collected?: number | null
+          total_revenue_generated?: number | null
+          trust_average?: number | null
+          updated_at?: string
+        }
+        Update: {
+          base_fee?: number
+          contract_type?: string
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          institution_id?: string
+          notes?: string | null
+          revenue_share_percentage?: number | null
+          start_date?: string
+          status?: string
+          total_fees_collected?: number | null
+          total_revenue_generated?: number | null
+          trust_average?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -15522,6 +15606,54 @@ export type Database = {
           min_fee?: number | null
           role?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      platform_fees: {
+        Row: {
+          created_at: string
+          deal_id: string | null
+          gross_amount: number
+          id: string
+          institution_id: string | null
+          is_institutional: boolean | null
+          milestone_id: string | null
+          net_payout: number
+          payee_id: string | null
+          payer_id: string | null
+          platform_fee_amount: number
+          platform_fee_percentage: number
+          trust_tier: string | null
+        }
+        Insert: {
+          created_at?: string
+          deal_id?: string | null
+          gross_amount?: number
+          id?: string
+          institution_id?: string | null
+          is_institutional?: boolean | null
+          milestone_id?: string | null
+          net_payout?: number
+          payee_id?: string | null
+          payer_id?: string | null
+          platform_fee_amount?: number
+          platform_fee_percentage?: number
+          trust_tier?: string | null
+        }
+        Update: {
+          created_at?: string
+          deal_id?: string | null
+          gross_amount?: number
+          id?: string
+          institution_id?: string | null
+          is_institutional?: boolean | null
+          milestone_id?: string | null
+          net_payout?: number
+          payee_id?: string | null
+          payer_id?: string | null
+          platform_fee_amount?: number
+          platform_fee_percentage?: number
+          trust_tier?: string | null
         }
         Relationships: []
       }
@@ -22396,6 +22528,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      trust_tier_fees: {
+        Row: {
+          bid_priority_weight: number | null
+          fee_percentage: number
+          id: string
+          is_active: boolean | null
+          tier: string
+          updated_at: string
+          visibility_boost: number | null
+        }
+        Insert: {
+          bid_priority_weight?: number | null
+          fee_percentage: number
+          id?: string
+          is_active?: boolean | null
+          tier: string
+          updated_at?: string
+          visibility_boost?: number | null
+        }
+        Update: {
+          bid_priority_weight?: number | null
+          fee_percentage?: number
+          id?: string
+          is_active?: boolean | null
+          tier?: string
+          updated_at?: string
+          visibility_boost?: number | null
+        }
+        Relationships: []
       }
       trust_tier_requirements: {
         Row: {
