@@ -180,6 +180,7 @@ import AcademicRankingsPage from "./pages/AcademicRankingsPage";
 import OpportunityDashboardPage from "./pages/OpportunityDashboardPage";
 import StrategicFeedPage from "./pages/StrategicFeedPage";
 import MyOSPage from "./pages/MyOSPage";
+import AdminRevenueIntelligencePage from "./pages/admin/AdminRevenueIntelligencePage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -362,6 +363,7 @@ const AppContent = () => {
             <Route path="/opportunities/dashboard" element={<OpportunityDashboardPage />} />
             <Route path="/feed/strategic" element={<StrategicFeedPage />} />
             <Route path="/my-os" element={<MyOSPage />} />
+            <Route path="/admin/revenue-intelligence" element={<AdminRevenueIntelligencePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
