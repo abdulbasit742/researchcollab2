@@ -1775,6 +1775,36 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_governance_logs: {
+        Row: {
+          bias_flag: boolean | null
+          created_at: string
+          decision_summary: string | null
+          id: string
+          model_version: string | null
+          override_flag: boolean | null
+          request_type: string
+        }
+        Insert: {
+          bias_flag?: boolean | null
+          created_at?: string
+          decision_summary?: string | null
+          id?: string
+          model_version?: string | null
+          override_flag?: boolean | null
+          request_type: string
+        }
+        Update: {
+          bias_flag?: boolean | null
+          created_at?: string
+          decision_summary?: string | null
+          id?: string
+          model_version?: string | null
+          override_flag?: boolean | null
+          request_type?: string
+        }
+        Relationships: []
+      }
       ai_guardrail_events: {
         Row: {
           guardrail_type: string
@@ -3921,6 +3951,47 @@ export type Database = {
           verified_associations?: number | null
         }
         Relationships: []
+      }
+      constitution_amendments: {
+        Row: {
+          approval_status: string
+          created_at: string
+          description: string
+          id: string
+          impact_analysis: Json | null
+          proposed_by: string | null
+          votes_against: number | null
+          votes_for: number | null
+        }
+        Insert: {
+          approval_status?: string
+          created_at?: string
+          description: string
+          id?: string
+          impact_analysis?: Json | null
+          proposed_by?: string | null
+          votes_against?: number | null
+          votes_for?: number | null
+        }
+        Update: {
+          approval_status?: string
+          created_at?: string
+          description?: string
+          id?: string
+          impact_analysis?: Json | null
+          proposed_by?: string | null
+          votes_against?: number | null
+          votes_for?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "constitution_amendments_proposed_by_fkey"
+            columns: ["proposed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       constitutional_invariants: {
         Row: {
@@ -7028,6 +7099,39 @@ export type Database = {
         }
         Relationships: []
       }
+      economic_fairness_reports: {
+        Row: {
+          created_at: string
+          dispute_rate_by_tier: Json | null
+          fairness_score: number | null
+          fee_distribution: Json | null
+          id: string
+          period: string
+          revenue_distribution: Json | null
+          trust_tier_distribution: Json | null
+        }
+        Insert: {
+          created_at?: string
+          dispute_rate_by_tier?: Json | null
+          fairness_score?: number | null
+          fee_distribution?: Json | null
+          id?: string
+          period: string
+          revenue_distribution?: Json | null
+          trust_tier_distribution?: Json | null
+        }
+        Update: {
+          created_at?: string
+          dispute_rate_by_tier?: Json | null
+          fairness_score?: number | null
+          fee_distribution?: Json | null
+          id?: string
+          period?: string
+          revenue_distribution?: Json | null
+          trust_tier_distribution?: Json | null
+        }
+        Relationships: []
+      }
       economic_safety_profiles: {
         Row: {
           cooldowns: Json
@@ -7818,6 +7922,47 @@ export type Database = {
           },
         ]
       }
+      evolution_scenarios: {
+        Row: {
+          created_at: string
+          economic_simulation_result: Json | null
+          id: string
+          liquidity_impact: string | null
+          projected_growth_impact: string | null
+          proposed_change: string
+          simulated_by: string | null
+          trust_simulation_result: Json | null
+        }
+        Insert: {
+          created_at?: string
+          economic_simulation_result?: Json | null
+          id?: string
+          liquidity_impact?: string | null
+          projected_growth_impact?: string | null
+          proposed_change: string
+          simulated_by?: string | null
+          trust_simulation_result?: Json | null
+        }
+        Update: {
+          created_at?: string
+          economic_simulation_result?: Json | null
+          id?: string
+          liquidity_impact?: string | null
+          projected_growth_impact?: string | null
+          proposed_change?: string
+          simulated_by?: string | null
+          trust_simulation_result?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evolution_scenarios_simulated_by_fkey"
+            columns: ["simulated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       export_packages: {
         Row: {
           created_at: string
@@ -8112,6 +8257,60 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      feature_proposals: {
+        Row: {
+          approval_status: string
+          complexity_score: number | null
+          created_at: string
+          description: string | null
+          feature_name: string
+          id: string
+          projected_revenue_impact: string | null
+          projected_trust_impact: string | null
+          proposed_by: string | null
+          reviewed_by: string | null
+        }
+        Insert: {
+          approval_status?: string
+          complexity_score?: number | null
+          created_at?: string
+          description?: string | null
+          feature_name: string
+          id?: string
+          projected_revenue_impact?: string | null
+          projected_trust_impact?: string | null
+          proposed_by?: string | null
+          reviewed_by?: string | null
+        }
+        Update: {
+          approval_status?: string
+          complexity_score?: number | null
+          created_at?: string
+          description?: string | null
+          feature_name?: string
+          id?: string
+          projected_revenue_impact?: string | null
+          projected_trust_impact?: string | null
+          proposed_by?: string | null
+          reviewed_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feature_proposals_proposed_by_fkey"
+            columns: ["proposed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "feature_proposals_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       featured_listings: {
         Row: {
@@ -9830,6 +10029,47 @@ export type Database = {
             columns: ["reporting_to_id"]
             isOneToOne: false
             referencedRelation: "governance_councils"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      governance_decisions: {
+        Row: {
+          affected_systems: string[] | null
+          approved_by: string | null
+          created_at: string
+          decision_type: string
+          description: string
+          economic_impact: string | null
+          id: string
+          trust_impact: string | null
+        }
+        Insert: {
+          affected_systems?: string[] | null
+          approved_by?: string | null
+          created_at?: string
+          decision_type: string
+          description: string
+          economic_impact?: string | null
+          id?: string
+          trust_impact?: string | null
+        }
+        Update: {
+          affected_systems?: string[] | null
+          approved_by?: string | null
+          created_at?: string
+          decision_type?: string
+          description?: string
+          economic_impact?: string | null
+          id?: string
+          trust_impact?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_decisions_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -15844,6 +16084,85 @@ export type Database = {
           },
         ]
       }
+      platform_constitution_versions: {
+        Row: {
+          amendment_process: string | null
+          created_at: string
+          economic_rules: Json
+          governance_rules: Json
+          id: string
+          principles: Json
+          ratified_by: string | null
+          version: number
+        }
+        Insert: {
+          amendment_process?: string | null
+          created_at?: string
+          economic_rules?: Json
+          governance_rules?: Json
+          id?: string
+          principles?: Json
+          ratified_by?: string | null
+          version: number
+        }
+        Update: {
+          amendment_process?: string | null
+          created_at?: string
+          economic_rules?: Json
+          governance_rules?: Json
+          id?: string
+          principles?: Json
+          ratified_by?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_constitution_versions_ratified_by_fkey"
+            columns: ["ratified_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_crisis_modes: {
+        Row: {
+          activated_at: string
+          activated_by: string | null
+          deactivated_at: string | null
+          id: string
+          is_active: boolean | null
+          restrictions_applied: Json | null
+          trigger_type: string
+        }
+        Insert: {
+          activated_at?: string
+          activated_by?: string | null
+          deactivated_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          restrictions_applied?: Json | null
+          trigger_type: string
+        }
+        Update: {
+          activated_at?: string
+          activated_by?: string | null
+          deactivated_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          restrictions_applied?: Json | null
+          trigger_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_crisis_modes_activated_by_fkey"
+            columns: ["activated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       platform_evolution_proposals: {
         Row: {
           constitutional_implications: string | null
@@ -16104,6 +16423,47 @@ export type Database = {
           {
             foreignKeyName: "platform_settings_updated_by_fkey"
             columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_stewards: {
+        Row: {
+          authority_scope: string | null
+          created_at: string
+          id: string
+          is_active: boolean | null
+          role: string
+          steward_id: string
+          term_end: string | null
+          term_start: string
+        }
+        Insert: {
+          authority_scope?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          role: string
+          steward_id: string
+          term_end?: string | null
+          term_start?: string
+        }
+        Update: {
+          authority_scope?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          role?: string
+          steward_id?: string
+          term_end?: string | null
+          term_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_stewards_steward_id_fkey"
+            columns: ["steward_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -16683,6 +17043,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      power_distribution_metrics: {
+        Row: {
+          admin_actions_count: number | null
+          alert_triggered: boolean | null
+          decision_authority_spread: number | null
+          id: string
+          institutional_influence_score: number | null
+          top_1_percent_revenue_share: number | null
+          trust_concentration_score: number | null
+          updated_at: string
+        }
+        Insert: {
+          admin_actions_count?: number | null
+          alert_triggered?: boolean | null
+          decision_authority_spread?: number | null
+          id?: string
+          institutional_influence_score?: number | null
+          top_1_percent_revenue_share?: number | null
+          trust_concentration_score?: number | null
+          updated_at?: string
+        }
+        Update: {
+          admin_actions_count?: number | null
+          alert_triggered?: boolean | null
+          decision_authority_spread?: number | null
+          id?: string
+          institutional_influence_score?: number | null
+          top_1_percent_revenue_share?: number | null
+          trust_concentration_score?: number | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       prediction_markets: {
         Row: {
@@ -22515,6 +22908,33 @@ export type Database = {
           min_trust_score?: number | null
           min_trust_tier?: string | null
           requires_verification?: boolean | null
+        }
+        Relationships: []
+      }
+      trust_calculation_audit: {
+        Row: {
+          created_at: string
+          delta: number | null
+          id: string
+          input_factors: Json
+          output_score: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          delta?: number | null
+          id?: string
+          input_factors?: Json
+          output_score: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          delta?: number | null
+          id?: string
+          input_factors?: Json
+          output_score?: number
+          user_id?: string
         }
         Relationships: []
       }
