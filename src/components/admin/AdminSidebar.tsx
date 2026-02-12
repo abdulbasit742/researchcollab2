@@ -104,6 +104,9 @@ const navItems = [
   { icon: GraduationCap, label: "Employability Export", href: "/profile/employability" },
   { icon: Trophy, label: "Academic Rankings", href: "/academic/rankings" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
+  { icon: Layers, label: "My OS", href: "/my-os" },
+  { icon: TrendingUp, label: "Opportunity Dashboard", href: "/opportunities/dashboard" },
+  { icon: Radio, label: "Strategic Feed", href: "/feed/strategic" },
 ];
 
 const platformItems = [
