@@ -7437,6 +7437,42 @@ export type Database = {
         }
         Relationships: []
       }
+      employability_reports: {
+        Row: {
+          completed_projects: number | null
+          economic_output: number | null
+          generated_at: string
+          id: string
+          public_link_token: string | null
+          skills_summary: Json | null
+          trust_score: number | null
+          user_id: string
+          validation_score: number | null
+        }
+        Insert: {
+          completed_projects?: number | null
+          economic_output?: number | null
+          generated_at?: string
+          id?: string
+          public_link_token?: string | null
+          skills_summary?: Json | null
+          trust_score?: number | null
+          user_id: string
+          validation_score?: number | null
+        }
+        Update: {
+          completed_projects?: number | null
+          economic_output?: number | null
+          generated_at?: string
+          id?: string
+          public_link_token?: string | null
+          skills_summary?: Json | null
+          trust_score?: number | null
+          user_id?: string
+          validation_score?: number | null
+        }
+        Relationships: []
+      }
       endowment_funds: {
         Row: {
           created_at: string
@@ -9726,6 +9762,50 @@ export type Database = {
           },
         ]
       }
+      fyp_milestone_templates: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          domain: string
+          estimated_duration: string | null
+          id: string
+          institution_id: string | null
+          milestone_structure: Json
+          template_name: string
+          trust_weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          estimated_duration?: string | null
+          id?: string
+          institution_id?: string | null
+          milestone_structure?: Json
+          template_name: string
+          trust_weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          estimated_duration?: string | null
+          id?: string
+          institution_id?: string | null
+          milestone_structure?: Json
+          template_name?: string
+          trust_weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_milestone_templates_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fyp_projects: {
         Row: {
           created_at: string | null
@@ -9845,6 +9925,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      fyp_risk_flags: {
+        Row: {
+          created_at: string
+          id: string
+          project_id: string
+          recommended_action: string | null
+          resolved: boolean | null
+          risk_type: string
+          severity: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          project_id: string
+          recommended_action?: string | null
+          resolved?: boolean | null
+          risk_type: string
+          severity: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          project_id?: string
+          recommended_action?: string | null
+          resolved?: boolean | null
+          risk_type?: string
+          severity?: string
+        }
+        Relationships: []
       }
       fyp_services: {
         Row: {
@@ -13948,6 +14058,56 @@ export type Database = {
             columns: ["thread_id"]
             isOneToOne: false
             referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      micro_academic_tasks: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          description: string | null
+          id: string
+          institution_id: string | null
+          posted_by: string
+          reward_amount: number | null
+          status: string
+          task_title: string
+          task_type: string
+          trust_weight: number | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          posted_by: string
+          reward_amount?: number | null
+          status?: string
+          task_title: string
+          task_type: string
+          trust_weight?: number | null
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          posted_by?: string
+          reward_amount?: number | null
+          status?: string
+          task_title?: string
+          task_type?: string
+          trust_weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "micro_academic_tasks_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -20005,6 +20165,42 @@ export type Database = {
         }
         Relationships: []
       }
+      research_validations: {
+        Row: {
+          comments: string | null
+          created_at: string
+          id: string
+          impact_score: number | null
+          is_blind_review: boolean | null
+          originality_score: number | null
+          project_id: string
+          validation_score: number | null
+          validator_id: string
+        }
+        Insert: {
+          comments?: string | null
+          created_at?: string
+          id?: string
+          impact_score?: number | null
+          is_blind_review?: boolean | null
+          originality_score?: number | null
+          project_id: string
+          validation_score?: number | null
+          validator_id: string
+        }
+        Update: {
+          comments?: string | null
+          created_at?: string
+          id?: string
+          impact_score?: number | null
+          is_blind_review?: boolean | null
+          originality_score?: number | null
+          project_id?: string
+          validation_score?: number | null
+          validator_id?: string
+        }
+        Relationships: []
+      }
       research_versions: {
         Row: {
           change_summary: string | null
@@ -21882,6 +22078,39 @@ export type Database = {
           },
         ]
       }
+      student_performance_metrics: {
+        Row: {
+          consistency_score: number | null
+          economic_output: number | null
+          milestone_timeliness: number | null
+          revision_rate: number | null
+          student_id: string
+          supervisor_rating: number | null
+          trust_growth: number | null
+          updated_at: string
+        }
+        Insert: {
+          consistency_score?: number | null
+          economic_output?: number | null
+          milestone_timeliness?: number | null
+          revision_rate?: number | null
+          student_id: string
+          supervisor_rating?: number | null
+          trust_growth?: number | null
+          updated_at?: string
+        }
+        Update: {
+          consistency_score?: number | null
+          economic_output?: number | null
+          milestone_timeliness?: number | null
+          revision_rate?: number | null
+          student_id?: string
+          supervisor_rating?: number | null
+          trust_growth?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       student_research_links: {
         Row: {
           contribution_scope: string
@@ -22140,6 +22369,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      supervisor_performance_metrics: {
+        Row: {
+          avg_trust_growth: number | null
+          dispute_rate: number | null
+          institutional_rating: number | null
+          revision_ratio: number | null
+          student_completion_rate: number | null
+          supervisor_id: string
+          updated_at: string
+        }
+        Insert: {
+          avg_trust_growth?: number | null
+          dispute_rate?: number | null
+          institutional_rating?: number | null
+          revision_ratio?: number | null
+          student_completion_rate?: number | null
+          supervisor_id: string
+          updated_at?: string
+        }
+        Update: {
+          avg_trust_growth?: number | null
+          dispute_rate?: number | null
+          institutional_rating?: number | null
+          revision_ratio?: number | null
+          student_completion_rate?: number | null
+          supervisor_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      supervisor_reviews: {
+        Row: {
+          comments: string | null
+          created_at: string
+          decision: string
+          id: string
+          project_id: string
+          review_type: string
+          reviewer_id: string
+          trust_adjustment: number | null
+        }
+        Insert: {
+          comments?: string | null
+          created_at?: string
+          decision: string
+          id?: string
+          project_id: string
+          review_type: string
+          reviewer_id: string
+          trust_adjustment?: number | null
+        }
+        Update: {
+          comments?: string | null
+          created_at?: string
+          decision?: string
+          id?: string
+          project_id?: string
+          review_type?: string
+          reviewer_id?: string
+          trust_adjustment?: number | null
+        }
+        Relationships: []
       }
       support_tickets: {
         Row: {
