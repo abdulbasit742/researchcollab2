@@ -2882,6 +2882,44 @@ export type Database = {
         }
         Relationships: []
       }
+      capital_partnerships: {
+        Row: {
+          allocation_rules: Json | null
+          created_at: string
+          funding_pool_size: number
+          id: string
+          institution_id: string
+          status: string
+          trust_requirements: Json | null
+        }
+        Insert: {
+          allocation_rules?: Json | null
+          created_at?: string
+          funding_pool_size?: number
+          id?: string
+          institution_id: string
+          status?: string
+          trust_requirements?: Json | null
+        }
+        Update: {
+          allocation_rules?: Json | null
+          created_at?: string
+          funding_pool_size?: number
+          id?: string
+          institution_id?: string
+          status?: string
+          trust_requirements?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capital_partnerships_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       career_milestones: {
         Row: {
           achieved_at: string
@@ -5065,6 +5103,41 @@ export type Database = {
           },
         ]
       }
+      currency_profiles: {
+        Row: {
+          id: string
+          preferred_currency: string
+          region: string | null
+          settlement_currency: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          preferred_currency?: string
+          region?: string | null
+          settlement_currency?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          preferred_currency?: string
+          region?: string | null
+          settlement_currency?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "currency_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dashboard_audit_logs: {
         Row: {
           action: string
@@ -5336,6 +5409,41 @@ export type Database = {
           version?: string
         }
         Relationships: []
+      }
+      data_residency_profiles: {
+        Row: {
+          consent_version: string | null
+          id: string
+          legal_compliance_zone: string | null
+          preferred_data_region: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          consent_version?: string | null
+          id?: string
+          legal_compliance_zone?: string | null
+          preferred_data_region?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          consent_version?: string | null
+          id?: string
+          legal_compliance_zone?: string | null
+          preferred_data_region?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_residency_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       data_residency_proofs: {
         Row: {
@@ -8271,6 +8379,44 @@ export type Database = {
         }
         Relationships: []
       }
+      federated_institution_nodes: {
+        Row: {
+          created_at: string
+          id: string
+          institution_id: string
+          region: string
+          status: string
+          trust_multiplier: number
+          verification_level: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution_id: string
+          region?: string
+          status?: string
+          trust_multiplier?: number
+          verification_level?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution_id?: string
+          region?: string
+          status?: string
+          trust_multiplier?: number
+          verification_level?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_institution_nodes_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       federated_nodes: {
         Row: {
           base_url: string
@@ -9503,6 +9649,77 @@ export type Database = {
             foreignKeyName: "gaming_detection_events_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      global_liquidity_metrics: {
+        Row: {
+          active_deals: number
+          avg_trust_score: number
+          deal_velocity: number
+          id: string
+          region: string
+          total_volume: number
+          updated_at: string
+        }
+        Insert: {
+          active_deals?: number
+          avg_trust_score?: number
+          deal_velocity?: number
+          id?: string
+          region: string
+          total_volume?: number
+          updated_at?: string
+        }
+        Update: {
+          active_deals?: number
+          avg_trust_score?: number
+          deal_velocity?: number
+          id?: string
+          region?: string
+          total_volume?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      global_trust_rankings: {
+        Row: {
+          category: string | null
+          category_rank: number | null
+          global_rank: number | null
+          id: string
+          region: string | null
+          regional_rank: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          category_rank?: number | null
+          global_rank?: number | null
+          id?: string
+          region?: string | null
+          regional_rank?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          category_rank?: number | null
+          global_rank?: number | null
+          id?: string
+          region?: string | null
+          regional_rank?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "global_trust_rankings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -16119,6 +16336,47 @@ export type Database = {
             columns: ["impact_pathway_id"]
             isOneToOne: false
             referencedRelation: "impact_pathways"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portable_reputation_exports: {
+        Row: {
+          deal_history_snapshot: Json | null
+          export_hash: string
+          generated_at: string
+          id: string
+          skills_snapshot: Json | null
+          trust_score_snapshot: number
+          user_id: string
+          verification_signature: string
+        }
+        Insert: {
+          deal_history_snapshot?: Json | null
+          export_hash: string
+          generated_at?: string
+          id?: string
+          skills_snapshot?: Json | null
+          trust_score_snapshot?: number
+          user_id: string
+          verification_signature: string
+        }
+        Update: {
+          deal_history_snapshot?: Json | null
+          export_hash?: string
+          generated_at?: string
+          id?: string
+          skills_snapshot?: Json | null
+          trust_score_snapshot?: number
+          user_id?: string
+          verification_signature?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portable_reputation_exports_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
