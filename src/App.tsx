@@ -177,6 +177,9 @@ import AcademicTaskMarketplacePage from "./pages/AcademicTaskMarketplacePage";
 import SupervisorPerformancePage from "./pages/SupervisorPerformancePage";
 import EmployabilityExportPage from "./pages/EmployabilityExportPage";
 import AcademicRankingsPage from "./pages/AcademicRankingsPage";
+import OpportunityDashboardPage from "./pages/OpportunityDashboardPage";
+import StrategicFeedPage from "./pages/StrategicFeedPage";
+import MyOSPage from "./pages/MyOSPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -356,6 +359,9 @@ const AppContent = () => {
             <Route path="/faculty/performance" element={<SupervisorPerformancePage />} />
             <Route path="/profile/employability" element={<EmployabilityExportPage />} />
             <Route path="/academic/rankings" element={<AcademicRankingsPage />} />
+            <Route path="/opportunities/dashboard" element={<OpportunityDashboardPage />} />
+            <Route path="/feed/strategic" element={<StrategicFeedPage />} />
+            <Route path="/my-os" element={<MyOSPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>

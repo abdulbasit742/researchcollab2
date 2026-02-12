@@ -12166,6 +12166,51 @@ export type Database = {
         }
         Relationships: []
       }
+      institutional_metrics: {
+        Row: {
+          active_risk_signals: number | null
+          avg_trust_score: number | null
+          computed_at: string
+          created_at: string
+          deal_volume: number | null
+          economic_contribution: number | null
+          id: string
+          institution_id: string
+          period_end: string
+          period_start: string
+          skill_distribution: Json | null
+          talent_count: number | null
+        }
+        Insert: {
+          active_risk_signals?: number | null
+          avg_trust_score?: number | null
+          computed_at?: string
+          created_at?: string
+          deal_volume?: number | null
+          economic_contribution?: number | null
+          id?: string
+          institution_id: string
+          period_end: string
+          period_start: string
+          skill_distribution?: Json | null
+          talent_count?: number | null
+        }
+        Update: {
+          active_risk_signals?: number | null
+          avg_trust_score?: number | null
+          computed_at?: string
+          created_at?: string
+          deal_volume?: number | null
+          economic_contribution?: number | null
+          id?: string
+          institution_id?: string
+          period_end?: string
+          period_start?: string
+          skill_distribution?: Json | null
+          talent_count?: number | null
+        }
+        Relationships: []
+      }
       institutional_performance_metrics: {
         Row: {
           calculated_at: string
@@ -15364,6 +15409,104 @@ export type Database = {
           },
         ]
       }
+      opportunity_edges: {
+        Row: {
+          created_at: string
+          edge_type: string
+          id: string
+          metadata: Json | null
+          opportunity_id: string
+          user_id: string
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          edge_type: string
+          id?: string
+          metadata?: Json | null
+          opportunity_id: string
+          user_id: string
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          edge_type?: string
+          id?: string
+          metadata?: Json | null
+          opportunity_id?: string
+          user_id?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_edges_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunity_graph"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opportunity_graph: {
+        Row: {
+          composite_score: number | null
+          created_at: string
+          description: string | null
+          id: string
+          network_proximity_score: number | null
+          opportunity_type: string
+          outcome_match_score: number | null
+          readiness_score: number | null
+          relevance_score: number | null
+          skill_match_score: number | null
+          source_entity_id: string | null
+          source_entity_type: string | null
+          status: string
+          title: string
+          trust_match_score: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          composite_score?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          network_proximity_score?: number | null
+          opportunity_type: string
+          outcome_match_score?: number | null
+          readiness_score?: number | null
+          relevance_score?: number | null
+          skill_match_score?: number | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          status?: string
+          title: string
+          trust_match_score?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          composite_score?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          network_proximity_score?: number | null
+          opportunity_type?: string
+          outcome_match_score?: number | null
+          readiness_score?: number | null
+          relevance_score?: number | null
+          skill_match_score?: number | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          status?: string
+          title?: string
+          trust_match_score?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       opportunity_insights: {
         Row: {
           created_at: string
@@ -15410,6 +15553,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      opportunity_multiplier_log: {
+        Row: {
+          created_at: string
+          id: string
+          new_multiplier: number
+          previous_multiplier: number
+          trigger_details: Json | null
+          trigger_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          new_multiplier?: number
+          previous_multiplier?: number
+          trigger_details?: Json | null
+          trigger_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          new_multiplier?: number
+          previous_multiplier?: number
+          trigger_details?: Json | null
+          trigger_type?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       ops_metrics_snapshots: {
         Row: {
@@ -18163,6 +18336,7 @@ export type Database = {
           last_name: string | null
           location: string | null
           onboarding_completed: boolean | null
+          opportunity_visibility_multiplier: number | null
           research_level: string | null
           role: string | null
           skills: string[] | null
@@ -18184,6 +18358,7 @@ export type Database = {
           last_name?: string | null
           location?: string | null
           onboarding_completed?: boolean | null
+          opportunity_visibility_multiplier?: number | null
           research_level?: string | null
           role?: string | null
           skills?: string[] | null
@@ -18205,6 +18380,7 @@ export type Database = {
           last_name?: string | null
           location?: string | null
           onboarding_completed?: boolean | null
+          opportunity_visibility_multiplier?: number | null
           research_level?: string | null
           role?: string | null
           skills?: string[] | null
