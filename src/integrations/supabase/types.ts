@@ -11045,6 +11045,41 @@ export type Database = {
           },
         ]
       }
+      institutional_badges: {
+        Row: {
+          awarded_at: string
+          badge_type: string
+          expires_at: string | null
+          id: string
+          institution_id: string
+          metadata: Json | null
+        }
+        Insert: {
+          awarded_at?: string
+          badge_type: string
+          expires_at?: string | null
+          id?: string
+          institution_id: string
+          metadata?: Json | null
+        }
+        Update: {
+          awarded_at?: string
+          badge_type?: string
+          expires_at?: string | null
+          id?: string
+          institution_id?: string
+          metadata?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institutional_badges_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       institutional_capabilities: {
         Row: {
           capability_type: string
@@ -11071,6 +11106,158 @@ export type Database = {
           organization_id?: string
         }
         Relationships: []
+      }
+      institutional_economic_scores: {
+        Row: {
+          active_members: number
+          deal_completion_rate: number
+          economic_output_score: number
+          institution_id: string
+          liquidity_contribution: number
+          rank_position: number | null
+          total_deals: number
+          total_earnings: number
+          trust_score_average: number
+          updated_at: string
+        }
+        Insert: {
+          active_members?: number
+          deal_completion_rate?: number
+          economic_output_score?: number
+          institution_id: string
+          liquidity_contribution?: number
+          rank_position?: number | null
+          total_deals?: number
+          total_earnings?: number
+          trust_score_average?: number
+          updated_at?: string
+        }
+        Update: {
+          active_members?: number
+          deal_completion_rate?: number
+          economic_output_score?: number
+          institution_id?: string
+          liquidity_contribution?: number
+          rank_position?: number | null
+          total_deals?: number
+          total_earnings?: number
+          trust_score_average?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institutional_economic_scores_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: true
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institutional_enrollment_records: {
+        Row: {
+          activation_score: number
+          created_at: string
+          enrollment_status: string
+          first_bid_at: string | null
+          first_deal_at: string | null
+          id: string
+          institution_id: string
+          profile_completion_pct: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activation_score?: number
+          created_at?: string
+          enrollment_status?: string
+          first_bid_at?: string | null
+          first_deal_at?: string | null
+          id?: string
+          institution_id: string
+          profile_completion_pct?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activation_score?: number
+          created_at?: string
+          enrollment_status?: string
+          first_bid_at?: string | null
+          first_deal_at?: string | null
+          id?: string
+          institution_id?: string
+          profile_completion_pct?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institutional_enrollment_records_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "institutional_enrollment_records_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institutional_interventions: {
+        Row: {
+          ai_nudge_sent: boolean | null
+          created_at: string
+          faculty_notified: boolean | null
+          id: string
+          institution_id: string
+          intervention_type: string
+          resolved_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          ai_nudge_sent?: boolean | null
+          created_at?: string
+          faculty_notified?: boolean | null
+          id?: string
+          institution_id: string
+          intervention_type: string
+          resolved_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          ai_nudge_sent?: boolean | null
+          created_at?: string
+          faculty_notified?: boolean | null
+          id?: string
+          institution_id?: string
+          intervention_type?: string
+          resolved_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institutional_interventions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "institutional_interventions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       institutional_liquidity_metrics: {
         Row: {
@@ -11221,6 +11408,56 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "institutional_talent_snapshots_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institutional_targets: {
+        Row: {
+          created_at: string
+          current_deals: number
+          current_revenue: number
+          current_trust_average: number
+          id: string
+          institution_id: string
+          quarter: string
+          target_deals: number
+          target_revenue: number
+          target_trust_average: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_deals?: number
+          current_revenue?: number
+          current_trust_average?: number
+          id?: string
+          institution_id: string
+          quarter: string
+          target_deals?: number
+          target_revenue?: number
+          target_trust_average?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_deals?: number
+          current_revenue?: number
+          current_trust_average?: number
+          id?: string
+          institution_id?: string
+          quarter?: string
+          target_deals?: number
+          target_revenue?: number
+          target_trust_average?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institutional_targets_institution_id_fkey"
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "organizations"
