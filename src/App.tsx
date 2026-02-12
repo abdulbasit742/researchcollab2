@@ -94,6 +94,8 @@ import AdminAIGovernancePage from "./pages/admin/AdminAIGovernancePage";
 import AdminReproducibilityPage from "./pages/admin/AdminReproducibilityPage";
 import AdminFederationPage from "./pages/admin/AdminFederationPage";
 import FeedPage from "./pages/FeedPage";
+import InstitutionApplyPage from "./pages/InstitutionApplyPage";
+import AdminInstitutionIntelligencePage from "./pages/admin/AdminInstitutionIntelligencePage";
 import HomeDashboard from "./pages/HomeDashboard";
 import PostDetailPage from "./pages/PostDetailPage";
 import NetworkPage from "./pages/NetworkPage";
@@ -294,6 +296,8 @@ const AppContent = () => {
             <Route path="/admin/constitutional-guardian" element={<AdminConstitutionalGuardianPage />} />
             <Route path="/admin/operational-health" element={<AdminOperationalHealthPage />} />
             <Route path="/admin/conversion-metrics" element={<AdminConversionMetricsPage />} />
+            <Route path="/admin/institution-intelligence" element={<AdminInstitutionIntelligencePage />} />
+            <Route path="/institution/apply" element={<InstitutionApplyPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>
