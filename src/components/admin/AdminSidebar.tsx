@@ -59,6 +59,7 @@ const navItems = [
   { icon: Building2, label: "Enterprise", href: "/admin/enterprise" },
   { icon: Building2, label: "Institution Intelligence", href: "/admin/institution-intelligence" },
   { icon: Building2, label: "Institution Activation", href: "/admin/institution-activation" },
+  { icon: DollarSign, label: "Revenue Dashboard", href: "/admin/revenue-dashboard" },
   { icon: Package, label: "Fulfillment", href: "/admin/fulfillment" },
   { icon: DollarSign, label: "Subscriptions", href: "/admin/subscriptions" },
   { icon: Briefcase, label: "AI Pricing", href: "/admin/ai-pricing" },
