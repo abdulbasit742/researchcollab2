@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -28,11 +29,11 @@ const footerLinks = {
   ],
 };
 
-export function Footer() {
+export const Footer = forwardRef<HTMLElement>((_props, ref) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t bg-muted/30">
+    <footer ref={ref} className="border-t bg-muted/30">
       <div className="container py-12 md:py-16 px-4">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
@@ -133,4 +134,6 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+});
+
+Footer.displayName = "Footer";
