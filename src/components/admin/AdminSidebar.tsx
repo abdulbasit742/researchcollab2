@@ -104,6 +104,7 @@ const navItems = [
   { icon: Star, label: "Supervisor Performance", href: "/faculty/performance" },
   { icon: GraduationCap, label: "Employability Export", href: "/profile/employability" },
   { icon: Trophy, label: "Academic Rankings", href: "/academic/rankings" },
+  { icon: Building2, label: "Academic Analytics", href: "/org/default/academic-analytics" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
   { icon: Layers, label: "My OS", href: "/my-os" },
   { icon: TrendingUp, label: "Opportunity Dashboard", href: "/opportunities/dashboard" },

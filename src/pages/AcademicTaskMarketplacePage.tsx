@@ -1,22 +1,19 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Plus, BookOpen, Code, FileText, BarChart3, DollarSign } from "lucide-react";
+import { Search, Plus, BookOpen, Code, FileText, BarChart3, DollarSign, Loader2 } from "lucide-react";
+import { useAcademicTasks } from "@/hooks/useAcademicData";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
 
 const taskTypeIcons: Record<string, any> = {
   literature_review: BookOpen, coding: Code, data_cleaning: FileText, survey_analysis: BarChart3, writing: FileText, other: FileText,
 };
-
-const mockTasks = [
-  { id: "1", title: "Literature Review on Federated Learning", type: "literature_review", reward: 5000, trust_weight: 1.2, status: "open", institution: "FAST-NUCES", posted_by: "Dr. Ahmed Khan" },
-  { id: "2", title: "Data Cleaning for IoT Sensor Dataset", type: "data_cleaning", reward: 3000, trust_weight: 1.0, status: "open", institution: "NUST", posted_by: "Prof. Sara Malik" },
-  { id: "3", title: "Python Script for Sentiment Analysis", type: "coding", reward: 8000, trust_weight: 1.5, status: "assigned", institution: "LUMS", posted_by: "Dr. Usman Tariq" },
-  { id: "4", title: "Survey Data Analysis for HCI Study", type: "survey_analysis", reward: 4000, trust_weight: 1.1, status: "open", institution: "FAST-NUCES", posted_by: "Dr. Amina Shah" },
-  { id: "5", title: "Technical Writing for Research Paper", type: "writing", reward: 6000, trust_weight: 1.3, status: "completed", institution: "COMSATS", posted_by: "Prof. Bilal Ahmad" },
-];
 
 const statusColor: Record<string, string> = {
   open: "bg-green-500/10 text-green-600 border-green-500/20",
@@ -27,7 +24,61 @@ const statusColor: Record<string, string> = {
 
 export default function AcademicTaskMarketplacePage() {
   const [search, setSearch] = useState("");
-  const filtered = mockTasks.filter(t => t.title.toLowerCase().includes(search.toLowerCase()) || t.type.includes(search.toLowerCase()));
+  const { data: tasks, isLoading } = useAcademicTasks();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const { user } = useAuth();
+
+  const applyMutation = useMutation({
+    mutationFn: async (taskId: string) => {
+      const { error } = await supabase
+        .from("micro_academic_tasks")
+        .update({ assigned_to: user?.id, status: "assigned" })
+        .eq("id", taskId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["academic-tasks"] });
+      toast({ title: "Applied successfully" });
+    },
+    onError: (e: Error) => toast({ title: "Error", description: e.message, variant: "destructive" }),
+  });
+
+  const filtered = (tasks || []).filter(t =>
+    t.task_title?.toLowerCase().includes(search.toLowerCase()) ||
+    t.task_type?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  if (isLoading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+
+  const renderTask = (task: any) => {
+    const Icon = taskTypeIcons[task.task_type] || FileText;
+    return (
+      <Card key={task.id}>
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10"><Icon className="h-5 w-5 text-primary" /></div>
+              <div>
+                <p className="font-medium">{task.task_title}</p>
+                <p className="text-sm text-muted-foreground">{task.task_type}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <p className="font-semibold flex items-center gap-1"><DollarSign className="h-3 w-3" /> PKR {(task.reward_amount ?? 0).toLocaleString()}</p>
+                <p className="text-xs text-muted-foreground">Trust ×{task.trust_weight ?? 1}</p>
+              </div>
+              <Badge variant="outline" className={statusColor[task.status] || statusColor.open}>{task.status}</Badge>
+              {task.status === "open" && (
+                <Button size="sm" onClick={() => applyMutation.mutate(task.id)} disabled={applyMutation.isPending}>Apply</Button>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -54,53 +105,13 @@ export default function AcademicTaskMarketplacePage() {
             <TabsTrigger value="writing">Writing</TabsTrigger>
           </TabsList>
           <TabsContent value="all" className="space-y-3 mt-4">
-            {filtered.map(task => {
-              const Icon = taskTypeIcons[task.type] || FileText;
-              return (
-                <Card key={task.id}>
-                  <CardContent className="pt-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-primary/10"><Icon className="h-5 w-5 text-primary" /></div>
-                        <div>
-                          <p className="font-medium">{task.title}</p>
-                          <p className="text-sm text-muted-foreground">{task.institution} · {task.posted_by}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="text-right">
-                          <p className="font-semibold flex items-center gap-1"><DollarSign className="h-3 w-3" /> PKR {task.reward.toLocaleString()}</p>
-                          <p className="text-xs text-muted-foreground">Trust ×{task.trust_weight}</p>
-                        </div>
-                        <Badge variant="outline" className={statusColor[task.status]}>{task.status}</Badge>
-                        {task.status === "open" && <Button size="sm">Apply</Button>}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+            {filtered.length === 0 && <p className="text-center text-muted-foreground py-8">No tasks available</p>}
+            {filtered.map(renderTask)}
           </TabsContent>
           {["literature_review", "coding", "data_cleaning", "writing"].map(type => (
             <TabsContent key={type} value={type} className="space-y-3 mt-4">
-              {filtered.filter(t => t.type === type).map(task => {
-                const Icon = taskTypeIcons[task.type];
-                return (
-                  <Card key={task.id}><CardContent className="pt-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-primary/10"><Icon className="h-5 w-5 text-primary" /></div>
-                        <div><p className="font-medium">{task.title}</p><p className="text-sm text-muted-foreground">{task.institution}</p></div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <p className="font-semibold">PKR {task.reward.toLocaleString()}</p>
-                        <Badge variant="outline" className={statusColor[task.status]}>{task.status}</Badge>
-                        {task.status === "open" && <Button size="sm">Apply</Button>}
-                      </div>
-                    </div>
-                  </CardContent></Card>
-                );
-              })}
+              {filtered.filter(t => t.task_type === type).length === 0 && <p className="text-center text-muted-foreground py-8">No {type.replace("_", " ")} tasks</p>}
+              {filtered.filter(t => t.task_type === type).map(renderTask)}
             </TabsContent>
           ))}
         </Tabs>

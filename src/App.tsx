@@ -181,6 +181,7 @@ import OpportunityDashboardPage from "./pages/OpportunityDashboardPage";
 import StrategicFeedPage from "./pages/StrategicFeedPage";
 import MyOSPage from "./pages/MyOSPage";
 import AdminRevenueIntelligencePage from "./pages/admin/AdminRevenueIntelligencePage";
+import InstitutionalAcademicAnalyticsPage from "./pages/InstitutionalAcademicAnalyticsPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -364,6 +365,7 @@ const AppContent = () => {
             <Route path="/feed/strategic" element={<StrategicFeedPage />} />
             <Route path="/my-os" element={<MyOSPage />} />
             <Route path="/admin/revenue-intelligence" element={<AdminRevenueIntelligencePage />} />
+            <Route path="/org/:id/academic-analytics" element={<InstitutionalAcademicAnalyticsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
     </>

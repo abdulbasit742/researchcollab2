@@ -4,15 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, XCircle, RotateCcw, AlertTriangle, Clock, User } from "lucide-react";
-
-type ReviewStatus = "pending" | "approved" | "rejected" | "revision_needed";
-interface Review { id: string; student: string; project: string; type: "milestone" | "final" | "revision"; milestone: string; submitted: string; status: ReviewStatus; }
-const mockReviews: Review[] = [
-  { id: "1", student: "Fatima Ali", project: "AI-Powered Academic Integrity System", type: "milestone", milestone: "Prototype Development", submitted: "2026-02-10", status: "pending" },
-  { id: "2", student: "Hassan Raza", project: "Blockchain-Based Credential Verification", type: "final", milestone: "Final Submission", submitted: "2026-02-08", status: "pending" },
-  { id: "3", student: "Aisha Noor", project: "IoT Smart Campus Energy Monitor", type: "revision", milestone: "Software Integration", submitted: "2026-02-05", status: "pending" },
-];
+import { CheckCircle2, XCircle, RotateCcw, AlertTriangle, Clock, User, Loader2 } from "lucide-react";
+import { useSupervisorReviews } from "@/hooks/useAcademicData";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const typeColor: Record<string, string> = {
   milestone: "bg-blue-500/10 text-blue-600 border-blue-500/20",
@@ -21,15 +17,31 @@ const typeColor: Record<string, string> = {
 };
 
 export default function SupervisorReviewQueuePage() {
-  const [reviews, setReviews] = useState(mockReviews);
+  const { data: reviews, isLoading } = useSupervisorReviews();
   const [comments, setComments] = useState<Record<string, string>>({});
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  const handleDecision = (id: string, decision: string) => {
-    setReviews(prev => prev.map(r => r.id === id ? { ...r, status: decision as any } : r));
-  };
+  const decisionMutation = useMutation({
+    mutationFn: async ({ id, decision }: { id: string; decision: string }) => {
+      const trustAdj = decision === "approved" ? 5 : decision === "rejected" ? -3 : 0;
+      const { error } = await supabase
+        .from("supervisor_reviews")
+        .update({ decision, comments: comments[id] || null, trust_adjustment: trustAdj })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["supervisor-reviews"] });
+      toast({ title: "Decision recorded" });
+    },
+    onError: (e: Error) => toast({ title: "Error", description: e.message, variant: "destructive" }),
+  });
 
-  const pending = reviews.filter(r => r.status === "pending");
-  const resolved = reviews.filter(r => r.status !== "pending");
+  const pending = (reviews || []).filter(r => r.decision === "pending");
+  const resolved = (reviews || []).filter(r => r.decision !== "pending");
+
+  if (isLoading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
 
   return (
     <div className="min-h-screen bg-background">
@@ -47,11 +59,11 @@ export default function SupervisorReviewQueuePage() {
             <p className="text-sm text-muted-foreground">Pending</p>
           </CardContent></Card>
           <Card><CardContent className="pt-6 text-center">
-            <p className="text-2xl font-bold text-green-600">{resolved.filter(r => r.status === "approved").length}</p>
+            <p className="text-2xl font-bold text-green-600">{resolved.filter(r => r.decision === "approved").length}</p>
             <p className="text-sm text-muted-foreground">Approved</p>
           </CardContent></Card>
           <Card><CardContent className="pt-6 text-center">
-            <p className="text-2xl font-bold text-red-600">{resolved.filter(r => r.status === "rejected").length}</p>
+            <p className="text-2xl font-bold text-red-600">{resolved.filter(r => r.decision === "rejected").length}</p>
             <p className="text-sm text-muted-foreground">Rejected</p>
           </CardContent></Card>
         </div>
@@ -64,21 +76,21 @@ export default function SupervisorReviewQueuePage() {
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-lg">{r.project}</CardTitle>
-                      <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1"><User className="h-3 w-3" /> {r.student} · {r.milestone}</p>
+                      <CardTitle className="text-lg">Project Review</CardTitle>
+                      <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1"><User className="h-3 w-3" /> {r.project_id?.slice(0, 8)}...</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline" className={typeColor[r.type]}>{r.type}</Badge>
-                      <span className="text-xs text-muted-foreground">{r.submitted}</span>
+                      <Badge variant="outline" className={typeColor[r.review_type] || typeColor.milestone}>{r.review_type}</Badge>
+                      <span className="text-xs text-muted-foreground">{new Date(r.created_at!).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Textarea placeholder="Add comments..." value={comments[r.id] || ""} onChange={e => setComments(prev => ({ ...prev, [r.id]: e.target.value }))} rows={2} />
                   <div className="flex gap-2">
-                    <Button size="sm" className="gap-1" onClick={() => handleDecision(r.id, "approved")}><CheckCircle2 className="h-4 w-4" /> Approve</Button>
-                    <Button size="sm" variant="destructive" className="gap-1" onClick={() => handleDecision(r.id, "rejected")}><XCircle className="h-4 w-4" /> Reject</Button>
-                    <Button size="sm" variant="outline" className="gap-1" onClick={() => handleDecision(r.id, "revision_needed")}><RotateCcw className="h-4 w-4" /> Request Revision</Button>
+                    <Button size="sm" className="gap-1" onClick={() => decisionMutation.mutate({ id: r.id, decision: "approved" })} disabled={decisionMutation.isPending}><CheckCircle2 className="h-4 w-4" /> Approve</Button>
+                    <Button size="sm" variant="destructive" className="gap-1" onClick={() => decisionMutation.mutate({ id: r.id, decision: "rejected" })} disabled={decisionMutation.isPending}><XCircle className="h-4 w-4" /> Reject</Button>
+                    <Button size="sm" variant="outline" className="gap-1" onClick={() => decisionMutation.mutate({ id: r.id, decision: "revision_needed" })} disabled={decisionMutation.isPending}><RotateCcw className="h-4 w-4" /> Request Revision</Button>
                     <Button size="sm" variant="outline" className="gap-1 ml-auto"><AlertTriangle className="h-4 w-4" /> Flag Risk</Button>
                   </div>
                 </CardContent>
@@ -90,12 +102,13 @@ export default function SupervisorReviewQueuePage() {
             {resolved.map(r => (
               <div key={r.id} className="flex items-center justify-between p-3 rounded-lg border">
                 <div>
-                  <p className="font-medium">{r.student}</p>
-                  <p className="text-sm text-muted-foreground">{r.project} · {r.milestone}</p>
+                  <p className="font-medium">{r.review_type} review</p>
+                  <p className="text-sm text-muted-foreground">Project {r.project_id?.slice(0, 8)}... · Trust adj: {r.trust_adjustment || 0}</p>
                 </div>
-                <Badge variant="outline" className={r.status === "approved" ? "bg-green-500/10 text-green-600" : r.status === "rejected" ? "bg-red-500/10 text-red-600" : "bg-orange-500/10 text-orange-600"}>{r.status}</Badge>
+                <Badge variant="outline" className={r.decision === "approved" ? "bg-green-500/10 text-green-600" : r.decision === "rejected" ? "bg-red-500/10 text-red-600" : "bg-orange-500/10 text-orange-600"}>{r.decision}</Badge>
               </div>
             ))}
+            {resolved.length === 0 && <p className="text-center text-muted-foreground py-8">No resolved reviews yet</p>}
           </TabsContent>
         </Tabs>
       </div>
