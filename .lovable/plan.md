@@ -1,17 +1,21 @@
 
 
-# Fix Bottom Nav Sliding Down on Mobile Scroll
+# Fix Bottom Nav Icons Getting Clipped
 
-## Root Cause
-The `MobileBottomNav` uses framer-motion with `initial={{ y: 100 }}` and `animate={{ y: 0 }}`. When framer-motion completes, it sets `transform: translateY(0px)` on the element, which **overwrites** the `style={{ transform: 'translateZ(0)' }}` GPU compositing hint. Without the compositing layer, mobile browsers can shift the fixed nav when the address bar appears/disappears during scrolling.
+## Problem
+The bottom navigation bar has a fixed height of `h-16` (64px), but the `safe-area-bottom` class adds extra padding inside via `padding-bottom: env(safe-area-inset-bottom)`. This pushes the icon content down within the fixed-height container, causing icons and labels to be clipped at the bottom.
 
 ## Fix
 
 ### File: `src/components/layout/MobileBottomNav.tsx`
-1. Remove the framer-motion `motion.nav` wrapper entirely and use a plain `<nav>` element instead. The entrance animation is unnecessary for a persistent nav bar and causes the transform conflict.
-2. Keep `will-change-transform` and `transform: translateZ(0)` for GPU compositing.
-3. This eliminates all transform conflicts and ensures the nav stays pinned at `bottom: 0` at all times.
+- Remove the fixed `h-16` from the inner flex container
+- Instead, apply explicit padding: `pt-2 pb-2` for the content area
+- Move `safe-area-bottom` so it adds padding **below** the content naturally
+- Use `pb-[env(safe-area-inset-bottom)]` or keep the class but remove the fixed height so the nav expands to fit content + safe area
 
-### Summary of Change
-Replace `<motion.nav initial/animate/transition ...>` with a plain `<nav>` that has solid fixed positioning and GPU compositing -- no animation transforms that can interfere with the browser's fixed-position rendering on mobile.
+Specifically:
+1. On the outer `<nav>`, remove `safe-area-bottom` class
+2. Change the inner `<div>` from `h-16` to `py-2` so it sizes to content
+3. Add a separate safe-area spacer div at the bottom of the nav, OR use `pb-[max(0.5rem,env(safe-area-inset-bottom))]` on the outer nav
 
+This ensures the nav always shows all icons fully, regardless of device safe area insets.
