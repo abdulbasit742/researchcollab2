@@ -21,7 +21,7 @@ export function MainLayout({ children }: MainLayoutProps) {
   const { unreadCount, highPriorityCount } = useAmbientIntelligence();
 
   return (
-    <div className="flex min-h-screen flex-col overflow-x-hidden">
+    <div className="flex min-h-[100dvh] flex-col overflow-x-hidden">
       <Navbar />
       <main className={`flex-1 ${isMobile ? 'pb-20' : ''}`}>
         <SwipeBackNavigator>{children}</SwipeBackNavigator>
