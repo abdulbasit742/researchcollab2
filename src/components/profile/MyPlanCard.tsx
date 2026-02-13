@@ -24,8 +24,8 @@ export function MyPlanCard() {
   if (loading) return null;
 
   // Map existing tier names to new LinkedIn-style names
-  const tierName = currentTier?.name?.toLowerCase() || "free";
-  const planName = tierName === "free" ? "basic" : tierName === "pro" ? "career" : tierName === "elite" ? "business" : tierName;
+  const tierName = currentTier?.name?.toLowerCase() || "basic";
+  const planName = tierName === "free" ? "basic" : tierName;
   const displayName = planName.charAt(0).toUpperCase() + planName.slice(1);
   const config = planConfig[planName] || planConfig.basic;
   const limits = planLimits[planName] || planLimits.basic;
