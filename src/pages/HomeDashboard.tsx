@@ -77,7 +77,7 @@ export default function HomeDashboard() {
       <FirstTimeUserOverlay />
       <PostSignupIntentSelector />
       
-      <div className="container py-6 max-w-5xl">
+      <div className="container py-6 pb-4 max-w-5xl">
         {/* Header - Simplified */}
         <div className="mb-4">
           <h1 className="text-xl font-bold flex items-center gap-2">
