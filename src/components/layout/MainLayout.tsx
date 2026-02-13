@@ -8,6 +8,7 @@ import { FloatingNudgeIndicator } from "@/components/ambient";
 import { useAmbientIntelligence } from "@/hooks/useAmbientIntelligence";
 import { useAuth } from "@/contexts/AuthContext";
 import { GlobalAIChatButton } from "@/components/ai/GlobalAIChatButton";
+import { SwipeBackNavigator } from "@/components/mobile/SwipeBackNavigator";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -21,7 +22,9 @@ export function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className={`flex-1 ${isMobile ? 'pb-16' : ''}`}>{children}</main>
+      <main className={`flex-1 ${isMobile ? 'pb-16' : ''}`}>
+        <SwipeBackNavigator>{children}</SwipeBackNavigator>
+      </main>
       {!isMobile && <Footer />}
       <FloatingSupportChat />
       <GlobalAIChatButton />
