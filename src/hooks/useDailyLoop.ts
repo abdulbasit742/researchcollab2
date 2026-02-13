@@ -53,7 +53,7 @@ export function useDailyLoop() {
         title: opp.title || 'New Opportunity',
         subtitle: 'Match score: High',
         urgent: index === 0,
-        href: `/opportunities/${opp.id}`,
+        href: `/offers/${opp.id}`,
       });
     });
 
