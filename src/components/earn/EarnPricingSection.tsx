@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Check, ArrowRight, Sparkles, BookOpen, Package, Zap } from "lucide-react";
@@ -6,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatPKR } from "@/lib/currency";
 import { toolBundles, tools } from "@/data/tools";
+import { SubscriptionCheckoutModal } from "@/components/subscriptions/SubscriptionCheckoutModal";
 
 const plans = [
   {
@@ -148,7 +150,7 @@ const combos = [
   },
 ];
 
-function PlanCards({ items, sectionId }: { items: typeof plans; sectionId: string }) {
+function PlanCards({ items, sectionId, onSubscribe }: { items: typeof plans; sectionId: string; onSubscribe?: () => void }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
       {items.map((plan, i) => (
@@ -190,9 +192,9 @@ function PlanCards({ items, sectionId }: { items: typeof plans; sectionId: strin
               <Button
                 variant={plan.popular ? "hero" : "outline"}
                 className="w-full"
-                asChild
+                onClick={onSubscribe}
               >
-                <Link to="/pricing">{plan.cta}</Link>
+                {plan.cta}
               </Button>
             </CardContent>
           </Card>
@@ -230,10 +232,12 @@ function SectionHeader({ icon: Icon, label, title, highlight, subtitle }: {
 }
 
 export function EarnPricingSection() {
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
   const getToolNames = (toolIds: string[]) =>
     toolIds.map((id) => tools.find((t) => t.id === id)?.name ?? id);
 
   return (
+    <>
     <section className="py-16 md:py-24 space-y-24">
       <div className="container px-4 md:px-6">
         {/* Individual Plans */}
@@ -244,7 +248,7 @@ export function EarnPricingSection() {
           highlight="Growth Plan"
           subtitle="Start free and scale as you earn. Upgrade anytime to unlock premium features."
         />
-        <PlanCards items={plans} sectionId="plans" />
+        <PlanCards items={plans} sectionId="plans" onSubscribe={() => setCheckoutOpen(true)} />
 
         <motion.div
           initial={{ opacity: 0 }}
@@ -271,7 +275,7 @@ export function EarnPricingSection() {
           highlight="Research Papers"
           subtitle="From open access to unlimited AI-powered research tools — pick the tier that fits your workflow."
         />
-        <PlanCards items={researchTiers} sectionId="research" />
+        <PlanCards items={researchTiers} sectionId="research" onSubscribe={() => setCheckoutOpen(true)} />
       </div>
 
       {/* AI Tools Bundles */}
@@ -380,5 +384,8 @@ export function EarnPricingSection() {
         </div>
       </div>
     </section>
+
+      <SubscriptionCheckoutModal open={checkoutOpen} onOpenChange={setCheckoutOpen} />
+    </>
   );
 }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,8 +7,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Check, Sparkles, Users, Building2, GraduationCap, Zap, Star, BookOpen, Crown, Infinity, X, Shield, GraduationCap as UniCap } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SubscriptionCheckoutModal } from "@/components/subscriptions/SubscriptionCheckoutModal";
 
 const PricingPage = () => {
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+
   const individualPlans = [
     {
       name: "Basic",
@@ -326,9 +330,9 @@ const PricingPage = () => {
                     <Button 
                       className="w-full" 
                       variant={plan.ctaVariant}
-                      asChild
+                      onClick={() => setCheckoutOpen(true)}
                     >
-                      <Link to="/auth">{plan.cta}</Link>
+                      {plan.cta}
                     </Button>
                   </CardContent>
                 </Card>
@@ -699,6 +703,7 @@ const PricingPage = () => {
           </div>
         </section>
       </div>
+      <SubscriptionCheckoutModal open={checkoutOpen} onOpenChange={setCheckoutOpen} />
     </MainLayout>
   );
 };
