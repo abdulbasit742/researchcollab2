@@ -9,6 +9,7 @@ import { useAmbientIntelligence } from "@/hooks/useAmbientIntelligence";
 import { useAuth } from "@/contexts/AuthContext";
 import { GlobalAIChatButton } from "@/components/ai/GlobalAIChatButton";
 import { SwipeBackNavigator } from "@/components/mobile/SwipeBackNavigator";
+import { PWAInstallBanner } from "@/components/pwa/PWAInstallBanner";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -29,6 +30,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       <FloatingSupportChat />
       <GlobalAIChatButton />
       <MobileBottomNav />
+      <PWAInstallBanner />
       {user && (unreadCount > 0 || highPriorityCount > 0) && (
         <FloatingNudgeIndicator 
           count={unreadCount} 
