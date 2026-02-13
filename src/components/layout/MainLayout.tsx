@@ -23,7 +23,7 @@ export function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className={`flex-1 ${isMobile ? 'pb-16' : ''}`}>
+      <main className={`flex-1 ${isMobile ? 'pb-20' : ''}`}>
         <SwipeBackNavigator>{children}</SwipeBackNavigator>
       </main>
       {!isMobile && <Footer />}
