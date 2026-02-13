@@ -1,37 +1,44 @@
 
 
-# Add Pricing Section to Earn Page
+# Expand Earn Page Pricing with Research Papers + AI Tools Bundles
 
-Add an eye-catching pricing section directly on the Earn page so users can see available plans without navigating away.
+Add the full Research Paper access tiers and AI Tools bundles below the existing individual plans on the Earn page pricing section, so users can see everything in one place.
 
 ## What You Get
 
-- A new "Pricing Plans" section embedded at the bottom of the Earn page (below the main tabs content)
-- Shows the 3 individual plans (Free, Student, Researcher) as styled cards with feature lists
-- Highlights the "Student" plan as most popular
-- "View All Plans" link to the full `/pricing` page for tool bundles and enterprise options
-- Responsive grid: 1 column on mobile, 3 on desktop
-- Smooth scroll-in animation using framer-motion
+- **Research Paper Tiers** section with 3 cards: Free Researcher (PKR 0), Pro Researcher (PKR 999/mo), Elite Researcher (PKR 2,499/mo) -- each with detailed feature lists
+- **AI Tools Bundles** section with 4 bundle cards from `src/data/tools.ts`: Research Starter (PKR 10,800), Publication Ready (PKR 16,400), Data Science (PKR 18,000), Complete Research Suite (PKR 27,500) -- showing discount badges, included tools, and original prices with strikethrough
+- **Combo Deals** section with 3 combo offers that pair research tiers + AI tool bundles at discounted rates
+- All sections use the same animated card style (framer-motion scroll-in) as the existing plans
+- Responsive grids: 1 column on mobile, 3 on desktop (4 columns for bundles on large screens)
+- "Pro Researcher" highlighted as most popular in research tiers
 
 ## Changes
 
-### 1. Create `src/components/earn/EarnPricingSection.tsx` (New)
+### 1. Edit `src/components/earn/EarnPricingSection.tsx`
 
-A self-contained component displaying the 3 individual pricing tiers:
-- Free (PKR 0/mo) -- outline card
-- Student (PKR 499/mo) -- highlighted as popular with gradient border
-- Researcher (PKR 1,999/mo) -- standard card
+Add three new subsections below the existing individual plans:
 
-Each card shows: plan name, price, description, feature checklist, and CTA button linking to `/pricing` or signup.
+**Section A -- Research Paper Access Tiers:**
+- Free Researcher: Open Access papers, 3 AI summaries/month, basic search, reading stats
+- Pro Researcher (Popular): All papers unlocked, 50 AI summaries, paper comparison, Research Gap Finder, Lit Review Generator, export citations
+- Elite Researcher: Everything in Pro + unlimited AI, Annotated Bibliography, Document Chat, Plain English toggle, priority processing, API access
 
-### 2. Edit `src/pages/EarnPage.tsx`
+**Section B -- AI Tools Bundles:**
+- Import `toolBundles` and `tools` from `src/data/tools.ts`
+- Display each bundle card with: name, description, bundle price (PKR), original price with strikethrough, discount badge (e.g., "34% OFF"), and list of included tool names
+- 4-column grid on desktop, 2 on tablet, 1 on mobile
 
-Import and render `EarnPricingSection` after the closing `</Tabs>` element, before the `PostProjectModal`.
+**Section C -- Combo Deals:**
+- Research Pro + AI Essentials (PKR 7,999, save PKR 1,500)
+- Research Elite + Research Pro AI (PKR 14,999, save PKR 3,500)
+- Full Academic Suite (Custom pricing)
+
+Each section gets its own heading badge and animated entrance.
 
 ## Files
 
 | File | Action |
 |------|--------|
-| `src/components/earn/EarnPricingSection.tsx` | Create |
-| `src/pages/EarnPage.tsx` | Edit (add import + render) |
+| `src/components/earn/EarnPricingSection.tsx` | Edit (add research tiers, AI bundles, combo deals sections) |
 
