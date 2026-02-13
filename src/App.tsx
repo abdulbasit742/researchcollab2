@@ -229,6 +229,7 @@ const AppContent = () => {
             <Route path="/blog/:slug" element={<BlogArticlePage />} />
             <Route path="/offers" element={<OpportunitiesPage />} />
             <Route path="/offers/:id" element={<OfferRedirectPage />} />
+            <Route path="/opportunities/:id" element={<OfferRedirectPage />} />
             <Route path="/workroom/:offerId" element={<WorkRoomPage />} />
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/subscriptions" element={<SubscriptionsPage />} />
