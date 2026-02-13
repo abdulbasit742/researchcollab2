@@ -1,91 +1,101 @@
 
 
-# Phase: Data Activation & System Hardening
-
-## Problem
-
-Multiple pages built in recent phases use hardcoded mock data instead of real database queries. This means:
-- Supervisor Review Queue shows fake reviews
-- Student Performance Scorecard shows static numbers
-- Academic Rankings shows placeholder names
-- Employability Export generates nothing real
-- Academic Task Marketplace has no real task data
-- Supervisor Performance uses static metrics
-- The `forecast-revenue` edge function (planned in Revenue Engine) was never created
+# Research Papers Access + Monetization Pricing System
 
 ## What Gets Built
 
-### 1. Wire Academic Pages to Real Database
+### 1. Enhanced Research Papers Hub with Access Control
 
-**SupervisorReviewQueuePage.tsx** -- Replace mock reviews with real `supervisor_reviews` table queries. Add insert mutations for approve/reject/revision decisions with `trust_adjustment` writes.
+Currently the Research Papers page (`/research-papers`) shows all 12 sample papers with "Open Access" / "Restricted" badges but no actual gating. We will add real access control:
 
-**StudentPerformancePage.tsx** -- Query `student_performance_metrics` table using current user's auth ID. Fall back to computed values from `user_trust_profiles` and `fyp_projects` if no row exists.
+**Changes to `useResearchPapers.ts`:**
+- Import `useUserSubscription` to check current plan
+- Add `userTier` state ("free" | "pro" | "elite")
+- Gate "Restricted" papers: free users see title + abstract only, cannot AI Summarize or access full content
+- Pro users unlock all restricted papers
+- Elite users get unlimited AI tool usage (summarize, compare, gap finder, lit review, bibliography)
+- Free users get 3 AI actions/session, Pro gets 20/month
 
-**AcademicRankingsPage.tsx** -- Query `student_performance_metrics` (top students), `supervisor_performance_metrics` (top supervisors), and aggregate `fyp_projects` by institution for department rankings. Order by relevant score columns.
+**Changes to `PaperCard.tsx`:**
+- Add lock icon overlay on restricted papers for free users
+- Show "Upgrade to Access" button instead of "AI Summarize" for locked papers
+- Show tier badge indicating what plan unlocks this paper
 
-**AcademicTaskMarketplacePage.tsx** -- Query `micro_academic_tasks` with status filters. Add apply mutation (set `assigned_to` + status change). Show real institution names from `organizations` join.
+### 2. Research Papers Discovery Section on Landing Page
 
-**SupervisorPerformancePage.tsx** -- Query `supervisor_performance_metrics` for the logged-in user. Display real completion rates and trust growth.
+**New component: `src/components/home/ResearchDiscoverySection.tsx`**
+- Added between `FeaturesSection` and `WhyChooseSection` on the landing page
+- Shows 4 featured papers (open access) with clean cards
+- Search bar preview (typing redirects to `/research-papers`)
+- Stats: "12,000+ Papers | 50+ Fields | AI-Powered Analysis"
+- CTA: "Explore Research Hub" linking to `/research-papers`
 
-**EmployabilityExportPage.tsx** -- Query `employability_reports` for current user. If none exists, compute from `user_trust_profiles` + `fyp_projects` + `research_validations` and insert a new report row.
+**Update `src/pages/Index.tsx`:**
+- Import and add `ResearchDiscoverySection`
 
-### 2. Institutional Academic Analytics Page (Phase 9 -- Missing)
+### 3. Research + AI Tools Pricing Section
 
-Create **`/org/:id/academic-analytics`** route and page.
+**Update `src/pages/PricingPage.tsx`:**
+- Add a 4th tab: "Research" alongside Individual, AI Tools, Enterprise
+- Research tab shows 3 tiers:
 
-**InstitutionalAcademicAnalyticsPage.tsx:**
-- FYP completion rate (from `fyp_projects` where `institution_id` matches)
-- Average milestone delay (computed from `fyp_risk_flags`)
-- Student trust distribution (histogram from `user_trust_profiles` joined via org members)
-- Faculty workload balance (from `supervisor_reviews` count per supervisor)
-- Economic output by department (sum `economic_value` from `fyp_projects`)
-- Skill demand heatmap (from `micro_academic_tasks` task_type distribution)
+```text
+Free Researcher (PKR 0/mo)
+- Access to Open Access papers only
+- 3 AI summaries/month
+- Basic search & filters
+- Reading stats tracking
 
-Uses Recharts bar/pie/area charts. Boardroom-ready layout with Cards.
+Pro Researcher (PKR 999/mo)
+- All papers unlocked (Open + Restricted)
+- 50 AI summaries/month
+- Paper comparison (up to 5/month)
+- Research Gap Finder
+- Lit Review Generator
+- Export citations
 
-### 3. FYP Risk Detection Hook
+Elite Researcher (PKR 2,499/mo)
+- Everything in Pro
+- Unlimited AI actions
+- Annotated Bibliography generator
+- Document Chat (ask questions to papers)
+- Plain English toggle
+- Priority AI processing
+- API access to research tools
+```
 
-Create **`useAcademicData.ts`** -- a unified hook that:
-- Exports `useSupervisorReviews(projectId?)` -- fetches from `supervisor_reviews`
-- Exports `useStudentMetrics(studentId?)` -- fetches from `student_performance_metrics`
-- Exports `useFYPRiskFlags(projectId?)` -- fetches from `fyp_risk_flags`
-- Exports `useAcademicTasks(filters?)` -- fetches from `micro_academic_tasks`
-- Exports `useSupervisorMetrics(supervisorId?)` -- fetches from `supervisor_performance_metrics`
+- Below tiers: "Paper + AI Tools Combo" pricing table showing value ratios:
+  - Research Pro + AI Essentials bundle = PKR 7,999 (Save PKR 1,500)
+  - Research Elite + Research Pro AI bundle = PKR 14,999 (Save PKR 3,500)
+  - Full Academic Suite (Elite + Ultimate AI + Enterprise) = Custom
 
-### 4. Revenue Forecast Edge Function
+### 4. Add Research Papers to Navbar
 
-Create **`supabase/functions/forecast-revenue/index.ts`**:
-- Reads last 30 days from `revenue_metrics_daily`
-- Computes projected MRR using linear trend
-- Estimates churn risk from declining user activity
-- Writes to `revenue_forecasts` table
-- Returns forecast data in response
-
-### 5. Routing & Navigation
-
-- Add `/org/:id/academic-analytics` route in App.tsx
-- Add navigation link in AdminSidebar under academic section
+**Update `src/components/layout/Navbar.tsx`:**
+- Add "Research" nav item with BookOpen icon linking to `/research-papers`
+- Positioned after "Opportunities" in the nav items array
 
 ## Technical Details
 
-### New Files (3)
-1. `src/hooks/useAcademicData.ts`
-2. `src/pages/InstitutionalAcademicAnalyticsPage.tsx`
-3. `supabase/functions/forecast-revenue/index.ts`
+### New Files (1)
+1. `src/components/home/ResearchDiscoverySection.tsx` -- landing page section
 
-### Modified Files (8)
-1. `src/pages/SupervisorReviewQueuePage.tsx` -- replace mock with DB queries
-2. `src/pages/StudentPerformancePage.tsx` -- replace mock with DB queries
-3. `src/pages/AcademicRankingsPage.tsx` -- replace mock with DB queries
-4. `src/pages/AcademicTaskMarketplacePage.tsx` -- replace mock with DB queries
-5. `src/pages/SupervisorPerformancePage.tsx` -- replace mock with DB queries
-6. `src/pages/EmployabilityExportPage.tsx` -- replace mock with DB queries
-7. `src/App.tsx` -- add academic-analytics route
-8. `src/components/admin/AdminSidebar.tsx` -- add academic analytics nav item
+### Modified Files (4)
+1. `src/hooks/useResearchPapers.ts` -- add subscription-aware gating logic
+2. `src/components/research/PaperCard.tsx` -- add lock overlay for restricted papers
+3. `src/pages/PricingPage.tsx` -- add Research pricing tab with tier cards and combo bundles
+4. `src/pages/Index.tsx` -- add ResearchDiscoverySection
+5. `src/components/layout/Navbar.tsx` -- add Research nav link
 
-### No New Database Tables
-All tables already exist from previous migrations. No schema changes needed.
+### No Database Changes
+- Uses existing `subscription_tiers` and `user_subscriptions` tables
+- Research access level derived from subscription tier (Free/Pro/Elite mapping)
+- AI usage limits tracked client-side per session (can be upgraded to DB tracking later)
 
-### Edge Function
-`forecast-revenue` -- reads `revenue_metrics_daily`, computes linear projection, writes to `revenue_forecasts`. Authenticated endpoint using service role key for writes.
-
+### Access Control Logic
+- `access === "Open Access"` -- available to all users
+- `access === "Restricted"` -- requires Pro or Elite subscription
+- AI features (summarize, compare, gap finder, lit review, bibliography, chat) -- metered by tier
+- Free: 3 AI actions/session
+- Pro: 50/month
+- Elite: unlimited
