@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Check, Sparkles, Users, Building2, GraduationCap, Zap, Star, BookOpen, Crown, Infinity } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Check, Sparkles, Users, Building2, GraduationCap, Zap, Star, BookOpen, Crown, Infinity, X, Shield, GraduationCap as UniCap } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const PricingPage = () => {
@@ -15,9 +16,11 @@ const PricingPage = () => {
       description: "Get started with basic features",
       features: [
         "Access to public tools directory",
-        "5 collaboration requests/month",
+        "3 bids/month",
+        "1,000 free AI words/month",
         "Basic profile",
         "Community support",
+        "No peer review included",
       ],
       cta: "Get Started",
       ctaVariant: "outline" as const,
@@ -30,10 +33,12 @@ const PricingPage = () => {
       description: "Perfect for students and learners",
       features: [
         "Everything in Free",
-        "Unlimited collaboration requests",
+        "Unlimited bids",
+        "10,000 free AI words/month",
+        "1 free peer review/month",
+        "Verified university badge (.edu)",
         "Priority matching with researchers",
         "Access to discounted AI tools",
-        "Profile verification badge",
         "Email support",
       ],
       cta: "Start Free Trial",
@@ -47,10 +52,12 @@ const PricingPage = () => {
       description: "For researchers and academics",
       features: [
         "Everything in Student",
+        "50,000 free AI words/month",
+        "3 free peer reviews/month",
+        "Verified university badge + spotlight",
         "Post unlimited projects",
         "AI project scoping assistant",
         "Advanced analytics",
-        "Research verification badge",
         "Priority support",
         "API access",
       ],
@@ -170,6 +177,8 @@ const PricingPage = () => {
       features: [
         "All papers unlocked (Open + Restricted)",
         "50 AI summaries/month",
+        "5 bid tokens/month for collaborations",
+        "1 free peer review request",
         "Paper comparison (up to 5/month)",
         "Research Gap Finder",
         "Lit Review Generator",
@@ -188,6 +197,9 @@ const PricingPage = () => {
       features: [
         "Everything in Pro",
         "Unlimited AI actions",
+        "15 bid tokens/month",
+        "3 free peer reviews/month",
+        "Verified institution badge",
         "Annotated Bibliography generator",
         "Document Chat (ask questions to papers)",
         "Plain English toggle",
@@ -224,6 +236,20 @@ const PricingPage = () => {
     },
   ];
 
+  const comparisonFeatures = [
+    { feature: "Bids/month", free: "3", student: "Unlimited", researcher: "Unlimited", proResearch: "5 tokens", eliteResearch: "15 tokens" },
+    { feature: "AI words/month", free: "1,000", student: "10,000", researcher: "50,000", proResearch: "50 summaries", eliteResearch: "Unlimited" },
+    { feature: "Peer reviews", free: "—", student: "1 free", researcher: "3 free", proResearch: "1 free", eliteResearch: "3 free" },
+    { feature: "Research papers", free: "Open Access", student: "Open Access", researcher: "Open Access", proResearch: "All unlocked", eliteResearch: "All unlocked" },
+    { feature: "Verified university", free: "—", student: "Badge", researcher: "Badge + Spotlight", proResearch: "—", eliteResearch: "Badge" },
+    { feature: "AI tools", free: "Basic", student: "Discounted", researcher: "Full access", proResearch: "Research tools", eliteResearch: "All tools" },
+    { feature: "Document Chat", free: "—", student: "—", researcher: "—", proResearch: "—", eliteResearch: "✓" },
+    { feature: "Research Gap Finder", free: "—", student: "—", researcher: "—", proResearch: "✓", eliteResearch: "✓" },
+    { feature: "Lit Review Generator", free: "—", student: "—", researcher: "—", proResearch: "✓", eliteResearch: "✓" },
+    { feature: "API access", free: "—", student: "—", researcher: "✓", proResearch: "—", eliteResearch: "✓" },
+    { feature: "Priority support", free: "—", student: "—", researcher: "✓", proResearch: "—", eliteResearch: "✓" },
+  ];
+
   return (
     <MainLayout>
       {/* Hero Section */}
@@ -244,7 +270,7 @@ const PricingPage = () => {
 
       <div className="container mx-auto px-4 py-8 md:py-12">
         <Tabs defaultValue="individual" className="w-full">
-          <TabsList className="grid w-full max-w-lg mx-auto grid-cols-4 mb-8 md:mb-12">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-5 mb-8 md:mb-12">
             <TabsTrigger value="individual" className="flex items-center gap-1 text-xs sm:text-sm px-2">
               <GraduationCap className="h-4 w-4 shrink-0" />
               <span className="truncate">Individual</span>
@@ -260,6 +286,10 @@ const PricingPage = () => {
             <TabsTrigger value="enterprise" className="flex items-center gap-1 text-xs sm:text-sm px-2">
               <Building2 className="h-4 w-4 shrink-0" />
               <span className="truncate">Enterprise</span>
+            </TabsTrigger>
+            <TabsTrigger value="compare" className="flex items-center gap-1 text-xs sm:text-sm px-2">
+              <Star className="h-4 w-4 shrink-0" />
+              <span className="truncate">Compare</span>
             </TabsTrigger>
           </TabsList>
 
@@ -509,6 +539,95 @@ const PricingPage = () => {
               ))}
             </div>
           </TabsContent>
+
+          {/* Compare All Plans Tab */}
+          <TabsContent value="compare">
+            <div className="space-y-12">
+              <div>
+                <h2 className="text-2xl font-bold text-center mb-2">All-in-One Comparison</h2>
+                <p className="text-muted-foreground text-center mb-8 max-w-xl mx-auto">
+                  See exactly what's included in every plan at a glance
+                </p>
+                <Card className="max-w-6xl mx-auto overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-muted/50">
+                          <TableHead className="font-semibold min-w-[160px]">Feature</TableHead>
+                          <TableHead className="text-center font-semibold min-w-[100px]">Free</TableHead>
+                          <TableHead className="text-center font-semibold min-w-[100px]">
+                            <div className="flex flex-col items-center gap-1">
+                              <span>Student</span>
+                              <span className="text-xs text-primary font-normal">PKR 499</span>
+                            </div>
+                          </TableHead>
+                          <TableHead className="text-center font-semibold min-w-[110px]">
+                            <div className="flex flex-col items-center gap-1">
+                              <span>Researcher</span>
+                              <span className="text-xs text-primary font-normal">PKR 1,999</span>
+                            </div>
+                          </TableHead>
+                          <TableHead className="text-center font-semibold min-w-[110px]">
+                            <div className="flex flex-col items-center gap-1">
+                              <span>Pro Research</span>
+                              <span className="text-xs text-primary font-normal">PKR 999</span>
+                            </div>
+                          </TableHead>
+                          <TableHead className="text-center font-semibold min-w-[120px]">
+                            <div className="flex flex-col items-center gap-1">
+                              <span>Elite Research</span>
+                              <span className="text-xs text-primary font-normal">PKR 2,499</span>
+                            </div>
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {comparisonFeatures.map((row, index) => (
+                          <TableRow key={index}>
+                            <TableCell className="font-medium">{row.feature}</TableCell>
+                            <TableCell className="text-center text-muted-foreground">{row.free}</TableCell>
+                            <TableCell className="text-center text-muted-foreground">{row.student}</TableCell>
+                            <TableCell className="text-center text-muted-foreground">{row.researcher}</TableCell>
+                            <TableCell className="text-center text-muted-foreground">{row.proResearch}</TableCell>
+                            <TableCell className="text-center text-muted-foreground">{row.eliteResearch}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Verified Universities Banner */}
+              <Card className="max-w-4xl mx-auto bg-primary/5 border-primary/20">
+                <CardContent className="py-8">
+                  <div className="flex flex-col md:flex-row items-center gap-6">
+                    <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
+                      <Shield className="h-8 w-8 text-primary" />
+                    </div>
+                    <div className="text-center md:text-left flex-1">
+                      <h3 className="text-xl font-bold mb-2">Trusted by 50+ Verified Pakistani Universities</h3>
+                      <p className="text-muted-foreground text-sm mb-4">
+                        Students with .edu email get automatic verification and unlock exclusive badges, peer review access, and institutional spotlights on their profile.
+                      </p>
+                      <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                        {["LUMS", "NUST", "FAST", "COMSATS", "UET", "QAU", "IBA", "GCU"].map((uni) => (
+                          <Badge key={uni} variant="secondary" className="text-xs">
+                            <GraduationCap className="h-3 w-3 mr-1" />
+                            {uni}
+                          </Badge>
+                        ))}
+                        <Badge variant="outline" className="text-xs">+42 more</Badge>
+                      </div>
+                    </div>
+                    <Button asChild className="shrink-0">
+                      <Link to="/auth">Verify Now</Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
         </Tabs>
 
         {/* Payment Methods */}
@@ -545,7 +664,15 @@ const PricingPage = () => {
               },
               {
                 q: "What's included in the Research tiers?",
-                a: "Free gives you Open Access papers and 3 AI summaries. Pro unlocks all papers with 50 AI actions. Elite gives unlimited AI with Document Chat, Bibliography generator, and more.",
+                a: "Free gives you Open Access papers and 3 AI summaries. Pro unlocks all papers with 50 AI actions, 5 bid tokens, and 1 peer review. Elite gives unlimited AI with Document Chat, Bibliography generator, 15 bid tokens, 3 peer reviews, and more.",
+              },
+              {
+                q: "What are bid tokens?",
+                a: "Bid tokens let you submit proposals on research collaboration projects. Free users get 3 bids/month, while Student and Researcher plans offer unlimited bids. Research tiers include 5-15 tokens for cross-platform collaboration.",
+              },
+              {
+                q: "How does the verified university badge work?",
+                a: "Students and researchers with a .edu email get automatic verification. This unlocks a verified badge on your profile, access to peer reviews, and institutional spotlight features.",
               },
               {
                 q: "Can I switch plans later?",
