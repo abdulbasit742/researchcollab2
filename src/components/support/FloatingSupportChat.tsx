@@ -37,7 +37,7 @@ export const FloatingSupportChat = forwardRef<HTMLDivElement>((_props, ref) => {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <div ref={ref} className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex items-center gap-2">
+        <div ref={ref} className="fixed bottom-36 md:bottom-22 right-4 md:right-6 z-50 flex items-center gap-2">
           {/* Expandable label - mobile only */}
           <div
             className={`md:hidden bg-primary text-primary-foreground text-sm font-medium px-3 py-1.5 rounded-full shadow-md transition-all duration-300 ${
