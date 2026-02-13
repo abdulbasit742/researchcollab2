@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { HeroSection } from "@/components/home/HeroSection";
 import { StatsSection } from "@/components/home/StatsSection";
@@ -10,7 +11,7 @@ import { OnboardingPopup } from "@/components/onboarding/OnboardingPopup";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 
-const Index = () => {
+const Index = forwardRef<HTMLDivElement>((_props, ref) => {
   const { user, isLoading } = useAuth();
 
   // Redirect authenticated users to the home dashboard
@@ -30,6 +31,8 @@ const Index = () => {
       <CTASection />
     </MainLayout>
   );
-};
+});
+
+Index.displayName = "Index";
 
 export default Index;
