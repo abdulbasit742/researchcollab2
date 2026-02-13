@@ -23,6 +23,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import { useEarnNotificationCount } from "@/hooks/useEarning";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 // Simplified, focused navigation - only core actions
 const navItems = [
@@ -230,6 +231,7 @@ export function Navbar() {
              onTranscript={handleVoiceSearch}
              className="h-9 w-9"
            />
+          <ThemeToggle />
           <NotificationBell />
           {user ? (
             <>
@@ -263,6 +265,7 @@ export function Navbar() {
 
         {/* Mobile Actions */}
         <div className="flex lg:hidden items-center gap-1">
+          <ThemeToggle />
           <NotificationBell />
           <button
             className="p-2 rounded-lg hover:bg-muted touch-manipulation"
