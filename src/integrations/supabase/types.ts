@@ -6944,6 +6944,136 @@ export type Database = {
           },
         ]
       }
+      document_comments: {
+        Row: {
+          content: string
+          created_at: string
+          document_id: string
+          id: string
+          is_resolved: boolean
+          position_data: Json | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          document_id: string
+          id?: string
+          is_resolved?: boolean
+          position_data?: Json | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          document_id?: string
+          id?: string
+          is_resolved?: boolean
+          position_data?: Json | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_comments_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      document_versions: {
+        Row: {
+          change_summary: string | null
+          content: Json
+          created_at: string
+          created_by: string
+          document_id: string
+          id: string
+          version_number: number
+          word_count: number
+        }
+        Insert: {
+          change_summary?: string | null
+          content: Json
+          created_at?: string
+          created_by: string
+          document_id: string
+          id?: string
+          version_number: number
+          word_count?: number
+        }
+        Update: {
+          change_summary?: string | null
+          content?: Json
+          created_at?: string
+          created_by?: string
+          document_id?: string
+          id?: string
+          version_number?: number
+          word_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_versions_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      documents: {
+        Row: {
+          ai_assisted: boolean
+          citation_count: number
+          content: Json
+          created_at: string
+          format_style: string
+          id: string
+          is_archived: boolean
+          owner_id: string
+          project_id: string | null
+          status: string
+          title: string
+          updated_at: string
+          version_number: number
+          word_count: number
+        }
+        Insert: {
+          ai_assisted?: boolean
+          citation_count?: number
+          content?: Json
+          created_at?: string
+          format_style?: string
+          id?: string
+          is_archived?: boolean
+          owner_id: string
+          project_id?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          version_number?: number
+          word_count?: number
+        }
+        Update: {
+          ai_assisted?: boolean
+          citation_count?: number
+          content?: Json
+          created_at?: string
+          format_style?: string
+          id?: string
+          is_archived?: boolean
+          owner_id?: string
+          project_id?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          version_number?: number
+          word_count?: number
+        }
+        Relationships: []
+      }
       due_diligence_contributions: {
         Row: {
           check_type: string
@@ -11753,6 +11883,50 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institution_documents: {
+        Row: {
+          access_level: string
+          created_at: string
+          document_id: string
+          id: string
+          institution_id: string
+          notes: string | null
+          review_status: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+        }
+        Insert: {
+          access_level?: string
+          created_at?: string
+          document_id: string
+          id?: string
+          institution_id: string
+          notes?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+        }
+        Update: {
+          access_level?: string
+          created_at?: string
+          document_id?: string
+          id?: string
+          institution_id?: string
+          notes?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_documents_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
             referencedColumns: ["id"]
           },
         ]
@@ -17958,6 +18132,45 @@ export type Database = {
           },
         ]
       }
+      presentations: {
+        Row: {
+          ai_design_assist: boolean
+          created_at: string
+          id: string
+          is_archived: boolean
+          owner_id: string
+          project_id: string | null
+          slides_data: Json
+          template_type: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          ai_design_assist?: boolean
+          created_at?: string
+          id?: string
+          is_archived?: boolean
+          owner_id: string
+          project_id?: string | null
+          slides_data?: Json
+          template_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          ai_design_assist?: boolean
+          created_at?: string
+          id?: string
+          is_archived?: boolean
+          owner_id?: string
+          project_id?: string | null
+          slides_data?: Json
+          template_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       preservation_audit_logs: {
         Row: {
           action_type: string
@@ -20478,6 +20691,45 @@ export type Database = {
           },
         ]
       }
+      research_templates: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          institution_id: string | null
+          is_public: boolean
+          structure_json: Json
+          template_type: string
+          title: string
+          usage_count: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          is_public?: boolean
+          structure_json?: Json
+          template_type: string
+          title: string
+          usage_count?: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          is_public?: boolean
+          structure_json?: Json
+          template_type?: string
+          title?: string
+          usage_count?: number
+        }
+        Relationships: []
+      }
       research_timelines: {
         Row: {
           created_at: string
@@ -22362,6 +22614,45 @@ export type Database = {
           status?: string | null
           target_country?: string
           treaty_reference?: string | null
+        }
+        Relationships: []
+      }
+      spreadsheets: {
+        Row: {
+          ai_analysis_enabled: boolean
+          created_at: string
+          formula_support: boolean
+          id: string
+          is_archived: boolean
+          owner_id: string
+          project_id: string | null
+          sheet_data: Json
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          ai_analysis_enabled?: boolean
+          created_at?: string
+          formula_support?: boolean
+          id?: string
+          is_archived?: boolean
+          owner_id: string
+          project_id?: string | null
+          sheet_data?: Json
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          ai_analysis_enabled?: boolean
+          created_at?: string
+          formula_support?: boolean
+          id?: string
+          is_archived?: boolean
+          owner_id?: string
+          project_id?: string | null
+          sheet_data?: Json
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }

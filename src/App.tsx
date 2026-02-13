@@ -184,6 +184,10 @@ import MyOSPage from "./pages/MyOSPage";
 import AdminRevenueIntelligencePage from "./pages/admin/AdminRevenueIntelligencePage";
 import InstitutionalAcademicAnalyticsPage from "./pages/InstitutionalAcademicAnalyticsPage";
 import InstallPage from "./pages/InstallPage";
+import ProductivityDashboardPage from "./pages/ProductivityDashboardPage";
+import DocumentEditorPage from "./pages/DocumentEditorPage";
+import SpreadsheetEditorPage from "./pages/SpreadsheetEditorPage";
+import PresentationEditorPage from "./pages/PresentationEditorPage";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -368,6 +372,10 @@ const AppContent = () => {
             <Route path="/feed/strategic" element={<StrategicFeedPage />} />
             <Route path="/my-os" element={<MyOSPage />} />
             <Route path="/install" element={<InstallPage />} />
+            <Route path="/productivity" element={<ProductivityDashboardPage />} />
+            <Route path="/documents/:id" element={<DocumentEditorPage />} />
+            <Route path="/sheets/:id" element={<SpreadsheetEditorPage />} />
+            <Route path="/slides/:id" element={<PresentationEditorPage />} />
             <Route path="/admin/revenue-intelligence" element={<AdminRevenueIntelligencePage />} />
             <Route path="/org/:id/academic-analytics" element={<InstitutionalAcademicAnalyticsPage />} />
             <Route path="*" element={<NotFound />} />

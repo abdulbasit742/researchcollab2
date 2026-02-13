@@ -93,9 +93,10 @@ All 62 systems are organized into exactly 7 layers. Every feature belongs to ONE
 | 43 | Legacy & Succession | Extended |
 | 44 | Knowledge Pipeline | Extended |
 | 45 | Anti-Capture Safeguards | Core |
+| 63 | Research Productivity Suite (Docs/Sheets/Slides) | Core |
 
-**Entry Points**: Knowledge creation, legacy planning
-**Key Hook**: `useKnowledgeObjects`, `useLongTermMemory`
+**Entry Points**: Knowledge creation, legacy planning, /productivity dashboard
+**Key Hook**: `useKnowledgeObjects`, `useLongTermMemory`, `useDocuments`, `useSpreadsheets`, `usePresentations`
 
 ---
 
