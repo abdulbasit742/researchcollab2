@@ -52,6 +52,7 @@ import { RecommendedProjects } from "@/components/earn/RecommendedProjects";
 import { BidStatusTimeline } from "@/components/earn/BidStatusTimeline";
 import { ShareProjectButton } from "@/components/earn/ShareProjectButton";
 import { AdvancedFilters, AdvancedFilterState, DEFAULT_FILTERS } from "@/components/earn/AdvancedFilters";
+import { EarnPricingSection } from "@/components/earn/EarnPricingSection";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -941,6 +942,8 @@ export default function EarnPage() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <EarnPricingSection />
 
       {/* Post Project Modal */}
       <PostProjectModal 
