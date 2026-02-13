@@ -32,7 +32,7 @@ export function StatsSection() {
   const patternY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.05));
 
   return (
-    <section className="py-10 md:py-16 lg:py-24 border-y bg-muted/30 relative overflow-hidden">
+    <section data-tour="stats" className="py-10 md:py-16 lg:py-24 border-y bg-muted/30 relative overflow-hidden">
       {/* Subtle background pattern with parallax */}
       <motion.div
         className="absolute inset-0 opacity-30"

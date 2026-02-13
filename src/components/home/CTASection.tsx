@@ -13,7 +13,7 @@ export function CTASection() {
   const decoration2Y = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.05));
 
   return (
-    <section className="py-12 md:py-20 lg:py-28">
+    <section data-tour="cta" className="py-12 md:py-20 lg:py-28">
       <div className="container px-4 md:px-6">
         <motion.div
           ref={ref}

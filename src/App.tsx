@@ -188,6 +188,9 @@ import ProductivityDashboardPage from "./pages/ProductivityDashboardPage";
 import DocumentEditorPage from "./pages/DocumentEditorPage";
 import SpreadsheetEditorPage from "./pages/SpreadsheetEditorPage";
 import PresentationEditorPage from "./pages/PresentationEditorPage";
+import { DemoWalkthroughProvider } from "@/contexts/DemoWalkthroughContext";
+import { WalkthroughOverlay } from "@/components/walkthrough/WalkthroughOverlay";
+import { TourLaunchButton } from "@/components/walkthrough/TourLaunchButton";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
@@ -392,7 +395,11 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
-            <AppContent />
+            <DemoWalkthroughProvider>
+              <AppContent />
+              <TourLaunchButton />
+              <WalkthroughOverlay />
+            </DemoWalkthroughProvider>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
