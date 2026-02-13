@@ -3,19 +3,21 @@ import { useDemoWalkthrough } from "@/contexts/DemoWalkthroughContext";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLocation } from "react-router-dom";
 
 export const TourLaunchButton = () => {
   const { isActive, startTour } = useDemoWalkthrough();
   const isMobile = useIsMobile();
+  const location = useLocation();
 
-  if (isActive) return null;
+  if (isActive || location.pathname !== "/") return null;
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 1, duration: 0.4 }}
-      className={`fixed right-6 z-50 ${isMobile ? "bottom-20" : "bottom-6"}`}
+      className={`fixed right-6 z-50 ${isMobile ? "bottom-24" : "bottom-6"}`}
     >
       <Button
         onClick={startTour}
