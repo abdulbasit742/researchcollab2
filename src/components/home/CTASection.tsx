@@ -54,22 +54,23 @@ export function CTASection() {
             </p>
 
             <div className="mt-6 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
-              <Link to="/auth?tab=signup" className="w-full sm:w-auto">
+              <Link to="/pricing" className="w-full sm:w-auto">
                 <Button
                   size="lg"
                   className="w-full sm:w-auto bg-primary-foreground text-primary hover:bg-primary-foreground/90 h-12 md:h-14 text-sm md:text-base touch-manipulation"
                 >
-                  Create Free Account
+                  View Pricing Plans
                   <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
                 </Button>
               </Link>
-              <Link to="/tools" className="w-full sm:w-auto">
+              <Link to="/earn" className="w-full sm:w-auto">
                 <Button
                   size="lg"
                   variant="ghost"
                   className="w-full sm:w-auto text-primary-foreground hover:bg-primary-foreground/10 h-12 md:h-14 text-sm md:text-base touch-manipulation"
                 >
-                  Explore AI Tools
+                  Start Earning
+                  <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
                 </Button>
               </Link>
             </div>

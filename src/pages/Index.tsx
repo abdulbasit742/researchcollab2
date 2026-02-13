@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { HeroSection } from "@/components/home/HeroSection";
 import { StatsSection } from "@/components/home/StatsSection";
+import { FeaturedToolsCarousel } from "@/components/home/FeaturedToolsCarousel";
 import { FeaturesSection } from "@/components/home/FeaturesSection";
 import { ResearchDiscoverySection } from "@/components/home/ResearchDiscoverySection";
 import { WhyChooseSection } from "@/components/home/WhyChooseSection";
@@ -24,6 +25,7 @@ const Index = forwardRef<HTMLDivElement>((_props, ref) => {
       <OnboardingPopup />
       <HeroSection />
       <StatsSection />
+      <FeaturedToolsCarousel />
       <FeaturesSection />
       <ResearchDiscoverySection />
       <WhyChooseSection />
