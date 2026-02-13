@@ -227,49 +227,49 @@ const PricingPage = () => {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="gradient-hero py-16 md:py-24">
+      <section className="gradient-hero py-10 md:py-24">
         <div className="container mx-auto px-4 text-center">
           <Badge className="mb-4 bg-primary/10 text-primary border-0">
             <Sparkles className="h-3 w-3 mr-1" />
             Simple, Transparent Pricing
           </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-3">
             Choose Your Plan
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
             Whether you're a student, researcher, or institution, we have the perfect plan for you. All prices in PKR.
           </p>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8 md:py-12">
         <Tabs defaultValue="individual" className="w-full">
-          <TabsList className="grid w-full max-w-lg mx-auto grid-cols-4 mb-12">
-            <TabsTrigger value="individual" className="flex items-center gap-1">
-              <GraduationCap className="h-4 w-4" />
-              <span className="hidden sm:inline">Individual</span>
+          <TabsList className="grid w-full max-w-lg mx-auto grid-cols-4 mb-8 md:mb-12">
+            <TabsTrigger value="individual" className="flex items-center gap-1 text-xs sm:text-sm px-2">
+              <GraduationCap className="h-4 w-4 shrink-0" />
+              <span className="truncate">Individual</span>
             </TabsTrigger>
-            <TabsTrigger value="tools" className="flex items-center gap-1">
-              <Zap className="h-4 w-4" />
-              <span className="hidden sm:inline">AI Tools</span>
+            <TabsTrigger value="tools" className="flex items-center gap-1 text-xs sm:text-sm px-2">
+              <Zap className="h-4 w-4 shrink-0" />
+              <span className="truncate">AI Tools</span>
             </TabsTrigger>
-            <TabsTrigger value="research" className="flex items-center gap-1">
-              <BookOpen className="h-4 w-4" />
-              <span className="hidden sm:inline">Research</span>
+            <TabsTrigger value="research" className="flex items-center gap-1 text-xs sm:text-sm px-2">
+              <BookOpen className="h-4 w-4 shrink-0" />
+              <span className="truncate">Research</span>
             </TabsTrigger>
-            <TabsTrigger value="enterprise" className="flex items-center gap-1">
-              <Building2 className="h-4 w-4" />
-              <span className="hidden sm:inline">Enterprise</span>
+            <TabsTrigger value="enterprise" className="flex items-center gap-1 text-xs sm:text-sm px-2">
+              <Building2 className="h-4 w-4 shrink-0" />
+              <span className="truncate">Enterprise</span>
             </TabsTrigger>
           </TabsList>
 
           {/* Individual Plans */}
           <TabsContent value="individual">
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
               {individualPlans.map((plan, index) => (
                 <Card 
                   key={index} 
-                  className={`relative ${plan.popular ? 'border-primary shadow-lg scale-105' : ''}`}
+                  className={`relative ${plan.popular ? 'border-primary shadow-lg md:scale-105' : ''}`}
                 >
                   {plan.popular && (
                     <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary">
@@ -349,22 +349,22 @@ const PricingPage = () => {
                 <h2 className="text-2xl font-bold text-center mb-8">Individual AI Tools</h2>
                 <Card className="max-w-4xl mx-auto overflow-hidden">
                   <div className="overflow-x-auto">
-                    <table className="w-full">
+                     <table className="w-full text-sm">
                       <thead>
                         <tr className="bg-muted/50">
-                          <th className="px-6 py-4 text-left font-semibold">Tool</th>
-                          <th className="px-6 py-4 text-center font-semibold">Semi-Private</th>
-                          <th className="px-6 py-4 text-center font-semibold">Private</th>
-                          <th className="px-6 py-4 text-center font-semibold">BYO</th>
+                          <th className="px-3 md:px-6 py-3 md:py-4 text-left font-semibold whitespace-nowrap">Tool</th>
+                          <th className="px-2 md:px-6 py-3 md:py-4 text-center font-semibold whitespace-nowrap">Semi-Private</th>
+                          <th className="px-2 md:px-6 py-3 md:py-4 text-center font-semibold whitespace-nowrap">Private</th>
+                          <th className="px-2 md:px-6 py-3 md:py-4 text-center font-semibold whitespace-nowrap">BYO</th>
                         </tr>
                       </thead>
                       <tbody>
                         {aiToolPricing.map((item, index) => (
                           <tr key={index} className="border-t border-border">
-                            <td className="px-6 py-4 font-medium">{item.tool}</td>
-                            <td className="px-6 py-4 text-center text-muted-foreground">{item.semiPrivate}</td>
-                            <td className="px-6 py-4 text-center text-muted-foreground">{item.private}</td>
-                            <td className="px-6 py-4 text-center text-muted-foreground">{item.byo}</td>
+                            <td className="px-3 md:px-6 py-3 md:py-4 font-medium whitespace-nowrap">{item.tool}</td>
+                            <td className="px-2 md:px-6 py-3 md:py-4 text-center text-muted-foreground whitespace-nowrap">{item.semiPrivate}</td>
+                            <td className="px-2 md:px-6 py-3 md:py-4 text-center text-muted-foreground whitespace-nowrap">{item.private}</td>
+                            <td className="px-2 md:px-6 py-3 md:py-4 text-center text-muted-foreground whitespace-nowrap">{item.byo}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -387,11 +387,11 @@ const PricingPage = () => {
           <TabsContent value="research">
             <div className="space-y-12">
               {/* Research Tiers */}
-              <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
                 {researchPlans.map((plan, index) => (
                   <Card 
                     key={index} 
-                    className={`relative ${plan.popular ? 'border-primary shadow-lg scale-105' : ''}`}
+                    className={`relative ${plan.popular ? 'border-primary shadow-lg md:scale-105' : ''}`}
                   >
                     {plan.popular && (
                       <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary">
