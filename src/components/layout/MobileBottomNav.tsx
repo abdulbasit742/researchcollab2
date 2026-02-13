@@ -39,10 +39,10 @@ export function MobileBottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 w-full bg-background border-t border-border safe-area-bottom will-change-transform"
-      style={{ transform: 'translateZ(0)' }}
+      className="fixed bottom-0 left-0 right-0 z-50 w-full bg-background border-t border-border will-change-transform"
+      style={{ transform: 'translateZ(0)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
-      <div className="flex items-center justify-around h-16 px-2">
+      <div className="flex items-center justify-around py-2 px-2">
         {navItems.map((item) => {
           const active = isActive(item.route);
           const Icon = item.icon;
