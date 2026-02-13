@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from "react";
 import { useUniversalAI, AIDomain } from "@/hooks/useUniversalAI";
+import { useUserSubscription } from "@/hooks/useSubscriptions";
 import { toast } from "sonner";
 
 export type PaperType =
@@ -173,6 +174,14 @@ const SAMPLE_PAPERS: ResearchPaper[] = [
   },
 ];
 
+export type UserResearchTier = "free" | "pro" | "elite";
+
+const AI_LIMITS: Record<UserResearchTier, number> = {
+  free: 3,
+  pro: 50,
+  elite: Infinity,
+};
+
 export function useResearchPapers() {
   const [papers, setPapers] = useState<ResearchPaper[]>(SAMPLE_PAPERS);
   const [search, setSearch] = useState("");
@@ -183,7 +192,29 @@ export function useResearchPapers() {
   const [readingHistory, setReadingHistory] = useState<string[]>([]);
   const [summaries, setSummaries] = useState<Record<string, PaperSummary>>({});
   const [selectedForCompare, setSelectedForCompare] = useState<string[]>([]);
+  const [aiActionsUsed, setAiActionsUsed] = useState(0);
   const { ask, loading: aiLoading } = useUniversalAI();
+  const { currentTier } = useUserSubscription();
+
+  const userTier: UserResearchTier = useMemo(() => {
+    if (!currentTier) return "free";
+    const name = currentTier.name.toLowerCase();
+    if (name === "elite") return "elite";
+    if (name === "pro") return "pro";
+    return "free";
+  }, [currentTier]);
+
+  const aiLimit = AI_LIMITS[userTier];
+  const canUseAI = aiActionsUsed < aiLimit;
+
+  const canAccessPaper = useCallback((paper: ResearchPaper) => {
+    if (paper.access === "Open Access") return true;
+    return userTier === "pro" || userTier === "elite";
+  }, [userTier]);
+
+  const trackAIAction = useCallback(() => {
+    setAiActionsUsed((prev) => prev + 1);
+  }, []);
 
   const [metrics] = useState<ResearchMetrics>({
     publications: 8,
@@ -254,18 +285,27 @@ export function useResearchPapers() {
 
   const summarizePaper = useCallback(
     async (paper: ResearchPaper): Promise<PaperSummary | null> => {
+      if (!canAccessPaper(paper)) {
+        toast.error("Upgrade to Pro or Elite to access restricted papers");
+        return null;
+      }
+      if (!canUseAI) {
+        toast.error(`AI action limit reached for ${userTier} tier. Upgrade for more.`);
+        return null;
+      }
       const result = await ask<PaperSummary>("research" as AIDomain, "summarize-paper", {
         title: paper.title, abstract: paper.abstract, authors: paper.authors,
         journal: paper.journal, type: paper.type, field: paper.field,
       });
       if (result) {
+        trackAIAction();
         setSummaries((prev) => ({ ...prev, [paper.id]: result }));
         setPapers((prev) => prev.map((p) => (p.id === paper.id ? { ...p, summarized: true } : p)));
         setReadingHistory((prev) => (prev.includes(paper.id) ? prev : [...prev, paper.id]));
       }
       return result;
     },
-    [ask]
+    [ask, canAccessPaper, canUseAI, userTier, trackAIAction]
   );
 
   const comparePapers = useCallback(
@@ -386,5 +426,6 @@ export function useResearchPapers() {
     getImprovementPlan, comparePapers, getRelatedPapers, exportCitations,
     selectedForCompare, toggleCompareSelect, clearCompareSelection,
     chatWithPaper, simplifySummary, findResearchGaps, generateLitReview, generateAnnotatedBib,
+    userTier, canUseAI, canAccessPaper, aiActionsUsed, aiLimit,
   };
 }

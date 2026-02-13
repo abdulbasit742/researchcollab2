@@ -25,6 +25,7 @@ export default function ResearchPapersPage() {
     getImprovementPlan, comparePapers, getRelatedPapers, exportCitations,
     selectedForCompare, toggleCompareSelect, clearCompareSelection,
     chatWithPaper, simplifySummary, findResearchGaps, generateLitReview, generateAnnotatedBib,
+    userTier, canAccessPaper,
   } = useResearchPapers();
 
   const [selectedPaper, setSelectedPaper] = useState<ResearchPaper | null>(null);
@@ -174,6 +175,8 @@ export default function ResearchPapersPage() {
                   selectable={compareMode}
                   selected={selectedForCompare.includes(paper.id)}
                   onSelect={toggleCompareSelect}
+                  userTier={userTier}
+                  isLocked={!canAccessPaper(paper)}
                 />
               ))}
             </div>

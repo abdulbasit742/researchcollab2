@@ -20,6 +20,7 @@ import {
   TrendingUp,
   Search,
   DollarSign,
+  BookOpen,
 } from "lucide-react";
 import { useEarnNotificationCount } from "@/hooks/useEarning";
 
@@ -28,6 +29,7 @@ const navItems = [
   { label: "Home", href: "/home", icon: Home },
   { label: "Network", href: "/network", icon: Users },
   { label: "Opportunities", href: "/offers", icon: Target },
+  { label: "Research", href: "/research-papers", icon: BookOpen },
   { label: "Deals", href: "/deals", icon: Briefcase },
 ];
 
