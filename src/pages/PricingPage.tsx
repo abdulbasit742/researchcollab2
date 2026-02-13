@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Check, Sparkles, Users, Building2, GraduationCap, Zap, Star } from "lucide-react";
+import { Check, Sparkles, Users, Building2, GraduationCap, Zap, Star, BookOpen, Crown, Infinity } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const PricingPage = () => {
@@ -144,6 +144,86 @@ const PricingPage = () => {
     { tool: "AI Data Analyst Pack", semiPrivate: "-", private: "PKR 7,800", byo: "-" },
   ];
 
+  const researchPlans = [
+    {
+      name: "Free Researcher",
+      price: "PKR 0",
+      period: "/month",
+      description: "Explore open access papers",
+      icon: BookOpen,
+      features: [
+        "Access to Open Access papers only",
+        "3 AI summaries/month",
+        "Basic search & filters",
+        "Reading stats tracking",
+      ],
+      cta: "Get Started",
+      ctaVariant: "outline" as const,
+      popular: false,
+    },
+    {
+      name: "Pro Researcher",
+      price: "PKR 999",
+      period: "/month",
+      description: "Unlock all papers + AI tools",
+      icon: Crown,
+      features: [
+        "All papers unlocked (Open + Restricted)",
+        "50 AI summaries/month",
+        "Paper comparison (up to 5/month)",
+        "Research Gap Finder",
+        "Lit Review Generator",
+        "Export citations",
+      ],
+      cta: "Upgrade to Pro",
+      ctaVariant: "default" as const,
+      popular: true,
+    },
+    {
+      name: "Elite Researcher",
+      price: "PKR 2,499",
+      period: "/month",
+      description: "Unlimited AI + advanced tools",
+      icon: Sparkles,
+      features: [
+        "Everything in Pro",
+        "Unlimited AI actions",
+        "Annotated Bibliography generator",
+        "Document Chat (ask questions to papers)",
+        "Plain English toggle",
+        "Priority AI processing",
+        "API access to research tools",
+      ],
+      cta: "Go Elite",
+      ctaVariant: "default" as const,
+      popular: false,
+    },
+  ];
+
+  const comboBundles = [
+    {
+      name: "Research Pro + AI Essentials",
+      price: "PKR 7,999",
+      originalPrice: "PKR 9,499",
+      savings: "Save PKR 1,500",
+      includes: ["Pro Researcher plan", "AI Essentials bundle", "50 AI summaries + ChatGPT + Perplexity"],
+    },
+    {
+      name: "Research Elite + Research Pro AI",
+      price: "PKR 14,999",
+      originalPrice: "PKR 18,499",
+      savings: "Save PKR 3,500",
+      includes: ["Elite Researcher plan", "Research Pro AI bundle", "Unlimited AI + Claude + ChatGPT + Perplexity"],
+    },
+    {
+      name: "Full Academic Suite",
+      price: "Custom",
+      originalPrice: "",
+      savings: "Best Value",
+      includes: ["Elite Researcher", "Ultimate AI Bundle", "Enterprise features", "Contact us for pricing"],
+    },
+  ];
+
   return (
     <MainLayout>
       {/* Hero Section */}
@@ -164,18 +244,22 @@ const PricingPage = () => {
 
       <div className="container mx-auto px-4 py-12">
         <Tabs defaultValue="individual" className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-12">
+          <TabsList className="grid w-full max-w-lg mx-auto grid-cols-4 mb-12">
             <TabsTrigger value="individual" className="flex items-center gap-1">
               <GraduationCap className="h-4 w-4" />
-              Individual
+              <span className="hidden sm:inline">Individual</span>
             </TabsTrigger>
             <TabsTrigger value="tools" className="flex items-center gap-1">
               <Zap className="h-4 w-4" />
-              AI Tools
+              <span className="hidden sm:inline">AI Tools</span>
+            </TabsTrigger>
+            <TabsTrigger value="research" className="flex items-center gap-1">
+              <BookOpen className="h-4 w-4" />
+              <span className="hidden sm:inline">Research</span>
             </TabsTrigger>
             <TabsTrigger value="enterprise" className="flex items-center gap-1">
               <Building2 className="h-4 w-4" />
-              Enterprise
+              <span className="hidden sm:inline">Enterprise</span>
             </TabsTrigger>
           </TabsList>
 
@@ -299,6 +383,96 @@ const PricingPage = () => {
             </div>
           </TabsContent>
 
+          {/* Research Tab */}
+          <TabsContent value="research">
+            <div className="space-y-12">
+              {/* Research Tiers */}
+              <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                {researchPlans.map((plan, index) => (
+                  <Card 
+                    key={index} 
+                    className={`relative ${plan.popular ? 'border-primary shadow-lg scale-105' : ''}`}
+                  >
+                    {plan.popular && (
+                      <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary">
+                        <Star className="h-3 w-3 mr-1" /> Best Value
+                      </Badge>
+                    )}
+                    <CardHeader>
+                      <div className="flex items-center gap-2 mb-2">
+                        <plan.icon className="h-5 w-5 text-primary" />
+                        <CardTitle className="text-xl">{plan.name}</CardTitle>
+                      </div>
+                      <CardDescription>{plan.description}</CardDescription>
+                      <div className="pt-4">
+                        <span className="text-4xl font-bold">{plan.price}</span>
+                        <span className="text-muted-foreground">{plan.period}</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <ul className="space-y-3">
+                        {plan.features.map((feature, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <span className="text-sm text-muted-foreground">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <Button 
+                        className="w-full" 
+                        variant={plan.ctaVariant}
+                        asChild
+                      >
+                        <Link to="/auth">{plan.cta}</Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Paper + AI Tools Combo Bundles */}
+              <div>
+                <h2 className="text-2xl font-bold text-center mb-2">Paper + AI Tools Combo</h2>
+                <p className="text-muted-foreground text-center mb-8 max-w-xl mx-auto">
+                  Bundle research access with AI tools for maximum value
+                </p>
+                <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                  {comboBundles.map((bundle, index) => (
+                    <Card key={index} className="relative overflow-hidden">
+                      <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-bl-lg">
+                        {bundle.savings}
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="text-lg">{bundle.name}</CardTitle>
+                        <div className="pt-3">
+                          <span className="text-3xl font-bold">{bundle.price}</span>
+                          {bundle.originalPrice && (
+                            <span className="text-sm text-muted-foreground line-through ml-2">{bundle.originalPrice}</span>
+                          )}
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <ul className="space-y-2 mb-6">
+                          {bundle.includes.map((item, i) => (
+                            <li key={i} className="flex items-center gap-2 text-sm">
+                              <Check className="h-4 w-4 text-primary shrink-0" />
+                              <span className="text-muted-foreground">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        <Button className="w-full" variant={bundle.price === "Custom" ? "outline" : "default"} asChild>
+                          <Link to={bundle.price === "Custom" ? "/contact" : "/auth"}>
+                            {bundle.price === "Custom" ? "Contact Sales" : "Get Bundle"}
+                          </Link>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
           {/* Enterprise Tab */}
           <TabsContent value="enterprise">
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -368,6 +542,10 @@ const PricingPage = () => {
               {
                 q: "What is Semi-Private vs Private access?",
                 a: "Semi-Private accounts are shared with 2-4 other users, offering lower prices. Private accounts are exclusively yours with no sharing.",
+              },
+              {
+                q: "What's included in the Research tiers?",
+                a: "Free gives you Open Access papers and 3 AI summaries. Pro unlocks all papers with 50 AI actions. Elite gives unlimited AI with Document Chat, Bibliography generator, and more.",
               },
               {
                 q: "Can I switch plans later?",
