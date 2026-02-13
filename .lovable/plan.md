@@ -1,155 +1,91 @@
 
-# Professional Opportunity Operating System - Implementation Plan
 
-## Overview
+# Phase: Data Activation & System Hardening
 
-This plan builds 5 integrated systems on top of existing architecture. No duplicate tables or hooks -- we extend what exists and add only what's missing.
+## Problem
 
-## Architecture Audit (What Already Exists)
-
-- `useOpportunityEngine.ts` -- fetches earning_projects, scores by skill/location/university
-- `useOpportunityIntelligence.ts` -- calls edge function for opportunity_score, projected_income, skill gaps
-- `useOutcomeGraph.ts` -- mock-based People-Work-Results-Impact graph
-- `useTrustEngine.ts` -- 5-dimension trust scoring with DB backing
-- `useSkillGapEngine.ts` -- mock-based gap detection
-- `useCareerEvolution.ts` -- mock-based career trajectory
-- `useEconomicEngine.ts` -- full economic subsystem (830 lines)
-- `useRiskIndex.ts` -- entity risk scoring from DB
-- `useInstitutionalDashboard.ts` -- institution metrics, members, policies
-- `OpportunitiesPage.tsx` at `/opportunities` -- basic listing page
-- No `/opportunities/dashboard`, no `/my-os`, no strategic feed, no `opportunity_graph` table
+Multiple pages built in recent phases use hardcoded mock data instead of real database queries. This means:
+- Supervisor Review Queue shows fake reviews
+- Student Performance Scorecard shows static numbers
+- Academic Rankings shows placeholder names
+- Employability Export generates nothing real
+- Academic Task Marketplace has no real task data
+- Supervisor Performance uses static metrics
+- The `forecast-revenue` edge function (planned in Revenue Engine) was never created
 
 ## What Gets Built
 
----
+### 1. Wire Academic Pages to Real Database
 
-### System 1: Opportunity Graph Engine
+**SupervisorReviewQueuePage.tsx** -- Replace mock reviews with real `supervisor_reviews` table queries. Add insert mutations for approve/reject/revision decisions with `trust_adjustment` writes.
 
-**Database Migration:**
-- `opportunity_graph` table: `id, user_id, opportunity_type (project|job|grant|collaboration|advisory|cofounder|institutional_funding), title, description, source_entity_type, source_entity_id, relevance_score, skill_match_score, trust_match_score, outcome_match_score, network_proximity_score, readiness_score, composite_score, status (active|applied|matched|expired), created_at, updated_at`
-- `opportunity_edges` table: `id, user_id, opportunity_id (FK), edge_type (skill_match|trust_fit|network_link|outcome_history|readiness_match), weight, metadata JSONB, created_at`
-- RLS: users see only their own rows
-- Indexes on `user_id`, `composite_score`, `opportunity_type`
+**StudentPerformancePage.tsx** -- Query `student_performance_metrics` table using current user's auth ID. Fall back to computed values from `user_trust_profiles` and `fyp_projects` if no row exists.
 
-**Hook:** `src/hooks/useOpportunityGraph.ts`
-- Fetches from `opportunity_graph` with filters
-- Computes composite score client-side from 5 dimensions (skill, trust, outcomes, network, readiness)
-- Reuses `useAuth` for profile context
-- Exports `useOpportunityGraph`, `useOpportunityPipeline`, `useOpportunityScore`
+**AcademicRankingsPage.tsx** -- Query `student_performance_metrics` (top students), `supervisor_performance_metrics` (top supervisors), and aggregate `fyp_projects` by institution for department rankings. Order by relevant score columns.
 
-**UI Components:**
-- `src/components/opportunity/OpportunityDashboard.tsx` -- main dashboard with pipeline view, score card, and trajectory
-- `src/components/opportunity/OpportunityScoreCard.tsx` -- radial score display with 5 dimension breakdown
-- `src/components/opportunity/OpportunityTrajectory.tsx` -- line chart of composite score over time using Recharts
+**AcademicTaskMarketplacePage.tsx** -- Query `micro_academic_tasks` with status filters. Add apply mutation (set `assigned_to` + status change). Show real institution names from `organizations` join.
 
-**Route:** `/opportunities/dashboard`
+**SupervisorPerformancePage.tsx** -- Query `supervisor_performance_metrics` for the logged-in user. Display real completion rates and trust growth.
 
----
+**EmployabilityExportPage.tsx** -- Query `employability_reports` for current user. If none exists, compute from `user_trust_profiles` + `fyp_projects` + `research_validations` and insert a new report row.
 
-### System 2: Reputation-to-Opportunity Converter
+### 2. Institutional Academic Analytics Page (Phase 9 -- Missing)
 
-**Database Migration:**
-- Add `opportunity_visibility_multiplier NUMERIC DEFAULT 1.0` column to `profiles` table
-- `opportunity_multiplier_log` table: `id, user_id, previous_multiplier, new_multiplier, trigger_type, trigger_details JSONB, created_at`
-- RLS: users read own logs, admins read all
+Create **`/org/:id/academic-analytics`** route and page.
 
-**Hook:** `src/hooks/useOpportunityMultiplier.ts`
-- Reads multiplier from profile
-- Provides `computeMultiplier(trustScore, dealSuccessRate, outcomeValue)` utility
-- Admin override function
+**InstitutionalAcademicAnalyticsPage.tsx:**
+- FYP completion rate (from `fyp_projects` where `institution_id` matches)
+- Average milestone delay (computed from `fyp_risk_flags`)
+- Student trust distribution (histogram from `user_trust_profiles` joined via org members)
+- Faculty workload balance (from `supervisor_reviews` count per supervisor)
+- Economic output by department (sum `economic_value` from `fyp_projects`)
+- Skill demand heatmap (from `micro_academic_tasks` task_type distribution)
 
-**Integration:** The `OpportunityScoreCard` component will display the multiplier badge. The multiplier logic will be documented for future edge function integration with compute-trust.
+Uses Recharts bar/pie/area charts. Boardroom-ready layout with Cards.
 
----
+### 3. FYP Risk Detection Hook
 
-### System 3: Strategic Feed
+Create **`useAcademicData.ts`** -- a unified hook that:
+- Exports `useSupervisorReviews(projectId?)` -- fetches from `supervisor_reviews`
+- Exports `useStudentMetrics(studentId?)` -- fetches from `student_performance_metrics`
+- Exports `useFYPRiskFlags(projectId?)` -- fetches from `fyp_risk_flags`
+- Exports `useAcademicTasks(filters?)` -- fetches from `micro_academic_tasks`
+- Exports `useSupervisorMetrics(supervisorId?)` -- fetches from `supervisor_performance_metrics`
 
-**Hook:** `src/hooks/useStrategicFeed.ts`
-- Wraps `useProfessionalSignalFeed` with additional ranking logic
-- Ranks by: outcome_value, credibility_score (from trust), skill relevance, opportunity signals
-- Deprioritizes low-trust accounts and empty engagement
-- Supports mode toggle: "social" vs "opportunity"
+### 4. Revenue Forecast Edge Function
 
-**Page:** `src/pages/StrategicFeedPage.tsx`
-- Reuses existing `ProfessionalSignalCard` for rendering
-- Adds mode toggle in header ("Social Mode" / "Opportunity Mode")
-- In opportunity mode: intersperses `OpportunityMatchCard` items between signals
-- Clean, minimal layout following existing feed patterns
+Create **`supabase/functions/forecast-revenue/index.ts`**:
+- Reads last 30 days from `revenue_metrics_daily`
+- Computes projected MRR using linear trend
+- Estimates churn risk from declining user activity
+- Writes to `revenue_forecasts` table
+- Returns forecast data in response
 
-**Route:** `/feed/strategic`
+### 5. Routing & Navigation
 
----
-
-### System 4: Personal Operating System Dashboard (/my-os)
-
-**Page:** `src/pages/MyOSPage.tsx`
-- Single dashboard pulling from existing hooks:
-  - `useTrustProfile` -- trust trajectory (score + level)
-  - `useLiquidityIndex` -- economic velocity
-  - `useOpportunityGraph` -- pipeline count + top 5 matches
-  - `useSkillGapEngine` -- radar chart of gaps
-  - `useCareerEvolution` -- career projection phase
-  - `useRiskIndex` -- economic risk indicator
-- Layout: 2-column grid on desktop, single column mobile
-- Top row: 4 KPI cards (Trust Score, Income Velocity, Pipeline Size, Risk Level)
-- Middle: Opportunity Pipeline (top 5 matches) + Skill Gap Radar (RadarChart)
-- Bottom: Career Projection timeline + Next Best Action card
-- Progressive disclosure: collapsed sections expand on click
-
-**Route:** `/my-os`
-
----
-
-### System 5: Institutional Layer (Enterprise Moat)
-
-**Database Migration:**
-- `institutional_metrics` table: `id, institution_id, talent_count, avg_trust_score, skill_distribution JSONB, economic_contribution NUMERIC, deal_volume INTEGER, active_risk_signals INTEGER, period_start DATE, period_end DATE, computed_at TIMESTAMPTZ, created_at TIMESTAMPTZ`
-- RLS: institution admins can read their own metrics
-- Index on `institution_id, period_start`
-
-**Component:** `src/components/institution/InstitutionDashboardV2.tsx`
-- Talent heatmap (skill distribution bar chart)
-- Trust averages gauge
-- Economic contribution trend line
-- Deal volume bar chart
-- Risk signals alert list
-- Reuses `useInstitutionalDashboard` for member/policy data
-- New `useInstitutionalMetrics` hook for the metrics table
-
-**Route:** Enhances existing `/org/:id/dashboard` with new metrics tab
-
----
+- Add `/org/:id/academic-analytics` route in App.tsx
+- Add navigation link in AdminSidebar under academic section
 
 ## Technical Details
 
-### Migration SQL (single migration file)
-1. CREATE `opportunity_graph` with RLS (owner-only SELECT/INSERT/UPDATE)
-2. CREATE `opportunity_edges` with RLS (owner-only)
-3. ALTER `profiles` ADD COLUMN `opportunity_visibility_multiplier`
-4. CREATE `opportunity_multiplier_log` with RLS
-5. CREATE `institutional_metrics` with RLS (institution admin check)
-6. CREATE indexes on scoring columns
+### New Files (3)
+1. `src/hooks/useAcademicData.ts`
+2. `src/pages/InstitutionalAcademicAnalyticsPage.tsx`
+3. `supabase/functions/forecast-revenue/index.ts`
 
-### New Files (8 total)
-1. `supabase/migrations/[timestamp]_opportunity_os.sql`
-2. `src/hooks/useOpportunityGraph.ts`
-3. `src/hooks/useOpportunityMultiplier.ts`
-4. `src/hooks/useStrategicFeed.ts`
-5. `src/components/opportunity/OpportunityScoreCard.tsx`
-6. `src/components/opportunity/OpportunityTrajectory.tsx`
-7. `src/pages/OpportunityDashboardPage.tsx`
-8. `src/pages/StrategicFeedPage.tsx`
-9. `src/pages/MyOSPage.tsx`
-10. `src/components/institution/InstitutionDashboardV2.tsx`
+### Modified Files (8)
+1. `src/pages/SupervisorReviewQueuePage.tsx` -- replace mock with DB queries
+2. `src/pages/StudentPerformancePage.tsx` -- replace mock with DB queries
+3. `src/pages/AcademicRankingsPage.tsx` -- replace mock with DB queries
+4. `src/pages/AcademicTaskMarketplacePage.tsx` -- replace mock with DB queries
+5. `src/pages/SupervisorPerformancePage.tsx` -- replace mock with DB queries
+6. `src/pages/EmployabilityExportPage.tsx` -- replace mock with DB queries
+7. `src/App.tsx` -- add academic-analytics route
+8. `src/components/admin/AdminSidebar.tsx` -- add academic analytics nav item
 
-### Modified Files (3 total)
-1. `src/App.tsx` -- add 3 routes: `/opportunities/dashboard`, `/my-os`, `/feed/strategic`
-2. `src/components/opportunity/index.ts` -- export new components
-3. `src/components/admin/AdminSidebar.tsx` -- add My OS nav link
+### No New Database Tables
+All tables already exist from previous migrations. No schema changes needed.
 
-### No Duplications
-- Reuses `useOpportunityEngine` data as source for graph population
-- Reuses `useTrustProfile` instead of creating new trust hooks
-- Reuses `useProfessionalSignalFeed` as base for strategic feed
-- Reuses `useInstitutionalDashboard` for institution member data
-- Reuses existing `RadarChart`, `LineChart`, `BarChart` from Recharts
+### Edge Function
+`forecast-revenue` -- reads `revenue_metrics_daily`, computes linear projection, writes to `revenue_forecasts`. Authenticated endpoint using service role key for writes.
+
