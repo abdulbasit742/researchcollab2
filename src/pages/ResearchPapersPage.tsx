@@ -66,7 +66,7 @@ export default function ResearchPapersPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="container py-6 px-4">
+      <main className="container py-6 px-4 pb-20 md:pb-6">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between flex-wrap gap-3">
           <div>
