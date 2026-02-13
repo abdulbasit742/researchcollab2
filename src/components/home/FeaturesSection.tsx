@@ -89,7 +89,7 @@ export function FeaturesSection() {
   const bgY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.03));
 
   return (
-    <section className="py-12 md:py-20 lg:py-28 relative overflow-hidden">
+    <section data-tour="features" className="py-12 md:py-20 lg:py-28 relative overflow-hidden">
       {/* Subtle background gradient with parallax */}
       <motion.div 
         className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent pointer-events-none"

@@ -72,7 +72,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden gradient-hero min-h-[600px] md:min-h-[700px]">
+    <section data-tour="hero" className="relative overflow-hidden gradient-hero min-h-[600px] md:min-h-[700px]">
       {/* Animated background orbs with parallax */}
       <motion.div style={{ y: orbsY }} className="absolute inset-0">
         <FloatingOrbs variant="hero" />

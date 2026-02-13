@@ -61,7 +61,7 @@ export function ResearchDiscoverySection() {
   };
 
   return (
-    <section className="py-20 bg-muted/30">
+    <section data-tour="research-discovery" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
