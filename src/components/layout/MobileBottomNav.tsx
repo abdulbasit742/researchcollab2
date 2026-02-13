@@ -1,9 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Briefcase, MessageCircle, Target, User, DollarSign } from "lucide-react";
+import { Home, MessageCircle, Target, User, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useEarnNotificationCount } from "@/hooks/useEarning";
+import { useDemoWalkthrough } from "@/contexts/DemoWalkthroughContext";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -18,8 +19,8 @@ export function MobileBottomNav() {
   const isMobile = useIsMobile();
   const { unreadCount } = useNotifications();
   const earnNotifCount = useEarnNotificationCount();
+  const { isActive: isTourActive } = useDemoWalkthrough();
 
-  // Core navigation - focused on action and results
   const navItems: NavItem[] = [
     { icon: Home, label: "Home", route: "/home" },
     { icon: Target, label: "Opportunities", route: "/offers" },
@@ -28,8 +29,8 @@ export function MobileBottomNav() {
     { icon: User, label: "Profile", route: "/profile" },
   ];
 
-  // Only show on mobile
-  if (!isMobile) return null;
+  // Hide on desktop or when tour is active
+  if (!isMobile || isTourActive) return null;
 
   const isActive = (route: string) => {
     if (route === "/") return location.pathname === "/";
@@ -66,7 +67,6 @@ export function MobileBottomNav() {
                   <Icon className="h-5 w-5" strokeWidth={active ? 2.5 : 2} />
                 </motion.div>
                 
-                {/* Notification badge */}
                 {item.badge && item.badge > 0 && (
                   <motion.span
                     initial={{ scale: 0 }}
@@ -85,7 +85,6 @@ export function MobileBottomNav() {
                 {item.label}
               </span>
 
-              {/* Active indicator */}
               {active && (
                 <motion.div
                   layoutId="activeTab"
