@@ -1,24 +1,34 @@
 
-# Fix: Project Detail 404 on `/opportunities/:id`
 
-## Problem
-When you click on a posted project from the daily loop / notifications, the URL goes to `/opportunities/[id]` which has no route defined -- resulting in a 404 page.
+# Dark Mode Support
 
-## Root Cause
-In `src/hooks/useDailyLoop.ts` (line 56), opportunity links are generated as `/opportunities/${opp.id}`, but no route exists for that pattern.
+Add a system-wide dark mode toggle with theme persistence, smooth transitions, and proper theming across all pages.
 
-## Fix (Two changes)
+## What You Get
 
-### 1. Fix the link source
-Update `src/hooks/useDailyLoop.ts` line 56 to use `/offers/${opp.id}` instead of `/opportunities/${opp.id}`. This matches the existing route at `/offers/:id` which properly redirects to the project detail page.
+- A theme toggle button in the navbar (sun/moon icon)
+- Dark mode that applies consistently across every page
+- User preference saved so it persists between sessions
+- Respects system preference (auto-detect light/dark OS setting)
+- Smooth color transitions when switching themes
 
-### 2. Add a safety redirect route
-Add a catch-all redirect in `src/App.tsx` so that `/opportunities/:id` redirects to `/earn/projects/:id`. This prevents future 404s if any other link still uses the old pattern.
+## Technical Approach
 
-```
-/opportunities/:id  -->  /earn/projects/:id
-```
+1. **Configure `next-themes` provider** (already installed) in `App.tsx` wrapping the app with `ThemeProvider` using `attribute="class"` and `defaultTheme="system"`
 
-## Files Modified
-1. `src/hooks/useDailyLoop.ts` -- fix href from `/opportunities/` to `/offers/`
-2. `src/App.tsx` -- add redirect route for `/opportunities/:id`
+2. **Add theme toggle to Navbar** - A sun/moon icon button in the desktop actions area and mobile menu that cycles between light, dark, and system themes
+
+3. **Update `tailwind.config.ts`** - Set `darkMode: "class"` to enable class-based dark mode switching
+
+4. **Create a `ThemeToggle` component** - Reusable button component using `useTheme()` from `next-themes` with animated sun/moon icons
+
+5. **Audit and fix dark mode colors** - Review key pages (Home, Pricing, Research, Deals, Profile) to ensure `bg-background`, `text-foreground`, and other semantic Tailwind classes work correctly in dark mode. Fix any hardcoded colors that break in dark theme.
+
+## Files to Create/Modify
+
+- `src/components/ui/theme-toggle.tsx` - New toggle component
+- `src/App.tsx` - Wrap with ThemeProvider
+- `tailwind.config.ts` - Add `darkMode: "class"`
+- `src/components/layout/Navbar.tsx` - Add toggle button
+- `src/index.css` - Ensure dark mode CSS variables are properly defined
+
