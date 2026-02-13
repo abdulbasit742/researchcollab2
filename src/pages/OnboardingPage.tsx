@@ -13,12 +13,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { GraduationCap, User, MapPin, Building, BookOpen, Sparkles, ArrowRight, ArrowLeft, Loader2, Check } from "lucide-react";
+import { GraduationCap, User, MapPin, Building, Sparkles, ArrowRight, ArrowLeft, Loader2, Check, SkipForward } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { CelebrationOverlay } from "@/components/celebrations";
 import { useCelebration, CELEBRATION_PRESETS } from "@/hooks/useCelebration";
+import { SkillSelector } from "@/components/onboarding/SkillSelector";
+import { PlatformWalkthrough } from "@/components/onboarding/PlatformWalkthrough";
+
+const TOTAL_STEPS = 4;
+
+const stepMeta = [
+  { title: "Tell us about yourself", description: "Help us personalize your experience", label: "Personal" },
+  { title: "Your Academic Profile", description: "Complete your academic details", label: "Academic" },
+  { title: "Select Your Skills", description: "Pick skills to showcase on your profile", label: "Skills" },
+  { title: "Welcome to the Platform", description: "A quick look at what you can do", label: "Explore" },
+];
 
 const educationLevels = [
   { value: "FSC", label: "FSC / Intermediate" },
@@ -75,7 +86,6 @@ export default function OnboardingPage() {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form state
   const [formData, setFormData] = useState({
     fullName: "",
     role: "",
@@ -85,6 +95,7 @@ export default function OnboardingPage() {
     department: "",
     researchLevel: "",
     interests: [] as string[],
+    skills: [] as string[],
   });
 
   const toggleInterest = (interest: string) => {
@@ -99,37 +110,26 @@ export default function OnboardingPage() {
   const handleNext = () => {
     if (step === 1) {
       if (!formData.fullName || !formData.role || !formData.location || !formData.university) {
-        toast({
-          title: "Missing Information",
-          description: "Please fill in all required fields.",
-          variant: "destructive",
-        });
+        toast({ title: "Missing Information", description: "Please fill in all required fields.", variant: "destructive" });
         return;
       }
     }
-    setStep(2);
+    if (step === 2) {
+      if (!formData.educationLevel || !formData.department || !formData.researchLevel) {
+        toast({ title: "Missing Information", description: "Please complete all academic fields.", variant: "destructive" });
+        return;
+      }
+    }
+    if (step < TOTAL_STEPS) setStep(step + 1);
   };
 
   const handleBack = () => {
-    setStep(1);
+    if (step > 1) setStep(step - 1);
   };
 
   const handleSubmit = async () => {
-    if (!formData.educationLevel || !formData.department || !formData.researchLevel) {
-      toast({
-        title: "Missing Information",
-        description: "Please complete all academic fields.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     if (!user) {
-      toast({
-        title: "Not authenticated",
-        description: "Please sign in first.",
-        variant: "destructive",
-      });
+      toast({ title: "Not authenticated", description: "Please sign in first.", variant: "destructive" });
       navigate("/auth");
       return;
     }
@@ -148,14 +148,13 @@ export default function OnboardingPage() {
           department: formData.department,
           research_level: formData.researchLevel,
           interests: formData.interests,
+          skills: formData.skills,
           onboarding_completed: true,
         })
         .eq("id", user.id);
 
       if (error) throw error;
 
-      // Also update user_roles if role changed
-      // Map professional role to a valid user_roles value
       const dbRole = formData.role === "professional" ? "researcher" : formData.role;
       await supabase
         .from("user_roles")
@@ -163,42 +162,30 @@ export default function OnboardingPage() {
         .eq("user_id", user.id);
 
       await refreshProfile();
-
-      // Trigger celebration
       celebrate(CELEBRATION_PRESETS.onboardingComplete);
 
-      toast({
-        title: "Profile Complete!",
-        description: "Welcome to ResearchCollabPro! Your profile is ready.",
-      });
-
-      // Redirect after celebration animation
-      setTimeout(() => {
-        navigate("/home");
-      }, 2500);
+      toast({ title: "Profile Complete!", description: "Welcome to ResearchCollabPro! Your profile is ready." });
+      setTimeout(() => navigate("/home"), 2500);
     } catch (error: any) {
       console.error("Onboarding error:", error);
-      toast({
-        title: "Error",
-        description: error.message || "Failed to save profile. Please try again.",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: error.message || "Failed to save profile. Please try again.", variant: "destructive" });
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const isSkippable = step === 3 || step === 4;
+  const meta = stepMeta[step - 1];
+
   return (
     <div className="min-h-screen gradient-hero flex items-center justify-center p-4">
-      {/* Celebration overlay */}
-      <CelebrationOverlay 
-        isActive={isCelebrating} 
+      <CelebrationOverlay
+        isActive={isCelebrating}
         title={celebrationConfig.title}
         subtitle={celebrationConfig.subtitle}
         icon={celebrationConfig.icon}
       />
 
-      {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
         <div className="absolute bottom-20 -left-20 h-60 w-60 rounded-full bg-primary/5 blur-2xl" />
@@ -211,7 +198,7 @@ export default function OnboardingPage() {
         className="relative w-full max-w-lg"
       >
         {/* Logo */}
-        <div className="flex items-center justify-center gap-2 mb-8">
+        <div className="flex items-center justify-center gap-2 mb-6">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-primary">
             <GraduationCap className="h-6 w-6 text-primary-foreground" />
           </div>
@@ -220,225 +207,170 @@ export default function OnboardingPage() {
           </span>
         </div>
 
-        {/* Progress indicator */}
-        <div className="flex items-center justify-center gap-2 mb-6">
-          <div className={`h-2 w-16 rounded-full ${step >= 1 ? "bg-primary" : "bg-muted"}`} />
-          <div className={`h-2 w-16 rounded-full ${step >= 2 ? "bg-primary" : "bg-muted"}`} />
+        {/* Stepper */}
+        <div className="flex items-center justify-center gap-1 mb-6">
+          {stepMeta.map((s, i) => {
+            const stepNum = i + 1;
+            const isCompleted = step > stepNum;
+            const isCurrent = step === stepNum;
+            return (
+              <div key={i} className="flex items-center gap-1">
+                <div className="flex flex-col items-center">
+                  <div
+                    className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
+                      isCompleted
+                        ? "bg-primary text-primary-foreground"
+                        : isCurrent
+                        ? "bg-primary/20 text-primary border-2 border-primary"
+                        : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {isCompleted ? <Check className="h-4 w-4" /> : stepNum}
+                  </div>
+                  <span className={`text-[10px] mt-1 ${isCurrent ? "text-primary font-medium" : "text-muted-foreground"}`}>
+                    {s.label}
+                  </span>
+                </div>
+                {i < TOTAL_STEPS - 1 && (
+                  <div className={`h-0.5 w-6 mb-4 rounded-full ${step > stepNum ? "bg-primary" : "bg-muted"}`} />
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <Card className="border-0 shadow-xl">
-          <CardHeader className="text-center">
+          <CardHeader className="text-center pb-4">
             <Badge variant="secondary" className="mx-auto mb-2">
-              Step {step} of 2
+              Step {step} of {TOTAL_STEPS}
             </Badge>
-            <CardTitle className="text-2xl">
-              {step === 1 ? "Tell us about yourself" : "Your Academic Profile"}
-            </CardTitle>
-            <CardDescription>
-              {step === 1
-                ? "Help us personalize your experience"
-                : "Complete your academic details"}
-            </CardDescription>
+            <CardTitle className="text-2xl">{meta.title}</CardTitle>
+            <CardDescription>{meta.description}</CardDescription>
           </CardHeader>
 
           <CardContent>
             <AnimatePresence mode="wait">
+              {/* Step 1: Personal Info */}
               {step === 1 && (
-                <motion.div
-                  key="step1"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="space-y-4"
-                >
-                  {/* Full Name */}
+                <motion.div key="step1" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="fullName">Full Name</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="fullName"
-                        placeholder="Muhammad Ali Khan"
-                        className="pl-10"
-                        value={formData.fullName}
-                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      />
+                      <Input id="fullName" placeholder="Muhammad Ali Khan" className="pl-10" value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} />
                     </div>
                   </div>
-
-                  {/* Role */}
                   <div className="space-y-2">
                     <Label>I am a...</Label>
                     <div className="grid grid-cols-3 gap-3">
                       {roles.map((role) => (
-                        <button
-                          key={role.value}
-                          type="button"
-                          onClick={() => setFormData({ ...formData, role: role.value })}
-                          className={`p-3 rounded-lg border-2 text-left transition-all ${
-                            formData.role === role.value
-                              ? "border-primary bg-primary/5"
-                              : "border-border hover:border-primary/50"
-                          }`}
-                        >
+                        <button key={role.value} type="button" onClick={() => setFormData({ ...formData, role: role.value })}
+                          className={`p-3 rounded-lg border-2 text-left transition-all ${formData.role === role.value ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
                           <div className="font-medium text-sm">{role.label}</div>
                           <div className="text-xs text-muted-foreground">{role.description}</div>
                         </button>
                       ))}
                     </div>
                   </div>
-
-                  {/* Location */}
                   <div className="space-y-2">
                     <Label htmlFor="location">Location (City, Country)</Label>
                     <div className="relative">
                       <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="location"
-                        placeholder="Islamabad, Pakistan"
-                        className="pl-10"
-                        value={formData.location}
-                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      />
+                      <Input id="location" placeholder="Islamabad, Pakistan" className="pl-10" value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} />
                     </div>
                   </div>
-
-                  {/* University */}
                   <div className="space-y-2">
                     <Label htmlFor="university">University / Institute</Label>
                     <div className="relative">
                       <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="university"
-                        placeholder="NUST, PIEAS, GIKI..."
-                        className="pl-10"
-                        value={formData.university}
-                        onChange={(e) => setFormData({ ...formData, university: e.target.value })}
-                      />
+                      <Input id="university" placeholder="NUST, PIEAS, GIKI..." className="pl-10" value={formData.university} onChange={(e) => setFormData({ ...formData, university: e.target.value })} />
                     </div>
                   </div>
-
                   <Button className="w-full" onClick={handleNext}>
-                    Continue
-                    <ArrowRight className="h-4 w-4" />
+                    Continue <ArrowRight className="h-4 w-4" />
                   </Button>
                 </motion.div>
               )}
 
+              {/* Step 2: Academic Profile */}
               {step === 2 && (
-                <motion.div
-                  key="step2"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="space-y-4"
-                >
-                  {/* Education Level */}
+                <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
                   <div className="space-y-2">
                     <Label>Education Level</Label>
-                    <Select
-                      value={formData.educationLevel}
-                      onValueChange={(value) => setFormData({ ...formData, educationLevel: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your education level" />
-                      </SelectTrigger>
+                    <Select value={formData.educationLevel} onValueChange={(value) => setFormData({ ...formData, educationLevel: value })}>
+                      <SelectTrigger><SelectValue placeholder="Select your education level" /></SelectTrigger>
                       <SelectContent>
-                        {educationLevels.map((level) => (
-                          <SelectItem key={level.value} value={level.value}>
-                            {level.label}
-                          </SelectItem>
-                        ))}
+                        {educationLevels.map((level) => (<SelectItem key={level.value} value={level.value}>{level.label}</SelectItem>))}
                       </SelectContent>
                     </Select>
                   </div>
-
-                  {/* Department */}
                   <div className="space-y-2">
                     <Label>Department</Label>
-                    <Select
-                      value={formData.department}
-                      onValueChange={(value) => setFormData({ ...formData, department: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your department" />
-                      </SelectTrigger>
+                    <Select value={formData.department} onValueChange={(value) => setFormData({ ...formData, department: value })}>
+                      <SelectTrigger><SelectValue placeholder="Select your department" /></SelectTrigger>
                       <SelectContent>
-                        {departments.map((dept) => (
-                          <SelectItem key={dept.value} value={dept.value}>
-                            {dept.label}
-                          </SelectItem>
-                        ))}
+                        {departments.map((dept) => (<SelectItem key={dept.value} value={dept.value}>{dept.label}</SelectItem>))}
                       </SelectContent>
                     </Select>
                   </div>
-
-                  {/* Research Level */}
                   <div className="space-y-2">
                     <Label>Research Experience Level</Label>
-                    <Select
-                      value={formData.researchLevel}
-                      onValueChange={(value) => setFormData({ ...formData, researchLevel: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your research level" />
-                      </SelectTrigger>
+                    <Select value={formData.researchLevel} onValueChange={(value) => setFormData({ ...formData, researchLevel: value })}>
+                      <SelectTrigger><SelectValue placeholder="Select your research level" /></SelectTrigger>
                       <SelectContent>
                         {researchLevels.map((level) => (
                           <SelectItem key={level.value} value={level.value}>
-                            <div>
-                              <div className="font-medium">{level.label}</div>
-                              <div className="text-xs text-muted-foreground">{level.description}</div>
-                            </div>
+                            <div><div className="font-medium">{level.label}</div><div className="text-xs text-muted-foreground">{level.description}</div></div>
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
-
-                  {/* Interests */}
                   <div className="space-y-2">
                     <Label>Research Interests (Select multiple)</Label>
                     <div className="flex flex-wrap gap-2">
                       {interestOptions.map((interest) => (
-                        <Badge
-                          key={interest}
-                          variant={formData.interests.includes(interest) ? "default" : "outline"}
-                          className="cursor-pointer transition-all"
-                          onClick={() => toggleInterest(interest)}
-                        >
-                          {formData.interests.includes(interest) && (
-                            <Check className="h-3 w-3 mr-1" />
-                          )}
+                        <Badge key={interest} variant={formData.interests.includes(interest) ? "default" : "outline"} className="cursor-pointer transition-all" onClick={() => toggleInterest(interest)}>
+                          {formData.interests.includes(interest) && <Check className="h-3 w-3 mr-1" />}
                           {interest}
                         </Badge>
                       ))}
                     </div>
                   </div>
-
                   <div className="flex gap-3">
-                    <Button variant="outline" onClick={handleBack} className="flex-1">
-                      <ArrowLeft className="h-4 w-4" />
-                      Back
-                    </Button>
-                    <Button
-                      className="flex-1"
-                      onClick={handleSubmit}
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          Saving...
-                        </>
-                      ) : (
-                        <>
-                          Complete Setup
-                          <Sparkles className="h-4 w-4" />
-                        </>
-                      )}
+                    <Button variant="outline" onClick={handleBack} className="flex-1"><ArrowLeft className="h-4 w-4" /> Back</Button>
+                    <Button className="flex-1" onClick={handleNext}>Continue <ArrowRight className="h-4 w-4" /></Button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Step 3: Skills */}
+              {step === 3 && (
+                <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
+                  <SkillSelector selectedSkills={formData.skills} onSkillsChange={(skills) => setFormData({ ...formData, skills })} />
+                  <div className="flex gap-3">
+                    <Button variant="outline" onClick={handleBack} className="flex-1"><ArrowLeft className="h-4 w-4" /> Back</Button>
+                    <Button className="flex-1" onClick={handleNext}>Continue <ArrowRight className="h-4 w-4" /></Button>
+                  </div>
+                  <Button variant="ghost" className="w-full text-muted-foreground" onClick={handleNext}>
+                    <SkipForward className="h-4 w-4 mr-1" /> Skip for now
+                  </Button>
+                </motion.div>
+              )}
+
+              {/* Step 4: Platform Walkthrough */}
+              {step === 4 && (
+                <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
+                  <PlatformWalkthrough />
+                  <div className="flex gap-3">
+                    <Button variant="outline" onClick={handleBack} className="flex-1"><ArrowLeft className="h-4 w-4" /> Back</Button>
+                    <Button className="flex-1" onClick={handleSubmit} disabled={isSubmitting}>
+                      {isSubmitting ? (<><Loader2 className="h-4 w-4 animate-spin" /> Saving...</>) : (<>Get Started <Sparkles className="h-4 w-4" /></>)}
                     </Button>
                   </div>
+                  <Button variant="ghost" className="w-full text-muted-foreground" onClick={handleSubmit} disabled={isSubmitting}>
+                    <SkipForward className="h-4 w-4 mr-1" /> Skip & finish
+                  </Button>
                 </motion.div>
               )}
             </AnimatePresence>
