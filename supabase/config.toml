@@ -56,3 +56,6 @@ verify_jwt = false
 
 [functions.run-constitutional-audit]
 verify_jwt = false
+
+[functions.forecast-revenue]
+verify_jwt = false

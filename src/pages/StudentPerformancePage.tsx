@@ -1,43 +1,60 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { TrendingUp, Target, Clock, Star, DollarSign, BarChart3 } from "lucide-react";
+import { TrendingUp, Target, Clock, Star, DollarSign, BarChart3, Loader2 } from "lucide-react";
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from "recharts";
+import { useStudentMetrics } from "@/hooks/useAcademicData";
+import { useAuth } from "@/contexts/AuthContext";
 
-const metrics = {
-  milestone_timeliness: 82,
-  revision_rate: 15,
-  supervisor_rating: 4.2,
-  trust_growth: 28,
-  economic_output: 45000,
-  consistency_score: 76,
+const fallbackMetrics = {
+  milestone_timeliness: 0,
+  revision_rate: 0,
+  supervisor_rating: 0,
+  trust_growth: 0,
+  economic_output: 0,
+  consistency_score: 0,
 };
 
-const radarData = [
-  { metric: "Timeliness", value: metrics.milestone_timeliness },
-  { metric: "Quality", value: 100 - metrics.revision_rate },
-  { metric: "Rating", value: metrics.supervisor_rating * 20 },
-  { metric: "Trust", value: metrics.trust_growth * 2 },
-  { metric: "Output", value: Math.min(metrics.economic_output / 1000, 100) },
-  { metric: "Consistency", value: metrics.consistency_score },
-];
-
-const statCards = [
-  { icon: Clock, label: "Milestone Timeliness", value: `${metrics.milestone_timeliness}%`, color: "text-blue-500" },
-  { icon: Target, label: "Revision Rate", value: `${metrics.revision_rate}%`, color: "text-orange-500" },
-  { icon: Star, label: "Supervisor Rating", value: `${metrics.supervisor_rating}/5`, color: "text-yellow-500" },
-  { icon: TrendingUp, label: "Trust Growth", value: `+${metrics.trust_growth}`, color: "text-green-500" },
-  { icon: DollarSign, label: "Economic Output", value: `PKR ${metrics.economic_output.toLocaleString()}`, color: "text-primary" },
-  { icon: BarChart3, label: "Consistency", value: `${metrics.consistency_score}%`, color: "text-purple-500" },
-];
-
 export default function StudentPerformancePage() {
+  const { user } = useAuth();
+  const { data: dbMetrics, isLoading } = useStudentMetrics(user?.id);
+
+  const metrics = dbMetrics ? {
+    milestone_timeliness: dbMetrics.milestone_timeliness ?? 0,
+    revision_rate: dbMetrics.revision_rate ?? 0,
+    supervisor_rating: dbMetrics.supervisor_rating ?? 0,
+    trust_growth: dbMetrics.trust_growth ?? 0,
+    economic_output: dbMetrics.economic_output ?? 0,
+    consistency_score: dbMetrics.consistency_score ?? 0,
+  } : fallbackMetrics;
+
+  const radarData = [
+    { metric: "Timeliness", value: metrics.milestone_timeliness },
+    { metric: "Quality", value: 100 - metrics.revision_rate },
+    { metric: "Rating", value: (metrics.supervisor_rating ?? 0) * 20 },
+    { metric: "Trust", value: Math.min((metrics.trust_growth ?? 0) * 2, 100) },
+    { metric: "Output", value: Math.min((metrics.economic_output ?? 0) / 1000, 100) },
+    { metric: "Consistency", value: metrics.consistency_score },
+  ];
+
+  const statCards = [
+    { icon: Clock, label: "Milestone Timeliness", value: `${metrics.milestone_timeliness}%`, color: "text-blue-500" },
+    { icon: Target, label: "Revision Rate", value: `${metrics.revision_rate}%`, color: "text-orange-500" },
+    { icon: Star, label: "Supervisor Rating", value: `${metrics.supervisor_rating}/5`, color: "text-yellow-500" },
+    { icon: TrendingUp, label: "Trust Growth", value: `+${metrics.trust_growth}`, color: "text-green-500" },
+    { icon: DollarSign, label: "Economic Output", value: `PKR ${(metrics.economic_output ?? 0).toLocaleString()}`, color: "text-primary" },
+    { icon: BarChart3, label: "Consistency", value: `${metrics.consistency_score}%`, color: "text-purple-500" },
+  ];
+
+  if (isLoading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Performance Scorecard</h1>
           <p className="text-muted-foreground mt-1">Your academic execution metrics at a glance</p>
+          {!dbMetrics && <p className="text-sm text-muted-foreground mt-2">No performance data found yet. Complete milestones to build your scorecard.</p>}
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">

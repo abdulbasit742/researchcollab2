@@ -2,33 +2,32 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileDown, Link2, Share2, Shield, TrendingUp, Briefcase, CheckCircle2 } from "lucide-react";
+import { FileDown, Link2, Share2, Shield, TrendingUp, Briefcase, CheckCircle2, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-const report = {
-  trust_score: 72,
-  completed_projects: 8,
-  validation_score: 85,
-  economic_output: 125000,
-  skills: ["React", "Python", "Data Analysis", "Machine Learning", "Academic Writing"],
-  certifications: ["Verified Student", "Research Contributor"],
-};
+import { useEmployabilityReport } from "@/hooks/useAcademicData";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function EmployabilityExportPage() {
   const { toast } = useToast();
+  const { user } = useAuth();
+  const { data: report, isLoading } = useEmployabilityReport(user?.id);
   const [generating, setGenerating] = useState(false);
+
+  const r = report || { trust_score: 0, completed_projects: 0, validation_score: 0, economic_output: 0 };
 
   const handleExport = async () => {
     setGenerating(true);
-    await new Promise(r => setTimeout(r, 1500));
+    await new Promise(res => setTimeout(res, 1500));
     toast({ title: "Report Generated", description: "Your employability report PDF has been generated." });
     setGenerating(false);
   };
 
   const handleShareLink = () => {
-    navigator.clipboard.writeText(`${window.location.origin}/employability/verify/abc123`);
+    navigator.clipboard.writeText(`${window.location.origin}/employability/verify/${user?.id?.slice(0, 8)}`);
     toast({ title: "Link Copied", description: "Public verification link copied to clipboard." });
   };
+
+  if (isLoading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
 
   return (
     <div className="min-h-screen bg-background">
@@ -36,6 +35,7 @@ export default function EmployabilityExportPage() {
         <div>
           <h1 className="text-3xl font-bold text-foreground flex items-center gap-2"><Briefcase className="h-8 w-8 text-primary" /> Employability Report</h1>
           <p className="text-muted-foreground mt-1">Your employer-ready academic performance summary</p>
+          {!report && <p className="text-sm text-muted-foreground mt-2">No report generated yet. Complete projects to build your employability profile.</p>}
         </div>
 
         <Card>
@@ -43,10 +43,10 @@ export default function EmployabilityExportPage() {
           <CardContent className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: Shield, label: "Trust Score", value: report.trust_score, suffix: "/100" },
-                { icon: CheckCircle2, label: "Projects Completed", value: report.completed_projects },
-                { icon: TrendingUp, label: "Validation Score", value: report.validation_score, suffix: "%" },
-                { icon: Briefcase, label: "Economic Output", value: `PKR ${report.economic_output.toLocaleString()}` },
+                { icon: Shield, label: "Trust Score", value: r.trust_score, suffix: "/100" },
+                { icon: CheckCircle2, label: "Projects Completed", value: r.completed_projects },
+                { icon: TrendingUp, label: "Validation Score", value: r.validation_score, suffix: "%" },
+                { icon: Briefcase, label: "Economic Output", value: `PKR ${(r.economic_output ?? 0).toLocaleString()}` },
               ].map(item => (
                 <div key={item.label} className="p-4 rounded-lg border text-center">
                   <item.icon className="h-6 w-6 mx-auto mb-2 text-primary" />
@@ -54,20 +54,6 @@ export default function EmployabilityExportPage() {
                   <p className="text-sm text-muted-foreground">{item.label}</p>
                 </div>
               ))}
-            </div>
-
-            <div>
-              <p className="text-sm font-medium mb-2">Skills</p>
-              <div className="flex flex-wrap gap-2">
-                {report.skills.map(s => <Badge key={s} variant="outline">{s}</Badge>)}
-              </div>
-            </div>
-
-            <div>
-              <p className="text-sm font-medium mb-2">Certifications</p>
-              <div className="flex flex-wrap gap-2">
-                {report.certifications.map(c => <Badge key={c} className="bg-green-500/10 text-green-600 border-green-500/20">{c}</Badge>)}
-              </div>
             </div>
           </CardContent>
         </Card>
