@@ -21,6 +21,7 @@ import {
   WorkGraphCard,
 } from "@/components/outcome";
 import { ProfileViewsCard } from "@/components/profile";
+import { MyPlanCard } from "@/components/profile/MyPlanCard";
 import { VisibilityScoreCard } from "@/components/profile/VisibilityScoreCard";
 import { useWorkConnections } from "@/hooks/useOutcomeFeed";
 import {
@@ -269,6 +270,9 @@ export default function ProfilePage() {
 
             {/* Sidebar - 1 column */}
             <div className="space-y-6">
+              {/* My Plan */}
+              <MyPlanCard />
+
               {/* Trust Engine */}
               <TrustEngineDisplay
                 totalScore={trustScore}

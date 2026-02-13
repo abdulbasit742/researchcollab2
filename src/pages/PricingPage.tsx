@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 const PricingPage = () => {
   const individualPlans = [
     {
-      name: "Free",
+      name: "Basic",
       price: "PKR 0",
       period: "/month",
       description: "Get started with basic features",
@@ -27,12 +27,12 @@ const PricingPage = () => {
       popular: false,
     },
     {
-      name: "Student",
+      name: "Career",
       price: "PKR 499",
       period: "/month",
-      description: "Perfect for students and learners",
+      description: "Perfect for ambitious students and learners",
       features: [
-        "Everything in Free",
+        "Everything in Basic",
         "Unlimited bids",
         "10,000 free AI words/month",
         "1 free peer review/month",
@@ -46,12 +46,12 @@ const PricingPage = () => {
       popular: true,
     },
     {
-      name: "Researcher",
+      name: "Business",
       price: "PKR 1,999",
       period: "/month",
       description: "For researchers and academics",
       features: [
-        "Everything in Student",
+        "Everything in Career",
         "50,000 free AI words/month",
         "3 free peer reviews/month",
         "Verified university badge + spotlight",
@@ -554,16 +554,16 @@ const PricingPage = () => {
                       <TableHeader>
                         <TableRow className="bg-muted/50">
                           <TableHead className="font-semibold min-w-[160px]">Feature</TableHead>
-                          <TableHead className="text-center font-semibold min-w-[100px]">Free</TableHead>
+                          <TableHead className="text-center font-semibold min-w-[100px]">Basic</TableHead>
                           <TableHead className="text-center font-semibold min-w-[100px]">
                             <div className="flex flex-col items-center gap-1">
-                              <span>Student</span>
+                              <span>Career</span>
                               <span className="text-xs text-primary font-normal">PKR 499</span>
                             </div>
                           </TableHead>
                           <TableHead className="text-center font-semibold min-w-[110px]">
                             <div className="flex flex-col items-center gap-1">
-                              <span>Researcher</span>
+                              <span>Business</span>
                               <span className="text-xs text-primary font-normal">PKR 1,999</span>
                             </div>
                           </TableHead>

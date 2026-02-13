@@ -9,7 +9,7 @@ import { toolBundles, tools } from "@/data/tools";
 
 const plans = [
   {
-    name: "Free",
+    name: "Basic",
     price: 0,
     period: "/mo",
     description: "Get started with essential tools at no cost.",
@@ -26,7 +26,7 @@ const plans = [
     cta: "Get Started",
   },
   {
-    name: "Student",
+    name: "Career",
     price: 499,
     period: "/mo",
     description: "Unlock more opportunities and stand out.",
@@ -45,14 +45,14 @@ const plans = [
     cta: "Start Free Trial",
   },
   {
-    name: "Researcher",
+    name: "Business",
     price: 1999,
     period: "/mo",
     description: "Full power for serious academic professionals.",
     variant: "elevated" as const,
     popular: false,
     features: [
-      "Everything in Student",
+      "Everything in Career",
       "50,000 free AI words/month",
       "3 free peer reviews/month",
       "Verified university badge + spotlight",
