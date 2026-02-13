@@ -123,13 +123,23 @@ export const DemoWalkthroughProvider: React.FC<{ children: React.ReactNode }> = 
     if (step.route && location.pathname !== step.route) {
       navigate(step.route);
     }
-    // Scroll to target after navigation
+    // Scroll to target after navigation with mobile-aware offset
     setTimeout(() => {
       if (step.targetSelector) {
         const el = document.querySelector(step.targetSelector);
-        el?.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (el) {
+          const isMobileView = window.innerWidth < 768;
+          if (isMobileView) {
+            // On mobile, scroll so element is near top to avoid tooltip overlap
+            const rect = el.getBoundingClientRect();
+            const scrollTop = window.scrollY + rect.top - 80;
+            window.scrollTo({ top: Math.max(0, scrollTop), behavior: "smooth" });
+          } else {
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }
       }
-    }, 400);
+    }, 500);
   }, [navigate, location.pathname]);
 
   const startTour = useCallback(() => {
