@@ -14,6 +14,9 @@ import { Search, ArrowRight, Sparkles, GraduationCap, BookOpen, FlaskConical } f
 import { FloatingOrbs } from "@/components/decorations/FloatingOrbs";
 import { useParallax } from "@/hooks/useParallax";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
+import { LiveActivityFeed } from "@/components/home/LiveActivityFeed";
+
+const typingWords = ["Research Papers", "Global Collaborators", "AI-Powered Tools", "Real Earning"];
 
 const disciplines = [
   "Computer Science", "Biology", "Physics", "Chemistry", "Mathematics",
@@ -53,6 +56,9 @@ export function HeroSection() {
   const [discipline, setDiscipline] = useState("");
   const [location, setLocation] = useState("");
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [typingIndex, setTypingIndex] = useState(0);
+  const [displayedText, setDisplayedText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const { scrollY, isDisabled } = useParallax({ speed: 0.3 });
   const orbsY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.15));
@@ -60,12 +66,44 @@ export function HeroSection() {
   const contentY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.1));
   const searchY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.12));
 
+  // Parallax transforms for floating icons - must be called unconditionally
+  const iconY0 = useTransform(scrollY, (v) => (isDisabled ? 0 : v * floatingIcons[0].speed));
+  const iconY1 = useTransform(scrollY, (v) => (isDisabled ? 0 : v * floatingIcons[1].speed));
+  const iconY2 = useTransform(scrollY, (v) => (isDisabled ? 0 : v * floatingIcons[2].speed));
+  const iconY3 = useTransform(scrollY, (v) => (isDisabled ? 0 : v * floatingIcons[3].speed));
+  const iconYValues = [iconY0, iconY1, iconY2, iconY3];
+
   useEffect(() => {
     const interval = setInterval(() => {
       setPlaceholderIndex((prev) => (prev + 1) % cyclingPlaceholders.length);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  // Typewriter effect
+  useEffect(() => {
+    const currentWord = typingWords[typingIndex];
+    const speed = isDeleting ? 40 : 80;
+
+    if (!isDeleting && displayedText === currentWord) {
+      const timeout = setTimeout(() => setIsDeleting(true), 1800);
+      return () => clearTimeout(timeout);
+    }
+    if (isDeleting && displayedText === "") {
+      setIsDeleting(false);
+      setTypingIndex((prev) => (prev + 1) % typingWords.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setDisplayedText(
+        isDeleting
+          ? currentWord.substring(0, displayedText.length - 1)
+          : currentWord.substring(0, displayedText.length + 1)
+      );
+    }, speed);
+    return () => clearTimeout(timeout);
+  }, [displayedText, isDeleting, typingIndex]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,26 +120,23 @@ export function HeroSection() {
         <FloatingOrbs variant="hero" />
       </motion.div>
 
-      {floatingIcons.map(({ Icon, x, y, delay, speed }, index) => {
-        const iconY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * speed));
-        return (
+      {floatingIcons.map(({ Icon, x, y, delay }, index) => (
+        <motion.div
+          key={index}
+          className="absolute hidden md:flex items-center justify-center w-12 h-12 rounded-xl bg-card/50 backdrop-blur-sm border border-border/30 shadow-lg will-change-transform"
+          style={{ left: x, top: y, y: iconYValues[index] }}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: delay + 0.5, duration: 0.5 }}
+        >
           <motion.div
-            key={index}
-            className="absolute hidden md:flex items-center justify-center w-12 h-12 rounded-xl bg-card/50 backdrop-blur-sm border border-border/30 shadow-lg will-change-transform"
-            style={{ left: x, top: y, y: iconY }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: delay + 0.5, duration: 0.5 }}
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 3, delay, repeat: Infinity, ease: "easeInOut" }}
           >
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 3, delay, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <Icon className="h-6 w-6 text-primary" />
-            </motion.div>
+            <Icon className="h-6 w-6 text-primary" />
           </motion.div>
-        );
-      })}
+        </motion.div>
+      ))}
 
       <motion.div 
         className="absolute inset-0 bg-gradient-to-b from-transparent via-background/5 to-background/20 pointer-events-none"
@@ -124,11 +159,17 @@ export function HeroSection() {
             className="text-2xl font-extrabold tracking-tight xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight"
           >
             Looking for{" "}
-            <span className="text-gradient animate-gradient-text bg-[length:200%_auto]">Research, Tools,</span>
+            <span className="text-gradient animate-gradient-text bg-[length:200%_auto]">
+              {displayedText}
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity }}
+                className="inline-block w-[2px] h-[0.9em] bg-primary ml-0.5 align-middle"
+              />
+            </span>
             <br className="hidden xs:block" />
             <span className="xs:hidden"> </span>
-            or{" "}
-            <span className="text-gradient animate-gradient-text bg-[length:200%_auto]">Real Earning</span> Opportunities?
+            Opportunities?
           </motion.h1>
 
           <motion.p
@@ -227,6 +268,16 @@ export function HeroSection() {
                 </div>
               </div>
             </form>
+          </motion.div>
+
+          {/* Live Activity Feed */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="mt-6"
+          >
+            <LiveActivityFeed />
           </motion.div>
         </motion.div>
       </div>
