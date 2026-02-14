@@ -27,7 +27,7 @@ export function LiveActivityFeed() {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="inline-flex items-center gap-2 rounded-full bg-card/60 backdrop-blur-sm border border-border/40 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm max-w-md">
+      <div className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-card/60 backdrop-blur-sm border border-border/40 px-2.5 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs md:text-sm max-w-[95vw] sm:max-w-md">
         <span className="relative flex h-2 w-2 shrink-0">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
@@ -40,7 +40,7 @@ export function LiveActivityFeed() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3 }}
-            className="text-muted-foreground truncate"
+            className="text-muted-foreground line-clamp-2 sm:truncate"
           >
             {current.text}
           </motion.span>

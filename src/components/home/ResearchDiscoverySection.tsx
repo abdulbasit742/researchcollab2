@@ -98,19 +98,19 @@ export function ResearchDiscoverySection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
           onSubmit={handleSearch}
-          className="max-w-2xl mx-auto mb-12"
+          className="max-w-2xl mx-auto mb-12 px-1"
         >
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
             <Input
               placeholder="Search papers by title, author, or field..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 pr-28 h-14 text-base rounded-xl border-2 border-border focus:border-primary"
+              className="pl-10 sm:pl-12 pr-20 sm:pr-28 h-12 sm:h-14 text-base rounded-xl border-2 border-border focus:border-primary"
             />
-            <Button type="submit" size="sm" className="absolute right-2 top-1/2 -translate-y-1/2 gap-1.5">
-              <Search className="h-4 w-4" />
-              Search
+            <Button type="submit" size="sm" className="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 gap-1 sm:gap-1.5 h-9 px-3 sm:px-4 text-xs sm:text-sm touch-manipulation active:scale-95">
+              <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span className="hidden xs:inline">Search</span>
             </Button>
           </div>
         </motion.form>
@@ -134,7 +134,7 @@ export function ResearchDiscoverySection() {
         </div>
 
         {/* Featured Papers */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-10">
           {FEATURED_PAPERS.map((paper, i) => (
             <motion.div
               key={paper.title}

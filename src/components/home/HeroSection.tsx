@@ -257,7 +257,7 @@ export function HeroSection() {
                 <div className="flex-1 flex flex-col xs:flex-row gap-2">
                   <Input
                     placeholder={cyclingPlaceholders[placeholderIndex]}
-                    className="flex-1 h-11 bg-background/50 transition-all"
+                    className="flex-1 h-11 min-h-[44px] bg-background/50 transition-all text-base"
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
                   />

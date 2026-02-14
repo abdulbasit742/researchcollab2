@@ -44,19 +44,43 @@ export function WhyChooseSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-8 md:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-3 sm:mb-4">
             Why Choose{" "}
             <span className="text-primary">ResearchCollabPro</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-sm sm:text-lg max-w-2xl mx-auto">
             See the difference a purpose-built platform makes.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-5xl mx-auto">
-          {/* Without column header */}
+        {/* Mobile: stacked comparison cards */}
+        <div className="md:hidden space-y-3 max-w-lg mx-auto">
+          {comparisons.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+              viewport={{ once: true }}
+              className="rounded-xl border border-border/50 overflow-hidden"
+            >
+              <div className="p-3 bg-destructive/5 border-b border-border/30 flex items-start gap-2.5">
+                <XCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+                <p className="text-xs text-muted-foreground leading-relaxed">{item.without}</p>
+              </div>
+              <div className="p-3 bg-primary/5 flex items-start gap-2.5">
+                <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <p className="text-xs text-foreground font-medium leading-relaxed">{item.with}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Desktop: 2-column grid */}
+        <div className="hidden md:grid grid-cols-2 gap-4 md:gap-6 max-w-5xl mx-auto">
+          {/* Column headers */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -73,7 +97,7 @@ export function WhyChooseSection() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="text-center md:text-left hidden md:block"
+            className="text-left"
           >
             <span className="inline-flex items-center gap-2 text-sm font-semibold text-primary mb-4 px-3 py-1 rounded-full bg-primary/10">
               <CheckCircle2 className="h-4 w-4" /> With ResearchCollabPro
@@ -82,9 +106,8 @@ export function WhyChooseSection() {
 
           {/* Comparison rows */}
           {comparisons.map((item, i) => (
-            <>
+            <div key={i} className="contents">
               <motion.div
-                key={`without-${i}`}
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
@@ -95,7 +118,6 @@ export function WhyChooseSection() {
                 <p className="text-sm text-muted-foreground">{item.without}</p>
               </motion.div>
               <motion.div
-                key={`with-${i}`}
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.1 + 0.1 }}
@@ -105,7 +127,7 @@ export function WhyChooseSection() {
                 <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <p className="text-sm text-foreground font-medium">{item.with}</p>
               </motion.div>
-            </>
+            </div>
           ))}
         </div>
       </div>
