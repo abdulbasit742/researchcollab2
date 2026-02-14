@@ -10,6 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { GlobalAIChatButton } from "@/components/ai/GlobalAIChatButton";
 import { SwipeBackNavigator } from "@/components/mobile/SwipeBackNavigator";
 import { PWAInstallBanner } from "@/components/pwa/PWAInstallBanner";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -22,6 +23,7 @@ export function MainLayout({ children }: MainLayoutProps) {
 
   return (
     <div className="flex min-h-[100dvh] flex-col overflow-x-hidden">
+      <ScrollProgress />
       <Navbar />
       <main className={`flex-1 ${isMobile ? 'pb-20' : ''}`}>
         <SwipeBackNavigator>{children}</SwipeBackNavigator>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -13,31 +13,16 @@ import {
 import { Search, ArrowRight, Sparkles, GraduationCap, BookOpen, FlaskConical } from "lucide-react";
 import { FloatingOrbs } from "@/components/decorations/FloatingOrbs";
 import { useParallax } from "@/hooks/useParallax";
+import { AnimatedCounter } from "@/components/ui/animated-counter";
 
 const disciplines = [
-  "Computer Science",
-  "Biology",
-  "Physics",
-  "Chemistry",
-  "Mathematics",
-  "Engineering",
-  "Medicine",
-  "Psychology",
-  "Economics",
-  "Environmental Science",
+  "Computer Science", "Biology", "Physics", "Chemistry", "Mathematics",
+  "Engineering", "Medicine", "Psychology", "Economics", "Environmental Science",
 ];
 
 const locations = [
-  "United States",
-  "United Kingdom",
-  "Germany",
-  "China",
-  "India",
-  "Australia",
-  "Canada",
-  "Japan",
-  "France",
-  "Netherlands",
+  "United States", "United Kingdom", "Germany", "China", "India",
+  "Australia", "Canada", "Japan", "France", "Netherlands",
 ];
 
 const floatingIcons = [
@@ -47,20 +32,40 @@ const floatingIcons = [
   { Icon: Sparkles, x: "90%", y: "65%", delay: 1.5, speed: 0.3 },
 ];
 
+const cyclingPlaceholders = [
+  "Try: machine learning",
+  "Try: climate change",
+  "Try: quantum computing",
+  "Try: gene therapy",
+  "Try: neural networks",
+];
+
+const heroStats = [
+  { value: 12000, suffix: "+", label: "Papers" },
+  { value: 5000, suffix: "+", label: "Researchers" },
+  { value: 50, suffix: "+", label: "Fields" },
+  { value: 98, suffix: "%", label: "Satisfaction" },
+];
+
 export function HeroSection() {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
   const [discipline, setDiscipline] = useState("");
   const [location, setLocation] = useState("");
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
-  // Parallax for different layers
   const { scrollY, isDisabled } = useParallax({ speed: 0.3 });
-  
-  // Create transforms for each layer
   const orbsY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.15));
   const gradientY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.08));
   const contentY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.1));
   const searchY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.12));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIndex((prev) => (prev + 1) % cyclingPlaceholders.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,15 +78,12 @@ export function HeroSection() {
 
   return (
     <section data-tour="hero" className="relative overflow-hidden gradient-hero min-h-[600px] md:min-h-[700px]">
-      {/* Animated background orbs with parallax */}
       <motion.div style={{ y: orbsY }} className="absolute inset-0">
         <FloatingOrbs variant="hero" />
       </motion.div>
 
-      {/* Floating academic icons with individual parallax */}
       {floatingIcons.map(({ Icon, x, y, delay, speed }, index) => {
         const iconY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * speed));
-        
         return (
           <motion.div
             key={index}
@@ -101,22 +103,14 @@ export function HeroSection() {
         );
       })}
 
-      {/* Gradient mesh overlay with parallax */}
       <motion.div 
         className="absolute inset-0 bg-gradient-to-b from-transparent via-background/5 to-background/20 pointer-events-none"
         style={{ y: gradientY }}
       />
 
       <div className="container relative py-12 px-4 md:py-32 md:px-6">
-        <motion.div 
-          className="mx-auto max-w-4xl text-center"
-          style={{ y: contentY }}
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+        <motion.div className="mx-auto max-w-4xl text-center" style={{ y: contentY }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium text-primary border border-primary/20 backdrop-blur-sm">
               <Sparkles className="h-3 w-3 md:h-4 md:w-4 animate-pulse" />
               Built for researchers, by researchers
@@ -147,6 +141,23 @@ export function HeroSection() {
             with your academic skills. Your all-in-one research collaboration platform.
           </motion.p>
 
+          {/* Animated stats bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="mt-6 md:mt-8 flex items-center justify-center gap-4 md:gap-8 flex-wrap"
+          >
+            {heroStats.map((stat, i) => (
+              <div key={stat.label} className="flex flex-col items-center">
+                <span className="text-lg md:text-2xl font-bold text-primary">
+                  <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={2000} delay={i * 150} />
+                </span>
+                <span className="text-[10px] md:text-xs text-muted-foreground font-medium">{stat.label}</span>
+              </div>
+            ))}
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -154,19 +165,19 @@ export function HeroSection() {
             className="mt-6 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4"
           >
             <Link to="/auth?tab=signup" className="w-full sm:w-auto">
-              <Button variant="premium" size="lg" className="w-full sm:w-auto h-12 md:h-14 text-sm md:text-base touch-manipulation">
+              <Button variant="premium" size="lg" className="w-full sm:w-auto h-12 md:h-14 text-sm md:text-base touch-manipulation active:scale-95 transition-transform">
                 Get Started Free
                 <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
               </Button>
             </Link>
             <Link to="/tools" className="w-full sm:w-auto">
-              <Button variant="hero-outline" size="lg" className="w-full sm:w-auto h-12 md:h-14 text-sm md:text-base touch-manipulation">
+              <Button variant="hero-outline" size="lg" className="w-full sm:w-auto h-12 md:h-14 text-sm md:text-base touch-manipulation active:scale-95 transition-transform">
                 Explore AI Tools
               </Button>
             </Link>
           </motion.div>
 
-          {/* Search Bar with glow effect and parallax */}
+          {/* Search Bar */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -176,40 +187,40 @@ export function HeroSection() {
           >
             <form onSubmit={handleSearch} className="rounded-xl md:rounded-2xl bg-card/80 backdrop-blur-xl p-3 md:p-4 shadow-xl border border-border/50 glow-focus transition-all duration-300 hover:shadow-2xl hover:border-primary/20">
               <div className="flex flex-col gap-3 md:flex-row md:gap-4">
-                <Select value={discipline} onValueChange={setDiscipline}>
-                  <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation bg-background/50">
-                    <SelectValue placeholder="Discipline" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {disciplines.map((d) => (
-                      <SelectItem key={d} value={d.toLowerCase()}>
-                        {d}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="hidden md:block">
+                  <Select value={discipline} onValueChange={setDiscipline}>
+                    <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation bg-background/50">
+                      <SelectValue placeholder="Discipline" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {disciplines.map((d) => (
+                        <SelectItem key={d} value={d.toLowerCase()}>{d}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                <Select value={location} onValueChange={setLocation}>
-                  <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation bg-background/50">
-                    <SelectValue placeholder="Location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {locations.map((l) => (
-                      <SelectItem key={l} value={l.toLowerCase()}>
-                        {l}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="hidden md:block">
+                  <Select value={location} onValueChange={setLocation}>
+                    <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation bg-background/50">
+                      <SelectValue placeholder="Location" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {locations.map((l) => (
+                        <SelectItem key={l} value={l.toLowerCase()}>{l}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
                 <div className="flex-1 flex flex-col xs:flex-row gap-2">
                   <Input
-                    placeholder="Keywords (e.g., machine learning)"
-                    className="flex-1 h-11 bg-background/50"
+                    placeholder={cyclingPlaceholders[placeholderIndex]}
+                    className="flex-1 h-11 bg-background/50 transition-all"
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
                   />
-                  <Button type="submit" size="default" className="h-11 px-6 w-full xs:w-auto touch-manipulation">
+                  <Button type="submit" size="default" className="h-11 px-6 w-full xs:w-auto touch-manipulation active:scale-95 transition-transform">
                     <Search className="h-4 w-4 mr-2" />
                     Search
                   </Button>

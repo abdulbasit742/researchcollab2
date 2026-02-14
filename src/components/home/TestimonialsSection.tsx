@@ -1,5 +1,5 @@
 import { motion, useTransform } from "framer-motion";
-import { Quote } from "lucide-react";
+import { Quote, Star, CheckCircle2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +12,7 @@ const testimonials = [
     role: "Postdoctoral Researcher",
     institution: "University of Cape Town",
     initials: "AO",
+    rating: 5,
   },
   {
     quote: "I found a co-author for my thesis within a week. The trust scores helped me pick someone reliable.",
@@ -19,6 +20,7 @@ const testimonials = [
     role: "PhD Student",
     institution: "ETH Zürich",
     initials: "LC",
+    rating: 5,
   },
   {
     quote: "The AI literature review tool saved me dozens of hours. It surfaces connections I would have missed.",
@@ -26,6 +28,7 @@ const testimonials = [
     role: "Full Professor",
     institution: "Universidad de Buenos Aires",
     initials: "MG",
+    rating: 5,
   },
   {
     quote: "As an independent researcher, this platform levels the playing field. I can collaborate with anyone, anywhere.",
@@ -33,6 +36,7 @@ const testimonials = [
     role: "Independent Researcher",
     institution: "Freelance",
     initials: "KN",
+    rating: 4,
   },
   {
     quote: "We use it to connect our R&D team with academic experts. The accountability records are invaluable.",
@@ -40,6 +44,7 @@ const testimonials = [
     role: "Industry Collaborator",
     institution: "BioTech Solutions Ltd",
     initials: "SM",
+    rating: 5,
   },
   {
     quote: "I started using this as an undergrad research assistant. The guided workflows made my first collaboration seamless.",
@@ -47,6 +52,7 @@ const testimonials = [
     role: "Undergraduate Student",
     institution: "IIT Delhi",
     initials: "PS",
+    rating: 5,
   },
 ];
 
@@ -56,10 +62,7 @@ export function TestimonialsSection() {
 
   return (
     <section className="py-16 md:py-24 bg-muted/30 border-y relative overflow-hidden">
-      <motion.div
-        className="absolute inset-0 opacity-20"
-        style={{ y: patternY }}
-      >
+      <motion.div className="absolute inset-0 opacity-20" style={{ y: patternY }}>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,hsl(var(--primary)/0.12)_1px,transparent_0)] bg-[length:28px_28px]" />
       </motion.div>
 
@@ -88,9 +91,19 @@ export function TestimonialsSection() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <Card variant="premium" className="h-full">
+              <Card variant="premium" className="h-full hover:shadow-lg transition-all duration-300">
                 <CardContent className="p-6 flex flex-col gap-4">
-                  <Quote className="h-5 w-5 text-primary/40" />
+                  <div className="flex items-center justify-between">
+                    <Quote className="h-5 w-5 text-primary/40" />
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-3.5 w-3.5 ${i < t.rating ? "text-amber-400 fill-amber-400" : "text-muted-foreground/30"}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
                   <p className="text-sm text-foreground/90 leading-relaxed italic">
                     "{t.quote}"
                   </p>
@@ -101,7 +114,10 @@ export function TestimonialsSection() {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold truncate">{t.name}</p>
+                      <p className="text-sm font-semibold truncate flex items-center gap-1">
+                        {t.name}
+                        <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" />
+                      </p>
                       <p className="text-xs text-muted-foreground truncate">
                         {t.role} · {t.institution}
                       </p>
