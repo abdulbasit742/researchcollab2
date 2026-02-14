@@ -9,6 +9,14 @@ import { BookOpen, Search, Sparkles, Users, GraduationCap, ArrowRight, Quote, Ca
 
 const FEATURED_PAPERS = [
   {
+    title: "A look at advanced learners' use of mobile devices for English language study: Insights from interview data",
+    authors: ["Kruk, M."],
+    field: "Applied Linguistics",
+    year: 2017,
+    citations: 142,
+    type: "Journal Article",
+  },
+  {
     title: "Transformer Architecture for Large Language Models",
     authors: ["Vaswani, A.", "Shazeer, N."],
     field: "Computer Science",
