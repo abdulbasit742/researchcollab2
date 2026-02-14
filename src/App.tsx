@@ -133,6 +133,7 @@ import CollectiveIntelligencePage from "./pages/CollectiveIntelligencePage";
  import ProfileSettingsPage from "./pages/ProfileSettingsPage";
  import CareerPage from "./pages/CareerPage";
 import ResearchPapersPage from "./pages/ResearchPapersPage";
+import PaperReaderPage from "./pages/PaperReaderPage";
 import AdminVisibilityAnalyticsPage from "./pages/admin/AdminVisibilityAnalyticsPage";
 import InstitutionalCommandCenterPage from "./pages/InstitutionalCommandCenterPage";
 import AdminGlobalTalentAnalyticsPage from "./pages/admin/AdminGlobalTalentAnalyticsPage";
@@ -286,6 +287,7 @@ const AppContent = () => {
              <Route path="/briefings" element={<BriefingsPage />} />
              <Route path="/career" element={<CareerPage />} />
              <Route path="/research-papers" element={<ResearchPapersPage />} />
+             <Route path="/research-papers/:slug" element={<PaperReaderPage />} />
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminPortalPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
