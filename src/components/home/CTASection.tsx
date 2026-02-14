@@ -20,8 +20,10 @@ export function CTASection() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
           style={{ scale: isDisabled ? 1 : scale }}
-          className="relative overflow-hidden rounded-2xl md:rounded-3xl gradient-primary p-6 md:p-10 lg:p-16 text-center will-change-transform"
+          className="relative overflow-hidden rounded-2xl md:rounded-3xl p-6 md:p-10 lg:p-16 text-center will-change-transform animate-gradient-mesh"
         >
+          {/* Animated gradient mesh background */}
+          <div className="absolute inset-0 animate-gradient-mesh-bg opacity-90" />
           <motion.div className="absolute top-0 left-0 h-64 w-64 rounded-full bg-primary-foreground/10 blur-3xl" style={{ y: decoration1Y }} />
           <motion.div className="absolute bottom-0 right-0 h-48 w-48 rounded-full bg-primary-foreground/5 blur-2xl" style={{ y: decoration2Y }} />
 
