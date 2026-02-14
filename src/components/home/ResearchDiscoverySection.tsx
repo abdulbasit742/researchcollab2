@@ -15,6 +15,7 @@ const FEATURED_PAPERS = [
     year: 2017,
     citations: 142,
     type: "Journal Article",
+    slug: "mobile-devices-english-study",
   },
   {
     title: "Transformer Architecture for Large Language Models",
@@ -142,33 +143,65 @@ export function ResearchDiscoverySection() {
               viewport={{ once: true }}
               transition={{ delay: 0.15 + i * 0.07 }}
             >
-              <Card className="h-full hover:shadow-md transition-shadow group cursor-pointer">
-                <CardContent className="p-5 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs">{paper.type}</Badge>
-                    <Badge variant="outline" className="text-xs bg-green-500/10 text-green-700 border-green-200">Open Access</Badge>
-                  </div>
-                  <h3 className="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-primary transition-colors">
-                    {paper.title}
-                  </h3>
-                  <div className="space-y-1 text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <Users className="h-3 w-3" />
-                      {paper.authors.join(", ")}
+              {paper.slug ? (
+                <Link to={`/research-papers/${paper.slug}`}>
+                  <Card className="h-full hover:shadow-md transition-shadow group cursor-pointer">
+                    <CardContent className="p-5 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary" className="text-xs">{paper.type}</Badge>
+                        <Badge variant="outline" className="text-xs bg-green-500/10 text-green-700 border-green-200">Open Access</Badge>
+                      </div>
+                      <h3 className="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+                        {paper.title}
+                      </h3>
+                      <div className="space-y-1 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Users className="h-3 w-3" />
+                          {paper.authors.join(", ")}
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            {paper.year}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Quote className="h-3 w-3" />
+                            {paper.citations.toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ) : (
+                <Card className="h-full hover:shadow-md transition-shadow group cursor-pointer">
+                  <CardContent className="p-5 space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">{paper.type}</Badge>
+                      <Badge variant="outline" className="text-xs bg-green-500/10 text-green-700 border-green-200">Open Access</Badge>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {paper.year}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Quote className="h-3 w-3" />
-                        {paper.citations.toLocaleString()}
-                      </span>
+                    <h3 className="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+                      {paper.title}
+                    </h3>
+                    <div className="space-y-1 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <Users className="h-3 w-3" />
+                        {paper.authors.join(", ")}
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {paper.year}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Quote className="h-3 w-3" />
+                          {paper.citations.toLocaleString()}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              )}
             </motion.div>
           ))}
         </div>

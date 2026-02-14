@@ -113,6 +113,11 @@ function getProgressToNext(score: number, current: ResearchLevel): number {
 
 const SAMPLE_PAPERS: ResearchPaper[] = [
   {
+    id: "kruk-mobile-devices", title: "A look at advanced learners' use of mobile devices for English language study: Insights from interview data", authors: ["Kruk, M."],
+    abstract: "The paper discusses the results of a study which explored advanced learners of English engagement with their mobile devices to develop learning experiences that meet their needs and goals as foreign language learners. The data were collected from 20 students by means of a semi-structured interview. The gathered data were subjected to qualitative and quantitative analysis.",
+    type: "Journal Article", field: "Applied Linguistics", journal: "The EUROCALL Review", year: 2017, citations: 142, doi: "10.14746/ssllt.2017.7.2.3", access: "Open Access",
+  },
+  {
     id: "1", title: "Transformer Architecture for Large Language Models", authors: ["Vaswani, A.", "Shazeer, N.", "Parmar, N."],
     abstract: "We propose a new simple network architecture based entirely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments show these models achieve superior quality while being more parallelizable.",
     type: "Conference Paper", field: "Computer Science", journal: "NeurIPS 2017", year: 2017, citations: 95000, doi: "10.5555/3295222.3295349", access: "Open Access",
@@ -122,6 +127,7 @@ const SAMPLE_PAPERS: ResearchPaper[] = [
     abstract: "This review covers recent advances in CRISPR-Cas9 technology and its applications in therapeutic gene editing, addressing both technical challenges and the ethical framework needed for clinical deployment.",
     type: "Systematic Review", field: "Biotechnology", journal: "Nature Reviews Genetics", year: 2023, citations: 1200, doi: "10.1038/nrg.2023.001", access: "Restricted",
   },
+  // ... keep existing code
   {
     id: "3", title: "Sustainable Urban Development: A Meta-Analysis of Green Infrastructure Impact", authors: ["Chen, L.", "Müller, K.", "Patel, R."],
     abstract: "A comprehensive meta-analysis examining the effectiveness of green infrastructure interventions across 150 urban centers, analyzing environmental, social, and economic outcomes.",
