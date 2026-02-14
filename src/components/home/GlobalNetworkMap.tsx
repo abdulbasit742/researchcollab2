@@ -1,22 +1,17 @@
 import { motion } from "framer-motion";
 
 const nodes = [
-  // Americas
-  { x: 20, y: 35, label: "MIT", delay: 0 },
-  { x: 25, y: 42, label: "Stanford", delay: 0.5 },
-  { x: 30, y: 55, label: "São Paulo", delay: 1.2 },
-  // Europe
-  { x: 48, y: 30, label: "Oxford", delay: 0.3 },
-  { x: 52, y: 32, label: "Berlin", delay: 0.8 },
-  { x: 50, y: 38, label: "Zurich", delay: 1.5 },
-  // Asia
-  { x: 72, y: 35, label: "Tokyo", delay: 0.6 },
-  { x: 68, y: 42, label: "Beijing", delay: 1.0 },
-  { x: 65, y: 50, label: "Mumbai", delay: 1.8 },
-  // Oceania
-  { x: 80, y: 65, label: "Sydney", delay: 1.3 },
-  // Africa
-  { x: 52, y: 55, label: "Nairobi", delay: 2.0 },
+  { x: 20, y: 35, label: "MIT", delay: 0, showOnMobile: true },
+  { x: 25, y: 42, label: "Stanford", delay: 0.5, showOnMobile: false },
+  { x: 30, y: 55, label: "São Paulo", delay: 1.2, showOnMobile: false },
+  { x: 48, y: 30, label: "Oxford", delay: 0.3, showOnMobile: true },
+  { x: 52, y: 32, label: "Berlin", delay: 0.8, showOnMobile: false },
+  { x: 50, y: 38, label: "Zurich", delay: 1.5, showOnMobile: false },
+  { x: 72, y: 35, label: "Tokyo", delay: 0.6, showOnMobile: true },
+  { x: 68, y: 42, label: "Beijing", delay: 1.0, showOnMobile: false },
+  { x: 65, y: 50, label: "Mumbai", delay: 1.8, showOnMobile: true },
+  { x: 80, y: 65, label: "Sydney", delay: 1.3, showOnMobile: false },
+  { x: 52, y: 55, label: "Nairobi", delay: 2.0, showOnMobile: false },
 ];
 
 const connections = [
@@ -27,28 +22,28 @@ const connections = [
 
 export function GlobalNetworkMap() {
   return (
-    <section className="py-12 md:py-20 relative overflow-hidden">
+    <section className="py-10 md:py-20 relative overflow-hidden">
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-8 md:mb-12"
+          className="text-center mb-6 md:mb-12"
         >
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mb-2 sm:mb-3">
             Researchers Connected{" "}
             <span className="text-primary">Worldwide</span>
           </h2>
-          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
+          <p className="text-muted-foreground text-xs sm:text-sm md:text-base max-w-xl mx-auto">
             Live collaborations forming across continents, every minute.
           </p>
         </motion.div>
 
-        <div className="relative mx-auto max-w-4xl aspect-[2/1]">
-          {/* World outline - simplified dots background */}
+        <div className="relative mx-auto max-w-4xl aspect-[2/1] sm:aspect-[2/1]">
+          {/* World outline dots */}
           <div className="absolute inset-0 opacity-10">
-            <div className="w-full h-full bg-[radial-gradient(circle_at_1px_1px,hsl(var(--primary))_0.5px,transparent_0)] bg-[length:16px_16px]" />
+            <div className="w-full h-full bg-[radial-gradient(circle_at_1px_1px,hsl(var(--primary))_0.5px,transparent_0)] bg-[length:12px_12px] sm:bg-[length:16px_16px]" />
           </div>
 
           {/* Connection lines */}
@@ -84,14 +79,20 @@ export function GlobalNetworkMap() {
             >
               {/* Pulse ring */}
               <motion.div
-                className="absolute -inset-3 rounded-full bg-primary/20"
+                className="absolute -inset-2 sm:-inset-3 rounded-full bg-primary/20"
                 animate={{ scale: [1, 2, 1], opacity: [0.4, 0, 0.4] }}
                 transition={{ duration: 3, repeat: Infinity, delay: node.delay }}
               />
-              {/* Dot */}
-              <div className="relative h-2.5 w-2.5 rounded-full bg-primary shadow-[0_0_8px_hsl(var(--primary)/0.5)] -translate-x-1/2 -translate-y-1/2" />
-              {/* Label */}
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] md:text-xs font-medium text-primary bg-card/80 backdrop-blur-sm px-2 py-0.5 rounded-md border border-border/50">
+              {/* Dot - larger on mobile for touch */}
+              <div className="relative h-3 w-3 sm:h-2.5 sm:w-2.5 rounded-full bg-primary shadow-[0_0_8px_hsl(var(--primary)/0.5)] -translate-x-1/2 -translate-y-1/2" />
+              {/* Label - always visible for key nodes on mobile, hover for others */}
+              <div
+                className={`absolute left-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] sm:text-[10px] md:text-xs font-medium text-primary bg-card/80 backdrop-blur-sm px-1.5 sm:px-2 py-0.5 rounded-md border border-border/50 transition-opacity ${
+                  node.showOnMobile
+                    ? "opacity-100"
+                    : "opacity-0 group-hover:opacity-100"
+                }`}
+              >
                 {node.label}
               </div>
             </motion.div>
