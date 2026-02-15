@@ -66,7 +66,7 @@ export default function ResearchPapersPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="container py-6 px-4 pb-20 md:pb-6">
+      <main className="container py-6 px-4 pb-24 md:pb-6">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between flex-wrap gap-3">
           <div>
@@ -78,24 +78,26 @@ export default function ResearchPapersPage() {
               Browse, analyze, and track research papers with AI-powered insights
             </p>
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <Button variant="outline" size="sm" className="gap-2" onClick={() => setLitReviewOpen(true)}>
-              <FileEdit className="h-4 w-4" />
-              Lit Review Outline
-            </Button>
-            <Button variant="outline" size="sm" className="gap-2" onClick={() => setAnnotatedBibOpen(true)}>
-              <BookMarked className="h-4 w-4" />
-              Annotated Bibliography
-            </Button>
-            <Button
-              variant={compareMode ? "default" : "outline"}
-              size="sm"
-              className="gap-2"
-              onClick={() => { setCompareMode(!compareMode); if (compareMode) clearCompareSelection(); }}
-            >
-              <GitCompareArrows className="h-4 w-4" />
-              {compareMode ? "Exit Compare" : "Compare Papers"}
-            </Button>
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex items-center gap-2 w-max sm:w-auto sm:flex-wrap">
+              <Button variant="outline" size="sm" className="gap-2 whitespace-nowrap" onClick={() => setLitReviewOpen(true)}>
+                <FileEdit className="h-4 w-4" />
+                Lit Review
+              </Button>
+              <Button variant="outline" size="sm" className="gap-2 whitespace-nowrap" onClick={() => setAnnotatedBibOpen(true)}>
+                <BookMarked className="h-4 w-4" />
+                Bibliography
+              </Button>
+              <Button
+                variant={compareMode ? "default" : "outline"}
+                size="sm"
+                className="gap-2 whitespace-nowrap"
+                onClick={() => { setCompareMode(!compareMode); if (compareMode) clearCompareSelection(); }}
+              >
+                <GitCompareArrows className="h-4 w-4" />
+                {compareMode ? "Exit Compare" : "Compare"}
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -111,8 +113,8 @@ export default function ResearchPapersPage() {
             </Tabs>
 
             {/* Search & Filters */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <div className="relative flex-1">
+            <div className="space-y-3">
+              <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search papers by title or author..."
@@ -121,36 +123,38 @@ export default function ResearchPapersPage() {
                   className="pl-9"
                 />
               </div>
-              <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as any)}>
-                <SelectTrigger className="w-full sm:w-44">
-                  <SelectValue placeholder="Paper Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="All">All Types</SelectItem>
-                  {paperTypes.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
-                </SelectContent>
-              </Select>
-              <Select value={fieldFilter} onValueChange={setFieldFilter}>
-                <SelectTrigger className="w-full sm:w-44">
-                  <SelectValue placeholder="Field" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="All">All Fields</SelectItem>
-                  {fields.map((f) => <SelectItem key={f} value={f}>{f}</SelectItem>)}
-                </SelectContent>
-              </Select>
-              <Select value={sortBy} onValueChange={(v) => setSortBy(v as any)}>
-                <SelectTrigger className="w-full sm:w-44">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="citations-desc">Most Cited</SelectItem>
-                  <SelectItem value="year-desc">Newest First</SelectItem>
-                  <SelectItem value="year-asc">Oldest First</SelectItem>
-                  <SelectItem value="title-asc">Alphabetical</SelectItem>
-                  <SelectItem value="analyzed">Recently Analyzed</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="grid grid-cols-2 sm:flex sm:flex-row gap-2 sm:gap-3">
+                <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as any)}>
+                  <SelectTrigger className="w-full sm:w-44">
+                    <SelectValue placeholder="Paper Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="All">All Types</SelectItem>
+                    {paperTypes.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Select value={fieldFilter} onValueChange={setFieldFilter}>
+                  <SelectTrigger className="w-full sm:w-44">
+                    <SelectValue placeholder="Field" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="All">All Fields</SelectItem>
+                    {fields.map((f) => <SelectItem key={f} value={f}>{f}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Select value={sortBy} onValueChange={(v) => setSortBy(v as any)}>
+                  <SelectTrigger className="w-full sm:w-44 col-span-2 sm:col-span-1">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="citations-desc">Most Cited</SelectItem>
+                    <SelectItem value="year-desc">Newest First</SelectItem>
+                    <SelectItem value="year-asc">Oldest First</SelectItem>
+                    <SelectItem value="title-asc">Alphabetical</SelectItem>
+                    <SelectItem value="analyzed">Recently Analyzed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* Stats bar */}
@@ -212,7 +216,7 @@ export default function ResearchPapersPage() {
 
       {/* Compare floating bar */}
       {compareMode && selectedForCompare.length > 0 && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-card border shadow-lg rounded-full px-6 py-3 flex items-center gap-4">
+        <div className="fixed bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 bg-card border shadow-lg rounded-full px-4 sm:px-6 py-3 flex items-center gap-3 sm:gap-4">
           <span className="text-sm font-medium">{selectedForCompare.length} paper(s) selected</span>
           <Button size="sm" onClick={handleCompare} disabled={selectedForCompare.length < 2 || aiLoading} className="gap-2">
             <GitCompareArrows className="h-3.5 w-3.5" />

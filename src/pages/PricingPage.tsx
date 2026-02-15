@@ -274,28 +274,30 @@ const PricingPage = () => {
 
       <div className="container mx-auto px-4 py-8 md:py-12">
         <Tabs defaultValue="individual" className="w-full">
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-5 mb-8 md:mb-12">
-            <TabsTrigger value="individual" className="flex items-center gap-1 text-xs sm:text-sm px-2">
-              <GraduationCap className="h-4 w-4 shrink-0" />
-              <span className="truncate">Individual</span>
-            </TabsTrigger>
-            <TabsTrigger value="tools" className="flex items-center gap-1 text-xs sm:text-sm px-2">
-              <Zap className="h-4 w-4 shrink-0" />
-              <span className="truncate">AI Tools</span>
-            </TabsTrigger>
-            <TabsTrigger value="research" className="flex items-center gap-1 text-xs sm:text-sm px-2">
-              <BookOpen className="h-4 w-4 shrink-0" />
-              <span className="truncate">Research</span>
-            </TabsTrigger>
-            <TabsTrigger value="enterprise" className="flex items-center gap-1 text-xs sm:text-sm px-2">
-              <Building2 className="h-4 w-4 shrink-0" />
-              <span className="truncate">Enterprise</span>
-            </TabsTrigger>
-            <TabsTrigger value="compare" className="flex items-center gap-1 text-xs sm:text-sm px-2">
-              <Star className="h-4 w-4 shrink-0" />
-              <span className="truncate">Compare</span>
-            </TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto -mx-4 px-4 mb-8 md:mb-12">
+            <TabsList className="inline-flex w-auto min-w-full md:w-full max-w-2xl mx-auto">
+              <TabsTrigger value="individual" className="flex items-center gap-1.5 text-xs sm:text-sm px-3 whitespace-nowrap">
+                <GraduationCap className="h-4 w-4 shrink-0" />
+                Individual
+              </TabsTrigger>
+              <TabsTrigger value="tools" className="flex items-center gap-1.5 text-xs sm:text-sm px-3 whitespace-nowrap">
+                <Zap className="h-4 w-4 shrink-0" />
+                AI Tools
+              </TabsTrigger>
+              <TabsTrigger value="research" className="flex items-center gap-1.5 text-xs sm:text-sm px-3 whitespace-nowrap">
+                <BookOpen className="h-4 w-4 shrink-0" />
+                Research
+              </TabsTrigger>
+              <TabsTrigger value="enterprise" className="flex items-center gap-1.5 text-xs sm:text-sm px-3 whitespace-nowrap">
+                <Building2 className="h-4 w-4 shrink-0" />
+                Enterprise
+              </TabsTrigger>
+              <TabsTrigger value="compare" className="flex items-center gap-1.5 text-xs sm:text-sm px-3 whitespace-nowrap">
+                <Star className="h-4 w-4 shrink-0" />
+                Compare
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Individual Plans */}
           <TabsContent value="individual">
