@@ -90,7 +90,7 @@ const VerificationCenterPage = () => {
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Verification Center</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Verification Center</h1>
           <p className="text-muted-foreground">
             Get verified to build trust, unlock features, and stand out in the community.
           </p>
@@ -169,7 +169,7 @@ const VerificationCenterPage = () => {
         </Card>
 
         {/* Verification Options */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
           {verificationOptions.map((option) => (
             <Card key={option.title} className="relative overflow-hidden hover:shadow-lg transition-shadow">
               <CardHeader>
@@ -212,7 +212,7 @@ const VerificationCenterPage = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">30</div>

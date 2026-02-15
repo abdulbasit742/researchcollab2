@@ -56,7 +56,7 @@ export default function AcademicTaskMarketplacePage() {
     return (
       <Card key={task.id}>
         <CardContent className="pt-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-primary/10"><Icon className="h-5 w-5 text-primary" /></div>
               <div>
@@ -64,7 +64,7 @@ export default function AcademicTaskMarketplacePage() {
                 <p className="text-sm text-muted-foreground">{task.task_type}</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <div className="text-right">
                 <p className="font-semibold flex items-center gap-1"><DollarSign className="h-3 w-3" /> PKR {(task.reward_amount ?? 0).toLocaleString()}</p>
                 <p className="text-xs text-muted-foreground">Trust ×{task.trust_weight ?? 1}</p>
@@ -81,11 +81,11 @@ export default function AcademicTaskMarketplacePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20">
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Academic Task Marketplace</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Academic Task Marketplace</h1>
             <p className="text-muted-foreground mt-1">Quick tasks for trust growth and earnings</p>
           </div>
           <Button className="gap-2"><Plus className="h-4 w-4" /> Post Task</Button>
@@ -97,6 +97,7 @@ export default function AcademicTaskMarketplacePage() {
         </div>
 
         <Tabs defaultValue="all">
+          <div className="overflow-x-auto -mx-4 px-4">
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="literature_review">Literature</TabsTrigger>
@@ -104,6 +105,7 @@ export default function AcademicTaskMarketplacePage() {
             <TabsTrigger value="data_cleaning">Data</TabsTrigger>
             <TabsTrigger value="writing">Writing</TabsTrigger>
           </TabsList>
+          </div>
           <TabsContent value="all" className="space-y-3 mt-4">
             {filtered.length === 0 && <p className="text-center text-muted-foreground py-8">No tasks available</p>}
             {filtered.map(renderTask)}

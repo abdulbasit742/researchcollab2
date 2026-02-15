@@ -124,8 +124,8 @@ export default function HelpCenterPage() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <div className="gradient-hero py-16 md:py-24">
-        <div className="container">
+      <div className="gradient-hero py-8 sm:py-16 md:py-24">
+        <div className="container px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -136,10 +136,10 @@ export default function HelpCenterPage() {
               <HelpCircle className="h-3 w-3 mr-1" />
               Help Center
             </Badge>
-            <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+            <h1 className="text-2xl sm:text-4xl font-bold md:text-5xl lg:text-6xl">
               How can we <span className="text-gradient">help you?</span>
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               Find answers to common questions, explore our guides, or get in touch with our support team.
             </p>
           </motion.div>
@@ -164,9 +164,9 @@ export default function HelpCenterPage() {
         </div>
       </div>
 
-      <div className="container py-16">
+      <div className="container px-4 py-6 sm:py-16">
         {/* Categories */}
-        <section className="mb-16">
+        <section className="mb-8 sm:mb-16">
           <h2 className="text-2xl font-bold mb-8">Browse by Category</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {categories.map((category, index) => (
@@ -197,7 +197,7 @@ export default function HelpCenterPage() {
         </section>
 
         {/* FAQ Section */}
-        <section className="mb-16">
+        <section className="mb-8 sm:mb-16">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold">Frequently Asked Questions</h2>
           </div>
@@ -220,7 +220,7 @@ export default function HelpCenterPage() {
         </section>
 
         {/* Popular Articles */}
-        <section className="mb-16">
+        <section className="mb-8 sm:mb-16">
           <h2 className="text-2xl font-bold mb-8">Popular Articles</h2>
           <div className="grid md:grid-cols-2 gap-4">
             {popularArticles.map((article, index) => (
@@ -256,7 +256,7 @@ export default function HelpCenterPage() {
           <h2 className="text-2xl font-bold mb-8">Still Need Help?</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <Card>
-              <CardContent className="p-6 text-center">
+              <CardContent className="p-4 sm:p-6 text-center">
                 <div className="h-14 w-14 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-4">
                   <MessageCircle className="h-7 w-7 text-green-600" />
                 </div>
@@ -275,7 +275,7 @@ export default function HelpCenterPage() {
             </Card>
 
             <Card>
-              <CardContent className="p-6 text-center">
+              <CardContent className="p-4 sm:p-6 text-center">
                 <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <Mail className="h-7 w-7 text-primary" />
                 </div>
@@ -293,7 +293,7 @@ export default function HelpCenterPage() {
             </Card>
 
             <Card>
-              <CardContent className="p-6 text-center">
+              <CardContent className="p-4 sm:p-6 text-center">
                 <div className="h-14 w-14 rounded-full bg-amber-500/10 flex items-center justify-center mx-auto mb-4">
                   <Clock className="h-7 w-7 text-amber-600" />
                 </div>

@@ -109,7 +109,7 @@ export default function FeedPage() {
   return (
     <MainLayout>
       <div className="bg-muted/20 min-h-screen">
-        <div className="container py-4 sm:py-6">
+        <div className="container px-4 py-4 sm:py-6">
           {/* 3-column professional layout */}
           <div className="grid lg:grid-cols-12 gap-5">
             
