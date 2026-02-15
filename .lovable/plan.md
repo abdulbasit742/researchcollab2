@@ -1,93 +1,98 @@
 
+# Make Everything 100% Mobile Friendly -- Full App Pass
 
-# Make Everything 100% Mobile Friendly
-
-A targeted pass across all landing page sections and the Paper Reader page to ensure every element looks and works perfectly on small screens.
+A comprehensive mobile optimization across all inner pages, the pricing page, research hub, network, profile, deals, auth, and remaining landing page polish.
 
 ---
 
-## 1. Paper Reader Page (`PaperReaderPage.tsx`)
+## 1. Pricing Page (`PricingPage.tsx`)
 
-**Current issues:** Sidebar AI Summarizer is hidden below content on mobile with no way to scroll to it easily. The sticky bottom bar overlaps the mobile bottom nav. Header metadata overflows on narrow screens.
-
-**Fixes:**
-- Move the AI Summarizer sidebar **above** the paper sections on mobile (reorder grid so sidebar comes first on small screens, or use a collapsible sheet)
-- Add `pb-20` to the page container so the sticky bottom bar clears the MobileBottomNav
-- Increase bottom bar's `bottom` to sit above the nav (`bottom-16` + safe area)
-- Truncate long metadata items (authors, journal) and make them wrap gracefully
-- Make the DOI button text smaller and ensure it doesn't overflow
-
-## 2. Global Network Map (`GlobalNetworkMap.tsx`)
-
-**Current issues:** Labels only show on hover (unusable on touch). The map is too small on mobile.
+**Issues found:**
+- Tab labels truncated on mobile ("Indi...", "AI T...", "Re...", "Ent...", "Co...") -- unusable
+- Comparison table overflows horizontally without clear scroll indication
+- 5-column grid TabsList is too cramped at 390px width
 
 **Fixes:**
-- Show 3-4 key labels permanently on mobile (not hover-dependent)
-- Increase dot sizes on mobile for better touch visibility
-- Reduce aspect ratio on mobile so the map takes less vertical space
+- Make TabsList horizontally scrollable with `overflow-x-auto` instead of `grid-cols-5`
+- Add scroll shadow hints on the comparison table
+- Ensure pricing cards stack properly with no `md:scale-105` on mobile (already OK)
+- Make FAQ cards more compact on mobile
 
-## 3. WhyChoose Before/After Section (`WhyChooseSection.tsx`)
+## 2. Research Papers Hub (`ResearchPapersPage.tsx`)
 
-**Current issues:** On mobile the 2-column grid stacks but the "With" header is hidden (`hidden md:block`), making it confusing which cards are "without" and which are "with". Items appear as interleaved cards without context.
-
-**Fixes:**
-- On mobile, show grouped layout: all "Without" items together under a header, then all "With" items together
-- Alternatively, stack each comparison pair as a single card with both without/with inside it
-- Ensure minimum touch target of 44px on all interactive elements
-
-## 4. Research Discovery Section (`ResearchDiscoverySection.tsx`)
-
-**Current issues:** The search bar's inner button is cramped on mobile. The 4-column paper grid doesn't adapt well to small screens. The search input with `pr-28` pushes the button out of view on very narrow screens.
+**Issues found:**
+- Header buttons ("Lit Review Outline", "Annotated Bibliography", "Compare Papers") overflow on mobile
+- 4 filter Select dropdowns stack vertically but take full width each -- excessive scrolling
+- Sidebar (ResearchLevelCard, ReadingStatsCard, ResearchGapCard) pushes below content with no visual separator
+- Compare floating bar at `bottom-6` overlaps MobileBottomNav
 
 **Fixes:**
-- Change paper grid to `grid-cols-1 sm:grid-cols-2` instead of jumping straight to `md:grid-cols-2 lg:grid-cols-4`
-- Make the search button stack below the input on very small screens, or reduce `pr-28` and make button smaller
-- Add horizontal scroll for the stats row on very small screens
+- Wrap header action buttons in a horizontal scroll container on mobile
+- Make filter row use 2-column grid on mobile instead of full-width stacking
+- Move compare floating bar to `bottom-20` on mobile to clear the nav bar
+- Add `pb-20 md:pb-6` (already present -- verify)
 
-## 5. Testimonials Section (`TestimonialsSection.tsx`)
+## 3. Network Page (`NetworkPage.tsx`)
 
-**Current issues:** On mobile, 6 cards stacked vertically creates excessive scroll. Long institution names can overflow.
-
-**Fixes:**
-- Show only 3 testimonials on mobile with a "Show more" toggle, or use a horizontal scroll carousel
-- Ensure all text truncates properly
-
-## 6. Featured Tools Carousel (`FeaturedToolsCarousel.tsx`)
-
-**Current issues:** Works well already with horizontal scroll. Minor: the header badge and title can collide on very narrow screens.
+**Issues found:**
+- Tab labels may truncate on narrow screens (depends on tab count)
+- Connection cards and suggestion cards may overflow with long names
 
 **Fixes:**
-- Stack the header (title above, nav arrows below) on mobile
-- Ensure scroll snap works smoothly with momentum scrolling (`-webkit-overflow-scrolling: touch`)
+- Ensure TabsList is scrollable on mobile
+- Truncate long names and institution names in connection cards
+- Ensure all card layouts use `flex-wrap` for tag badges
 
-## 7. How It Works Section (`HowItWorksSection.tsx`)
+## 4. Profile Page (`ProfilePage.tsx`)
 
-**Current issues:** On mobile the steps stack but the connecting line is hidden. No visual flow between steps.
-
-**Fixes:**
-- Add a vertical connecting line on mobile between steps (instead of the horizontal one)
-- Reduce padding for tighter mobile layout
-
-## 8. Footer (`Footer.tsx`)
-
-**Current issues:** Footer is hidden on mobile (`!isMobile` check in MainLayout). If shown, the 5-column grid would be cramped.
-
-**Status:** Already hidden on mobile via MainLayout -- this is intentional since the bottom nav handles navigation. No changes needed.
-
-## 9. Hero Section (`HeroSection.tsx`)
-
-**Current issues:** Mostly good. The cycling placeholder input could be taller for easier tapping.
+**Issues found:**
+- Multi-tab layout with Tabs may have truncation issues
+- Trust score displays and badge grids may not wrap properly
+- Sidebar content stacks below main content with no clear separation
 
 **Fixes:**
-- Ensure the search input has `min-h-[44px]` for touch accessibility
-- Add `text-base` to inputs to prevent iOS zoom on focus (font-size < 16px triggers auto-zoom)
+- Make TabsList scrollable on mobile
+- Ensure badge grid uses `flex-wrap` with proper spacing
+- Add visual separators between stacked sections on mobile
 
-## 10. Live Activity Feed (`LiveActivityFeed.tsx`)
+## 5. Earn Page (`EarnPage.tsx`)
 
-**Current issues:** Text can be cut off on very narrow screens.
+**Issues found:**
+- Tab triggers ("Available Projects", "Saved", "My Projects", etc.) get truncated
+- "Support" floating button overlaps with content on some views
+- Stats cards grid works but text can overflow
 
 **Fixes:**
-- Reduce padding on mobile, allow text to wrap to 2 lines instead of truncating
+- Make TabsList scrollable on mobile
+- Ensure stats card text sizes are responsive
+- Verify bottom padding for MobileBottomNav clearance
+
+## 6. Auth Page (`AuthPage.tsx`)
+
+**Status:** Already looks good on mobile based on screenshot. Minor:
+- Ensure sign-up form fields don't cause iOS zoom (add `text-base` to inputs)
+
+## 7. Messages Page (`MessagesPage.tsx`)
+
+**Issues found:**
+- Thread list items may have long names truncating oddly
+- Search input needs `text-base` to prevent iOS zoom
+
+**Fixes:**
+- Add `text-base` to search inputs
+- Verify thread list item layout wraps properly
+
+## 8. Offers Page (`OffersPage.tsx`)
+
+**Status:** Renders blank on mobile -- likely an auth redirect or loading issue (not a CSS problem). Layout structure looks sound with `flex-wrap` on tags.
+
+## 9. Global Polish
+
+**Fixes applied across all pages:**
+- Add `text-base` to all Input components that don't already have it (prevents iOS auto-zoom when font-size < 16px)
+- Ensure all TabsList components with 4+ tabs use horizontal scrolling on mobile instead of fixed grid
+- Verify all fixed/sticky bottom bars use `bottom-16` or `bottom-20` to clear MobileBottomNav
+- Ensure all touch targets meet minimum 44px height
 
 ---
 
@@ -95,15 +100,13 @@ A targeted pass across all landing page sections and the Paper Reader page to en
 
 ### Files to modify:
 
-- **`src/pages/PaperReaderPage.tsx`** -- Reorder grid for mobile (sidebar first), fix bottom bar positioning with safe area clearance, improve metadata wrapping
-- **`src/components/home/GlobalNetworkMap.tsx`** -- Show permanent labels on mobile, increase dot sizes
-- **`src/components/home/WhyChooseSection.tsx`** -- Restructure mobile layout to group without/with items clearly with visible headers
-- **`src/components/home/ResearchDiscoverySection.tsx`** -- Fix search bar overflow, improve grid breakpoints
-- **`src/components/home/TestimonialsSection.tsx`** -- Add horizontal scroll carousel on mobile instead of vertical stack
-- **`src/components/home/FeaturedToolsCarousel.tsx`** -- Stack header on mobile
-- **`src/components/home/HowItWorksSection.tsx`** -- Add vertical connecting line for mobile
-- **`src/components/home/HeroSection.tsx`** -- Add `text-base` to inputs to prevent iOS zoom, ensure 44px touch targets
-- **`src/components/home/LiveActivityFeed.tsx`** -- Allow text wrapping on narrow screens
+- **`src/pages/PricingPage.tsx`** -- Convert TabsList from `grid-cols-5` to scrollable horizontal layout on mobile; remove text truncation from tab triggers
+- **`src/pages/ResearchPapersPage.tsx`** -- Wrap action buttons in scrollable container; fix compare bar bottom position; optimize filter layout
+- **`src/pages/NetworkPage.tsx`** -- Make TabsList scrollable; truncate long text in connection cards
+- **`src/pages/ProfilePage.tsx`** -- Make TabsList scrollable; ensure badge wrapping
+- **`src/pages/EarnPage.tsx`** -- Make TabsList scrollable; verify bottom padding
+- **`src/pages/AuthPage.tsx`** -- Add `text-base` to inputs to prevent iOS zoom
+- **`src/pages/MessagesPage.tsx`** -- Add `text-base` to search input
+- **`src/pages/ResearchPapersPage.tsx`** -- Fix compare floating bar position on mobile
 
 ### No new files or dependencies needed.
-
