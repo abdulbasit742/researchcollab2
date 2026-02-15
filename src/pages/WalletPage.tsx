@@ -124,7 +124,7 @@ export default function WalletPage() {
                       <span className="font-semibold">My Wallet</span>
                     </div>
                     <p className="text-sm opacity-80">Available Balance</p>
-                    <p className="text-4xl font-bold mt-1">PKR {wallet.available_balance.toLocaleString()}</p>
+                    <p className="text-3xl sm:text-4xl font-bold mt-1">PKR {wallet.available_balance.toLocaleString()}</p>
                   </div>
                   <CardContent className="p-6">
                     <div className="grid grid-cols-2 gap-4">

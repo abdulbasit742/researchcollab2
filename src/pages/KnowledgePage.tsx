@@ -99,11 +99,11 @@ export default function KnowledgePage() {
 
   return (
     <MainLayout>
-      <div className="container py-8 space-y-8">
+      <div className="container px-4 py-8 space-y-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
               <Brain className="h-8 w-8 text-primary" />
               Knowledge Graph
             </h1>
@@ -112,7 +112,7 @@ export default function KnowledgePage() {
             </p>
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <Dialog open={ideaOpen} onOpenChange={setIdeaOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline">
@@ -307,22 +307,22 @@ export default function KnowledgePage() {
 
         {/* Tabs */}
         <Tabs defaultValue="ideas" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="ideas">
-              <Lightbulb className="h-4 w-4 mr-2" />
-              Idea Evolution
+          <TabsList className="w-full overflow-x-auto justify-start">
+            <TabsTrigger value="ideas" className="text-xs sm:text-sm">
+              <Lightbulb className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Idea Evolution</span>
             </TabsTrigger>
-            <TabsTrigger value="lineage">
-              <GitBranch className="h-4 w-4 mr-2" />
-              Research Lineage
+            <TabsTrigger value="lineage" className="text-xs sm:text-sm">
+              <GitBranch className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Research Lineage</span>
             </TabsTrigger>
-            <TabsTrigger value="negative">
-              <AlertTriangle className="h-4 w-4 mr-2" />
-              Negative Results
+            <TabsTrigger value="negative" className="text-xs sm:text-sm">
+              <AlertTriangle className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Negative Results</span>
             </TabsTrigger>
-            <TabsTrigger value="snapshots">
-              <Archive className="h-4 w-4 mr-2" />
-              Snapshots
+            <TabsTrigger value="snapshots" className="text-xs sm:text-sm">
+              <Archive className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Snapshots</span>
             </TabsTrigger>
           </TabsList>
 
@@ -334,7 +334,7 @@ export default function KnowledgePage() {
                 ))}
               </div>
             ) : ideaEvolution.length === 0 ? (
-              <Card className="p-12 text-center">
+              <Card className="p-6 sm:p-12 text-center">
                 <Lightbulb className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No ideas yet</h3>
                 <p className="text-muted-foreground mb-4">
@@ -380,7 +380,7 @@ export default function KnowledgePage() {
             {loading ? (
               <Skeleton className="h-64" />
             ) : researchLineage.length === 0 ? (
-              <Card className="p-12 text-center">
+              <Card className="p-6 sm:p-12 text-center">
                 <GitBranch className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No lineage records</h3>
                 <p className="text-muted-foreground">
@@ -417,7 +417,7 @@ export default function KnowledgePage() {
             {loading ? (
               <Skeleton className="h-64" />
             ) : negativeResults.length === 0 ? (
-              <Card className="p-12 text-center">
+              <Card className="p-6 sm:p-12 text-center">
                 <AlertTriangle className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No negative results archived</h3>
                 <p className="text-muted-foreground mb-4">
@@ -465,7 +465,7 @@ export default function KnowledgePage() {
             {loading ? (
               <Skeleton className="h-64" />
             ) : knowledgeSnapshots.length === 0 ? (
-              <Card className="p-12 text-center">
+              <Card className="p-6 sm:p-12 text-center">
                 <Archive className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No snapshots</h3>
                 <p className="text-muted-foreground">

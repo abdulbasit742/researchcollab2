@@ -69,11 +69,11 @@ export default function DatasetsPage() {
 
   return (
     <MainLayout>
-      <div className="container py-8 space-y-8">
+      <div className="container px-4 py-8 space-y-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
               <Database className="h-8 w-8 text-primary" />
               Research Datasets
             </h1>
@@ -189,7 +189,7 @@ export default function DatasetsPage() {
             />
           </div>
           <Select value={accessFilter} onValueChange={setAccessFilter}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-full sm:w-[180px]">
               <Filter className="h-4 w-4 mr-2" />
               <SelectValue placeholder="Access Level" />
             </SelectTrigger>
@@ -202,7 +202,7 @@ export default function DatasetsPage() {
             </SelectContent>
           </Select>
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="Dataset Type" />
             </SelectTrigger>
             <SelectContent>
@@ -240,7 +240,7 @@ export default function DatasetsPage() {
                 ))}
               </div>
             ) : filteredDatasets.length === 0 ? (
-              <Card className="p-12 text-center">
+              <Card className="p-6 sm:p-12 text-center">
                 <Database className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No datasets found</h3>
                 <p className="text-muted-foreground mb-4">
@@ -318,7 +318,7 @@ export default function DatasetsPage() {
 
           <TabsContent value="my-requests" className="space-y-4">
             {myRequests.length === 0 ? (
-              <Card className="p-12 text-center">
+              <Card className="p-6 sm:p-12 text-center">
                 <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No access requests</h3>
                 <p className="text-muted-foreground">
