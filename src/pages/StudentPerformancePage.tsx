@@ -5,6 +5,7 @@ import { TrendingUp, Target, Clock, Star, DollarSign, BarChart3, Loader2 } from 
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from "recharts";
 import { useStudentMetrics } from "@/hooks/useAcademicData";
 import { useAuth } from "@/contexts/AuthContext";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 const fallbackMetrics = {
   milestone_timeliness: 0,
@@ -46,13 +47,13 @@ export default function StudentPerformancePage() {
     { icon: BarChart3, label: "Consistency", value: `${metrics.consistency_score}%`, color: "text-purple-500" },
   ];
 
-  if (isLoading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+  if (isLoading) return <MainLayout><div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></MainLayout>;
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Performance Scorecard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Performance Scorecard</h1>
           <p className="text-muted-foreground mt-1">Your academic execution metrics at a glance</p>
           {!dbMetrics && <p className="text-sm text-muted-foreground mt-2">No performance data found yet. Complete milestones to build your scorecard.</p>}
         </div>
@@ -104,6 +105,6 @@ export default function StudentPerformancePage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </MainLayout>
   );
 }

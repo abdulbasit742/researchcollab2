@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Users, TrendingUp, AlertTriangle, CheckCircle2, Clock, ShieldCheck } from "lucide-react";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 const mockStudents = [
   { name: "Fatima Ali", project: "AI-Powered Academic Integrity", progress: 60, status: "on_track", trust: 72, velocity: "high", risk: false },
@@ -25,10 +26,10 @@ export default function SupervisorDashboardPage() {
   const avgTrust = Math.round(mockStudents.reduce((s, st) => s + st.trust, 0) / mockStudents.length);
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
             <Users className="h-8 w-8 text-primary" />
             Supervisor Control Panel
           </h1>
@@ -103,6 +104,6 @@ export default function SupervisorDashboardPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </MainLayout>
   );
 }

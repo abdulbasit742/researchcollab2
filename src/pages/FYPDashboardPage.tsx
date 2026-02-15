@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { GraduationCap, Target, TrendingUp, DollarSign, Clock, CheckCircle2, AlertTriangle, Plus } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 const mockFYPs = [
   {
@@ -77,11 +78,11 @@ export default function FYPDashboardPage() {
   const totalEconomicValue = mockFYPs.reduce((s, f) => s + f.economic_value, 0);
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
               <GraduationCap className="h-8 w-8 text-primary" />
               FYP Execution Hub
             </h1>
@@ -228,6 +229,6 @@ export default function FYPDashboardPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </MainLayout>
   );
 }

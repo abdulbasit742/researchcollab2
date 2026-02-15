@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, TrendingUp, Star, Building2, Loader2 } from "lucide-react";
 import { useTopStudents, useTopSupervisors } from "@/hooks/useAcademicData";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 const medalColor = (rank: number) => rank === 1 ? "text-yellow-500" : rank === 2 ? "text-gray-400" : rank === 3 ? "text-orange-600" : "text-muted-foreground";
 
@@ -12,13 +13,13 @@ export default function AcademicRankingsPage() {
 
   const isLoading = loadingStudents || loadingSupervisors;
 
-  if (isLoading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+  if (isLoading) return <MainLayout><div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></MainLayout>;
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2"><Trophy className="h-8 w-8 text-yellow-500" /> Academic Rankings</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2"><Trophy className="h-8 w-8 text-yellow-500" /> Academic Rankings</h1>
           <p className="text-muted-foreground mt-1">Competition drives excellence</p>
         </div>
 
@@ -78,6 +79,6 @@ export default function AcademicRankingsPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </MainLayout>
   );
 }

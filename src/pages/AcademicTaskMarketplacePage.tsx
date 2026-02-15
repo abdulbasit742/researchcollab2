@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 const taskTypeIcons: Record<string, any> = {
   literature_review: BookOpen, coding: Code, data_cleaning: FileText, survey_analysis: BarChart3, writing: FileText, other: FileText,
@@ -49,7 +50,7 @@ export default function AcademicTaskMarketplacePage() {
     t.task_type?.toLowerCase().includes(search.toLowerCase())
   );
 
-  if (isLoading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+  if (isLoading) return <MainLayout><div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></MainLayout>;
 
   const renderTask = (task: any) => {
     const Icon = taskTypeIcons[task.task_type] || FileText;
@@ -81,7 +82,7 @@ export default function AcademicTaskMarketplacePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <MainLayout>
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
@@ -118,6 +119,6 @@ export default function AcademicTaskMarketplacePage() {
           ))}
         </Tabs>
       </div>
-    </div>
+    </MainLayout>
   );
 }
