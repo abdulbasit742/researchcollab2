@@ -121,8 +121,8 @@ export default function OffersPage() {
 
   return (
     <MainLayout>
-      <div className="gradient-hero py-16 md:py-24">
-        <div className="container">
+      <div className="gradient-hero py-8 sm:py-16 md:py-24">
+        <div className="container px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -133,7 +133,7 @@ export default function OffersPage() {
               <Target className="h-3 w-3 mr-1" />
               Live Opportunities
             </Badge>
-            <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+            <h1 className="text-2xl sm:text-4xl font-bold md:text-5xl lg:text-6xl">
               Find Your Next{" "}
               <span className="text-gradient">Opportunity</span>
             </h1>
@@ -145,7 +145,7 @@ export default function OffersPage() {
         </div>
       </div>
 
-      <div className="container py-16">
+      <div className="container px-4 py-6 sm:py-16">
         <div className="space-y-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <h2 className="text-xl font-semibold">
@@ -170,7 +170,7 @@ export default function OffersPage() {
             </div>
           ) : filteredProjects.length === 0 ? (
             <Card>
-              <CardContent className="p-12 text-center">
+              <CardContent className="p-6 sm:p-12 text-center">
                 <Target className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-xl font-semibold mb-2">
                   {searchQuery ? "No Matching Projects" : "No Open Projects Yet"}

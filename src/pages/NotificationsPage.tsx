@@ -155,9 +155,9 @@ export default function NotificationsPage() {
 
   return (
     <MainLayout>
-      <div className="container py-6 max-w-4xl">
+      <div className="container px-4 py-6 max-w-4xl">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-primary/10">
               <Bell className="h-5 w-5 text-primary" />
@@ -198,7 +198,7 @@ export default function NotificationsPage() {
                     )}
                   </CardTitle>
                   <Tabs value={activeFilter} onValueChange={setActiveFilter}>
-                    <TabsList className="h-8">
+                    <TabsList className="h-8 overflow-x-auto">
                       <TabsTrigger value="all" className="text-xs px-2">All</TabsTrigger>
                       <TabsTrigger value="unread" className="text-xs px-2">Unread</TabsTrigger>
                       <TabsTrigger value="deal" className="text-xs px-2">Deals</TabsTrigger>
@@ -221,7 +221,7 @@ export default function NotificationsPage() {
                     ))}
                   </div>
                 ) : filteredNotifications.length > 0 ? (
-                  <ScrollArea className="h-[600px]">
+                  <ScrollArea className="h-[calc(100vh-280px)] sm:h-[600px]">
                     {todayNotifs.length > 0 && (
                       <>
                         <div className="px-4 py-2 bg-muted/50 text-xs font-medium text-muted-foreground">

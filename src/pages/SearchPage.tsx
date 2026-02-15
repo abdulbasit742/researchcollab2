@@ -88,7 +88,7 @@ export default function SearchPage() {
     <MainLayout>
       {/* Header */}
       <div className="border-b bg-gradient-to-r from-primary/5 to-transparent">
-        <div className="container py-6">
+        <div className="container px-4 py-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 rounded-lg bg-primary/10">
               <Search className="h-5 w-5 text-primary" />
@@ -103,11 +103,11 @@ export default function SearchPage() {
         </div>
       </div>
 
-      <div className="container py-6">
+      <div className="container px-4 py-6">
         <div className="max-w-5xl mx-auto">
           {/* Search Bar */}
           <div className="mb-4">
-            <form onSubmit={handleSearch} className="flex gap-2">
+            <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
