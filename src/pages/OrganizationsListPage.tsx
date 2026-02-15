@@ -75,7 +75,7 @@ const OrganizationsListPage = () => {
       <div className="container py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Organizations</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Organizations</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Browse universities, research labs, and enterprises using our platform
           </p>

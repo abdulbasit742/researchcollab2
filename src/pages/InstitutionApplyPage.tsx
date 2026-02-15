@@ -79,7 +79,7 @@ const InstitutionApplyPage = () => {
           <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="h-10 w-10 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold mb-4">Application Submitted!</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-4">Application Submitted!</h1>
           <p className="text-muted-foreground mb-8">
             Your institution application is under review. You'll receive an email at{" "}
             <strong>{form.contact_email}</strong> once approved.
@@ -94,7 +94,7 @@ const InstitutionApplyPage = () => {
     <MainLayout>
       <div className="container max-w-2xl py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Register Your Institution</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Register Your Institution</h1>
           <p className="text-muted-foreground">
             Join RCollab's institutional network to unlock economic intelligence, talent tracking, and more.
           </p>

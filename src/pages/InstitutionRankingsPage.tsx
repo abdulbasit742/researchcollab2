@@ -59,7 +59,7 @@ const InstitutionRankingsPage = () => {
         <div className="flex items-center gap-3 mb-8">
           <Trophy className="h-8 w-8 text-primary" />
           <div>
-            <h1 className="text-3xl font-bold">Institution Rankings</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Institution Rankings</h1>
             <p className="text-muted-foreground">Ranked by economic output, trust, and deal success</p>
           </div>
         </div>

@@ -95,7 +95,7 @@ export default function AffiliateDashboardPage() {
         <div className="min-h-screen bg-background py-16">
           <div className="container mx-auto px-4 max-w-2xl text-center">
             <Gift className="h-16 w-16 mx-auto text-primary mb-6" />
-            <h1 className="text-3xl font-bold mb-4">Join Our Affiliate Program</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-4">Join Our Affiliate Program</h1>
             <p className="text-muted-foreground mb-8">
               Sign in to access your affiliate dashboard and start earning commissions by sharing tools and services.
             </p>
@@ -121,7 +121,7 @@ export default function AffiliateDashboardPage() {
               <div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
                 <Gift className="h-8 w-8 text-primary" />
               </div>
-              <h1 className="text-3xl font-bold mb-2">Affiliate Program</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-2">Affiliate Program</h1>
               <p className="text-muted-foreground max-w-xl mx-auto">
                 Become a trusted partner and earn by recommending our platform to your network. 
                 This is not marketing — it's extending trust.
@@ -272,9 +272,9 @@ export default function AffiliateDashboardPage() {
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Header */}
           <div className="mb-8">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-foreground">Affiliate Dashboard</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Affiliate Dashboard</h1>
                 <p className="text-muted-foreground mt-1">
                   {isRestricted 
                     ? "Your affiliate account has restrictions" 

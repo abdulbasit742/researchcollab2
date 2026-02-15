@@ -150,7 +150,7 @@ const AIProjectScopePage = () => {
             <Sparkles className="h-4 w-4" />
             <span className="text-sm font-medium">AI-Powered Project Scoping</span>
           </div>
-          <h1 className="text-3xl font-bold mb-2">Scope & Price Your Project</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Scope & Price Your Project</h1>
           <p className="text-muted-foreground">
             Let AI help you define, estimate, and price your project in minutes
           </p>

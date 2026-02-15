@@ -19,7 +19,7 @@ export default function InstallPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-primary mb-4">
             <Smartphone className="h-8 w-8 text-primary-foreground" />
           </div>
-          <h1 className="text-3xl font-bold mb-2">Install the App</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Install the App</h1>
           <p className="text-muted-foreground">
             Get the full experience — faster access, offline support, and no browser chrome.
           </p>

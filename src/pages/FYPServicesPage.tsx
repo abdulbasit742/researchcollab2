@@ -241,7 +241,7 @@ export default function FYPServicesPage() {
       {/* Services Grid */}
       <div className="container py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold">Our Services</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold">Our Services</h2>
           <p className="mt-2 text-muted-foreground">
             Choose from a wide range of academic support services
           </p>
@@ -305,7 +305,7 @@ export default function FYPServicesPage() {
           className="mt-20"
         >
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold">Recent Requests</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold">Recent Requests</h2>
             <p className="mt-2 text-muted-foreground">
               Active projects looking for experts
             </p>
