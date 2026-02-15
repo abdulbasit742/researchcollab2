@@ -1,4 +1,5 @@
 // App entry point
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,189 +11,213 @@ import { ScrollRestoration } from "@/components/ScrollRestoration";
 import { RouteProgress } from "@/components/layout/RouteProgress";
 import { LoadingScreen } from "@/components/loading";
 import { useAppLoading } from "@/hooks/useAppLoading";
-import Index from "./pages/Index";
-import AuthPage from "./pages/AuthPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import ProfilePage from "./pages/ProfilePage";
-import OnboardingPage from "./pages/OnboardingPage";
-import StudentDashboard from "./pages/dashboard/StudentDashboard";
-import ResearcherDashboard from "./pages/dashboard/ResearcherDashboard";
-import AdminDashboard from "./pages/dashboard/AdminDashboard";
-import ToolsPage from "./pages/ToolsPage";
-import CollaborationsPage from "./pages/CollaborationsPage";
-import EarnPage from "./pages/EarnPage";
-import EarnProjectDetailPage from "./pages/EarnProjectDetailPage";
-import FYPServicesPage from "./pages/FYPServicesPage";
-import GrantsPage from "./pages/GrantsPage";
-import MatchesPage from "./pages/MatchesPage";
-import SmartMatchingPage from "./pages/SmartMatchingPage";
-import StudentProfilePage from "./pages/StudentProfilePage";
-import ResearcherProfilePage from "./pages/ResearcherProfilePage";
-import ResearcherPublicProfilePage from "./pages/ResearcherPublicProfilePage";
-import UserPublicProfilePage from "./pages/UserPublicProfilePage";
-import BlogPage from "./pages/BlogPage";
-import BlogArticlePage from "./pages/BlogArticlePage";
-import OffersPage from "./pages/OffersPage";
-import OfferRedirectPage from "./pages/OfferRedirectPage";
-import WorkRoomPage from "./pages/WorkRoomPage";
-
-import OpportunityIntelligencePage from "./pages/OpportunityIntelligencePage";
-import WalletPage from "./pages/WalletPage";
-import SubscriptionsPage from "./pages/SubscriptionsPage";
-import AffiliateDashboardPage from "./pages/AffiliateDashboardPage";
-import AffiliateAssetsPage from "./pages/AffiliateAssetsPage";
-import VerificationCenterPage from "./pages/VerificationCenterPage";
-import StudentVerificationPage from "./pages/StudentVerificationPage";
-import ResearcherVerificationPage from "./pages/ResearcherVerificationPage";
-import PartnerVerificationPage from "./pages/PartnerVerificationPage";
-import OrganizationsListPage from "./pages/OrganizationsListPage";
-import OrganizationDashboardPage from "./pages/OrganizationDashboardPage";
-import OrganizationMembersPage from "./pages/OrganizationMembersPage";
-import OrganizationToolsPage from "./pages/OrganizationToolsPage";
-import OrganizationProjectsPage from "./pages/OrganizationProjectsPage";
-import OrganizationBillingPage from "./pages/OrganizationBillingPage";
-import AIProjectScopePage from "./pages/AIProjectScopePage";
-import MessagesPage from "./pages/MessagesPage";
-import MessageThreadPage from "./pages/MessageThreadPage";
-import HelpCenterPage from "./pages/HelpCenterPage";
-import ApiDocsPage from "./pages/ApiDocsPage";
-import PricingPage from "./pages/PricingPage";
-import ContactPage from "./pages/ContactPage";
-import AboutPage from "./pages/AboutPage";
-import CareersPage from "./pages/CareersPage";
-import NotFound from "./pages/NotFound";
-// Admin pages
-import AdminPortalPage from "./pages/AdminPortalPage";
-import AdminUsersPage from "./pages/admin/AdminUsersPage";
-import AdminToolsPage from "./pages/admin/AdminToolsPage";
-import AdminProjectsPage from "./pages/admin/AdminProjectsPage";
-import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
-import AdminFinancePage from "./pages/AdminFinancePage";
-import AdminFulfillmentPage from "./pages/AdminFulfillmentPage";
-import AdminSubscriptionsPage from "./pages/AdminSubscriptionsPage";
-import AdminAffiliatePage from "./pages/AdminAffiliatePage";
-import AdminVerificationsPage from "./pages/AdminVerificationsPage";
-import AdminEnterprisePage from "./pages/AdminEnterprisePage";
-import AdminAIPricingPage from "./pages/AdminAIPricingPage";
-import AdminReportsPage from "./pages/AdminReportsPage";
-import AdminSupportPage from "./pages/AdminSupportPage";
-import AdminAuditLogPage from "./pages/admin/AdminAuditLogPage";
-import AdminAnalyticsPage from "./pages/admin/AdminAnalyticsPage";
-import AdminGovernmentPage from "./pages/admin/AdminGovernmentPage";
-import AdminNationalInsightsPage from "./pages/admin/AdminNationalInsightsPage";
-import AdminInfrastructurePage from "./pages/admin/AdminInfrastructurePage";
-import AdminGovernancePage from "./pages/admin/AdminGovernancePage";
-import AdminResiliencePage from "./pages/admin/AdminResiliencePage";
-import AdminKnowledgePage from "./pages/admin/AdminKnowledgePage";
-import AdminFeedModerationPage from "./pages/admin/AdminFeedModerationPage";
-import AdminFeatureFlagsPage from "./pages/admin/AdminFeatureFlagsPage";
-import AdminSchemaPage from "./pages/admin/AdminSchemaPage";
-import AdminPermissionsPage from "./pages/admin/AdminPermissionsPage";
-import AdminHealthPage from "./pages/admin/AdminHealthPage";
-import AdminDeploymentPage from "./pages/admin/AdminDeploymentPage";
-import AdminSecurityPage from "./pages/admin/AdminSecurityPage";
-import AdminAIGovernancePage from "./pages/admin/AdminAIGovernancePage";
-import AdminReproducibilityPage from "./pages/admin/AdminReproducibilityPage";
-import AdminFederationPage from "./pages/admin/AdminFederationPage";
-import FeedPage from "./pages/FeedPage";
-import InstitutionApplyPage from "./pages/InstitutionApplyPage";
-import AdminInstitutionIntelligencePage from "./pages/admin/AdminInstitutionIntelligencePage";
-import HomeDashboard from "./pages/HomeDashboard";
-import PostDetailPage from "./pages/PostDetailPage";
-import NetworkPage from "./pages/NetworkPage";
-import SearchPage from "./pages/SearchPage";
-import OutcomeFeedPage from "./pages/OutcomeFeedPage";
-import RealityFeedPage from "./pages/RealityFeedPage";
-import AdminStewardshipPage from "./pages/admin/AdminStewardshipPage";
-import AdminOperationsPage from "./pages/admin/AdminOperationsPage";
-import AdminOperationalHealthPage from "./pages/admin/AdminOperationalHealthPage";
-import PressKitPage from "./pages/PressKitPage";
-import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
-import TermsOfServicePage from "./pages/TermsOfServicePage";
-import CookiePolicyPage from "./pages/CookiePolicyPage";
-import OpportunitiesPage from "./pages/OpportunitiesPage";
-import NotificationSettingsPage from "./pages/NotificationSettingsPage";
-import NotificationsPage from "./pages/NotificationsPage";
-import OrganizationPage from "./pages/OrganizationPage";
-import ProgressPage from "./pages/ProgressPage";
-import DealsPage from "./pages/DealsPage";
-import DealDetailPage from "./pages/DealDetailPage";
-import PremiumOnboardingPage from "./pages/PremiumOnboardingPage";
-import AdminPremiumAnalyticsPage from "./pages/admin/AdminPremiumAnalyticsPage";
-import AdminPricingPage from "./pages/admin/AdminPricingPage";
-import FeaturesShowcasePage from "./pages/FeaturesShowcasePage";
-import LearningPage from "./pages/LearningPage";
-import EventsPage from "./pages/EventsPage";
-import HRPage from "./pages/HRPage";
-import AutomationPage from "./pages/AutomationPage";
-import ProjectManagementPage from "./pages/ProjectManagementPage";
-import SocialFeaturesPage from "./pages/SocialFeaturesPage";
-import AmbientPage from "./pages/AmbientPage";
-import CollectiveIntelligencePage from "./pages/CollectiveIntelligencePage";
- import BriefingsPage from "./pages/BriefingsPage";
- import ProfileSettingsPage from "./pages/ProfileSettingsPage";
- import CareerPage from "./pages/CareerPage";
-import ResearchPapersPage from "./pages/ResearchPapersPage";
-import PaperReaderPage from "./pages/PaperReaderPage";
-import AdminVisibilityAnalyticsPage from "./pages/admin/AdminVisibilityAnalyticsPage";
-import InstitutionalCommandCenterPage from "./pages/InstitutionalCommandCenterPage";
-import AdminGlobalTalentAnalyticsPage from "./pages/admin/AdminGlobalTalentAnalyticsPage";
-import PassportPage from "./pages/PassportPage";
-import MarketLiquidityPage from "./pages/MarketLiquidityPage";
-import AdminPassportAnalyticsPage from "./pages/admin/AdminPassportAnalyticsPage";
-import AdminGlobalLiquidityPage from "./pages/admin/AdminGlobalLiquidityPage";
-import AdminPodAnalyticsPage from "./pages/admin/AdminPodAnalyticsPage";
-import AdminDealIntelligencePage from "./pages/admin/AdminDealIntelligencePage";
-import MacroRiskPage from "./pages/MacroRiskPage";
-import AdminSystemicRiskPage from "./pages/admin/AdminSystemicRiskPage";
-import GovernancePage from "./pages/GovernancePage";
-import AdminGovernanceOversightPage from "./pages/admin/AdminGovernanceOversightPage";
-import ConstitutionalHealthPage from "./pages/ConstitutionalHealthPage";
-import AdminConstitutionalGuardianPage from "./pages/admin/AdminConstitutionalGuardianPage";
-import AdminConversionMetricsPage from "./pages/admin/AdminConversionMetricsPage";
-import AdminInstitutionActivationPage from "./pages/admin/AdminInstitutionActivationPage";
-import InstitutionRankingsPage from "./pages/InstitutionRankingsPage";
-import FacultyMonitorPage from "./pages/FacultyMonitorPage";
-import AdminRevenueDashboardPage from "./pages/admin/AdminRevenueDashboardPage";
-import InstitutionContractPage from "./pages/InstitutionContractPage";
-import AdminProfitDashboardPage from "./pages/admin/AdminProfitDashboardPage";
-import AdminPricingOptimizerPage from "./pages/admin/AdminPricingOptimizerPage";
-import AdminInfrastructureCostsPage from "./pages/admin/AdminInfrastructureCostsPage";
-import GlobalRankingsPage from "./pages/GlobalRankingsPage";
-import GlobalLiquidityAnalyticsPage from "./pages/GlobalLiquidityAnalyticsPage";
-import DeveloperApiDashboardPage from "./pages/DeveloperApiDashboardPage";
-import ReputationExportPage from "./pages/ReputationExportPage";
-import AdminGlobalExpansionPage from "./pages/admin/AdminGlobalExpansionPage";
-import GovernanceConstitutionPage from "./pages/GovernanceConstitutionPage";
-import GovernanceDecisionsPage from "./pages/GovernanceDecisionsPage";
-import EconomicFairnessPage from "./pages/EconomicFairnessPage";
-import AdminPowerAuditPage from "./pages/admin/AdminPowerAuditPage";
-import AdminFeatureGovernancePage from "./pages/admin/AdminFeatureGovernancePage";
-import AdminCrisisModePage from "./pages/admin/AdminCrisisModePage";
-import AdminEvolutionSimulatorPage from "./pages/admin/AdminEvolutionSimulatorPage";
-import FYPDashboardPage from "./pages/FYPDashboardPage";
-import SupervisorDashboardPage from "./pages/SupervisorDashboardPage";
-import AcademicOutputAnalyticsPage from "./pages/AcademicOutputAnalyticsPage";
-import SupervisorReviewQueuePage from "./pages/SupervisorReviewQueuePage";
-import StudentPerformancePage from "./pages/StudentPerformancePage";
-import AcademicTaskMarketplacePage from "./pages/AcademicTaskMarketplacePage";
-import SupervisorPerformancePage from "./pages/SupervisorPerformancePage";
-import EmployabilityExportPage from "./pages/EmployabilityExportPage";
-import AcademicRankingsPage from "./pages/AcademicRankingsPage";
-import OpportunityDashboardPage from "./pages/OpportunityDashboardPage";
-import StrategicFeedPage from "./pages/StrategicFeedPage";
-import MyOSPage from "./pages/MyOSPage";
-import AdminRevenueIntelligencePage from "./pages/admin/AdminRevenueIntelligencePage";
-import InstitutionalAcademicAnalyticsPage from "./pages/InstitutionalAcademicAnalyticsPage";
-import InstallPage from "./pages/InstallPage";
-import ProductivityDashboardPage from "./pages/ProductivityDashboardPage";
-import DocumentEditorPage from "./pages/DocumentEditorPage";
-import SpreadsheetEditorPage from "./pages/SpreadsheetEditorPage";
-import PresentationEditorPage from "./pages/PresentationEditorPage";
 import { DemoWalkthroughProvider } from "@/contexts/DemoWalkthroughContext";
 import { WalkthroughOverlay } from "@/components/walkthrough/WalkthroughOverlay";
 import { TourLaunchButton } from "@/components/walkthrough/TourLaunchButton";
-const queryClient = new QueryClient();
+
+// Static imports for instant first paint
+import Index from "./pages/Index";
+import AuthPage from "./pages/AuthPage";
+import NotFound from "./pages/NotFound";
+
+// Lazy-loaded page imports
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const OnboardingPage = lazy(() => import("./pages/OnboardingPage"));
+const StudentDashboard = lazy(() => import("./pages/dashboard/StudentDashboard"));
+const ResearcherDashboard = lazy(() => import("./pages/dashboard/ResearcherDashboard"));
+const AdminDashboard = lazy(() => import("./pages/dashboard/AdminDashboard"));
+const ToolsPage = lazy(() => import("./pages/ToolsPage"));
+const CollaborationsPage = lazy(() => import("./pages/CollaborationsPage"));
+const EarnPage = lazy(() => import("./pages/EarnPage"));
+const EarnProjectDetailPage = lazy(() => import("./pages/EarnProjectDetailPage"));
+const FYPServicesPage = lazy(() => import("./pages/FYPServicesPage"));
+const GrantsPage = lazy(() => import("./pages/GrantsPage"));
+const MatchesPage = lazy(() => import("./pages/MatchesPage"));
+const SmartMatchingPage = lazy(() => import("./pages/SmartMatchingPage"));
+const StudentProfilePage = lazy(() => import("./pages/StudentProfilePage"));
+const ResearcherProfilePage = lazy(() => import("./pages/ResearcherProfilePage"));
+const ResearcherPublicProfilePage = lazy(() => import("./pages/ResearcherPublicProfilePage"));
+const UserPublicProfilePage = lazy(() => import("./pages/UserPublicProfilePage"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const BlogArticlePage = lazy(() => import("./pages/BlogArticlePage"));
+const OffersPage = lazy(() => import("./pages/OffersPage"));
+const OfferRedirectPage = lazy(() => import("./pages/OfferRedirectPage"));
+const WorkRoomPage = lazy(() => import("./pages/WorkRoomPage"));
+const OpportunityIntelligencePage = lazy(() => import("./pages/OpportunityIntelligencePage"));
+const WalletPage = lazy(() => import("./pages/WalletPage"));
+const SubscriptionsPage = lazy(() => import("./pages/SubscriptionsPage"));
+const AffiliateDashboardPage = lazy(() => import("./pages/AffiliateDashboardPage"));
+const AffiliateAssetsPage = lazy(() => import("./pages/AffiliateAssetsPage"));
+const VerificationCenterPage = lazy(() => import("./pages/VerificationCenterPage"));
+const StudentVerificationPage = lazy(() => import("./pages/StudentVerificationPage"));
+const ResearcherVerificationPage = lazy(() => import("./pages/ResearcherVerificationPage"));
+const PartnerVerificationPage = lazy(() => import("./pages/PartnerVerificationPage"));
+const OrganizationsListPage = lazy(() => import("./pages/OrganizationsListPage"));
+const OrganizationDashboardPage = lazy(() => import("./pages/OrganizationDashboardPage"));
+const OrganizationMembersPage = lazy(() => import("./pages/OrganizationMembersPage"));
+const OrganizationToolsPage = lazy(() => import("./pages/OrganizationToolsPage"));
+const OrganizationProjectsPage = lazy(() => import("./pages/OrganizationProjectsPage"));
+const OrganizationBillingPage = lazy(() => import("./pages/OrganizationBillingPage"));
+const AIProjectScopePage = lazy(() => import("./pages/AIProjectScopePage"));
+const MessagesPage = lazy(() => import("./pages/MessagesPage"));
+const MessageThreadPage = lazy(() => import("./pages/MessageThreadPage"));
+const HelpCenterPage = lazy(() => import("./pages/HelpCenterPage"));
+const ApiDocsPage = lazy(() => import("./pages/ApiDocsPage"));
+const PricingPage = lazy(() => import("./pages/PricingPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const CareersPage = lazy(() => import("./pages/CareersPage"));
+const HomeDashboard = lazy(() => import("./pages/HomeDashboard"));
+const FeedPage = lazy(() => import("./pages/FeedPage"));
+const RealityFeedPage = lazy(() => import("./pages/RealityFeedPage"));
+const OutcomeFeedPage = lazy(() => import("./pages/OutcomeFeedPage"));
+const PostDetailPage = lazy(() => import("./pages/PostDetailPage"));
+const NetworkPage = lazy(() => import("./pages/NetworkPage"));
+const SearchPage = lazy(() => import("./pages/SearchPage"));
+const PressKitPage = lazy(() => import("./pages/PressKitPage"));
+const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
+const TermsOfServicePage = lazy(() => import("./pages/TermsOfServicePage"));
+const CookiePolicyPage = lazy(() => import("./pages/CookiePolicyPage"));
+const OpportunitiesPage = lazy(() => import("./pages/OpportunitiesPage"));
+const NotificationSettingsPage = lazy(() => import("./pages/NotificationSettingsPage"));
+const NotificationsPage = lazy(() => import("./pages/NotificationsPage"));
+const OrganizationPage = lazy(() => import("./pages/OrganizationPage"));
+const ProgressPage = lazy(() => import("./pages/ProgressPage"));
+const DealsPage = lazy(() => import("./pages/DealsPage"));
+const DealDetailPage = lazy(() => import("./pages/DealDetailPage"));
+const PremiumOnboardingPage = lazy(() => import("./pages/PremiumOnboardingPage"));
+const FeaturesShowcasePage = lazy(() => import("./pages/FeaturesShowcasePage"));
+const LearningPage = lazy(() => import("./pages/LearningPage"));
+const EventsPage = lazy(() => import("./pages/EventsPage"));
+const HRPage = lazy(() => import("./pages/HRPage"));
+const AutomationPage = lazy(() => import("./pages/AutomationPage"));
+const ProjectManagementPage = lazy(() => import("./pages/ProjectManagementPage"));
+const SocialFeaturesPage = lazy(() => import("./pages/SocialFeaturesPage"));
+const AmbientPage = lazy(() => import("./pages/AmbientPage"));
+const CollectiveIntelligencePage = lazy(() => import("./pages/CollectiveIntelligencePage"));
+const BriefingsPage = lazy(() => import("./pages/BriefingsPage"));
+const ProfileSettingsPage = lazy(() => import("./pages/ProfileSettingsPage"));
+const CareerPage = lazy(() => import("./pages/CareerPage"));
+const ResearchPapersPage = lazy(() => import("./pages/ResearchPapersPage"));
+const PaperReaderPage = lazy(() => import("./pages/PaperReaderPage"));
+const InstitutionalCommandCenterPage = lazy(() => import("./pages/InstitutionalCommandCenterPage"));
+const PassportPage = lazy(() => import("./pages/PassportPage"));
+const MarketLiquidityPage = lazy(() => import("./pages/MarketLiquidityPage"));
+const MacroRiskPage = lazy(() => import("./pages/MacroRiskPage"));
+const GovernancePage = lazy(() => import("./pages/GovernancePage"));
+const ConstitutionalHealthPage = lazy(() => import("./pages/ConstitutionalHealthPage"));
+const InstitutionApplyPage = lazy(() => import("./pages/InstitutionApplyPage"));
+const InstitutionRankingsPage = lazy(() => import("./pages/InstitutionRankingsPage"));
+const FacultyMonitorPage = lazy(() => import("./pages/FacultyMonitorPage"));
+const InstitutionContractPage = lazy(() => import("./pages/InstitutionContractPage"));
+const GlobalRankingsPage = lazy(() => import("./pages/GlobalRankingsPage"));
+const GlobalLiquidityAnalyticsPage = lazy(() => import("./pages/GlobalLiquidityAnalyticsPage"));
+const DeveloperApiDashboardPage = lazy(() => import("./pages/DeveloperApiDashboardPage"));
+const ReputationExportPage = lazy(() => import("./pages/ReputationExportPage"));
+const GovernanceConstitutionPage = lazy(() => import("./pages/GovernanceConstitutionPage"));
+const GovernanceDecisionsPage = lazy(() => import("./pages/GovernanceDecisionsPage"));
+const EconomicFairnessPage = lazy(() => import("./pages/EconomicFairnessPage"));
+const FYPDashboardPage = lazy(() => import("./pages/FYPDashboardPage"));
+const SupervisorDashboardPage = lazy(() => import("./pages/SupervisorDashboardPage"));
+const AcademicOutputAnalyticsPage = lazy(() => import("./pages/AcademicOutputAnalyticsPage"));
+const SupervisorReviewQueuePage = lazy(() => import("./pages/SupervisorReviewQueuePage"));
+const StudentPerformancePage = lazy(() => import("./pages/StudentPerformancePage"));
+const AcademicTaskMarketplacePage = lazy(() => import("./pages/AcademicTaskMarketplacePage"));
+const SupervisorPerformancePage = lazy(() => import("./pages/SupervisorPerformancePage"));
+const EmployabilityExportPage = lazy(() => import("./pages/EmployabilityExportPage"));
+const AcademicRankingsPage = lazy(() => import("./pages/AcademicRankingsPage"));
+const OpportunityDashboardPage = lazy(() => import("./pages/OpportunityDashboardPage"));
+const StrategicFeedPage = lazy(() => import("./pages/StrategicFeedPage"));
+const MyOSPage = lazy(() => import("./pages/MyOSPage"));
+const InstallPage = lazy(() => import("./pages/InstallPage"));
+const ProductivityDashboardPage = lazy(() => import("./pages/ProductivityDashboardPage"));
+const DocumentEditorPage = lazy(() => import("./pages/DocumentEditorPage"));
+const SpreadsheetEditorPage = lazy(() => import("./pages/SpreadsheetEditorPage"));
+const PresentationEditorPage = lazy(() => import("./pages/PresentationEditorPage"));
+const InstitutionalAcademicAnalyticsPage = lazy(() => import("./pages/InstitutionalAcademicAnalyticsPage"));
+
+// Admin pages - lazy loaded
+const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
+const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
+const AdminToolsPage = lazy(() => import("./pages/admin/AdminToolsPage"));
+const AdminProjectsPage = lazy(() => import("./pages/admin/AdminProjectsPage"));
+const AdminSettingsPage = lazy(() => import("./pages/admin/AdminSettingsPage"));
+const AdminFinancePage = lazy(() => import("./pages/AdminFinancePage"));
+const AdminFulfillmentPage = lazy(() => import("./pages/AdminFulfillmentPage"));
+const AdminSubscriptionsPage = lazy(() => import("./pages/AdminSubscriptionsPage"));
+const AdminAffiliatePage = lazy(() => import("./pages/AdminAffiliatePage"));
+const AdminVerificationsPage = lazy(() => import("./pages/AdminVerificationsPage"));
+const AdminEnterprisePage = lazy(() => import("./pages/AdminEnterprisePage"));
+const AdminAIPricingPage = lazy(() => import("./pages/AdminAIPricingPage"));
+const AdminReportsPage = lazy(() => import("./pages/AdminReportsPage"));
+const AdminSupportPage = lazy(() => import("./pages/AdminSupportPage"));
+const AdminAuditLogPage = lazy(() => import("./pages/admin/AdminAuditLogPage"));
+const AdminAnalyticsPage = lazy(() => import("./pages/admin/AdminAnalyticsPage"));
+const AdminGovernmentPage = lazy(() => import("./pages/admin/AdminGovernmentPage"));
+const AdminNationalInsightsPage = lazy(() => import("./pages/admin/AdminNationalInsightsPage"));
+const AdminInfrastructurePage = lazy(() => import("./pages/admin/AdminInfrastructurePage"));
+const AdminGovernancePage = lazy(() => import("./pages/admin/AdminGovernancePage"));
+const AdminResiliencePage = lazy(() => import("./pages/admin/AdminResiliencePage"));
+const AdminKnowledgePage = lazy(() => import("./pages/admin/AdminKnowledgePage"));
+const AdminFeedModerationPage = lazy(() => import("./pages/admin/AdminFeedModerationPage"));
+const AdminFeatureFlagsPage = lazy(() => import("./pages/admin/AdminFeatureFlagsPage"));
+const AdminSchemaPage = lazy(() => import("./pages/admin/AdminSchemaPage"));
+const AdminPermissionsPage = lazy(() => import("./pages/admin/AdminPermissionsPage"));
+const AdminHealthPage = lazy(() => import("./pages/admin/AdminHealthPage"));
+const AdminDeploymentPage = lazy(() => import("./pages/admin/AdminDeploymentPage"));
+const AdminSecurityPage = lazy(() => import("./pages/admin/AdminSecurityPage"));
+const AdminAIGovernancePage = lazy(() => import("./pages/admin/AdminAIGovernancePage"));
+const AdminReproducibilityPage = lazy(() => import("./pages/admin/AdminReproducibilityPage"));
+const AdminFederationPage = lazy(() => import("./pages/admin/AdminFederationPage"));
+const AdminStewardshipPage = lazy(() => import("./pages/admin/AdminStewardshipPage"));
+const AdminOperationsPage = lazy(() => import("./pages/admin/AdminOperationsPage"));
+const AdminOperationalHealthPage = lazy(() => import("./pages/admin/AdminOperationalHealthPage"));
+const AdminPremiumAnalyticsPage = lazy(() => import("./pages/admin/AdminPremiumAnalyticsPage"));
+const AdminPricingPage = lazy(() => import("./pages/admin/AdminPricingPage"));
+const AdminVisibilityAnalyticsPage = lazy(() => import("./pages/admin/AdminVisibilityAnalyticsPage"));
+const AdminGlobalTalentAnalyticsPage = lazy(() => import("./pages/admin/AdminGlobalTalentAnalyticsPage"));
+const AdminPassportAnalyticsPage = lazy(() => import("./pages/admin/AdminPassportAnalyticsPage"));
+const AdminGlobalLiquidityPage = lazy(() => import("./pages/admin/AdminGlobalLiquidityPage"));
+const AdminPodAnalyticsPage = lazy(() => import("./pages/admin/AdminPodAnalyticsPage"));
+const AdminDealIntelligencePage = lazy(() => import("./pages/admin/AdminDealIntelligencePage"));
+const AdminSystemicRiskPage = lazy(() => import("./pages/admin/AdminSystemicRiskPage"));
+const AdminGovernanceOversightPage = lazy(() => import("./pages/admin/AdminGovernanceOversightPage"));
+const AdminConstitutionalGuardianPage = lazy(() => import("./pages/admin/AdminConstitutionalGuardianPage"));
+const AdminConversionMetricsPage = lazy(() => import("./pages/admin/AdminConversionMetricsPage"));
+const AdminInstitutionIntelligencePage = lazy(() => import("./pages/admin/AdminInstitutionIntelligencePage"));
+const AdminInstitutionActivationPage = lazy(() => import("./pages/admin/AdminInstitutionActivationPage"));
+const AdminRevenueDashboardPage = lazy(() => import("./pages/admin/AdminRevenueDashboardPage"));
+const AdminProfitDashboardPage = lazy(() => import("./pages/admin/AdminProfitDashboardPage"));
+const AdminPricingOptimizerPage = lazy(() => import("./pages/admin/AdminPricingOptimizerPage"));
+const AdminInfrastructureCostsPage = lazy(() => import("./pages/admin/AdminInfrastructureCostsPage"));
+const AdminGlobalExpansionPage = lazy(() => import("./pages/admin/AdminGlobalExpansionPage"));
+const AdminPowerAuditPage = lazy(() => import("./pages/admin/AdminPowerAuditPage"));
+const AdminFeatureGovernancePage = lazy(() => import("./pages/admin/AdminFeatureGovernancePage"));
+const AdminCrisisModePage = lazy(() => import("./pages/admin/AdminCrisisModePage"));
+const AdminEvolutionSimulatorPage = lazy(() => import("./pages/admin/AdminEvolutionSimulatorPage"));
+const AdminRevenueIntelligencePage = lazy(() => import("./pages/admin/AdminRevenueIntelligencePage"));
+
+// Suspense fallback for lazy-loaded routes
+const SuspenseFallback = () => (
+  <div className="min-h-screen flex items-center justify-center gradient-hero">
+    <div className="flex flex-col items-center gap-4">
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      <p className="text-sm text-muted-foreground">Loading...</p>
+    </div>
+  </div>
+);
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 const AppContent = () => {
   const { isLoading, progress, isComplete } = useAppLoading();
@@ -202,7 +227,8 @@ const AppContent = () => {
       <LoadingScreen isLoading={isLoading} progress={progress} isComplete={isComplete} />
       <RouteProgress />
       <ScrollRestoration />
-      <Routes>
+      <Suspense fallback={<SuspenseFallback />}>
+        <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/home" element={<HomeDashboard />} />
             <Route path="/feed" element={<FeedPage />} />
@@ -215,7 +241,7 @@ const AppContent = () => {
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-             <Route path="/profile/settings" element={<ProfileSettingsPage />} />
+            <Route path="/profile/settings" element={<ProfileSettingsPage />} />
             <Route path="/u/:id" element={<UserPublicProfilePage />} />
             <Route path="/dashboard/student" element={<StudentDashboard />} />
             <Route path="/dashboard/researcher" element={<ResearcherDashboard />} />
@@ -284,10 +310,10 @@ const AppContent = () => {
             <Route path="/social" element={<SocialFeaturesPage />} />
             <Route path="/ambient" element={<AmbientPage />} />
             <Route path="/collective" element={<CollectiveIntelligencePage />} />
-             <Route path="/briefings" element={<BriefingsPage />} />
-             <Route path="/career" element={<CareerPage />} />
-             <Route path="/research-papers" element={<ResearchPapersPage />} />
-             <Route path="/research-papers/:slug" element={<PaperReaderPage />} />
+            <Route path="/briefings" element={<BriefingsPage />} />
+            <Route path="/career" element={<CareerPage />} />
+            <Route path="/research-papers" element={<ResearchPapersPage />} />
+            <Route path="/research-papers/:slug" element={<PaperReaderPage />} />
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminPortalPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
@@ -385,6 +411,7 @@ const AppContent = () => {
             <Route path="/org/:id/academic-analytics" element={<InstitutionalAcademicAnalyticsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+      </Suspense>
     </>
   );
 };
