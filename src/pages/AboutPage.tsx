@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { SEOHead } from "@/components/seo/SEOHead";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Target, Users, Lightbulb, Award, Rocket, Heart, Shield, Code } from "lucide-react";
@@ -57,6 +58,12 @@ const values = [
 export default function AboutPage() {
   return (
     <MainLayout>
+      <SEOHead
+        title="About Us"
+        description="Learn about ResearchCollabPro's mission to connect researchers, build trust in academia, and create fair earning opportunities for students worldwide."
+        canonicalPath="/about"
+        keywords="about ResearchCollabPro, research collaboration mission, academic platform"
+      />
       <div className="min-h-screen">
         {/* Hero Section */}
         <section className="relative py-10 sm:py-20 overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10">
