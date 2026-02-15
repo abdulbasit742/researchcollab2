@@ -81,7 +81,7 @@ export default function OutcomeFeedPage() {
 
   return (
     <MainLayout>
-      <div className="container py-6">
+      <div className="container px-4 py-6">
         <div className="grid lg:grid-cols-12 gap-6">
           {/* Left Sidebar - Proof-Based Profile Summary */}
           <aside className="hidden lg:block lg:col-span-3">

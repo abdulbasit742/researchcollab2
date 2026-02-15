@@ -60,11 +60,11 @@ export default function InterdisciplinaryPage() {
 
   return (
     <MainLayout>
-      <div className="container py-8 space-y-8">
+      <div className="container px-4 py-8 space-y-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
               <Layers className="h-8 w-8 text-primary" />
               Interdisciplinary Collaboration
             </h1>
@@ -214,7 +214,7 @@ export default function InterdisciplinaryPage() {
                 ))}
               </div>
             ) : calls.length === 0 ? (
-              <Card className="p-12 text-center">
+              <Card className="p-6 sm:p-12 text-center">
                 <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No active calls</h3>
                 <p className="text-muted-foreground mb-4">
@@ -289,7 +289,7 @@ export default function InterdisciplinaryPage() {
             {translationsLoading ? (
               <Skeleton className="h-64" />
             ) : translations.length === 0 ? (
-              <Card className="p-12 text-center">
+              <Card className="p-6 sm:p-12 text-center">
                 <ArrowRightLeft className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No field translations</h3>
                 <p className="text-muted-foreground">

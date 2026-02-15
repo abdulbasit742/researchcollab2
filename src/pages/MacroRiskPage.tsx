@@ -6,6 +6,7 @@ import { Loader2, ShieldAlert, TrendingUp, AlertTriangle, Activity } from "lucid
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, BarChart, Bar, RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
 import { format } from "date-fns";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 const riskColors: Record<string, string> = {
   stable: "hsl(var(--success, 142 76% 36%))",
@@ -51,11 +52,11 @@ export default function MacroRiskPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <div className="container mx-auto px-4 py-8 max-w-7xl space-y-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-3">
               <ShieldAlert className="h-8 w-8 text-primary" />
               Global Talent Risk Index
             </h1>
@@ -83,7 +84,7 @@ export default function MacroRiskPage() {
                 </ResponsiveContainer>
               </div>
               <div className="text-center -mt-4">
-                <span className="text-4xl font-bold text-foreground">{compositeScore.toFixed(1)}</span>
+                <span className="text-3xl sm:text-4xl font-bold text-foreground">{compositeScore.toFixed(1)}</span>
                 <span className="text-muted-foreground text-sm">/100</span>
               </div>
               <Badge variant={severityVariant(riskLevel)} className="mt-2 uppercase">{riskLevel}</Badge>
@@ -162,6 +163,6 @@ export default function MacroRiskPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </MainLayout>
   );
 }

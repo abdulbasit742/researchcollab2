@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Scale, TrendingUp } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 export default function EconomicFairnessPage() {
   const { data: reports } = useQuery({
@@ -24,11 +25,12 @@ export default function EconomicFairnessPage() {
   })) || [];
 
   return (
-    <div className="min-h-screen bg-background p-6 max-w-5xl mx-auto space-y-6">
+    <MainLayout>
+    <div className="max-w-5xl mx-auto px-4 py-6 sm:p-6 space-y-6">
       <div className="flex items-center gap-3">
         <Scale className="h-8 w-8 text-primary" />
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Economic Fairness</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Economic Fairness</h1>
           <p className="text-muted-foreground">Ensuring the platform does not bias against lower-tier users</p>
         </div>
       </div>
@@ -63,7 +65,7 @@ export default function EconomicFairnessPage() {
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+            <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-muted-foreground">
               <div>Revenue Distribution: {JSON.stringify(r.revenue_distribution)}</div>
               <div>Fee Distribution: {JSON.stringify(r.fee_distribution)}</div>
               <div>Trust Tier Split: {JSON.stringify(r.trust_tier_distribution)}</div>
@@ -73,5 +75,6 @@ export default function EconomicFairnessPage() {
         ))}
       </div>
     </div>
+    </MainLayout>
   );
 }

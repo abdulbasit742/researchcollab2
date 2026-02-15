@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Shield, AlertTriangle, CheckCircle2, Activity, BarChart3, Scale, RefreshCw } from "lucide-react";
 import { RadialBarChart, RadialBar, ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, BarChart, Bar, CartesianGrid } from "recharts";
 import { format } from "date-fns";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 export default function ConstitutionalHealthPage() {
   const {
@@ -53,10 +54,11 @@ export default function ConstitutionalHealthPage() {
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
+    <MainLayout>
+    <div className="container mx-auto px-4 py-6 sm:p-6 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
             <Shield className="h-8 w-8 text-primary" />
             Constitutional Health
           </h1>
@@ -92,7 +94,7 @@ export default function ConstitutionalHealthPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold">{activeViolations.length}</div>
+            <div className="text-3xl sm:text-4xl font-bold">{activeViolations.length}</div>
             <p className="text-sm text-muted-foreground mt-1">
               {activeViolations.filter((v: any) => v.severity_level === "critical").length} critical
             </p>
@@ -116,7 +118,7 @@ export default function ConstitutionalHealthPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold">{invariants?.length || 0}</div>
+            <div className="text-3xl sm:text-4xl font-bold">{invariants?.length || 0}</div>
             <div className="mt-3 space-y-2">
               {(invariants || []).slice(0, 4).map((inv: any) => (
                 <div key={inv.id} className="text-sm text-muted-foreground truncate">
@@ -236,5 +238,6 @@ export default function ConstitutionalHealthPage() {
         </Card>
       </div>
     </div>
+    </MainLayout>
   );
 }

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { useLiquidityIndex } from "@/hooks/useLiquidityIndex";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from "recharts";
 import { TrendingUp, Activity, RefreshCw, Droplets, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 export default function MarketLiquidityPage() {
   const { metrics, metricsLoading, velocity, avgLiquidity, topSkill, compute, computing } = useLiquidityIndex();
@@ -23,11 +24,11 @@ export default function MarketLiquidityPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
               <Droplets className="h-8 w-8 text-primary" />
               Global Research Liquidity Index
             </h1>
@@ -40,7 +41,7 @@ export default function MarketLiquidityPage() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card><CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground">Avg Liquidity</p>
             <p className="text-3xl font-bold">{avgLiquidity}</p>
@@ -144,6 +145,6 @@ export default function MarketLiquidityPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </MainLayout>
   );
 }
