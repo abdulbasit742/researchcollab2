@@ -137,7 +137,7 @@ export default function UserPublicProfilePage() {
     <MainLayout>
       {/* Hero Section */}
       <div className="gradient-hero py-12 md:py-16">
-        <div className="container">
+        <div className="container px-4">
           <Button
             variant="ghost"
             className="mb-6"
