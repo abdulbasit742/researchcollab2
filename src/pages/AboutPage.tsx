@@ -59,7 +59,7 @@ export default function AboutPage() {
     <MainLayout>
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="relative py-20 overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10">
+        <section className="relative py-10 sm:py-20 overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -68,10 +68,10 @@ export default function AboutPage() {
               className="text-center max-w-4xl mx-auto"
             >
               <Badge variant="secondary" className="mb-4">About Us</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6">
                 Empowering Research <span className="text-primary">Collaboration</span>
               </h1>
-              <p className="text-xl text-muted-foreground leading-relaxed">
+              <p className="text-base sm:text-xl text-muted-foreground leading-relaxed">
                 We're building professional infrastructure where trust, work, and opportunity
                 compound over time — connecting students, researchers, and institutions
                 through verified outcomes, not vanity metrics.
@@ -81,7 +81,7 @@ export default function AboutPage() {
         </section>
 
         {/* Mission Section */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-8 sm:py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <motion.div
@@ -112,11 +112,11 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="grid grid-cols-2 gap-4"
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4"
               >
                 {values.map((value, index) => (
                   <Card key={index} className="bg-background/80 backdrop-blur-sm border-border/50">
-                    <CardContent className="p-6 text-center">
+                    <CardContent className="p-4 sm:p-6 text-center">
                       <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
                         <value.icon className="w-6 h-6 text-primary" />
                       </div>
@@ -131,7 +131,7 @@ export default function AboutPage() {
         </section>
 
         {/* Built by section (replaces fake team) */}
-        <section className="py-16">
+        <section className="py-8 sm:py-16">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -184,7 +184,7 @@ export default function AboutPage() {
         </section>
 
         {/* Milestones Section */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-8 sm:py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -237,9 +237,9 @@ export default function AboutPage() {
         </section>
 
         {/* Capabilities Section */}
-        <section className="py-16">
+        <section className="py-8 sm:py-16">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {[
                 { icon: Shield, label: "Atomic Escrow", description: "Every payment is locked, verified, and released through database-level transactions." },
                 { icon: Target, label: "Trust Engine", description: "Reputation computed from real outcomes — not followers, likes, or self-reported claims." },

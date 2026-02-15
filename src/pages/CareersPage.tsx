@@ -185,18 +185,18 @@ const CareersPage = () => {
     <MainLayout>
       <div className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary/10 via-background to-secondary/10">
+        <section className="relative py-10 sm:py-20 bg-gradient-to-br from-primary/10 via-background to-secondary/10">
           <div className="container mx-auto px-4 text-center">
             <Badge className="mb-4" variant="secondary">We're Hiring!</Badge>
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6">
               Join Our Mission to Transform
               <span className="text-primary block">Academic Research</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+            <p className="text-base sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
               Be part of a team that's empowering students and researchers across Pakistan 
               with cutting-edge tools and resources.
             </p>
-            <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-primary" />
                 <span>50+ Team Members</span>
@@ -214,7 +214,7 @@ const CareersPage = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-8 sm:py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-foreground mb-4">Why Work With Us?</h2>
@@ -241,7 +241,7 @@ const CareersPage = () => {
         </section>
 
         {/* Job Listings Section */}
-        <section className="py-16">
+        <section className="py-8 sm:py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-foreground mb-4">Open Positions</h2>
@@ -275,7 +275,7 @@ const CareersPage = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex flex-col sm:flex-row gap-2">
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button variant="outline" onClick={() => setSelectedJob(job)}>

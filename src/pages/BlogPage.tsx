@@ -75,8 +75,8 @@ const categories = ["All", "Collaboration", "AI Tools", "Writing", "Funding", "C
 export default function BlogPage() {
   return (
     <MainLayout>
-      <div className="gradient-hero py-16 md:py-24">
-        <div className="container">
+      <div className="gradient-hero py-8 sm:py-16 md:py-24">
+        <div className="container px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -87,11 +87,11 @@ export default function BlogPage() {
               <BookOpen className="h-3 w-3 mr-1" />
               Research Blog
             </Badge>
-            <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+            <h1 className="text-2xl sm:text-4xl font-bold md:text-5xl lg:text-6xl">
               Insights for{" "}
               <span className="text-gradient">Research Excellence</span>
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               Tips, guides, and insights to help you succeed in your research journey.
             </p>
           </motion.div>
@@ -132,7 +132,7 @@ export default function BlogPage() {
         </div>
       </div>
 
-      <div className="container py-16">
+      <div className="container px-4 py-6 sm:py-16">
         {/* Featured Post */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -159,7 +159,7 @@ export default function BlogPage() {
                 <p className="text-muted-foreground mb-4">
                   {blogPosts[0].excerpt}
                 </p>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground mb-6">
+                <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
                   <div className="flex items-center gap-1">
                     <User className="h-4 w-4" />
                     {blogPosts[0].author}

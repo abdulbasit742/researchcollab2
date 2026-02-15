@@ -55,8 +55,8 @@ export default function JobsPage() {
 
   return (
     <MainLayout>
-      <div className="gradient-hero py-16 md:py-24">
-        <div className="container">
+      <div className="gradient-hero py-8 sm:py-16 md:py-24">
+        <div className="container px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -67,11 +67,11 @@ export default function JobsPage() {
               <Briefcase className="h-3 w-3 mr-1" />
               Public Jobs Board
             </Badge>
-            <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+            <h1 className="text-2xl sm:text-4xl font-bold md:text-5xl lg:text-6xl">
               Find Projects &{" "}
               <span className="text-gradient">Start Earning</span>
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               Browse open project opportunities from researchers worldwide. 
               Bid on projects that match your skills and start earning today.
             </p>
@@ -85,23 +85,23 @@ export default function JobsPage() {
             className="mt-12 grid grid-cols-3 gap-4 max-w-lg mx-auto"
           >
             <Card variant="glass">
-              <CardContent className="p-4 text-center">
-                <Briefcase className="h-6 w-6 mx-auto text-primary mb-1" />
-                <div className="text-xl font-bold">{publicOffers.length}</div>
+              <CardContent className="p-3 sm:p-4 text-center">
+                <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 mx-auto text-primary mb-1" />
+                <div className="text-lg sm:text-xl font-bold">{publicOffers.length}</div>
                 <div className="text-xs text-muted-foreground">Open Jobs</div>
               </CardContent>
             </Card>
             <Card variant="glass">
-              <CardContent className="p-4 text-center">
-                <DollarSign className="h-6 w-6 mx-auto text-primary mb-1" />
-                <div className="text-xl font-bold">$50K+</div>
+              <CardContent className="p-3 sm:p-4 text-center">
+                <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 mx-auto text-primary mb-1" />
+                <div className="text-lg sm:text-xl font-bold">$50K+</div>
                 <div className="text-xs text-muted-foreground">Available</div>
               </CardContent>
             </Card>
             <Card variant="glass">
-              <CardContent className="p-4 text-center">
-                <Users className="h-6 w-6 mx-auto text-primary mb-1" />
-                <div className="text-xl font-bold">200+</div>
+              <CardContent className="p-3 sm:p-4 text-center">
+                <Users className="h-5 w-5 sm:h-6 sm:w-6 mx-auto text-primary mb-1" />
+                <div className="text-lg sm:text-xl font-bold">200+</div>
                 <div className="text-xs text-muted-foreground">Bidders</div>
               </CardContent>
             </Card>
@@ -109,7 +109,7 @@ export default function JobsPage() {
         </div>
       </div>
 
-      <div className="container py-16">
+      <div className="container px-4 py-6 sm:py-16">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Content */}
           <div className="flex-1 space-y-6">
@@ -142,7 +142,7 @@ export default function JobsPage() {
             <div className="space-y-4">
               {filteredOffers.length === 0 ? (
                 <Card>
-                  <CardContent className="p-12 text-center">
+                  <CardContent className="p-6 sm:p-12 text-center">
                     <Briefcase className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                     <h3 className="text-xl font-semibold mb-2">No Jobs Found</h3>
                     <p className="text-muted-foreground">
