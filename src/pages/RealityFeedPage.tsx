@@ -71,7 +71,7 @@ export default function RealityFeedPage() {
 
   return (
     <MainLayout>
-      <div className="container py-6">
+      <div className="container px-4 py-6">
         <div className="grid lg:grid-cols-12 gap-6">
           {/* Left Sidebar - Consequence Ledger */}
           <aside className="hidden lg:block lg:col-span-3">

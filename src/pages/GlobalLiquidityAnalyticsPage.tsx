@@ -4,7 +4,7 @@ import { Globe, Droplets, TrendingUp, Activity } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { Navbar } from "@/components/layout/Navbar";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 export default function GlobalLiquidityAnalyticsPage() {
   const { data: metrics = [], isLoading } = useQuery({
@@ -30,13 +30,12 @@ export default function GlobalLiquidityAnalyticsPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <div className="max-w-6xl mx-auto px-4 py-8 pb-20 md:pb-8 space-y-6">
+    <MainLayout>
+      <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
         <div className="flex items-center gap-3">
           <Globe className="h-8 w-8 text-primary" />
           <div>
-            <h1 className="text-3xl font-bold">Global Liquidity</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Global Liquidity</h1>
             <p className="text-muted-foreground">Region-by-region economic activity</p>
           </div>
         </div>
@@ -87,7 +86,7 @@ export default function GlobalLiquidityAnalyticsPage() {
                     <Droplets className="h-4 w-4 text-primary" />
                     <span className="font-medium">{m.region}</span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 flex-wrap">
                     <Badge variant="outline">{m.active_deals} deals</Badge>
                     <Badge variant="secondary">Trust {Number(m.avg_trust_score).toFixed(0)}</Badge>
                     <Badge>Velocity {Number(m.deal_velocity).toFixed(1)}</Badge>
@@ -98,6 +97,6 @@ export default function GlobalLiquidityAnalyticsPage() {
           </Card>
         )}
       </div>
-    </div>
+    </MainLayout>
   );
 }
