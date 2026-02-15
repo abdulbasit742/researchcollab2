@@ -1,94 +1,88 @@
 
 
-# Mobile-Friendly Pass -- Batch 13 (Remaining Heading Scale + Header Stacking)
+# Mobile-Friendly Pass -- Batch 14 (Redundant Wrappers + Table Overflow)
 
-Fix the last ~20 pages with unscaled `text-3xl` h1 headings and unstacked header rows that overflow on mobile.
-
----
-
-## Problem
-
-After Batches 9-12, all pages use the correct layout wrappers (MainLayout / AdminLayout). However, roughly 20 pages still have `h1` elements with `text-3xl` that are not responsively scaled down for mobile, and several have side-by-side header rows (`flex items-center justify-between`) that don't stack on narrow screens.
+Two cleanup categories to finish the mobile pass: remove redundant `min-h-screen bg-background` divs inside MainLayout, and wrap unwrapped `<Table>` components in `overflow-x-auto` containers to prevent horizontal overflow on mobile.
 
 ---
 
-## Pages to Fix (20 total)
+## Part A: Remove Redundant `min-h-screen bg-background` Inside MainLayout (3 files)
 
-### User-facing pages (11 pages)
+MainLayout already provides `min-h-screen` and `bg-background`. These pages have leftover inner divs duplicating those classes.
 
-1. **MobilityPage.tsx** -- Scale `h1` from `text-3xl` to `text-2xl sm:text-3xl`.
-2. **NotificationSettingsPage.tsx** -- Scale `h1` from `text-3xl` to `text-2xl sm:text-3xl`.
-3. **AffiliateAssetsPage.tsx** -- Scale `h1` from `text-3xl` to `text-2xl sm:text-3xl`.
-4. **AffiliateDashboardPage.tsx** -- Three `h1` elements with `text-3xl`: scale all to `text-2xl sm:text-3xl`. Header row `flex items-center justify-between` (line 275) -- stack with `flex-col sm:flex-row gap-4`.
-5. **InstitutionApplyPage.tsx** -- Two `h1` elements with `text-3xl`: scale both to `text-2xl sm:text-3xl`.
-6. **InstitutionRankingsPage.tsx** -- Scale `h1` from `text-3xl` to `text-2xl sm:text-3xl`.
-7. **InstallPage.tsx** -- Scale `h1` from `text-3xl` to `text-2xl sm:text-3xl`.
-8. **AIProjectScopePage.tsx** -- Scale `h1` from `text-3xl` to `text-2xl sm:text-3xl`.
-9. **FYPServicesPage.tsx** -- Two section `h2` headings with `text-3xl`: scale to `text-2xl sm:text-3xl`.
-10. **OrganizationsListPage.tsx** -- Scale `h1` from `text-3xl` to `text-2xl sm:text-3xl`.
-11. **SubscriptionsPage.tsx** -- Already has `text-3xl md:text-4xl` which is acceptable (scales up not down). **Skip** -- no change needed.
+1. **AffiliateDashboardPage.tsx** -- Four return branches each have `<div className="min-h-screen bg-background py-8">` inside `<MainLayout>`. Remove `min-h-screen bg-background` from all four, keeping `py-8` / `py-16`.
 
-### Admin pages (9 pages)
+2. **AffiliateAssetsPage.tsx** -- One return with `<div className="min-h-screen bg-background py-8">` inside `<MainLayout>`. Remove `min-h-screen bg-background`, keep `py-8`.
 
-12. **AdminHealthPage.tsx** -- Scale `h1` to `text-2xl sm:text-3xl`. Header row `flex items-center justify-between` -- stack with `flex-col sm:flex-row gap-4`.
-13. **AdminDeploymentPage.tsx** -- Scale `h1` to `text-2xl sm:text-3xl`. Header row -- stack.
-14. **AdminFeatureFlagsPage.tsx** -- Scale `h1` to `text-2xl sm:text-3xl`. Header already has `flex-col sm:flex-row`.
-15. **AdminFederationPage.tsx** -- Scale `h1` to `text-2xl sm:text-3xl`. Header row -- stack.
-16. **AdminSecurityPage.tsx** -- Scale `h1` to `text-2xl sm:text-3xl`. Header row -- stack.
-17. **AdminPermissionsPage.tsx** -- Scale `h1` to `text-2xl sm:text-3xl`. Header row -- stack.
-18. **AdminAIGovernancePage.tsx** -- Scale `h1` to `text-2xl sm:text-3xl`. Header row -- stack.
-19. **AdminSchemaPage.tsx** -- Scale `h1` to `text-2xl sm:text-3xl`.
-20. **AdminReproducibilityPage.tsx** -- Scale `h1` to `text-2xl sm:text-3xl`. Header row -- stack.
+3. **CareersPage.tsx** -- One return with `<div className="min-h-screen bg-background">` inside `<MainLayout>`. Remove the redundant div entirely (content sections have their own padding).
+
+---
+
+## Part B: Wrap Tables in `overflow-x-auto` (5 files, 8 tables)
+
+These pages render `<Table>` components directly inside `<CardContent>` without a scrollable wrapper, causing horizontal overflow on narrow screens.
+
+4. **OrganizationBillingPage.tsx** -- 6-column invoice table (line 161). Wrap in `<div className="overflow-x-auto">`.
+
+5. **AdminAIPricingPage.tsx** -- 7-column AI-scoped projects table (line 322). Wrap in `<div className="overflow-x-auto">`.
+
+6. **admin/AdminPremiumAnalyticsPage.tsx** -- Two tables: 5-column feature impact table (line 420) and 4-column role breakdown table (line 499). Wrap both in `<div className="overflow-x-auto">`.
+
+7. **admin/AdminPricingPage.tsx** -- A/B test results table with `flex items-center justify-between` header (line 394). Wrap in `<div className="overflow-x-auto">` if it contains a `<Table>`.
+
+8. **ResearcherPublicProfilePage.tsx** -- Scale heading from `text-3xl md:text-4xl` to `text-2xl sm:text-3xl md:text-4xl` (line 259) for better small-screen fit.
 
 ---
 
 ## Technical Details
 
-### Heading scale pattern:
+### Redundant wrapper removal pattern:
 
 Before:
 ```text
-<h1 className="text-3xl font-bold">Title</h1>
+<MainLayout>
+  <div className="min-h-screen bg-background py-8">
+    <div className="container ...">
 ```
 
 After:
 ```text
-<h1 className="text-2xl sm:text-3xl font-bold">Title</h1>
+<MainLayout>
+  <div className="py-8">
+    <div className="container ...">
 ```
 
-### Header stacking pattern:
+### Table overflow pattern:
 
 Before:
 ```text
-<div className="flex items-center justify-between">
+<CardContent>
+  <Table>
+    ...
+  </Table>
+</CardContent>
 ```
 
 After:
 ```text
-<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<CardContent>
+  <div className="overflow-x-auto">
+    <Table>
+      ...
+    </Table>
+  </div>
+</CardContent>
 ```
 
 ### Files to modify:
 
-- `src/pages/MobilityPage.tsx`
-- `src/pages/NotificationSettingsPage.tsx`
-- `src/pages/AffiliateAssetsPage.tsx`
 - `src/pages/AffiliateDashboardPage.tsx`
-- `src/pages/InstitutionApplyPage.tsx`
-- `src/pages/InstitutionRankingsPage.tsx`
-- `src/pages/InstallPage.tsx`
-- `src/pages/AIProjectScopePage.tsx`
-- `src/pages/FYPServicesPage.tsx`
-- `src/pages/OrganizationsListPage.tsx`
-- `src/pages/admin/AdminHealthPage.tsx`
-- `src/pages/admin/AdminDeploymentPage.tsx`
-- `src/pages/admin/AdminFeatureFlagsPage.tsx`
-- `src/pages/admin/AdminFederationPage.tsx`
-- `src/pages/admin/AdminSecurityPage.tsx`
-- `src/pages/admin/AdminPermissionsPage.tsx`
-- `src/pages/admin/AdminAIGovernancePage.tsx`
-- `src/pages/admin/AdminSchemaPage.tsx`
-- `src/pages/admin/AdminReproducibilityPage.tsx`
+- `src/pages/AffiliateAssetsPage.tsx`
+- `src/pages/CareersPage.tsx`
+- `src/pages/OrganizationBillingPage.tsx`
+- `src/pages/AdminAIPricingPage.tsx`
+- `src/pages/admin/AdminPremiumAnalyticsPage.tsx`
+- `src/pages/ResearcherPublicProfilePage.tsx`
 
 ### No new files or dependencies needed.
 
