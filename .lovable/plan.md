@@ -1,74 +1,73 @@
 
 
-# Performance Optimization Pass
+# Three-in-One: Fix Crash + Sitemap + Dark Mode Audit
 
-## Problem
+## URGENT: Fix App Crash (Blocking)
 
-All 180+ page components are statically imported in `App.tsx`. Every page is bundled into a single JavaScript file, meaning users download the entire app on first visit even though they only see one page. This is the single biggest performance bottleneck.
+The app currently shows a **blank white screen** due to a `TypeError: Cannot read properties of null (reading 'useRef')` in `TooltipProvider`. This is caused by duplicate React instances in the bundle. This must be fixed before any other work can proceed.
 
-## Plan
-
-### 1. Lazy-load all page routes (HIGH IMPACT)
-
-Convert every page import in `App.tsx` from static to `React.lazy()` with a `Suspense` boundary. Only the landing page (`Index`) and `AuthPage` will remain as static imports for fastest initial load.
-
-**Before:**
+**Fix:** Add `resolve.dedupe` to `vite.config.ts`:
 ```
-import ProfilePage from "./pages/ProfilePage";
-import ToolsPage from "./pages/ToolsPage";
-// ... 170+ more
-```
-
-**After:**
-```
-const ProfilePage = lazy(() => import("./pages/ProfilePage"));
-const ToolsPage = lazy(() => import("./pages/ToolsPage"));
-// ... 170+ more
-```
-
-A `<Suspense fallback={<LoadingScreen />}>` wrapper will be added around `<Routes>` to show the existing loading spinner during chunk loads.
-
-This will split the bundle into ~180 separate chunks, loaded on demand. Expected initial bundle reduction: **60-80%**.
-
-### 2. Group admin routes into a single lazy chunk (MEDIUM IMPACT)
-
-All ~40 admin pages will be consolidated behind a single lazy-loaded admin route wrapper, so they share one chunk that only loads when an admin visits `/admin/*`.
-
-### 3. Optimize QueryClient defaults (LOW IMPACT)
-
-Add sensible defaults to prevent unnecessary refetches:
-
-```
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000,    // 5 min
-      gcTime: 10 * 60 * 1000,       // 10 min
-      refetchOnWindowFocus: false,
-      retry: 1,
-    },
-  },
-});
+resolve: {
+  dedupe: ["react", "react-dom", "react/jsx-runtime"],
+  alias: { "@": ... }
+}
 ```
 
 ---
 
-## Technical Details
+## Task 1: End-to-End Verification
 
-### Files to modify
+After the crash fix, visually verify:
+- Landing page loads correctly with all sections
+- Lazy-loaded routes work (navigate to `/pricing`, `/about`, `/tools`)
+- No console errors on page transitions
+
+---
+
+## Task 2: Add sitemap.xml
+
+Create a static `public/sitemap.xml` listing all public-facing routes. Private routes (admin, dashboard, messages, settings, workroom) are excluded since they're already blocked by `robots.txt`.
+
+**Public routes to include** (~45 URLs):
+- `/` (landing)
+- `/auth`, `/forgot-password`
+- `/tools`, `/pricing`, `/about`, `/contact`, `/blog`, `/earn`
+- `/features`, `/careers`, `/press`, `/help`, `/docs`
+- `/privacy`, `/terms`, `/cookies`
+- `/collaborations`, `/grants`, `/matches`, `/smart-matching`
+- `/fyp-services`, `/offers`, `/events`, `/learning`
+- `/governance`, `/governance/constitution`, `/governance/decisions`
+- `/rankings/global`, `/research-papers`
+- `/institution/apply`, `/institutions/rankings`
+- `/install`, `/search`
+- And other publicly accessible pages
+
+Each URL will include `<lastmod>` (today's date), `<changefreq>`, and `<priority>` values.
+
+---
+
+## Task 3: Dark Mode Audit
+
+The app uses `next-themes` with a `ThemeToggle` component in the navbar. CSS variables for dark mode are already defined in `src/index.css`. After the crash is fixed, I will:
+
+1. Toggle dark mode on the landing page and screenshot key sections
+2. Check for contrast issues (text on backgrounds, borders, cards)
+3. Fix any components using hardcoded colors instead of CSS variables
+4. Verify gradient utilities (`gradient-hero`, `gradient-card`, `text-gradient`) adapt properly in dark mode
+
+---
+
+## Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/App.tsx` | Replace ~180 static imports with `React.lazy()`, add `Suspense` boundary, update `QueryClient` defaults |
+| `vite.config.ts` | Add `resolve.dedupe` to fix React crash |
+| `public/sitemap.xml` | New file with all public routes |
+| Various components (if needed) | Fix dark mode contrast issues found during audit |
 
-### What stays static (for instant first paint)
-- `Index` (landing page)
-- `AuthPage` (login/signup)
-- `NotFound` (404)
-- All providers, layout components, and UI primitives
-
-### Estimated impact
-- Initial JS payload: reduced by 60-80%
-- Time to Interactive on landing page: significantly faster
-- Subsequent page navigations: small delay on first visit (chunk load), then cached
+## Estimated Scope
+- Crash fix: 1 line change
+- Sitemap: 1 new file
+- Dark mode fixes: depends on audit findings (0-5 files)
 
