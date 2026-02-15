@@ -75,12 +75,12 @@ export default function PressKitPage() {
 
   return (
     <MainLayout>
-      <div className="container py-8 max-w-6xl">
+      <div className="container px-4 py-8 max-w-6xl">
         {/* Header */}
         <div className="mb-10">
           <Badge variant="outline" className="mb-4">Press & Media</Badge>
-          <h1 className="text-4xl font-bold mb-4">Press Kit</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
+          <h1 className="text-2xl sm:text-4xl font-bold mb-4">Press Kit</h1>
+          <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl">
             Official brand assets, platform information, and media resources for journalists, 
             partners, and institutions covering ResearchCollabPro.
           </p>
@@ -105,10 +105,10 @@ export default function PressKitPage() {
           </div>
         </section>
 
-        <Separator className="my-10" />
+        <Separator className="my-6 sm:my-10" />
 
         {/* About Section */}
-        <section className="mb-12">
+        <section className="mb-8 sm:mb-12">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <GraduationCap className="h-5 w-5 text-primary" />
             About ResearchCollabPro
@@ -155,10 +155,10 @@ export default function PressKitPage() {
           </div>
         </section>
 
-        <Separator className="my-10" />
+        <Separator className="my-6 sm:my-10" />
 
         {/* Brand Colors */}
-        <section className="mb-12">
+        <section className="mb-8 sm:mb-12">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <Palette className="h-5 w-5 text-primary" />
             Brand Colors
@@ -197,7 +197,7 @@ export default function PressKitPage() {
         </section>
 
         {/* Media Assets */}
-        <section className="mb-12">
+        <section className="mb-8 sm:mb-12">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <Image className="h-5 w-5 text-primary" />
             Media Assets
@@ -243,7 +243,7 @@ export default function PressKitPage() {
         </section>
 
         {/* Usage Guidelines */}
-        <section className="mb-12">
+        <section className="mb-8 sm:mb-12">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <FileText className="h-5 w-5 text-primary" />
             Usage Guidelines
@@ -276,7 +276,7 @@ export default function PressKitPage() {
           </Card>
         </section>
 
-        <Separator className="my-10" />
+        <Separator className="my-6 sm:my-10" />
 
         {/* Contact */}
         <section>

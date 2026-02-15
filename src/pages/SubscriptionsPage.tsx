@@ -146,7 +146,7 @@ export default function SubscriptionsPage() {
   return (
     <MainLayout>
       <div className="gradient-hero py-12 md:py-16">
-        <div className="container">
+        <div className="container px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -167,7 +167,7 @@ export default function SubscriptionsPage() {
         </div>
       </div>
 
-      <div className="container py-8">
+      <div className="container px-4 py-8">
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <Card>
@@ -222,6 +222,7 @@ export default function SubscriptionsPage() {
         </div>
 
         <Tabs defaultValue="active" className="space-y-6">
+          <div className="overflow-x-auto -mx-4 px-4">
           <TabsList>
             <TabsTrigger value="active" className="gap-2">
               <CheckCircle2 className="h-4 w-4" />
@@ -236,6 +237,7 @@ export default function SubscriptionsPage() {
               Support ({tickets.length})
             </TabsTrigger>
           </TabsList>
+          </div>
 
           <TabsContent value="active" className="space-y-6">
             {subsLoading ? (
@@ -253,8 +255,8 @@ export default function SubscriptionsPage() {
               </div>
             ) : activeSubscriptions.length === 0 ? (
               <Card>
-                <CardContent className="p-12 text-center">
-                  <Package className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <CardContent className="p-6 sm:p-12 text-center">
+                   <Package className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-xl font-semibold mb-2">No Active Subscriptions</h3>
                   <p className="text-muted-foreground mb-6">
                     Browse our AI tools marketplace to get started
@@ -291,8 +293,8 @@ export default function SubscriptionsPage() {
           <TabsContent value="expired" className="space-y-6">
             {expiredSubscriptions.length === 0 ? (
               <Card>
-                <CardContent className="p-12 text-center">
-                  <Clock className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <CardContent className="p-6 sm:p-12 text-center">
+                   <Clock className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-xl font-semibold mb-2">No Past Subscriptions</h3>
                   <p className="text-muted-foreground">
                     Your expired and cancelled subscriptions will appear here
@@ -333,8 +335,8 @@ export default function SubscriptionsPage() {
               </div>
             ) : tickets.length === 0 ? (
               <Card>
-                <CardContent className="p-12 text-center">
-                  <MessageSquare className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <CardContent className="p-6 sm:p-12 text-center">
+                   <MessageSquare className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-xl font-semibold mb-2">No Support Tickets</h3>
                   <p className="text-muted-foreground">
                     Create a ticket from any active subscription if you need help
