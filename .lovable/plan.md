@@ -1,41 +1,54 @@
 
-# Mobile-Friendly Pass -- Batch 5 (Stragglers)
 
-Fix remaining pages that still have desktop-first hero sections, missing container padding, or oversized typography on mobile.
+# Mobile-Friendly Pass -- Batch 6 (Final Stragglers)
+
+Fix the last set of pages with desktop-first layouts, missing container padding, oversized typography, or task card overflow on mobile.
 
 ---
 
-## 1. Smart Matching Page (`SmartMatchingPage.tsx`)
+## 1. Help Center Page (`HelpCenterPage.tsx`)
 
-- Missing `px-4` on `.container` divs (lines 78, 124)
-- Hero padding too large on mobile: `py-16 md:py-24` needs `py-8 sm:py-16 md:py-24`
-- Heading not scaled for mobile: `text-4xl` needs `text-2xl sm:text-4xl`
-- Subtext not scaled: `text-lg` needs `text-sm sm:text-lg`
-- "How it works" grid: `grid-cols-2 md:grid-cols-4` for mobile (currently jumps straight to 4-col on md)
+- Missing `px-4` on hero container (line 129: `<div className="container">`)
+- Missing `px-4` on content container (line 167: `<div className="container py-16">`)
+- Hero padding: `py-16 md:py-24` needs `py-8 sm:py-16 md:py-24`
+- Heading: `text-4xl` needs `text-2xl sm:text-4xl`
+- Subtext: `text-lg` needs `text-sm sm:text-lg`
 - Content section: `py-16` needs `py-6 sm:py-16`
-- "Top Matches" and "All Matches" section margins too large on mobile: `mb-16` to `mb-8 sm:mb-16`
+- Section margins: `mb-16` to `mb-8 sm:mb-16`
+- Contact card `p-6` to `p-4 sm:p-6`
 
-## 2. Network Page (`NetworkPage.tsx`)
+## 2. Subscriptions Page (`SubscriptionsPage.tsx`)
 
-- Missing `px-4` on container (line 116: `container py-6`)
-- Empty state `py-12` reduce to `py-6 sm:py-12` (lines 240, 280, 384)
+- Missing `px-4` on hero container (line 149: `<div className="container">`)
+- Missing `px-4` on content container (line 170: `<div className="container py-8">`)
+- Empty state padding: `p-12` to `p-6 sm:p-12` (lines 256, 294, 336)
+- TabsList with 3 tabs may overflow on very small screens -- add `overflow-x-auto` wrapper
 
-## 3. Social Features Page (`SocialFeaturesPage.tsx`)
+## 3. Academic Task Marketplace Page (`AcademicTaskMarketplacePage.tsx`)
 
-- Missing `px-4` on container (line 24)
-- Feature comparison grid `grid-cols-4` needs horizontal scroll wrapper or smaller text on mobile (line 222)
+- No MobileBottomNav or MainLayout -- missing `pb-20` for bottom nav clearance
+- Task card inner layout (line 59): `flex items-center justify-between` causes horizontal overflow on mobile -- stack vertically with `flex-col sm:flex-row`
+- Header row (line 86): stack title and "Post Task" button with `flex-col sm:flex-row`
+- TabsList with 5 tabs: add `overflow-x-auto` wrapper
+- Scale heading: `text-2xl sm:text-3xl`
 
-## 4. Features Showcase Page (`FeaturesShowcasePage.tsx`)
+## 4. Press Kit Page (`PressKitPage.tsx`)
 
-- Missing `px-4` on `.container` divs (lines 230, 280)
-- Missing `pb-20` for MobileBottomNav clearance (uses own Navbar, not MainLayout -- line 280 has `pb-24` which is fine)
-- Header icon+text row could overflow on very small screens -- stack on mobile
+- Missing `px-4` on container (line 78: `<div className="container py-8 max-w-6xl">`)
+- Heading: `text-4xl` needs `text-2xl sm:text-4xl`
+- Subtext: `text-lg` needs `text-sm sm:text-lg`
+- Section margins: `mb-12` to `mb-8 sm:mb-12`
+- Separator margins: `my-10` to `my-6 sm:my-10`
 
-## 5. Pricing Page (`PricingPage.tsx`)
+## 5. Feed Page (`FeedPage.tsx`)
 
-- Hero section already decent (`py-10 md:py-24`)
-- Pricing card text `text-4xl` for price needs `text-3xl sm:text-4xl` (line 319)
-- Comparison table at bottom needs horizontal scroll wrapper (already has `overflow-x-auto` on tool table -- verify comparison table too)
+- Missing `px-4` on container (line 112: `<div className="container py-4 sm:py-6">`)
+
+## 6. Verification Center Page (`VerificationCenterPage.tsx`)
+
+- Heading: `text-3xl` needs `text-2xl sm:text-3xl`
+- Verification options grid: `md:grid-cols-3` -- add `grid-cols-1 sm:grid-cols-2` for intermediate screens
+- Trust score info grid: same treatment `grid-cols-1 sm:grid-cols-3`
 
 ---
 
@@ -43,10 +56,12 @@ Fix remaining pages that still have desktop-first hero sections, missing contain
 
 ### Files to modify:
 
-- **`src/pages/SmartMatchingPage.tsx`** -- Add `px-4`, reduce hero/content padding, scale heading, fix "how it works" grid breakpoints
-- **`src/pages/NetworkPage.tsx`** -- Add `px-4` to container, reduce empty state padding
-- **`src/pages/SocialFeaturesPage.tsx`** -- Add `px-4`, wrap feature comparison grid for mobile
-- **`src/pages/FeaturesShowcasePage.tsx`** -- Add `px-4` to containers, stack header on mobile
-- **`src/pages/PricingPage.tsx`** -- Scale pricing card text, verify comparison table scroll
+- **`src/pages/HelpCenterPage.tsx`** -- Add `px-4`, reduce hero/content padding, scale text, reduce section margins and contact card padding
+- **`src/pages/SubscriptionsPage.tsx`** -- Add `px-4`, reduce empty state padding, make TabsList scrollable
+- **`src/pages/AcademicTaskMarketplacePage.tsx`** -- Add `pb-20`, stack task card layout on mobile, stack header, scrollable TabsList, scale heading
+- **`src/pages/PressKitPage.tsx`** -- Add `px-4`, scale heading/subtext, reduce section margins
+- **`src/pages/FeedPage.tsx`** -- Add `px-4` to container
+- **`src/pages/VerificationCenterPage.tsx`** -- Scale heading, improve grid breakpoints
 
 ### No new files or dependencies needed.
+
