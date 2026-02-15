@@ -1,59 +1,62 @@
 
 
-# Mobile-Friendly Pass -- Batch 9 (Admin Pages)
+# Mobile-Friendly Pass -- Batch 10 (Admin Pages Round 2)
 
-Migrate admin pages that use `AdminSidebar` directly (or no admin wrapper) to use the existing `AdminLayout` component, which already provides responsive padding (`p-4 md:p-6`), `AdminMobileNav` for small screens, and proper sidebar handling.
+Migrate the remaining 9 admin pages that still use `AdminSidebar` directly (or have no admin wrapper at all) to the standardized `AdminLayout` component.
 
 ---
 
 ## Problem
 
-Many admin pages manually render `<AdminSidebar />` with hardcoded `p-6` padding and no mobile navigation. The `AdminLayout` component already solves this with responsive padding, a mobile hamburger nav, and a sticky search bar -- but these pages bypass it.
+After Batch 9 migrated 11 pages, 9 more admin pages were missed. They fall into three categories:
 
-Two pages (Deal Intelligence, Global Liquidity) skip admin navigation entirely.
-
----
-
-## Solution
-
-Wrap all affected admin pages in `<AdminLayout>` instead of manually rendering `<AdminSidebar />`. Remove the outer `div.flex` wrapper and `<main>` tag since `AdminLayout` provides its own.
+- 7 pages render `AdminSidebar` manually with hardcoded `p-6` and no mobile nav
+- 2 pages (Pod Analytics, Passport Analytics) have no admin navigation at all -- they render a standalone `max-w-7xl` container
+- 2 pages (Conversion Metrics, Institution Intelligence) wrap in both `MainLayout` and `AdminSidebar`, creating double navigation
 
 ---
 
-## Pages to Migrate (11 total)
+## Pages to Migrate (9 total)
 
-### Group A: Pages using `AdminSidebar` directly (9 pages)
+### Group A: Pages using AdminSidebar directly (5 pages)
 
-1. **AdminEvolutionSimulatorPage.tsx** -- Remove outer flex div, AdminSidebar import, and `<main>` wrapper. Wrap content in `<AdminLayout>`.
-2. **AdminCrisisModePage.tsx** -- Same migration.
-3. **AdminFeatureGovernancePage.tsx** -- Same migration. Also fix `grid-cols-3` summary cards to `grid-cols-1 sm:grid-cols-3` for mobile.
-4. **AdminPowerAuditPage.tsx** -- Same migration. Scale `text-4xl` decision authority to `text-3xl sm:text-4xl`.
-5. **AdminSystemicRiskPage.tsx** -- Same migration (already has good responsive grids).
-6. **AdminConstitutionalGuardianPage.tsx** -- Same migration (loading state also needs AdminLayout).
-7. **AdminGovernanceOversightPage.tsx** -- Same migration.
-8. **AdminRevenueIntelligencePage.tsx** -- Same migration. Add `overflow-x-auto` on TabsList with 6 tabs for mobile.
-9. **AdminPricingOptimizerPage.tsx** -- Same migration.
+1. **AdminInfrastructureCostsPage.tsx** -- Remove outer flex div, AdminSidebar, and `<main>` wrapper. Wrap in `<AdminLayout>`. Header row with h1 + description stays as-is (already responsive).
 
-### Group B: Pages missing admin nav entirely (2 pages)
+2. **AdminOperationalHealthPage.tsx** -- Same migration for both loading state (line 63) and main return (line 97). Stack header row (title + Refresh button) with `flex-col sm:flex-row`.
 
-10. **AdminDealIntelligencePage.tsx** -- Wrap in `<AdminLayout>`, remove standalone `max-w-7xl` container (AdminLayout handles layout). Scale heading.
-11. **AdminGlobalLiquidityPage.tsx** -- Same treatment. Risk flag rows: add `flex-wrap` on badge containers.
+3. **AdminRevenueDashboardPage.tsx** -- Same migration. Has Tabs with 4 triggers and a Table -- add `overflow-x-auto` wrapper on Table containers for mobile. Scale heading.
+
+4. **AdminGlobalExpansionPage.tsx** -- Same migration. Has TabsList with 5 tabs -- add `overflow-x-auto` wrapper. Scale heading from `text-3xl` to `text-2xl sm:text-3xl`.
+
+5. **AdminProfitDashboardPage.tsx** -- Same migration. Has TabsList with 4 tabs. Complexity registry badge rows: add `flex-wrap` on badge containers.
+
+### Group B: Pages with double wrapping -- MainLayout + AdminSidebar (2 pages)
+
+6. **AdminConversionMetricsPage.tsx** -- Remove `MainLayout` and `AdminSidebar`. Wrap in `<AdminLayout>` only. Remove inner `max-w-6xl` container (AdminLayout handles layout).
+
+7. **AdminInstitutionIntelligencePage.tsx** -- Same treatment. Application card action buttons: stack with `flex-col sm:flex-row` on mobile. TabsList with 4 tabs is fine.
+
+### Group C: Pages missing admin nav entirely (2 pages)
+
+8. **AdminPodAnalyticsPage.tsx** -- Wrap in `<AdminLayout>`. Remove standalone `min-h-screen` and `max-w-7xl` container. Scale heading from `text-3xl` to `text-2xl sm:text-3xl`.
+
+9. **AdminPassportAnalyticsPage.tsx** -- Same treatment. Scale heading.
 
 ---
 
-## Additional Mobile Fixes Within Pages
+## Additional Mobile Fixes
 
-- **EvolutionSimulator**: Card content `grid-cols-2` with JSON data -- change to `grid-cols-1 sm:grid-cols-2`
-- **CrisisMode**: Header badge row -- add `flex-wrap`
-- **FeatureGovernance**: Proposal card header `flex items-center justify-between` -- stack on mobile with `flex-col sm:flex-row`; summary grid `grid-cols-3` to `grid-cols-1 sm:grid-cols-3`
-- **RevenueIntelligence**: TabsList with 6 tabs -- wrap in `overflow-x-auto` container
-- **GlobalLiquidity**: Risk flag rows `flex items-center justify-between` -- add `flex-wrap` for long badge text
+- **OperationalHealth**: Header row `flex items-center justify-between` -- stack with `flex-col sm:flex-row gap-4`
+- **RevenueDashboard**: Table containers -- wrap in `overflow-x-auto` div for horizontal scrolling on mobile
+- **GlobalExpansion**: TabsList with 5 tabs -- wrap in `overflow-x-auto`; federation/capital card rows `flex items-center justify-between` -- add `flex-wrap`
+- **ProfitDashboard**: Complexity registry badge container -- add `flex-wrap`; TabsList -- add `overflow-x-auto`
+- **InstitutionIntelligence**: Application review card buttons -- stack vertically on mobile with `flex-col sm:flex-row`; info row spans -- add `flex-wrap`
 
 ---
 
 ## Technical Details
 
-### Migration pattern (same for all):
+### Migration pattern (same for all Group A/C):
 
 Before:
 ```text
@@ -74,19 +77,40 @@ After:
 </AdminLayout>
 ```
 
+### Migration pattern for Group B (double wrapped):
+
+Before:
+```text
+<MainLayout>
+  <div className="flex min-h-[calc(100vh-4rem)]">
+    <AdminSidebar />
+    <main className="flex-1 p-6">
+      ...content...
+    </main>
+  </div>
+</MainLayout>
+```
+
+After:
+```text
+<AdminLayout>
+  <div className="space-y-6">
+    ...content...
+  </div>
+</AdminLayout>
+```
+
 ### Files to modify:
 
-- `src/pages/admin/AdminEvolutionSimulatorPage.tsx`
-- `src/pages/admin/AdminCrisisModePage.tsx`
-- `src/pages/admin/AdminFeatureGovernancePage.tsx`
-- `src/pages/admin/AdminPowerAuditPage.tsx`
-- `src/pages/admin/AdminSystemicRiskPage.tsx`
-- `src/pages/admin/AdminConstitutionalGuardianPage.tsx`
-- `src/pages/admin/AdminGovernanceOversightPage.tsx`
-- `src/pages/admin/AdminRevenueIntelligencePage.tsx`
-- `src/pages/admin/AdminPricingOptimizerPage.tsx`
-- `src/pages/admin/AdminDealIntelligencePage.tsx`
-- `src/pages/admin/AdminGlobalLiquidityPage.tsx`
+- `src/pages/admin/AdminInfrastructureCostsPage.tsx`
+- `src/pages/admin/AdminOperationalHealthPage.tsx`
+- `src/pages/admin/AdminRevenueDashboardPage.tsx`
+- `src/pages/admin/AdminGlobalExpansionPage.tsx`
+- `src/pages/admin/AdminProfitDashboardPage.tsx`
+- `src/pages/admin/AdminConversionMetricsPage.tsx`
+- `src/pages/admin/AdminInstitutionIntelligencePage.tsx`
+- `src/pages/admin/AdminPodAnalyticsPage.tsx`
+- `src/pages/admin/AdminPassportAnalyticsPage.tsx`
 
 ### No new files or dependencies needed.
 
