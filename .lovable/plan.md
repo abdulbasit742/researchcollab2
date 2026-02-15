@@ -1,50 +1,41 @@
 
+# Mobile-Friendly Pass -- Batch 5 (Stragglers)
 
-# Mobile-Friendly Pass -- Batch 4 (Final Sweep)
-
-Polish the remaining pages that still have desktop-first issues: Passport, Governance, Governance Decisions, Datasets, Knowledge, and a wallet balance text fix.
+Fix remaining pages that still have desktop-first hero sections, missing container padding, or oversized typography on mobile.
 
 ---
 
-## 1. Passport Page (`PassportPage.tsx`)
+## 1. Smart Matching Page (`SmartMatchingPage.tsx`)
 
-- Header: Stack title and button vertically on mobile (`flex-col sm:flex-row`)
-- Scale heading: `text-2xl sm:text-3xl`
-- Empty state: `p-6 sm:p-12`
-- History cards: wrap badges on mobile with `flex-wrap`
-- Scale balance text in wallet: `text-3xl sm:text-4xl` (line 127)
+- Missing `px-4` on `.container` divs (lines 78, 124)
+- Hero padding too large on mobile: `py-16 md:py-24` needs `py-8 sm:py-16 md:py-24`
+- Heading not scaled for mobile: `text-4xl` needs `text-2xl sm:text-4xl`
+- Subtext not scaled: `text-lg` needs `text-sm sm:text-lg`
+- "How it works" grid: `grid-cols-2 md:grid-cols-4` for mobile (currently jumps straight to 4-col on md)
+- Content section: `py-16` needs `py-6 sm:py-16`
+- "Top Matches" and "All Matches" section margins too large on mobile: `mb-16` to `mb-8 sm:mb-16`
 
-## 2. Governance Page (`GovernancePage.tsx`)
+## 2. Network Page (`NetworkPage.tsx`)
 
-- Header buttons overflow on mobile -- wrap `flex gap-2` into `flex-wrap gap-2` and stack title/buttons with `flex-col sm:flex-row`
-- Scale heading: `text-2xl sm:text-3xl`
-- Add `pb-20 md:pb-0` since this page doesn't use MainLayout (uses own Navbar + no built-in bottom padding)
+- Missing `px-4` on container (line 116: `container py-6`)
+- Empty state `py-12` reduce to `py-6 sm:py-12` (lines 240, 280, 384)
 
-## 3. Governance Decisions Page (`GovernanceDecisionsPage.tsx`)
+## 3. Social Features Page (`SocialFeaturesPage.tsx`)
 
-- Replace `p-6` with `px-4 py-6 sm:p-6`
-- Scale heading: `text-2xl sm:text-3xl`
-- Add `pb-20` for MobileBottomNav clearance (no MainLayout)
-- Card header: wrap title and badge on mobile
+- Missing `px-4` on container (line 24)
+- Feature comparison grid `grid-cols-4` needs horizontal scroll wrapper or smaller text on mobile (line 222)
 
-## 4. Datasets Page (`DatasetsPage.tsx`)
+## 4. Features Showcase Page (`FeaturesShowcasePage.tsx`)
 
-- Add `px-4` to container (`container py-8` missing horizontal padding)
-- Filter selects: change `w-[180px]` to `w-full sm:w-[180px]`
-- Empty state: `p-6 sm:p-12`
-- Scale heading: `text-2xl sm:text-3xl`
+- Missing `px-4` on `.container` divs (lines 230, 280)
+- Missing `pb-20` for MobileBottomNav clearance (uses own Navbar, not MainLayout -- line 280 has `pb-24` which is fine)
+- Header icon+text row could overflow on very small screens -- stack on mobile
 
-## 5. Knowledge Page (`KnowledgePage.tsx`)
+## 5. Pricing Page (`PricingPage.tsx`)
 
-- Add `px-4` to container
-- TabsList with 4 tabs: make scrollable with `overflow-x-auto` and `inline-flex` instead of default layout
-- Scale tab trigger text: hide label text on mobile, show icons only
-- Header action buttons: stack on mobile `flex-col sm:flex-row`
-- Empty states: `p-6 sm:p-12`
-
-## 6. Wallet Page (`WalletPage.tsx`)
-
-- Balance text: scale from `text-4xl` to `text-3xl sm:text-4xl` (line 127)
+- Hero section already decent (`py-10 md:py-24`)
+- Pricing card text `text-4xl` for price needs `text-3xl sm:text-4xl` (line 319)
+- Comparison table at bottom needs horizontal scroll wrapper (already has `overflow-x-auto` on tool table -- verify comparison table too)
 
 ---
 
@@ -52,12 +43,10 @@ Polish the remaining pages that still have desktop-first issues: Passport, Gover
 
 ### Files to modify:
 
-- **`src/pages/PassportPage.tsx`** -- Stack header, scale text, reduce empty state padding, wrap history badges
-- **`src/pages/GovernancePage.tsx`** -- Wrap header buttons, stack layout, scale heading, add `pb-20`
-- **`src/pages/GovernanceDecisionsPage.tsx`** -- Fix padding, scale heading, add `pb-20`, wrap card header
-- **`src/pages/DatasetsPage.tsx`** -- Add `px-4`, make filter selects full-width on mobile, reduce empty state padding
-- **`src/pages/KnowledgePage.tsx`** -- Add `px-4`, make TabsList scrollable, stack header buttons, reduce empty state padding
-- **`src/pages/WalletPage.tsx`** -- Scale balance text
+- **`src/pages/SmartMatchingPage.tsx`** -- Add `px-4`, reduce hero/content padding, scale heading, fix "how it works" grid breakpoints
+- **`src/pages/NetworkPage.tsx`** -- Add `px-4` to container, reduce empty state padding
+- **`src/pages/SocialFeaturesPage.tsx`** -- Add `px-4`, wrap feature comparison grid for mobile
+- **`src/pages/FeaturesShowcasePage.tsx`** -- Add `px-4` to containers, stack header on mobile
+- **`src/pages/PricingPage.tsx`** -- Scale pricing card text, verify comparison table scroll
 
 ### No new files or dependencies needed.
-
