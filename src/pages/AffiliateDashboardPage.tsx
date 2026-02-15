@@ -640,43 +640,45 @@ export default function AffiliateDashboardPage() {
                       </p>
                     </div>
                   ) : (
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Date</TableHead>
-                          <TableHead>Type</TableHead>
-                          <TableHead>Sale Amount</TableHead>
-                          <TableHead>Commission</TableHead>
-                          <TableHead>Status</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {conversions.slice(0, 10).map(conv => (
-                          <TableRow key={conv.id}>
-                            <TableCell className="text-muted-foreground">
-                              {formatDistanceToNow(new Date(conv.created_at || Date.now()), { addSuffix: true })}
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-2">
-                                {getTransactionIcon(conv.transaction_type)}
-                                <span className="capitalize text-sm">
-                                  {conv.transaction_type.replace(/_/g, " ")}
-                                </span>
-                              </div>
-                            </TableCell>
-                            <TableCell>{formatPKR(conv.transaction_amount)}</TableCell>
-                            <TableCell className="font-medium text-green-500">
-                              +{formatPKR(conv.commission_amount)}
-                            </TableCell>
-                            <TableCell>
-                              <Badge className={getStatusColor(conv.status || "pending")}>
-                                {conv.status || "pending"}
-                              </Badge>
-                            </TableCell>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Type</TableHead>
+                            <TableHead>Sale Amount</TableHead>
+                            <TableHead>Commission</TableHead>
+                            <TableHead>Status</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {conversions.slice(0, 10).map(conv => (
+                            <TableRow key={conv.id}>
+                              <TableCell className="text-muted-foreground">
+                                {formatDistanceToNow(new Date(conv.created_at || Date.now()), { addSuffix: true })}
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex items-center gap-2">
+                                  {getTransactionIcon(conv.transaction_type)}
+                                  <span className="capitalize text-sm">
+                                    {conv.transaction_type.replace(/_/g, " ")}
+                                  </span>
+                                </div>
+                              </TableCell>
+                              <TableCell>{formatPKR(conv.transaction_amount)}</TableCell>
+                              <TableCell className="font-medium text-green-500">
+                                +{formatPKR(conv.commission_amount)}
+                              </TableCell>
+                              <TableCell>
+                                <Badge className={getStatusColor(conv.status || "pending")}>
+                                  {conv.status || "pending"}
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   )}
                 </CardContent>
               </Card>

@@ -156,31 +156,33 @@ export default function InstitutionContractPage() {
             <CardTitle className="text-base">Contract History</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Base Fee</TableHead>
-                  <TableHead>Rev Share</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Period</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {(contracts || []).map(c => (
-                  <TableRow key={c.id}>
-                    <TableCell className="capitalize">{c.contract_type.replace("_", " ")}</TableCell>
-                    <TableCell>{formatPKR(Number(c.base_fee))}</TableCell>
-                    <TableCell>{Number(c.revenue_share_percentage || 0)}%</TableCell>
-                    <TableCell><Badge variant="outline" className="capitalize">{c.status}</Badge></TableCell>
-                    <TableCell className="text-xs">{c.start_date} → {c.end_date || "Ongoing"}</TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Base Fee</TableHead>
+                    <TableHead>Rev Share</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Period</TableHead>
                   </TableRow>
-                ))}
-                {(!contracts || contracts.length === 0) && (
-                  <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">No contracts found</TableCell></TableRow>
-                )}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {(contracts || []).map(c => (
+                    <TableRow key={c.id}>
+                      <TableCell className="capitalize">{c.contract_type.replace("_", " ")}</TableCell>
+                      <TableCell>{formatPKR(Number(c.base_fee))}</TableCell>
+                      <TableCell>{Number(c.revenue_share_percentage || 0)}%</TableCell>
+                      <TableCell><Badge variant="outline" className="capitalize">{c.status}</Badge></TableCell>
+                      <TableCell className="text-xs">{c.start_date} → {c.end_date || "Ongoing"}</TableCell>
+                    </TableRow>
+                  ))}
+                  {(!contracts || contracts.length === 0) && (
+                    <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">No contracts found</TableCell></TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>

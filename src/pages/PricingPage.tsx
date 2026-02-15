@@ -263,7 +263,7 @@ const PricingPage = () => {
             <Sparkles className="h-3 w-3 mr-1" />
             Simple, Transparent Pricing
           </Badge>
-          <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-3">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-foreground mb-3">
             Choose Your Plan
           </h1>
           <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">

@@ -13,7 +13,7 @@ export default function TermsOfServicePage() {
               <FileText className="h-8 w-8 text-primary" />
             </div>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">Terms of Service</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">Terms of Service</h1>
           <p className="text-muted-foreground">
             Last updated: February 3, 2026
           </p>

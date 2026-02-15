@@ -232,32 +232,34 @@ export default function AdminStewardshipPage() {
                     <p>No stewardship entities defined</p>
                   </div>
                 ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Mandate</TableHead>
-                        <TableHead>Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {entities.map((entity) => (
-                        <TableRow key={entity.id}>
-                          <TableCell className="font-medium">{entity.name}</TableCell>
-                          <TableCell>
-                            <Badge variant="outline">{entity.entity_type}</Badge>
-                          </TableCell>
-                          <TableCell className="max-w-md truncate">{entity.mandate}</TableCell>
-                          <TableCell>
-                            <Badge variant={entity.status === 'active' ? 'default' : 'secondary'}>
-                              {entity.status}
-                            </Badge>
-                          </TableCell>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Mandate</TableHead>
+                          <TableHead>Status</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {entities.map((entity) => (
+                          <TableRow key={entity.id}>
+                            <TableCell className="font-medium">{entity.name}</TableCell>
+                            <TableCell>
+                              <Badge variant="outline">{entity.entity_type}</Badge>
+                            </TableCell>
+                            <TableCell className="max-w-md truncate">{entity.mandate}</TableCell>
+                            <TableCell>
+                              <Badge variant={entity.status === 'active' ? 'default' : 'secondary'}>
+                                {entity.status}
+                              </Badge>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -281,28 +283,30 @@ export default function AdminStewardshipPage() {
                     <p>No continuity triggers defined</p>
                   </div>
                 ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Response</TableHead>
-                        <TableHead>Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {triggers.map((trigger) => (
-                        <TableRow key={trigger.id} className={trigger.status === 'activated' ? 'bg-destructive/5' : ''}>
-                          <TableCell className="font-medium">{trigger.trigger_type.replace(/_/g, ' ')}</TableCell>
-                          <TableCell className="max-w-md truncate">{trigger.predefined_response}</TableCell>
-                          <TableCell>
-                            <Badge variant={trigger.status === 'activated' ? 'destructive' : trigger.status === 'dormant' ? 'secondary' : 'default'}>
-                              {trigger.status}
-                            </Badge>
-                          </TableCell>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Response</TableHead>
+                          <TableHead>Status</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {triggers.map((trigger) => (
+                          <TableRow key={trigger.id} className={trigger.status === 'activated' ? 'bg-destructive/5' : ''}>
+                            <TableCell className="font-medium">{trigger.trigger_type.replace(/_/g, ' ')}</TableCell>
+                            <TableCell className="max-w-md truncate">{trigger.predefined_response}</TableCell>
+                            <TableCell>
+                              <Badge variant={trigger.status === 'activated' ? 'destructive' : trigger.status === 'dormant' ? 'secondary' : 'default'}>
+                                {trigger.status}
+                              </Badge>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 )}
               </CardContent>
             </Card>

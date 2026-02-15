@@ -245,7 +245,7 @@ export default function EarnPage() {
               <DollarSign className="h-3 w-3 mr-1" />
               Student Earning Hub
             </Badge>
-            <h1 className="text-3xl font-bold md:text-5xl lg:text-6xl">
+            <h1 className="text-2xl sm:text-3xl font-bold md:text-5xl lg:text-6xl">
               Turn Your Skills Into{" "}
               <span className="text-gradient">Real Income</span>
             </h1>

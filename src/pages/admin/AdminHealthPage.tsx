@@ -108,32 +108,34 @@ export default function AdminHealthPage() {
             <Card>
               <CardHeader><CardTitle>Active Alerts</CardTitle></CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Time</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Severity</TableHead>
-                      <TableHead>Message</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {alerts.slice(0, 20).map(a => (
-                      <TableRow key={a.id}>
-                        <TableCell className="text-sm">{format(new Date(a.created_at), "MMM d HH:mm")}</TableCell>
-                        <TableCell><Badge variant="outline">{a.alert_type}</Badge></TableCell>
-                        <TableCell><Badge className={getSeverityColor(a.severity)}>{a.severity}</Badge></TableCell>
-                        <TableCell className="max-w-xs truncate">{a.message}</TableCell>
-                        <TableCell className="space-x-1">
-                          {!a.acknowledged_at && <Button size="sm" variant="outline" onClick={() => acknowledgeAlert(a.id)}>Ack</Button>}
-                          {!a.resolved_at && <Button size="sm" variant="outline" onClick={() => resolveAlert(a.id)}>Resolve</Button>}
-                          {a.resolved_at && <Badge variant="secondary">Resolved</Badge>}
-                        </TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Time</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Severity</TableHead>
+                        <TableHead>Message</TableHead>
+                        <TableHead>Actions</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {alerts.slice(0, 20).map(a => (
+                        <TableRow key={a.id}>
+                          <TableCell className="text-sm">{format(new Date(a.created_at), "MMM d HH:mm")}</TableCell>
+                          <TableCell><Badge variant="outline">{a.alert_type}</Badge></TableCell>
+                          <TableCell><Badge className={getSeverityColor(a.severity)}>{a.severity}</Badge></TableCell>
+                          <TableCell className="max-w-xs truncate">{a.message}</TableCell>
+                          <TableCell className="space-x-1">
+                            {!a.acknowledged_at && <Button size="sm" variant="outline" onClick={() => acknowledgeAlert(a.id)}>Ack</Button>}
+                            {!a.resolved_at && <Button size="sm" variant="outline" onClick={() => resolveAlert(a.id)}>Resolve</Button>}
+                            {a.resolved_at && <Badge variant="secondary">Resolved</Badge>}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -142,26 +144,28 @@ export default function AdminHealthPage() {
             <Card>
               <CardHeader><CardTitle>Recent Events</CardTitle></CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Time</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Severity</TableHead>
-                      <TableHead>Entity</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {events.slice(0, 30).map(e => (
-                      <TableRow key={e.id}>
-                        <TableCell className="text-sm">{format(new Date(e.created_at), "MMM d HH:mm")}</TableCell>
-                        <TableCell><Badge variant="outline">{e.event_type}</Badge></TableCell>
-                        <TableCell><Badge className={getSeverityColor(e.severity)}>{e.severity}</Badge></TableCell>
-                        <TableCell className="text-sm text-muted-foreground">{e.entity_type || "-"}</TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Time</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Severity</TableHead>
+                        <TableHead>Entity</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {events.slice(0, 30).map(e => (
+                        <TableRow key={e.id}>
+                          <TableCell className="text-sm">{format(new Date(e.created_at), "MMM d HH:mm")}</TableCell>
+                          <TableCell><Badge variant="outline">{e.event_type}</Badge></TableCell>
+                          <TableCell><Badge className={getSeverityColor(e.severity)}>{e.severity}</Badge></TableCell>
+                          <TableCell className="text-sm text-muted-foreground">{e.entity_type || "-"}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -170,30 +174,32 @@ export default function AdminHealthPage() {
             <Card>
               <CardHeader><CardTitle>Integrity Issues</CardTitle></CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Time</TableHead>
-                      <TableHead>Job</TableHead>
-                      <TableHead>Issue</TableHead>
-                      <TableHead>Severity</TableHead>
-                      <TableHead>Table</TableHead>
-                      <TableHead>Fixed</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {integrityLogs.slice(0, 30).map(l => (
-                      <TableRow key={l.id}>
-                        <TableCell className="text-sm">{format(new Date(l.created_at), "MMM d HH:mm")}</TableCell>
-                        <TableCell>{l.job_name}</TableCell>
-                        <TableCell>{l.issue_type}</TableCell>
-                        <TableCell><Badge className={getSeverityColor(l.severity)}>{l.severity}</Badge></TableCell>
-                        <TableCell className="font-mono text-xs">{l.affected_table}</TableCell>
-                        <TableCell>{l.auto_fixed ? <CheckCircle className="h-4 w-4 text-green-500" /> : l.requires_admin_action ? <AlertTriangle className="h-4 w-4 text-amber-500" /> : "-"}</TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Time</TableHead>
+                        <TableHead>Job</TableHead>
+                        <TableHead>Issue</TableHead>
+                        <TableHead>Severity</TableHead>
+                        <TableHead>Table</TableHead>
+                        <TableHead>Fixed</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {integrityLogs.slice(0, 30).map(l => (
+                        <TableRow key={l.id}>
+                          <TableCell className="text-sm">{format(new Date(l.created_at), "MMM d HH:mm")}</TableCell>
+                          <TableCell>{l.job_name}</TableCell>
+                          <TableCell>{l.issue_type}</TableCell>
+                          <TableCell><Badge className={getSeverityColor(l.severity)}>{l.severity}</Badge></TableCell>
+                          <TableCell className="font-mono text-xs">{l.affected_table}</TableCell>
+                          <TableCell>{l.auto_fixed ? <CheckCircle className="h-4 w-4 text-green-500" /> : l.requires_admin_action ? <AlertTriangle className="h-4 w-4 text-amber-500" /> : "-"}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -202,30 +208,32 @@ export default function AdminHealthPage() {
             <Card>
               <CardHeader><CardTitle>Job Runs</CardTitle></CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Started</TableHead>
-                      <TableHead>Job</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Found</TableHead>
-                      <TableHead>Fixed</TableHead>
-                      <TableHead>Flagged</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {jobRuns.map(j => (
-                      <TableRow key={j.id}>
-                        <TableCell className="text-sm">{format(new Date(j.started_at), "MMM d HH:mm")}</TableCell>
-                        <TableCell>{j.job_name}</TableCell>
-                        <TableCell><Badge variant={j.status === "completed" ? "secondary" : j.status === "failed" ? "destructive" : "default"}>{j.status}</Badge></TableCell>
-                        <TableCell>{j.issues_found}</TableCell>
-                        <TableCell>{j.issues_fixed}</TableCell>
-                        <TableCell>{j.issues_flagged}</TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Started</TableHead>
+                        <TableHead>Job</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Found</TableHead>
+                        <TableHead>Fixed</TableHead>
+                        <TableHead>Flagged</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {jobRuns.map(j => (
+                        <TableRow key={j.id}>
+                          <TableCell className="text-sm">{format(new Date(j.started_at), "MMM d HH:mm")}</TableCell>
+                          <TableCell>{j.job_name}</TableCell>
+                          <TableCell><Badge variant={j.status === "completed" ? "secondary" : j.status === "failed" ? "destructive" : "default"}>{j.status}</Badge></TableCell>
+                          <TableCell>{j.issues_found}</TableCell>
+                          <TableCell>{j.issues_fixed}</TableCell>
+                          <TableCell>{j.issues_flagged}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

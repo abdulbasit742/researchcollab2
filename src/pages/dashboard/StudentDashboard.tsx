@@ -78,7 +78,7 @@ export default function StudentDashboard() {
               <GraduationCap className="h-3 w-3 mr-1" />
               Student Dashboard
             </Badge>
-            <h1 className="text-3xl font-bold md:text-4xl">
+            <h1 className="text-2xl sm:text-3xl font-bold md:text-4xl">
               Welcome back, <span className="text-primary">{profile?.full_name || "Student"}</span>
             </h1>
             <p className="mt-2 text-muted-foreground">
