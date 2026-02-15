@@ -1,80 +1,50 @@
 
 
-# Mobile-Friendly Pass -- Remaining Pages (Batch 3)
+# Mobile-Friendly Pass -- Batch 4 (Final Sweep)
 
-Polish the final batch of pages that still have desktop-first layouts: Grants, Jobs, Blog, About, Careers, Contact, and a few utility pages.
-
----
-
-## Common Issues
-
-- Missing `px-4` on `.container` elements causing edge clipping
-- Hero sections with `py-16 md:py-24` wasting space on mobile (no small-screen override)
-- Headings at `text-4xl` without mobile scaling
-- Content sections with `py-16` not reduced for mobile
-- Hero stats row overflowing or being too cramped on narrow screens
-- Missing bottom padding for MobileBottomNav clearance on pages not using MainLayout's built-in `pb-20`
+Polish the remaining pages that still have desktop-first issues: Passport, Governance, Governance Decisions, Datasets, Knowledge, and a wallet balance text fix.
 
 ---
 
-## 1. Grants Page (`GrantsPage.tsx`)
+## 1. Passport Page (`PassportPage.tsx`)
 
-- Add `px-4` to all `.container` divs
-- Reduce hero padding: `py-8 sm:py-16 md:py-24`
-- Scale heading: `text-2xl sm:text-4xl md:text-5xl lg:text-6xl`
-- Scale subtext: `text-sm sm:text-lg`
-- Reduce search/filter row gap and stack button below on mobile
-- Content section: `py-6 sm:py-16`
-- Newsletter CTA: reduce `p-8` to `p-5 sm:p-8 md:p-12`, scale text
-- Empty state padding: `p-6 sm:p-12`
-
-## 2. Jobs Page (`JobsPage.tsx`)
-
-- Add `px-4` to all `.container` divs
-- Reduce hero padding: `py-8 sm:py-16 md:py-24`
-- Scale heading: `text-2xl sm:text-4xl md:text-5xl lg:text-6xl`
-- Scale subtext: `text-sm sm:text-lg`
-- Stats grid: already `grid-cols-3` but reduce padding on mobile
-- Content section: `py-6 sm:py-16`
+- Header: Stack title and button vertically on mobile (`flex-col sm:flex-row`)
+- Scale heading: `text-2xl sm:text-3xl`
 - Empty state: `p-6 sm:p-12`
+- History cards: wrap badges on mobile with `flex-wrap`
+- Scale balance text in wallet: `text-3xl sm:text-4xl` (line 127)
 
-## 3. Blog Page (`BlogPage.tsx`)
+## 2. Governance Page (`GovernancePage.tsx`)
 
-- Add `px-4` to all `.container` divs
-- Reduce hero padding: `py-8 sm:py-16 md:py-24`
-- Scale heading: `text-2xl sm:text-4xl md:text-5xl lg:text-6xl`
-- Scale subtext: `text-sm sm:text-lg`
-- Content section: `py-6 sm:py-16`
-- Featured post metadata: wrap on mobile with `flex-wrap`
+- Header buttons overflow on mobile -- wrap `flex gap-2` into `flex-wrap gap-2` and stack title/buttons with `flex-col sm:flex-row`
+- Scale heading: `text-2xl sm:text-3xl`
+- Add `pb-20 md:pb-0` since this page doesn't use MainLayout (uses own Navbar + no built-in bottom padding)
 
-## 4. About Page (`AboutPage.tsx`)
+## 3. Governance Decisions Page (`GovernanceDecisionsPage.tsx`)
 
-- Reduce hero padding: `py-10 sm:py-20`
-- Scale heading: `text-2xl sm:text-4xl md:text-5xl`
-- Scale subtext: `text-base sm:text-xl`
-- Values grid: reduce card padding on mobile `p-4 sm:p-6`
-- Capabilities grid: change `grid-cols-2` to `grid-cols-1 sm:grid-cols-2 md:grid-cols-4`
-- Section padding: `py-8 sm:py-16`
+- Replace `p-6` with `px-4 py-6 sm:p-6`
+- Scale heading: `text-2xl sm:text-3xl`
+- Add `pb-20` for MobileBottomNav clearance (no MainLayout)
+- Card header: wrap title and badge on mobile
 
-## 5. Careers Page (`CareersPage.tsx`)
+## 4. Datasets Page (`DatasetsPage.tsx`)
 
-- Reduce hero padding: `py-10 sm:py-20`
-- Scale heading: `text-2xl sm:text-4xl md:text-5xl`
-- Scale subtext: `text-base sm:text-xl`
-- Hero stats row: stack on very small screens with `flex-wrap`
-- Section padding: `py-8 sm:py-16`
-- Job card buttons: stack on mobile `flex-col sm:flex-row`
+- Add `px-4` to container (`container py-8` missing horizontal padding)
+- Filter selects: change `w-[180px]` to `w-full sm:w-[180px]`
+- Empty state: `p-6 sm:p-12`
+- Scale heading: `text-2xl sm:text-3xl`
 
-## 6. Contact Page (`ContactPage.tsx`)
+## 5. Knowledge Page (`KnowledgePage.tsx`)
 
-- Reduce hero padding: `py-8 sm:py-16 md:py-24`
-- Scale heading: `text-2xl sm:text-4xl md:text-5xl`
-- Scale subtext: `text-sm sm:text-lg`
+- Add `px-4` to container
+- TabsList with 4 tabs: make scrollable with `overflow-x-auto` and `inline-flex` instead of default layout
+- Scale tab trigger text: hide label text on mobile, show icons only
+- Header action buttons: stack on mobile `flex-col sm:flex-row`
+- Empty states: `p-6 sm:p-12`
 
-## 7. Earn Page hero (`EarnPage.tsx`)
+## 6. Wallet Page (`WalletPage.tsx`)
 
-- Reduce hero padding from `py-12 md:py-24` to `py-8 sm:py-12 md:py-24`
-- Content padding: already mostly good
+- Balance text: scale from `text-4xl` to `text-3xl sm:text-4xl` (line 127)
 
 ---
 
@@ -82,12 +52,12 @@ Polish the final batch of pages that still have desktop-first layouts: Grants, J
 
 ### Files to modify:
 
-- **`src/pages/GrantsPage.tsx`** -- Add `px-4`, reduce hero/content padding, scale text, stack search controls on mobile
-- **`src/pages/JobsPage.tsx`** -- Add `px-4`, reduce hero/content padding, scale text
-- **`src/pages/BlogPage.tsx`** -- Add `px-4`, reduce hero/content padding, scale text, wrap featured post metadata
-- **`src/pages/AboutPage.tsx`** -- Reduce hero/section padding, scale text, fix capabilities grid breakpoints
-- **`src/pages/CareersPage.tsx`** -- Reduce hero/section padding, scale text, stack stats row and job card buttons
-- **`src/pages/ContactPage.tsx`** -- Reduce hero padding, scale text
-- **`src/pages/EarnPage.tsx`** -- Reduce hero top padding for mobile
+- **`src/pages/PassportPage.tsx`** -- Stack header, scale text, reduce empty state padding, wrap history badges
+- **`src/pages/GovernancePage.tsx`** -- Wrap header buttons, stack layout, scale heading, add `pb-20`
+- **`src/pages/GovernanceDecisionsPage.tsx`** -- Fix padding, scale heading, add `pb-20`, wrap card header
+- **`src/pages/DatasetsPage.tsx`** -- Add `px-4`, make filter selects full-width on mobile, reduce empty state padding
+- **`src/pages/KnowledgePage.tsx`** -- Add `px-4`, make TabsList scrollable, stack header buttons, reduce empty state padding
+- **`src/pages/WalletPage.tsx`** -- Scale balance text
 
 ### No new files or dependencies needed.
+
