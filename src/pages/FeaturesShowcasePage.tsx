@@ -227,8 +227,8 @@ export default function FeaturesShowcasePage() {
       
       {/* Hero Header */}
       <div className="border-b bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5">
-        <div className="container py-8">
-          <div className="flex items-center gap-3 mb-6">
+        <div className="container px-4 py-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">
             <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-lg">
               <Sparkles className="h-7 w-7 text-primary-foreground" />
             </div>
@@ -277,7 +277,7 @@ export default function FeaturesShowcasePage() {
       </div>
 
       {/* Content */}
-      <div className="container py-8 pb-24">
+      <div className="container px-4 py-8 pb-24">
         <Tabs value={activeCategory} onValueChange={setActiveCategory}>
           <TabsList className="hidden">
             {categories.map((cat) => (

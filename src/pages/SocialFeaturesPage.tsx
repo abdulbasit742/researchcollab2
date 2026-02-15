@@ -21,7 +21,7 @@ export default function SocialFeaturesPage() {
 
   return (
     <MainLayout>
-      <div className="container max-w-4xl py-6 space-y-6">
+      <div className="container max-w-4xl px-4 py-6 space-y-6">
         {/* Header */}
         <div className="space-y-2">
           <div className="flex items-center gap-2">
@@ -219,7 +219,8 @@ export default function SocialFeaturesPage() {
                 <CardTitle>Platform Feature Comparison</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-4 gap-4 text-center text-sm">
+                <div className="overflow-x-auto -mx-4 px-4">
+                <div className="grid grid-cols-4 gap-4 text-center text-sm min-w-[400px]">
                   <div className="font-semibold">Feature</div>
                   <div className="text-pink-500 font-semibold">Instagram</div>
                   <div className="text-blue-500 font-semibold">Facebook</div>
@@ -254,6 +255,7 @@ export default function SocialFeaturesPage() {
                   <div>✓</div>
                   <div>✓</div>
                   <div>✓</div>
+                </div>
                 </div>
               </CardContent>
             </Card>

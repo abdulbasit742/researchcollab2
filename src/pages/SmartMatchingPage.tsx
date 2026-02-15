@@ -74,8 +74,8 @@ export default function SmartMatchingPage() {
 
   return (
     <MainLayout>
-      <div className="gradient-hero py-16 md:py-24">
-        <div className="container">
+      <div className="gradient-hero py-8 sm:py-16 md:py-24">
+        <div className="container px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -86,11 +86,11 @@ export default function SmartMatchingPage() {
               <Sparkles className="h-3 w-3 mr-1" />
               AI-Powered Matching
             </Badge>
-            <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+            <h1 className="text-2xl sm:text-4xl font-bold md:text-5xl lg:text-6xl">
               Smart Matching{" "}
               <span className="text-gradient">Algorithm</span>
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               Our intelligent algorithm analyzes your profile, interests, and goals 
               to find the best research collaborators for you.
             </p>
@@ -101,7 +101,7 @@ export default function SmartMatchingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-12 grid md:grid-cols-4 gap-4"
+            className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4"
           >
             {[
               { label: "Interests Match", value: "35%", icon: Brain },
@@ -121,9 +121,9 @@ export default function SmartMatchingPage() {
         </div>
       </div>
 
-      <div className="container py-16">
+      <div className="container px-4 py-6 sm:py-16">
         {/* Top Matches Section */}
-        <div className="mb-16">
+        <div className="mb-8 sm:mb-16">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-2xl font-bold">Your Top Matches</h2>

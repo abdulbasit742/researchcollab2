@@ -113,7 +113,7 @@ export default function NetworkPage() {
 
   return (
     <MainLayout>
-      <div className="container py-6">
+      <div className="container px-4 py-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
@@ -237,7 +237,7 @@ export default function NetworkPage() {
                   </div>
                 ) : (
                   <Card className="border-dashed">
-                    <CardContent className="py-12 text-center">
+                    <CardContent className="py-6 sm:py-12 text-center">
                       <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                       <h3 className="font-semibold mb-2">No connections yet</h3>
                       <p className="text-sm text-muted-foreground mb-4 max-w-sm mx-auto">
@@ -277,7 +277,7 @@ export default function NetworkPage() {
                   </div>
                 ) : (
                   <Card className="border-dashed">
-                    <CardContent className="py-12 text-center">
+                    <CardContent className="py-6 sm:py-12 text-center">
                       <UserPlus className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                       <h3 className="font-semibold mb-2">No pending requests</h3>
                       <p className="text-sm text-muted-foreground">
@@ -381,7 +381,7 @@ export default function NetworkPage() {
                   </div>
                 ) : (
                   <Card className="border-dashed">
-                    <CardContent className="py-12 text-center">
+                    <CardContent className="py-6 sm:py-12 text-center">
                       <Briefcase className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                       <h3 className="font-semibold mb-2">No work connections yet</h3>
                       <p className="text-sm text-muted-foreground mb-4 max-w-sm mx-auto">
