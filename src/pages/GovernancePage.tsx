@@ -1,3 +1,4 @@
+import { MainLayout } from "@/components/layout/MainLayout";
 import { useGovernancePods } from "@/hooks/useGovernancePods";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,16 +20,18 @@ export default function GovernancePage() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    );
+      return (
+        <MainLayout>
+          <div className="flex items-center justify-center min-h-[50vh]">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
+        </MainLayout>
+      );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-7xl space-y-8 pb-20 md:pb-8">
+    <MainLayout>
+      <div className="container mx-auto px-4 py-8 max-w-7xl space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-3">
@@ -133,6 +136,6 @@ export default function GovernancePage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </MainLayout>
   );
 }

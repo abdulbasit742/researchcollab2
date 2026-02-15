@@ -4,8 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Navbar } from "@/components/layout/Navbar";
-import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
+import { MainLayout } from "@/components/layout/MainLayout";
 import { 
   Shield, DollarSign, GraduationCap, Kanban, Users, 
   Zap, Calendar, Building, Sparkles, TrendingUp,
@@ -222,8 +221,7 @@ export default function FeaturesShowcasePage() {
   const [activeCategory, setActiveCategory] = useState("verification");
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <MainLayout>
       
       {/* Hero Header */}
       <div className="border-b bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5">
@@ -233,7 +231,7 @@ export default function FeaturesShowcasePage() {
               <Sparkles className="h-7 w-7 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
                 Platform Components Gallery
               </h1>
               <p className="text-muted-foreground">
@@ -1035,7 +1033,6 @@ export default function FeaturesShowcasePage() {
         </div>
       </div>
 
-      <MobileBottomNav />
-    </div>
+    </MainLayout>
   );
 }

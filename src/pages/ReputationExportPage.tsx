@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useState } from "react";
-import { Navbar } from "@/components/layout/Navbar";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 export default function ReputationExportPage() {
   const { user } = useAuth();
@@ -90,14 +90,13 @@ export default function ReputationExportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <div className="max-w-4xl mx-auto px-4 py-8 pb-20 md:pb-8 space-y-6">
-        <div className="flex items-center justify-between">
+    <MainLayout>
+      <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Shield className="h-8 w-8 text-primary" />
             <div>
-              <h1 className="text-3xl font-bold">Reputation Export</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold">Reputation Export</h1>
               <p className="text-muted-foreground">Portable, signed trust credentials</p>
             </div>
           </div>
@@ -134,6 +133,6 @@ export default function ReputationExportPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </MainLayout>
   );
 }
