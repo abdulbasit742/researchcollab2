@@ -72,7 +72,7 @@ export default function AffiliateDashboardPage() {
   if (loading || statusLoading) {
     return (
       <MainLayout>
-        <div className="min-h-screen bg-background py-8">
+        <div className="py-8">
           <div className="container mx-auto px-4 max-w-7xl">
             <Skeleton className="h-10 w-64 mb-2" />
             <Skeleton className="h-5 w-96 mb-8" />
@@ -92,7 +92,7 @@ export default function AffiliateDashboardPage() {
   if (!user) {
     return (
       <MainLayout>
-        <div className="min-h-screen bg-background py-16">
+        <div className="py-16">
           <div className="container mx-auto px-4 max-w-2xl text-center">
             <Gift className="h-16 w-16 mx-auto text-primary mb-6" />
             <h1 className="text-2xl sm:text-3xl font-bold mb-4">Join Our Affiliate Program</h1>
@@ -114,7 +114,7 @@ export default function AffiliateDashboardPage() {
   if (!affiliate) {
     return (
       <MainLayout>
-        <div className="min-h-screen bg-background py-8">
+        <div className="py-8">
           <div className="container mx-auto px-4 max-w-4xl">
             {/* Header */}
             <div className="text-center mb-8">
@@ -268,7 +268,7 @@ export default function AffiliateDashboardPage() {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-background py-8">
+      <div className="py-8">
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Header */}
           <div className="mb-8">

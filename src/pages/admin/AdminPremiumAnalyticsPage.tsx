@@ -417,6 +417,7 @@ export default function AdminPremiumAnalyticsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -454,6 +455,7 @@ export default function AdminPremiumAnalyticsPage() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -496,6 +498,7 @@ export default function AdminPremiumAnalyticsPage() {
                   <CardDescription>Trials and conversions per segment</CardDescription>
                 </CardHeader>
                 <CardContent>
+                  <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -520,6 +523,7 @@ export default function AdminPremiumAnalyticsPage() {
                       ))}
                     </TableBody>
                   </Table>
+                  </div>
                 </CardContent>
               </Card>
             </div>
