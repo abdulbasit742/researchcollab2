@@ -39,6 +39,7 @@ export function MobileBottomNav() {
 
   return (
     <nav
+      aria-label="Mobile navigation"
       className="fixed bottom-0 left-0 right-0 z-50 w-full bg-background border-t border-border will-change-transform"
       style={{ transform: 'translateZ(0)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
@@ -52,7 +53,7 @@ export function MobileBottomNav() {
               key={item.route}
               to={item.route}
               className={cn(
-                "relative flex flex-col items-center justify-center w-full h-full gap-0.5 touch-manipulation transition-colors",
+                "relative flex flex-col items-center justify-center w-full h-full gap-0.5 touch-manipulation transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:rounded-lg",
                 active ? "text-primary" : "text-muted-foreground"
               )}
             >

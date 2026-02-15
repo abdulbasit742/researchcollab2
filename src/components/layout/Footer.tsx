@@ -125,6 +125,7 @@ export const Footer = forwardRef<HTMLElement>((_props, ref) => {
             <form
               onSubmit={(e) => { e.preventDefault(); setEmail(""); }}
               className="flex gap-1.5"
+              aria-label="Newsletter signup"
             >
               <Input
                 type="email"

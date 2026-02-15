@@ -247,7 +247,7 @@ export function Navbar() {
                   Profile
                 </Button>
               </Link>
-              <Button variant="ghost" size="sm" onClick={handleSignOut} className="gap-2">
+              <Button variant="ghost" size="sm" onClick={handleSignOut} className="gap-2" aria-label="Sign out">
                 <LogOut className="h-4 w-4" />
               </Button>
             </>
@@ -271,6 +271,7 @@ export function Navbar() {
             className="p-2 rounded-lg hover:bg-muted touch-manipulation"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
+            aria-expanded={isOpen}
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>

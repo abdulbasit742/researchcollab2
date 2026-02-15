@@ -33,7 +33,7 @@
     --secondary-foreground: 263 70% 40%;
 
     --muted: 240 5% 96%;
-    --muted-foreground: 240 5% 45%;
+    --muted-foreground: 240 5% 40%;
 
     --accent: 263 100% 97%;
     --accent-foreground: 263 70% 50%;
@@ -158,6 +158,16 @@
     background-clip: text;
   }
 
+  @media (forced-colors: active) {
+    .text-gradient {
+      background: none;
+      -webkit-background-clip: unset;
+      -webkit-text-fill-color: unset;
+      background-clip: unset;
+      color: CanvasText;
+    }
+  }
+
   .glass {
     @apply bg-surface-elevated/80 backdrop-blur-xl;
   }
@@ -267,6 +277,25 @@
     transform: scaleX(1);
     transform-origin: left;
   }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }
 
 /* Custom scrollbar */
