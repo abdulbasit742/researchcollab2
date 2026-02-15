@@ -1,3 +1,4 @@
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLiquidityIndex } from "@/hooks/useLiquidityIndex";
@@ -18,28 +19,28 @@ export default function AdminGlobalLiquidityPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
-        <h1 className="text-3xl font-bold flex items-center gap-2">
+    <AdminLayout>
+      <div className="space-y-6">
+        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
           <Droplets className="h-8 w-8 text-primary" /> Global Liquidity Analytics
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card><CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground">Avg Liquidity</p>
-            <p className="text-3xl font-bold">{avgLiquidity}</p>
+            <p className="text-2xl sm:text-3xl font-bold">{avgLiquidity}</p>
           </CardContent></Card>
           <Card><CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground">High Liquidity Skills</p>
-            <p className="text-3xl font-bold text-green-600">{highLiquidity.length}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-green-600">{highLiquidity.length}</p>
           </CardContent></Card>
           <Card><CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground">Low Liquidity</p>
-            <p className="text-3xl font-bold text-destructive">{lowLiquidity.length}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-destructive">{lowLiquidity.length}</p>
           </CardContent></Card>
           <Card><CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground">Oversupplied</p>
-            <p className="text-3xl font-bold text-amber-600">{oversupplied.length}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-amber-600">{oversupplied.length}</p>
           </CardContent></Card>
         </div>
 
@@ -66,13 +67,13 @@ export default function AdminGlobalLiquidityPage() {
             <CardHeader><CardTitle className="flex items-center gap-2"><AlertTriangle className="h-5 w-5 text-amber-500" /> Risk Flags</CardTitle></CardHeader>
             <CardContent className="space-y-2">
               {lowLiquidity.map(m => (
-                <div key={m.id} className="flex items-center justify-between p-2 rounded bg-destructive/5">
+                <div key={m.id} className="flex flex-wrap items-center justify-between gap-2 p-2 rounded bg-destructive/5">
                   <span className="text-sm">{m.skill_name}</span>
                   <Badge variant="destructive">Low Liquidity: {m.liquidity_score}</Badge>
                 </div>
               ))}
               {oversupplied.map(m => (
-                <div key={m.id} className="flex items-center justify-between p-2 rounded bg-amber-500/5">
+                <div key={m.id} className="flex flex-wrap items-center justify-between gap-2 p-2 rounded bg-amber-500/5">
                   <span className="text-sm">{m.skill_name}</span>
                   <Badge className="bg-amber-500/10 text-amber-700">Oversupplied ({m.total_active_bids} bids / {m.total_active_projects} projects)</Badge>
                 </div>
@@ -81,6 +82,6 @@ export default function AdminGlobalLiquidityPage() {
           </Card>
         )}
       </div>
-    </div>
+    </AdminLayout>
   );
 }

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, Shield } from "lucide-react";
@@ -20,13 +20,12 @@ export default function AdminCrisisModePage() {
   const active = crises?.filter((c) => c.is_active) || [];
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <AdminSidebar />
-      <main className="flex-1 p-6 space-y-6">
-        <div className="flex items-center gap-3">
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex flex-wrap items-center gap-3">
           <AlertTriangle className="h-8 w-8 text-destructive" />
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Crisis Mode</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Crisis Mode</h1>
             <p className="text-muted-foreground">Emergency restrictions & stability controls</p>
           </div>
           {active.length > 0 && <Badge variant="destructive">🔴 {active.length} Active</Badge>}
@@ -71,7 +70,7 @@ export default function AdminCrisisModePage() {
             ))}
           </CardContent>
         </Card>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

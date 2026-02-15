@@ -1,5 +1,5 @@
 import { useRiskIndex } from "@/hooks/useRiskIndex";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,10 +21,9 @@ export default function AdminSystemicRiskPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <AdminSidebar />
-      <main className="flex-1 p-6 space-y-6 overflow-auto">
-        <div className="flex items-center justify-between">
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
               <ShieldAlert className="h-6 w-6 text-primary" /> Systemic Risk
@@ -92,7 +91,7 @@ export default function AdminSystemicRiskPage() {
                 ) : (
                   <div className="space-y-2">
                     {alerts.map((alert: any) => (
-                      <div key={alert.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
+                      <div key={alert.id} className="flex flex-wrap items-center gap-3 p-3 rounded-lg border border-border">
                         <Badge variant={alert.severity === "critical" ? "destructive" : alert.severity === "warning" ? "warning" : "info"}>
                           {alert.severity}
                         </Badge>
@@ -109,7 +108,7 @@ export default function AdminSystemicRiskPage() {
             </Card>
           </>
         )}
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }
