@@ -17,11 +17,11 @@ export default function GovernanceDecisionsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-background p-6 max-w-5xl mx-auto space-y-6">
+    <div className="min-h-screen bg-background px-4 py-6 sm:p-6 max-w-5xl mx-auto space-y-6 pb-20 md:pb-6">
       <div className="flex items-center gap-3">
-        <FileText className="h-8 w-8 text-primary" />
+        <FileText className="h-8 w-8 text-primary shrink-0" />
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Governance Decisions</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Governance Decisions</h1>
           <p className="text-muted-foreground">Full traceability of every major system change</p>
         </div>
       </div>
@@ -33,9 +33,9 @@ export default function GovernanceDecisionsPage() {
         {decisions?.map((d) => (
           <Card key={d.id}>
             <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <CardTitle className="text-base">{d.description}</CardTitle>
-                <Badge>{d.decision_type}</Badge>
+                <Badge className="w-fit">{d.decision_type}</Badge>
               </div>
             </CardHeader>
             <CardContent className="space-y-2">

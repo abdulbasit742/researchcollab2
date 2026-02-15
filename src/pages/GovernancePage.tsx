@@ -28,16 +28,16 @@ export default function GovernancePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-7xl space-y-8">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4 py-8 max-w-7xl space-y-8 pb-20 md:pb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-3">
               <Shield className="h-8 w-8 text-primary" />
               Platform Governance
             </h1>
             <p className="text-muted-foreground mt-1">Decentralized, trust-weighted governance for ecosystem stability</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {["risk", "capital", "dispute", "constitutional"].map((type) => (
               <Button key={type} variant="outline" size="sm" onClick={() => handleAssemble(type)} disabled={assemblePod.isPending}>
                 {assemblePod.isPending ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : <Users className="h-3 w-3 mr-1" />}

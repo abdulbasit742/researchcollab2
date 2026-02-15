@@ -48,9 +48,9 @@ export default function PassportPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Sovereign Reputation Passport</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Sovereign Reputation Passport</h1>
             <p className="text-muted-foreground mt-1">Your portable, verifiable professional identity</p>
           </div>
           <Button onClick={handleGenerate} disabled={generating}>
@@ -62,7 +62,7 @@ export default function PassportPage() {
         {latestLoading ? (
           <Card className="animate-pulse"><CardContent className="p-6"><div className="h-48 bg-muted rounded" /></CardContent></Card>
         ) : !latest ? (
-          <Card><CardContent className="p-12 text-center">
+          <Card><CardContent className="p-6 sm:p-12 text-center">
             <Shield className="h-16 w-16 mx-auto text-muted-foreground/30 mb-4" />
             <h3 className="text-lg font-semibold">No Passport Yet</h3>
             <p className="text-muted-foreground mt-2">Generate your first Sovereign Reputation Passport to create a verifiable professional identity.</p>
@@ -170,7 +170,7 @@ export default function PassportPage() {
                       <p className="text-sm font-medium">Version {p.passport_version}</p>
                       <p className="text-xs text-muted-foreground">{new Date(p.issued_at).toLocaleDateString()}</p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <Badge variant="secondary">Trust: {p.trust_score_snapshot}</Badge>
                       <Badge variant="outline">Vis: {p.visibility_score_snapshot}</Badge>
                     </div>
