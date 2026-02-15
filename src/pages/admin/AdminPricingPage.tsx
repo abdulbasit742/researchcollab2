@@ -201,6 +201,7 @@ export default function AdminPricingPage() {
                 </div>
               </CardHeader>
               <CardContent>
+                <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -277,6 +278,7 @@ export default function AdminPricingPage() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </CardContent>
             </Card>
 
@@ -329,6 +331,7 @@ export default function AdminPricingPage() {
                 </div>
               </CardHeader>
               <CardContent>
+                <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -366,6 +369,7 @@ export default function AdminPricingPage() {
                     })}
                   </TableBody>
                 </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -404,6 +408,7 @@ export default function AdminPricingPage() {
                       </div>
                     </CardHeader>
                     <CardContent>
+                      <div className="overflow-x-auto">
                       <Table>
                         <TableHeader>
                           <TableRow>
@@ -438,6 +443,7 @@ export default function AdminPricingPage() {
                           })}
                         </TableBody>
                       </Table>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}

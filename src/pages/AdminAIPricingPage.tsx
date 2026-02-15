@@ -319,6 +319,7 @@ const AdminAIPricingPage = () => {
                 <CardDescription>All projects created using AI scoping</CardDescription>
               </CardHeader>
               <CardContent>
+                <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -380,6 +381,7 @@ const AdminAIPricingPage = () => {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

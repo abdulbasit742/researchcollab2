@@ -158,6 +158,7 @@ const OrganizationBillingPage = () => {
             <CardTitle>Invoices</CardTitle>
           </CardHeader>
           <CardContent>
+            <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -215,6 +216,7 @@ const OrganizationBillingPage = () => {
                 ))}
               </TableBody>
             </Table>
+            </div>
           </CardContent>
         </Card>
 

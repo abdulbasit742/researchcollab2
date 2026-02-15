@@ -183,7 +183,7 @@ const CareersPage = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-background">
+      <div>
         {/* Hero Section */}
         <section className="relative py-10 sm:py-20 bg-gradient-to-br from-primary/10 via-background to-secondary/10">
           <div className="container mx-auto px-4 text-center">

@@ -78,7 +78,7 @@ export default function AffiliateAssetsPage() {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-background py-8">
+      <div className="py-8">
         <div className="container mx-auto px-4 max-w-6xl">
           {/* Header */}
           <div className="mb-8">
