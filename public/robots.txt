@@ -12,3 +12,12 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /workroom/
+Disallow: /messages/
+Disallow: /settings/
+Disallow: /onboarding
+Disallow: /profile/settings
+
+Sitemap: https://academic-forge-flow.lovable.app/sitemap.xml

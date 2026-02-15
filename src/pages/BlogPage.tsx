@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { SEOHead } from "@/components/seo/SEOHead";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -75,6 +76,12 @@ const categories = ["All", "Collaboration", "AI Tools", "Writing", "Funding", "C
 export default function BlogPage() {
   return (
     <MainLayout>
+      <SEOHead
+        title="Blog"
+        description="Insights, tips, and guides on research collaboration, academic tools, and earning opportunities for students and researchers."
+        canonicalPath="/blog"
+        keywords="research blog, academic tips, collaboration guides, student earning"
+      />
       <div className="gradient-hero py-8 sm:py-16 md:py-24">
         <div className="container px-4">
           <motion.div

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -113,6 +114,12 @@ const ContactPage = () => {
 
   return (
     <MainLayout>
+      <SEOHead
+        title="Contact Us"
+        description="Get in touch with ResearchCollabPro. We're here to help with partnerships, support, and inquiries."
+        canonicalPath="/contact"
+        keywords="contact, support, partnerships, research platform help"
+      />
       {/* Hero Section */}
       <section className="gradient-hero py-8 sm:py-16 md:py-24">
         <div className="container mx-auto px-4 text-center">

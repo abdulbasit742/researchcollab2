@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { SEOHead } from "@/components/seo/SEOHead";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -233,6 +234,12 @@ export default function EarnPage() {
 
   return (
     <MainLayout>
+      <SEOHead
+        title="Earn Money"
+        description="Earn money with your academic skills. Find research projects, freelance tasks, and academic gigs on ResearchCollabPro."
+        canonicalPath="/earn"
+        keywords="earn money, academic freelancing, research projects, student jobs, academic gigs"
+      />
       <div className="gradient-hero py-8 sm:py-12 md:py-24">
         <div className="container px-4 md:px-6">
           <motion.div

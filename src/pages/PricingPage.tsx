@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -256,6 +257,12 @@ const PricingPage = () => {
 
   return (
     <MainLayout>
+      <SEOHead
+        title="Pricing Plans"
+        description="Affordable plans for students, researchers, and institutions. Start free and upgrade as you grow."
+        canonicalPath="/pricing"
+        keywords="pricing, subscription plans, academic tools pricing, research platform cost"
+      />
       {/* Hero Section */}
       <section className="gradient-hero py-10 md:py-24">
         <div className="container mx-auto px-4 text-center">

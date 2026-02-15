@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { SEOHead } from "@/components/seo/SEOHead";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -132,6 +133,12 @@ Please guide me through the subscription process. JazakAllah!`;
 
   return (
     <MainLayout>
+      <SEOHead
+        title="AI Tools Marketplace"
+        description="Access premium AI-powered research tools — writing assistants, data analysis, citation managers, and more for academics and researchers."
+        canonicalPath="/tools"
+        keywords="AI tools, research tools, academic AI, writing assistant, data analysis"
+      />
       <div className="gradient-hero py-10 md:py-16 lg:py-24">
         <div className="container px-4 md:px-6">
           <motion.div
