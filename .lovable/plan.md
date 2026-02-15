@@ -1,73 +1,57 @@
 
+# Expand sitemap.xml with Missing Public Routes
 
-# Three-in-One: Fix Crash + Sitemap + Dark Mode Audit
+## What's Already Done
+The sitemap already exists with 34 public routes and is referenced in `robots.txt`. However, comparing against the 180+ routes in `App.tsx`, approximately 20 additional public-facing pages are missing.
 
-## URGENT: Fix App Crash (Blocking)
+## Routes to Add
 
-The app currently shows a **blank white screen** due to a `TypeError: Cannot read properties of null (reading 'useRef')` in `TooltipProvider`. This is caused by duplicate React instances in the bundle. This must be fixed before any other work can proceed.
+The following publicly accessible pages will be added to the sitemap:
 
-**Fix:** Add `resolve.dedupe` to `vite.config.ts`:
-```
-resolve: {
-  dedupe: ["react", "react-dom", "react/jsx-runtime"],
-  alias: { "@": ... }
-}
-```
+| Route | Priority | Change Frequency |
+|-------|----------|-----------------|
+| `/hr` | 0.6 | weekly |
+| `/automation` | 0.6 | weekly |
+| `/projects` | 0.7 | weekly |
+| `/social` | 0.6 | weekly |
+| `/ambient` | 0.5 | monthly |
+| `/collective` | 0.6 | weekly |
+| `/briefings` | 0.7 | daily |
+| `/career` | 0.7 | weekly |
+| `/passport` | 0.6 | weekly |
+| `/market-liquidity` | 0.6 | daily |
+| `/macro-risk` | 0.5 | weekly |
+| `/constitutional-health` | 0.5 | monthly |
+| `/analytics/fairness` | 0.5 | weekly |
+| `/analytics/global-liquidity` | 0.5 | daily |
+| `/analytics/academic-output` | 0.5 | weekly |
+| `/academic/tasks` | 0.6 | daily |
+| `/academic/rankings` | 0.6 | weekly |
+| `/my-os` | 0.6 | weekly |
+| `/productivity` | 0.6 | weekly |
+| `/opportunity-intelligence` | 0.7 | weekly |
+| `/deals` | 0.7 | daily |
 
----
-
-## Task 1: End-to-End Verification
-
-After the crash fix, visually verify:
-- Landing page loads correctly with all sections
-- Lazy-loaded routes work (navigate to `/pricing`, `/about`, `/tools`)
-- No console errors on page transitions
-
----
-
-## Task 2: Add sitemap.xml
-
-Create a static `public/sitemap.xml` listing all public-facing routes. Private routes (admin, dashboard, messages, settings, workroom) are excluded since they're already blocked by `robots.txt`.
-
-**Public routes to include** (~45 URLs):
-- `/` (landing)
-- `/auth`, `/forgot-password`
-- `/tools`, `/pricing`, `/about`, `/contact`, `/blog`, `/earn`
-- `/features`, `/careers`, `/press`, `/help`, `/docs`
-- `/privacy`, `/terms`, `/cookies`
-- `/collaborations`, `/grants`, `/matches`, `/smart-matching`
-- `/fyp-services`, `/offers`, `/events`, `/learning`
-- `/governance`, `/governance/constitution`, `/governance/decisions`
-- `/rankings/global`, `/research-papers`
-- `/institution/apply`, `/institutions/rankings`
-- `/install`, `/search`
-- And other publicly accessible pages
-
-Each URL will include `<lastmod>` (today's date), `<changefreq>`, and `<priority>` values.
-
----
-
-## Task 3: Dark Mode Audit
-
-The app uses `next-themes` with a `ThemeToggle` component in the navbar. CSS variables for dark mode are already defined in `src/index.css`. After the crash is fixed, I will:
-
-1. Toggle dark mode on the landing page and screenshot key sections
-2. Check for contrast issues (text on backgrounds, borders, cards)
-3. Fix any components using hardcoded colors instead of CSS variables
-4. Verify gradient utilities (`gradient-hero`, `gradient-card`, `text-gradient`) adapt properly in dark mode
-
----
+## Routes Intentionally Excluded
+These remain excluded (matching `robots.txt` Disallow rules and auth-required pages):
+- `/admin/*` -- all admin routes
+- `/dashboard/*` -- user dashboards
+- `/profile/*`, `/u/:id` -- user profiles
+- `/workroom/*`, `/messages/*`, `/settings/*` -- private areas
+- `/onboarding`, `/org/*` -- auth-required
+- `/wallet`, `/subscriptions`, `/affiliate/*`, `/verification/*` -- account features
+- `/developer/*`, `/faculty/*`, `/fyp/dashboard` -- role-specific
+- `/documents/*`, `/sheets/*`, `/slides/*` -- editor tools
+- Dynamic routes like `/blog/:slug`, `/posts/:postId`, `/earn/projects/:id`
 
 ## Files to Modify
 
 | File | Change |
 |------|--------|
-| `vite.config.ts` | Add `resolve.dedupe` to fix React crash |
-| `public/sitemap.xml` | New file with all public routes |
-| Various components (if needed) | Fix dark mode contrast issues found during audit |
+| `public/sitemap.xml` | Add ~21 new URL entries |
 
-## Estimated Scope
-- Crash fix: 1 line change
-- Sitemap: 1 new file
-- Dark mode fixes: depends on audit findings (0-5 files)
-
+## Technical Details
+- All new entries use `lastmod` of 2026-02-15 (today)
+- Priority values range from 0.5 to 0.7 based on page importance
+- Change frequencies set based on expected content update cadence
+- Total sitemap will grow from 34 to ~55 entries
