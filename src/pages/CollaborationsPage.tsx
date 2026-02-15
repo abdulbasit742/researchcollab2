@@ -186,8 +186,8 @@ export default function CollaborationsPage() {
 
   return (
     <MainLayout>
-      <div className="gradient-hero py-16 md:py-24">
-        <div className="container">
+      <div className="gradient-hero py-8 sm:py-16 md:py-24">
+        <div className="container px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -198,7 +198,7 @@ export default function CollaborationsPage() {
               <Users className="h-3 w-3 mr-1" />
               Research Collaborations
             </Badge>
-            <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+            <h1 className="text-2xl sm:text-4xl font-bold md:text-5xl lg:text-6xl">
               Find Your Next{" "}
               <span className="text-gradient">Research Partner</span>
             </h1>
@@ -245,7 +245,7 @@ export default function CollaborationsPage() {
       </div>
 
       {/* Collaborations List */}
-      <div className="container py-16">
+      <div className="container px-4 py-6 sm:py-16">
         <div className="grid gap-6">
           {isLoading ? (
             // Loading skeleton
@@ -268,7 +268,7 @@ export default function CollaborationsPage() {
             ))
           ) : filteredCollaborations.length === 0 ? (
             <Card>
-              <CardContent className="p-12 text-center">
+              <CardContent className="p-6 sm:p-12 text-center">
                 <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-xl font-semibold mb-2">No Collaborations Found</h3>
                 <p className="text-muted-foreground">
@@ -307,7 +307,7 @@ export default function CollaborationsPage() {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <CardTitle className="text-xl pr-20">{collab.title}</CardTitle>
+                        <CardTitle className="text-xl pr-16 sm:pr-20">{collab.title}</CardTitle>
                         <CardDescription className="mt-1">
                           <span 
                             className="font-medium text-foreground cursor-pointer hover:text-primary transition-colors"
@@ -358,7 +358,7 @@ export default function CollaborationsPage() {
                     </div>
                   </CardContent>
 
-                  <CardFooter className="flex gap-3">
+                  <CardFooter className="flex flex-col sm:flex-row gap-3">
                     <Button onClick={() => handleApply(collab.title)}>
                       Apply Now
                       <ArrowRight className="h-4 w-4" />

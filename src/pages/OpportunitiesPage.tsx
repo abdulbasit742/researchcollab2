@@ -62,7 +62,7 @@ export default function OpportunitiesPage() {
     <MainLayout>
       {/* Header - Clean, professional */}
       <div className="border-b bg-card">
-        <div className="container py-6">
+        <div className="container px-4 py-6">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-primary/10">
               <Target className="h-5 w-5 text-primary" />
@@ -77,7 +77,7 @@ export default function OpportunitiesPage() {
         </div>
       </div>
 
-      <div className="container py-6">
+      <div className="container px-4 py-6">
         {/* Search & Filters - Simplified */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <div className="relative flex-1">
@@ -90,7 +90,7 @@ export default function OpportunitiesPage() {
             />
           </div>
           <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as OpportunityType | "all")}>
-            <SelectTrigger className="w-36">
+            <SelectTrigger className="w-full sm:w-36">
               <SelectValue placeholder="Type" />
             </SelectTrigger>
             <SelectContent>
@@ -102,7 +102,7 @@ export default function OpportunitiesPage() {
             </SelectContent>
           </Select>
           <Select value={sortBy} onValueChange={(v) => setSortBy(v as OpportunityFilters["sortBy"])}>
-            <SelectTrigger className="w-36">
+            <SelectTrigger className="w-full sm:w-36">
               <SelectValue placeholder="Sort" />
             </SelectTrigger>
             <SelectContent>
