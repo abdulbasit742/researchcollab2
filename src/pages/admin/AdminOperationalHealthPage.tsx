@@ -1,4 +1,4 @@
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -61,15 +61,14 @@ export default function AdminOperationalHealthPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen">
-        <AdminSidebar />
-        <main className="flex-1 p-6 space-y-6">
+      <AdminLayout>
+        <div className="space-y-6">
           <Skeleton className="h-10 w-64" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1, 2, 3, 4, 5, 6, 7, 8].map(i => <Skeleton key={i} className="h-28" />)}
           </div>
-        </main>
-      </div>
+        </div>
+      </AdminLayout>
     );
   }
 
@@ -95,10 +94,9 @@ export default function AdminOperationalHealthPage() {
   ];
 
   return (
-    <div className="flex min-h-screen">
-      <AdminSidebar />
-      <main className="flex-1 p-6 space-y-6 overflow-auto">
-        <div className="flex items-center justify-between">
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold flex items-center gap-2">
               <Activity className="h-6 w-6 text-primary" />
@@ -111,7 +109,6 @@ export default function AdminOperationalHealthPage() {
           </Button>
         </div>
 
-        {/* Volume Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {metrics.map(m => (
             <Card key={m.label}>
@@ -126,7 +123,6 @@ export default function AdminOperationalHealthPage() {
           ))}
         </div>
 
-        {/* Conversion Rates */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {rates.map(r => (
             <Card key={r.label}>
@@ -143,7 +139,6 @@ export default function AdminOperationalHealthPage() {
           ))}
         </div>
 
-        {/* Trust + Pipeline Chart */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
@@ -181,7 +176,7 @@ export default function AdminOperationalHealthPage() {
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

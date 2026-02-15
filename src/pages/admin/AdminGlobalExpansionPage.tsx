@@ -1,4 +1,4 @@
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -56,11 +56,10 @@ export default function AdminGlobalExpansionPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-background flex">
-      <AdminSidebar />
-      <main className="flex-1 p-6 space-y-6 overflow-y-auto">
-        <h1 className="text-3xl font-bold flex items-center gap-2">
-          <Globe className="h-8 w-8 text-primary" /> Global Expansion Control
+    <AdminLayout>
+      <div className="space-y-6">
+        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+          <Globe className="h-7 w-7 sm:h-8 sm:w-8 text-primary" /> Global Expansion Control
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -83,13 +82,15 @@ export default function AdminGlobalExpansionPage() {
         </div>
 
         <Tabs defaultValue="liquidity">
-          <TabsList>
-            <TabsTrigger value="liquidity">Regional Liquidity</TabsTrigger>
-            <TabsTrigger value="federation">Federation</TabsTrigger>
-            <TabsTrigger value="capital">Capital</TabsTrigger>
-            <TabsTrigger value="rankings">Rankings</TabsTrigger>
-            <TabsTrigger value="ai-policies">AI Policies</TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto">
+            <TabsList>
+              <TabsTrigger value="liquidity">Regional Liquidity</TabsTrigger>
+              <TabsTrigger value="federation">Federation</TabsTrigger>
+              <TabsTrigger value="capital">Capital</TabsTrigger>
+              <TabsTrigger value="rankings">Rankings</TabsTrigger>
+              <TabsTrigger value="ai-policies">AI Policies</TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="liquidity" className="space-y-4">
             <Card>
@@ -114,12 +115,12 @@ export default function AdminGlobalExpansionPage() {
               <p className="text-muted-foreground text-center py-8">No federated nodes registered</p>
             ) : fedNodes.map((n: any) => (
               <Card key={n.id}>
-                <CardContent className="p-4 flex items-center justify-between">
+                <CardContent className="p-4 flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <p className="font-medium">{n.organizations?.name ?? "Unknown"}</p>
                     <p className="text-xs text-muted-foreground">Region: {n.region} · Trust ×{Number(n.trust_multiplier).toFixed(1)}</p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     <Badge variant="outline">{n.verification_level}</Badge>
                     <Badge>{n.status}</Badge>
                   </div>
@@ -133,7 +134,7 @@ export default function AdminGlobalExpansionPage() {
               <p className="text-muted-foreground text-center py-8">No capital partnerships</p>
             ) : capitalPartners.map((c: any) => (
               <Card key={c.id}>
-                <CardContent className="p-4 flex items-center justify-between">
+                <CardContent className="p-4 flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <p className="font-medium">{c.organizations?.name ?? "Unknown"}</p>
                     <p className="text-xs text-muted-foreground">Pool: PKR {Number(c.funding_pool_size).toLocaleString()}</p>
@@ -148,12 +149,12 @@ export default function AdminGlobalExpansionPage() {
             {rankings.length === 0 ? (
               <p className="text-muted-foreground text-center py-8">No rankings computed yet</p>
             ) : rankings.map((r: any) => (
-              <div key={r.id} className="flex items-center justify-between p-3 rounded-lg border border-border">
+              <div key={r.id} className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-lg border border-border">
                 <div className="flex items-center gap-3">
                   <span className="font-bold text-primary">#{r.global_rank}</span>
                   <span>{r.profiles?.full_name ?? "Anonymous"}</span>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   {r.regional_rank && <Badge variant="outline">Regional #{r.regional_rank}</Badge>}
                   {r.category && <Badge variant="secondary">{r.category}</Badge>}
                 </div>
@@ -166,7 +167,7 @@ export default function AdminGlobalExpansionPage() {
               <p className="text-muted-foreground text-center py-8">No AI policies configured</p>
             ) : aiPolicies.map((p: any) => (
               <Card key={p.id}>
-                <CardContent className="p-4 flex items-center justify-between">
+                <CardContent className="p-4 flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <p className="font-medium">{p.organizations?.name ?? "Unknown"}</p>
                     <p className="text-xs text-muted-foreground">
@@ -179,7 +180,7 @@ export default function AdminGlobalExpansionPage() {
             ))}
           </TabsContent>
         </Tabs>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

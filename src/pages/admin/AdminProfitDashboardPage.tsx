@@ -1,4 +1,4 @@
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -66,15 +66,14 @@ export default function AdminProfitDashboardPage() {
   const hasConcentrationRisk = latestDist?.risk_flag;
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <AdminSidebar />
-      <main className="flex-1 p-6 overflow-auto">
-        <div className="mb-6">
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
           <h1 className="text-2xl font-bold text-foreground">Profit Dashboard</h1>
           <p className="text-muted-foreground">Financial performance & optimization</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
@@ -124,12 +123,14 @@ export default function AdminProfitDashboardPage() {
         </div>
 
         <Tabs defaultValue="trends" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="trends">Revenue Trends</TabsTrigger>
-            <TabsTrigger value="breakdown">Revenue Breakdown</TabsTrigger>
-            <TabsTrigger value="concentration">Concentration Risk</TabsTrigger>
-            <TabsTrigger value="complexity">Complexity Budget</TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto">
+            <TabsList>
+              <TabsTrigger value="trends">Revenue Trends</TabsTrigger>
+              <TabsTrigger value="breakdown">Revenue Breakdown</TabsTrigger>
+              <TabsTrigger value="concentration">Concentration Risk</TabsTrigger>
+              <TabsTrigger value="complexity">Complexity Budget</TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="trends">
             <Card>
@@ -175,7 +176,7 @@ export default function AdminProfitDashboardPage() {
           <TabsContent value="concentration">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <CardTitle>Revenue Concentration</CardTitle>
                   {hasConcentrationRisk && (
                     <Badge variant="destructive" className="flex items-center gap-1">
@@ -185,7 +186,7 @@ export default function AdminProfitDashboardPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="p-4 rounded-lg border bg-card">
                     <p className="text-sm text-muted-foreground">Top 1% Revenue Share</p>
                     <p className="text-2xl font-bold">{Number(latestDist?.top_1_percent_revenue || 0).toFixed(1)}%</p>
@@ -215,12 +216,12 @@ export default function AdminProfitDashboardPage() {
                   {(complexityItems ?? []).map((item: any) => {
                     const shouldArchive = item.complexity_score > 7 && item.usage_rate < 5;
                     return (
-                      <div key={item.id} className={`flex items-center justify-between p-3 rounded-lg border ${shouldArchive ? 'border-destructive/30 bg-destructive/5' : ''}`}>
+                      <div key={item.id} className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-lg border ${shouldArchive ? 'border-destructive/30 bg-destructive/5' : ''}`}>
                         <div>
                           <p className="font-medium">{item.feature_name}</p>
                           <p className="text-xs text-muted-foreground">Usage: {item.usage_rate}% · Revenue Impact: {formatPKR(Number(item.revenue_impact))}</p>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <Badge variant={item.complexity_score > 7 ? "destructive" : item.complexity_score > 4 ? "secondary" : "outline"}>
                             Complexity: {item.complexity_score}/10
                           </Badge>
@@ -240,7 +241,7 @@ export default function AdminProfitDashboardPage() {
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }
