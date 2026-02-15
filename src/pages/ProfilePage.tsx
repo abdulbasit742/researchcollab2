@@ -139,24 +139,26 @@ export default function ProfilePage() {
               <Card>
                 <Tabs defaultValue="accountability" className="w-full">
                   <CardHeader className="pb-0">
-                    <TabsList className="grid w-full grid-cols-4">
-                      <TabsTrigger value="accountability" className="text-xs sm:text-sm">
-                        <Briefcase className="h-4 w-4 mr-1 hidden sm:inline" />
-                        Records
-                      </TabsTrigger>
-                      <TabsTrigger value="trust-history" className="text-xs sm:text-sm">
-                        <Activity className="h-4 w-4 mr-1 hidden sm:inline" />
-                        Trust
-                      </TabsTrigger>
-                      <TabsTrigger value="badges" className="text-xs sm:text-sm">
-                        <Star className="h-4 w-4 mr-1 hidden sm:inline" />
-                        Badges
-                      </TabsTrigger>
-                      <TabsTrigger value="failures" className="text-xs sm:text-sm">
-                        <XCircle className="h-4 w-4 mr-1 hidden sm:inline" />
-                        Failures
-                      </TabsTrigger>
-                    </TabsList>
+                    <div className="overflow-x-auto -mx-6 px-6">
+                      <TabsList className="inline-flex w-auto min-w-full">
+                        <TabsTrigger value="accountability" className="text-xs sm:text-sm whitespace-nowrap">
+                          <Briefcase className="h-4 w-4 mr-1 hidden sm:inline" />
+                          Records
+                        </TabsTrigger>
+                        <TabsTrigger value="trust-history" className="text-xs sm:text-sm whitespace-nowrap">
+                          <Activity className="h-4 w-4 mr-1 hidden sm:inline" />
+                          Trust
+                        </TabsTrigger>
+                        <TabsTrigger value="badges" className="text-xs sm:text-sm whitespace-nowrap">
+                          <Star className="h-4 w-4 mr-1 hidden sm:inline" />
+                          Badges
+                        </TabsTrigger>
+                        <TabsTrigger value="failures" className="text-xs sm:text-sm whitespace-nowrap">
+                          <XCircle className="h-4 w-4 mr-1 hidden sm:inline" />
+                          Failures
+                        </TabsTrigger>
+                      </TabsList>
+                    </div>
                   </CardHeader>
                   <CardContent className="pt-6">
                     <TabsContent value="accountability" className="mt-0">
