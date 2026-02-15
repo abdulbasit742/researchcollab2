@@ -1,4 +1,4 @@
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -50,15 +50,14 @@ export default function AdminPricingOptimizerPage() {
   }));
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <AdminSidebar />
-      <main className="flex-1 p-6 overflow-auto">
-        <div className="mb-6">
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
           <h1 className="text-2xl font-bold text-foreground">Pricing Optimizer</h1>
           <p className="text-muted-foreground">Dynamic fee rules, deal efficiency & dispute risk</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -68,14 +67,14 @@ export default function AdminPricingOptimizerPage() {
             <CardContent>
               <div className="space-y-3">
                 {(rules ?? []).map((rule: any) => (
-                  <div key={rule.id} className="flex items-center justify-between p-3 rounded-lg border">
+                  <div key={rule.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-lg border">
                     <div>
                       <p className="font-medium">{rule.condition_label || rule.condition_type}</p>
                       <p className="text-xs text-muted-foreground">
                         Type: {rule.condition_type} · Threshold: {rule.threshold}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <Badge variant={Number(rule.fee_adjustment) < 0 ? "default" : "destructive"}>
                         {Number(rule.fee_adjustment) > 0 ? "+" : ""}{rule.fee_adjustment}%
                       </Badge>
@@ -120,7 +119,7 @@ export default function AdminPricingOptimizerPage() {
               {(disputeRisks ?? []).map((risk: any) => {
                 const factors = risk.contributing_factors as Record<string, any> ?? {};
                 return (
-                  <div key={risk.id} className="flex items-center justify-between p-3 rounded-lg border">
+                  <div key={risk.id} className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-lg border">
                     <div>
                       <p className="font-medium text-sm">{risk.user_id?.slice(0, 8)}...</p>
                       <p className="text-xs text-muted-foreground">
@@ -139,7 +138,7 @@ export default function AdminPricingOptimizerPage() {
             </div>
           </CardContent>
         </Card>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

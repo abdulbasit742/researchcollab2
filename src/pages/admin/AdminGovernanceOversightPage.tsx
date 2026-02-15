@@ -1,5 +1,5 @@
 import { useGovernancePods } from "@/hooks/useGovernancePods";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Shield } from "lucide-react";
@@ -9,9 +9,8 @@ export default function AdminGovernanceOversightPage() {
   const { pods, decisions, isLoading } = useGovernancePods();
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <AdminSidebar />
-      <main className="flex-1 p-6 space-y-6 overflow-auto">
+    <AdminLayout>
+      <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
             <Shield className="h-6 w-6 text-primary" /> Governance Oversight
@@ -39,7 +38,6 @@ export default function AdminGovernanceOversightPage() {
               ))}
             </div>
 
-            {/* Pod Composition */}
             <Card>
               <CardHeader><CardTitle className="text-sm">Pod Composition</CardTitle></CardHeader>
               <CardContent>
@@ -48,7 +46,7 @@ export default function AdminGovernanceOversightPage() {
                 ) : (
                   <div className="space-y-2">
                     {pods.map((pod: any) => (
-                      <div key={pod.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
+                      <div key={pod.id} className="flex flex-wrap items-center gap-3 p-3 rounded-lg border border-border">
                         <Badge variant="outline" className="capitalize">{pod.pod_type}</Badge>
                         <span className="text-sm text-foreground">{pod.formation_method}</span>
                         <Badge variant={pod.status === "active" ? "success" : "secondary"}>{pod.status}</Badge>
@@ -60,7 +58,6 @@ export default function AdminGovernanceOversightPage() {
               </CardContent>
             </Card>
 
-            {/* Recent Decisions */}
             <Card>
               <CardHeader><CardTitle className="text-sm">Recent Decisions</CardTitle></CardHeader>
               <CardContent>
@@ -85,7 +82,7 @@ export default function AdminGovernanceOversightPage() {
             </Card>
           </>
         )}
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

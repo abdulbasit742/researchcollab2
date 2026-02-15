@@ -1,4 +1,4 @@
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -44,16 +44,15 @@ export default function AdminRevenueIntelligencePage() {
   const activeContracts = (contracts ?? []).filter((c: any) => c.status === "active");
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <AdminSidebar />
-      <main className="flex-1 p-6 overflow-auto">
-        <div className="mb-6">
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
           <h1 className="text-2xl font-bold text-foreground">Revenue Intelligence</h1>
           <p className="text-muted-foreground">Real-time monetization analytics & forecasting</p>
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
@@ -101,14 +100,16 @@ export default function AdminRevenueIntelligencePage() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="overview">Revenue Trends</TabsTrigger>
-            <TabsTrigger value="breakdown">Breakdown</TabsTrigger>
-            <TabsTrigger value="commission">Commission Engine</TabsTrigger>
-            <TabsTrigger value="enterprise">Enterprise</TabsTrigger>
-            <TabsTrigger value="forecast">Forecast</TabsTrigger>
-            <TabsTrigger value="leakage">Anti-Leakage</TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto -mx-1 px-1">
+            <TabsList>
+              <TabsTrigger value="overview">Revenue Trends</TabsTrigger>
+              <TabsTrigger value="breakdown">Breakdown</TabsTrigger>
+              <TabsTrigger value="commission">Commission Engine</TabsTrigger>
+              <TabsTrigger value="enterprise">Enterprise</TabsTrigger>
+              <TabsTrigger value="forecast">Forecast</TabsTrigger>
+              <TabsTrigger value="leakage">Anti-Leakage</TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Revenue Trends */}
           <TabsContent value="overview">
@@ -168,14 +169,14 @@ export default function AdminRevenueIntelligencePage() {
               <CardContent>
                 <div className="space-y-3">
                   {(commissionRules ?? []).map((rule: any) => (
-                    <div key={rule.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
+                    <div key={rule.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-lg border bg-card">
                       <div>
                         <p className="font-medium">{rule.rule_name}</p>
                         <p className="text-xs text-muted-foreground">
                           Trust: {rule.min_trust_score}–{rule.max_trust_score ?? '100'} · Volume: {formatPKR(Number(rule.min_volume))}+
                         </p>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <Badge variant={Number(rule.commission_rate) <= 8 ? "default" : "secondary"}>
                           {rule.commission_rate}% commission
                         </Badge>
@@ -208,14 +209,14 @@ export default function AdminRevenueIntelligencePage() {
               <CardContent>
                 <div className="space-y-3">
                   {(contracts ?? []).map((contract: any) => (
-                    <div key={contract.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
+                    <div key={contract.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-lg border bg-card">
                       <div>
                         <p className="font-medium">{contract.contract_name}</p>
                         <p className="text-xs text-muted-foreground">
                           {contract.seats} seats · {contract.pricing_model} · Renewal: {contract.renewal_date ?? 'N/A'}
                         </p>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-semibold">{formatPKR(Number(contract.contract_value))}</span>
                         <Badge variant={contract.status === "active" ? "default" : "secondary"}>{contract.status}</Badge>
                         {contract.intelligence_access && <Badge variant="outline"><Zap className="h-3 w-3 mr-1" />AI</Badge>}
@@ -271,7 +272,7 @@ export default function AdminRevenueIntelligencePage() {
               <CardContent>
                 <div className="space-y-3">
                   {leakageAlerts.map((alert: any) => (
-                    <div key={alert.id} className="flex items-center justify-between p-4 rounded-lg border border-destructive/20 bg-destructive/5">
+                    <div key={alert.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-lg border border-destructive/20 bg-destructive/5">
                       <div>
                         <p className="font-medium capitalize">{alert.detection_type.replace(/_/g, ' ')}</p>
                         <p className="text-xs text-muted-foreground">
@@ -291,7 +292,7 @@ export default function AdminRevenueIntelligencePage() {
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

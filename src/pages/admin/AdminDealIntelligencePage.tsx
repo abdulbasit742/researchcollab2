@@ -1,3 +1,4 @@
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
@@ -34,26 +35,26 @@ export default function AdminDealIntelligencePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
-        <h1 className="text-3xl font-bold flex items-center gap-2"><Brain className="h-8 w-8 text-primary" /> Deal Intelligence Analytics</h1>
+    <AdminLayout>
+      <div className="space-y-6">
+        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2"><Brain className="h-8 w-8 text-primary" /> Deal Intelligence Analytics</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card><CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground">Total Sessions</p>
-            <p className="text-3xl font-bold">{totalSessions}</p>
+            <p className="text-2xl sm:text-3xl font-bold">{totalSessions}</p>
           </CardContent></Card>
           <Card><CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground">Avg Risk Score</p>
-            <p className="text-3xl font-bold">{avgRisk}</p>
+            <p className="text-2xl sm:text-3xl font-bold">{avgRisk}</p>
           </CardContent></Card>
           <Card><CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground">Avg Dispute Prob</p>
-            <p className="text-3xl font-bold">{avgDispute}%</p>
+            <p className="text-2xl sm:text-3xl font-bold">{avgDispute}%</p>
           </CardContent></Card>
           <Card><CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground">High Risk Deals</p>
-            <p className="text-3xl font-bold text-destructive">{highRisk}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-destructive">{highRisk}</p>
           </CardContent></Card>
         </div>
 
@@ -71,6 +72,6 @@ export default function AdminDealIntelligencePage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </AdminLayout>
   );
 }

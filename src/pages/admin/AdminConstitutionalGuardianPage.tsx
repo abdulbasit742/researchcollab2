@@ -1,4 +1,4 @@
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { useConstitutionalGuardian } from "@/hooks/useConstitutionalGuardian";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -29,23 +29,21 @@ export default function AdminConstitutionalGuardianPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen">
-        <AdminSidebar />
-        <main className="flex-1 p-6 space-y-6">
+      <AdminLayout>
+        <div className="space-y-6">
           <Skeleton className="h-10 w-64" />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-28" />)}
           </div>
-        </main>
-      </div>
+        </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <div className="flex min-h-screen">
-      <AdminSidebar />
-      <main className="flex-1 p-6 space-y-6 overflow-auto">
-        <div className="flex items-center justify-between">
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold flex items-center gap-2">
               <Shield className="h-6 w-6 text-primary" />
@@ -60,7 +58,7 @@ export default function AdminConstitutionalGuardianPage() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card>
             <CardContent className="pt-6">
               <p className="text-sm text-muted-foreground">Health Score</p>
@@ -89,9 +87,7 @@ export default function AdminConstitutionalGuardianPage() {
 
         {/* Active Violations */}
         <Card>
-          <CardHeader>
-            <CardTitle>Active Violations</CardTitle>
-          </CardHeader>
+          <CardHeader><CardTitle>Active Violations</CardTitle></CardHeader>
           <CardContent>
             {activeViolations.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-6">
@@ -101,7 +97,7 @@ export default function AdminConstitutionalGuardianPage() {
             ) : (
               <div className="space-y-3">
                 {activeViolations.map((v: any) => (
-                  <div key={v.id} className="flex items-center justify-between p-4 rounded-lg border">
+                  <div key={v.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-lg border">
                     <div className="flex items-center gap-3">
                       <Badge variant={v.severity_level === "critical" ? "destructive" : "secondary"}>
                         {v.severity_level}
@@ -126,9 +122,7 @@ export default function AdminConstitutionalGuardianPage() {
         {/* Concentration + Recent Audits */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Concentration Metrics</CardTitle>
-            </CardHeader>
+            <CardHeader><CardTitle>Concentration Metrics</CardTitle></CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {(concentrationData || []).slice(0, 10).map((m: any) => (
@@ -145,9 +139,7 @@ export default function AdminConstitutionalGuardianPage() {
           </Card>
 
           <Card>
-            <CardHeader>
-              <CardTitle>Recent Audit Logs</CardTitle>
-            </CardHeader>
+            <CardHeader><CardTitle>Recent Audit Logs</CardTitle></CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {(auditLogs || []).slice(0, 8).map((log: any) => (
@@ -168,7 +160,7 @@ export default function AdminConstitutionalGuardianPage() {
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }
