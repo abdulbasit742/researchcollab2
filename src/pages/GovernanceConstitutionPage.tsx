@@ -1,3 +1,4 @@
+import { MainLayout } from "@/components/layout/MainLayout";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,11 +36,12 @@ export default function GovernanceConstitutionPage() {
   const governanceRules = (constitution?.governance_rules as string[]) || [];
 
   return (
-    <div className="min-h-screen bg-background p-6 max-w-5xl mx-auto space-y-6">
+    <MainLayout>
+      <div className="px-4 py-8 max-w-5xl mx-auto space-y-6">
       <div className="flex items-center gap-3">
         <ScrollText className="h-8 w-8 text-primary" />
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Platform Constitution</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Platform Constitution</h1>
           <p className="text-muted-foreground">
             Version {constitution?.version || 0} — The governing document of RCollab
           </p>
@@ -117,6 +119,7 @@ export default function GovernanceConstitutionPage() {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+      </div>
+    </MainLayout>
   );
 }

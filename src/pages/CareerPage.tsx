@@ -1,7 +1,6 @@
  import { useState, useRef, useEffect } from "react";
  import { useCareerCopilot, CareerInsight } from "@/hooks/useCareerCopilot";
- import { Navbar } from "@/components/layout/Navbar";
- import { Footer } from "@/components/layout/Footer";
+ import { MainLayout } from "@/components/layout/MainLayout";
  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
  import { Button } from "@/components/ui/button";
  import { Input } from "@/components/ui/input";
@@ -86,10 +85,9 @@
  };
  
  return (
-   <div className="min-h-screen bg-background flex flex-col">
-     <Navbar />
-     <main className="flex-1 container mx-auto px-4 py-6 pb-20 md:pb-6">
-       <div className="max-w-4xl mx-auto h-[calc(100vh-12rem)] flex flex-col">
+    <MainLayout>
+      <div className="container mx-auto px-4 py-6">
+        <div className="max-w-4xl mx-auto h-[calc(100vh-12rem)] flex flex-col">
          {/* Header */}
          <div className="flex items-center gap-3 mb-4">
            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -241,8 +239,7 @@
            </div>
          </Card>
        </div>
-     </main>
-     <Footer />
-   </div>
+      </div>
+    </MainLayout>
  );
  }

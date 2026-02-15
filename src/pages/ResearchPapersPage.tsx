@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navbar } from "@/components/layout/Navbar";
+import { MainLayout } from "@/components/layout/MainLayout";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -64,9 +64,8 @@ export default function ResearchPapersPage() {
   const bookmarkedOrAnalyzedCount = allPapers.filter((p) => p.bookmarked || p.summarized).length;
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <main className="container py-6 px-4 pb-24 md:pb-6">
+    <MainLayout>
+      <div className="container py-6 px-4">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between flex-wrap gap-3">
           <div>
@@ -212,7 +211,7 @@ export default function ResearchPapersPage() {
             />
           </div>
         </div>
-      </main>
+      </div>
 
       {/* Compare floating bar */}
       {compareMode && selectedForCompare.length > 0 && (
@@ -269,6 +268,6 @@ export default function ResearchPapersPage() {
         loading={aiLoading}
         paperCount={bookmarkedOrAnalyzedCount}
       />
-    </div>
+    </MainLayout>
   );
 }

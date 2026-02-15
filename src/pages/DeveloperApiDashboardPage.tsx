@@ -6,7 +6,7 @@ import { useApiAccess } from "@/hooks/useFederation";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Navbar } from "@/components/layout/Navbar";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 export default function DeveloperApiDashboardPage() {
   const { clients, loading, fetchApiClients, createApiClient, revokeApiClient } = useApiAccess();
@@ -39,13 +39,12 @@ export default function DeveloperApiDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <div className="max-w-5xl mx-auto px-4 py-8 pb-20 md:pb-8 space-y-6">
+    <MainLayout>
+      <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         <div className="flex items-center gap-3">
           <Code className="h-8 w-8 text-primary" />
           <div>
-            <h1 className="text-3xl font-bold">Developer API</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Developer API</h1>
             <p className="text-muted-foreground">Manage API keys and integrations</p>
           </div>
         </div>
@@ -112,6 +111,6 @@ export default function DeveloperApiDashboardPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </MainLayout>
   );
 }

@@ -1,7 +1,6 @@
  import { useState } from "react";
  import { useAuth } from "@/contexts/AuthContext";
- import { Navbar } from "@/components/layout/Navbar";
- import { Footer } from "@/components/layout/Footer";
+ import { MainLayout } from "@/components/layout/MainLayout";
  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
  import { Button } from "@/components/ui/button";
  import { Input } from "@/components/ui/input";
@@ -36,9 +35,8 @@
  };
  
  return (
-   <div className="min-h-screen bg-background flex flex-col">
-     <Navbar />
-     <main className="flex-1 container mx-auto px-4 py-8 pb-20 md:pb-8">
+    <MainLayout>
+      <div className="container mx-auto px-4 py-8">
        <div className="max-w-3xl mx-auto">
          {/* Header */}
          <div className="flex items-center gap-4 mb-6">
@@ -234,8 +232,7 @@
            </TabsContent>
          </Tabs>
        </div>
-     </main>
-     <Footer />
-   </div>
+      </div>
+    </MainLayout>
  );
  }

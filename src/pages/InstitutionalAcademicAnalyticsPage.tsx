@@ -1,3 +1,4 @@
+import { MainLayout } from "@/components/layout/MainLayout";
 import { useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building2, GraduationCap, TrendingUp, AlertTriangle, DollarSign, Users, Loader2 } from "lucide-react";
@@ -63,13 +64,13 @@ export default function InstitutionalAcademicAnalyticsPage() {
   }, {});
   const workloadData = Object.entries(reviewerCounts).map(([name, reviews]) => ({ name, reviews })).slice(0, 10);
 
-  if (isLoading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+  if (isLoading) return <MainLayout><div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></MainLayout>;
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2"><Building2 className="h-8 w-8 text-primary" /> Institutional Academic Analytics</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2"><Building2 className="h-8 w-8 text-primary" /> Institutional Academic Analytics</h1>
           <p className="text-muted-foreground mt-1">Boardroom-ready academic performance overview</p>
         </div>
 
@@ -148,6 +149,6 @@ export default function InstitutionalAcademicAnalyticsPage() {
           </Card>
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 }
