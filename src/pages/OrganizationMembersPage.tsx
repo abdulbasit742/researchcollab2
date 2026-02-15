@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -233,12 +234,11 @@ const OrganizationMembersPage = () => {
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <Avatar className="h-8 w-8">
-                            <AvatarImage src={member.avatar_url || ""} alt={member.userName} />
                             <AvatarFallback>{member.userName?.charAt(0) || "?"}</AvatarFallback>
                           </Avatar>
                           <div>
                             <p className="font-medium">{member.userName}</p>
-                            <p className="text-xs text-muted-foreground">{member.email || "No email"}</p>
+                            <p className="text-xs text-muted-foreground">{member.userEmail || "No email"}</p>
                           </div>
                         </div>
                       </TableCell>
@@ -252,20 +252,20 @@ const OrganizationMembersPage = () => {
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-1 flex-wrap">
-                          {member.tool_access?.slice(0, 2).map((tool: string) => (
+                          {member.toolAccess?.slice(0, 2).map((tool: string) => (
                             <Badge key={tool} variant="secondary" className="text-xs">
                               {tool}
                             </Badge>
                           )) || <span className="text-muted-foreground text-sm">None</span>}
-                          {(member.tool_access?.length || 0) > 2 && (
+                          {(member.toolAccess?.length || 0) > 2 && (
                             <Badge variant="secondary" className="text-xs">
-                              +{member.tool_access.length - 2}
+                              +{member.toolAccess.length - 2}
                             </Badge>
                           )}
                         </div>
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
-                        {new Date(member.created_at).toLocaleDateString()}
+                        {new Date(member.joinedAt).toLocaleDateString()}
                       </TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
