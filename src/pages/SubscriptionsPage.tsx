@@ -156,7 +156,7 @@ export default function SubscriptionsPage() {
               <Package className="h-3 w-3 mr-1" />
               My Subscriptions
             </Badge>
-            <h1 className="text-3xl font-bold md:text-4xl">
+            <h1 className="text-2xl sm:text-3xl font-bold md:text-4xl">
               Manage Your{" "}
               <span className="text-gradient">AI Tools</span>
             </h1>

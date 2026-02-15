@@ -173,74 +173,76 @@ const AdminEnterprisePage = () => {
                     {organizations.length === 0 ? "No organizations registered yet" : "No organizations match your search"}
                   </div>
                 ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Organization</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Members</TableHead>
-                        <TableHead>Plan</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredOrgs.map(org => (
-                        <TableRow key={org.id}>
-                          <TableCell>
-                            <div>
-                              <p className="font-medium">{org.name}</p>
-                              <p className="text-sm text-muted-foreground">
-                                {org.city && org.country ? `${org.city}, ${org.country}` : "Location not set"}
-                              </p>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline">{getOrgTypeLabel(org.type)}</Badge>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-1">
-                              <Users className="h-4 w-4 text-muted-foreground" />
-                              <span>{org.member_count || 0}/{org.member_limit}</span>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant={org.subscription_plan === 'enterprise' ? 'default' : 'secondary'}>
-                              {org.subscription_plan}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant={org.status === 'active' ? 'default' : 'destructive'}>
-                              {org.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
-                              <Button 
-                                variant="ghost" 
-                                size="sm"
-                                onClick={() => navigate(`/org/${org.id}/dashboard`)}
-                              >
-                                <Eye className="h-4 w-4" />
-                              </Button>
-                              <Button 
-                                variant="outline" 
-                                size="sm"
-                                onClick={() => {
-                                  toast({
-                                    title: "Invoice Created",
-                                    description: `New invoice created for ${org.name}`
-                                  });
-                                }}
-                              >
-                                <FileText className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </TableCell>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Organization</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Members</TableHead>
+                          <TableHead>Plan</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredOrgs.map(org => (
+                          <TableRow key={org.id}>
+                            <TableCell>
+                              <div>
+                                <p className="font-medium">{org.name}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {org.city && org.country ? `${org.city}, ${org.country}` : "Location not set"}
+                                </p>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="outline">{getOrgTypeLabel(org.type)}</Badge>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-1">
+                                <Users className="h-4 w-4 text-muted-foreground" />
+                                <span>{org.member_count || 0}/{org.member_limit}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant={org.subscription_plan === 'enterprise' ? 'default' : 'secondary'}>
+                                {org.subscription_plan}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant={org.status === 'active' ? 'default' : 'destructive'}>
+                                {org.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex justify-end gap-2">
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm"
+                                  onClick={() => navigate(`/org/${org.id}/dashboard`)}
+                                >
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => {
+                                    toast({
+                                      title: "Invoice Created",
+                                      description: `New invoice created for ${org.name}`
+                                    });
+                                  }}
+                                >
+                                  <FileText className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -259,50 +261,52 @@ const AdminEnterprisePage = () => {
                     No bulk licenses created yet
                   </div>
                 ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Organization</TableHead>
-                        <TableHead>Tool</TableHead>
-                        <TableHead>Seats</TableHead>
-                        <TableHead>Usage</TableHead>
-                        <TableHead>Monthly</TableHead>
-                        <TableHead>Expires</TableHead>
-                        <TableHead>Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {licenses.map(license => {
-                        const usagePercent = (license.used_seats / license.total_seats) * 100;
-                        return (
-                          <TableRow key={license.id}>
-                            <TableCell className="font-medium">{license.org_name}</TableCell>
-                            <TableCell>{license.tool_name}</TableCell>
-                            <TableCell>{license.total_seats}</TableCell>
-                            <TableCell>
-                              <div className="w-24">
-                                <Progress value={usagePercent} className="h-2" />
-                                <p className="text-xs text-muted-foreground mt-1">
-                                  {license.used_seats}/{license.total_seats}
-                                </p>
-                              </div>
-                            </TableCell>
-                            <TableCell>${license.monthly_cost}</TableCell>
-                            <TableCell>
-                              {license.expires_at 
-                                ? new Date(license.expires_at).toLocaleDateString() 
-                                : "No expiry"}
-                            </TableCell>
-                            <TableCell>
-                              <Badge variant={license.status === 'active' ? 'default' : 'secondary'}>
-                                {license.status}
-                              </Badge>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Organization</TableHead>
+                          <TableHead>Tool</TableHead>
+                          <TableHead>Seats</TableHead>
+                          <TableHead>Usage</TableHead>
+                          <TableHead>Monthly</TableHead>
+                          <TableHead>Expires</TableHead>
+                          <TableHead>Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {licenses.map(license => {
+                          const usagePercent = (license.used_seats / license.total_seats) * 100;
+                          return (
+                            <TableRow key={license.id}>
+                              <TableCell className="font-medium">{license.org_name}</TableCell>
+                              <TableCell>{license.tool_name}</TableCell>
+                              <TableCell>{license.total_seats}</TableCell>
+                              <TableCell>
+                                <div className="w-24">
+                                  <Progress value={usagePercent} className="h-2" />
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    {license.used_seats}/{license.total_seats}
+                                  </p>
+                                </div>
+                              </TableCell>
+                              <TableCell>${license.monthly_cost}</TableCell>
+                              <TableCell>
+                                {license.expires_at 
+                                  ? new Date(license.expires_at).toLocaleDateString() 
+                                  : "No expiry"}
+                              </TableCell>
+                              <TableCell>
+                                <Badge variant={license.status === 'active' ? 'default' : 'secondary'}>
+                                  {license.status}
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -321,38 +325,40 @@ const AdminEnterprisePage = () => {
                     No organization members yet
                   </div>
                 ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Member</TableHead>
-                        <TableHead>Role</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Tool Access</TableHead>
-                        <TableHead>Joined</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {members.map(member => (
-                        <TableRow key={member.id}>
-                          <TableCell className="font-medium">{member.user_name}</TableCell>
-                          <TableCell>
-                            <Badge variant="outline" className="capitalize">{member.role}</Badge>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant={member.status === 'active' ? 'default' : 'secondary'}>
-                              {member.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            {member.tool_access?.length || 0} tools
-                          </TableCell>
-                          <TableCell>
-                            {new Date(member.created_at).toLocaleDateString()}
-                          </TableCell>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Member</TableHead>
+                          <TableHead>Role</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Tool Access</TableHead>
+                          <TableHead>Joined</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {members.map(member => (
+                          <TableRow key={member.id}>
+                            <TableCell className="font-medium">{member.user_name}</TableCell>
+                            <TableCell>
+                              <Badge variant="outline" className="capitalize">{member.role}</Badge>
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant={member.status === 'active' ? 'default' : 'secondary'}>
+                                {member.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              {member.tool_access?.length || 0} tools
+                            </TableCell>
+                            <TableCell>
+                              {new Date(member.created_at).toLocaleDateString()}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 )}
               </CardContent>
             </Card>

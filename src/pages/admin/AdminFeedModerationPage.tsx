@@ -221,86 +221,88 @@ export default function AdminFeedModerationPage() {
                     ))}
                   </div>
                 ) : reports && reports.length > 0 ? (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Content</TableHead>
-                        <TableHead>Reason</TableHead>
-                        <TableHead>Reporter</TableHead>
-                        <TableHead>Reported</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {reports.map((report) => (
-                        <TableRow key={report.id}>
-                          <TableCell className="max-w-xs">
-                            <p className="truncate text-sm">
-                              {report.post?.content || "Content not available"}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              by {report.post?.author?.full_name || "Unknown"}
-                            </p>
-                          </TableCell>
-                          <TableCell>
-                            <Badge className={getReasonBadge(report.reason)}>
-                              {report.reason.replace("_", " ")}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <span className="text-sm">{report.reporter?.full_name || "Anonymous"}</span>
-                          </TableCell>
-                          <TableCell>
-                            <span className="text-sm text-muted-foreground">
-                              {formatDistanceToNow(new Date(report.created_at), { addSuffix: true })}
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                {report.post_id && (
-                                  <>
-                                    <DropdownMenuItem onClick={() => hidePost.mutate(report.post_id!)}>
-                                      <EyeOff className="h-4 w-4 mr-2" />
-                                      Hide Post
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem 
-                                      className="text-destructive"
-                                      onClick={() => deletePost.mutate(report.post_id!)}
-                                    >
-                                      <Trash2 className="h-4 w-4 mr-2" />
-                                      Delete Post
-                                    </DropdownMenuItem>
-                                  </>
-                                )}
-                                {activeTab === "pending" && (
-                                  <>
-                                    <DropdownMenuItem
-                                      onClick={() => resolveReport.mutate({ reportId: report.id, action: "resolved" })}
-                                    >
-                                      <CheckCircle className="h-4 w-4 mr-2" />
-                                      Mark Resolved
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                      onClick={() => resolveReport.mutate({ reportId: report.id, action: "dismissed" })}
-                                    >
-                                      <XCircle className="h-4 w-4 mr-2" />
-                                      Dismiss
-                                    </DropdownMenuItem>
-                                  </>
-                                )}
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Content</TableHead>
+                          <TableHead>Reason</TableHead>
+                          <TableHead>Reporter</TableHead>
+                          <TableHead>Reported</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {reports.map((report) => (
+                          <TableRow key={report.id}>
+                            <TableCell className="max-w-xs">
+                              <p className="truncate text-sm">
+                                {report.post?.content || "Content not available"}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                by {report.post?.author?.full_name || "Unknown"}
+                              </p>
+                            </TableCell>
+                            <TableCell>
+                              <Badge className={getReasonBadge(report.reason)}>
+                                {report.reason.replace("_", " ")}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <span className="text-sm">{report.reporter?.full_name || "Anonymous"}</span>
+                            </TableCell>
+                            <TableCell>
+                              <span className="text-sm text-muted-foreground">
+                                {formatDistanceToNow(new Date(report.created_at), { addSuffix: true })}
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="icon">
+                                    <MoreHorizontal className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  {report.post_id && (
+                                    <>
+                                      <DropdownMenuItem onClick={() => hidePost.mutate(report.post_id!)}>
+                                        <EyeOff className="h-4 w-4 mr-2" />
+                                        Hide Post
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem 
+                                        className="text-destructive"
+                                        onClick={() => deletePost.mutate(report.post_id!)}
+                                      >
+                                        <Trash2 className="h-4 w-4 mr-2" />
+                                        Delete Post
+                                      </DropdownMenuItem>
+                                    </>
+                                  )}
+                                  {activeTab === "pending" && (
+                                    <>
+                                      <DropdownMenuItem
+                                        onClick={() => resolveReport.mutate({ reportId: report.id, action: "resolved" })}
+                                      >
+                                        <CheckCircle className="h-4 w-4 mr-2" />
+                                        Mark Resolved
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem
+                                        onClick={() => resolveReport.mutate({ reportId: report.id, action: "dismissed" })}
+                                      >
+                                        <XCircle className="h-4 w-4 mr-2" />
+                                        Dismiss
+                                      </DropdownMenuItem>
+                                    </>
+                                  )}
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">
                     <Flag className="h-12 w-12 mx-auto mb-3 opacity-50" />

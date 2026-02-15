@@ -174,7 +174,7 @@ export default function UserPublicProfilePage() {
             <div className="flex-1">
               {/* Name and verification */}
               <div className="flex items-center gap-3 flex-wrap">
-                <h1 className="text-3xl md:text-4xl font-bold">{profileData.fullName}</h1>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">{profileData.fullName}</h1>
                 {profileData.isVerified && (
                   <Badge variant="default" className="gap-1 bg-emerald-600">
                     <CheckCircle2 className="h-3 w-3" />

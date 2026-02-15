@@ -227,6 +227,7 @@ export default function AdminPermissionsPage() {
 
             <Card>
               <ScrollArea className="h-[600px]">
+                <div className="overflow-x-auto">
                 <Table>
                   <TableHeader className="sticky top-0 bg-card z-10">
                     <TableRow>
@@ -284,6 +285,7 @@ export default function AdminPermissionsPage() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </ScrollArea>
             </Card>
           </TabsContent>
@@ -303,63 +305,65 @@ export default function AdminPermissionsPage() {
                     No contextual permissions have been granted yet
                   </p>
                 ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>User ID</TableHead>
-                        <TableHead>Context</TableHead>
-                        <TableHead>Permission</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Expires</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {contextualPermissions.map((perm) => (
-                        <TableRow key={perm.id}>
-                          <TableCell className="font-mono text-xs">
-                            {perm.user_id.slice(0, 8)}...
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline" className="capitalize">
-                              {perm.context_type}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="font-mono text-xs">
-                            {perm.action_key}
-                          </TableCell>
-                          <TableCell>
-                            {perm.allowed ? (
-                              <Badge className="bg-green-500/10 text-green-600">
-                                <Check className="h-3 w-3 mr-1" />
-                                Allowed
-                              </Badge>
-                            ) : (
-                              <Badge className="bg-red-500/10 text-red-600">
-                                <X className="h-3 w-3 mr-1" />
-                                Denied
-                              </Badge>
-                            )}
-                          </TableCell>
-                          <TableCell className="text-sm text-muted-foreground">
-                            {perm.expires_at
-                              ? format(new Date(perm.expires_at), "MMM d, yyyy")
-                              : "Never"}
-                          </TableCell>
-                          <TableCell>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleRevokeContextual(perm.id)}
-                              className="text-red-500 hover:text-red-600"
-                            >
-                              Revoke
-                            </Button>
-                          </TableCell>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>User ID</TableHead>
+                          <TableHead>Context</TableHead>
+                          <TableHead>Permission</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Expires</TableHead>
+                          <TableHead>Actions</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {contextualPermissions.map((perm) => (
+                          <TableRow key={perm.id}>
+                            <TableCell className="font-mono text-xs">
+                              {perm.user_id.slice(0, 8)}...
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="outline" className="capitalize">
+                                {perm.context_type}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="font-mono text-xs">
+                              {perm.action_key}
+                            </TableCell>
+                            <TableCell>
+                              {perm.allowed ? (
+                                <Badge className="bg-green-500/10 text-green-600">
+                                  <Check className="h-3 w-3 mr-1" />
+                                  Allowed
+                                </Badge>
+                              ) : (
+                                <Badge className="bg-red-500/10 text-red-600">
+                                  <X className="h-3 w-3 mr-1" />
+                                  Denied
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-sm text-muted-foreground">
+                              {perm.expires_at
+                                ? format(new Date(perm.expires_at), "MMM d, yyyy")
+                                : "Never"}
+                            </TableCell>
+                            <TableCell>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleRevokeContextual(perm.id)}
+                                className="text-red-500 hover:text-red-600"
+                              >
+                                Revoke
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -375,51 +379,53 @@ export default function AdminPermissionsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Time</TableHead>
-                      <TableHead>Admin</TableHead>
-                      <TableHead>Action</TableHead>
-                      <TableHead>Permission</TableHead>
-                      <TableHead>Change</TableHead>
-                      <TableHead>Reason</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {auditLogs.map((log) => (
-                      <TableRow key={log.id}>
-                        <TableCell className="text-sm text-muted-foreground">
-                          {format(new Date(log.created_at), "MMM d, HH:mm")}
-                        </TableCell>
-                        <TableCell>{log.admin_name || "Unknown"}</TableCell>
-                        <TableCell>
-                          <Badge className={getActionTypeColor(log.action_type)}>
-                            {log.action_type}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="font-mono text-xs">
-                          {log.action_key}
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {log.old_value && (
-                            <span className="text-red-500 line-through mr-2">
-                              {JSON.stringify(log.old_value).slice(0, 30)}
-                            </span>
-                          )}
-                          {log.new_value && (
-                            <span className="text-green-500">
-                              {JSON.stringify(log.new_value).slice(0, 30)}
-                            </span>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">
-                          {log.reason || "-"}
-                        </TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Time</TableHead>
+                        <TableHead>Admin</TableHead>
+                        <TableHead>Action</TableHead>
+                        <TableHead>Permission</TableHead>
+                        <TableHead>Change</TableHead>
+                        <TableHead>Reason</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {auditLogs.map((log) => (
+                        <TableRow key={log.id}>
+                          <TableCell className="text-sm text-muted-foreground">
+                            {format(new Date(log.created_at), "MMM d, HH:mm")}
+                          </TableCell>
+                          <TableCell>{log.admin_name || "Unknown"}</TableCell>
+                          <TableCell>
+                            <Badge className={getActionTypeColor(log.action_type)}>
+                              {log.action_type}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="font-mono text-xs">
+                            {log.action_key}
+                          </TableCell>
+                          <TableCell className="text-sm">
+                            {log.old_value && (
+                              <span className="text-red-500 line-through mr-2">
+                                {JSON.stringify(log.old_value).slice(0, 30)}
+                              </span>
+                            )}
+                            {log.new_value && (
+                              <span className="text-green-500">
+                                {JSON.stringify(log.new_value).slice(0, 30)}
+                              </span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">
+                            {log.reason || "-"}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

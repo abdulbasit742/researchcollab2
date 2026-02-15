@@ -160,7 +160,7 @@ export default function StudentProfilePage() {
               <GraduationCap className="h-3 w-3 mr-1" />
               Student Profile
             </Badge>
-            <h1 className="text-3xl font-bold md:text-4xl">
+            <h1 className="text-2xl sm:text-3xl font-bold md:text-4xl">
               Complete Your{" "}
               <span className="text-gradient">Student Profile</span>
             </h1>

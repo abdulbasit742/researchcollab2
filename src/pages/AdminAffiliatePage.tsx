@@ -240,102 +240,104 @@ export default function AdminAffiliatePage() {
                     {affiliates.length === 0 ? "No affiliates registered yet" : "No affiliates match your search"}
                   </div>
                 ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Affiliate</TableHead>
-                        <TableHead>Code</TableHead>
-                        <TableHead className="text-right">Clicks</TableHead>
-                        <TableHead className="text-right">Conversions</TableHead>
-                        <TableHead className="text-right">Earnings</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredAffiliates.map(aff => (
-                        <TableRow key={aff.id}>
-                          <TableCell>
-                            <div>
-                              <p className="font-medium">{aff.user_name || "Unknown"}</p>
-                              <p className="text-xs text-muted-foreground">
-                                Since {new Date(aff.created_at).toLocaleDateString()}
-                              </p>
-                            </div>
-                          </TableCell>
-                          <TableCell className="font-mono text-sm">{aff.referral_code}</TableCell>
-                          <TableCell className="text-right">{aff.total_clicks}</TableCell>
-                          <TableCell className="text-right">{aff.total_conversions}</TableCell>
-                          <TableCell className="text-right font-medium">
-                            ${(aff.lifetime_earnings || 0).toFixed(2)}
-                          </TableCell>
-                          <TableCell>
-                            <Badge className={getStatusColor(aff.status)}>
-                              {aff.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex gap-1">
-                              <Dialog>
-                                <DialogTrigger asChild>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Affiliate</TableHead>
+                          <TableHead>Code</TableHead>
+                          <TableHead className="text-right">Clicks</TableHead>
+                          <TableHead className="text-right">Conversions</TableHead>
+                          <TableHead className="text-right">Earnings</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredAffiliates.map(aff => (
+                          <TableRow key={aff.id}>
+                            <TableCell>
+                              <div>
+                                <p className="font-medium">{aff.user_name || "Unknown"}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  Since {new Date(aff.created_at).toLocaleDateString()}
+                                </p>
+                              </div>
+                            </TableCell>
+                            <TableCell className="font-mono text-sm">{aff.referral_code}</TableCell>
+                            <TableCell className="text-right">{aff.total_clicks}</TableCell>
+                            <TableCell className="text-right">{aff.total_conversions}</TableCell>
+                            <TableCell className="text-right font-medium">
+                              ${(aff.lifetime_earnings || 0).toFixed(2)}
+                            </TableCell>
+                            <TableCell>
+                              <Badge className={getStatusColor(aff.status)}>
+                                {aff.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex gap-1">
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="icon"
+                                      onClick={() => {
+                                        setSelectedAffiliate(aff);
+                                        setEditingCommission(aff.custom_commission_rate || aff.commission_rate);
+                                      }}
+                                    >
+                                      <Settings className="h-4 w-4" />
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent>
+                                    <DialogHeader>
+                                      <DialogTitle>Edit Commission Rate</DialogTitle>
+                                    </DialogHeader>
+                                    <div className="space-y-4 py-4">
+                                      <div>
+                                        <Label>Affiliate: {selectedAffiliate?.user_name}</Label>
+                                      </div>
+                                      <div>
+                                        <Label>Custom Commission Rate (%)</Label>
+                                        <Input
+                                          type="number"
+                                          value={editingCommission || ""}
+                                          onChange={(e) => setEditingCommission(Number(e.target.value))}
+                                          className="mt-2"
+                                        />
+                                      </div>
+                                    </div>
+                                    <DialogFooter>
+                                      <Button onClick={handleUpdateCommission}>Save Changes</Button>
+                                    </DialogFooter>
+                                  </DialogContent>
+                                </Dialog>
+                                {aff.status === "active" && (
                                   <Button 
                                     variant="ghost" 
                                     size="icon"
-                                    onClick={() => {
-                                      setSelectedAffiliate(aff);
-                                      setEditingCommission(aff.custom_commission_rate || aff.commission_rate);
-                                    }}
+                                    onClick={() => handleSuspend(aff)}
                                   >
-                                    <Settings className="h-4 w-4" />
+                                    <AlertTriangle className="h-4 w-4 text-orange-500" />
                                   </Button>
-                                </DialogTrigger>
-                                <DialogContent>
-                                  <DialogHeader>
-                                    <DialogTitle>Edit Commission Rate</DialogTitle>
-                                  </DialogHeader>
-                                  <div className="space-y-4 py-4">
-                                    <div>
-                                      <Label>Affiliate: {selectedAffiliate?.user_name}</Label>
-                                    </div>
-                                    <div>
-                                      <Label>Custom Commission Rate (%)</Label>
-                                      <Input
-                                        type="number"
-                                        value={editingCommission || ""}
-                                        onChange={(e) => setEditingCommission(Number(e.target.value))}
-                                        className="mt-2"
-                                      />
-                                    </div>
-                                  </div>
-                                  <DialogFooter>
-                                    <Button onClick={handleUpdateCommission}>Save Changes</Button>
-                                  </DialogFooter>
-                                </DialogContent>
-                              </Dialog>
-                              {aff.status === "active" && (
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon"
-                                  onClick={() => handleSuspend(aff)}
-                                >
-                                  <AlertTriangle className="h-4 w-4 text-orange-500" />
-                                </Button>
-                              )}
-                              {aff.status !== "blocked" && (
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon"
-                                  onClick={() => handleBlock(aff)}
-                                >
-                                  <Ban className="h-4 w-4 text-red-500" />
-                                </Button>
-                              )}
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                                )}
+                                {aff.status !== "blocked" && (
+                                  <Button 
+                                    variant="ghost" 
+                                    size="icon"
+                                    onClick={() => handleBlock(aff)}
+                                  >
+                                    <Ban className="h-4 w-4 text-red-500" />
+                                  </Button>
+                                )}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 )}
               </CardContent>
             </Card>
