@@ -233,7 +233,7 @@ export default function EarnPage() {
 
   return (
     <MainLayout>
-      <div className="gradient-hero py-12 md:py-24">
+      <div className="gradient-hero py-8 sm:py-12 md:py-24">
         <div className="container px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

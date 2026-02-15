@@ -98,8 +98,8 @@ const fields = ["All Fields", "STEM", "Humanities", "Social Sciences", "Health",
 export default function GrantsPage() {
   return (
     <MainLayout>
-      <div className="gradient-hero py-16 md:py-24">
-        <div className="container">
+      <div className="gradient-hero py-8 sm:py-16 md:py-24">
+        <div className="container px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -110,11 +110,11 @@ export default function GrantsPage() {
               <Award className="h-3 w-3 mr-1" />
               Grants & Funding
             </Badge>
-            <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+            <h1 className="text-2xl sm:text-4xl font-bold md:text-5xl lg:text-6xl">
               Discover{" "}
               <span className="text-gradient">Funding Opportunities</span>
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               Find research grants, fellowships, and scholarships from leading 
               organizations worldwide.
             </p>
@@ -125,7 +125,7 @@ export default function GrantsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-10 flex flex-col md:flex-row gap-4 max-w-4xl mx-auto"
+            className="mt-10 flex flex-col md:flex-row gap-3 sm:gap-4 max-w-4xl mx-auto"
           >
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -167,7 +167,7 @@ export default function GrantsPage() {
       </div>
 
       {/* Grants List */}
-      <div className="container py-16">
+      <div className="container px-4 py-6 sm:py-16">
         <div className="grid gap-6">
           {grants.map((grant, index) => (
             <motion.div
@@ -244,9 +244,9 @@ export default function GrantsPage() {
           className="mt-20"
         >
           <Card className="gradient-primary border-0 text-primary-foreground">
-            <CardContent className="p-8 md:p-12 text-center">
+            <CardContent className="p-5 sm:p-8 md:p-12 text-center">
               <Bell className="h-12 w-12 mx-auto mb-4" />
-              <h3 className="text-2xl md:text-3xl font-bold">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold">
                 Never Miss a Funding Opportunity
               </h3>
               <p className="mt-2 text-primary-foreground/90 max-w-xl mx-auto">

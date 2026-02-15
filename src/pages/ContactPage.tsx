@@ -114,16 +114,16 @@ const ContactPage = () => {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="gradient-hero py-16 md:py-24">
+      <section className="gradient-hero py-8 sm:py-16 md:py-24">
         <div className="container mx-auto px-4 text-center">
           <Badge className="mb-4 bg-primary/10 text-primary border-0">
             <MessageSquare className="h-3 w-3 mr-1" />
             Get In Touch
           </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
             Contact Us
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-sm sm:text-lg max-w-2xl mx-auto">
             Have questions, want to partner with us, or need enterprise solutions? We'd love to hear from you.
           </p>
         </div>
