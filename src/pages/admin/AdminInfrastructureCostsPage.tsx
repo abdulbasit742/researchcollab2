@@ -1,4 +1,4 @@
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
@@ -49,15 +49,14 @@ export default function AdminInfrastructureCostsPage() {
   const highChurnUsers = (ltvData ?? []).filter((l: any) => Number(l.churn_risk_score) > 70);
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <AdminSidebar />
-      <main className="flex-1 p-6 overflow-auto">
-        <div className="mb-6">
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
           <h1 className="text-2xl font-bold text-foreground">Infrastructure & LTV</h1>
           <p className="text-muted-foreground">Cost control, lifetime value & performance</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
@@ -104,7 +103,7 @@ export default function AdminInfrastructureCostsPage() {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader><CardTitle>Infrastructure Cost Trend</CardTitle></CardHeader>
             <CardContent>
@@ -135,7 +134,7 @@ export default function AdminInfrastructureCostsPage() {
                         Deals: {user.deal_completion_count} · Fees: {formatPKR(Number(user.total_fees_paid))}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap justify-end">
                       <span className="text-sm font-bold">{formatPKR(Number(user.projected_lifetime_value))}</span>
                       {Number(user.churn_risk_score) > 70 && (
                         <Badge variant="destructive">Churn Risk</Badge>
@@ -150,7 +149,7 @@ export default function AdminInfrastructureCostsPage() {
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

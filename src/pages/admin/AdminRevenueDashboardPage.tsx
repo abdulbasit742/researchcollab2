@@ -1,4 +1,4 @@
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -57,7 +57,6 @@ export default function AdminRevenueDashboardPage() {
     priority: Number(t.bid_priority_weight || 1),
   })) || [];
 
-  // Monthly revenue trend (mock aggregation from real data)
   const monthlyTrend = [
     { month: "Jan", revenue: totalFeeRevenue * 0.6 },
     { month: "Feb", revenue: totalFeeRevenue * 0.75 },
@@ -78,15 +77,13 @@ export default function AdminRevenueDashboardPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <AdminSidebar />
-      <main className="flex-1 p-6 space-y-6 overflow-y-auto">
+    <AdminLayout>
+      <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Revenue Dashboard</h1>
           <p className="text-muted-foreground">Financial control room — all revenue streams</p>
         </div>
 
-        {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -131,19 +128,19 @@ export default function AdminRevenueDashboardPage() {
         </div>
 
         <Tabs defaultValue="overview">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="tiers">Trust Tiers</TabsTrigger>
-            <TabsTrigger value="contracts">Contracts</TabsTrigger>
-            <TabsTrigger value="evasion">Anti-Abuse</TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto">
+            <TabsList>
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="tiers">Trust Tiers</TabsTrigger>
+              <TabsTrigger value="contracts">Contracts</TabsTrigger>
+              <TabsTrigger value="evasion">Anti-Abuse</TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="overview" className="space-y-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Revenue Trend</CardTitle>
-                </CardHeader>
+                <CardHeader><CardTitle className="text-base">Revenue Trend</CardTitle></CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={250}>
                     <LineChart data={monthlyTrend}>
@@ -157,9 +154,7 @@ export default function AdminRevenueDashboardPage() {
                 </CardContent>
               </Card>
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Revenue Breakdown</CardTitle>
-                </CardHeader>
+                <CardHeader><CardTitle className="text-base">Revenue Breakdown</CardTitle></CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={250}>
                     <PieChart>
@@ -176,43 +171,38 @@ export default function AdminRevenueDashboardPage() {
               </Card>
             </div>
 
-            {/* Recent Transactions */}
             <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Recent Fee Transactions</CardTitle>
-              </CardHeader>
+              <CardHeader><CardTitle className="text-base">Recent Fee Transactions</CardTitle></CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Gross</TableHead>
-                      <TableHead>Fee %</TableHead>
-                      <TableHead>Fee Amount</TableHead>
-                      <TableHead>Net Payout</TableHead>
-                      <TableHead>Tier</TableHead>
-                      <TableHead>Date</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {(fees || []).slice(0, 10).map(fee => (
-                      <TableRow key={fee.id}>
-                        <TableCell>{formatPKR(Number(fee.gross_amount))}</TableCell>
-                        <TableCell>{Number(fee.platform_fee_percentage).toFixed(1)}%</TableCell>
-                        <TableCell className="font-medium">{formatPKR(Number(fee.platform_fee_amount))}</TableCell>
-                        <TableCell>{formatPKR(Number(fee.net_payout))}</TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{fee.trust_tier || "—"}</Badge>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground text-xs">
-                          {new Date(fee.created_at).toLocaleDateString()}
-                        </TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Gross</TableHead>
+                        <TableHead>Fee %</TableHead>
+                        <TableHead>Fee Amount</TableHead>
+                        <TableHead>Net Payout</TableHead>
+                        <TableHead>Tier</TableHead>
+                        <TableHead>Date</TableHead>
                       </TableRow>
-                    ))}
-                    {(!fees || fees.length === 0) && (
-                      <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">No fee transactions yet</TableCell></TableRow>
-                    )}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {(fees || []).slice(0, 10).map(fee => (
+                        <TableRow key={fee.id}>
+                          <TableCell>{formatPKR(Number(fee.gross_amount))}</TableCell>
+                          <TableCell>{Number(fee.platform_fee_percentage).toFixed(1)}%</TableCell>
+                          <TableCell className="font-medium">{formatPKR(Number(fee.platform_fee_amount))}</TableCell>
+                          <TableCell>{formatPKR(Number(fee.net_payout))}</TableCell>
+                          <TableCell><Badge variant="outline">{fee.trust_tier || "—"}</Badge></TableCell>
+                          <TableCell className="text-muted-foreground text-xs">{new Date(fee.created_at).toLocaleDateString()}</TableCell>
+                        </TableRow>
+                      ))}
+                      {(!fees || fees.length === 0) && (
+                        <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">No fee transactions yet</TableCell></TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -234,32 +224,34 @@ export default function AdminRevenueDashboardPage() {
                     <Bar dataKey="boost" name="Visibility Boost %" fill="hsl(var(--chart-2))" />
                   </BarChart>
                 </ResponsiveContainer>
-                <Table className="mt-4">
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Tier</TableHead>
-                      <TableHead>Fee %</TableHead>
-                      <TableHead>Visibility Boost</TableHead>
-                      <TableHead>Bid Priority</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {(tierFees || []).map(t => (
-                      <TableRow key={t.id}>
-                        <TableCell className="font-medium capitalize">{t.tier}</TableCell>
-                        <TableCell>{Number(t.fee_percentage)}%</TableCell>
-                        <TableCell>+{Number(t.visibility_boost || 0)}%</TableCell>
-                        <TableCell>{Number(t.bid_priority_weight || 1)}x</TableCell>
-                        <TableCell>
-                          <Badge variant={t.is_active ? "default" : "secondary"}>
-                            {t.is_active ? "Active" : "Inactive"}
-                          </Badge>
-                        </TableCell>
+                <div className="overflow-x-auto mt-4">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Tier</TableHead>
+                        <TableHead>Fee %</TableHead>
+                        <TableHead>Visibility Boost</TableHead>
+                        <TableHead>Bid Priority</TableHead>
+                        <TableHead>Status</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {(tierFees || []).map(t => (
+                        <TableRow key={t.id}>
+                          <TableCell className="font-medium capitalize">{t.tier}</TableCell>
+                          <TableCell>{Number(t.fee_percentage)}%</TableCell>
+                          <TableCell>+{Number(t.visibility_boost || 0)}%</TableCell>
+                          <TableCell>{Number(t.bid_priority_weight || 1)}x</TableCell>
+                          <TableCell>
+                            <Badge variant={t.is_active ? "default" : "secondary"}>
+                              {t.is_active ? "Active" : "Inactive"}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -271,39 +263,35 @@ export default function AdminRevenueDashboardPage() {
                 <CardDescription>Subscription, revenue-share, and hybrid contracts</CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Base Fee</TableHead>
-                      <TableHead>Rev Share %</TableHead>
-                      <TableHead>Revenue Generated</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Period</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {(contracts || []).map(c => (
-                      <TableRow key={c.id}>
-                        <TableCell>
-                          <Badge variant="outline" className="capitalize">{c.contract_type.replace("_", " ")}</Badge>
-                        </TableCell>
-                        <TableCell>{formatPKR(Number(c.base_fee))}</TableCell>
-                        <TableCell>{Number(c.revenue_share_percentage || 0)}%</TableCell>
-                        <TableCell>{formatPKR(Number(c.total_revenue_generated || 0))}</TableCell>
-                        <TableCell>
-                          <Badge variant={c.status === "active" ? "default" : "secondary"} className="capitalize">{c.status}</Badge>
-                        </TableCell>
-                        <TableCell className="text-xs text-muted-foreground">
-                          {c.start_date} → {c.end_date || "Ongoing"}
-                        </TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Base Fee</TableHead>
+                        <TableHead>Rev Share %</TableHead>
+                        <TableHead>Revenue Generated</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Period</TableHead>
                       </TableRow>
-                    ))}
-                    {(!contracts || contracts.length === 0) && (
-                      <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">No institutional contracts yet</TableCell></TableRow>
-                    )}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {(contracts || []).map(c => (
+                        <TableRow key={c.id}>
+                          <TableCell><Badge variant="outline" className="capitalize">{c.contract_type.replace("_", " ")}</Badge></TableCell>
+                          <TableCell>{formatPKR(Number(c.base_fee))}</TableCell>
+                          <TableCell>{Number(c.revenue_share_percentage || 0)}%</TableCell>
+                          <TableCell>{formatPKR(Number(c.total_revenue_generated || 0))}</TableCell>
+                          <TableCell><Badge variant={c.status === "active" ? "default" : "secondary"} className="capitalize">{c.status}</Badge></TableCell>
+                          <TableCell className="text-xs text-muted-foreground">{c.start_date} → {c.end_date || "Ongoing"}</TableCell>
+                        </TableRow>
+                      ))}
+                      {(!contracts || contracts.length === 0) && (
+                        <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">No institutional contracts yet</TableCell></TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -317,44 +305,44 @@ export default function AdminRevenueDashboardPage() {
                 <CardDescription>Revenue leakage detection and enforcement</CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Severity</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Date</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {(evasionLogs || []).map(log => (
-                      <TableRow key={log.id}>
-                        <TableCell className="font-medium">{log.detection_type}</TableCell>
-                        <TableCell>
-                          <Badge variant={log.severity === "critical" ? "destructive" : log.severity === "high" ? "destructive" : "secondary"}>
-                            {log.severity}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={log.resolved ? "default" : "outline"}>
-                            {log.resolved ? "Resolved" : "Open"}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-xs text-muted-foreground">
-                          {new Date(log.created_at).toLocaleDateString()}
-                        </TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Severity</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Date</TableHead>
                       </TableRow>
-                    ))}
-                    {(!evasionLogs || evasionLogs.length === 0) && (
-                      <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground py-8">No evasion alerts</TableCell></TableRow>
-                    )}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {(evasionLogs || []).map(log => (
+                        <TableRow key={log.id}>
+                          <TableCell className="font-medium">{log.detection_type}</TableCell>
+                          <TableCell>
+                            <Badge variant={log.severity === "critical" ? "destructive" : log.severity === "high" ? "destructive" : "secondary"}>
+                              {log.severity}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant={log.resolved ? "default" : "outline"}>
+                              {log.resolved ? "Resolved" : "Open"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-xs text-muted-foreground">{new Date(log.created_at).toLocaleDateString()}</TableCell>
+                        </TableRow>
+                      ))}
+                      {(!evasionLogs || evasionLogs.length === 0) && (
+                        <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground py-8">No evasion alerts</TableCell></TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

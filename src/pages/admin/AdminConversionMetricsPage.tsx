@@ -1,30 +1,14 @@
-import { MainLayout } from "@/components/layout/MainLayout";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  LineChart,
-  Line,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
 import {
-  Target,
-  TrendingUp,
-  Users,
-  Briefcase,
-  DollarSign,
-  Clock,
-  ArrowRight,
-  Repeat,
+  Target, TrendingUp, Users, Briefcase, DollarSign, Clock, ArrowRight, Repeat,
 } from "lucide-react";
 
 function useConversionMetrics() {
@@ -58,7 +42,6 @@ function useConversionMetrics() {
 
       const completedMilestones = milestones.filter((m) => m.status === "approved" || m.status === "released").length;
 
-      // Repeat project rate
       const ownerCounts: Record<string, number> = {};
       projects.forEach((p) => {
         if (p.owner_id) ownerCounts[p.owner_id] = (ownerCounts[p.owner_id] || 0) + 1;
@@ -67,7 +50,6 @@ function useConversionMetrics() {
       const uniquePosters = Object.keys(ownerCounts).length;
       const repeatRate = uniquePosters > 0 ? Math.round((repeatPosters / uniquePosters) * 100) : 0;
 
-      // Funnel data for chart
       const funnelData = [
         { stage: "Signups", count: totalUsers },
         { stage: "First Bid", count: usersWithBids },
@@ -76,16 +58,8 @@ function useConversionMetrics() {
       ];
 
       return {
-        signupToBid,
-        bidToDeal,
-        dealToCompletion,
-        repeatRate,
-        totalUsers,
-        totalBids,
-        totalDeals,
-        completedDeals,
-        completedMilestones,
-        funnelData,
+        signupToBid, bidToDeal, dealToCompletion, repeatRate,
+        totalUsers, totalBids, totalDeals, completedDeals, completedMilestones, funnelData,
       };
     },
     staleTime: 60_000,
@@ -103,106 +77,96 @@ export default function AdminConversionMetricsPage() {
   const { data, isLoading } = useConversionMetrics();
 
   return (
-    <MainLayout>
-      <div className="flex min-h-[calc(100vh-4rem)]">
-        <AdminSidebar />
-        <main className="flex-1 p-6 overflow-auto">
-          <div className="max-w-6xl mx-auto space-y-6">
-            <div>
-              <h1 className="text-2xl font-bold flex items-center gap-2">
-                <Target className="h-6 w-6 text-primary" />
-                Conversion Metrics
-              </h1>
-              <p className="text-muted-foreground text-sm mt-1">
-                Core economic loop: Project → Bid → Deal → Completion
-              </p>
-            </div>
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+            <Target className="h-6 w-6 text-primary" />
+            Conversion Metrics
+          </h1>
+          <p className="text-muted-foreground text-sm mt-1">
+            Core economic loop: Project → Bid → Deal → Completion
+          </p>
+        </div>
 
-            {/* KPI Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {metricCards.map((card) => {
-                const Icon = card.icon;
-                const value = data?.[card.key];
-                return (
-                  <Card key={card.key}>
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Icon className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">{card.label}</span>
-                      </div>
-                      {isLoading ? (
-                        <Skeleton className="h-8 w-16" />
-                      ) : (
-                        <p className="text-2xl font-bold">
-                          {value}{card.suffix}
-                        </p>
-                      )}
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-
-            {/* Funnel Chart */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  Conversion Funnel
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {isLoading ? (
-                  <Skeleton className="h-64 w-full" />
-                ) : (
-                  <ResponsiveContainer width="100%" height={280}>
-                    <BarChart data={data?.funnelData || []}>
-                      <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                      <XAxis dataKey="stage" className="text-xs" tick={{ fill: "hsl(var(--muted-foreground))" }} />
-                      <YAxis className="text-xs" tick={{ fill: "hsl(var(--muted-foreground))" }} />
-                      <Tooltip
-                        contentStyle={{
-                          backgroundColor: "hsl(var(--card))",
-                          border: "1px solid hsl(var(--border))",
-                          borderRadius: "8px",
-                        }}
-                      />
-                      <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Raw Numbers */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Raw Numbers</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {isLoading ? (
-                  <Skeleton className="h-32 w-full" />
-                ) : (
-                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 text-center">
-                    {[
-                      { label: "Total Users", value: data?.totalUsers },
-                      { label: "Total Bids", value: data?.totalBids },
-                      { label: "Total Deals", value: data?.totalDeals },
-                      { label: "Completed Deals", value: data?.completedDeals },
-                      { label: "Milestones Done", value: data?.completedMilestones },
-                    ].map((item) => (
-                      <div key={item.label} className="p-3 rounded-lg bg-accent/30">
-                        <p className="text-2xl font-bold">{item.value ?? 0}</p>
-                        <p className="text-xs text-muted-foreground">{item.label}</p>
-                      </div>
-                    ))}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {metricCards.map((card) => {
+            const Icon = card.icon;
+            const value = data?.[card.key];
+            return (
+              <Card key={card.key}>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Icon className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-xs text-muted-foreground">{card.label}</span>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        </main>
+                  {isLoading ? (
+                    <Skeleton className="h-8 w-16" />
+                  ) : (
+                    <p className="text-2xl font-bold">{value}{card.suffix}</p>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-primary" />
+              Conversion Funnel
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <Skeleton className="h-64 w-full" />
+            ) : (
+              <ResponsiveContainer width="100%" height={280}>
+                <BarChart data={data?.funnelData || []}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                  <XAxis dataKey="stage" className="text-xs" tick={{ fill: "hsl(var(--muted-foreground))" }} />
+                  <YAxis className="text-xs" tick={{ fill: "hsl(var(--muted-foreground))" }} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: "8px",
+                    }}
+                  />
+                  <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Raw Numbers</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <Skeleton className="h-32 w-full" />
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 text-center">
+                {[
+                  { label: "Total Users", value: data?.totalUsers },
+                  { label: "Total Bids", value: data?.totalBids },
+                  { label: "Total Deals", value: data?.totalDeals },
+                  { label: "Completed Deals", value: data?.completedDeals },
+                  { label: "Milestones Done", value: data?.completedMilestones },
+                ].map((item) => (
+                  <div key={item.label} className="p-3 rounded-lg bg-accent/30">
+                    <p className="text-2xl font-bold">{item.value ?? 0}</p>
+                    <p className="text-xs text-muted-foreground">{item.label}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
-    </MainLayout>
+    </AdminLayout>
   );
 }

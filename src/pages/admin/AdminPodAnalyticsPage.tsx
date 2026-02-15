@@ -1,3 +1,4 @@
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
@@ -35,9 +36,9 @@ export default function AdminPodAnalyticsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
-        <h1 className="text-3xl font-bold flex items-center gap-2"><Users className="h-8 w-8 text-primary" /> Pod Analytics</h1>
+    <AdminLayout>
+      <div className="space-y-6">
+        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2"><Users className="h-7 w-7 sm:h-8 sm:w-8 text-primary" /> Pod Analytics</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card><CardContent className="p-4 text-center">
@@ -72,6 +73,6 @@ export default function AdminPodAnalyticsPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </AdminLayout>
   );
 }
