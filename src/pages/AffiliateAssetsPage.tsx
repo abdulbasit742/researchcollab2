@@ -86,7 +86,7 @@ export default function AffiliateAssetsPage() {
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Dashboard
             </Link>
-            <h1 className="text-3xl font-bold text-foreground">Promotional Assets</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Promotional Assets</h1>
             <p className="text-muted-foreground mt-1">
               Ready-to-use content for promoting tools and earning commissions
             </p>

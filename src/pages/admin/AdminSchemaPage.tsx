@@ -39,7 +39,7 @@ export default function AdminSchemaPage() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
             <Database className="h-8 w-8 text-primary" />
             Schema Governance
           </h1>
