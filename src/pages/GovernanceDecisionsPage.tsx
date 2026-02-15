@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText } from "lucide-react";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 export default function GovernanceDecisionsPage() {
   const { data: decisions } = useQuery({
@@ -17,7 +18,8 @@ export default function GovernanceDecisionsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-background px-4 py-6 sm:p-6 max-w-5xl mx-auto space-y-6 pb-20 md:pb-6">
+    <MainLayout>
+    <div className="px-4 py-6 sm:p-6 max-w-5xl mx-auto space-y-6">
       <div className="flex items-center gap-3">
         <FileText className="h-8 w-8 text-primary shrink-0" />
         <div>
@@ -54,5 +56,6 @@ export default function GovernanceDecisionsPage() {
         ))}
       </div>
     </div>
+    </MainLayout>
   );
 }

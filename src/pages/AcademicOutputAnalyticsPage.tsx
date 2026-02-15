@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from "recharts";
 import { GraduationCap, TrendingUp, DollarSign, Activity } from "lucide-react";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 const institutionData = [
   { name: "NUST", fyps: 120, economic: 2400000, velocity: 85, trust: 78 },
@@ -27,10 +28,10 @@ export default function AcademicOutputAnalyticsPage() {
   const avgTrust = Math.round(institutionData.reduce((s, i) => s + i.trust, 0) / institutionData.length);
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
             <Activity className="h-8 w-8 text-primary" />
             Academic Output Analytics
           </h1>
@@ -119,6 +120,6 @@ export default function AcademicOutputAnalyticsPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </MainLayout>
   );
 }

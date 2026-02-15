@@ -6,6 +6,7 @@ import { FileDown, Link2, Share2, Shield, TrendingUp, Briefcase, CheckCircle2, L
 import { useToast } from "@/hooks/use-toast";
 import { useEmployabilityReport } from "@/hooks/useAcademicData";
 import { useAuth } from "@/contexts/AuthContext";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 export default function EmployabilityExportPage() {
   const { toast } = useToast();
@@ -27,13 +28,13 @@ export default function EmployabilityExportPage() {
     toast({ title: "Link Copied", description: "Public verification link copied to clipboard." });
   };
 
-  if (isLoading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+  if (isLoading) return <MainLayout><div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></MainLayout>;
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2"><Briefcase className="h-8 w-8 text-primary" /> Employability Report</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2"><Briefcase className="h-8 w-8 text-primary" /> Employability Report</h1>
           <p className="text-muted-foreground mt-1">Your employer-ready academic performance summary</p>
           {!report && <p className="text-sm text-muted-foreground mt-2">No report generated yet. Complete projects to build your employability profile.</p>}
         </div>
@@ -70,6 +71,6 @@ export default function EmployabilityExportPage() {
           </Button>
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 }

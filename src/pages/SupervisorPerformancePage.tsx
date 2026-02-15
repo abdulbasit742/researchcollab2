@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Users, CheckCircle2, TrendingUp, RotateCcw, AlertTriangle, Star, Loader2 } from "lucide-react";
 import { useSupervisorMetrics } from "@/hooks/useAcademicData";
 import { useAuth } from "@/contexts/AuthContext";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 export default function SupervisorPerformancePage() {
   const { user } = useAuth();
@@ -17,13 +18,13 @@ export default function SupervisorPerformancePage() {
     institutional_rating: dbMetrics.institutional_rating ?? 0,
   } : { student_completion_rate: 0, avg_trust_growth: 0, revision_ratio: 0, dispute_rate: 0, institutional_rating: 0 };
 
-  if (isLoading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+  if (isLoading) return <MainLayout><div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></MainLayout>;
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2"><Star className="h-8 w-8 text-primary" /> Supervisor Performance</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2"><Star className="h-8 w-8 text-primary" /> Supervisor Performance</h1>
           <p className="text-muted-foreground mt-1">Faculty-level accountability and impact metrics</p>
           {!dbMetrics && <p className="text-sm text-muted-foreground mt-2">No performance data found. Metrics will appear as you review student work.</p>}
         </div>
@@ -45,6 +46,6 @@ export default function SupervisorPerformancePage() {
           ))}
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 }

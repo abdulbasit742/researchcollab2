@@ -7,6 +7,7 @@ import { useReputationPassport } from "@/hooks/useReputationPassport";
 import { Download, Shield, FileText, Code, Copy, CheckCircle, RefreshCw, ExternalLink, Clock, QrCode } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 export default function PassportPage() {
   const { latest, latestLoading, history, generate, generating, verify, logExport } = useReputationPassport();
@@ -46,7 +47,7 @@ export default function PassportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -182,6 +183,6 @@ export default function PassportPage() {
           </>
         )}
       </div>
-    </div>
+    </MainLayout>
   );
 }
