@@ -1,55 +1,113 @@
 
 
-# Mobile-Friendly Pass -- Batch 11 (Standalone Pages Missing Navigation)
+# Mobile-Friendly Pass -- Batch 12 (Remaining Pages with Manual Navbar/MobileBottomNav)
 
-Wrap 10 standalone pages that have no Navbar or MobileBottomNav in `MainLayout`, and apply standard mobile fixes (heading scale, header stacking, bottom-nav clearance).
+Migrate pages that manually render `<Navbar />` and `<MobileBottomNav />` (or just `<Navbar />`) to use the standardized `MainLayout` component, and wrap standalone pages missing all navigation.
 
 ---
 
 ## Problem
 
-10 user-facing pages render as standalone `min-h-screen bg-background` containers with no Navbar, no MobileBottomNav, and no bottom padding clearance. On mobile, users cannot navigate away from these pages without using the browser back button.
-
-One page (GovernanceDecisionsPage) has `pb-20` but still lacks Navbar/MobileBottomNav.
+After Batches 9-11, there are still pages that:
+- Manually import and render `<Navbar />` and `<MobileBottomNav />` instead of using `MainLayout` (which provides both plus Footer, SwipeBackNavigator, PWA banner, etc.)
+- Import `<Navbar />` only, missing `MobileBottomNav` entirely
+- Have no navigation wrapper at all
 
 ---
 
-## Pages to Migrate (10 total)
+## Pages to Migrate (13 total)
 
-1. **AcademicOutputAnalyticsPage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
+### Group A: Pages with manual Navbar + MobileBottomNav (5 pages)
 
-2. **SupervisorPerformancePage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
+These pages manually render both components. Replace the outer `div > Navbar > main > MobileBottomNav` pattern with `<MainLayout>`.
 
-3. **SupervisorReviewQueuePage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
+1. **AutomationPage.tsx** -- Replace manual Navbar/MobileBottomNav with MainLayout. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
 
-4. **SupervisorDashboardPage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`. Header row `flex items-center justify-between` -- stack with `flex-col sm:flex-row gap-4`.
+2. **HRPage.tsx** -- Same migration. Scale heading.
 
-5. **FYPDashboardPage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`. Header row `flex items-center justify-between` -- stack with `flex-col sm:flex-row gap-4` (title + "New FYP Project" button).
+3. **LearningPage.tsx** -- Same migration. Scale heading.
 
-6. **StudentPerformancePage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
+4. **ProjectManagementPage.tsx** -- Same migration. Scale heading.
 
-7. **PassportPage.tsx** -- Wrap in `MainLayout`. Heading already scaled. Already has responsive header. Just needs navigation wrapper.
+5. **EventsPage.tsx** -- Same migration. Scale heading.
 
-8. **EmployabilityExportPage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
+6. **FeaturesShowcasePage.tsx** -- Same migration. Large file (1041 lines) -- just swap the wrapper, keep all content.
 
-9. **AcademicRankingsPage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
+### Group B: Pages with Navbar only, missing MobileBottomNav (4 pages)
 
-10. **GovernanceDecisionsPage.tsx** -- Wrap in `MainLayout`. Already has responsive padding and `pb-20`. Remove the outer `min-h-screen bg-background` div (MainLayout provides this). Keep the `max-w-5xl mx-auto` container.
+7. **DeveloperApiDashboardPage.tsx** -- Has Navbar but no MobileBottomNav. Wrap in MainLayout. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
 
-11. **ProductivityDashboardPage.tsx** -- Wrap in `MainLayout`. Heading already scaled. Just needs navigation wrapper.
+8. **ReputationExportPage.tsx** -- Same. Scale heading. Header row `flex items-center justify-between` -- stack with `flex-col sm:flex-row gap-4`.
 
-12. **AcademicTaskMarketplacePage.tsx** -- Wrap in `MainLayout`. Already has `pb-20`. Keep responsive classes.
+9. **ResearchPapersPage.tsx** -- Has Navbar but no MobileBottomNav. Wrap in MainLayout. Heading already scaled.
+
+10. **CareerPage.tsx** -- Has Navbar + Footer manually. Wrap in MainLayout (which provides Footer on desktop). Remove manual Footer import.
+
+11. **ProfileSettingsPage.tsx** -- Has Navbar + Footer manually. Same treatment as CareerPage.
+
+### Group C: Pages with no navigation at all (2 pages)
+
+12. **GovernancePage.tsx** -- No Navbar or MobileBottomNav. Wrap in MainLayout. Remove outer `min-h-screen bg-background` div. Heading and header row already responsive.
+
+13. **GovernanceConstitutionPage.tsx** -- No navigation. Wrap in MainLayout. Remove `min-h-screen bg-background` from outer div. Scale heading `text-3xl` to `text-2xl sm:text-3xl`. Change `p-6` to `px-4 py-8`.
+
+14. **InstitutionalAcademicAnalyticsPage.tsx** -- No navigation. Wrap in MainLayout. Remove outer `min-h-screen bg-background` div. Scale heading if needed.
+
+---
+
+## Editor Pages (Excluded)
+
+The following editor pages use a custom full-screen toolbar layout intentionally and should NOT be wrapped in MainLayout:
+- SpreadsheetEditorPage.tsx
+- PresentationEditorPage.tsx
+- DocumentEditorPage.tsx
+- PaperReaderPage.tsx
+
+These have their own back-navigation buttons and are designed as standalone editing experiences.
 
 ---
 
 ## Technical Details
 
-### Migration pattern:
+### Migration pattern for Group A (Navbar + MobileBottomNav):
+
+Before:
+```text
+import { Navbar } from "@/components/layout/Navbar";
+import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
+
+<div className="min-h-screen bg-background">
+  <Navbar />
+  <main className="container mx-auto px-4 py-8 pb-20 md:pb-8">
+    ...content...
+  </main>
+  <MobileBottomNav />
+</div>
+```
+
+After:
+```text
+import { MainLayout } from "@/components/layout/MainLayout";
+
+<MainLayout>
+  <div className="container mx-auto px-4 py-8">
+    ...content...
+  </div>
+</MainLayout>
+```
+
+Remove `pb-20 md:pb-8` since MainLayout handles bottom clearance. Remove `min-h-screen bg-background` since MainLayout provides these.
+
+### Migration pattern for Group B (Navbar only):
+
+Same as above but also removes the missing MobileBottomNav gap.
+
+### Migration pattern for Group C (no navigation):
 
 Before:
 ```text
 <div className="min-h-screen bg-background">
-  <div className="max-w-Xxl mx-auto px-4 py-8 space-y-6">
+  <div className="container mx-auto px-4 py-8 space-y-6">
     ...content...
   </div>
 </div>
@@ -58,28 +116,28 @@ Before:
 After:
 ```text
 <MainLayout>
-  <div className="max-w-Xxl mx-auto px-4 py-8 space-y-6">
+  <div className="container mx-auto px-4 py-8 space-y-6">
     ...content...
   </div>
 </MainLayout>
 ```
 
-MainLayout already provides min-h-screen, bg-background, Navbar, MobileBottomNav, and `pb-20` clearance.
-
 ### Files to modify:
 
-- `src/pages/AcademicOutputAnalyticsPage.tsx`
-- `src/pages/SupervisorPerformancePage.tsx`
-- `src/pages/SupervisorReviewQueuePage.tsx`
-- `src/pages/SupervisorDashboardPage.tsx`
-- `src/pages/FYPDashboardPage.tsx`
-- `src/pages/StudentPerformancePage.tsx`
-- `src/pages/PassportPage.tsx`
-- `src/pages/EmployabilityExportPage.tsx`
-- `src/pages/AcademicRankingsPage.tsx`
-- `src/pages/GovernanceDecisionsPage.tsx`
-- `src/pages/ProductivityDashboardPage.tsx`
-- `src/pages/AcademicTaskMarketplacePage.tsx`
+- `src/pages/AutomationPage.tsx`
+- `src/pages/HRPage.tsx`
+- `src/pages/LearningPage.tsx`
+- `src/pages/ProjectManagementPage.tsx`
+- `src/pages/EventsPage.tsx`
+- `src/pages/FeaturesShowcasePage.tsx`
+- `src/pages/DeveloperApiDashboardPage.tsx`
+- `src/pages/ReputationExportPage.tsx`
+- `src/pages/ResearchPapersPage.tsx`
+- `src/pages/CareerPage.tsx`
+- `src/pages/ProfileSettingsPage.tsx`
+- `src/pages/GovernancePage.tsx`
+- `src/pages/GovernanceConstitutionPage.tsx`
+- `src/pages/InstitutionalAcademicAnalyticsPage.tsx`
 
 ### No new files or dependencies needed.
 
