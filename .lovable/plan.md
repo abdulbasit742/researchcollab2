@@ -1,116 +1,85 @@
 
 
-# Mobile-Friendly Pass -- Batch 10 (Admin Pages Round 2)
+# Mobile-Friendly Pass -- Batch 11 (Standalone Pages Missing Navigation)
 
-Migrate the remaining 9 admin pages that still use `AdminSidebar` directly (or have no admin wrapper at all) to the standardized `AdminLayout` component.
+Wrap 10 standalone pages that have no Navbar or MobileBottomNav in `MainLayout`, and apply standard mobile fixes (heading scale, header stacking, bottom-nav clearance).
 
 ---
 
 ## Problem
 
-After Batch 9 migrated 11 pages, 9 more admin pages were missed. They fall into three categories:
+10 user-facing pages render as standalone `min-h-screen bg-background` containers with no Navbar, no MobileBottomNav, and no bottom padding clearance. On mobile, users cannot navigate away from these pages without using the browser back button.
 
-- 7 pages render `AdminSidebar` manually with hardcoded `p-6` and no mobile nav
-- 2 pages (Pod Analytics, Passport Analytics) have no admin navigation at all -- they render a standalone `max-w-7xl` container
-- 2 pages (Conversion Metrics, Institution Intelligence) wrap in both `MainLayout` and `AdminSidebar`, creating double navigation
+One page (GovernanceDecisionsPage) has `pb-20` but still lacks Navbar/MobileBottomNav.
 
 ---
 
-## Pages to Migrate (9 total)
+## Pages to Migrate (10 total)
 
-### Group A: Pages using AdminSidebar directly (5 pages)
+1. **AcademicOutputAnalyticsPage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
 
-1. **AdminInfrastructureCostsPage.tsx** -- Remove outer flex div, AdminSidebar, and `<main>` wrapper. Wrap in `<AdminLayout>`. Header row with h1 + description stays as-is (already responsive).
+2. **SupervisorPerformancePage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
 
-2. **AdminOperationalHealthPage.tsx** -- Same migration for both loading state (line 63) and main return (line 97). Stack header row (title + Refresh button) with `flex-col sm:flex-row`.
+3. **SupervisorReviewQueuePage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
 
-3. **AdminRevenueDashboardPage.tsx** -- Same migration. Has Tabs with 4 triggers and a Table -- add `overflow-x-auto` wrapper on Table containers for mobile. Scale heading.
+4. **SupervisorDashboardPage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`. Header row `flex items-center justify-between` -- stack with `flex-col sm:flex-row gap-4`.
 
-4. **AdminGlobalExpansionPage.tsx** -- Same migration. Has TabsList with 5 tabs -- add `overflow-x-auto` wrapper. Scale heading from `text-3xl` to `text-2xl sm:text-3xl`.
+5. **FYPDashboardPage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`. Header row `flex items-center justify-between` -- stack with `flex-col sm:flex-row gap-4` (title + "New FYP Project" button).
 
-5. **AdminProfitDashboardPage.tsx** -- Same migration. Has TabsList with 4 tabs. Complexity registry badge rows: add `flex-wrap` on badge containers.
+6. **StudentPerformancePage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
 
-### Group B: Pages with double wrapping -- MainLayout + AdminSidebar (2 pages)
+7. **PassportPage.tsx** -- Wrap in `MainLayout`. Heading already scaled. Already has responsive header. Just needs navigation wrapper.
 
-6. **AdminConversionMetricsPage.tsx** -- Remove `MainLayout` and `AdminSidebar`. Wrap in `<AdminLayout>` only. Remove inner `max-w-6xl` container (AdminLayout handles layout).
+8. **EmployabilityExportPage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
 
-7. **AdminInstitutionIntelligencePage.tsx** -- Same treatment. Application card action buttons: stack with `flex-col sm:flex-row` on mobile. TabsList with 4 tabs is fine.
+9. **AcademicRankingsPage.tsx** -- Wrap in `MainLayout`. Scale heading `text-3xl` to `text-2xl sm:text-3xl`.
 
-### Group C: Pages missing admin nav entirely (2 pages)
+10. **GovernanceDecisionsPage.tsx** -- Wrap in `MainLayout`. Already has responsive padding and `pb-20`. Remove the outer `min-h-screen bg-background` div (MainLayout provides this). Keep the `max-w-5xl mx-auto` container.
 
-8. **AdminPodAnalyticsPage.tsx** -- Wrap in `<AdminLayout>`. Remove standalone `min-h-screen` and `max-w-7xl` container. Scale heading from `text-3xl` to `text-2xl sm:text-3xl`.
+11. **ProductivityDashboardPage.tsx** -- Wrap in `MainLayout`. Heading already scaled. Just needs navigation wrapper.
 
-9. **AdminPassportAnalyticsPage.tsx** -- Same treatment. Scale heading.
-
----
-
-## Additional Mobile Fixes
-
-- **OperationalHealth**: Header row `flex items-center justify-between` -- stack with `flex-col sm:flex-row gap-4`
-- **RevenueDashboard**: Table containers -- wrap in `overflow-x-auto` div for horizontal scrolling on mobile
-- **GlobalExpansion**: TabsList with 5 tabs -- wrap in `overflow-x-auto`; federation/capital card rows `flex items-center justify-between` -- add `flex-wrap`
-- **ProfitDashboard**: Complexity registry badge container -- add `flex-wrap`; TabsList -- add `overflow-x-auto`
-- **InstitutionIntelligence**: Application review card buttons -- stack vertically on mobile with `flex-col sm:flex-row`; info row spans -- add `flex-wrap`
+12. **AcademicTaskMarketplacePage.tsx** -- Wrap in `MainLayout`. Already has `pb-20`. Keep responsive classes.
 
 ---
 
 ## Technical Details
 
-### Migration pattern (same for all Group A/C):
+### Migration pattern:
 
 Before:
 ```text
-<div className="flex min-h-screen bg-background">
-  <AdminSidebar />
-  <main className="flex-1 p-6 space-y-6">
+<div className="min-h-screen bg-background">
+  <div className="max-w-Xxl mx-auto px-4 py-8 space-y-6">
     ...content...
-  </main>
+  </div>
 </div>
 ```
 
 After:
 ```text
-<AdminLayout>
-  <div className="space-y-6">
-    ...content...
-  </div>
-</AdminLayout>
-```
-
-### Migration pattern for Group B (double wrapped):
-
-Before:
-```text
 <MainLayout>
-  <div className="flex min-h-[calc(100vh-4rem)]">
-    <AdminSidebar />
-    <main className="flex-1 p-6">
-      ...content...
-    </main>
+  <div className="max-w-Xxl mx-auto px-4 py-8 space-y-6">
+    ...content...
   </div>
 </MainLayout>
 ```
 
-After:
-```text
-<AdminLayout>
-  <div className="space-y-6">
-    ...content...
-  </div>
-</AdminLayout>
-```
+MainLayout already provides min-h-screen, bg-background, Navbar, MobileBottomNav, and `pb-20` clearance.
 
 ### Files to modify:
 
-- `src/pages/admin/AdminInfrastructureCostsPage.tsx`
-- `src/pages/admin/AdminOperationalHealthPage.tsx`
-- `src/pages/admin/AdminRevenueDashboardPage.tsx`
-- `src/pages/admin/AdminGlobalExpansionPage.tsx`
-- `src/pages/admin/AdminProfitDashboardPage.tsx`
-- `src/pages/admin/AdminConversionMetricsPage.tsx`
-- `src/pages/admin/AdminInstitutionIntelligencePage.tsx`
-- `src/pages/admin/AdminPodAnalyticsPage.tsx`
-- `src/pages/admin/AdminPassportAnalyticsPage.tsx`
+- `src/pages/AcademicOutputAnalyticsPage.tsx`
+- `src/pages/SupervisorPerformancePage.tsx`
+- `src/pages/SupervisorReviewQueuePage.tsx`
+- `src/pages/SupervisorDashboardPage.tsx`
+- `src/pages/FYPDashboardPage.tsx`
+- `src/pages/StudentPerformancePage.tsx`
+- `src/pages/PassportPage.tsx`
+- `src/pages/EmployabilityExportPage.tsx`
+- `src/pages/AcademicRankingsPage.tsx`
+- `src/pages/GovernanceDecisionsPage.tsx`
+- `src/pages/ProductivityDashboardPage.tsx`
+- `src/pages/AcademicTaskMarketplacePage.tsx`
 
 ### No new files or dependencies needed.
 
