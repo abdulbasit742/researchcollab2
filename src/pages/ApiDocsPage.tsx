@@ -188,8 +188,8 @@ export default function ApiDocsPage() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <div className="gradient-hero py-16 md:py-24">
-        <div className="container">
+      <div className="gradient-hero py-8 sm:py-16 md:py-24">
+        <div className="container px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -200,10 +200,10 @@ export default function ApiDocsPage() {
               <Code className="h-3 w-3 mr-1" />
               API Documentation
             </Badge>
-            <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+            <h1 className="text-2xl sm:text-4xl font-bold md:text-5xl lg:text-6xl">
               Build with our <span className="text-gradient">API</span>
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               Integrate ResearchCollabPro services into your applications with our RESTful API.
             </p>
           </motion.div>
@@ -226,7 +226,7 @@ export default function ApiDocsPage() {
         </div>
       </div>
 
-      <div className="container py-16">
+      <div className="container px-4 py-8 sm:py-16">
         {/* Quick Start */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-8">Quick Start</h2>

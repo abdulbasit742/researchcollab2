@@ -142,8 +142,8 @@ export default function FYPServicesPage() {
 
   return (
     <MainLayout>
-      <div className="gradient-hero py-16 md:py-24">
-        <div className="container">
+      <div className="gradient-hero py-8 sm:py-16 md:py-24">
+        <div className="container px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -154,11 +154,11 @@ export default function FYPServicesPage() {
               <GraduationCap className="h-3 w-3 mr-1" />
               FYP & Academic Services
             </Badge>
-            <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+            <h1 className="text-2xl sm:text-4xl font-bold md:text-5xl lg:text-6xl">
               Expert Help for Your{" "}
               <span className="text-gradient">Academic Success</span>
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               Get professional assistance with final year projects, thesis writing, 
               data analysis, and more from verified experts.
             </p>
