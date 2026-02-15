@@ -226,7 +226,7 @@ export function HeroSection() {
             style={{ y: searchY }}
             className="mt-8 md:mt-16 mx-auto max-w-3xl px-2"
           >
-            <form onSubmit={handleSearch} className="rounded-xl md:rounded-2xl bg-card/80 backdrop-blur-xl p-3 md:p-4 shadow-xl border border-border/50 glow-focus transition-all duration-300 hover:shadow-2xl hover:border-primary/20">
+            <form onSubmit={handleSearch} aria-label="Search researchers and papers" className="rounded-xl md:rounded-2xl bg-card/80 backdrop-blur-xl p-3 md:p-4 shadow-xl border border-border/50 glow-focus transition-all duration-300 hover:shadow-2xl hover:border-primary/20">
               <div className="flex flex-col gap-3 md:flex-row md:gap-4">
                 <div className="hidden md:block">
                   <Select value={discipline} onValueChange={setDiscipline}>
@@ -255,7 +255,9 @@ export function HeroSection() {
                 </div>
 
                 <div className="flex-1 flex flex-col xs:flex-row gap-2">
+                  <label htmlFor="hero-search" className="sr-only">Search keyword</label>
                   <Input
+                    id="hero-search"
                     placeholder={cyclingPlaceholders[placeholderIndex]}
                     className="flex-1 h-11 min-h-[44px] bg-background/50 transition-all text-base"
                     value={keyword}

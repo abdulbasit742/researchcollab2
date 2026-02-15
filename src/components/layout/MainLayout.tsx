@@ -23,9 +23,15 @@ export function MainLayout({ children }: MainLayoutProps) {
 
   return (
     <div className="flex min-h-[100dvh] flex-col overflow-x-hidden">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-primary focus:text-primary-foreground focus:text-sm focus:font-medium focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
       <ScrollProgress />
       <Navbar />
-      <main className={`flex-1 ${isMobile ? 'pb-20' : ''}`}>
+      <main id="main-content" tabIndex={-1} className={`flex-1 outline-none ${isMobile ? 'pb-20' : ''}`}>
         <SwipeBackNavigator>{children}</SwipeBackNavigator>
       </main>
       {!isMobile && <Footer />}

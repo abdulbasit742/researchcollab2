@@ -9,7 +9,7 @@ const cardVariants = cva(
       variant: {
         default: "shadow-sm",
         elevated: "shadow-md hover:shadow-lg transition-shadow duration-300",
-        interactive: "shadow-md hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300 cursor-pointer",
+        interactive: "shadow-md hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
         glass: "bg-card/60 backdrop-blur-xl border-border/50 shadow-lg",
         gradient: "gradient-card border-0 shadow-md",
         outline: "border-2 border-border/60 shadow-none hover:border-primary/30 transition-colors",

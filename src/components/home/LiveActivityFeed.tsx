@@ -26,7 +26,7 @@ export function LiveActivityFeed() {
   const current = activities[index];
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center" role="status" aria-live="polite" aria-label="Live activity feed">
       <div className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-card/60 backdrop-blur-sm border border-border/40 px-2.5 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs md:text-sm max-w-[95vw] sm:max-w-md">
         <span className="relative flex h-2 w-2 shrink-0">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
