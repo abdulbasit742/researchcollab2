@@ -1,57 +1,70 @@
 
-# Expand sitemap.xml with Missing Public Routes
+# Add JSON-LD Structured Data to Key Pages
 
-## What's Already Done
-The sitemap already exists with 34 public routes and is referenced in `robots.txt`. However, comparing against the 180+ routes in `App.tsx`, approximately 20 additional public-facing pages are missing.
+## Overview
+Add rich structured data to 4 pages so search engines can display enhanced results (pricing tables, product listings, blog carousels, organization info).
 
-## Routes to Add
+## Changes Per Page
 
-The following publicly accessible pages will be added to the sitemap:
+### 1. Pricing Page (`src/pages/PricingPage.tsx`)
+- Schema type: **Product** with multiple **Offer** entries
+- Include plan names, prices, currency (PKR), and descriptions
+- Pass via `jsonLd` prop on the existing `SEOHead` component
 
-| Route | Priority | Change Frequency |
-|-------|----------|-----------------|
-| `/hr` | 0.6 | weekly |
-| `/automation` | 0.6 | weekly |
-| `/projects` | 0.7 | weekly |
-| `/social` | 0.6 | weekly |
-| `/ambient` | 0.5 | monthly |
-| `/collective` | 0.6 | weekly |
-| `/briefings` | 0.7 | daily |
-| `/career` | 0.7 | weekly |
-| `/passport` | 0.6 | weekly |
-| `/market-liquidity` | 0.6 | daily |
-| `/macro-risk` | 0.5 | weekly |
-| `/constitutional-health` | 0.5 | monthly |
-| `/analytics/fairness` | 0.5 | weekly |
-| `/analytics/global-liquidity` | 0.5 | daily |
-| `/analytics/academic-output` | 0.5 | weekly |
-| `/academic/tasks` | 0.6 | daily |
-| `/academic/rankings` | 0.6 | weekly |
-| `/my-os` | 0.6 | weekly |
-| `/productivity` | 0.6 | weekly |
-| `/opportunity-intelligence` | 0.7 | weekly |
-| `/deals` | 0.7 | daily |
+### 2. Tools Page (`src/pages/ToolsPage.tsx`)
+- Schema type: **ItemList** containing **SoftwareApplication** entries
+- Include tool names, descriptions, ratings, review counts, and prices
+- Data sourced from the existing `tools` array import
 
-## Routes Intentionally Excluded
-These remain excluded (matching `robots.txt` Disallow rules and auth-required pages):
-- `/admin/*` -- all admin routes
-- `/dashboard/*` -- user dashboards
-- `/profile/*`, `/u/:id` -- user profiles
-- `/workroom/*`, `/messages/*`, `/settings/*` -- private areas
-- `/onboarding`, `/org/*` -- auth-required
-- `/wallet`, `/subscriptions`, `/affiliate/*`, `/verification/*` -- account features
-- `/developer/*`, `/faculty/*`, `/fyp/dashboard` -- role-specific
-- `/documents/*`, `/sheets/*`, `/slides/*` -- editor tools
-- Dynamic routes like `/blog/:slug`, `/posts/:postId`, `/earn/projects/:id`
+### 3. About Page (`src/pages/AboutPage.tsx`)
+- Schema type: **Organization** with expanded details
+- Include name, description, URL, founding info, and team member references
+- Data sourced from the existing `teamMembers` array
+
+### 4. Blog Page (`src/pages/BlogPage.tsx`)
+- Schema type: **Blog** with **BlogPosting** entries
+- Include post titles, authors, dates, excerpts, and images
+- Data sourced from the existing `blogPosts` array
+
+## Technical Details
+
+All 4 pages already use `SEOHead` which accepts a `jsonLd` prop. The implementation simply involves defining the JSON-LD object inline and passing it to the existing prop -- no new components or dependencies needed.
+
+### Example structure (Pricing):
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "ResearchCollabPro Plans",
+  "offers": [
+    { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "PKR" },
+    { "@type": "Offer", "name": "Pro", "price": "2499", "priceCurrency": "PKR" }
+  ]
+}
+```
+
+### Example structure (Tools - ItemList):
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "ChatGPT 5.3",
+      "aggregateRating": { "ratingValue": 4.9, "reviewCount": 2450 }
+    }
+  ]
+}
+```
 
 ## Files to Modify
 
 | File | Change |
 |------|--------|
-| `public/sitemap.xml` | Add ~21 new URL entries |
+| `src/pages/PricingPage.tsx` | Add `jsonLd` prop to SEOHead |
+| `src/pages/ToolsPage.tsx` | Add `jsonLd` prop to SEOHead |
+| `src/pages/AboutPage.tsx` | Add `jsonLd` prop to SEOHead |
+| `src/pages/BlogPage.tsx` | Add `jsonLd` prop to SEOHead |
 
-## Technical Details
-- All new entries use `lastmod` of 2026-02-15 (today)
-- Priority values range from 0.5 to 0.7 based on page importance
-- Change frequencies set based on expected content update cadence
-- Total sitemap will grow from 34 to ~55 entries
+No new files or dependencies required.
