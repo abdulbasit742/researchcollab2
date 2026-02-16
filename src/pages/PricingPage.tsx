@@ -262,6 +262,18 @@ const PricingPage = () => {
         description="Affordable plans for students, researchers, and institutions. Start free and upgrade as you grow."
         canonicalPath="/pricing"
         keywords="pricing, subscription plans, academic tools pricing, research platform cost"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": "ResearchCollabPro Plans",
+          "description": "Affordable plans for students, researchers, and institutions.",
+          "brand": { "@type": "Brand", "name": "ResearchCollabPro" },
+          "offers": [
+            { "@type": "Offer", "name": "Basic", "price": "0", "priceCurrency": "PKR", "description": "Get started with basic features" },
+            { "@type": "Offer", "name": "Career", "price": "499", "priceCurrency": "PKR", "description": "For serious researchers" },
+            { "@type": "Offer", "name": "Business", "price": "1999", "priceCurrency": "PKR", "description": "For teams and institutions" }
+          ]
+        }}
       />
       {/* Hero Section */}
       <section className="gradient-hero py-10 md:py-24">

@@ -63,6 +63,16 @@ export default function AboutPage() {
         description="Learn about ResearchCollabPro's mission to connect researchers, build trust in academia, and create fair earning opportunities for students worldwide."
         canonicalPath="/about"
         keywords="about ResearchCollabPro, research collaboration mission, academic platform"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "ResearchCollabPro",
+          "url": "https://academic-forge-flow.lovable.app",
+          "description": "Connect with researchers worldwide, access premium AI tools, earn money with your academic skills.",
+          "foundingDate": "2024",
+          "sameAs": [],
+          "knowsAbout": ["Academic Research", "AI Tools", "Research Collaboration"]
+        }}
       />
       <div className="min-h-screen">
         {/* Hero Section */}

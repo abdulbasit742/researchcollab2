@@ -138,6 +138,19 @@ Please guide me through the subscription process. JazakAllah!`;
         description="Access premium AI-powered research tools — writing assistants, data analysis, citation managers, and more for academics and researchers."
         canonicalPath="/tools"
         keywords="AI tools, research tools, academic AI, writing assistant, data analysis"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "AI Research Tools",
+          "itemListElement": (filteredTools || []).map((tool, i) => ({
+            "@type": "SoftwareApplication",
+            "position": i + 1,
+            "name": tool.name,
+            "description": tool.description,
+            "applicationCategory": "ResearchApplication",
+            ...(tool.pricing?.price != null ? { "offers": { "@type": "Offer", "price": String(tool.pricing.price), "priceCurrency": tool.pricing?.currency || "PKR" } } : {})
+          }))
+        }}
       />
       <div className="gradient-hero py-10 md:py-16 lg:py-24">
         <div className="container px-4 md:px-6">
