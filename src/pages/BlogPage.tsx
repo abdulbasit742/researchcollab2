@@ -81,6 +81,20 @@ export default function BlogPage() {
         description="Insights, tips, and guides on research collaboration, academic tools, and earning opportunities for students and researchers."
         canonicalPath="/blog"
         keywords="research blog, academic tips, collaboration guides, student earning"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          "name": "ResearchCollabPro Blog",
+          "url": "https://academic-forge-flow.lovable.app/blog",
+          "blogPost": blogPosts.map((post) => ({
+            "@type": "BlogPosting",
+            "headline": post.title,
+            "description": post.excerpt,
+            "author": { "@type": "Person", "name": post.author },
+            "datePublished": post.date,
+            "image": post.image
+          }))
+        }}
       />
       <div className="gradient-hero py-8 sm:py-16 md:py-24">
         <div className="container px-4">
