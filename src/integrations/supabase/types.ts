@@ -10334,6 +10334,48 @@ export type Database = {
           },
         ]
       }
+      global_liquidity_flows: {
+        Row: {
+          created_at: string
+          currency: string | null
+          deal_volume: number | null
+          flow_period: string
+          id: string
+          period_end: string
+          period_start: string
+          skill_name: string | null
+          source_region: string
+          target_region: string
+          total_value: number | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string | null
+          deal_volume?: number | null
+          flow_period?: string
+          id?: string
+          period_end: string
+          period_start: string
+          skill_name?: string | null
+          source_region: string
+          target_region: string
+          total_value?: number | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string | null
+          deal_volume?: number | null
+          flow_period?: string
+          id?: string
+          period_end?: string
+          period_start?: string
+          skill_name?: string | null
+          source_region?: string
+          target_region?: string
+          total_value?: number | null
+        }
+        Relationships: []
+      }
       global_liquidity_metrics: {
         Row: {
           active_deals: number
@@ -11927,6 +11969,62 @@ export type Database = {
             columns: ["document_id"]
             isOneToOne: false
             referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institution_economic_health: {
+        Row: {
+          avg_trust_growth: number | null
+          computed_at: string
+          created_at: string
+          deal_completion_rate: number | null
+          early_warnings: Json | null
+          health_grade: string | null
+          health_score: number | null
+          id: string
+          idle_talent_percent: number | null
+          institution_id: string | null
+          intervention_suggestions: Json | null
+          revenue_per_member: number | null
+          skill_utilization_ratio: number | null
+        }
+        Insert: {
+          avg_trust_growth?: number | null
+          computed_at?: string
+          created_at?: string
+          deal_completion_rate?: number | null
+          early_warnings?: Json | null
+          health_grade?: string | null
+          health_score?: number | null
+          id?: string
+          idle_talent_percent?: number | null
+          institution_id?: string | null
+          intervention_suggestions?: Json | null
+          revenue_per_member?: number | null
+          skill_utilization_ratio?: number | null
+        }
+        Update: {
+          avg_trust_growth?: number | null
+          computed_at?: string
+          created_at?: string
+          deal_completion_rate?: number | null
+          early_warnings?: Json | null
+          health_grade?: string | null
+          health_score?: number | null
+          id?: string
+          idle_talent_percent?: number | null
+          institution_id?: string | null
+          intervention_suggestions?: Json | null
+          revenue_per_member?: number | null
+          skill_utilization_ratio?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_economic_health_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -14281,6 +14379,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      market_adjustments_log: {
+        Row: {
+          action_taken: string
+          adjustment_type: string
+          ai_confidence: number | null
+          ai_model_version: string | null
+          applied_by: string | null
+          created_at: string
+          id: string
+          is_reversible: boolean | null
+          parameters: Json | null
+          region: string | null
+          reversed_at: string | null
+          reversed_by: string | null
+          skill_name: string | null
+          trigger_condition: string
+        }
+        Insert: {
+          action_taken: string
+          adjustment_type: string
+          ai_confidence?: number | null
+          ai_model_version?: string | null
+          applied_by?: string | null
+          created_at?: string
+          id?: string
+          is_reversible?: boolean | null
+          parameters?: Json | null
+          region?: string | null
+          reversed_at?: string | null
+          reversed_by?: string | null
+          skill_name?: string | null
+          trigger_condition: string
+        }
+        Update: {
+          action_taken?: string
+          adjustment_type?: string
+          ai_confidence?: number | null
+          ai_model_version?: string | null
+          applied_by?: string | null
+          created_at?: string
+          id?: string
+          is_reversible?: boolean | null
+          parameters?: Json | null
+          region?: string | null
+          reversed_at?: string | null
+          reversed_by?: string | null
+          skill_name?: string | null
+          trigger_condition?: string
+        }
+        Relationships: []
       }
       mentorship_interactions: {
         Row: {
@@ -22498,13 +22647,63 @@ export type Database = {
           },
         ]
       }
+      skill_forecasts: {
+        Row: {
+          ai_model_version: string | null
+          ai_reasoning: string | null
+          computed_at: string
+          confidence_score: number | null
+          created_at: string
+          forecast_period: string
+          id: string
+          predicted_demand_change: number | null
+          predicted_price_change: number | null
+          predicted_supply_change: number | null
+          signal: string | null
+          skill_name: string
+        }
+        Insert: {
+          ai_model_version?: string | null
+          ai_reasoning?: string | null
+          computed_at?: string
+          confidence_score?: number | null
+          created_at?: string
+          forecast_period?: string
+          id?: string
+          predicted_demand_change?: number | null
+          predicted_price_change?: number | null
+          predicted_supply_change?: number | null
+          signal?: string | null
+          skill_name: string
+        }
+        Update: {
+          ai_model_version?: string | null
+          ai_reasoning?: string | null
+          computed_at?: string
+          confidence_score?: number | null
+          created_at?: string
+          forecast_period?: string
+          id?: string
+          predicted_demand_change?: number | null
+          predicted_price_change?: number | null
+          predicted_supply_change?: number | null
+          signal?: string | null
+          skill_name?: string
+        }
+        Relationships: []
+      }
       skill_market_metrics: {
         Row: {
+          abandonment_rate: number | null
           avg_bid_price: number | null
+          avg_deal_time_hours: number | null
           avg_project_budget: number | null
           deal_conversion_rate: number | null
+          fill_rate: number | null
           id: string
+          liquidity_category: string | null
           liquidity_score: number | null
+          region: string | null
           skill_name: string
           total_active_bids: number | null
           total_active_projects: number | null
@@ -22512,11 +22711,16 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          abandonment_rate?: number | null
           avg_bid_price?: number | null
+          avg_deal_time_hours?: number | null
           avg_project_budget?: number | null
           deal_conversion_rate?: number | null
+          fill_rate?: number | null
           id?: string
+          liquidity_category?: string | null
           liquidity_score?: number | null
+          region?: string | null
           skill_name: string
           total_active_bids?: number | null
           total_active_projects?: number | null
@@ -22524,11 +22728,16 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          abandonment_rate?: number | null
           avg_bid_price?: number | null
+          avg_deal_time_hours?: number | null
           avg_project_budget?: number | null
           deal_conversion_rate?: number | null
+          fill_rate?: number | null
           id?: string
+          liquidity_category?: string | null
           liquidity_score?: number | null
+          region?: string | null
           skill_name?: string
           total_active_bids?: number | null
           total_active_projects?: number | null

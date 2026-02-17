@@ -138,6 +138,25 @@ All 62 systems are organized into exactly 7 layers. Every feature belongs to ONE
 
 ---
 
+## Layer 8: MARKET INTELLIGENCE & LIQUIDITY OPTIMIZATION
+**Purpose**: Monitor, predict, and optimize professional capital flow across institutions, geographies, and skills. Autonomous economic stabilization logic.
+
+| System | Name | Status |
+|--------|------|--------|
+| GSLI | Global Skill Liquidity Index | Core |
+| IEH | Institutional Economic Health Monitor | Core |
+| OFE | Opportunity Forecast Engine | Extended |
+| CFV | Capital Flow Visualizer | Extended |
+| MSL | Market Stabilization Logic | Core |
+| LIMSE-CC | LIMSE Command Center (Admin) | Core |
+
+**Entry Points**: /market/liquidity, /institutions/intelligence, /career/forecast, /global/economy, /admin/limse-command
+**Key Hook**: `useLIMSE`, `useLiquidityIndex`
+**Depends on**: Layer 1 (Trust), Layer 2 (Capability), Layer 3 (Deals), Layer 4 (Economics)
+**Cannot**: Modify trust scores directly, override escrow rules, change constitutional parameters
+
+---
+
 ## 📊 System Classification Summary
 
 | Classification | Count | Description |
@@ -163,6 +182,8 @@ Layer 5 (Knowledge & Memory)
 Layer 6 (Institutions & Governance)
     ↓
 Layer 7 (Intelligence & Automation)
+    ↓
+Layer 8 (Market Intelligence & Liquidity Optimization)
 ```
 
 **Rule**: Lower layers NEVER depend on higher layers.
