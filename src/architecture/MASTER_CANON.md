@@ -340,6 +340,38 @@ Ten permanent doctrines: Core Axiom, Three Permanent Constraints, Law of Verifie
 
 ---
 
+## Layer 20: CIVILIZATIONAL PURPOSE & DIRECTION
+**Purpose**: The directional philosophy — coordination toward capability maximization, not power or wealth alone.
+
+| Doctrine | Name |
+|----------|------|
+| XI | The Three Civilizational Directions |
+| XII | The Highest-Leverage Direction |
+| XIII | The Real Scarcity |
+| XIV | The Human Constraint |
+| XV | The Compounding Mechanism |
+| XVI | The End State |
+
+**Core Thesis**: Capability compounds. Power and wealth without capability decay. The highest-leverage objective is to increase verified capability density across the network.
+
+---
+
+## Layer 21: IRREDUCIBLE CORE
+**Purpose**: The invariant principles that survive total collapse — what must remain true even without technology.
+
+| Doctrine | Name |
+|----------|------|
+| XVII | Trust Earned Through Observable Contribution |
+| XVIII | Capital Must Represent Real Output |
+| XIX | Governance Must Be Constrained |
+| XX | Feedback Must Be Immediate |
+| XXI | Status Attaches to Creation, Not Control |
+| XXII | The Only Durable Asset |
+
+**Core Thesis**: Technology amplifies; it does not replace. The only durable asset across centuries is a culture that equates dignity with competence and cooperation.
+
+---
+
 ## 🔗 Layer Dependencies
 
 ```
@@ -358,10 +390,15 @@ Layer 7 (Intelligence & Automation)
 Layer 8 (Market Intelligence & Liquidity Optimization)
     ↓
 Layer 10 (Professional Capital & Credit Infrastructure)
+    ↓
+Layer 11–18 (Governance Economy → Planetary Coordination)
+    ↓
+Layer 19–21 (Doctrine → Irreducible Core)
 ```
 
 **Rule**: Lower layers NEVER depend on higher layers.
 **Rule**: Horizontal dependencies are allowed within limits.
+**Rule**: Doctrine layers (19–21) are non-technical — they constrain all layers above.
 
 ---
 

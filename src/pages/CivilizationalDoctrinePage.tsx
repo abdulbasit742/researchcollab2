@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ScrollText, Shield, TrendingUp, Scale, Clock, Globe, Zap, Lock, Triangle, Eye } from "lucide-react";
+import { ScrollText, Shield, TrendingUp, Scale, Clock, Globe, Zap, Lock, Triangle, Eye, Compass, Target, Gem, Sprout, Flame, Heart } from "lucide-react";
 
 const doctrines = [
   {
@@ -66,6 +66,84 @@ const doctrines = [
   },
 ];
 
+const layer20Doctrines = [
+  {
+    numeral: "XI",
+    title: "The Three Civilizational Directions",
+    icon: Compass,
+    content: "Any advanced coordination system orients toward one of three ends: Power Maximization (expansion, dominance, control), Wealth Maximization (capital growth, financial optimization), or Capability Maximization (human potential expansion, competence density). Most drift into the first two. Very few anchor in the third.",
+  },
+  {
+    numeral: "XII",
+    title: "The Highest-Leverage Direction",
+    icon: Target,
+    content: "Power without capability decays. Wealth without capability destabilizes. Capability compounds. It creates wealth, enables power, sustains governance, improves resilience, and expands possibility. If a civilization optimizes for capability density per capita, it becomes nearly impossible to suppress.",
+  },
+  {
+    numeral: "XIII",
+    title: "The Real Scarcity",
+    icon: Gem,
+    content: "Energy, information, and capital are abundant relative to history. What is scarce? Verified competence. Trustworthy execution. Aligned long-term incentives. Productive coordination quality. Scarcity defines value. The highest-leverage objective: increase verified capability density across the network.",
+  },
+  {
+    numeral: "XIV",
+    title: "The Human Constraint",
+    icon: Eye,
+    content: "No system can outrun human nature. Humans seek status, respond to incentives, avoid friction, and prefer narrative over accountability. A durable system must channel status toward contribution, align incentives with long-term outcomes, make accountability unavoidable, and replace narrative status with performance status.",
+  },
+  {
+    numeral: "XV",
+    title: "The Compounding Mechanism",
+    icon: TrendingUp,
+    content: "Trust → lowers friction → increases capital velocity → increases opportunity → increases skill acquisition → increases productivity → increases trust. A compounding civilization loop. Break any node — decay begins. Strengthen each node — acceleration begins.",
+  },
+  {
+    numeral: "XVI",
+    title: "The End State",
+    icon: Globe,
+    content: "The most advanced civilization is not one with the most territory, capital, or population. It is one with the highest verified productivity per capita, the lowest corruption entropy, the fastest skill adaptation cycle, the most stable governance under stress, and the most antifragile coordination network.",
+  },
+];
+
+const layer21Doctrines = [
+  {
+    numeral: "XVII",
+    title: "Trust Must Be Earned Through Observable Contribution",
+    icon: Shield,
+    content: "If people revert to narrative reputation, political proximity, or inherited status, the system collapses into pre-modern coordination. The only invariant rule that must survive collapse: contribution precedes influence.",
+  },
+  {
+    numeral: "XVIII",
+    title: "Capital Must Represent Real Output",
+    icon: Scale,
+    content: "When capital detaches from productivity, bubbles inflate, inequality destabilizes, and coordination fractures. If everything collapses but this rule survives — value tracks output — recovery is possible.",
+  },
+  {
+    numeral: "XIX",
+    title: "Governance Must Be Constrained",
+    icon: Lock,
+    content: "Power unconstrained corrupts coordination. Even in small communities. Even without technology. The invariant rule: authority must be accountable to contribution and transparent process. If that remains, capture can be reversed.",
+  },
+  {
+    numeral: "XX",
+    title: "Feedback Must Be Immediate",
+    icon: Flame,
+    content: "Civilizations decay when feedback is delayed. If failure is hidden, errors punished instead of corrected, and signals distorted, entropy accelerates. The irreducible principle: systems must expose failure early.",
+  },
+  {
+    numeral: "XXI",
+    title: "Status Must Attach to Creation, Not Control",
+    icon: Sprout,
+    content: "Control-based status breeds stagnation. Creation-based status breeds expansion. If people admire builders more than rulers, the civilization remains productive.",
+  },
+  {
+    numeral: "XXII",
+    title: "The Only Durable Asset",
+    icon: Heart,
+    content: "Not capital. Not infrastructure. Not planetary reach. The only durable asset across centuries is a culture that equates dignity with competence and cooperation. Technology amplifies — it does not replace. If the underlying cultural logic is strong, scaling it compounds strength. Everything else is transient.",
+  },
+];
+
 const CivilizationalDoctrinePage = () => {
   return (
     <>
@@ -79,6 +157,8 @@ const CivilizationalDoctrinePage = () => {
             <Separator className="mt-6 mx-auto w-24" />
           </div>
 
+          {/* Layer 19 — The Philosophy of Verified Human Coordination */}
+          <h2 className="text-2xl font-semibold mt-2">Layer 19 — The Philosophy of Verified Human Coordination</h2>
           <div className="space-y-6">
             {doctrines.map((d) => {
               const Icon = d.icon;
@@ -99,11 +179,67 @@ const CivilizationalDoctrinePage = () => {
             })}
           </div>
 
+          <Separator className="my-10" />
+
+          {/* Layer 20 — Civilizational Purpose & Direction */}
+          <div className="text-center mb-8">
+            <Compass className="h-10 w-10 mx-auto text-primary mb-3" />
+            <h2 className="text-2xl font-semibold">Layer 20 — Civilizational Purpose & Direction</h2>
+            <p className="text-muted-foreground mt-1">The Question of "Why"</p>
+          </div>
+          <div className="space-y-6">
+            {layer20Doctrines.map((d) => {
+              const Icon = d.icon;
+              return (
+                <Card key={d.numeral} className="border-l-4 border-l-accent/40">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="flex items-center gap-3 text-xl">
+                      <Icon className="h-5 w-5 text-accent-foreground flex-shrink-0" />
+                      <span className="text-muted-foreground font-mono mr-1">{d.numeral}.</span>
+                      {d.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground leading-relaxed">{d.content}</p>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+
+          <Separator className="my-10" />
+
+          {/* Layer 21 — Irreducible Core */}
+          <div className="text-center mb-8">
+            <Heart className="h-10 w-10 mx-auto text-primary mb-3" />
+            <h2 className="text-2xl font-semibold">Layer 21 — Irreducible Core</h2>
+            <p className="text-muted-foreground mt-1">What Survives Collapse</p>
+          </div>
+          <div className="space-y-6">
+            {layer21Doctrines.map((d) => {
+              const Icon = d.icon;
+              return (
+                <Card key={d.numeral} className="border-l-4 border-l-secondary/50">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="flex items-center gap-3 text-xl">
+                      <Icon className="h-5 w-5 text-secondary-foreground flex-shrink-0" />
+                      <span className="text-muted-foreground font-mono mr-1">{d.numeral}.</span>
+                      {d.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground leading-relaxed">{d.content}</p>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+
           <Card className="mt-12 bg-primary/5 border-primary/20">
             <CardContent className="py-8 text-center">
-              <p className="text-lg font-semibold">There Is No Layer 20</p>
+              <p className="text-lg font-semibold">Beyond This, Only Choices Remain</p>
               <p className="text-muted-foreground mt-2 max-w-lg mx-auto">
-                Beyond doctrine, there are only choices. The structure is complete. What remains is not engineering. It is execution.
+                The structure is complete. Twenty-one layers — from local execution to civilizational philosophy. What remains is not engineering. It is execution. The only durable asset is a culture that equates dignity with competence and cooperation.
               </p>
             </CardContent>
           </Card>
