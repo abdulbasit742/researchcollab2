@@ -21,7 +21,17 @@ export function NotificationBell() {
       // Projects & Work
       case "new_bid":
       case "bid_received":
+      case "new_bid_received":
         return "💰";
+      case "bid_viewed":
+        return "👁️";
+      case "bid_shortlisted":
+        return "⭐";
+      case "bid_accepted":
+        return "🏆";
+      case "bid_rejected":
+      case "bid_position_filled":
+        return "📋";
       case "offer_received":
         return "📩";
       case "offer_accepted":
@@ -112,6 +122,16 @@ export function NotificationBell() {
         return "/wallet";
       case "verification_approved":
         return "/verification";
+      // Bid notifications → Earn page "My Bids" tab
+      case "bid_viewed":
+      case "bid_shortlisted":
+      case "bid_accepted":
+      case "bid_rejected":
+      case "bid_position_filled":
+        return "/earn";
+      // Project owner notifications → Earn page "My Projects" tab
+      case "new_bid_received":
+        return data.project_id ? `/earn/projects/${data.project_id}` : "/earn";
       default:
         return "#";
     }
