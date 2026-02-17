@@ -270,6 +270,11 @@ const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCent
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
 
+// Contracts, Finance, Arbitration
+const ContractsDashboardPage = lazy(() => import("./pages/ContractsDashboardPage"));
+const FinanceDashboardPage = lazy(() => import("./pages/FinanceDashboardPage"));
+const ArbitrationCourtPage = lazy(() => import("./pages/ArbitrationCourtPage"));
+
 // Economic Intelligence, AI Allocation, Strategic Brain, Global Grid
 const EconomicIntelligencePage = lazy(() => import("./pages/intelligence/EconomicIntelligencePage"));
 const AIAllocationEnginePage = lazy(() => import("./pages/intelligence/AIAllocationEnginePage"));
@@ -559,6 +564,11 @@ const AppContent = () => {
             <Route path="/admin/strategic-brain" element={<StrategicBrainPage />} />
             <Route path="/national/impact" element={<NationalImpactPage />} />
             <Route path="/global/control-tower" element={<GlobalControlTowerPage />} />
+            {/* Contracts, Finance, Arbitration */}
+            <Route path="/contracts" element={<ContractsDashboardPage />} />
+            <Route path="/finance/dashboard" element={<FinanceDashboardPage />} />
+            <Route path="/arbitration/court" element={<ArbitrationCourtPage />} />
+            <Route path="*" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>
