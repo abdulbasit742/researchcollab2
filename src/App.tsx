@@ -183,6 +183,7 @@ const FYPBrowsePage = lazy(() => import("./pages/FYPBrowsePage"));
 const FacultyFYPMonitorPage = lazy(() => import("./pages/FacultyFYPMonitorPage"));
 const InstitutionalFYPIntelligencePage = lazy(() => import("./pages/InstitutionalFYPIntelligencePage"));
 const FYPGTMStrategyPage = lazy(() => import("./pages/FYPGTMStrategyPage"));
+const SponsorAcquisitionStrategyPage = lazy(() => import("./pages/SponsorAcquisitionStrategyPage"));
 
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
@@ -498,6 +499,7 @@ const AppContent = () => {
             <Route path="/faculty/fyp-monitor" element={<FacultyFYPMonitorPage />} />
             <Route path="/institutions/fyp-intelligence" element={<InstitutionalFYPIntelligencePage />} />
             <Route path="/fyp/gtm-strategy" element={<FYPGTMStrategyPage />} />
+            <Route path="/fyp/sponsor-strategy" element={<SponsorAcquisitionStrategyPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>
