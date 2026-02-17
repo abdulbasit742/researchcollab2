@@ -62,9 +62,21 @@ const ContactPage = () => {
 
       if (error) throw error;
 
+      // Send email notification (fire-and-forget, don't block user)
+      supabase.functions.invoke("notify-contact", {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          organization: formData.organization || undefined,
+          inquiryType: formData.inquiryType,
+          subject: formData.subject || undefined,
+          message: formData.message,
+        },
+      }).catch((err) => console.error("Email notification failed:", err));
+
       toast({
         title: "Message Sent!",
-        description: "We'll get back to you within 24-48 hours.",
+        description: "We'll get back to you within 24-48 hours. Check your email for confirmation.",
       });
       
       setFormData({
