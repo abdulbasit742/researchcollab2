@@ -42,6 +42,7 @@ const ResearcherPublicProfilePage = lazy(() => import("./pages/ResearcherPublicP
 const UserPublicProfilePage = lazy(() => import("./pages/UserPublicProfilePage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
 const BlogArticlePage = lazy(() => import("./pages/BlogArticlePage"));
+const BlogEditorPage = lazy(() => import("./pages/BlogEditorPage"));
 const OffersPage = lazy(() => import("./pages/OffersPage"));
 const OfferRedirectPage = lazy(() => import("./pages/OfferRedirectPage"));
 const WorkRoomPage = lazy(() => import("./pages/WorkRoomPage"));
@@ -263,6 +264,8 @@ const AppContent = () => {
             <Route path="/profile/researcher" element={<ResearcherProfilePage />} />
             <Route path="/profile/researcher/:id" element={<ResearcherProfilePage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/new" element={<BlogEditorPage />} />
+            <Route path="/blog/edit/:postId" element={<BlogEditorPage />} />
             <Route path="/blog/:slug" element={<BlogArticlePage />} />
             <Route path="/offers" element={<OpportunitiesPage />} />
             <Route path="/offers/:id" element={<OfferRedirectPage />} />
