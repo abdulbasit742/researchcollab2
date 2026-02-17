@@ -170,6 +170,12 @@ const ResearchEconomicImpactPage = lazy(() => import("./pages/ResearchEconomicIm
 const InstitutionResearchIntelligencePage = lazy(() => import("./pages/InstitutionResearchIntelligencePage"));
 const ResearchMatchPage = lazy(() => import("./pages/ResearchMatchPage"));
 
+// RLCMA: Research Liquidity & Commercialization Moat
+const InstitutionCommercializationPage = lazy(() => import("./pages/InstitutionCommercializationPage"));
+const ExecutionProductivityRankingsPage = lazy(() => import("./pages/ExecutionProductivityRankingsPage"));
+const IndustryExplorePage = lazy(() => import("./pages/IndustryExplorePage"));
+const InstitutionCommercializationDashboardPage = lazy(() => import("./pages/InstitutionCommercializationDashboardPage"));
+
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
 const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
@@ -472,6 +478,11 @@ const AppContent = () => {
             <Route path="/research/economic-impact" element={<ResearchEconomicImpactPage />} />
             <Route path="/institutions/research-intelligence" element={<InstitutionResearchIntelligencePage />} />
             <Route path="/research/match" element={<ResearchMatchPage />} />
+            {/* RLCMA */}
+            <Route path="/institutions/commercialization" element={<InstitutionCommercializationPage />} />
+            <Route path="/institutions/epr-rankings" element={<ExecutionProductivityRankingsPage />} />
+            <Route path="/industry/explore" element={<IndustryExplorePage />} />
+            <Route path="/institutions/:id/commercialization" element={<InstitutionCommercializationDashboardPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>
