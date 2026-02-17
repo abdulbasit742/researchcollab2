@@ -3013,6 +3013,75 @@ export type Database = {
         }
         Relationships: []
       }
+      arbitration_cases: {
+        Row: {
+          against_party: string
+          arbitrator_id: string | null
+          created_at: string
+          dispute_type: string
+          escrow_frozen: boolean
+          id: string
+          initiated_by: string
+          linked_contract_id: string | null
+          linked_escrow_id: string | null
+          resolved_at: string | null
+          risk_level: string | null
+          status: string
+          updated_at: string
+          verdict_summary: string | null
+          verdict_type: string | null
+        }
+        Insert: {
+          against_party: string
+          arbitrator_id?: string | null
+          created_at?: string
+          dispute_type?: string
+          escrow_frozen?: boolean
+          id?: string
+          initiated_by: string
+          linked_contract_id?: string | null
+          linked_escrow_id?: string | null
+          resolved_at?: string | null
+          risk_level?: string | null
+          status?: string
+          updated_at?: string
+          verdict_summary?: string | null
+          verdict_type?: string | null
+        }
+        Update: {
+          against_party?: string
+          arbitrator_id?: string | null
+          created_at?: string
+          dispute_type?: string
+          escrow_frozen?: boolean
+          id?: string
+          initiated_by?: string
+          linked_contract_id?: string | null
+          linked_escrow_id?: string | null
+          resolved_at?: string | null
+          risk_level?: string | null
+          status?: string
+          updated_at?: string
+          verdict_summary?: string | null
+          verdict_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "arbitration_cases_linked_contract_id_fkey"
+            columns: ["linked_contract_id"]
+            isOneToOne: false
+            referencedRelation: "contracts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "arbitration_cases_linked_escrow_id_fkey"
+            columns: ["linked_escrow_id"]
+            isOneToOne: false
+            referencedRelation: "escrow_wallets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       archival_objects: {
         Row: {
           archival_format: string
@@ -5287,6 +5356,53 @@ export type Database = {
           },
         ]
       }
+      contract_signatures: {
+        Row: {
+          contract_id: string
+          created_at: string
+          device_metadata: Json | null
+          id: string
+          ip_address: string | null
+          role: string
+          signatory_id: string
+          signature_hash: string | null
+          signed_at: string | null
+          status: string
+        }
+        Insert: {
+          contract_id: string
+          created_at?: string
+          device_metadata?: Json | null
+          id?: string
+          ip_address?: string | null
+          role?: string
+          signatory_id: string
+          signature_hash?: string | null
+          signed_at?: string | null
+          status?: string
+        }
+        Update: {
+          contract_id?: string
+          created_at?: string
+          device_metadata?: Json | null
+          id?: string
+          ip_address?: string | null
+          role?: string
+          signatory_id?: string
+          signature_hash?: string | null
+          signed_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_signatures_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contract_usage: {
         Row: {
           additional_metrics: Json | null
@@ -5333,6 +5449,59 @@ export type Database = {
             columns: ["contract_id"]
             isOneToOne: false
             referencedRelation: "infrastructure_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contracts: {
+        Row: {
+          activated_at: string | null
+          content_hash: string | null
+          contract_type: string
+          created_at: string
+          created_by: string | null
+          id: string
+          linked_document_id: string | null
+          linked_entity_id: string | null
+          linked_entity_type: string | null
+          status: string
+          terminated_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          activated_at?: string | null
+          content_hash?: string | null
+          contract_type?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          linked_document_id?: string | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          status?: string
+          terminated_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activated_at?: string | null
+          content_hash?: string | null
+          contract_type?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          linked_document_id?: string | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          status?: string
+          terminated_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contracts_linked_document_id_fkey"
+            columns: ["linked_document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
             referencedColumns: ["id"]
           },
         ]
@@ -9569,6 +9738,111 @@ export type Database = {
           },
         ]
       }
+      escrow_transactions: {
+        Row: {
+          amount: number
+          beneficiary_id: string | null
+          created_at: string
+          currency: string
+          escrow_wallet_id: string
+          gateway_reference: string | null
+          id: string
+          linked_contract_id: string | null
+          linked_milestone_id: string | null
+          metadata: Json | null
+          payer_id: string | null
+          status: string
+          transaction_type: string
+        }
+        Insert: {
+          amount: number
+          beneficiary_id?: string | null
+          created_at?: string
+          currency?: string
+          escrow_wallet_id: string
+          gateway_reference?: string | null
+          id?: string
+          linked_contract_id?: string | null
+          linked_milestone_id?: string | null
+          metadata?: Json | null
+          payer_id?: string | null
+          status?: string
+          transaction_type: string
+        }
+        Update: {
+          amount?: number
+          beneficiary_id?: string | null
+          created_at?: string
+          currency?: string
+          escrow_wallet_id?: string
+          gateway_reference?: string | null
+          id?: string
+          linked_contract_id?: string | null
+          linked_milestone_id?: string | null
+          metadata?: Json | null
+          payer_id?: string | null
+          status?: string
+          transaction_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "escrow_transactions_escrow_wallet_id_fkey"
+            columns: ["escrow_wallet_id"]
+            isOneToOne: false
+            referencedRelation: "escrow_wallets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "escrow_transactions_linked_contract_id_fkey"
+            columns: ["linked_contract_id"]
+            isOneToOne: false
+            referencedRelation: "contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      escrow_wallets: {
+        Row: {
+          created_at: string
+          currency: string
+          id: string
+          linked_entity_id: string
+          linked_entity_type: string
+          status: string
+          total_funded: number
+          total_locked: number
+          total_refunded: number
+          total_released: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          id?: string
+          linked_entity_id: string
+          linked_entity_type: string
+          status?: string
+          total_funded?: number
+          total_locked?: number
+          total_refunded?: number
+          total_released?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          id?: string
+          linked_entity_id?: string
+          linked_entity_type?: string
+          status?: string
+          total_funded?: number
+          total_locked?: number
+          total_refunded?: number
+          total_released?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       ethics_board_members: {
         Row: {
           appointed_at: string
@@ -11157,6 +11431,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      financial_compliance_logs: {
+        Row: {
+          check_type: string
+          created_at: string
+          details: Json | null
+          id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          check_type: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          check_type?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       financial_rail_registry: {
         Row: {
@@ -22091,6 +22392,39 @@ export type Database = {
           revenue_type?: string
           source_id?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      platform_revenue_logs: {
+        Row: {
+          commission_amount: number
+          commission_rate: number | null
+          created_at: string
+          currency: string
+          id: string
+          payer_id: string | null
+          tier: string | null
+          transaction_id: string | null
+        }
+        Insert: {
+          commission_amount?: number
+          commission_rate?: number | null
+          created_at?: string
+          currency?: string
+          id?: string
+          payer_id?: string | null
+          tier?: string | null
+          transaction_id?: string | null
+        }
+        Update: {
+          commission_amount?: number
+          commission_rate?: number | null
+          created_at?: string
+          currency?: string
+          id?: string
+          payer_id?: string | null
+          tier?: string | null
+          transaction_id?: string | null
         }
         Relationships: []
       }
