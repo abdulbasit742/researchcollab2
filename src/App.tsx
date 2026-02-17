@@ -185,6 +185,10 @@ const InstitutionalFYPIntelligencePage = lazy(() => import("./pages/Institutiona
 const FYPGTMStrategyPage = lazy(() => import("./pages/FYPGTMStrategyPage"));
 const SponsorAcquisitionStrategyPage = lazy(() => import("./pages/SponsorAcquisitionStrategyPage"));
 const ThirtyDayExecutionPlanPage = lazy(() => import("./pages/ThirtyDayExecutionPlanPage"));
+const ImpactPage = lazy(() => import("./pages/ImpactPage"));
+const FYPSubmitProblemPage = lazy(() => import("./pages/FYPSubmitProblemPage"));
+const FounderDashboardPage = lazy(() => import("./pages/FounderDashboardPage"));
+const ActivationStrategyPage = lazy(() => import("./pages/ActivationStrategyPage"));
 
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
@@ -502,6 +506,10 @@ const AppContent = () => {
             <Route path="/fyp/gtm-strategy" element={<FYPGTMStrategyPage />} />
             <Route path="/fyp/sponsor-strategy" element={<SponsorAcquisitionStrategyPage />} />
             <Route path="/fyp/30-day-plan" element={<ThirtyDayExecutionPlanPage />} />
+            <Route path="/impact" element={<ImpactPage />} />
+            <Route path="/fyp/submit-problem" element={<FYPSubmitProblemPage />} />
+            <Route path="/founder/dashboard" element={<FounderDashboardPage />} />
+            <Route path="/fyp/activation-strategy" element={<ActivationStrategyPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>
