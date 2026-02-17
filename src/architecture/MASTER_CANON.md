@@ -263,6 +263,72 @@ All 62 systems are organized into exactly 7 layers. Every feature belongs to ONE
 
 ---
 
+## Layer 16: INTEROPERABLE MULTI-CIVILIZATION ECONOMIC NETWORK
+**Purpose**: Protocol-level interoperability between independent professional economies, sovereign platforms, and institutional systems.
+
+| System | Name | Status |
+|--------|------|--------|
+| FHP | Federation Handshake Protocol | Core |
+| TTL | Trust Translation Layer | Core |
+| ICRE | Interoperable Capital Routing Engine | Core |
+| CIP | Credential Interoperability Protocol | Core |
+| MCPI | Multi-Civilization Productivity Index | Extended |
+| ACAL | Autonomous Conflict Arbitration Layer | Core |
+| SEIP | Sovereign Exit & Isolation Protocol | Core |
+
+**Entry Points**: /federation/intelligence, /federation/transparency
+**Key Hook**: `useFederationNetwork`
+**Cannot**: Override foreign governance, modify foreign trust scores, seize cross-node capital
+
+---
+
+## Layer 17: GLOBAL INFRASTRUCTURE SYNCHRONIZATION
+**Purpose**: Productivity-verified synchronization between digital professional economies and physical infrastructure systems.
+
+| System | Name | Status |
+|--------|------|--------|
+| IRL | Infrastructure Registry Layer | Institutional |
+| TIRE | Talent-to-Infrastructure Routing Engine | Extended |
+| ICSE | Infrastructure Capital Synchronization | Institutional |
+| PCIM | Production Capacity Intelligence Model | Core |
+| DTL | Development Transparency Ledger | Core |
+| RWVE | Real-World Execution Verification | Extended |
+
+**Entry Points**: /infrastructure/intelligence
+**Key Hook**: `useInfrastructureSync`
+**Cannot**: Override sovereign governance, force capital reallocation
+
+---
+
+## Layer 18: PLANETARY & INTERPLANETARY ECONOMIC COORDINATION
+**Purpose**: Long-horizon economic coordination supporting distributed human productivity across planetary-scale and off-world settlements.
+
+| System | Name | Status |
+|--------|------|--------|
+| PNR | Planetary Node Registry | Core |
+| LAGE | Latency-Aware Governance Engine | Core |
+| ICSM | Interplanetary Capital Synchronization | Core |
+| RPCE | Resource-Productivity Conversion Engine | Core |
+| SATM | Survival-Risk Adaptive Trust Model | Core |
+| ITP | Interplanetary Treaty Protocol | Institutional |
+| CSSE2 | Colony Self-Sufficiency Simulation | Extended |
+
+**Entry Points**: /planetary/intelligence
+**Key Hook**: `usePlanetaryCoordination`
+**Cannot**: Override local sovereign constitutions, trust scoring, or escrow rules
+
+---
+
+## Layer 19: CIVILIZATIONAL DOCTRINE
+**Purpose**: The operating philosophy of high-trust, productivity-based civilization. Defines the invariant axioms.
+
+Ten permanent doctrines: Core Axiom, Three Permanent Constraints, Law of Verified Output, Stability Triangle, Antifragility Principle, Capital-Trust Symmetry, Incentive Alignment Law, Sovereignty Paradox, Long-Horizon Rule, Final Insight.
+
+**Entry Point**: /doctrine
+**Cannot**: Be overridden by any system layer. It is the philosophical invariant core.
+
+---
+
 ## 📊 System Classification Summary
 
 | Classification | Count | Description |

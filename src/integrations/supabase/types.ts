@@ -3865,6 +3865,91 @@ export type Database = {
         }
         Relationships: []
       }
+      colony_simulation_runs: {
+        Row: {
+          ai_confidence: number | null
+          id: string
+          input_parameters: Json | null
+          planetary_node_id: string | null
+          results: Json | null
+          run_at: string | null
+          simulation_type: string
+          time_horizon_years: number | null
+        }
+        Insert: {
+          ai_confidence?: number | null
+          id?: string
+          input_parameters?: Json | null
+          planetary_node_id?: string | null
+          results?: Json | null
+          run_at?: string | null
+          simulation_type: string
+          time_horizon_years?: number | null
+        }
+        Update: {
+          ai_confidence?: number | null
+          id?: string
+          input_parameters?: Json | null
+          planetary_node_id?: string | null
+          results?: Json | null
+          run_at?: string | null
+          simulation_type?: string
+          time_horizon_years?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "colony_simulation_runs_planetary_node_id_fkey"
+            columns: ["planetary_node_id"]
+            isOneToOne: false
+            referencedRelation: "planetary_node_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      colony_viability_scores: {
+        Row: {
+          assessed_at: string | null
+          capital_independence_pct: number | null
+          governance_fragmentation_risk: string | null
+          id: string
+          overall_viability: number | null
+          planetary_node_id: string | null
+          resource_earth_reliance_pct: number | null
+          talent_retention_probability: number | null
+          trust_volatility: number | null
+        }
+        Insert: {
+          assessed_at?: string | null
+          capital_independence_pct?: number | null
+          governance_fragmentation_risk?: string | null
+          id?: string
+          overall_viability?: number | null
+          planetary_node_id?: string | null
+          resource_earth_reliance_pct?: number | null
+          talent_retention_probability?: number | null
+          trust_volatility?: number | null
+        }
+        Update: {
+          assessed_at?: string | null
+          capital_independence_pct?: number | null
+          governance_fragmentation_risk?: string | null
+          id?: string
+          overall_viability?: number | null
+          planetary_node_id?: string | null
+          resource_earth_reliance_pct?: number | null
+          talent_retention_probability?: number | null
+          trust_volatility?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "colony_viability_scores_planetary_node_id_fkey"
+            columns: ["planetary_node_id"]
+            isOneToOne: true
+            referencedRelation: "planetary_node_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       comment_likes: {
         Row: {
           comment_id: string
@@ -5479,6 +5564,57 @@ export type Database = {
           },
         ]
       }
+      credential_federation_logs: {
+        Row: {
+          credential_hash: string
+          credential_type: string
+          cross_signature_valid: boolean | null
+          id: string
+          metadata: Json | null
+          source_node_id: string | null
+          target_node_id: string | null
+          verification_result: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          credential_hash: string
+          credential_type: string
+          cross_signature_valid?: boolean | null
+          id?: string
+          metadata?: Json | null
+          source_node_id?: string | null
+          target_node_id?: string | null
+          verification_result?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          credential_hash?: string
+          credential_type?: string
+          cross_signature_valid?: boolean | null
+          id?: string
+          metadata?: Json | null
+          source_node_id?: string | null
+          target_node_id?: string | null
+          verification_result?: string | null
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credential_federation_logs_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "credential_federation_logs_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       credential_verifications: {
         Row: {
           created_at: string
@@ -5675,6 +5811,66 @@ export type Database = {
             columns: ["deactivated_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cross_node_capital_flows: {
+        Row: {
+          amount: number
+          completed_at: string | null
+          created_at: string | null
+          currency: string
+          escrow_reference_id: string | null
+          exposure_cap: number | null
+          flow_type: string
+          id: string
+          risk_score: number | null
+          source_node_id: string | null
+          status: string
+          target_node_id: string | null
+        }
+        Insert: {
+          amount?: number
+          completed_at?: string | null
+          created_at?: string | null
+          currency?: string
+          escrow_reference_id?: string | null
+          exposure_cap?: number | null
+          flow_type: string
+          id?: string
+          risk_score?: number | null
+          source_node_id?: string | null
+          status?: string
+          target_node_id?: string | null
+        }
+        Update: {
+          amount?: number
+          completed_at?: string | null
+          created_at?: string | null
+          currency?: string
+          escrow_reference_id?: string | null
+          exposure_cap?: number | null
+          flow_type?: string
+          id?: string
+          risk_score?: number | null
+          source_node_id?: string | null
+          status?: string
+          target_node_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cross_node_capital_flows_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cross_node_capital_flows_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
             referencedColumns: ["id"]
           },
         ]
@@ -6910,6 +7106,50 @@ export type Database = {
             columns: ["deployment_instance_id"]
             isOneToOne: false
             referencedRelation: "deployment_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      development_transparency_ledger: {
+        Row: {
+          capital_deployed: number | null
+          delay_days: number | null
+          id: string
+          infrastructure_id: string | null
+          logged_at: string | null
+          milestone_status: string | null
+          milestone_title: string
+          trust_movement: number | null
+          workforce_verified: number | null
+        }
+        Insert: {
+          capital_deployed?: number | null
+          delay_days?: number | null
+          id?: string
+          infrastructure_id?: string | null
+          logged_at?: string | null
+          milestone_status?: string | null
+          milestone_title: string
+          trust_movement?: number | null
+          workforce_verified?: number | null
+        }
+        Update: {
+          capital_deployed?: number | null
+          delay_days?: number | null
+          id?: string
+          infrastructure_id?: string | null
+          logged_at?: string | null
+          milestone_status?: string | null
+          milestone_title?: string
+          trust_movement?: number | null
+          workforce_verified?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "development_transparency_ledger_infrastructure_id_fkey"
+            columns: ["infrastructure_id"]
+            isOneToOne: false
+            referencedRelation: "infrastructure_registry"
             referencedColumns: ["id"]
           },
         ]
@@ -9435,6 +9675,159 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      federation_arbitration_registry: {
+        Row: {
+          ai_fault_probability: number | null
+          created_at: string | null
+          dispute_type: string
+          disputing_node_a: string | null
+          disputing_node_b: string | null
+          escrow_frozen: boolean | null
+          id: string
+          resolution_summary: string | null
+          resolved_at: string | null
+          severity: string
+          status: string
+        }
+        Insert: {
+          ai_fault_probability?: number | null
+          created_at?: string | null
+          dispute_type: string
+          disputing_node_a?: string | null
+          disputing_node_b?: string | null
+          escrow_frozen?: boolean | null
+          id?: string
+          resolution_summary?: string | null
+          resolved_at?: string | null
+          severity?: string
+          status?: string
+        }
+        Update: {
+          ai_fault_probability?: number | null
+          created_at?: string | null
+          dispute_type?: string
+          disputing_node_a?: string | null
+          disputing_node_b?: string | null
+          escrow_frozen?: boolean | null
+          id?: string
+          resolution_summary?: string | null
+          resolved_at?: string | null
+          severity?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federation_arbitration_registry_disputing_node_a_fkey"
+            columns: ["disputing_node_a"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "federation_arbitration_registry_disputing_node_b_fkey"
+            columns: ["disputing_node_b"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federation_registry: {
+        Row: {
+          compatibility_score: number | null
+          constitutional_fingerprint: string | null
+          escrow_guarantee_hash: string | null
+          established_at: string | null
+          federation_id: string
+          governance_framework_hash: string | null
+          handshake_status: string
+          id: string
+          last_sync_at: string | null
+          metadata: Json | null
+          node_id: string | null
+          partner_node_id: string | null
+          trust_schema_hash: string | null
+        }
+        Insert: {
+          compatibility_score?: number | null
+          constitutional_fingerprint?: string | null
+          escrow_guarantee_hash?: string | null
+          established_at?: string | null
+          federation_id: string
+          governance_framework_hash?: string | null
+          handshake_status?: string
+          id?: string
+          last_sync_at?: string | null
+          metadata?: Json | null
+          node_id?: string | null
+          partner_node_id?: string | null
+          trust_schema_hash?: string | null
+        }
+        Update: {
+          compatibility_score?: number | null
+          constitutional_fingerprint?: string | null
+          escrow_guarantee_hash?: string | null
+          established_at?: string | null
+          federation_id?: string
+          governance_framework_hash?: string | null
+          handshake_status?: string
+          id?: string
+          last_sync_at?: string | null
+          metadata?: Json | null
+          node_id?: string | null
+          partner_node_id?: string | null
+          trust_schema_hash?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federation_registry_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "federation_registry_partner_node_id_fkey"
+            columns: ["partner_node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federation_risk_audit_log: {
+        Row: {
+          affected_nodes: string[] | null
+          ai_confidence: number | null
+          detected_at: string | null
+          id: string
+          resolved_at: string | null
+          risk_type: string
+          severity: string
+          simulation_summary: Json | null
+        }
+        Insert: {
+          affected_nodes?: string[] | null
+          ai_confidence?: number | null
+          detected_at?: string | null
+          id?: string
+          resolved_at?: string | null
+          risk_type: string
+          severity?: string
+          simulation_summary?: Json | null
+        }
+        Update: {
+          affected_nodes?: string[] | null
+          ai_confidence?: number | null
+          detected_at?: string | null
+          id?: string
+          resolved_at?: string | null
+          risk_type?: string
+          severity?: string
+          simulation_summary?: Json | null
+        }
+        Relationships: []
       }
       fee_evasion_logs: {
         Row: {
@@ -12410,6 +12803,53 @@ export type Database = {
         }
         Relationships: []
       }
+      infrastructure_capital_flows: {
+        Row: {
+          amount: number
+          created_at: string | null
+          currency: string | null
+          fx_risk_adjustment: number | null
+          id: string
+          infrastructure_id: string | null
+          political_risk_overlay: number | null
+          source_type: string
+          status: string | null
+          yield_projection: number | null
+        }
+        Insert: {
+          amount?: number
+          created_at?: string | null
+          currency?: string | null
+          fx_risk_adjustment?: number | null
+          id?: string
+          infrastructure_id?: string | null
+          political_risk_overlay?: number | null
+          source_type: string
+          status?: string | null
+          yield_projection?: number | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          currency?: string | null
+          fx_risk_adjustment?: number | null
+          id?: string
+          infrastructure_id?: string | null
+          political_risk_overlay?: number | null
+          source_type?: string
+          status?: string | null
+          yield_projection?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "infrastructure_capital_flows_infrastructure_id_fkey"
+            columns: ["infrastructure_id"]
+            isOneToOne: false
+            referencedRelation: "infrastructure_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       infrastructure_contracts: {
         Row: {
           auto_renew: boolean
@@ -12478,6 +12918,106 @@ export type Database = {
           usage_limits?: Json | null
         }
         Relationships: []
+      }
+      infrastructure_registry: {
+        Row: {
+          capacity_metrics: Json | null
+          capital_requirement: number | null
+          completion_timeline: string | null
+          created_at: string | null
+          currency: string | null
+          id: string
+          infrastructure_type: string
+          name: string
+          region_code: string
+          regulatory_jurisdiction: string | null
+          sovereign_node_id: string | null
+          status: string | null
+          talent_demand_forecast: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          capacity_metrics?: Json | null
+          capital_requirement?: number | null
+          completion_timeline?: string | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          infrastructure_type: string
+          name: string
+          region_code: string
+          regulatory_jurisdiction?: string | null
+          sovereign_node_id?: string | null
+          status?: string | null
+          talent_demand_forecast?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          capacity_metrics?: Json | null
+          capital_requirement?: number | null
+          completion_timeline?: string | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          infrastructure_type?: string
+          name?: string
+          region_code?: string
+          regulatory_jurisdiction?: string | null
+          sovereign_node_id?: string | null
+          status?: string | null
+          talent_demand_forecast?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "infrastructure_registry_sovereign_node_id_fkey"
+            columns: ["sovereign_node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      infrastructure_risk_signals: {
+        Row: {
+          ai_confidence: number | null
+          detected_at: string | null
+          id: string
+          infrastructure_id: string | null
+          recommended_action: string | null
+          resolved_at: string | null
+          severity: string | null
+          signal_type: string
+        }
+        Insert: {
+          ai_confidence?: number | null
+          detected_at?: string | null
+          id?: string
+          infrastructure_id?: string | null
+          recommended_action?: string | null
+          resolved_at?: string | null
+          severity?: string | null
+          signal_type: string
+        }
+        Update: {
+          ai_confidence?: number | null
+          detected_at?: string | null
+          id?: string
+          infrastructure_id?: string | null
+          recommended_action?: string | null
+          resolved_at?: string | null
+          severity?: string | null
+          signal_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "infrastructure_risk_signals_infrastructure_id_fkey"
+            columns: ["infrastructure_id"]
+            isOneToOne: false
+            referencedRelation: "infrastructure_registry"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       institution_applications: {
         Row: {
@@ -13881,6 +14421,96 @@ export type Database = {
           },
         ]
       }
+      interplanetary_capital_flows: {
+        Row: {
+          amount: number
+          created_at: string | null
+          flow_type: string
+          id: string
+          resource_backing_type: string | null
+          risk_score: number | null
+          settlement_delay_hours: number | null
+          source_node_id: string | null
+          status: string | null
+          target_node_id: string | null
+        }
+        Insert: {
+          amount?: number
+          created_at?: string | null
+          flow_type: string
+          id?: string
+          resource_backing_type?: string | null
+          risk_score?: number | null
+          settlement_delay_hours?: number | null
+          source_node_id?: string | null
+          status?: string | null
+          target_node_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          flow_type?: string
+          id?: string
+          resource_backing_type?: string | null
+          risk_score?: number | null
+          settlement_delay_hours?: number | null
+          source_node_id?: string | null
+          status?: string | null
+          target_node_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interplanetary_capital_flows_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "planetary_node_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interplanetary_capital_flows_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "planetary_node_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interplanetary_treaty_registry: {
+        Row: {
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          participating_nodes: string[] | null
+          ratified_at: string | null
+          status: string | null
+          terms: Json | null
+          treaty_name: string
+          treaty_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          participating_nodes?: string[] | null
+          ratified_at?: string | null
+          status?: string | null
+          terms?: Json | null
+          treaty_name: string
+          treaty_type: string
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          participating_nodes?: string[] | null
+          ratified_at?: string | null
+          status?: string | null
+          terms?: Json | null
+          treaty_name?: string
+          treaty_type?: string
+        }
+        Relationships: []
+      }
       ip_contributors: {
         Row: {
           acknowledged_at: string | null
@@ -15031,6 +15661,53 @@ export type Database = {
         }
         Relationships: []
       }
+      latency_governance_log: {
+        Row: {
+          consensus_method: string | null
+          emergency_autonomy_triggered: boolean | null
+          governance_action: string
+          id: string
+          initiated_at: string | null
+          latency_band: string | null
+          planetary_node_id: string | null
+          quorum_model: string | null
+          resolved_at: string | null
+          vote_window_hours: number | null
+        }
+        Insert: {
+          consensus_method?: string | null
+          emergency_autonomy_triggered?: boolean | null
+          governance_action: string
+          id?: string
+          initiated_at?: string | null
+          latency_band?: string | null
+          planetary_node_id?: string | null
+          quorum_model?: string | null
+          resolved_at?: string | null
+          vote_window_hours?: number | null
+        }
+        Update: {
+          consensus_method?: string | null
+          emergency_autonomy_triggered?: boolean | null
+          governance_action?: string
+          id?: string
+          initiated_at?: string | null
+          latency_band?: string | null
+          planetary_node_id?: string | null
+          quorum_model?: string | null
+          resolved_at?: string | null
+          vote_window_hours?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "latency_governance_log_planetary_node_id_fkey"
+            columns: ["planetary_node_id"]
+            isOneToOne: false
+            referencedRelation: "planetary_node_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leakage_detection: {
         Row: {
           created_at: string
@@ -15774,6 +16451,44 @@ export type Database = {
           },
         ]
       }
+      multi_node_index_data: {
+        Row: {
+          calculated_at: string | null
+          id: string
+          index_type: string
+          index_value: number
+          methodology_version: string | null
+          node_id: string | null
+          period: string
+        }
+        Insert: {
+          calculated_at?: string | null
+          id?: string
+          index_type: string
+          index_value?: number
+          methodology_version?: string | null
+          node_id?: string | null
+          period: string
+        }
+        Update: {
+          calculated_at?: string | null
+          id?: string
+          index_type?: string
+          index_value?: number
+          methodology_version?: string | null
+          node_id?: string | null
+          period?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "multi_node_index_data_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       national_dashboard_access: {
         Row: {
           access_level: string
@@ -16182,6 +16897,50 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      node_reputation_scores: {
+        Row: {
+          capital_compliance: number | null
+          governance_integrity: number | null
+          id: string
+          isolation_risk: string | null
+          node_id: string | null
+          overall_score: number | null
+          protocol_adherence: number | null
+          trust_reliability: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          capital_compliance?: number | null
+          governance_integrity?: number | null
+          id?: string
+          isolation_risk?: string | null
+          node_id?: string | null
+          overall_score?: number | null
+          protocol_adherence?: number | null
+          trust_reliability?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          capital_compliance?: number | null
+          governance_integrity?: number | null
+          id?: string
+          isolation_risk?: string | null
+          node_id?: string | null
+          overall_score?: number | null
+          protocol_adherence?: number | null
+          trust_reliability?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "node_reputation_scores_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: true
+            referencedRelation: "federated_nodes"
             referencedColumns: ["id"]
           },
         ]
@@ -17779,6 +18538,87 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      planetary_node_registry: {
+        Row: {
+          capital_liquidity_class: string | null
+          celestial_body: string
+          communication_latency_band: string | null
+          governance_framework_hash: string | null
+          id: string
+          node_name: string
+          population_estimate: number | null
+          registered_at: string | null
+          resource_production_profile: Json | null
+          status: string | null
+          survival_dependency_index: number | null
+          trust_schema_metadata: Json | null
+        }
+        Insert: {
+          capital_liquidity_class?: string | null
+          celestial_body?: string
+          communication_latency_band?: string | null
+          governance_framework_hash?: string | null
+          id?: string
+          node_name: string
+          population_estimate?: number | null
+          registered_at?: string | null
+          resource_production_profile?: Json | null
+          status?: string | null
+          survival_dependency_index?: number | null
+          trust_schema_metadata?: Json | null
+        }
+        Update: {
+          capital_liquidity_class?: string | null
+          celestial_body?: string
+          communication_latency_band?: string | null
+          governance_framework_hash?: string | null
+          id?: string
+          node_name?: string
+          population_estimate?: number | null
+          registered_at?: string | null
+          resource_production_profile?: Json | null
+          status?: string | null
+          survival_dependency_index?: number | null
+          trust_schema_metadata?: Json | null
+        }
+        Relationships: []
+      }
+      planetary_risk_audit_log: {
+        Row: {
+          affected_nodes: string[] | null
+          ai_confidence: number | null
+          celestial_scope: string | null
+          containment_model: Json | null
+          detected_at: string | null
+          id: string
+          resolved_at: string | null
+          risk_type: string
+          severity: string | null
+        }
+        Insert: {
+          affected_nodes?: string[] | null
+          ai_confidence?: number | null
+          celestial_scope?: string | null
+          containment_model?: Json | null
+          detected_at?: string | null
+          id?: string
+          resolved_at?: string | null
+          risk_type: string
+          severity?: string | null
+        }
+        Update: {
+          affected_nodes?: string[] | null
+          ai_confidence?: number | null
+          celestial_scope?: string | null
+          containment_model?: Json | null
+          detected_at?: string | null
+          id?: string
+          resolved_at?: string | null
+          risk_type?: string
+          severity?: string | null
+        }
+        Relationships: []
       }
       platform_charters: {
         Row: {
@@ -19550,6 +20390,47 @@ export type Database = {
           trust_weighted_avg?: number | null
         }
         Relationships: []
+      }
+      production_capacity_metrics: {
+        Row: {
+          capacity_utilization_pct: number | null
+          capital_to_output_ratio: number | null
+          id: string
+          infrastructure_id: string | null
+          infrastructure_strain_risk: string | null
+          measured_at: string | null
+          production_efficiency_score: number | null
+          talent_absorption_capacity: number | null
+        }
+        Insert: {
+          capacity_utilization_pct?: number | null
+          capital_to_output_ratio?: number | null
+          id?: string
+          infrastructure_id?: string | null
+          infrastructure_strain_risk?: string | null
+          measured_at?: string | null
+          production_efficiency_score?: number | null
+          talent_absorption_capacity?: number | null
+        }
+        Update: {
+          capacity_utilization_pct?: number | null
+          capital_to_output_ratio?: number | null
+          id?: string
+          infrastructure_id?: string | null
+          infrastructure_strain_risk?: string | null
+          measured_at?: string | null
+          production_efficiency_score?: number | null
+          talent_absorption_capacity?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_capacity_metrics_infrastructure_id_fkey"
+            columns: ["infrastructure_id"]
+            isOneToOne: false
+            referencedRelation: "infrastructure_registry"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       professional_bonds: {
         Row: {
@@ -22410,6 +23291,50 @@ export type Database = {
             columns: ["scholar_passport_id"]
             isOneToOne: false
             referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resource_productivity_metrics: {
+        Row: {
+          capital_sustainability_horizon_years: number | null
+          colony_viability_score: number | null
+          energy_productivity_ratio: number | null
+          habitat_capacity_utilization: number | null
+          id: string
+          measured_at: string | null
+          planetary_node_id: string | null
+          resource_extraction_efficiency: number | null
+          sustainability_index: number | null
+        }
+        Insert: {
+          capital_sustainability_horizon_years?: number | null
+          colony_viability_score?: number | null
+          energy_productivity_ratio?: number | null
+          habitat_capacity_utilization?: number | null
+          id?: string
+          measured_at?: string | null
+          planetary_node_id?: string | null
+          resource_extraction_efficiency?: number | null
+          sustainability_index?: number | null
+        }
+        Update: {
+          capital_sustainability_horizon_years?: number | null
+          colony_viability_score?: number | null
+          energy_productivity_ratio?: number | null
+          habitat_capacity_utilization?: number | null
+          id?: string
+          measured_at?: string | null
+          planetary_node_id?: string | null
+          resource_extraction_efficiency?: number | null
+          sustainability_index?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_productivity_metrics_planetary_node_id_fkey"
+            columns: ["planetary_node_id"]
+            isOneToOne: false
+            referencedRelation: "planetary_node_registry"
             referencedColumns: ["id"]
           },
         ]
@@ -25372,6 +26297,50 @@ export type Database = {
           },
         ]
       }
+      talent_infrastructure_matches: {
+        Row: {
+          created_at: string | null
+          credit_band: string | null
+          id: string
+          infrastructure_id: string | null
+          match_score: number | null
+          mobility_eligible: boolean | null
+          status: string | null
+          trust_band: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          credit_band?: string | null
+          id?: string
+          infrastructure_id?: string | null
+          match_score?: number | null
+          mobility_eligible?: boolean | null
+          status?: string | null
+          trust_band?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          credit_band?: string | null
+          id?: string
+          infrastructure_id?: string | null
+          match_score?: number | null
+          mobility_eligible?: boolean | null
+          status?: string | null
+          trust_band?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "talent_infrastructure_matches_infrastructure_id_fkey"
+            columns: ["infrastructure_id"]
+            isOneToOne: false
+            referencedRelation: "infrastructure_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       teaching_research_outputs: {
         Row: {
           course_id: string
@@ -26459,6 +27428,63 @@ export type Database = {
           tier?: string
         }
         Relationships: []
+      }
+      trust_translation_matrix: {
+        Row: {
+          confidence_score: number | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          sample_size: number | null
+          source_node_id: string | null
+          source_trust_band: string
+          target_node_id: string | null
+          target_risk_band: string
+          updated_at: string | null
+          validation_method: string | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          sample_size?: number | null
+          source_node_id?: string | null
+          source_trust_band: string
+          target_node_id?: string | null
+          target_risk_band: string
+          updated_at?: string | null
+          validation_method?: string | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          sample_size?: number | null
+          source_node_id?: string | null
+          source_trust_band?: string
+          target_node_id?: string | null
+          target_risk_band?: string
+          updated_at?: string | null
+          validation_method?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trust_translation_matrix_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trust_translation_matrix_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       trust_velocity_tracking: {
         Row: {

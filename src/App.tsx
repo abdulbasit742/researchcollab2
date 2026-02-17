@@ -158,6 +158,12 @@ const IntelligenceGlobalPage = lazy(() => import("./pages/IntelligenceGlobalPage
 const PredictiveGlobalPage = lazy(() => import("./pages/PredictiveGlobalPage"));
 const SystemHealthPage = lazy(() => import("./pages/SystemHealthPage"));
 
+// Layers 16-19
+const FederationIntelligencePage = lazy(() => import("./pages/FederationIntelligencePage"));
+const InfrastructureIntelligencePage = lazy(() => import("./pages/InfrastructureIntelligencePage"));
+const PlanetaryIntelligencePage = lazy(() => import("./pages/PlanetaryIntelligencePage"));
+const CivilizationalDoctrinePage = lazy(() => import("./pages/CivilizationalDoctrinePage"));
+
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
 const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
@@ -420,6 +426,11 @@ const AppContent = () => {
             <Route path="/intelligence/global" element={<IntelligenceGlobalPage />} />
             <Route path="/predictive/global" element={<PredictiveGlobalPage />} />
             <Route path="/system/health" element={<SystemHealthPage />} />
+            {/* Layers 16-19 */}
+            <Route path="/federation/intelligence" element={<FederationIntelligencePage />} />
+            <Route path="/infrastructure/intelligence" element={<InfrastructureIntelligencePage />} />
+            <Route path="/planetary/intelligence" element={<PlanetaryIntelligencePage />} />
+            <Route path="/doctrine" element={<CivilizationalDoctrinePage />} />
             <Route path="/analytics/global-liquidity" element={<GlobalLiquidityAnalyticsPage />} />
             <Route path="/developer/api-dashboard" element={<DeveloperApiDashboardPage />} />
             <Route path="/profile/reputation-export" element={<ReputationExportPage />} />
