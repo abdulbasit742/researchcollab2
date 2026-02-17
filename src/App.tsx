@@ -178,6 +178,11 @@ const InstitutionCommercializationDashboardPage = lazy(() => import("./pages/Ins
 const InstitutionalROICalculatorPage = lazy(() => import("./pages/InstitutionalROICalculatorPage"));
 const PilotAcquisitionKitPage = lazy(() => import("./pages/PilotAcquisitionKitPage"));
 
+// FYP Execution OS
+const FYPBrowsePage = lazy(() => import("./pages/FYPBrowsePage"));
+const FacultyFYPMonitorPage = lazy(() => import("./pages/FacultyFYPMonitorPage"));
+const InstitutionalFYPIntelligencePage = lazy(() => import("./pages/InstitutionalFYPIntelligencePage"));
+
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
 const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
@@ -487,6 +492,10 @@ const AppContent = () => {
             <Route path="/institutions/:id/commercialization" element={<InstitutionCommercializationDashboardPage />} />
             <Route path="/institutions/roi-calculator" element={<InstitutionalROICalculatorPage />} />
             <Route path="/institutions/pilot-kit" element={<PilotAcquisitionKitPage />} />
+            {/* FYP Execution OS */}
+            <Route path="/fyp" element={<FYPBrowsePage />} />
+            <Route path="/faculty/fyp-monitor" element={<FacultyFYPMonitorPage />} />
+            <Route path="/institutions/fyp-intelligence" element={<InstitutionalFYPIntelligencePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>
