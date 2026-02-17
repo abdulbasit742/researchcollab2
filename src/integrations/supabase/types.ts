@@ -12803,6 +12803,69 @@ export type Database = {
         }
         Relationships: []
       }
+      industry_research_partnerships: {
+        Row: {
+          company_name: string
+          company_user_id: string | null
+          created_at: string | null
+          funding_pledged: number | null
+          funding_released: number | null
+          id: string
+          institution_id: string | null
+          ip_ownership: string | null
+          milestone_count: number | null
+          milestones_completed: number | null
+          nda_signed: boolean | null
+          partnership_type: string | null
+          research_id: string | null
+          revenue_generated: number | null
+          revenue_split: Json | null
+          roi_pct: number | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          company_name: string
+          company_user_id?: string | null
+          created_at?: string | null
+          funding_pledged?: number | null
+          funding_released?: number | null
+          id?: string
+          institution_id?: string | null
+          ip_ownership?: string | null
+          milestone_count?: number | null
+          milestones_completed?: number | null
+          nda_signed?: boolean | null
+          partnership_type?: string | null
+          research_id?: string | null
+          revenue_generated?: number | null
+          revenue_split?: Json | null
+          roi_pct?: number | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          company_name?: string
+          company_user_id?: string | null
+          created_at?: string | null
+          funding_pledged?: number | null
+          funding_released?: number | null
+          id?: string
+          institution_id?: string | null
+          ip_ownership?: string | null
+          milestone_count?: number | null
+          milestones_completed?: number | null
+          nda_signed?: boolean | null
+          partnership_type?: string | null
+          research_id?: string | null
+          revenue_generated?: number | null
+          revenue_split?: Json | null
+          roi_pct?: number | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       infrastructure_capital_flows: {
         Row: {
           amount: number
@@ -13282,6 +13345,48 @@ export type Database = {
           },
         ]
       }
+      institution_research_earnings: {
+        Row: {
+          created_at: string | null
+          earning_type: string | null
+          gross_amount: number | null
+          id: string
+          institution_id: string
+          institution_payout: number | null
+          net_amount: number | null
+          period: string | null
+          research_id: string | null
+          researcher_payout: number | null
+          student_payout: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          earning_type?: string | null
+          gross_amount?: number | null
+          id?: string
+          institution_id: string
+          institution_payout?: number | null
+          net_amount?: number | null
+          period?: string | null
+          research_id?: string | null
+          researcher_payout?: number | null
+          student_payout?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          earning_type?: string | null
+          gross_amount?: number | null
+          id?: string
+          institution_id?: string
+          institution_payout?: number | null
+          net_amount?: number | null
+          period?: string | null
+          research_id?: string | null
+          researcher_payout?: number | null
+          student_payout?: number | null
+        }
+        Relationships: []
+      }
       institution_research_links: {
         Row: {
           created_at: string | null
@@ -13524,6 +13629,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      institution_switching_cost_metrics: {
+        Row: {
+          active_commercialization_contracts: number | null
+          computed_at: string | null
+          created_at: string | null
+          historical_execution_data_points: number | null
+          id: string
+          institution_id: string
+          lock_in_grade: string | null
+          productivity_trajectory_months: number | null
+          revenue_performance_records: number | null
+          switching_cost_score: number | null
+          total_data_value_estimate: number | null
+          trust_capital_accumulated: number | null
+        }
+        Insert: {
+          active_commercialization_contracts?: number | null
+          computed_at?: string | null
+          created_at?: string | null
+          historical_execution_data_points?: number | null
+          id?: string
+          institution_id: string
+          lock_in_grade?: string | null
+          productivity_trajectory_months?: number | null
+          revenue_performance_records?: number | null
+          switching_cost_score?: number | null
+          total_data_value_estimate?: number | null
+          trust_capital_accumulated?: number | null
+        }
+        Update: {
+          active_commercialization_contracts?: number | null
+          computed_at?: string | null
+          created_at?: string | null
+          historical_execution_data_points?: number | null
+          id?: string
+          institution_id?: string
+          lock_in_grade?: string | null
+          productivity_trajectory_months?: number | null
+          revenue_performance_records?: number | null
+          switching_cost_score?: number | null
+          total_data_value_estimate?: number | null
+          trust_capital_accumulated?: number | null
+        }
+        Relationships: []
       }
       institution_usage_metrics: {
         Row: {
@@ -23064,6 +23214,54 @@ export type Database = {
         }
         Relationships: []
       }
+      research_funding_pledges: {
+        Row: {
+          amount: number
+          auto_escrow: boolean | null
+          condition_threshold_pct: number | null
+          converted_to_escrow_at: string | null
+          created_at: string | null
+          currency: string | null
+          id: string
+          is_conditional: boolean | null
+          pledger_id: string | null
+          pledger_type: string | null
+          research_id: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          auto_escrow?: boolean | null
+          condition_threshold_pct?: number | null
+          converted_to_escrow_at?: string | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          is_conditional?: boolean | null
+          pledger_id?: string | null
+          pledger_type?: string | null
+          research_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          auto_escrow?: boolean | null
+          condition_threshold_pct?: number | null
+          converted_to_escrow_at?: string | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          is_conditional?: boolean | null
+          pledger_id?: string | null
+          pledger_type?: string | null
+          research_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       research_funding_rounds: {
         Row: {
           amount: number
@@ -23350,6 +23548,68 @@ export type Database = {
             columns: ["research_timeline_id"]
             isOneToOne: false
             referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_revenue_streams: {
+        Row: {
+          created_at: string | null
+          currency: string | null
+          gross_amount: number | null
+          id: string
+          institution_id: string | null
+          institution_share: number | null
+          net_amount: number | null
+          period: string | null
+          platform_fee: number | null
+          research_id: string | null
+          researcher_share: number | null
+          revenue_type: string | null
+          royalty_contract_id: string | null
+          student_share: number | null
+          track_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          currency?: string | null
+          gross_amount?: number | null
+          id?: string
+          institution_id?: string | null
+          institution_share?: number | null
+          net_amount?: number | null
+          period?: string | null
+          platform_fee?: number | null
+          research_id?: string | null
+          researcher_share?: number | null
+          revenue_type?: string | null
+          royalty_contract_id?: string | null
+          student_share?: number | null
+          track_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          currency?: string | null
+          gross_amount?: number | null
+          id?: string
+          institution_id?: string | null
+          institution_share?: number | null
+          net_amount?: number | null
+          period?: string | null
+          platform_fee?: number | null
+          research_id?: string | null
+          researcher_share?: number | null
+          revenue_type?: string | null
+          royalty_contract_id?: string | null
+          student_share?: number | null
+          track_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_revenue_streams_royalty_contract_id_fkey"
+            columns: ["royalty_contract_id"]
+            isOneToOne: false
+            referencedRelation: "royalty_contracts"
             referencedColumns: ["id"]
           },
         ]
@@ -24220,6 +24480,66 @@ export type Database = {
             referencedColumns: ["action_key"]
           },
         ]
+      }
+      royalty_contracts: {
+        Row: {
+          contract_type: string | null
+          created_at: string | null
+          currency: string | null
+          effective_from: string | null
+          expires_at: string | null
+          id: string
+          institution_id: string | null
+          institution_share_pct: number | null
+          platform_share_pct: number | null
+          research_id: string | null
+          researcher_id: string | null
+          researcher_share_pct: number | null
+          status: string | null
+          student_share_pct: number | null
+          total_distributed: number | null
+          total_revenue: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          contract_type?: string | null
+          created_at?: string | null
+          currency?: string | null
+          effective_from?: string | null
+          expires_at?: string | null
+          id?: string
+          institution_id?: string | null
+          institution_share_pct?: number | null
+          platform_share_pct?: number | null
+          research_id?: string | null
+          researcher_id?: string | null
+          researcher_share_pct?: number | null
+          status?: string | null
+          student_share_pct?: number | null
+          total_distributed?: number | null
+          total_revenue?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          contract_type?: string | null
+          created_at?: string | null
+          currency?: string | null
+          effective_from?: string | null
+          expires_at?: string | null
+          id?: string
+          institution_id?: string | null
+          institution_share_pct?: number | null
+          platform_share_pct?: number | null
+          research_id?: string | null
+          researcher_id?: string | null
+          researcher_share_pct?: number | null
+          status?: string | null
+          student_share_pct?: number | null
+          total_distributed?: number | null
+          total_revenue?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       saved_jobs: {
         Row: {
