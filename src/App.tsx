@@ -139,6 +139,10 @@ const SpreadsheetEditorPage = lazy(() => import("./pages/SpreadsheetEditorPage")
 const PresentationEditorPage = lazy(() => import("./pages/PresentationEditorPage"));
 const InstitutionalAcademicAnalyticsPage = lazy(() => import("./pages/InstitutionalAcademicAnalyticsPage"));
 const LeaderboardPage = lazy(() => import("./pages/LeaderboardPage"));
+const InstitutionIntelligencePage = lazy(() => import("./pages/InstitutionIntelligencePage"));
+const CareerForecastPage = lazy(() => import("./pages/CareerForecastPage"));
+const GlobalEconomyPage = lazy(() => import("./pages/GlobalEconomyPage"));
+const AdminLIMSECommandCenter = lazy(() => import("./pages/admin/AdminLIMSECommandCenter"));
 
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
@@ -385,6 +389,11 @@ const AppContent = () => {
             <Route path="/admin/infrastructure-costs" element={<AdminInfrastructureCostsPage />} />
             <Route path="/rankings/global" element={<GlobalRankingsPage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/market/liquidity" element={<MarketLiquidityPage />} />
+            <Route path="/institutions/intelligence" element={<InstitutionIntelligencePage />} />
+            <Route path="/career/forecast" element={<CareerForecastPage />} />
+            <Route path="/global/economy" element={<GlobalEconomyPage />} />
+            <Route path="/admin/limse-command" element={<AdminLIMSECommandCenter />} />
             <Route path="/analytics/global-liquidity" element={<GlobalLiquidityAnalyticsPage />} />
             <Route path="/developer/api-dashboard" element={<DeveloperApiDashboardPage />} />
             <Route path="/profile/reputation-export" element={<ReputationExportPage />} />
