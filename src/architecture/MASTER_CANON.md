@@ -157,13 +157,32 @@ All 62 systems are organized into exactly 7 layers. Every feature belongs to ONE
 
 ---
 
+## Layer 10: PROFESSIONAL CAPITAL & CREDIT INFRASTRUCTURE
+**Purpose**: Revenue-backed financing, trust-weighted credit scoring, institutional funding pools, and professional bond instruments. Turns verified future output into financeable capital.
+
+| System | Name | Status |
+|--------|------|--------|
+| PCSE | Professional Credit Score Engine | Core |
+| RAE | Revenue Advance Engine | Core |
+| IFP | Institutional Funding Pools | Institutional |
+| PBI | Professional Bond Instrument | Institutional |
+| RIE | Risk Intelligence Engine | Core |
+| DRL | Default & Recovery Logic | Core |
+
+**Entry Points**: /capital/credit-profile, /capital/advance, /capital/pools, /capital/risk-intelligence
+**Key Hook**: `useCapitalEngine`, `useCreditProfile`, `useCapitalAdvances`, `useFundingPools`
+**Depends on**: Layer 1 (Trust), Layer 3 (Deals), Layer 4 (Economics), Layer 8 (Liquidity), Layer 9 (Credentials)
+**Cannot**: Modify core trust algorithm, override escrow enforcement, change constitutional governance, create synthetic credit layers
+
+---
+
 ## 📊 System Classification Summary
 
 | Classification | Count | Description |
 |----------------|-------|-------------|
-| **Core** | 24 | Always on, essential for basic operation |
+| **Core** | 28 | Always on, essential for basic operation |
 | **Extended** | 15 | Opt-in for power users |
-| **Institutional** | 18 | For organizations, governments, enterprises |
+| **Institutional** | 20 | For organizations, governments, enterprises |
 | **Experimental** | 5 | Future consideration |
 
 ---
@@ -184,6 +203,8 @@ Layer 6 (Institutions & Governance)
 Layer 7 (Intelligence & Automation)
     ↓
 Layer 8 (Market Intelligence & Liquidity Optimization)
+    ↓
+Layer 10 (Professional Capital & Credit Infrastructure)
 ```
 
 **Rule**: Lower layers NEVER depend on higher layers.

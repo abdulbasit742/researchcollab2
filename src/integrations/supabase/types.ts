@@ -3004,6 +3004,75 @@ export type Database = {
         }
         Relationships: []
       }
+      capital_advances: {
+        Row: {
+          approved_amount: number | null
+          approved_at: string | null
+          auto_repayment_enabled: boolean | null
+          created_at: string | null
+          credit_band_at_request: string | null
+          currency: string | null
+          deal_id: string | null
+          defaulted_at: string | null
+          disbursed_at: string | null
+          discount_rate: number | null
+          id: string
+          milestone_id: string | null
+          net_disbursed: number | null
+          repaid_amount: number | null
+          repaid_at: string | null
+          requested_amount: number
+          risk_score_at_request: number | null
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          approved_amount?: number | null
+          approved_at?: string | null
+          auto_repayment_enabled?: boolean | null
+          created_at?: string | null
+          credit_band_at_request?: string | null
+          currency?: string | null
+          deal_id?: string | null
+          defaulted_at?: string | null
+          disbursed_at?: string | null
+          discount_rate?: number | null
+          id?: string
+          milestone_id?: string | null
+          net_disbursed?: number | null
+          repaid_amount?: number | null
+          repaid_at?: string | null
+          requested_amount: number
+          risk_score_at_request?: number | null
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          approved_amount?: number | null
+          approved_at?: string | null
+          auto_repayment_enabled?: boolean | null
+          created_at?: string | null
+          credit_band_at_request?: string | null
+          currency?: string | null
+          deal_id?: string | null
+          defaulted_at?: string | null
+          disbursed_at?: string | null
+          discount_rate?: number | null
+          id?: string
+          milestone_id?: string | null
+          net_disbursed?: number | null
+          repaid_amount?: number | null
+          repaid_at?: string | null
+          requested_amount?: number
+          risk_score_at_request?: number | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       capital_partnerships: {
         Row: {
           allocation_rules: Json | null
@@ -3038,6 +3107,62 @@ export type Database = {
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      capital_recovery_registry: {
+        Row: {
+          advance_id: string | null
+          completed_at: string | null
+          governance_pod_notified: boolean | null
+          id: string
+          initiated_at: string | null
+          notes: string | null
+          original_amount: number
+          recovered_amount: number | null
+          recovery_method: string | null
+          status: string | null
+          trust_impact_applied: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          advance_id?: string | null
+          completed_at?: string | null
+          governance_pod_notified?: boolean | null
+          id?: string
+          initiated_at?: string | null
+          notes?: string | null
+          original_amount: number
+          recovered_amount?: number | null
+          recovery_method?: string | null
+          status?: string | null
+          trust_impact_applied?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          advance_id?: string | null
+          completed_at?: string | null
+          governance_pod_notified?: boolean | null
+          id?: string
+          initiated_at?: string | null
+          notes?: string | null
+          original_amount?: number
+          recovered_amount?: number | null
+          recovery_method?: string | null
+          status?: string | null
+          trust_impact_applied?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capital_recovery_registry_advance_id_fkey"
+            columns: ["advance_id"]
+            isOneToOne: false
+            referencedRelation: "capital_advances"
             referencedColumns: ["id"]
           },
         ]
@@ -9889,6 +10014,63 @@ export type Database = {
           revenue_sources?: Json
           sustainability_metrics?: Json | null
           transition_requirements?: string | null
+        }
+        Relationships: []
+      }
+      funding_pools: {
+        Row: {
+          available_capital: number | null
+          created_at: string | null
+          created_by: string | null
+          currency: string | null
+          default_rate: number | null
+          deployed_capital: number | null
+          id: string
+          institution_id: string | null
+          max_exposure_per_advance: number | null
+          name: string
+          pool_type: string
+          risk_tier: string | null
+          status: string | null
+          total_capital: number | null
+          total_yield: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          available_capital?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          currency?: string | null
+          default_rate?: number | null
+          deployed_capital?: number | null
+          id?: string
+          institution_id?: string | null
+          max_exposure_per_advance?: number | null
+          name: string
+          pool_type: string
+          risk_tier?: string | null
+          status?: string | null
+          total_capital?: number | null
+          total_yield?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          available_capital?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          currency?: string | null
+          default_rate?: number | null
+          deployed_capital?: number | null
+          id?: string
+          institution_id?: string | null
+          max_exposure_per_advance?: number | null
+          name?: string
+          pool_type?: string
+          risk_tier?: string | null
+          status?: string | null
+          total_capital?: number | null
+          total_yield?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -17720,6 +17902,60 @@ export type Database = {
           },
         ]
       }
+      pool_allocations: {
+        Row: {
+          actual_yield: number | null
+          advance_id: string | null
+          allocated_amount: number
+          created_at: string | null
+          expected_yield: number | null
+          id: string
+          maturity_date: string | null
+          pool_id: string
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          actual_yield?: number | null
+          advance_id?: string | null
+          allocated_amount: number
+          created_at?: string | null
+          expected_yield?: number | null
+          id?: string
+          maturity_date?: string | null
+          pool_id: string
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          actual_yield?: number | null
+          advance_id?: string | null
+          allocated_amount?: number
+          created_at?: string | null
+          expected_yield?: number | null
+          id?: string
+          maturity_date?: string | null
+          pool_id?: string
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pool_allocations_advance_id_fkey"
+            columns: ["advance_id"]
+            isOneToOne: false
+            referencedRelation: "capital_advances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pool_allocations_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "funding_pools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       portable_reputation_exports: {
         Row: {
           deal_history_snapshot: Json | null
@@ -18484,6 +18720,108 @@ export type Database = {
           snapshot_date?: string
           subcategory?: string | null
           trust_weighted_avg?: number | null
+        }
+        Relationships: []
+      }
+      professional_bonds: {
+        Row: {
+          backed_by_escrow: boolean | null
+          created_at: string | null
+          currency: string | null
+          deal_id: string | null
+          face_value: number
+          holder_institution_id: string | null
+          id: string
+          issuer_id: string
+          maturity_date: string | null
+          milestone_performance_score: number | null
+          status: string | null
+          updated_at: string | null
+          yield_rate: number | null
+        }
+        Insert: {
+          backed_by_escrow?: boolean | null
+          created_at?: string | null
+          currency?: string | null
+          deal_id?: string | null
+          face_value: number
+          holder_institution_id?: string | null
+          id?: string
+          issuer_id: string
+          maturity_date?: string | null
+          milestone_performance_score?: number | null
+          status?: string | null
+          updated_at?: string | null
+          yield_rate?: number | null
+        }
+        Update: {
+          backed_by_escrow?: boolean | null
+          created_at?: string | null
+          currency?: string | null
+          deal_id?: string | null
+          face_value?: number
+          holder_institution_id?: string | null
+          id?: string
+          issuer_id?: string
+          maturity_date?: string | null
+          milestone_performance_score?: number | null
+          status?: string | null
+          updated_at?: string | null
+          yield_rate?: number | null
+        }
+        Relationships: []
+      }
+      professional_credit_profiles: {
+        Row: {
+          avg_milestone_size: number | null
+          created_at: string | null
+          credit_band: string
+          credit_score: number | null
+          deal_completion_reliability: number | null
+          escrow_dispute_rate: number | null
+          historical_liquidity_tier: string | null
+          id: string
+          income_diversification_index: number | null
+          institutional_backing_score: number | null
+          last_computed_at: string | null
+          probability_of_default: number | null
+          revenue_volatility: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          avg_milestone_size?: number | null
+          created_at?: string | null
+          credit_band?: string
+          credit_score?: number | null
+          deal_completion_reliability?: number | null
+          escrow_dispute_rate?: number | null
+          historical_liquidity_tier?: string | null
+          id?: string
+          income_diversification_index?: number | null
+          institutional_backing_score?: number | null
+          last_computed_at?: string | null
+          probability_of_default?: number | null
+          revenue_volatility?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          avg_milestone_size?: number | null
+          created_at?: string | null
+          credit_band?: string
+          credit_score?: number | null
+          deal_completion_reliability?: number | null
+          escrow_dispute_rate?: number | null
+          historical_liquidity_tier?: string | null
+          id?: string
+          income_diversification_index?: number | null
+          institutional_backing_score?: number | null
+          last_computed_at?: string | null
+          probability_of_default?: number | null
+          revenue_volatility?: number | null
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -19837,6 +20175,47 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      repayment_flows: {
+        Row: {
+          advance_id: string
+          amount: number
+          created_at: string | null
+          id: string
+          milestone_id: string | null
+          processed_at: string | null
+          source: string | null
+          status: string | null
+        }
+        Insert: {
+          advance_id: string
+          amount: number
+          created_at?: string | null
+          id?: string
+          milestone_id?: string | null
+          processed_at?: string | null
+          source?: string | null
+          status?: string | null
+        }
+        Update: {
+          advance_id?: string
+          amount?: number
+          created_at?: string | null
+          id?: string
+          milestone_id?: string | null
+          processed_at?: string | null
+          source?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "repayment_flows_advance_id_fkey"
+            columns: ["advance_id"]
+            isOneToOne: false
+            referencedRelation: "capital_advances"
             referencedColumns: ["id"]
           },
         ]
@@ -21462,6 +21841,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      risk_exposure_log: {
+        Row: {
+          ai_confidence: number | null
+          ai_risk_summary: string | null
+          concentration_risk: number | null
+          cross_currency_exposure: number | null
+          entity_id: string
+          entity_type: string
+          exposure_amount: number | null
+          id: string
+          leverage_ratio: number | null
+          recorded_at: string | null
+          risk_factors: Json | null
+          risk_level: string | null
+        }
+        Insert: {
+          ai_confidence?: number | null
+          ai_risk_summary?: string | null
+          concentration_risk?: number | null
+          cross_currency_exposure?: number | null
+          entity_id: string
+          entity_type: string
+          exposure_amount?: number | null
+          id?: string
+          leverage_ratio?: number | null
+          recorded_at?: string | null
+          risk_factors?: Json | null
+          risk_level?: string | null
+        }
+        Update: {
+          ai_confidence?: number | null
+          ai_risk_summary?: string | null
+          concentration_risk?: number | null
+          cross_currency_exposure?: number | null
+          entity_id?: string
+          entity_type?: string
+          exposure_amount?: number | null
+          id?: string
+          leverage_ratio?: number | null
+          recorded_at?: string | null
+          risk_factors?: Json | null
+          risk_level?: string | null
+        }
+        Relationships: []
       }
       risk_metrics: {
         Row: {
@@ -26533,6 +26957,63 @@ export type Database = {
             columns: ["workspace_id"]
             isOneToOne: false
             referencedRelation: "collaborative_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      yield_tracking: {
+        Row: {
+          annualized_return: number | null
+          bond_id: string | null
+          created_at: string | null
+          default_losses: number | null
+          gross_yield: number | null
+          id: string
+          net_yield: number | null
+          period_end: string
+          period_start: string
+          platform_fee: number | null
+          pool_id: string | null
+        }
+        Insert: {
+          annualized_return?: number | null
+          bond_id?: string | null
+          created_at?: string | null
+          default_losses?: number | null
+          gross_yield?: number | null
+          id?: string
+          net_yield?: number | null
+          period_end: string
+          period_start: string
+          platform_fee?: number | null
+          pool_id?: string | null
+        }
+        Update: {
+          annualized_return?: number | null
+          bond_id?: string | null
+          created_at?: string | null
+          default_losses?: number | null
+          gross_yield?: number | null
+          id?: string
+          net_yield?: number | null
+          period_end?: string
+          period_start?: string
+          platform_fee?: number | null
+          pool_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "yield_tracking_bond_id_fkey"
+            columns: ["bond_id"]
+            isOneToOne: false
+            referencedRelation: "professional_bonds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "yield_tracking_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "funding_pools"
             referencedColumns: ["id"]
           },
         ]
