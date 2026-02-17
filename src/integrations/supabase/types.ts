@@ -11205,6 +11205,51 @@ export type Database = {
           },
         ]
       }
+      fyp_problem_briefs: {
+        Row: {
+          attachment_url: string | null
+          budget_range: string | null
+          company_name: string
+          contact_email: string
+          contact_name: string
+          created_at: string
+          id: string
+          notes: string | null
+          problem_description: string
+          prototype_tier: string | null
+          status: string
+          website: string | null
+        }
+        Insert: {
+          attachment_url?: string | null
+          budget_range?: string | null
+          company_name: string
+          contact_email: string
+          contact_name: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          problem_description: string
+          prototype_tier?: string | null
+          status?: string
+          website?: string | null
+        }
+        Update: {
+          attachment_url?: string | null
+          budget_range?: string | null
+          company_name?: string
+          contact_email?: string
+          contact_name?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          problem_description?: string
+          prototype_tier?: string | null
+          status?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       fyp_projects: {
         Row: {
           created_at: string | null
@@ -11321,6 +11366,60 @@ export type Database = {
             columns: ["service_id"]
             isOneToOne: false
             referencedRelation: "fyp_services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fyp_revenue_transactions: {
+        Row: {
+          created_at: string
+          currency: string
+          description: string | null
+          escrow_fee: number
+          gross_amount: number
+          id: string
+          institution_id: string | null
+          net_amount_distributed: number
+          platform_commission: number
+          sponsor_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          escrow_fee?: number
+          gross_amount: number
+          id?: string
+          institution_id?: string | null
+          net_amount_distributed?: number
+          platform_commission?: number
+          sponsor_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          escrow_fee?: number
+          gross_amount?: number
+          id?: string
+          institution_id?: string | null
+          net_amount_distributed?: number
+          platform_commission?: number
+          sponsor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_revenue_transactions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fyp_revenue_transactions_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -11467,6 +11566,69 @@ export type Database = {
           },
         ]
       }
+      fyp_subscription_plans: {
+        Row: {
+          accreditation_export_enabled: boolean
+          advanced_analytics_enabled: boolean
+          annual_price: number
+          api_access_enabled: boolean
+          created_at: string
+          currency: string
+          custom_branding_enabled: boolean
+          display_name: string
+          escrow_fee_percentage: number
+          id: string
+          is_active: boolean
+          max_funded_projects: number | null
+          max_funding_volume: number | null
+          max_fyp_limit: number | null
+          monthly_price: number
+          name: string
+          platform_commission_percentage: number
+          updated_at: string
+        }
+        Insert: {
+          accreditation_export_enabled?: boolean
+          advanced_analytics_enabled?: boolean
+          annual_price?: number
+          api_access_enabled?: boolean
+          created_at?: string
+          currency?: string
+          custom_branding_enabled?: boolean
+          display_name: string
+          escrow_fee_percentage?: number
+          id?: string
+          is_active?: boolean
+          max_funded_projects?: number | null
+          max_funding_volume?: number | null
+          max_fyp_limit?: number | null
+          monthly_price?: number
+          name: string
+          platform_commission_percentage?: number
+          updated_at?: string
+        }
+        Update: {
+          accreditation_export_enabled?: boolean
+          advanced_analytics_enabled?: boolean
+          annual_price?: number
+          api_access_enabled?: boolean
+          created_at?: string
+          currency?: string
+          custom_branding_enabled?: boolean
+          display_name?: string
+          escrow_fee_percentage?: number
+          id?: string
+          is_active?: boolean
+          max_funded_projects?: number | null
+          max_funding_volume?: number | null
+          max_fyp_limit?: number | null
+          monthly_price?: number
+          name?: string
+          platform_commission_percentage?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       fyp_team_members: {
         Row: {
           id: string
@@ -11536,6 +11698,47 @@ export type Database = {
             columns: ["topic_id"]
             isOneToOne: false
             referencedRelation: "fyp_topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fyp_testimonials: {
+        Row: {
+          author_id: string | null
+          author_name: string
+          author_role: string
+          content: string
+          created_at: string
+          id: string
+          is_public: boolean
+          rating: number | null
+        }
+        Insert: {
+          author_id?: string | null
+          author_name: string
+          author_role: string
+          content: string
+          created_at?: string
+          id?: string
+          is_public?: boolean
+          rating?: number | null
+        }
+        Update: {
+          author_id?: string | null
+          author_name?: string
+          author_role?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_public?: boolean
+          rating?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_testimonials_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -14111,6 +14314,66 @@ export type Database = {
           },
         ]
       }
+      institution_subscriptions: {
+        Row: {
+          billing_cycle: string
+          commission_paid: number
+          created_at: string
+          end_date: string | null
+          escrow_fees_paid: number
+          id: string
+          institution_id: string
+          plan_id: string
+          start_date: string
+          status: string
+          total_revenue_generated: number
+          updated_at: string
+        }
+        Insert: {
+          billing_cycle?: string
+          commission_paid?: number
+          created_at?: string
+          end_date?: string | null
+          escrow_fees_paid?: number
+          id?: string
+          institution_id: string
+          plan_id: string
+          start_date?: string
+          status?: string
+          total_revenue_generated?: number
+          updated_at?: string
+        }
+        Update: {
+          billing_cycle?: string
+          commission_paid?: number
+          created_at?: string
+          end_date?: string | null
+          escrow_fees_paid?: number
+          id?: string
+          institution_id?: string
+          plan_id?: string
+          start_date?: string
+          status?: string
+          total_revenue_generated?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_subscriptions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "institution_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_subscription_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       institution_switching_cost_metrics: {
         Row: {
           active_commercialization_contracts: number | null
@@ -14155,6 +14418,60 @@ export type Database = {
           trust_capital_accumulated?: number | null
         }
         Relationships: []
+      }
+      institution_trial_plans: {
+        Row: {
+          created_at: string
+          id: string
+          institution_id: string
+          max_funding_volume: number
+          max_fyp_limit: number
+          max_sponsor_limit: number
+          plan_id: string | null
+          trial_end_date: string
+          trial_start_date: string
+          trial_status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution_id: string
+          max_funding_volume?: number
+          max_fyp_limit?: number
+          max_sponsor_limit?: number
+          plan_id?: string | null
+          trial_end_date?: string
+          trial_start_date?: string
+          trial_status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution_id?: string
+          max_funding_volume?: number
+          max_fyp_limit?: number
+          max_sponsor_limit?: number
+          plan_id?: string | null
+          trial_end_date?: string
+          trial_start_date?: string
+          trial_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_trial_plans_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: true
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "institution_trial_plans_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_subscription_plans"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       institution_usage_metrics: {
         Row: {
