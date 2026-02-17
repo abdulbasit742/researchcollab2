@@ -1,65 +1,132 @@
 
-# Database-Backed Blog System
 
-## Overview
-Replace the hardcoded static blog data with a fully dynamic system powered by the existing `blog_posts` database table. Posts will be managed through a new editor page, displayed via slug-based SEO-friendly URLs, and support categories, tags, search, and infinite scroll.
+# Next-Level Features: Better Than LinkedIn
 
-## What Already Exists
-- **Database table** `blog_posts` with columns: id, title, slug, excerpt, content, cover_image_url, author_id, category, tags, status, published_at, views_count, created_at, updated_at
-- **RLS policies**: Published posts are publicly readable; authors and admins can manage their own posts
-- **React hooks** in `src/hooks/useBlog.ts`: `useBlogPosts`, `useBlogPost`, `useFeaturedBlogPosts`, `useBlogCategories`, `useMyBlogDrafts`, `useCreateBlogPost`, `useUpdateBlogPost`, `useDeleteBlogPost`
+## The Big Idea
+LinkedIn shows who you *say* you are. RCollab shows who you *prove* you are. These 4 features create a moat LinkedIn can't copy because they require real work data flowing through the platform.
 
-## Changes
+---
 
-### 1. Rewrite Blog Listing Page (`src/pages/BlogPage.tsx`)
-- Remove all hardcoded `blogPosts` and `categories` arrays
-- Add state for search input and selected category
-- Use `useBlogPosts({ category, search })` with infinite scroll via "Load More" button
-- Use `useBlogCategories()` for dynamic category badges
-- Use `useFeaturedBlogPosts()` for the featured hero section
-- Link to `/blog/{slug}` instead of `/blog/{id}`
-- Show loading skeletons and empty states
-- Update JSON-LD to use dynamic data
+## Feature 1: Proof-of-Work Profile Banner
 
-### 2. Rewrite Blog Article Page (`src/pages/BlogArticlePage.tsx`)
-- Remove all hardcoded post data
-- Use `useBlogPost(slug)` hook which looks up by slug first, then by id
-- Render content using `react-markdown` (already installed) instead of `dangerouslySetInnerHTML`
-- Add SEOHead with dynamic title, description, and BlogPosting JSON-LD
-- Show loading skeleton and 404 state
+**What LinkedIn has**: Static headline, self-reported job titles
+**What we build**: A live, dynamic banner on every profile showing verified outcomes
 
-### 3. Create Blog Editor Page (`src/pages/BlogEditorPage.tsx`)
-- Form with fields: title, excerpt, content (textarea), category, tags (comma-separated input), cover image URL, status (draft/published)
-- Uses `useCreateBlogPost` and `useUpdateBlogPost` hooks
-- If a post ID is in the URL (`/blog/edit/:id`), load and edit that post
-- Accessible to authenticated users only
-- Add "Write Post" button on BlogPage for logged-in users
+The top of every profile gets a "Proof Strip" -- a compact, auto-generated summary:
 
-### 4. Add Route (`src/App.tsx`)
-- Add lazy import for `BlogEditorPage`
-- Add routes: `/blog/new` and `/blog/edit/:postId`
+```text
++-------------------------------------------------------+
+| 12 Projects Delivered | 96% On-Time | PKR 1.2M Earned |
+| Top Skills: ML (8 projects) | NLP (5 projects)        |
+| Trusted by: LUMS, NUST, IBA                           |
++-------------------------------------------------------+
+```
 
-### 5. Seed Initial Blog Posts (Database)
-- Insert the 6 existing static posts into the `blog_posts` table so the blog isn't empty
-- These will use a system/admin author_id or the first available user
+- All numbers pulled from real deal completions, escrow releases, and institutional connections
+- Cannot be faked -- every metric links back to a completed deal or verified milestone
+- Shows "Claimed" vs "Proven" skill badges (already have `endorsement_count` in `user_skills`)
+- Updates automatically as users complete work
 
-## Technical Details
+**Technical scope**:
+- New `ProofBanner` component using existing `profile_proof_metrics` + `user_skills` tables
+- Add to `UserPublicProfilePage.tsx` and `ProfilePage.tsx`
+- No database changes needed -- all data already exists
 
-### SEO-Friendly URLs
-- Slugs auto-generated from title on creation (already in `useCreateBlogPost`)
-- Routes: `/blog` (listing), `/blog/:slug` (article), `/blog/new` (editor), `/blog/edit/:postId` (edit)
+---
 
-### Content Rendering
-- Switch from `dangerouslySetInnerHTML` to `react-markdown` for safe rendering
-- Content stored as markdown in the database
+## Feature 2: Smart Availability & Intent Broadcasting
 
-### Files Modified
-| File | Change |
+**What LinkedIn has**: A tiny "Open to Work" badge
+**What we build**: Granular availability broadcasting with intent matching
+
+Users set their current status with detail LinkedIn never offers:
+
+- **Availability**: Full-time / Part-time (X hrs/week) / Project-only / Unavailable
+- **Intent**: Looking for projects / Seeking collaborators / Open to mentoring / Hiring
+- **Capacity**: "Can take 2 more projects this month"
+- **Preferred deal size**: Budget range they're interested in
+- **Response time**: Average response time (auto-calculated from messaging data)
+
+This data feeds directly into the matching engine so opportunities find the *right* people at the *right* time.
+
+**Technical scope**:
+- New `user_availability` table: `user_id, status, intent[], capacity, preferred_budget_min, preferred_budget_max, response_time_hours, updated_at`
+- New `AvailabilitySettings` component on profile settings
+- `AvailabilityBadge` component shown on profile cards and search results
+- Update opportunity matching to weight availability signals
+
+---
+
+## Feature 3: Mutual Work Context on Discovery
+
+**What LinkedIn has**: "You share 3 connections" (meaningless)
+**What we build**: Real professional overlap signals
+
+When viewing any profile or opportunity, show actionable context:
+
+- "You both worked with **LUMS Computer Science Dept**"
+- "**2 shared collaborators** have worked with this person"
+- "This person completed **3 projects** in your field (NLP)"
+- "Their average delivery rating from mutual contacts: **4.8/5**"
+
+This reduces uncertainty when deciding to collaborate -- far more valuable than knowing someone follows the same influencer.
+
+**Technical scope**:
+- New `useMutualWorkContext(targetUserId)` hook
+- Queries: `deal_participants` for shared projects, `profiles.university` for institution overlap, `user_skills` for skill overlap
+- `MutualWorkContext` component displayed on public profiles, opportunity cards, and bid review screens
+- No new tables -- derived from existing deal and profile data
+
+---
+
+## Feature 4: Income Velocity Dashboard
+
+**What LinkedIn has**: Nothing. Zero financial insight.
+**What we build**: A personal financial operating system for freelancers
+
+A dedicated panel (embedded in Progress page) showing:
+
+- **Monthly income velocity**: Earnings trend over last 6 months
+- **Pipeline value**: Total value of active deals in progress
+- **Average deal cycle**: Days from bid to payment (with trend)
+- **Revenue by skill**: Which skills generate the most income
+- **Forecasted earnings**: Based on active pipeline and historical conversion rates
+- **Comparison**: "You're earning 2.3x more than peers at your trust level"
+
+This makes users *dependent* on the platform for financial planning -- a retention moat LinkedIn can never build.
+
+**Technical scope**:
+- New `useIncomeVelocity` hook querying `escrow_transactions`, `deal_participants`, `earning_projects`
+- `IncomeVelocityPanel` component added to Progress page
+- `EarningsBreakdownChart` using Recharts (already installed)
+- No new tables -- aggregates from existing financial data
+
+---
+
+## Implementation Order
+
+| Priority | Feature | Effort | Impact |
+|----------|---------|--------|--------|
+| 1 | Proof-of-Work Profile Banner | Small (no DB changes) | High -- instant credibility |
+| 2 | Mutual Work Context | Medium (new hook + component) | High -- reduces collaboration friction |
+| 3 | Smart Availability Broadcasting | Medium (new table + components) | High -- powers better matching |
+| 4 | Income Velocity Dashboard | Medium (new hooks + charts) | Very High -- retention moat |
+
+## Files to Create/Modify
+
+| File | Action |
 |------|--------|
-| `src/pages/BlogPage.tsx` | Replace static data with hooks, add search/category/infinite scroll |
-| `src/pages/BlogArticlePage.tsx` | Replace static data with `useBlogPost` hook + markdown rendering |
-| `src/pages/BlogEditorPage.tsx` | **New file** - Create/edit blog post form |
-| `src/App.tsx` | Add lazy import + routes for blog editor |
-
-### No Database Changes Needed
-The `blog_posts` table already has the correct schema and RLS policies.
+| `src/components/profile/ProofBanner.tsx` | Create -- verified outcomes strip |
+| `src/components/profile/AvailabilityBadge.tsx` | Create -- status indicator |
+| `src/components/profile/AvailabilitySettings.tsx` | Create -- settings form |
+| `src/components/profile/MutualWorkContext.tsx` | Create -- overlap signals |
+| `src/components/progress/IncomeVelocityPanel.tsx` | Create -- financial dashboard |
+| `src/components/progress/EarningsBreakdownChart.tsx` | Create -- revenue chart |
+| `src/hooks/useMutualWorkContext.ts` | Create -- shared work query |
+| `src/hooks/useIncomeVelocity.ts` | Create -- financial aggregation |
+| `src/hooks/useAvailability.ts` | Create -- availability CRUD |
+| `src/pages/UserPublicProfilePage.tsx` | Edit -- add ProofBanner + MutualWorkContext |
+| `src/pages/ProfilePage.tsx` | Edit -- add ProofBanner |
+| `src/pages/ProfileSettingsPage.tsx` | Edit -- add AvailabilitySettings |
+| `src/pages/ProgressPage.tsx` | Edit -- add IncomeVelocityPanel |
+| Database migration | Create `user_availability` table with RLS |
