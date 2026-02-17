@@ -191,6 +191,10 @@ const FounderDashboardPage = lazy(() => import("./pages/FounderDashboardPage"));
 const ActivationStrategyPage = lazy(() => import("./pages/ActivationStrategyPage"));
 const SprintPlaybookPage = lazy(() => import("./pages/SprintPlaybookPage"));
 const TrustExecutionUpgradePage = lazy(() => import("./pages/TrustExecutionUpgradePage"));
+const SponsorFYPDashboardPage = lazy(() => import("./pages/SponsorFYPDashboardPage"));
+const FacultyFYPCommandPage = lazy(() => import("./pages/FacultyFYPCommandPage"));
+const StudentFYPDashboardPage = lazy(() => import("./pages/StudentFYPDashboardPage"));
+const InstitutionalFYPDashboardPage = lazy(() => import("./pages/InstitutionalFYPDashboardPage"));
 
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
@@ -504,7 +508,7 @@ const AppContent = () => {
             {/* FYP Execution OS */}
             <Route path="/fyp" element={<FYPBrowsePage />} />
             <Route path="/faculty/fyp-monitor" element={<FacultyFYPMonitorPage />} />
-            <Route path="/institutions/fyp-intelligence" element={<InstitutionalFYPIntelligencePage />} />
+            <Route path="/institutions/fyp-intelligence" element={<InstitutionalFYPDashboardPage />} />
             <Route path="/fyp/gtm-strategy" element={<FYPGTMStrategyPage />} />
             <Route path="/fyp/sponsor-strategy" element={<SponsorAcquisitionStrategyPage />} />
             <Route path="/fyp/30-day-plan" element={<ThirtyDayExecutionPlanPage />} />
@@ -514,6 +518,9 @@ const AppContent = () => {
             <Route path="/fyp/activation-strategy" element={<ActivationStrategyPage />} />
             <Route path="/fyp/sprint-playbook" element={<SprintPlaybookPage />} />
             <Route path="/fyp/trust-upgrade" element={<TrustExecutionUpgradePage />} />
+            <Route path="/industry/fyp" element={<SponsorFYPDashboardPage />} />
+            <Route path="/faculty/fyp" element={<FacultyFYPCommandPage />} />
+            <Route path="/student/fyp" element={<StudentFYPDashboardPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>
