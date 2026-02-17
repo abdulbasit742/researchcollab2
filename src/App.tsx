@@ -263,6 +263,13 @@ const CountryImpactPage = lazy(() => import("./pages/CountryImpactPage"));
 const MinistryDashboardPage = lazy(() => import("./pages/MinistryDashboardPage"));
 const CapitalPoolDashboardPage = lazy(() => import("./pages/CapitalPoolDashboardPage"));
 
+// Corporate R&D, Spin-Off, National Infrastructure, Partners, E2E OS
+const CorporatePortfolioDashboardPage = lazy(() => import("./pages/CorporatePortfolioDashboardPage"));
+const SpinOffDashboardPage = lazy(() => import("./pages/SpinOffDashboardPage"));
+const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
+const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
+const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
+
 // Suspense fallback for lazy-loaded routes
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
@@ -533,6 +540,12 @@ const AppContent = () => {
             <Route path="/country/:id/impact" element={<CountryImpactPage />} />
             <Route path="/country/:id/ministry-dashboard" element={<MinistryDashboardPage />} />
             <Route path="/capital/pool/:id" element={<CapitalPoolDashboardPage />} />
+            {/* Corporate R&D, Spin-Off, National Infrastructure, Partners, E2E OS */}
+            <Route path="/corporate/portfolio" element={<CorporatePortfolioDashboardPage />} />
+            <Route path="/spinoffs" element={<SpinOffDashboardPage />} />
+            <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
+            <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
+            <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>

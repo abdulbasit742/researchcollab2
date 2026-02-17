@@ -3079,6 +3079,113 @@ export type Database = {
         }
         Relationships: []
       }
+      cap_table_audit_logs: {
+        Row: {
+          action: string
+          approval_signatures: Json | null
+          cap_table_entry_id: string | null
+          changed_by: string | null
+          created_at: string | null
+          id: string
+          legal_reference: string | null
+          new_equity: number | null
+          previous_equity: number | null
+          startup_id: string
+        }
+        Insert: {
+          action: string
+          approval_signatures?: Json | null
+          cap_table_entry_id?: string | null
+          changed_by?: string | null
+          created_at?: string | null
+          id?: string
+          legal_reference?: string | null
+          new_equity?: number | null
+          previous_equity?: number | null
+          startup_id: string
+        }
+        Update: {
+          action?: string
+          approval_signatures?: Json | null
+          cap_table_entry_id?: string | null
+          changed_by?: string | null
+          created_at?: string | null
+          id?: string
+          legal_reference?: string | null
+          new_equity?: number | null
+          previous_equity?: number | null
+          startup_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cap_table_audit_logs_cap_table_entry_id_fkey"
+            columns: ["cap_table_entry_id"]
+            isOneToOne: false
+            referencedRelation: "cap_tables"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cap_table_audit_logs_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cap_tables: {
+        Row: {
+          confirmed: boolean | null
+          confirmed_at: string | null
+          created_at: string | null
+          equity_percentage: number
+          id: string
+          lock_in_period_months: number | null
+          stakeholder_id: string | null
+          stakeholder_name: string | null
+          stakeholder_role: string | null
+          startup_id: string
+          version: number | null
+          vesting_terms: Json | null
+        }
+        Insert: {
+          confirmed?: boolean | null
+          confirmed_at?: string | null
+          created_at?: string | null
+          equity_percentage?: number
+          id?: string
+          lock_in_period_months?: number | null
+          stakeholder_id?: string | null
+          stakeholder_name?: string | null
+          stakeholder_role?: string | null
+          startup_id: string
+          version?: number | null
+          vesting_terms?: Json | null
+        }
+        Update: {
+          confirmed?: boolean | null
+          confirmed_at?: string | null
+          created_at?: string | null
+          equity_percentage?: number
+          id?: string
+          lock_in_period_months?: number | null
+          stakeholder_id?: string | null
+          stakeholder_name?: string | null
+          stakeholder_role?: string | null
+          startup_id?: string
+          version?: number | null
+          vesting_terms?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cap_tables_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       capital_advances: {
         Row: {
           approved_amount: number | null
@@ -5107,6 +5214,144 @@ export type Database = {
             columns: ["validator_user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      corporate_accounts: {
+        Row: {
+          account_manager: string | null
+          allocated_budget: number | null
+          annual_rnd_budget: number | null
+          commission_discount_pct: number | null
+          company_name: string
+          contract_type: string | null
+          country_id: string | null
+          created_at: string | null
+          created_by: string | null
+          governance_level: string | null
+          id: string
+          remaining_budget: number | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          account_manager?: string | null
+          allocated_budget?: number | null
+          annual_rnd_budget?: number | null
+          commission_discount_pct?: number | null
+          company_name: string
+          contract_type?: string | null
+          country_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          governance_level?: string | null
+          id?: string
+          remaining_budget?: number | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          account_manager?: string | null
+          allocated_budget?: number | null
+          annual_rnd_budget?: number | null
+          commission_discount_pct?: number | null
+          company_name?: string
+          contract_type?: string | null
+          country_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          governance_level?: string | null
+          id?: string
+          remaining_budget?: number | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corporate_accounts_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      corporate_governance_roles: {
+        Row: {
+          corporate_id: string
+          granted_at: string | null
+          id: string
+          is_active: boolean | null
+          role: string
+          user_id: string
+        }
+        Insert: {
+          corporate_id: string
+          granted_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          role: string
+          user_id: string
+        }
+        Update: {
+          corporate_id?: string
+          granted_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corporate_governance_roles_corporate_id_fkey"
+            columns: ["corporate_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      corporate_hiring_pipeline: {
+        Row: {
+          corporate_id: string
+          created_at: string | null
+          fyp_id: string | null
+          id: string
+          notes: string | null
+          performance_score: number | null
+          status: string | null
+          student_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          corporate_id: string
+          created_at?: string | null
+          fyp_id?: string | null
+          id?: string
+          notes?: string | null
+          performance_score?: number | null
+          status?: string | null
+          student_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          corporate_id?: string
+          created_at?: string | null
+          fyp_id?: string | null
+          id?: string
+          notes?: string | null
+          performance_score?: number | null
+          status?: string | null
+          student_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corporate_hiring_pipeline_corporate_id_fkey"
+            columns: ["corporate_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_accounts"
             referencedColumns: ["id"]
           },
         ]
@@ -8174,6 +8419,56 @@ export type Database = {
           trust_tier_distribution?: Json | null
         }
         Relationships: []
+      }
+      economic_impact_logs: {
+        Row: {
+          actor_id: string | null
+          amount: number | null
+          country_id: string | null
+          created_at: string | null
+          entity_id: string | null
+          entity_type: string | null
+          event_type: string
+          id: string
+          metadata: Json | null
+          sector: string | null
+          university_id: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          amount?: number | null
+          country_id?: string | null
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          sector?: string | null
+          university_id?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          amount?: number | null
+          country_id?: string | null
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          sector?: string | null
+          university_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "economic_impact_logs_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       economic_safety_profiles: {
         Row: {
@@ -14207,6 +14502,62 @@ export type Database = {
           },
         ]
       }
+      innovation_pipeline_briefs: {
+        Row: {
+          budget_allocated: number | null
+          corporate_id: string
+          created_at: string | null
+          description: string | null
+          id: string
+          innovation_theme: string | null
+          matched_fyp_id: string | null
+          matched_university_id: string | null
+          risk_score: number | null
+          sector: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          budget_allocated?: number | null
+          corporate_id: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          innovation_theme?: string | null
+          matched_fyp_id?: string | null
+          matched_university_id?: string | null
+          risk_score?: number | null
+          sector?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          budget_allocated?: number | null
+          corporate_id?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          innovation_theme?: string | null
+          matched_fyp_id?: string | null
+          matched_university_id?: string | null
+          risk_score?: number | null
+          sector?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "innovation_pipeline_briefs_corporate_id_fkey"
+            columns: ["corporate_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       institution_applications: {
         Row: {
           contact_email: string
@@ -15942,6 +16293,53 @@ export type Database = {
         }
         Relationships: []
       }
+      investor_accounts: {
+        Row: {
+          accreditation_status: string | null
+          active_investments: number | null
+          country_id: string | null
+          created_at: string | null
+          id: string
+          investment_focus: string[] | null
+          investor_type: string | null
+          total_invested: number | null
+          user_id: string
+          verified: boolean | null
+        }
+        Insert: {
+          accreditation_status?: string | null
+          active_investments?: number | null
+          country_id?: string | null
+          created_at?: string | null
+          id?: string
+          investment_focus?: string[] | null
+          investor_type?: string | null
+          total_invested?: number | null
+          user_id: string
+          verified?: boolean | null
+        }
+        Update: {
+          accreditation_status?: string | null
+          active_investments?: number | null
+          country_id?: string | null
+          created_at?: string | null
+          id?: string
+          investment_focus?: string[] | null
+          investor_type?: string | null
+          total_invested?: number | null
+          user_id?: string
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investor_accounts_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ip_contracts: {
         Row: {
           contract_hash: string | null
@@ -17354,6 +17752,48 @@ export type Database = {
           },
         ]
       }
+      lifecycle_progressions: {
+        Row: {
+          current_stage: string | null
+          employment_count: number | null
+          id: string
+          mobility_score: number | null
+          previous_stage: string | null
+          stage_entered_at: string | null
+          startups_founded: number | null
+          total_earnings: number | null
+          total_funding_handled: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          current_stage?: string | null
+          employment_count?: number | null
+          id?: string
+          mobility_score?: number | null
+          previous_stage?: string | null
+          stage_entered_at?: string | null
+          startups_founded?: number | null
+          total_earnings?: number | null
+          total_funding_handled?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          current_stage?: string | null
+          employment_count?: number | null
+          id?: string
+          mobility_score?: number | null
+          previous_stage?: string | null
+          stage_entered_at?: string | null
+          startups_founded?: number | null
+          total_earnings?: number | null
+          total_funding_handled?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       macro_simulation_results: {
         Row: {
           capital_stress_ripple: Json | null
@@ -18149,6 +18589,53 @@ export type Database = {
             columns: ["governing_body_id"]
             isOneToOne: false
             referencedRelation: "governance_councils"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      national_innovation_index: {
+        Row: {
+          composite_score: number | null
+          computed_at: string | null
+          country_id: string
+          hiring_rate: number | null
+          id: string
+          regional_balance: number | null
+          sector_diversification: number | null
+          startup_creation: number | null
+          student_income: number | null
+          total_funding: number | null
+        }
+        Insert: {
+          composite_score?: number | null
+          computed_at?: string | null
+          country_id: string
+          hiring_rate?: number | null
+          id?: string
+          regional_balance?: number | null
+          sector_diversification?: number | null
+          startup_creation?: number | null
+          student_income?: number | null
+          total_funding?: number | null
+        }
+        Update: {
+          composite_score?: number | null
+          computed_at?: string | null
+          country_id?: string
+          hiring_rate?: number | null
+          id?: string
+          regional_balance?: number | null
+          sector_diversification?: number | null
+          startup_creation?: number | null
+          student_income?: number | null
+          total_funding?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "national_innovation_index_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
             referencedColumns: ["id"]
           },
         ]
@@ -19775,6 +20262,153 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      partner_api_keys: {
+        Row: {
+          api_key: string
+          created_at: string | null
+          expiration_date: string | null
+          id: string
+          last_used_at: string | null
+          partner_id: string
+          rate_limit: number | null
+          scope_permissions: Json | null
+          status: string | null
+          total_calls: number | null
+        }
+        Insert: {
+          api_key: string
+          created_at?: string | null
+          expiration_date?: string | null
+          id?: string
+          last_used_at?: string | null
+          partner_id: string
+          rate_limit?: number | null
+          scope_permissions?: Json | null
+          status?: string | null
+          total_calls?: number | null
+        }
+        Update: {
+          api_key?: string
+          created_at?: string | null
+          expiration_date?: string | null
+          id?: string
+          last_used_at?: string | null
+          partner_id?: string
+          rate_limit?: number | null
+          scope_permissions?: Json | null
+          status?: string | null
+          total_calls?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_api_keys_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_revenue_logs: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          partner_id: string
+          period_end: string | null
+          period_start: string | null
+          revenue_type: string
+          status: string | null
+        }
+        Insert: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          partner_id: string
+          period_end?: string | null
+          period_start?: string | null
+          revenue_type: string
+          status?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          partner_id?: string
+          period_end?: string | null
+          period_start?: string | null
+          revenue_type?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_revenue_logs_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partners: {
+        Row: {
+          access_level: number | null
+          approval_status: string | null
+          compliance_score: number | null
+          compliance_status: string | null
+          contact_email: string | null
+          country_id: string | null
+          created_at: string | null
+          id: string
+          integration_scope: string | null
+          partner_name: string
+          partner_type: string
+          performance_score: number | null
+          revenue_share_model: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          access_level?: number | null
+          approval_status?: string | null
+          compliance_score?: number | null
+          compliance_status?: string | null
+          contact_email?: string | null
+          country_id?: string | null
+          created_at?: string | null
+          id?: string
+          integration_scope?: string | null
+          partner_name: string
+          partner_type: string
+          performance_score?: number | null
+          revenue_share_model?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          access_level?: number | null
+          approval_status?: string | null
+          compliance_score?: number | null
+          compliance_status?: string | null
+          contact_email?: string | null
+          country_id?: string | null
+          created_at?: string | null
+          id?: string
+          integration_scope?: string | null
+          partner_name?: string
+          partner_type?: string
+          performance_score?: number | null
+          revenue_share_model?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partners_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       passport_exports: {
         Row: {
@@ -27395,6 +28029,80 @@ export type Database = {
         }
         Relationships: []
       }
+      startups: {
+        Row: {
+          country_id: string | null
+          created_at: string | null
+          created_by: string | null
+          eligibility_score: number | null
+          equity_structure: Json | null
+          follow_on_funding: number | null
+          founding_team: Json | null
+          hiring_count: number | null
+          id: string
+          incubation_status: string | null
+          name: string
+          originating_fyp_id: string | null
+          platform_equity_pct: number | null
+          product_stage: string | null
+          revenue: number | null
+          sector: string | null
+          university_id: string | null
+          updated_at: string | null
+          valuation_basis: string | null
+        }
+        Insert: {
+          country_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          eligibility_score?: number | null
+          equity_structure?: Json | null
+          follow_on_funding?: number | null
+          founding_team?: Json | null
+          hiring_count?: number | null
+          id?: string
+          incubation_status?: string | null
+          name: string
+          originating_fyp_id?: string | null
+          platform_equity_pct?: number | null
+          product_stage?: string | null
+          revenue?: number | null
+          sector?: string | null
+          university_id?: string | null
+          updated_at?: string | null
+          valuation_basis?: string | null
+        }
+        Update: {
+          country_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          eligibility_score?: number | null
+          equity_structure?: Json | null
+          follow_on_funding?: number | null
+          founding_team?: Json | null
+          hiring_count?: number | null
+          id?: string
+          incubation_status?: string | null
+          name?: string
+          originating_fyp_id?: string | null
+          platform_equity_pct?: number | null
+          product_stage?: string | null
+          revenue?: number | null
+          sector?: string | null
+          university_id?: string | null
+          updated_at?: string | null
+          valuation_basis?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "startups_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       state_transition_logs: {
         Row: {
           created_at: string
@@ -29771,6 +30479,56 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "university_compliance_scores_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      university_tiers: {
+        Row: {
+          completion_rate: number | null
+          computed_at: string | null
+          country_id: string | null
+          employment_conversion: number | null
+          funding_volume: number | null
+          growth_velocity: number | null
+          id: string
+          ontime_pct: number | null
+          sponsor_rating: number | null
+          tier: string | null
+          university_id: string
+        }
+        Insert: {
+          completion_rate?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          employment_conversion?: number | null
+          funding_volume?: number | null
+          growth_velocity?: number | null
+          id?: string
+          ontime_pct?: number | null
+          sponsor_rating?: number | null
+          tier?: string | null
+          university_id: string
+        }
+        Update: {
+          completion_rate?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          employment_conversion?: number | null
+          funding_volume?: number | null
+          growth_velocity?: number | null
+          id?: string
+          ontime_pct?: number | null
+          sponsor_rating?: number | null
+          tier?: string | null
+          university_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "university_tiers_country_id_fkey"
             columns: ["country_id"]
             isOneToOne: false
             referencedRelation: "countries"
