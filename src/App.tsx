@@ -144,6 +144,12 @@ const CareerForecastPage = lazy(() => import("./pages/CareerForecastPage"));
 const GlobalEconomyPage = lazy(() => import("./pages/GlobalEconomyPage"));
 const AdminLIMSECommandCenter = lazy(() => import("./pages/admin/AdminLIMSECommandCenter"));
 
+// Layer 10: Capital & Credit
+const CreditProfilePage = lazy(() => import("./pages/CreditProfilePage"));
+const CapitalAdvancePage = lazy(() => import("./pages/CapitalAdvancePage"));
+const FundingPoolsPage = lazy(() => import("./pages/FundingPoolsPage"));
+const CapitalRiskIntelligencePage = lazy(() => import("./pages/CapitalRiskIntelligencePage"));
+
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
 const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
@@ -394,6 +400,11 @@ const AppContent = () => {
             <Route path="/career/forecast" element={<CareerForecastPage />} />
             <Route path="/global/economy" element={<GlobalEconomyPage />} />
             <Route path="/admin/limse-command" element={<AdminLIMSECommandCenter />} />
+            {/* Layer 10: Capital & Credit */}
+            <Route path="/capital/credit-profile" element={<CreditProfilePage />} />
+            <Route path="/capital/advance" element={<CapitalAdvancePage />} />
+            <Route path="/capital/pools" element={<FundingPoolsPage />} />
+            <Route path="/capital/risk-intelligence" element={<CapitalRiskIntelligencePage />} />
             <Route path="/analytics/global-liquidity" element={<GlobalLiquidityAnalyticsPage />} />
             <Route path="/developer/api-dashboard" element={<DeveloperApiDashboardPage />} />
             <Route path="/profile/reputation-export" element={<ReputationExportPage />} />
