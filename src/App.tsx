@@ -164,6 +164,12 @@ const InfrastructureIntelligencePage = lazy(() => import("./pages/Infrastructure
 const PlanetaryIntelligencePage = lazy(() => import("./pages/PlanetaryIntelligencePage"));
 const CivilizationalDoctrinePage = lazy(() => import("./pages/CivilizationalDoctrinePage"));
 
+// REIOS: Research Execution & Impact
+const ResearchExecutionPage = lazy(() => import("./pages/ResearchExecutionPage"));
+const ResearchEconomicImpactPage = lazy(() => import("./pages/ResearchEconomicImpactPage"));
+const InstitutionResearchIntelligencePage = lazy(() => import("./pages/InstitutionResearchIntelligencePage"));
+const ResearchMatchPage = lazy(() => import("./pages/ResearchMatchPage"));
+
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
 const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
@@ -461,6 +467,11 @@ const AppContent = () => {
             <Route path="/slides/:id" element={<PresentationEditorPage />} />
             <Route path="/admin/revenue-intelligence" element={<AdminRevenueIntelligencePage />} />
             <Route path="/org/:id/academic-analytics" element={<InstitutionalAcademicAnalyticsPage />} />
+            {/* REIOS */}
+            <Route path="/research/execute" element={<ResearchExecutionPage />} />
+            <Route path="/research/economic-impact" element={<ResearchEconomicImpactPage />} />
+            <Route path="/institutions/research-intelligence" element={<InstitutionResearchIntelligencePage />} />
+            <Route path="/research/match" element={<ResearchMatchPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>

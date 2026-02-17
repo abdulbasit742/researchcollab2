@@ -13362,6 +13362,48 @@ export type Database = {
           },
         ]
       }
+      institution_research_productivity: {
+        Row: {
+          capital_efficiency: number | null
+          computed_at: string
+          deal_completion_reliability: number | null
+          funding_conversion_rate: number | null
+          grade: string | null
+          id: string
+          institution_id: string
+          period: string
+          research_executed_pct: number | null
+          revenue_per_project: number | null
+          student_participation_rate: number | null
+        }
+        Insert: {
+          capital_efficiency?: number | null
+          computed_at?: string
+          deal_completion_reliability?: number | null
+          funding_conversion_rate?: number | null
+          grade?: string | null
+          id?: string
+          institution_id: string
+          period: string
+          research_executed_pct?: number | null
+          revenue_per_project?: number | null
+          student_participation_rate?: number | null
+        }
+        Update: {
+          capital_efficiency?: number | null
+          computed_at?: string
+          deal_completion_reliability?: number | null
+          funding_conversion_rate?: number | null
+          grade?: string | null
+          id?: string
+          institution_id?: string
+          period?: string
+          research_executed_pct?: number | null
+          revenue_per_project?: number | null
+          student_participation_rate?: number | null
+        }
+        Relationships: []
+      }
       institution_research_snapshots: {
         Row: {
           active_research_timelines: number | null
@@ -22292,6 +22334,48 @@ export type Database = {
         }
         Relationships: []
       }
+      research_adoption_logs: {
+        Row: {
+          adopter_id: string | null
+          adopter_name: string | null
+          adopter_type: string
+          adoption_evidence: string | null
+          created_at: string
+          id: string
+          region_code: string | null
+          research_id: string
+          revenue_impact: number | null
+          sector: string | null
+          time_to_market_days: number | null
+        }
+        Insert: {
+          adopter_id?: string | null
+          adopter_name?: string | null
+          adopter_type: string
+          adoption_evidence?: string | null
+          created_at?: string
+          id?: string
+          region_code?: string | null
+          research_id: string
+          revenue_impact?: number | null
+          sector?: string | null
+          time_to_market_days?: number | null
+        }
+        Update: {
+          adopter_id?: string | null
+          adopter_name?: string | null
+          adopter_type?: string
+          adoption_evidence?: string | null
+          created_at?: string
+          id?: string
+          region_code?: string | null
+          research_id?: string
+          revenue_impact?: number | null
+          sector?: string | null
+          time_to_market_days?: number | null
+        }
+        Relationships: []
+      }
       research_artifacts: {
         Row: {
           artifact_type: string
@@ -22385,6 +22469,59 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_commercialization_ledger: {
+        Row: {
+          amount: number | null
+          counterparty: string | null
+          created_at: string
+          currency: string | null
+          description: string | null
+          event_type: string
+          evidence_url: string | null
+          id: string
+          institution_id: string | null
+          ip_licensing: boolean | null
+          revenue_share_paid: number | null
+          track_id: string
+        }
+        Insert: {
+          amount?: number | null
+          counterparty?: string | null
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          event_type: string
+          evidence_url?: string | null
+          id?: string
+          institution_id?: string | null
+          ip_licensing?: boolean | null
+          revenue_share_paid?: number | null
+          track_id: string
+        }
+        Update: {
+          amount?: number | null
+          counterparty?: string | null
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          event_type?: string
+          evidence_url?: string | null
+          id?: string
+          institution_id?: string | null
+          ip_licensing?: boolean | null
+          revenue_share_paid?: number | null
+          track_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_commercialization_ledger_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "research_execution_tracks"
             referencedColumns: ["id"]
           },
         ]
@@ -22867,6 +23004,167 @@ export type Database = {
           },
         ]
       }
+      research_execution_tracks: {
+        Row: {
+          commercialization_path: string | null
+          created_at: string
+          currency: string | null
+          deal_room_id: string | null
+          description: string | null
+          execution_scope: Json | null
+          funding_required: number | null
+          funding_secured: number | null
+          id: string
+          institution_id: string | null
+          lead_researcher_id: string | null
+          region_code: string | null
+          research_id: string
+          status: string
+          talent_allocated: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          commercialization_path?: string | null
+          created_at?: string
+          currency?: string | null
+          deal_room_id?: string | null
+          description?: string | null
+          execution_scope?: Json | null
+          funding_required?: number | null
+          funding_secured?: number | null
+          id?: string
+          institution_id?: string | null
+          lead_researcher_id?: string | null
+          region_code?: string | null
+          research_id: string
+          status?: string
+          talent_allocated?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          commercialization_path?: string | null
+          created_at?: string
+          currency?: string | null
+          deal_room_id?: string | null
+          description?: string | null
+          execution_scope?: Json | null
+          funding_required?: number | null
+          funding_secured?: number | null
+          id?: string
+          institution_id?: string | null
+          lead_researcher_id?: string | null
+          region_code?: string | null
+          research_id?: string
+          status?: string
+          talent_allocated?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      research_funding_rounds: {
+        Row: {
+          amount: number
+          approved_at: string | null
+          created_at: string
+          currency: string | null
+          funder_id: string | null
+          funding_pool_id: string | null
+          funding_type: string | null
+          id: string
+          revenue_share_percentage: number | null
+          royalty_percentage: number | null
+          status: string
+          terms: Json | null
+          track_id: string
+        }
+        Insert: {
+          amount?: number
+          approved_at?: string | null
+          created_at?: string
+          currency?: string | null
+          funder_id?: string | null
+          funding_pool_id?: string | null
+          funding_type?: string | null
+          id?: string
+          revenue_share_percentage?: number | null
+          royalty_percentage?: number | null
+          status?: string
+          terms?: Json | null
+          track_id: string
+        }
+        Update: {
+          amount?: number
+          approved_at?: string | null
+          created_at?: string
+          currency?: string | null
+          funder_id?: string | null
+          funding_pool_id?: string | null
+          funding_type?: string | null
+          id?: string
+          revenue_share_percentage?: number | null
+          royalty_percentage?: number | null
+          status?: string
+          terms?: Json | null
+          track_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_funding_rounds_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "research_execution_tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_implementation_metrics: {
+        Row: {
+          citation_count: number | null
+          computed_at: string
+          cross_border_implementations: number | null
+          funded_projects_count: number | null
+          id: string
+          implementation_impact_score: number | null
+          institutional_adoptions: number | null
+          milestones_completed: number | null
+          research_id: string
+          researcher_id: string | null
+          revenue_generated: number | null
+          verified_deliverables: number | null
+        }
+        Insert: {
+          citation_count?: number | null
+          computed_at?: string
+          cross_border_implementations?: number | null
+          funded_projects_count?: number | null
+          id?: string
+          implementation_impact_score?: number | null
+          institutional_adoptions?: number | null
+          milestones_completed?: number | null
+          research_id: string
+          researcher_id?: string | null
+          revenue_generated?: number | null
+          verified_deliverables?: number | null
+        }
+        Update: {
+          citation_count?: number | null
+          computed_at?: string
+          cross_border_implementations?: number | null
+          funded_projects_count?: number | null
+          id?: string
+          implementation_impact_score?: number | null
+          institutional_adoptions?: number | null
+          milestones_completed?: number | null
+          research_id?: string
+          researcher_id?: string | null
+          revenue_generated?: number | null
+          verified_deliverables?: number | null
+        }
+        Relationships: []
+      }
       research_lineage: {
         Row: {
           contributions: string | null
@@ -22916,6 +23214,62 @@ export type Database = {
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_milestones: {
+        Row: {
+          amount: number | null
+          completed_at: string | null
+          created_at: string
+          deliverable_url: string | null
+          description: string | null
+          due_date: string | null
+          escrow_locked: boolean | null
+          id: string
+          milestone_order: number | null
+          status: string
+          title: string
+          track_id: string
+          verified_by: string | null
+        }
+        Insert: {
+          amount?: number | null
+          completed_at?: string | null
+          created_at?: string
+          deliverable_url?: string | null
+          description?: string | null
+          due_date?: string | null
+          escrow_locked?: boolean | null
+          id?: string
+          milestone_order?: number | null
+          status?: string
+          title: string
+          track_id: string
+          verified_by?: string | null
+        }
+        Update: {
+          amount?: number | null
+          completed_at?: string | null
+          created_at?: string
+          deliverable_url?: string | null
+          description?: string | null
+          due_date?: string | null
+          escrow_locked?: boolean | null
+          id?: string
+          milestone_order?: number | null
+          status?: string
+          title?: string
+          track_id?: string
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_milestones_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "research_execution_tracks"
             referencedColumns: ["id"]
           },
         ]
