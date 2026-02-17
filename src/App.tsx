@@ -138,6 +138,7 @@ const DocumentEditorPage = lazy(() => import("./pages/DocumentEditorPage"));
 const SpreadsheetEditorPage = lazy(() => import("./pages/SpreadsheetEditorPage"));
 const PresentationEditorPage = lazy(() => import("./pages/PresentationEditorPage"));
 const InstitutionalAcademicAnalyticsPage = lazy(() => import("./pages/InstitutionalAcademicAnalyticsPage"));
+const LeaderboardPage = lazy(() => import("./pages/LeaderboardPage"));
 
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
@@ -383,6 +384,7 @@ const AppContent = () => {
             <Route path="/admin/pricing-optimizer" element={<AdminPricingOptimizerPage />} />
             <Route path="/admin/infrastructure-costs" element={<AdminInfrastructureCostsPage />} />
             <Route path="/rankings/global" element={<GlobalRankingsPage />} />
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/analytics/global-liquidity" element={<GlobalLiquidityAnalyticsPage />} />
             <Route path="/developer/api-dashboard" element={<DeveloperApiDashboardPage />} />
             <Route path="/profile/reputation-export" element={<ReputationExportPage />} />
