@@ -8466,6 +8466,53 @@ export type Database = {
         }
         Relationships: []
       }
+      escrow_audit_logs: {
+        Row: {
+          action_type: string
+          actor_id: string
+          amount: number | null
+          created_at: string
+          fyp_id: string | null
+          id: string
+          ip_contract_id: string | null
+          metadata: Json | null
+          milestone_reference: string | null
+          sponsor_id: string
+        }
+        Insert: {
+          action_type: string
+          actor_id: string
+          amount?: number | null
+          created_at?: string
+          fyp_id?: string | null
+          id?: string
+          ip_contract_id?: string | null
+          metadata?: Json | null
+          milestone_reference?: string | null
+          sponsor_id: string
+        }
+        Update: {
+          action_type?: string
+          actor_id?: string
+          amount?: number | null
+          created_at?: string
+          fyp_id?: string | null
+          id?: string
+          ip_contract_id?: string | null
+          metadata?: Json | null
+          milestone_reference?: string | null
+          sponsor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "escrow_audit_logs_ip_contract_id_fkey"
+            columns: ["ip_contract_id"]
+            isOneToOne: false
+            referencedRelation: "ip_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ethics_board_members: {
         Row: {
           appointed_at: string
@@ -10587,6 +10634,36 @@ export type Database = {
           },
         ]
       }
+      funding_declarations: {
+        Row: {
+          declaration_text: string | null
+          declared_at: string
+          funding_source: string
+          fyp_id: string | null
+          id: string
+          legal_compliance_acknowledged: boolean
+          sponsor_id: string
+        }
+        Insert: {
+          declaration_text?: string | null
+          declared_at?: string
+          funding_source: string
+          fyp_id?: string | null
+          id?: string
+          legal_compliance_acknowledged?: boolean
+          sponsor_id: string
+        }
+        Update: {
+          declaration_text?: string | null
+          declared_at?: string
+          funding_source?: string
+          fyp_id?: string | null
+          id?: string
+          legal_compliance_acknowledged?: boolean
+          sponsor_id?: string
+        }
+        Relationships: []
+      }
       funding_milestones: {
         Row: {
           created_at: string
@@ -10940,6 +11017,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      fyp_disputes: {
+        Row: {
+          arbitrator_id: string | null
+          created_at: string
+          description: string
+          dispute_type: string
+          escrow_decision: string | null
+          escrow_decision_amount: number | null
+          evidence_urls: string[] | null
+          fyp_id: string | null
+          id: string
+          initiated_by: string
+          mediator_id: string | null
+          milestone_id: string | null
+          resolution_summary: string | null
+          respondent_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          arbitrator_id?: string | null
+          created_at?: string
+          description: string
+          dispute_type: string
+          escrow_decision?: string | null
+          escrow_decision_amount?: number | null
+          evidence_urls?: string[] | null
+          fyp_id?: string | null
+          id?: string
+          initiated_by: string
+          mediator_id?: string | null
+          milestone_id?: string | null
+          resolution_summary?: string | null
+          respondent_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          arbitrator_id?: string | null
+          created_at?: string
+          description?: string
+          dispute_type?: string
+          escrow_decision?: string | null
+          escrow_decision_amount?: number | null
+          evidence_urls?: string[] | null
+          fyp_id?: string | null
+          id?: string
+          initiated_by?: string
+          mediator_id?: string | null
+          milestone_id?: string | null
+          resolution_summary?: string | null
+          respondent_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       fyp_escrow_links: {
         Row: {
@@ -15501,6 +15635,72 @@ export type Database = {
         }
         Relationships: []
       }
+      ip_contracts: {
+        Row: {
+          contract_hash: string | null
+          contract_terms: Json | null
+          created_at: string
+          faculty_id: string | null
+          faculty_signed: boolean | null
+          faculty_signed_at: string | null
+          fyp_id: string | null
+          id: string
+          ip_model_type: string
+          license_duration_months: number | null
+          royalty_percentage: number | null
+          sponsor_id: string
+          sponsor_signed: boolean | null
+          sponsor_signed_at: string | null
+          status: string
+          student_ids: string[]
+          student_signed: boolean | null
+          student_signed_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          contract_hash?: string | null
+          contract_terms?: Json | null
+          created_at?: string
+          faculty_id?: string | null
+          faculty_signed?: boolean | null
+          faculty_signed_at?: string | null
+          fyp_id?: string | null
+          id?: string
+          ip_model_type: string
+          license_duration_months?: number | null
+          royalty_percentage?: number | null
+          sponsor_id: string
+          sponsor_signed?: boolean | null
+          sponsor_signed_at?: string | null
+          status?: string
+          student_ids?: string[]
+          student_signed?: boolean | null
+          student_signed_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          contract_hash?: string | null
+          contract_terms?: Json | null
+          created_at?: string
+          faculty_id?: string | null
+          faculty_signed?: boolean | null
+          faculty_signed_at?: string | null
+          fyp_id?: string | null
+          id?: string
+          ip_model_type?: string
+          license_duration_months?: number | null
+          royalty_percentage?: number | null
+          sponsor_id?: string
+          sponsor_signed?: boolean | null
+          sponsor_signed_at?: string | null
+          status?: string
+          student_ids?: string[]
+          student_signed?: boolean | null
+          student_signed_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       ip_contributors: {
         Row: {
           acknowledged_at: string | null
@@ -16623,6 +16823,75 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      kyc_verifications: {
+        Row: {
+          admin_approved: boolean | null
+          admin_approved_at: string | null
+          admin_approved_by: string | null
+          business_email: string | null
+          company_registration: string | null
+          created_at: string
+          documents: Json | null
+          entity_type: string
+          expires_at: string | null
+          id: string
+          institution_email: string | null
+          legal_entity_confirmed: boolean | null
+          payment_method_verified: boolean | null
+          rejection_reason: string | null
+          status: string
+          student_id_number: string | null
+          submitted_at: string | null
+          updated_at: string
+          user_id: string
+          verification_level: string
+        }
+        Insert: {
+          admin_approved?: boolean | null
+          admin_approved_at?: string | null
+          admin_approved_by?: string | null
+          business_email?: string | null
+          company_registration?: string | null
+          created_at?: string
+          documents?: Json | null
+          entity_type: string
+          expires_at?: string | null
+          id?: string
+          institution_email?: string | null
+          legal_entity_confirmed?: boolean | null
+          payment_method_verified?: boolean | null
+          rejection_reason?: string | null
+          status?: string
+          student_id_number?: string | null
+          submitted_at?: string | null
+          updated_at?: string
+          user_id: string
+          verification_level?: string
+        }
+        Update: {
+          admin_approved?: boolean | null
+          admin_approved_at?: string | null
+          admin_approved_by?: string | null
+          business_email?: string | null
+          company_registration?: string | null
+          created_at?: string
+          documents?: Json | null
+          entity_type?: string
+          expires_at?: string | null
+          id?: string
+          institution_email?: string | null
+          legal_entity_confirmed?: boolean | null
+          payment_method_verified?: boolean | null
+          rejection_reason?: string | null
+          status?: string
+          student_id_number?: string | null
+          submitted_at?: string | null
+          updated_at?: string
+          user_id?: string
+          verification_level?: string
+        }
+        Relationships: []
       }
       language_support_profiles: {
         Row: {
@@ -26625,6 +26894,45 @@ export type Database = {
           status?: string | null
           target_country?: string
           treaty_reference?: string | null
+        }
+        Relationships: []
+      }
+      sponsor_risk_scores: {
+        Row: {
+          approval_delay_score: number | null
+          created_at: string
+          dispute_history_score: number | null
+          escrow_abandonment_score: number | null
+          funding_consistency_score: number | null
+          id: string
+          last_computed_at: string | null
+          risk_score: number
+          sponsor_id: string
+          updated_at: string
+        }
+        Insert: {
+          approval_delay_score?: number | null
+          created_at?: string
+          dispute_history_score?: number | null
+          escrow_abandonment_score?: number | null
+          funding_consistency_score?: number | null
+          id?: string
+          last_computed_at?: string | null
+          risk_score?: number
+          sponsor_id: string
+          updated_at?: string
+        }
+        Update: {
+          approval_delay_score?: number | null
+          created_at?: string
+          dispute_history_score?: number | null
+          escrow_abandonment_score?: number | null
+          funding_consistency_score?: number | null
+          id?: string
+          last_computed_at?: string | null
+          risk_score?: number
+          sponsor_id?: string
+          updated_at?: string
         }
         Relationships: []
       }

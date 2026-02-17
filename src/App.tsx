@@ -256,6 +256,7 @@ const AdminFeatureGovernancePage = lazy(() => import("./pages/admin/AdminFeature
 const AdminCrisisModePage = lazy(() => import("./pages/admin/AdminCrisisModePage"));
 const AdminEvolutionSimulatorPage = lazy(() => import("./pages/admin/AdminEvolutionSimulatorPage"));
 const AdminRevenueIntelligencePage = lazy(() => import("./pages/admin/AdminRevenueIntelligencePage"));
+const AdminComplianceDashboardPage = lazy(() => import("./pages/admin/AdminComplianceDashboardPage"));
 
 // Suspense fallback for lazy-loaded routes
 const SuspenseFallback = () => (
@@ -521,6 +522,7 @@ const AppContent = () => {
             <Route path="/industry/fyp" element={<SponsorFYPDashboardPage />} />
             <Route path="/faculty/fyp" element={<FacultyFYPCommandPage />} />
             <Route path="/student/fyp" element={<StudentFYPDashboardPage />} />
+            <Route path="/admin/compliance" element={<AdminComplianceDashboardPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>
