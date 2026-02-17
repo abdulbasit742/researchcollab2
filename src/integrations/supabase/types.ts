@@ -10887,6 +10887,239 @@ export type Database = {
           },
         ]
       }
+      fyp_applications: {
+        Row: {
+          cover_note: string | null
+          created_at: string
+          id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          skills: string[] | null
+          status: string | null
+          team_id: string | null
+          topic_id: string
+          user_id: string
+        }
+        Insert: {
+          cover_note?: string | null
+          created_at?: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          skills?: string[] | null
+          status?: string | null
+          team_id?: string | null
+          topic_id: string
+          user_id: string
+        }
+        Update: {
+          cover_note?: string | null
+          created_at?: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          skills?: string[] | null
+          status?: string | null
+          team_id?: string | null
+          topic_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_applications_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fyp_applications_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fyp_escrow_links: {
+        Row: {
+          created_at: string
+          escrow_amount: number | null
+          id: string
+          institutional_share: number | null
+          platform_fee: number | null
+          released_amount: number | null
+          sponsorship_id: string | null
+          status: string | null
+          team_id: string | null
+          topic_id: string
+        }
+        Insert: {
+          created_at?: string
+          escrow_amount?: number | null
+          id?: string
+          institutional_share?: number | null
+          platform_fee?: number | null
+          released_amount?: number | null
+          sponsorship_id?: string | null
+          status?: string | null
+          team_id?: string | null
+          topic_id: string
+        }
+        Update: {
+          created_at?: string
+          escrow_amount?: number | null
+          id?: string
+          institutional_share?: number | null
+          platform_fee?: number | null
+          released_amount?: number | null
+          sponsorship_id?: string | null
+          status?: string | null
+          team_id?: string | null
+          topic_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_escrow_links_sponsorship_id_fkey"
+            columns: ["sponsorship_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_sponsorships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fyp_escrow_links_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fyp_escrow_links_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fyp_execution_tracks: {
+        Row: {
+          created_at: string
+          escrow_amount: number | null
+          id: string
+          milestone_order: number | null
+          milestone_template_id: string | null
+          released_amount: number | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
+          submission_notes: string | null
+          submission_url: string | null
+          submitted_at: string | null
+          team_id: string
+          title: string
+          topic_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          escrow_amount?: number | null
+          id?: string
+          milestone_order?: number | null
+          milestone_template_id?: string | null
+          released_amount?: number | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          submission_notes?: string | null
+          submission_url?: string | null
+          submitted_at?: string | null
+          team_id: string
+          title: string
+          topic_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          escrow_amount?: number | null
+          id?: string
+          milestone_order?: number | null
+          milestone_template_id?: string | null
+          released_amount?: number | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          submission_notes?: string | null
+          submission_url?: string | null
+          submitted_at?: string | null
+          team_id?: string
+          title?: string
+          topic_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_execution_tracks_milestone_template_id_fkey"
+            columns: ["milestone_template_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_milestones_template"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fyp_execution_tracks_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fyp_execution_tracks_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fyp_impact_metrics: {
+        Row: {
+          computed_at: string
+          faculty_rating: number | null
+          funded_projects: number | null
+          id: string
+          impact_score: number | null
+          milestones_completed: number | null
+          on_time_pct: number | null
+          total_earnings: number | null
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string
+          faculty_rating?: number | null
+          funded_projects?: number | null
+          id?: string
+          impact_score?: number | null
+          milestones_completed?: number | null
+          on_time_pct?: number | null
+          total_earnings?: number | null
+          user_id: string
+        }
+        Update: {
+          computed_at?: string
+          faculty_rating?: number | null
+          funded_projects?: number | null
+          id?: string
+          impact_score?: number | null
+          milestones_completed?: number | null
+          on_time_pct?: number | null
+          total_earnings?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       fyp_milestone_templates: {
         Row: {
           created_at: string
@@ -10927,6 +11160,47 @@ export type Database = {
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fyp_milestones_template: {
+        Row: {
+          created_at: string
+          deliverable_type: string | null
+          description: string | null
+          id: string
+          milestone_order: number
+          title: string
+          topic_id: string
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          deliverable_type?: string | null
+          description?: string | null
+          id?: string
+          milestone_order?: number
+          title: string
+          topic_id: string
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          deliverable_type?: string | null
+          description?: string | null
+          id?: string
+          milestone_order?: number
+          title?: string
+          topic_id?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_milestones_template_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_topics"
             referencedColumns: ["id"]
           },
         ]
@@ -11136,6 +11410,213 @@ export type Database = {
             columns: ["provider_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fyp_sponsorships: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          funded_amount: number
+          id: string
+          institution_approved: boolean | null
+          ip_agreement: string | null
+          pledge_amount: number
+          sponsor_id: string
+          status: string | null
+          topic_id: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          funded_amount?: number
+          id?: string
+          institution_approved?: boolean | null
+          ip_agreement?: string | null
+          pledge_amount?: number
+          sponsor_id: string
+          status?: string | null
+          topic_id: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          funded_amount?: number
+          id?: string
+          institution_approved?: boolean | null
+          ip_agreement?: string | null
+          pledge_amount?: number
+          sponsor_id?: string
+          status?: string | null
+          topic_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_sponsorships_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fyp_team_members: {
+        Row: {
+          id: string
+          joined_at: string
+          role: string | null
+          skill_match_pct: number | null
+          team_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          role?: string | null
+          skill_match_pct?: number | null
+          team_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          role?: string | null
+          skill_match_pct?: number | null
+          team_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fyp_teams: {
+        Row: {
+          approved_at: string | null
+          created_at: string
+          faculty_approved: boolean | null
+          id: string
+          status: string | null
+          team_name: string | null
+          topic_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          created_at?: string
+          faculty_approved?: boolean | null
+          id?: string
+          status?: string | null
+          team_name?: string | null
+          topic_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          created_at?: string
+          faculty_approved?: boolean | null
+          id?: string
+          status?: string | null
+          team_name?: string | null
+          topic_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_teams_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "fyp_topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fyp_topics: {
+        Row: {
+          commercialization_type: string | null
+          created_at: string
+          department_id: string | null
+          description: string | null
+          estimated_budget: number | null
+          estimated_duration: string | null
+          faculty_id: string
+          funding_type: string | null
+          id: string
+          implementation_ready: boolean | null
+          institution_id: string | null
+          ip_ownership: string | null
+          max_team_size: number | null
+          nda_required: boolean | null
+          scope: string | null
+          skill_requirements: string[] | null
+          status: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          commercialization_type?: string | null
+          created_at?: string
+          department_id?: string | null
+          description?: string | null
+          estimated_budget?: number | null
+          estimated_duration?: string | null
+          faculty_id: string
+          funding_type?: string | null
+          id?: string
+          implementation_ready?: boolean | null
+          institution_id?: string | null
+          ip_ownership?: string | null
+          max_team_size?: number | null
+          nda_required?: boolean | null
+          scope?: string | null
+          skill_requirements?: string[] | null
+          status?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          commercialization_type?: string | null
+          created_at?: string
+          department_id?: string | null
+          description?: string | null
+          estimated_budget?: number | null
+          estimated_duration?: string | null
+          faculty_id?: string
+          funding_type?: string | null
+          id?: string
+          implementation_ready?: boolean | null
+          institution_id?: string | null
+          ip_ownership?: string | null
+          max_team_size?: number | null
+          nda_required?: boolean | null
+          scope?: string | null
+          skill_requirements?: string[] | null
+          status?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fyp_topics_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fyp_topics_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
