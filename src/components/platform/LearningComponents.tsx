@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -67,10 +68,11 @@ export function CourseCard({
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative aspect-video bg-muted">
         {course.thumbnail_url ? (
-          <img 
+          <OptimizedImage 
             src={course.thumbnail_url} 
             alt={course.title}
-            className="object-cover w-full h-full"
+            widths={[400, 600, 800]}
+            fill
           />
         ) : (
           <div className="flex items-center justify-center h-full">

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { BookOpen, Search, Calendar, User, ArrowRight, Clock, PenLine } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useBlogPosts, useBlogCategories, useFeaturedBlogPosts } from "@/hooks/useBlog";
@@ -152,10 +153,12 @@ export default function BlogPage() {
               <div className="grid md:grid-cols-2">
                 <div className="aspect-video md:aspect-auto">
                   {featured.cover_image_url ? (
-                    <img
+                    <OptimizedImage
                       src={featured.cover_image_url}
                       alt={featured.title}
-                      className="w-full h-full object-cover"
+                      widths={[600, 900, 1200]}
+                      priority
+                      fill
                     />
                   ) : (
                     <div className="w-full h-full bg-muted flex items-center justify-center">
@@ -223,10 +226,11 @@ export default function BlogPage() {
                   <Card variant="interactive" className="h-full flex flex-col overflow-hidden cursor-pointer">
                     <div className="aspect-video">
                       {post.cover_image_url ? (
-                        <img
+                        <OptimizedImage
                           src={post.cover_image_url}
                           alt={post.title}
-                          className="w-full h-full object-cover"
+                          widths={[400, 600, 800]}
+                          fill
                         />
                       ) : (
                         <div className="w-full h-full bg-muted flex items-center justify-center">
