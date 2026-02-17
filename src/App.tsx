@@ -270,6 +270,13 @@ const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCent
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
 
+// Economic Intelligence, AI Allocation, Strategic Brain, Global Grid
+const EconomicIntelligencePage = lazy(() => import("./pages/intelligence/EconomicIntelligencePage"));
+const AIAllocationEnginePage = lazy(() => import("./pages/intelligence/AIAllocationEnginePage"));
+const StrategicBrainPage = lazy(() => import("./pages/admin/StrategicBrainPage"));
+const NationalImpactPage = lazy(() => import("./pages/NationalImpactPage"));
+const GlobalControlTowerPage = lazy(() => import("./pages/admin/GlobalControlTowerPage"));
+
 // Suspense fallback for lazy-loaded routes
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
@@ -546,6 +553,12 @@ const AppContent = () => {
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
+            {/* Economic Intelligence, AI Allocation, Strategic Brain, Global Grid */}
+            <Route path="/intelligence/economic" element={<EconomicIntelligencePage />} />
+            <Route path="/intelligence/ai-allocation" element={<AIAllocationEnginePage />} />
+            <Route path="/admin/strategic-brain" element={<StrategicBrainPage />} />
+            <Route path="/national/impact" element={<NationalImpactPage />} />
+            <Route path="/global/control-tower" element={<GlobalControlTowerPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>
