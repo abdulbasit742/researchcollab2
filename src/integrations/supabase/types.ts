@@ -1371,6 +1371,118 @@ export type Database = {
           },
         ]
       }
+      ai_allocation_recommendations: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          confidence_band: string | null
+          confidence_score: number | null
+          country_id: string | null
+          created_at: string | null
+          entity_id: string | null
+          entity_type: string
+          id: string
+          override_reason: string | null
+          rationale_summary: string | null
+          recommended_action: string
+          risk_score: number | null
+          status: string | null
+          success_probability: number | null
+          supporting_metrics: Json | null
+          top_factors: Json | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          confidence_band?: string | null
+          confidence_score?: number | null
+          country_id?: string | null
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          override_reason?: string | null
+          rationale_summary?: string | null
+          recommended_action: string
+          risk_score?: number | null
+          status?: string | null
+          success_probability?: number | null
+          supporting_metrics?: Json | null
+          top_factors?: Json | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          confidence_band?: string | null
+          confidence_score?: number | null
+          country_id?: string | null
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          override_reason?: string | null
+          rationale_summary?: string | null
+          recommended_action?: string
+          risk_score?: number | null
+          status?: string | null
+          success_probability?: number | null
+          supporting_metrics?: Json | null
+          top_factors?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_allocation_recommendations_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_approval_workflows: {
+        Row: {
+          approval_level: number | null
+          approver_id: string | null
+          approver_role: string
+          created_at: string | null
+          decided_at: string | null
+          decision: string | null
+          decision_reason: string | null
+          id: string
+          recommendation_id: string | null
+        }
+        Insert: {
+          approval_level?: number | null
+          approver_id?: string | null
+          approver_role: string
+          created_at?: string | null
+          decided_at?: string | null
+          decision?: string | null
+          decision_reason?: string | null
+          id?: string
+          recommendation_id?: string | null
+        }
+        Update: {
+          approval_level?: number | null
+          approver_id?: string | null
+          approver_role?: string
+          created_at?: string | null
+          decided_at?: string | null
+          decision?: string | null
+          decision_reason?: string | null
+          id?: string
+          recommendation_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_approval_workflows_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_allocation_recommendations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_assistance_records: {
         Row: {
           ai_model_version: string | null
@@ -1578,6 +1690,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_bias_logs: {
+        Row: {
+          affected_entity_id: string | null
+          affected_entity_type: string | null
+          bias_type: string
+          description: string | null
+          detected_at: string | null
+          id: string
+          mitigation_action: string | null
+          resolved_at: string | null
+          severity: string | null
+        }
+        Insert: {
+          affected_entity_id?: string | null
+          affected_entity_type?: string | null
+          bias_type: string
+          description?: string | null
+          detected_at?: string | null
+          id?: string
+          mitigation_action?: string | null
+          resolved_at?: string | null
+          severity?: string | null
+        }
+        Update: {
+          affected_entity_id?: string | null
+          affected_entity_type?: string | null
+          bias_type?: string
+          description?: string | null
+          detected_at?: string | null
+          id?: string
+          mitigation_action?: string | null
+          resolved_at?: string | null
+          severity?: string | null
+        }
+        Relationships: []
       }
       ai_bias_monitoring: {
         Row: {
@@ -1872,28 +2020,43 @@ export type Database = {
           bias_flag: boolean | null
           created_at: string
           decision_summary: string | null
+          human_decision_text: string | null
           id: string
           model_version: string | null
+          outcome_result_text: string | null
           override_flag: boolean | null
+          performance_impact: Json | null
+          recommendation_ref_id: string | null
           request_type: string
+          variance_from_prediction: number | null
         }
         Insert: {
           bias_flag?: boolean | null
           created_at?: string
           decision_summary?: string | null
+          human_decision_text?: string | null
           id?: string
           model_version?: string | null
+          outcome_result_text?: string | null
           override_flag?: boolean | null
+          performance_impact?: Json | null
+          recommendation_ref_id?: string | null
           request_type: string
+          variance_from_prediction?: number | null
         }
         Update: {
           bias_flag?: boolean | null
           created_at?: string
           decision_summary?: string | null
+          human_decision_text?: string | null
           id?: string
           model_version?: string | null
+          outcome_result_text?: string | null
           override_flag?: boolean | null
+          performance_impact?: Json | null
+          recommendation_ref_id?: string | null
           request_type?: string
+          variance_from_prediction?: number | null
         }
         Relationships: []
       }
@@ -2232,6 +2395,83 @@ export type Database = {
           },
         ]
       }
+      ai_override_logs: {
+        Row: {
+          created_at: string | null
+          decision_delta: Json | null
+          id: string
+          original_action: string | null
+          overridden_action: string | null
+          override_by: string
+          override_reason: string
+          recommendation_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          decision_delta?: Json | null
+          id?: string
+          original_action?: string | null
+          overridden_action?: string | null
+          override_by: string
+          override_reason: string
+          recommendation_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          decision_delta?: Json | null
+          id?: string
+          original_action?: string | null
+          overridden_action?: string | null
+          override_by?: string
+          override_reason?: string
+          recommendation_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_override_logs_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_allocation_recommendations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_performance_metrics: {
+        Row: {
+          allocation_success_rate: number | null
+          bias_indicators: Json | null
+          capital_efficiency_gain_pct: number | null
+          dispute_reduction_pct: number | null
+          employment_improvement_pct: number | null
+          id: string
+          measured_at: string | null
+          model_version: string
+          prediction_accuracy_pct: number | null
+        }
+        Insert: {
+          allocation_success_rate?: number | null
+          bias_indicators?: Json | null
+          capital_efficiency_gain_pct?: number | null
+          dispute_reduction_pct?: number | null
+          employment_improvement_pct?: number | null
+          id?: string
+          measured_at?: string | null
+          model_version: string
+          prediction_accuracy_pct?: number | null
+        }
+        Update: {
+          allocation_success_rate?: number | null
+          bias_indicators?: Json | null
+          capital_efficiency_gain_pct?: number | null
+          dispute_reduction_pct?: number | null
+          employment_improvement_pct?: number | null
+          id?: string
+          measured_at?: string | null
+          model_version?: string
+          prediction_accuracy_pct?: number | null
+        }
+        Relationships: []
+      }
       ai_policies: {
         Row: {
           allow_analysis: boolean | null
@@ -2447,6 +2687,59 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      allocation_simulations: {
+        Row: {
+          country_id: string | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          input_params: Json | null
+          projected_capital_efficiency: number | null
+          projected_completion_rate: number | null
+          projected_employment: number | null
+          projected_risk_exposure: number | null
+          projected_startup_yield: number | null
+          scenario_type: string | null
+          simulation_name: string
+        }
+        Insert: {
+          country_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          input_params?: Json | null
+          projected_capital_efficiency?: number | null
+          projected_completion_rate?: number | null
+          projected_employment?: number | null
+          projected_risk_exposure?: number | null
+          projected_startup_yield?: number | null
+          scenario_type?: string | null
+          simulation_name: string
+        }
+        Update: {
+          country_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          input_params?: Json | null
+          projected_capital_efficiency?: number | null
+          projected_completion_rate?: number | null
+          projected_employment?: number | null
+          projected_risk_exposure?: number | null
+          projected_startup_yield?: number | null
+          scenario_type?: string | null
+          simulation_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "allocation_simulations_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
             referencedColumns: ["id"]
           },
         ]
@@ -3254,6 +3547,59 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      capital_efficiency_index: {
+        Row: {
+          completion_rate: number | null
+          computed_at: string | null
+          country_id: string | null
+          efficiency_score: number | null
+          employment_conversions: number | null
+          entity_id: string | null
+          entity_type: string
+          id: string
+          period: string
+          startup_conversions: number | null
+          student_earnings: number | null
+          total_capital_deployed: number | null
+        }
+        Insert: {
+          completion_rate?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          efficiency_score?: number | null
+          employment_conversions?: number | null
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          period: string
+          startup_conversions?: number | null
+          student_earnings?: number | null
+          total_capital_deployed?: number | null
+        }
+        Update: {
+          completion_rate?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          efficiency_score?: number | null
+          employment_conversions?: number | null
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          period?: string
+          startup_conversions?: number | null
+          student_earnings?: number | null
+          total_capital_deployed?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capital_efficiency_index_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       capital_partnerships: {
         Row: {
@@ -6228,6 +6574,63 @@ export type Database = {
           },
         ]
       }
+      cross_border_simulations: {
+        Row: {
+          capital_amount: number | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          projected_completion_rate: number | null
+          projected_employment: number | null
+          projected_startup_output: number | null
+          regulatory_risk: string | null
+          sector: string | null
+          source_country_id: string | null
+          target_country_id: string | null
+        }
+        Insert: {
+          capital_amount?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          projected_completion_rate?: number | null
+          projected_employment?: number | null
+          projected_startup_output?: number | null
+          regulatory_risk?: string | null
+          sector?: string | null
+          source_country_id?: string | null
+          target_country_id?: string | null
+        }
+        Update: {
+          capital_amount?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          projected_completion_rate?: number | null
+          projected_employment?: number | null
+          projected_startup_output?: number | null
+          regulatory_risk?: string | null
+          sector?: string | null
+          source_country_id?: string | null
+          target_country_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cross_border_simulations_source_country_id_fkey"
+            columns: ["source_country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cross_border_simulations_target_country_id_fkey"
+            columns: ["target_country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cross_node_capital_flows: {
         Row: {
           amount: number
@@ -8619,6 +9022,59 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      economic_warehouse: {
+        Row: {
+          capital_allocated: number | null
+          computed_at: string | null
+          country_id: string | null
+          employment_count: number | null
+          funding_volume: number | null
+          id: string
+          innovation_density_score: number | null
+          period: string
+          region: string | null
+          sector: string | null
+          sponsor_activity_count: number | null
+          startup_count: number | null
+        }
+        Insert: {
+          capital_allocated?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          employment_count?: number | null
+          funding_volume?: number | null
+          id?: string
+          innovation_density_score?: number | null
+          period: string
+          region?: string | null
+          sector?: string | null
+          sponsor_activity_count?: number | null
+          startup_count?: number | null
+        }
+        Update: {
+          capital_allocated?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          employment_count?: number | null
+          funding_volume?: number | null
+          id?: string
+          innovation_density_score?: number | null
+          period?: string
+          region?: string | null
+          sector?: string | null
+          sponsor_activity_count?: number | null
+          startup_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "economic_warehouse_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       emergency_activations: {
         Row: {
@@ -12508,6 +12964,56 @@ export type Database = {
           },
         ]
       }
+      global_intelligence_warehouse: {
+        Row: {
+          capital_efficiency_avg: number | null
+          computed_at: string | null
+          country_id: string | null
+          employment_conversion_avg: number | null
+          id: string
+          innovation_signal_score: number | null
+          national_funding_total: number | null
+          period: string
+          risk_adjusted_efficiency: number | null
+          sector_momentum_avg: number | null
+          startup_density_index: number | null
+        }
+        Insert: {
+          capital_efficiency_avg?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          employment_conversion_avg?: number | null
+          id?: string
+          innovation_signal_score?: number | null
+          national_funding_total?: number | null
+          period: string
+          risk_adjusted_efficiency?: number | null
+          sector_momentum_avg?: number | null
+          startup_density_index?: number | null
+        }
+        Update: {
+          capital_efficiency_avg?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          employment_conversion_avg?: number | null
+          id?: string
+          innovation_signal_score?: number | null
+          national_funding_total?: number | null
+          period?: string
+          risk_adjusted_efficiency?: number | null
+          sector_momentum_avg?: number | null
+          startup_density_index?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "global_intelligence_warehouse_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       global_liquidity_flows: {
         Row: {
           created_at: string
@@ -14502,6 +15008,47 @@ export type Database = {
           },
         ]
       }
+      innovation_node_protocols: {
+        Row: {
+          compliance_rules: Json | null
+          country_id: string | null
+          created_at: string | null
+          data_schema: Json | null
+          id: string
+          interop_enabled: boolean | null
+          last_sync_at: string | null
+          protocol_version: string | null
+        }
+        Insert: {
+          compliance_rules?: Json | null
+          country_id?: string | null
+          created_at?: string | null
+          data_schema?: Json | null
+          id?: string
+          interop_enabled?: boolean | null
+          last_sync_at?: string | null
+          protocol_version?: string | null
+        }
+        Update: {
+          compliance_rules?: Json | null
+          country_id?: string | null
+          created_at?: string | null
+          data_schema?: Json | null
+          id?: string
+          interop_enabled?: boolean | null
+          last_sync_at?: string | null
+          protocol_version?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "innovation_node_protocols_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       innovation_pipeline_briefs: {
         Row: {
           budget_allocated: number | null
@@ -15948,6 +16495,94 @@ export type Database = {
             columns: ["reviewed_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      intelligence_access_levels: {
+        Row: {
+          access_level: string
+          country_id: string | null
+          expires_at: string | null
+          granted_at: string | null
+          id: string
+          is_global: boolean | null
+          user_id: string
+        }
+        Insert: {
+          access_level?: string
+          country_id?: string | null
+          expires_at?: string | null
+          granted_at?: string | null
+          id?: string
+          is_global?: boolean | null
+          user_id: string
+        }
+        Update: {
+          access_level?: string
+          country_id?: string | null
+          expires_at?: string | null
+          granted_at?: string | null
+          id?: string
+          is_global?: boolean | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intelligence_access_levels_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      intelligence_subscriptions: {
+        Row: {
+          country_id: string | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          is_global: boolean | null
+          price_monthly: number | null
+          started_at: string | null
+          status: string | null
+          subscriber_id: string
+          subscriber_type: string
+          tier: string
+        }
+        Insert: {
+          country_id?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_global?: boolean | null
+          price_monthly?: number | null
+          started_at?: string | null
+          status?: string | null
+          subscriber_id: string
+          subscriber_type?: string
+          tier?: string
+        }
+        Update: {
+          country_id?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_global?: boolean | null
+          price_monthly?: number | null
+          started_at?: string | null
+          status?: string | null
+          subscriber_id?: string
+          subscriber_type?: string
+          tier?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intelligence_subscriptions_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
             referencedColumns: ["id"]
           },
         ]
@@ -18815,6 +19450,53 @@ export type Database = {
             columns: ["adopted_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      national_signal_index: {
+        Row: {
+          capital_efficiency: number | null
+          computed_at: string | null
+          country_id: string | null
+          employment_conversion: number | null
+          funding_velocity: number | null
+          id: string
+          is_public: boolean | null
+          period: string
+          signal_score: number | null
+          startup_formation: number | null
+        }
+        Insert: {
+          capital_efficiency?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          employment_conversion?: number | null
+          funding_velocity?: number | null
+          id?: string
+          is_public?: boolean | null
+          period: string
+          signal_score?: number | null
+          startup_formation?: number | null
+        }
+        Update: {
+          capital_efficiency?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          employment_conversion?: number | null
+          funding_velocity?: number | null
+          id?: string
+          is_public?: boolean | null
+          period?: string
+          signal_score?: number | null
+          startup_formation?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "national_signal_index_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
             referencedColumns: ["id"]
           },
         ]
@@ -27181,6 +27863,103 @@ export type Database = {
         }
         Relationships: []
       }
+      sector_growth_metrics: {
+        Row: {
+          capital_allocation_pct: number | null
+          computed_at: string | null
+          country_id: string | null
+          funding_growth_pct: number | null
+          hiring_growth_pct: number | null
+          id: string
+          momentum_score: number | null
+          period: string
+          sector: string
+          startup_growth_pct: number | null
+        }
+        Insert: {
+          capital_allocation_pct?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          funding_growth_pct?: number | null
+          hiring_growth_pct?: number | null
+          id?: string
+          momentum_score?: number | null
+          period: string
+          sector: string
+          startup_growth_pct?: number | null
+        }
+        Update: {
+          capital_allocation_pct?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          funding_growth_pct?: number | null
+          hiring_growth_pct?: number | null
+          id?: string
+          momentum_score?: number | null
+          period?: string
+          sector?: string
+          startup_growth_pct?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sector_growth_metrics_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sector_momentum_index: {
+        Row: {
+          capital_inflow_velocity: number | null
+          computed_at: string | null
+          country_id: string | null
+          employment_growth_rate: number | null
+          funding_growth_rate: number | null
+          id: string
+          momentum_score: number | null
+          period: string
+          repeat_sponsor_activity: number | null
+          sector: string
+          startup_formation_rate: number | null
+        }
+        Insert: {
+          capital_inflow_velocity?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          employment_growth_rate?: number | null
+          funding_growth_rate?: number | null
+          id?: string
+          momentum_score?: number | null
+          period: string
+          repeat_sponsor_activity?: number | null
+          sector: string
+          startup_formation_rate?: number | null
+        }
+        Update: {
+          capital_inflow_velocity?: number | null
+          computed_at?: string | null
+          country_id?: string | null
+          employment_growth_rate?: number | null
+          funding_growth_rate?: number | null
+          id?: string
+          momentum_score?: number | null
+          period?: string
+          repeat_sponsor_activity?: number | null
+          sector?: string
+          startup_formation_rate?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sector_momentum_index_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       security_audit_events: {
         Row: {
           action: string
@@ -28293,6 +29072,45 @@ export type Database = {
         }
         Relationships: []
       }
+      strategic_briefing_requests: {
+        Row: {
+          created_at: string | null
+          data_scope: string | null
+          delivered_at: string | null
+          id: string
+          report_url: string | null
+          requester_id: string
+          requester_type: string | null
+          risk_sensitivity: string | null
+          status: string | null
+          topic: string
+        }
+        Insert: {
+          created_at?: string | null
+          data_scope?: string | null
+          delivered_at?: string | null
+          id?: string
+          report_url?: string | null
+          requester_id: string
+          requester_type?: string | null
+          risk_sensitivity?: string | null
+          status?: string | null
+          topic: string
+        }
+        Update: {
+          created_at?: string | null
+          data_scope?: string | null
+          delivered_at?: string | null
+          id?: string
+          report_url?: string | null
+          requester_id?: string
+          requester_type?: string | null
+          risk_sensitivity?: string | null
+          status?: string | null
+          topic?: string
+        }
+        Relationships: []
+      }
       structural_friction_log: {
         Row: {
           details: Json | null
@@ -29128,6 +29946,56 @@ export type Database = {
           triggered_at?: string
         }
         Relationships: []
+      }
+      systemic_risk_alerts: {
+        Row: {
+          affected_region: string | null
+          affected_sector: string | null
+          country_id: string | null
+          description: string | null
+          detected_at: string | null
+          id: string
+          is_active: boolean | null
+          metrics: Json | null
+          resolved_at: string | null
+          risk_type: string
+          severity: string | null
+        }
+        Insert: {
+          affected_region?: string | null
+          affected_sector?: string | null
+          country_id?: string | null
+          description?: string | null
+          detected_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          metrics?: Json | null
+          resolved_at?: string | null
+          risk_type: string
+          severity?: string | null
+        }
+        Update: {
+          affected_region?: string | null
+          affected_sector?: string | null
+          country_id?: string | null
+          description?: string | null
+          detected_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          metrics?: Json | null
+          resolved_at?: string | null
+          risk_type?: string
+          severity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "systemic_risk_alerts_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       talent_allocation_logs: {
         Row: {
