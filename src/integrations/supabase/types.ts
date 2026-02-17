@@ -24780,6 +24780,51 @@ export type Database = {
         }
         Relationships: []
       }
+      user_availability: {
+        Row: {
+          available_hours_per_week: number | null
+          capacity: number
+          created_at: string
+          earliest_start_date: string | null
+          id: string
+          intent: string[]
+          preferred_budget_max: number | null
+          preferred_budget_min: number | null
+          response_time_hours: number | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          available_hours_per_week?: number | null
+          capacity?: number
+          created_at?: string
+          earliest_start_date?: string | null
+          id?: string
+          intent?: string[]
+          preferred_budget_max?: number | null
+          preferred_budget_min?: number | null
+          response_time_hours?: number | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          available_hours_per_week?: number | null
+          capacity?: number
+          created_at?: string
+          earliest_start_date?: string | null
+          id?: string
+          intent?: string[]
+          preferred_budget_max?: number | null
+          preferred_budget_min?: number | null
+          response_time_hours?: number | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_badges: {
         Row: {
           badge_name: string

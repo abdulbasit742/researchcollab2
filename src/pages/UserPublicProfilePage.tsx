@@ -40,6 +40,9 @@ import {
   SkillsSection,
 } from "@/components/identity";
 import { MutualConnectionsBadge } from "@/components/network/MutualConnectionsBadge";
+import { ProofBanner } from "@/components/profile/ProofBanner";
+import { AvailabilityBadge } from "@/components/profile/AvailabilityBadge";
+import { MutualWorkContext } from "@/components/profile/MutualWorkContext";
 
 export default function UserPublicProfilePage() {
   const { id } = useParams<{ id: string }>();
@@ -227,6 +230,9 @@ export default function UserPublicProfilePage() {
                 )}
               </div>
 
+              {/* Availability Badge */}
+              {id && <AvailabilityBadge userId={id} compact className="mt-3" />}
+
               {/* Mutual connections */}
               {authUser && id && (
                 <MutualConnectionsBadge userId={id} className="mt-3" />
@@ -275,6 +281,12 @@ export default function UserPublicProfilePage() {
       </div>
 
       <div className="container py-12">
+        {/* Proof-of-Work Banner */}
+        <ProofBanner userId={id} className="mb-6" />
+
+        {/* Mutual Work Context */}
+        {authUser && id && <MutualWorkContext targetUserId={id} className="mb-6" />}
+
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left Column - Trust & Info */}
           <div className="lg:col-span-1 space-y-6">

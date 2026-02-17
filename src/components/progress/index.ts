@@ -7,3 +7,4 @@ export { CareerTimeline } from "./CareerTimeline";
 export { NextBestActionPanel } from "./NextBestActionPanel";
 export { FailureRecoveryCard } from "./FailureRecoveryCard";
 export { CareerTrajectoryPanel } from "./CareerTrajectoryPanel";
+export { IncomeVelocityPanel } from "./IncomeVelocityPanel";

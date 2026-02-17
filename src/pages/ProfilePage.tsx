@@ -20,7 +20,7 @@ import {
   TrustEngineDisplay,
   WorkGraphCard,
 } from "@/components/outcome";
-import { ProfileViewsCard } from "@/components/profile";
+import { ProfileViewsCard, ProofBanner } from "@/components/profile";
 import { MyPlanCard } from "@/components/profile/MyPlanCard";
 import { VisibilityScoreCard } from "@/components/profile/VisibilityScoreCard";
 import { useWorkConnections } from "@/hooks/useOutcomeFeed";
@@ -115,6 +115,9 @@ export default function ProfilePage() {
               </Link>
             </Button>
           </div>
+
+          {/* Proof-of-Work Banner */}
+          <ProofBanner userId={user.id} className="mb-6" />
 
           {/* Philosophy Banner */}
           <Card className="border-dashed bg-muted/30 mb-6">
