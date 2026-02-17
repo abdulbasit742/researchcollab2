@@ -8371,32 +8371,126 @@ export type Database = {
           },
         ]
       }
+      document_audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          details: Json | null
+          document_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: Json | null
+          document_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: Json | null
+          document_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_audit_logs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      document_collaborators: {
+        Row: {
+          added_by: string | null
+          created_at: string
+          document_id: string
+          id: string
+          permission_level: string
+          user_id: string
+        }
+        Insert: {
+          added_by?: string | null
+          created_at?: string
+          document_id: string
+          id?: string
+          permission_level?: string
+          user_id: string
+        }
+        Update: {
+          added_by?: string | null
+          created_at?: string
+          document_id?: string
+          id?: string
+          permission_level?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_collaborators_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       document_comments: {
         Row: {
+          anchor_text: string | null
           content: string
           created_at: string
           document_id: string
           id: string
           is_resolved: boolean
+          is_suggestion: boolean | null
+          parent_comment_id: string | null
           position_data: Json | null
+          resolved_at: string | null
+          resolved_by: string | null
+          suggestion_content: string | null
+          suggestion_status: string | null
+          updated_at: string | null
           user_id: string
         }
         Insert: {
+          anchor_text?: string | null
           content: string
           created_at?: string
           document_id: string
           id?: string
           is_resolved?: boolean
+          is_suggestion?: boolean | null
+          parent_comment_id?: string | null
           position_data?: Json | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          suggestion_content?: string | null
+          suggestion_status?: string | null
+          updated_at?: string | null
           user_id: string
         }
         Update: {
+          anchor_text?: string | null
           content?: string
           created_at?: string
           document_id?: string
           id?: string
           is_resolved?: boolean
+          is_suggestion?: boolean | null
+          parent_comment_id?: string | null
           position_data?: Json | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          suggestion_content?: string | null
+          suggestion_status?: string | null
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: [
@@ -8407,7 +8501,50 @@ export type Database = {
             referencedRelation: "documents"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "document_comments_parent_comment_id_fkey"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "document_comments"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      document_templates: {
+        Row: {
+          category: string
+          content: Json
+          created_at: string
+          created_by: string | null
+          description: string | null
+          icon_name: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+        }
+        Insert: {
+          category: string
+          content: Json
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+        }
+        Update: {
+          category?: string
+          content?: Json
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+        }
+        Relationships: []
       }
       document_versions: {
         Row: {
