@@ -176,6 +176,93 @@ All 62 systems are organized into exactly 7 layers. Every feature belongs to ONE
 
 ---
 
+## Layer 11: AUTONOMOUS GOVERNANCE ECONOMY
+**Purpose**: Self-correcting governance economy with trust-weighted influence, AI-audited constitutional compliance, and crisis containment.
+
+| System | Name | Status |
+|--------|------|--------|
+| GIU | Governance Influence Units | Core |
+| PE2 | Proposal Engine 2.0 | Core |
+| ACG2 | AI Constitutional Guardian 2.0 | Core |
+| GERE | Governance Economic Rewards | Core |
+| PCM | Power Concentration Monitor | Core |
+| CM2 | Crisis Mode 2.0 | Core |
+| CAF | Constitutional Amendment Framework | Core |
+
+**Entry Points**: /governance/proposals, /governance/transparency
+**Key Hook**: `useGovernanceEconomy`
+**Cannot**: Override immutable constitution, escrow atomicity, credential cryptography
+
+---
+
+## Layer 12: CIVILIZATION INTERFACE LAYER
+**Purpose**: Structured interface between RCollab and real-world legal, financial, and institutional systems.
+
+| System | Name | Status |
+|--------|------|--------|
+| BFRI | Banking & Financial Rails | Institutional |
+| UARB | University Academic Recognition | Institutional |
+| GRCG | Government Regulatory Gateway | Institutional |
+| CBLM | Cross-Border Labor Mobility | Institutional |
+| TICE | Treaty & Compact Engine | Institutional |
+| SDM | Sovereign Deployment Mode | Institutional |
+
+**Entry Points**: /civilization/treasury, /civilization/education, /mobility/export
+**Key Hook**: `useCivilizationInterface`
+
+---
+
+## Layer 13: HUMAN CAPITAL INTELLIGENCE INDEX
+**Purpose**: Real-time, trust-backed, execution-verified global productivity indices.
+
+| System | Name | Status |
+|--------|------|--------|
+| RPI | Regional Productivity Index | Core |
+| IEI | Institutional Execution Index | Core |
+| PIMI | Professional Income Mobility | Core |
+| GSHI | Global Skill Health Index | Core |
+| TSI | Trust Stability Index | Core |
+
+**Entry Points**: /intelligence/global, /intelligence/regions, /intelligence/skills
+**Key Hook**: `useHumanCapitalIndex`
+**Cannot**: Influence trust scoring, deal matching, governance power
+
+---
+
+## Layer 14: PREDICTIVE CIVILIZATION MODELING
+**Purpose**: Simulation-grade predictive engine for regional, institutional, and skill-level futures. Advisory only.
+
+| System | Name | Status |
+|--------|------|--------|
+| RPFE | Regional Productivity Forecast | Extended |
+| SES | Skill Evolution Simulator | Extended |
+| ISM | Institutional Stability Model | Extended |
+| CSSE | Capital Stress Simulation | Extended |
+| PIS | Policy Intervention Simulator | Institutional |
+
+**Entry Points**: /predictive/global, /predictive/regions, /predictive/skills
+**Cannot**: Trigger capital changes, adjust liquidity, modify trust, influence governance
+
+---
+
+## Layer 15: AUTONOMOUS SELF-OPTIMIZATION
+**Purpose**: Constrained self-improvement engine that detects inefficiencies and proposes structural optimization.
+
+| System | Name | Status |
+|--------|------|--------|
+| SFD | Structural Friction Detector | Core |
+| LTPO | Long-Term Productivity Optimizer | Core |
+| IRE | Incentive Recalibration Engine | Extended |
+| CBM2 | Complexity Budget Monitor 2.0 | Core |
+| AFI | Antifragility Index | Core |
+| SOPE | Self-Optimization Proposal Engine | Core |
+
+**Entry Points**: /system/health, /system/proposals, /system/transparency
+**Key Hook**: `useHumanCapitalIndex` (useSystemHealth, useAntifragility, useOptimizationProposals)
+**Cannot**: Auto-modify constitution, trust scoring, escrow, or governance votes
+
+---
+
 ## 📊 System Classification Summary
 
 | Classification | Count | Description |
