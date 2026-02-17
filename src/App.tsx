@@ -175,6 +175,8 @@ const InstitutionCommercializationPage = lazy(() => import("./pages/InstitutionC
 const ExecutionProductivityRankingsPage = lazy(() => import("./pages/ExecutionProductivityRankingsPage"));
 const IndustryExplorePage = lazy(() => import("./pages/IndustryExplorePage"));
 const InstitutionCommercializationDashboardPage = lazy(() => import("./pages/InstitutionCommercializationDashboardPage"));
+const InstitutionalROICalculatorPage = lazy(() => import("./pages/InstitutionalROICalculatorPage"));
+const PilotAcquisitionKitPage = lazy(() => import("./pages/PilotAcquisitionKitPage"));
 
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
@@ -483,6 +485,8 @@ const AppContent = () => {
             <Route path="/institutions/epr-rankings" element={<ExecutionProductivityRankingsPage />} />
             <Route path="/industry/explore" element={<IndustryExplorePage />} />
             <Route path="/institutions/:id/commercialization" element={<InstitutionCommercializationDashboardPage />} />
+            <Route path="/institutions/roi-calculator" element={<InstitutionalROICalculatorPage />} />
+            <Route path="/institutions/pilot-kit" element={<PilotAcquisitionKitPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>
