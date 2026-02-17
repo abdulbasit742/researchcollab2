@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -76,10 +77,11 @@ export function EventCard({
     <Card className="overflow-hidden hover:shadow-md transition-shadow">
       {event.cover_image_url && (
         <div className="aspect-video bg-muted">
-          <img 
+          <OptimizedImage 
             src={event.cover_image_url} 
             alt={event.title}
-            className="w-full h-full object-cover"
+            widths={[400, 600, 800]}
+            fill
           />
         </div>
       )}

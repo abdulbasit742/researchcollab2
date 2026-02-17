@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ProfileSkeleton } from "@/components/skeletons";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import {
   MapPin,
   GraduationCap,
@@ -384,9 +385,10 @@ export default function UserPublicProfilePage() {
                         >
                           <div className="flex gap-4">
                             {project.thumbnail_url && (
-                              <img
+                              <OptimizedImage
                                 src={project.thumbnail_url}
                                 alt={project.title}
+                                widths={[96, 192]}
                                 className="w-24 h-24 rounded-lg object-cover flex-shrink-0"
                               />
                             )}

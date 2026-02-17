@@ -5,6 +5,7 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { ArrowLeft, Calendar, User, Clock, Eye, BookOpen } from "lucide-react";
 import { useBlogPost } from "@/hooks/useBlog";
 import ReactMarkdown from "react-markdown";
@@ -92,10 +93,12 @@ export default function BlogArticlePage() {
           className="container mt-6"
         >
           <div className="aspect-[21/9] rounded-xl overflow-hidden">
-            <img
+            <OptimizedImage
               src={article.cover_image_url}
               alt={article.title}
-              className="w-full h-full object-cover"
+              widths={[800, 1200, 1920]}
+              priority
+              fill
             />
           </div>
         </motion.div>
