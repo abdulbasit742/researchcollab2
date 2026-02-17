@@ -150,6 +150,14 @@ const CapitalAdvancePage = lazy(() => import("./pages/CapitalAdvancePage"));
 const FundingPoolsPage = lazy(() => import("./pages/FundingPoolsPage"));
 const CapitalRiskIntelligencePage = lazy(() => import("./pages/CapitalRiskIntelligencePage"));
 
+// Layers 11-15
+const GovernanceProposalsPage = lazy(() => import("./pages/GovernanceProposalsPage"));
+const GovernanceTransparencyPage = lazy(() => import("./pages/GovernanceTransparencyPage"));
+const CivilizationTreasuryPage = lazy(() => import("./pages/CivilizationTreasuryPage"));
+const IntelligenceGlobalPage = lazy(() => import("./pages/IntelligenceGlobalPage"));
+const PredictiveGlobalPage = lazy(() => import("./pages/PredictiveGlobalPage"));
+const SystemHealthPage = lazy(() => import("./pages/SystemHealthPage"));
+
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
 const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
@@ -405,6 +413,13 @@ const AppContent = () => {
             <Route path="/capital/advance" element={<CapitalAdvancePage />} />
             <Route path="/capital/pools" element={<FundingPoolsPage />} />
             <Route path="/capital/risk-intelligence" element={<CapitalRiskIntelligencePage />} />
+            {/* Layers 11-15 */}
+            <Route path="/governance/proposals" element={<GovernanceProposalsPage />} />
+            <Route path="/governance/transparency" element={<GovernanceTransparencyPage />} />
+            <Route path="/civilization/treasury" element={<CivilizationTreasuryPage />} />
+            <Route path="/intelligence/global" element={<IntelligenceGlobalPage />} />
+            <Route path="/predictive/global" element={<PredictiveGlobalPage />} />
+            <Route path="/system/health" element={<SystemHealthPage />} />
             <Route path="/analytics/global-liquidity" element={<GlobalLiquidityAnalyticsPage />} />
             <Route path="/developer/api-dashboard" element={<DeveloperApiDashboardPage />} />
             <Route path="/profile/reputation-export" element={<ReputationExportPage />} />

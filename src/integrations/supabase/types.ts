@@ -2504,6 +2504,51 @@ export type Database = {
           },
         ]
       }
+      amendment_history: {
+        Row: {
+          activated_at: string | null
+          activation_delay_end: string | null
+          ai_guardian_cleared: boolean | null
+          amendment_type: string | null
+          created_at: string | null
+          id: string
+          institutional_quorum_met: boolean | null
+          new_value: Json | null
+          previous_value: Json | null
+          proposal_id: string | null
+          section_amended: string
+          supermajority_achieved: boolean | null
+        }
+        Insert: {
+          activated_at?: string | null
+          activation_delay_end?: string | null
+          ai_guardian_cleared?: boolean | null
+          amendment_type?: string | null
+          created_at?: string | null
+          id?: string
+          institutional_quorum_met?: boolean | null
+          new_value?: Json | null
+          previous_value?: Json | null
+          proposal_id?: string | null
+          section_amended: string
+          supermajority_achieved?: boolean | null
+        }
+        Update: {
+          activated_at?: string | null
+          activation_delay_end?: string | null
+          ai_guardian_cleared?: boolean | null
+          amendment_type?: string | null
+          created_at?: string | null
+          id?: string
+          institutional_quorum_met?: boolean | null
+          new_value?: Json | null
+          previous_value?: Json | null
+          proposal_id?: string | null
+          section_amended?: string
+          supermajority_achieved?: boolean | null
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           created_at: string
@@ -2600,6 +2645,36 @@ export type Database = {
           period_start?: string
           scope_id?: string | null
           scope_type?: string
+        }
+        Relationships: []
+      }
+      antifragility_metrics: {
+        Row: {
+          details: Json | null
+          id: string
+          measured_at: string | null
+          measurement_period_days: number | null
+          metric_type: string
+          score: number | null
+          trend: string | null
+        }
+        Insert: {
+          details?: Json | null
+          id?: string
+          measured_at?: string | null
+          measurement_period_days?: number | null
+          metric_type: string
+          score?: number | null
+          trend?: string | null
+        }
+        Update: {
+          details?: Json | null
+          id?: string
+          measured_at?: string | null
+          measurement_period_days?: number | null
+          metric_type?: string
+          score?: number | null
+          trend?: string | null
         }
         Relationships: []
       }
@@ -3166,6 +3241,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      capital_stress_results: {
+        Row: {
+          created_at: string | null
+          default_probability_spike: Json | null
+          id: string
+          institutional_exposure: Json | null
+          model_version: string | null
+          recovery_timeline_days: number | null
+          run_by: string | null
+          scenario: string
+          shock_magnitude: number | null
+          trust_shock_propagation: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          default_probability_spike?: Json | null
+          id?: string
+          institutional_exposure?: Json | null
+          model_version?: string | null
+          recovery_timeline_days?: number | null
+          run_by?: string | null
+          scenario: string
+          shock_magnitude?: number | null
+          trust_shock_propagation?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          default_probability_spike?: Json | null
+          id?: string
+          institutional_exposure?: Json | null
+          model_version?: string | null
+          recovery_timeline_days?: number | null
+          run_by?: string | null
+          scenario?: string
+          shock_magnitude?: number | null
+          trust_shock_propagation?: Json | null
+        }
+        Relationships: []
       }
       career_milestones: {
         Row: {
@@ -4016,6 +4130,48 @@ export type Database = {
         }
         Relationships: []
       }
+      complexity_budget_registry: {
+        Row: {
+          active_modules: number | null
+          governance_overhead_score: number | null
+          id: string
+          last_evaluated: string | null
+          layer: number
+          merge_candidates: Json | null
+          redundant_overlap_count: number | null
+          removal_candidates: Json | null
+          simplification_paths: Json | null
+          system_name: string
+          underused_flag: boolean | null
+        }
+        Insert: {
+          active_modules?: number | null
+          governance_overhead_score?: number | null
+          id?: string
+          last_evaluated?: string | null
+          layer: number
+          merge_candidates?: Json | null
+          redundant_overlap_count?: number | null
+          removal_candidates?: Json | null
+          simplification_paths?: Json | null
+          system_name: string
+          underused_flag?: boolean | null
+        }
+        Update: {
+          active_modules?: number | null
+          governance_overhead_score?: number | null
+          id?: string
+          last_evaluated?: string | null
+          layer?: number
+          merge_candidates?: Json | null
+          redundant_overlap_count?: number | null
+          removal_candidates?: Json | null
+          simplification_paths?: Json | null
+          system_name?: string
+          underused_flag?: boolean | null
+        }
+        Relationships: []
+      }
       concentration_metrics: {
         Row: {
           concentration_index: number
@@ -4251,6 +4407,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      constitutional_audit_logs: {
+        Row: {
+          ai_model_version: string | null
+          ai_reasoning: string | null
+          audit_type: string
+          bias_score: number | null
+          created_at: string | null
+          id: string
+          power_concentration_index: number | null
+          reviewed_by: string | null
+          risk_classification: string | null
+          target_id: string | null
+          target_type: string | null
+          violation_probability: number | null
+        }
+        Insert: {
+          ai_model_version?: string | null
+          ai_reasoning?: string | null
+          audit_type: string
+          bias_score?: number | null
+          created_at?: string | null
+          id?: string
+          power_concentration_index?: number | null
+          reviewed_by?: string | null
+          risk_classification?: string | null
+          target_id?: string | null
+          target_type?: string | null
+          violation_probability?: number | null
+        }
+        Update: {
+          ai_model_version?: string | null
+          ai_reasoning?: string | null
+          audit_type?: string
+          bias_score?: number | null
+          created_at?: string | null
+          id?: string
+          power_concentration_index?: number | null
+          reviewed_by?: string | null
+          risk_classification?: string | null
+          target_id?: string | null
+          target_type?: string | null
+          violation_probability?: number | null
+        }
+        Relationships: []
       }
       constitutional_invariants: {
         Row: {
@@ -5375,6 +5576,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      crisis_events: {
+        Row: {
+          actions_taken: Json | null
+          auto_expires_at: string | null
+          capital_freeze_active: boolean | null
+          created_at: string | null
+          crisis_type: string
+          id: string
+          post_mortem: Json | null
+          proposal_moratorium: boolean | null
+          resolved_at: string | null
+          severity: string | null
+          status: string | null
+          triggered_by: string | null
+        }
+        Insert: {
+          actions_taken?: Json | null
+          auto_expires_at?: string | null
+          capital_freeze_active?: boolean | null
+          created_at?: string | null
+          crisis_type: string
+          id?: string
+          post_mortem?: Json | null
+          proposal_moratorium?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          status?: string | null
+          triggered_by?: string | null
+        }
+        Update: {
+          actions_taken?: Json | null
+          auto_expires_at?: string | null
+          capital_freeze_active?: boolean | null
+          created_at?: string | null
+          crisis_type?: string
+          id?: string
+          post_mortem?: Json | null
+          proposal_moratorium?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          status?: string | null
+          triggered_by?: string | null
+        }
+        Relationships: []
       }
       crisis_modes: {
         Row: {
@@ -9416,6 +9662,45 @@ export type Database = {
           },
         ]
       }
+      financial_rail_registry: {
+        Row: {
+          compliance_level: string | null
+          created_at: string | null
+          fee_structure: Json | null
+          id: string
+          is_active: boolean | null
+          rail_name: string
+          rail_type: string
+          region: string | null
+          settlement_time_hours: number | null
+          supported_currencies: string[] | null
+        }
+        Insert: {
+          compliance_level?: string | null
+          created_at?: string | null
+          fee_structure?: Json | null
+          id?: string
+          is_active?: boolean | null
+          rail_name: string
+          rail_type: string
+          region?: string | null
+          settlement_time_hours?: number | null
+          supported_currencies?: string[] | null
+        }
+        Update: {
+          compliance_level?: string | null
+          created_at?: string | null
+          fee_structure?: Json | null
+          id?: string
+          is_active?: boolean | null
+          rail_name?: string
+          rail_type?: string
+          region?: string | null
+          settlement_time_hours?: number | null
+          supported_currencies?: string[] | null
+        }
+        Relationships: []
+      }
       financial_transparency_reports: {
         Row: {
           approved_by: string | null
@@ -10779,52 +11064,175 @@ export type Database = {
           },
         ]
       }
+      governance_influence_registry: {
+        Row: {
+          created_at: string | null
+          decay_rate: number | null
+          earned_from_capital: number | null
+          earned_from_disputes: number | null
+          earned_from_proposals: number | null
+          earned_from_research: number | null
+          earned_from_trust: number | null
+          giu_balance: number | null
+          id: string
+          last_decay_at: string | null
+          lifetime_earned: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          decay_rate?: number | null
+          earned_from_capital?: number | null
+          earned_from_disputes?: number | null
+          earned_from_proposals?: number | null
+          earned_from_research?: number | null
+          earned_from_trust?: number | null
+          giu_balance?: number | null
+          id?: string
+          last_decay_at?: string | null
+          lifetime_earned?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          decay_rate?: number | null
+          earned_from_capital?: number | null
+          earned_from_disputes?: number | null
+          earned_from_proposals?: number | null
+          earned_from_research?: number | null
+          earned_from_trust?: number | null
+          giu_balance?: number | null
+          id?: string
+          last_decay_at?: string | null
+          lifetime_earned?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      governance_participation_metrics: {
+        Row: {
+          badges: Json | null
+          computed_at: string | null
+          debates_contributed: number | null
+          governance_bonus_earned: number | null
+          high_impact_proposals: number | null
+          id: string
+          proposals_submitted: number | null
+          trust_multiplier: number | null
+          user_id: string
+          visibility_boost: number | null
+          votes_cast: number | null
+        }
+        Insert: {
+          badges?: Json | null
+          computed_at?: string | null
+          debates_contributed?: number | null
+          governance_bonus_earned?: number | null
+          high_impact_proposals?: number | null
+          id?: string
+          proposals_submitted?: number | null
+          trust_multiplier?: number | null
+          user_id: string
+          visibility_boost?: number | null
+          votes_cast?: number | null
+        }
+        Update: {
+          badges?: Json | null
+          computed_at?: string | null
+          debates_contributed?: number | null
+          governance_bonus_earned?: number | null
+          high_impact_proposals?: number | null
+          id?: string
+          proposals_submitted?: number | null
+          trust_multiplier?: number | null
+          user_id?: string
+          visibility_boost?: number | null
+          votes_cast?: number | null
+        }
+        Relationships: []
+      }
       governance_proposals: {
         Row: {
+          activated_at: string | null
+          activation_delay_hours: number | null
           affected_scope: string | null
+          ai_bias_audit: Json | null
+          capital_risk_sim: Json | null
+          constitutional_compliance: Json | null
           created_at: string
           decided_at: string | null
+          expires_at: string | null
           id: string
+          impact_forecast: Json | null
+          liquidity_analysis: Json | null
           proposal_text: string
           proposal_type: string
           proposed_by: string
+          quorum_required: number | null
           rationale: string | null
           required_majority: number | null
           sponsoring_council_id: string | null
           status: string
           title: string
+          votes_against: number | null
+          votes_for: number | null
           voting_closes_at: string | null
           voting_opens_at: string | null
         }
         Insert: {
+          activated_at?: string | null
+          activation_delay_hours?: number | null
           affected_scope?: string | null
+          ai_bias_audit?: Json | null
+          capital_risk_sim?: Json | null
+          constitutional_compliance?: Json | null
           created_at?: string
           decided_at?: string | null
+          expires_at?: string | null
           id?: string
+          impact_forecast?: Json | null
+          liquidity_analysis?: Json | null
           proposal_text: string
           proposal_type: string
           proposed_by: string
+          quorum_required?: number | null
           rationale?: string | null
           required_majority?: number | null
           sponsoring_council_id?: string | null
           status?: string
           title: string
+          votes_against?: number | null
+          votes_for?: number | null
           voting_closes_at?: string | null
           voting_opens_at?: string | null
         }
         Update: {
+          activated_at?: string | null
+          activation_delay_hours?: number | null
           affected_scope?: string | null
+          ai_bias_audit?: Json | null
+          capital_risk_sim?: Json | null
+          constitutional_compliance?: Json | null
           created_at?: string
           decided_at?: string | null
+          expires_at?: string | null
           id?: string
+          impact_forecast?: Json | null
+          liquidity_analysis?: Json | null
           proposal_text?: string
           proposal_type?: string
           proposed_by?: string
+          quorum_required?: number | null
           rationale?: string | null
           required_majority?: number | null
           sponsoring_council_id?: string | null
           status?: string
           title?: string
+          votes_against?: number | null
+          votes_for?: number | null
           voting_closes_at?: string | null
           voting_opens_at?: string | null
         }
@@ -11930,6 +12338,78 @@ export type Database = {
           },
         ]
       }
+      index_calculation_logs: {
+        Row: {
+          calculated_at: string | null
+          components: Json | null
+          confidence: number | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          index_name: string
+          manipulation_flag: boolean | null
+          methodology_version: string | null
+          score: number | null
+        }
+        Insert: {
+          calculated_at?: string | null
+          components?: Json | null
+          confidence?: number | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          index_name: string
+          manipulation_flag?: boolean | null
+          methodology_version?: string | null
+          score?: number | null
+        }
+        Update: {
+          calculated_at?: string | null
+          components?: Json | null
+          confidence?: number | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          index_name?: string
+          manipulation_flag?: boolean | null
+          methodology_version?: string | null
+          score?: number | null
+        }
+        Relationships: []
+      }
+      index_methodology_versions: {
+        Row: {
+          anti_manipulation_logic: Json | null
+          created_at: string | null
+          id: string
+          index_name: string
+          is_active: boolean | null
+          methodology: Json
+          normalization_rules: Json | null
+          version: string
+        }
+        Insert: {
+          anti_manipulation_logic?: Json | null
+          created_at?: string | null
+          id?: string
+          index_name: string
+          is_active?: boolean | null
+          methodology: Json
+          normalization_rules?: Json | null
+          version: string
+        }
+        Update: {
+          anti_manipulation_logic?: Json | null
+          created_at?: string | null
+          id?: string
+          index_name?: string
+          is_active?: boolean | null
+          methodology?: Json
+          normalization_rules?: Json | null
+          version?: string
+        }
+        Relationships: []
+      }
       infrastructure_contracts: {
         Row: {
           auto_renew: boolean
@@ -12880,6 +13360,48 @@ export type Database = {
           },
         ]
       }
+      institutional_risk_forecasts: {
+        Row: {
+          capital_dependency_risk: number | null
+          created_at: string | null
+          early_warnings: Json | null
+          governance_instability: number | null
+          id: string
+          institution_id: string | null
+          model_version: string | null
+          revenue_resilience: number | null
+          stability_index: number | null
+          talent_outflow_probability: number | null
+          trust_drift: number | null
+        }
+        Insert: {
+          capital_dependency_risk?: number | null
+          created_at?: string | null
+          early_warnings?: Json | null
+          governance_instability?: number | null
+          id?: string
+          institution_id?: string | null
+          model_version?: string | null
+          revenue_resilience?: number | null
+          stability_index?: number | null
+          talent_outflow_probability?: number | null
+          trust_drift?: number | null
+        }
+        Update: {
+          capital_dependency_risk?: number | null
+          created_at?: string | null
+          early_warnings?: Json | null
+          governance_instability?: number | null
+          id?: string
+          institution_id?: string | null
+          model_version?: string | null
+          revenue_resilience?: number | null
+          stability_index?: number | null
+          talent_outflow_probability?: number | null
+          trust_drift?: number | null
+        }
+        Relationships: []
+      }
       institutional_skill_gaps: {
         Row: {
           created_at: string
@@ -13742,6 +14264,33 @@ export type Database = {
           },
         ]
       }
+      jurisdiction_rules: {
+        Row: {
+          country_code: string
+          id: string
+          is_active: boolean | null
+          last_updated: string | null
+          rule_definition: Json
+          rule_type: string | null
+        }
+        Insert: {
+          country_code: string
+          id?: string
+          is_active?: boolean | null
+          last_updated?: string | null
+          rule_definition: Json
+          rule_type?: string | null
+        }
+        Update: {
+          country_code?: string
+          id?: string
+          is_active?: boolean | null
+          last_updated?: string | null
+          rule_definition?: Json
+          rule_type?: string | null
+        }
+        Relationships: []
+      }
       knowledge_context_layers: {
         Row: {
           authored_by: string | null
@@ -14561,6 +15110,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      macro_simulation_results: {
+        Row: {
+          capital_stress_ripple: Json | null
+          confidence: number | null
+          created_at: string | null
+          cross_border_effects: Json | null
+          id: string
+          input_parameters: Json
+          projected_index_shifts: Json | null
+          run_by: string | null
+          simulation_type: string
+          time_horizon_days: number | null
+          trust_volatility_impact: Json | null
+        }
+        Insert: {
+          capital_stress_ripple?: Json | null
+          confidence?: number | null
+          created_at?: string | null
+          cross_border_effects?: Json | null
+          id?: string
+          input_parameters: Json
+          projected_index_shifts?: Json | null
+          run_by?: string | null
+          simulation_type: string
+          time_horizon_days?: number | null
+          trust_volatility_impact?: Json | null
+        }
+        Update: {
+          capital_stress_ripple?: Json | null
+          confidence?: number | null
+          created_at?: string | null
+          cross_border_effects?: Json | null
+          id?: string
+          input_parameters?: Json
+          projected_index_shifts?: Json | null
+          run_by?: string | null
+          simulation_type?: string
+          time_horizon_days?: number | null
+          trust_volatility_impact?: Json | null
+        }
+        Relationships: []
       }
       market_adjustments_log: {
         Row: {
@@ -16350,6 +16941,51 @@ export type Database = {
         }
         Relationships: []
       }
+      optimization_proposals: {
+        Row: {
+          activated_at: string | null
+          constitutional_compliance: boolean | null
+          created_at: string | null
+          governance_vote_required: boolean | null
+          id: string
+          inefficiency_id: string | null
+          risk_exposure: Json | null
+          rollback_plan: Json | null
+          root_cause: string | null
+          simulation_results: Json | null
+          status: string | null
+          title: string
+        }
+        Insert: {
+          activated_at?: string | null
+          constitutional_compliance?: boolean | null
+          created_at?: string | null
+          governance_vote_required?: boolean | null
+          id?: string
+          inefficiency_id?: string | null
+          risk_exposure?: Json | null
+          rollback_plan?: Json | null
+          root_cause?: string | null
+          simulation_results?: Json | null
+          status?: string | null
+          title: string
+        }
+        Update: {
+          activated_at?: string | null
+          constitutional_compliance?: boolean | null
+          created_at?: string | null
+          governance_vote_required?: boolean | null
+          id?: string
+          inefficiency_id?: string | null
+          risk_exposure?: Json | null
+          rollback_plan?: Json | null
+          root_cause?: string | null
+          simulation_results?: Json | null
+          status?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       org_bulk_licenses: {
         Row: {
           created_at: string | null
@@ -17852,6 +18488,48 @@ export type Database = {
           },
         ]
       }
+      policy_simulation_runs: {
+        Row: {
+          advisory_only: boolean | null
+          capital_yield_change: Json | null
+          created_at: string | null
+          id: string
+          income_mobility_delta: Json | null
+          parameters: Json
+          policy_type: string
+          productivity_shift: Json | null
+          risk_externalities: Json | null
+          run_by: string | null
+          trust_stability_impact: Json | null
+        }
+        Insert: {
+          advisory_only?: boolean | null
+          capital_yield_change?: Json | null
+          created_at?: string | null
+          id?: string
+          income_mobility_delta?: Json | null
+          parameters: Json
+          policy_type: string
+          productivity_shift?: Json | null
+          risk_externalities?: Json | null
+          run_by?: string | null
+          trust_stability_impact?: Json | null
+        }
+        Update: {
+          advisory_only?: boolean | null
+          capital_yield_change?: Json | null
+          created_at?: string | null
+          id?: string
+          income_mobility_delta?: Json | null
+          parameters?: Json
+          policy_type?: string
+          productivity_shift?: Json | null
+          risk_externalities?: Json | null
+          run_by?: string | null
+          trust_stability_impact?: Json | null
+        }
+        Relationships: []
+      }
       policy_translation_records: {
         Row: {
           created_at: string
@@ -18300,6 +18978,42 @@ export type Database = {
           },
         ]
       }
+      power_concentration_metrics_v2: {
+        Row: {
+          auto_action_taken: string | null
+          breached: boolean | null
+          concentration_score: number | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          metric_type: string
+          recorded_at: string | null
+          threshold: number | null
+        }
+        Insert: {
+          auto_action_taken?: string | null
+          breached?: boolean | null
+          concentration_score?: number | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metric_type: string
+          recorded_at?: string | null
+          threshold?: number | null
+        }
+        Update: {
+          auto_action_taken?: string | null
+          breached?: boolean | null
+          concentration_score?: number | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metric_type?: string
+          recorded_at?: string | null
+          threshold?: number | null
+        }
+        Relationships: []
+      }
       power_distribution_metrics: {
         Row: {
           admin_actions_count: number | null
@@ -18516,6 +19230,120 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      predictive_audit_log: {
+        Row: {
+          confidence_interval: Json | null
+          created_at: string | null
+          human_review_triggered: boolean | null
+          id: string
+          input_hash: string | null
+          model_name: string
+          model_version: string | null
+          overfitting_flag: boolean | null
+          political_bias_risk: number | null
+        }
+        Insert: {
+          confidence_interval?: Json | null
+          created_at?: string | null
+          human_review_triggered?: boolean | null
+          id?: string
+          input_hash?: string | null
+          model_name: string
+          model_version?: string | null
+          overfitting_flag?: boolean | null
+          political_bias_risk?: number | null
+        }
+        Update: {
+          confidence_interval?: Json | null
+          created_at?: string | null
+          human_review_triggered?: boolean | null
+          id?: string
+          input_hash?: string | null
+          model_name?: string
+          model_version?: string | null
+          overfitting_flag?: boolean | null
+          political_bias_risk?: number | null
+        }
+        Relationships: []
+      }
+      predictive_region_forecasts: {
+        Row: {
+          capital_sensitivity: number | null
+          collapse_risk: number | null
+          confidence: number | null
+          created_at: string | null
+          growth_probability: number | null
+          id: string
+          model_version: string | null
+          region_code: string
+          stagnation_risk: number | null
+          time_horizon: string | null
+        }
+        Insert: {
+          capital_sensitivity?: number | null
+          collapse_risk?: number | null
+          confidence?: number | null
+          created_at?: string | null
+          growth_probability?: number | null
+          id?: string
+          model_version?: string | null
+          region_code: string
+          stagnation_risk?: number | null
+          time_horizon?: string | null
+        }
+        Update: {
+          capital_sensitivity?: number | null
+          collapse_risk?: number | null
+          confidence?: number | null
+          created_at?: string | null
+          growth_probability?: number | null
+          id?: string
+          model_version?: string | null
+          region_code?: string
+          stagnation_risk?: number | null
+          time_horizon?: string | null
+        }
+        Relationships: []
+      }
+      predictive_skill_models: {
+        Row: {
+          confidence: number | null
+          created_at: string | null
+          id: string
+          institutional_investment_match: number | null
+          lifecycle_stage: string | null
+          model_version: string | null
+          obsolescence_risk: number | null
+          saturation_timeline_months: number | null
+          skill_name: string
+          wage_trend: string | null
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string | null
+          id?: string
+          institutional_investment_match?: number | null
+          lifecycle_stage?: string | null
+          model_version?: string | null
+          obsolescence_risk?: number | null
+          saturation_timeline_months?: number | null
+          skill_name: string
+          wage_trend?: string | null
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string | null
+          id?: string
+          institutional_investment_match?: number | null
+          lifecycle_stage?: string | null
+          model_version?: string | null
+          obsolescence_risk?: number | null
+          saturation_timeline_months?: number | null
+          skill_name?: string
+          wage_trend?: string | null
+        }
+        Relationships: []
       }
       presentations: {
         Row: {
@@ -19482,6 +20310,42 @@ export type Database = {
         }
         Relationships: []
       }
+      proposal_simulation_results: {
+        Row: {
+          confidence: number | null
+          created_at: string | null
+          id: string
+          input_parameters: Json | null
+          model_version: string | null
+          proposal_id: string
+          results: Json | null
+          risk_score: number | null
+          simulation_type: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string | null
+          id?: string
+          input_parameters?: Json | null
+          model_version?: string | null
+          proposal_id: string
+          results?: Json | null
+          risk_score?: number | null
+          simulation_type: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string | null
+          id?: string
+          input_parameters?: Json | null
+          model_version?: string | null
+          proposal_id?: string
+          results?: Json | null
+          risk_score?: number | null
+          simulation_type?: string
+        }
+        Relationships: []
+      }
       public_accountability_reports: {
         Row: {
           access_statistics: Json | null
@@ -20119,6 +20983,42 @@ export type Database = {
           skill_name?: string
           supply_count?: number | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      regulatory_partners: {
+        Row: {
+          api_enabled: boolean | null
+          compliance_level: string | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          jurisdiction: string | null
+          partner_name: string
+          partner_type: string | null
+          treaty_count: number | null
+        }
+        Insert: {
+          api_enabled?: boolean | null
+          compliance_level?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          jurisdiction?: string | null
+          partner_name: string
+          partner_type?: string | null
+          treaty_count?: number | null
+        }
+        Update: {
+          api_enabled?: boolean | null
+          compliance_level?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          jurisdiction?: string | null
+          partner_name?: string
+          partner_type?: string | null
+          treaty_count?: number | null
         }
         Relationships: []
       }
@@ -22901,6 +23801,42 @@ export type Database = {
           },
         ]
       }
+      self_optimization_audit_log: {
+        Row: {
+          action: string
+          ai_explanation: string | null
+          bias_risk: number | null
+          created_at: string | null
+          id: string
+          manual_review_triggered: boolean | null
+          model_lineage: string | null
+          optimization_id: string | null
+          uncertainty_band: Json | null
+        }
+        Insert: {
+          action: string
+          ai_explanation?: string | null
+          bias_risk?: number | null
+          created_at?: string | null
+          id?: string
+          manual_review_triggered?: boolean | null
+          model_lineage?: string | null
+          optimization_id?: string | null
+          uncertainty_band?: Json | null
+        }
+        Update: {
+          action?: string
+          ai_explanation?: string | null
+          bias_risk?: number | null
+          created_at?: string | null
+          id?: string
+          manual_review_triggered?: boolean | null
+          model_lineage?: string | null
+          optimization_id?: string | null
+          uncertainty_band?: Json | null
+        }
+        Relationships: []
+      }
       semantic_queries: {
         Row: {
           created_at: string
@@ -22993,6 +23929,51 @@ export type Database = {
           service_category?: string
           updated_at?: string
           vendor_lock_in_risk?: string | null
+        }
+        Relationships: []
+      }
+      settlement_logs: {
+        Row: {
+          amount: number
+          compliance_cleared: boolean | null
+          created_at: string | null
+          currency: string
+          destination_currency: string | null
+          fx_rate: number | null
+          id: string
+          rail_id: string | null
+          reference_id: string | null
+          reference_type: string | null
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          compliance_cleared?: boolean | null
+          created_at?: string | null
+          currency?: string
+          destination_currency?: string | null
+          fx_rate?: number | null
+          id?: string
+          rail_id?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          compliance_cleared?: boolean | null
+          created_at?: string | null
+          currency?: string
+          destination_currency?: string | null
+          fx_rate?: number | null
+          id?: string
+          rail_id?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          status?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -23476,6 +24457,36 @@ export type Database = {
           status?: string
           to_body?: string | null
           transition_plan?: Json
+        }
+        Relationships: []
+      }
+      structural_friction_log: {
+        Row: {
+          details: Json | null
+          detected_at: string | null
+          friction_type: string
+          id: string
+          impact_radius: string | null
+          severity_score: number | null
+          systemic_risk: string | null
+        }
+        Insert: {
+          details?: Json | null
+          detected_at?: string | null
+          friction_type: string
+          id?: string
+          impact_radius?: string | null
+          severity_score?: number | null
+          systemic_risk?: string | null
+        }
+        Update: {
+          details?: Json | null
+          detected_at?: string | null
+          friction_type?: string
+          id?: string
+          impact_radius?: string | null
+          severity_score?: number | null
+          systemic_risk?: string | null
         }
         Relationships: []
       }
@@ -24047,6 +25058,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      system_health_snapshots: {
+        Row: {
+          active_optimizations: number | null
+          antifragility_score: number | null
+          complexity_score: number | null
+          components: Json | null
+          friction_count: number | null
+          id: string
+          overall_score: number | null
+          snapshot_at: string | null
+        }
+        Insert: {
+          active_optimizations?: number | null
+          antifragility_score?: number | null
+          complexity_score?: number | null
+          components?: Json | null
+          friction_count?: number | null
+          id?: string
+          overall_score?: number | null
+          snapshot_at?: string | null
+        }
+        Update: {
+          active_optimizations?: number | null
+          antifragility_score?: number | null
+          complexity_score?: number | null
+          components?: Json | null
+          friction_count?: number | null
+          id?: string
+          overall_score?: number | null
+          snapshot_at?: string | null
+        }
+        Relationships: []
       }
       system_recommendations: {
         Row: {
@@ -24647,6 +25691,78 @@ export type Database = {
           pricing?: Json | null
           short_description?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      treaty_execution_logs: {
+        Row: {
+          action_type: string
+          actor_id: string | null
+          created_at: string | null
+          details: Json | null
+          id: string
+          treaty_id: string | null
+        }
+        Insert: {
+          action_type: string
+          actor_id?: string | null
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          treaty_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          actor_id?: string | null
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          treaty_id?: string | null
+        }
+        Relationships: []
+      }
+      treaty_registry: {
+        Row: {
+          compliance_overlays: Json | null
+          created_at: string | null
+          eligibility_rules: Json | null
+          expires_at: string | null
+          funding_pool_id: string | null
+          id: string
+          parties: Json | null
+          ratified_at: string | null
+          risk_exposure_caps: Json | null
+          status: string | null
+          treaty_name: string
+          treaty_type: string | null
+        }
+        Insert: {
+          compliance_overlays?: Json | null
+          created_at?: string | null
+          eligibility_rules?: Json | null
+          expires_at?: string | null
+          funding_pool_id?: string | null
+          id?: string
+          parties?: Json | null
+          ratified_at?: string | null
+          risk_exposure_caps?: Json | null
+          status?: string | null
+          treaty_name: string
+          treaty_type?: string | null
+        }
+        Update: {
+          compliance_overlays?: Json | null
+          created_at?: string | null
+          eligibility_rules?: Json | null
+          expires_at?: string | null
+          funding_pool_id?: string | null
+          id?: string
+          parties?: Json | null
+          ratified_at?: string | null
+          risk_exposure_caps?: Json | null
+          status?: string | null
+          treaty_name?: string
+          treaty_type?: string | null
         }
         Relationships: []
       }
