@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { AISuggestionCard } from "@/components/ai/AISuggestionCard";
+import { IncomeVelocityPanel } from "@/components/progress/IncomeVelocityPanel";
 import {
   TrendingUp,
   Scale,
@@ -128,7 +129,10 @@ export default function ProgressPage() {
 
           {/* Economics Tab */}
           <TabsContent value="economics">
-            <EconomicVisibilityPanel />
+            <IncomeVelocityPanel />
+            <div className="mt-6">
+              <EconomicVisibilityPanel />
+            </div>
           </TabsContent>
         </Tabs>
       </div>

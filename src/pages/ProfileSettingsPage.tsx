@@ -8,19 +8,21 @@
  import { Switch } from "@/components/ui/switch";
  import { Separator } from "@/components/ui/separator";
  import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
- import { AudioBioSettings } from "@/components/profile/AudioBioSettings";
- import {
- User,
- Volume2,
- Shield,
- Bell,
- Download,
- Lock,
- Mail,
- Eye,
- EyeOff,
- ArrowLeft,
- } from "lucide-react";
+import { AudioBioSettings } from "@/components/profile/AudioBioSettings";
+import { AvailabilitySettings } from "@/components/profile/AvailabilitySettings";
+import {
+User,
+Volume2,
+Shield,
+Bell,
+Download,
+Lock,
+Mail,
+Eye,
+EyeOff,
+ArrowLeft,
+Radio,
+} from "lucide-react";
  import { Link } from "react-router-dom";
  import { toast } from "sonner";
  
@@ -51,12 +53,16 @@
            </div>
          </div>
  
-         <Tabs defaultValue="audio" className="space-y-6">
-           <TabsList className="grid grid-cols-5 w-full">
-             <TabsTrigger value="audio" className="gap-2">
-               <Volume2 className="h-4 w-4" />
-               <span className="hidden sm:inline">Audio</span>
-             </TabsTrigger>
+          <Tabs defaultValue="availability" className="space-y-6">
+            <TabsList className="grid grid-cols-6 w-full">
+              <TabsTrigger value="availability" className="gap-2">
+                <Radio className="h-4 w-4" />
+                <span className="hidden sm:inline">Availability</span>
+              </TabsTrigger>
+              <TabsTrigger value="audio" className="gap-2">
+                <Volume2 className="h-4 w-4" />
+                <span className="hidden sm:inline">Audio</span>
+              </TabsTrigger>
              <TabsTrigger value="account" className="gap-2">
                <User className="h-4 w-4" />
                <span className="hidden sm:inline">Account</span>
@@ -75,10 +81,15 @@
              </TabsTrigger>
            </TabsList>
  
-           {/* Audio Introduction */}
-           <TabsContent value="audio">
-             <AudioBioSettings />
-           </TabsContent>
+            {/* Availability & Intent */}
+            <TabsContent value="availability">
+              <AvailabilitySettings />
+            </TabsContent>
+
+            {/* Audio Introduction */}
+            <TabsContent value="audio">
+              <AudioBioSettings />
+            </TabsContent>
  
            {/* Account Settings */}
            <TabsContent value="account">
