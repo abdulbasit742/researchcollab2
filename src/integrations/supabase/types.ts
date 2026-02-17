@@ -3186,6 +3186,68 @@ export type Database = {
           },
         ]
       }
+      capital_pools: {
+        Row: {
+          available_balance: number
+          country_id: string | null
+          created_at: string
+          created_by: string | null
+          end_date: string | null
+          governance_structure: Json | null
+          id: string
+          lifecycle_status: string
+          name: string
+          pool_type: string
+          risk_category: string | null
+          start_date: string | null
+          total_allocated: number
+          total_committed: number
+          updated_at: string
+        }
+        Insert: {
+          available_balance?: number
+          country_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          governance_structure?: Json | null
+          id?: string
+          lifecycle_status?: string
+          name: string
+          pool_type: string
+          risk_category?: string | null
+          start_date?: string | null
+          total_allocated?: number
+          total_committed?: number
+          updated_at?: string
+        }
+        Update: {
+          available_balance?: number
+          country_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          governance_structure?: Json | null
+          id?: string
+          lifecycle_status?: string
+          name?: string
+          pool_type?: string
+          risk_category?: string | null
+          start_date?: string | null
+          total_allocated?: number
+          total_committed?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capital_pools_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       capital_recovery_registry: {
         Row: {
           advance_id: string | null
@@ -5234,6 +5296,71 @@ export type Database = {
           },
         ]
       }
+      countries: {
+        Row: {
+          code: string
+          created_at: string
+          currency: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          timezone: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          currency?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          timezone?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          currency?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          timezone?: string | null
+        }
+        Relationships: []
+      }
+      country_admins: {
+        Row: {
+          country_id: string
+          granted_at: string | null
+          granted_by: string | null
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          country_id: string
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          country_id?: string
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "country_admins_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       country_policies: {
         Row: {
           compliance_notes: string | null
@@ -5287,6 +5414,47 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      country_settings: {
+        Row: {
+          compliance_standards: Json | null
+          country_id: string
+          default_commission_rate: number | null
+          default_ip_model: string | null
+          dispute_protocol: Json | null
+          escrow_rules: Json | null
+          id: string
+          updated_at: string | null
+        }
+        Insert: {
+          compliance_standards?: Json | null
+          country_id: string
+          default_commission_rate?: number | null
+          default_ip_model?: string | null
+          dispute_protocol?: Json | null
+          escrow_rules?: Json | null
+          id?: string
+          updated_at?: string | null
+        }
+        Update: {
+          compliance_standards?: Json | null
+          country_id?: string
+          default_commission_rate?: number | null
+          default_ip_model?: string | null
+          dispute_protocol?: Json | null
+          escrow_rules?: Json | null
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "country_settings_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: true
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       course_certificates: {
         Row: {
@@ -11018,6 +11186,39 @@ export type Database = {
           },
         ]
       }
+      fyp_compliance_tags: {
+        Row: {
+          created_at: string
+          employment_impact: string | null
+          fyp_id: string
+          id: string
+          innovation_priority: string | null
+          national_goal_alignment: string | null
+          sector_category: string | null
+          tagged_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          employment_impact?: string | null
+          fyp_id: string
+          id?: string
+          innovation_priority?: string | null
+          national_goal_alignment?: string | null
+          sector_category?: string | null
+          tagged_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          employment_impact?: string | null
+          fyp_id?: string
+          id?: string
+          innovation_priority?: string | null
+          national_goal_alignment?: string | null
+          sector_category?: string | null
+          tagged_by?: string | null
+        }
+        Relationships: []
+      }
       fyp_disputes: {
         Row: {
           arbitrator_id: string | null
@@ -12592,6 +12793,68 @@ export type Database = {
         }
         Relationships: []
       }
+      government_grant_pools: {
+        Row: {
+          allocated_amount: number
+          available_balance: number
+          country_id: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          innovation_priorities: string[] | null
+          sector_focus: string[] | null
+          start_date: string | null
+          status: string
+          title: string
+          total_budget: number
+          updated_at: string
+        }
+        Insert: {
+          allocated_amount?: number
+          available_balance?: number
+          country_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          innovation_priorities?: string[] | null
+          sector_focus?: string[] | null
+          start_date?: string | null
+          status?: string
+          title: string
+          total_budget?: number
+          updated_at?: string
+        }
+        Update: {
+          allocated_amount?: number
+          available_balance?: number
+          country_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          innovation_priorities?: string[] | null
+          sector_focus?: string[] | null
+          start_date?: string | null
+          status?: string
+          title?: string
+          total_budget?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "government_grant_pools_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       government_report_executions: {
         Row: {
           completed_at: string | null
@@ -12747,6 +13010,50 @@ export type Database = {
             columns: ["government_body_id"]
             isOneToOne: false
             referencedRelation: "government_bodies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      grant_allocations: {
+        Row: {
+          allocated_amount: number
+          created_at: string
+          disbursed_amount: number | null
+          fyp_id: string | null
+          id: string
+          milestone_links: Json | null
+          pool_id: string
+          status: string
+          university_id: string | null
+        }
+        Insert: {
+          allocated_amount: number
+          created_at?: string
+          disbursed_amount?: number | null
+          fyp_id?: string | null
+          id?: string
+          milestone_links?: Json | null
+          pool_id: string
+          status?: string
+          university_id?: string | null
+        }
+        Update: {
+          allocated_amount?: number
+          created_at?: string
+          disbursed_amount?: number | null
+          fyp_id?: string | null
+          id?: string
+          milestone_links?: Json | null
+          pool_id?: string
+          status?: string
+          university_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "grant_allocations_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "government_grant_pools"
             referencedColumns: ["id"]
           },
         ]
@@ -20684,11 +20991,17 @@ export type Database = {
           actual_yield: number | null
           advance_id: string | null
           allocated_amount: number
+          approved_at: string | null
+          approved_by: string | null
+          capital_pool_id: string | null
           created_at: string | null
+          escrow_link_id: string | null
           expected_yield: number | null
           id: string
           maturity_date: string | null
           pool_id: string
+          risk_score: number | null
+          sector: string | null
           status: string | null
           user_id: string
         }
@@ -20696,11 +21009,17 @@ export type Database = {
           actual_yield?: number | null
           advance_id?: string | null
           allocated_amount: number
+          approved_at?: string | null
+          approved_by?: string | null
+          capital_pool_id?: string | null
           created_at?: string | null
+          escrow_link_id?: string | null
           expected_yield?: number | null
           id?: string
           maturity_date?: string | null
           pool_id: string
+          risk_score?: number | null
+          sector?: string | null
           status?: string | null
           user_id: string
         }
@@ -20708,11 +21027,17 @@ export type Database = {
           actual_yield?: number | null
           advance_id?: string | null
           allocated_amount?: number
+          approved_at?: string | null
+          approved_by?: string | null
+          capital_pool_id?: string | null
           created_at?: string | null
+          escrow_link_id?: string | null
           expected_yield?: number | null
           id?: string
           maturity_date?: string | null
           pool_id?: string
+          risk_score?: number | null
+          sector?: string | null
           status?: string | null
           user_id?: string
         }
@@ -20725,10 +21050,105 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "pool_allocations_capital_pool_id_fkey"
+            columns: ["capital_pool_id"]
+            isOneToOne: false
+            referencedRelation: "capital_pools"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "pool_allocations_pool_id_fkey"
             columns: ["pool_id"]
             isOneToOne: false
             referencedRelation: "funding_pools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pool_contributors: {
+        Row: {
+          amount_committed: number
+          amount_disbursed: number
+          contributor_id: string
+          contributor_type: string
+          id: string
+          joined_at: string | null
+          pool_id: string
+          reporting_access_level: string | null
+          rights_type: string | null
+        }
+        Insert: {
+          amount_committed?: number
+          amount_disbursed?: number
+          contributor_id: string
+          contributor_type: string
+          id?: string
+          joined_at?: string | null
+          pool_id: string
+          reporting_access_level?: string | null
+          rights_type?: string | null
+        }
+        Update: {
+          amount_committed?: number
+          amount_disbursed?: number
+          contributor_id?: string
+          contributor_type?: string
+          id?: string
+          joined_at?: string | null
+          pool_id?: string
+          reporting_access_level?: string | null
+          rights_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pool_contributors_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "capital_pools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pool_performance_metrics: {
+        Row: {
+          completion_rate: number | null
+          computed_at: string | null
+          employment_conversion_rate: number | null
+          id: string
+          milestone_success_rate: number | null
+          on_time_delivery_pct: number | null
+          pool_id: string
+          total_projects_funded: number | null
+          total_students_paid: number | null
+        }
+        Insert: {
+          completion_rate?: number | null
+          computed_at?: string | null
+          employment_conversion_rate?: number | null
+          id?: string
+          milestone_success_rate?: number | null
+          on_time_delivery_pct?: number | null
+          pool_id: string
+          total_projects_funded?: number | null
+          total_students_paid?: number | null
+        }
+        Update: {
+          completion_rate?: number | null
+          computed_at?: string | null
+          employment_conversion_rate?: number | null
+          id?: string
+          milestone_success_rate?: number | null
+          on_time_delivery_pct?: number | null
+          pool_id?: string
+          total_projects_funded?: number | null
+          total_students_paid?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pool_performance_metrics_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: true
+            referencedRelation: "capital_pools"
             referencedColumns: ["id"]
           },
         ]
@@ -29310,6 +29730,53 @@ export type Database = {
           velocity_score?: number | null
         }
         Relationships: []
+      }
+      university_compliance_scores: {
+        Row: {
+          computed_at: string | null
+          country_id: string | null
+          dispute_frequency: number | null
+          escrow_adherence: number | null
+          funding_transparency: number | null
+          id: string
+          milestone_completion_rate: number | null
+          overall_score: number | null
+          reporting_completeness: number | null
+          university_id: string
+        }
+        Insert: {
+          computed_at?: string | null
+          country_id?: string | null
+          dispute_frequency?: number | null
+          escrow_adherence?: number | null
+          funding_transparency?: number | null
+          id?: string
+          milestone_completion_rate?: number | null
+          overall_score?: number | null
+          reporting_completeness?: number | null
+          university_id: string
+        }
+        Update: {
+          computed_at?: string | null
+          country_id?: string | null
+          dispute_frequency?: number | null
+          escrow_adherence?: number | null
+          funding_transparency?: number | null
+          id?: string
+          milestone_completion_rate?: number | null
+          overall_score?: number | null
+          reporting_completeness?: number | null
+          university_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "university_compliance_scores_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_ai_credits: {
         Row: {
