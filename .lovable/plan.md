@@ -1,132 +1,74 @@
 
 
-# Next-Level Features: Better Than LinkedIn
+# Reputation Leaderboard at /leaderboard
 
-## The Big Idea
-LinkedIn shows who you *say* you are. RCollab shows who you *prove* you are. These 4 features create a moat LinkedIn can't copy because they require real work data flowing through the platform.
+## Overview
+A full-featured leaderboard page that ranks professionals by verified metrics (trust score, delivery rate, earnings) with filters for skill, institution, and region. All data already exists in the database -- no schema changes needed.
 
----
+## Data Sources (existing tables)
+- **user_trust_profiles**: trust_score, trust_tier, total_projects_completed, successful_rate, dispute_rate
+- **profile_proof_metrics**: total_earnings, escrow_success_rate, projects_completed, peer_reviews_received
+- **profiles**: full_name, university, location, role, interests
+- **user_skills**: skill_name, endorsement_count
 
-## Feature 1: Proof-of-Work Profile Banner
+## What Gets Built
 
-**What LinkedIn has**: Static headline, self-reported job titles
-**What we build**: A live, dynamic banner on every profile showing verified outcomes
+### 1. Leaderboard Hook (`src/hooks/useLeaderboardData.ts`)
+- Joins `user_trust_profiles` with `profiles` and `profile_proof_metrics`
+- Supports sorting by: trust score, delivery rate (successful_rate), total earnings
+- Supports filters: skill (via user_skills join), institution (profiles.university), region (profiles.location)
+- Paginates results (top 100 by default)
+- Returns the current user's own rank for comparison
 
-The top of every profile gets a "Proof Strip" -- a compact, auto-generated summary:
+### 2. Leaderboard Page (`src/pages/LeaderboardPage.tsx`)
+- Wrapped in `MainLayout`
+- Header with trophy icon and page title
+- Three stat cards at top: Total Ranked Users, Average Trust Score, Total Platform Earnings
+- Filter bar with:
+  - Sort dropdown (Trust Score / Delivery Rate / Earnings)
+  - Skill text filter
+  - Institution text filter
+  - Region text filter
+  - Reset button
+- Ranked list showing each user:
+  - Rank number (gold/silver/bronze icons for top 3)
+  - Name + institution
+  - Trust score badge with tier color
+  - Delivery rate percentage
+  - Total earnings (PKR formatted)
+  - Projects completed count
+  - Link to their public profile
+- "Your Position" highlight card if the logged-in user appears in results
+- Empty state for when no results match filters
+
+### 3. Route Registration (`src/App.tsx`)
+- Add lazy import for `LeaderboardPage`
+- Add `<Route path="/leaderboard" element={...} />`
+
+## Technical Details
 
 ```text
-+-------------------------------------------------------+
-| 12 Projects Delivered | 96% On-Time | PKR 1.2M Earned |
-| Top Skills: ML (8 projects) | NLP (5 projects)        |
-| Trusted by: LUMS, NUST, IBA                           |
-+-------------------------------------------------------+
+Query Strategy:
+  SELECT p.id, p.full_name, p.university, p.location,
+         t.trust_score, t.trust_tier, t.total_projects_completed, t.successful_rate,
+         m.total_earnings, m.escrow_success_rate, m.projects_completed
+  FROM profiles p
+  JOIN user_trust_profiles t ON t.user_id = p.id
+  LEFT JOIN profile_proof_metrics m ON m.user_id = p.id
+  WHERE t.is_frozen = false
+  ORDER BY t.trust_score DESC
+  LIMIT 100
 ```
 
-- All numbers pulled from real deal completions, escrow releases, and institutional connections
-- Cannot be faked -- every metric links back to a completed deal or verified milestone
-- Shows "Claimed" vs "Proven" skill badges (already have `endorsement_count` in `user_skills`)
-- Updates automatically as users complete work
+Skill filtering: separate query to `user_skills` to get matching user_ids, then filter the main query with `.in('id', matchingIds)`.
 
-**Technical scope**:
-- New `ProofBanner` component using existing `profile_proof_metrics` + `user_skills` tables
-- Add to `UserPublicProfilePage.tsx` and `ProfilePage.tsx`
-- No database changes needed -- all data already exists
+Uses existing `formatPKR()` from `src/lib/currency.ts` for earnings display.
 
----
-
-## Feature 2: Smart Availability & Intent Broadcasting
-
-**What LinkedIn has**: A tiny "Open to Work" badge
-**What we build**: Granular availability broadcasting with intent matching
-
-Users set their current status with detail LinkedIn never offers:
-
-- **Availability**: Full-time / Part-time (X hrs/week) / Project-only / Unavailable
-- **Intent**: Looking for projects / Seeking collaborators / Open to mentoring / Hiring
-- **Capacity**: "Can take 2 more projects this month"
-- **Preferred deal size**: Budget range they're interested in
-- **Response time**: Average response time (auto-calculated from messaging data)
-
-This data feeds directly into the matching engine so opportunities find the *right* people at the *right* time.
-
-**Technical scope**:
-- New `user_availability` table: `user_id, status, intent[], capacity, preferred_budget_min, preferred_budget_max, response_time_hours, updated_at`
-- New `AvailabilitySettings` component on profile settings
-- `AvailabilityBadge` component shown on profile cards and search results
-- Update opportunity matching to weight availability signals
-
----
-
-## Feature 3: Mutual Work Context on Discovery
-
-**What LinkedIn has**: "You share 3 connections" (meaningless)
-**What we build**: Real professional overlap signals
-
-When viewing any profile or opportunity, show actionable context:
-
-- "You both worked with **LUMS Computer Science Dept**"
-- "**2 shared collaborators** have worked with this person"
-- "This person completed **3 projects** in your field (NLP)"
-- "Their average delivery rating from mutual contacts: **4.8/5**"
-
-This reduces uncertainty when deciding to collaborate -- far more valuable than knowing someone follows the same influencer.
-
-**Technical scope**:
-- New `useMutualWorkContext(targetUserId)` hook
-- Queries: `deal_participants` for shared projects, `profiles.university` for institution overlap, `user_skills` for skill overlap
-- `MutualWorkContext` component displayed on public profiles, opportunity cards, and bid review screens
-- No new tables -- derived from existing deal and profile data
-
----
-
-## Feature 4: Income Velocity Dashboard
-
-**What LinkedIn has**: Nothing. Zero financial insight.
-**What we build**: A personal financial operating system for freelancers
-
-A dedicated panel (embedded in Progress page) showing:
-
-- **Monthly income velocity**: Earnings trend over last 6 months
-- **Pipeline value**: Total value of active deals in progress
-- **Average deal cycle**: Days from bid to payment (with trend)
-- **Revenue by skill**: Which skills generate the most income
-- **Forecasted earnings**: Based on active pipeline and historical conversion rates
-- **Comparison**: "You're earning 2.3x more than peers at your trust level"
-
-This makes users *dependent* on the platform for financial planning -- a retention moat LinkedIn can never build.
-
-**Technical scope**:
-- New `useIncomeVelocity` hook querying `escrow_transactions`, `deal_participants`, `earning_projects`
-- `IncomeVelocityPanel` component added to Progress page
-- `EarningsBreakdownChart` using Recharts (already installed)
-- No new tables -- aggregates from existing financial data
-
----
-
-## Implementation Order
-
-| Priority | Feature | Effort | Impact |
-|----------|---------|--------|--------|
-| 1 | Proof-of-Work Profile Banner | Small (no DB changes) | High -- instant credibility |
-| 2 | Mutual Work Context | Medium (new hook + component) | High -- reduces collaboration friction |
-| 3 | Smart Availability Broadcasting | Medium (new table + components) | High -- powers better matching |
-| 4 | Income Velocity Dashboard | Medium (new hooks + charts) | Very High -- retention moat |
-
-## Files to Create/Modify
+## Files
 
 | File | Action |
 |------|--------|
-| `src/components/profile/ProofBanner.tsx` | Create -- verified outcomes strip |
-| `src/components/profile/AvailabilityBadge.tsx` | Create -- status indicator |
-| `src/components/profile/AvailabilitySettings.tsx` | Create -- settings form |
-| `src/components/profile/MutualWorkContext.tsx` | Create -- overlap signals |
-| `src/components/progress/IncomeVelocityPanel.tsx` | Create -- financial dashboard |
-| `src/components/progress/EarningsBreakdownChart.tsx` | Create -- revenue chart |
-| `src/hooks/useMutualWorkContext.ts` | Create -- shared work query |
-| `src/hooks/useIncomeVelocity.ts` | Create -- financial aggregation |
-| `src/hooks/useAvailability.ts` | Create -- availability CRUD |
-| `src/pages/UserPublicProfilePage.tsx` | Edit -- add ProofBanner + MutualWorkContext |
-| `src/pages/ProfilePage.tsx` | Edit -- add ProofBanner |
-| `src/pages/ProfileSettingsPage.tsx` | Edit -- add AvailabilitySettings |
-| `src/pages/ProgressPage.tsx` | Edit -- add IncomeVelocityPanel |
-| Database migration | Create `user_availability` table with RLS |
+| `src/hooks/useLeaderboardData.ts` | Create -- data fetching with filters and sorting |
+| `src/pages/LeaderboardPage.tsx` | Create -- full leaderboard UI with filters |
+| `src/App.tsx` | Edit -- add lazy import and route |
+
