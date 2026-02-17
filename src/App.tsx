@@ -189,6 +189,8 @@ const ImpactPage = lazy(() => import("./pages/ImpactPage"));
 const FYPSubmitProblemPage = lazy(() => import("./pages/FYPSubmitProblemPage"));
 const FounderDashboardPage = lazy(() => import("./pages/FounderDashboardPage"));
 const ActivationStrategyPage = lazy(() => import("./pages/ActivationStrategyPage"));
+const SprintPlaybookPage = lazy(() => import("./pages/SprintPlaybookPage"));
+const TrustExecutionUpgradePage = lazy(() => import("./pages/TrustExecutionUpgradePage"));
 
 // Admin pages - lazy loaded
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
@@ -510,6 +512,8 @@ const AppContent = () => {
             <Route path="/fyp/submit-problem" element={<FYPSubmitProblemPage />} />
             <Route path="/founder/dashboard" element={<FounderDashboardPage />} />
             <Route path="/fyp/activation-strategy" element={<ActivationStrategyPage />} />
+            <Route path="/fyp/sprint-playbook" element={<SprintPlaybookPage />} />
+            <Route path="/fyp/trust-upgrade" element={<TrustExecutionUpgradePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </Suspense>
