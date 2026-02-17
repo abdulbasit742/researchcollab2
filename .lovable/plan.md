@@ -1,70 +1,65 @@
 
-# Add JSON-LD Structured Data to Key Pages
+# Database-Backed Blog System
 
 ## Overview
-Add rich structured data to 4 pages so search engines can display enhanced results (pricing tables, product listings, blog carousels, organization info).
+Replace the hardcoded static blog data with a fully dynamic system powered by the existing `blog_posts` database table. Posts will be managed through a new editor page, displayed via slug-based SEO-friendly URLs, and support categories, tags, search, and infinite scroll.
 
-## Changes Per Page
+## What Already Exists
+- **Database table** `blog_posts` with columns: id, title, slug, excerpt, content, cover_image_url, author_id, category, tags, status, published_at, views_count, created_at, updated_at
+- **RLS policies**: Published posts are publicly readable; authors and admins can manage their own posts
+- **React hooks** in `src/hooks/useBlog.ts`: `useBlogPosts`, `useBlogPost`, `useFeaturedBlogPosts`, `useBlogCategories`, `useMyBlogDrafts`, `useCreateBlogPost`, `useUpdateBlogPost`, `useDeleteBlogPost`
 
-### 1. Pricing Page (`src/pages/PricingPage.tsx`)
-- Schema type: **Product** with multiple **Offer** entries
-- Include plan names, prices, currency (PKR), and descriptions
-- Pass via `jsonLd` prop on the existing `SEOHead` component
+## Changes
 
-### 2. Tools Page (`src/pages/ToolsPage.tsx`)
-- Schema type: **ItemList** containing **SoftwareApplication** entries
-- Include tool names, descriptions, ratings, review counts, and prices
-- Data sourced from the existing `tools` array import
+### 1. Rewrite Blog Listing Page (`src/pages/BlogPage.tsx`)
+- Remove all hardcoded `blogPosts` and `categories` arrays
+- Add state for search input and selected category
+- Use `useBlogPosts({ category, search })` with infinite scroll via "Load More" button
+- Use `useBlogCategories()` for dynamic category badges
+- Use `useFeaturedBlogPosts()` for the featured hero section
+- Link to `/blog/{slug}` instead of `/blog/{id}`
+- Show loading skeletons and empty states
+- Update JSON-LD to use dynamic data
 
-### 3. About Page (`src/pages/AboutPage.tsx`)
-- Schema type: **Organization** with expanded details
-- Include name, description, URL, founding info, and team member references
-- Data sourced from the existing `teamMembers` array
+### 2. Rewrite Blog Article Page (`src/pages/BlogArticlePage.tsx`)
+- Remove all hardcoded post data
+- Use `useBlogPost(slug)` hook which looks up by slug first, then by id
+- Render content using `react-markdown` (already installed) instead of `dangerouslySetInnerHTML`
+- Add SEOHead with dynamic title, description, and BlogPosting JSON-LD
+- Show loading skeleton and 404 state
 
-### 4. Blog Page (`src/pages/BlogPage.tsx`)
-- Schema type: **Blog** with **BlogPosting** entries
-- Include post titles, authors, dates, excerpts, and images
-- Data sourced from the existing `blogPosts` array
+### 3. Create Blog Editor Page (`src/pages/BlogEditorPage.tsx`)
+- Form with fields: title, excerpt, content (textarea), category, tags (comma-separated input), cover image URL, status (draft/published)
+- Uses `useCreateBlogPost` and `useUpdateBlogPost` hooks
+- If a post ID is in the URL (`/blog/edit/:id`), load and edit that post
+- Accessible to authenticated users only
+- Add "Write Post" button on BlogPage for logged-in users
+
+### 4. Add Route (`src/App.tsx`)
+- Add lazy import for `BlogEditorPage`
+- Add routes: `/blog/new` and `/blog/edit/:postId`
+
+### 5. Seed Initial Blog Posts (Database)
+- Insert the 6 existing static posts into the `blog_posts` table so the blog isn't empty
+- These will use a system/admin author_id or the first available user
 
 ## Technical Details
 
-All 4 pages already use `SEOHead` which accepts a `jsonLd` prop. The implementation simply involves defining the JSON-LD object inline and passing it to the existing prop -- no new components or dependencies needed.
+### SEO-Friendly URLs
+- Slugs auto-generated from title on creation (already in `useCreateBlogPost`)
+- Routes: `/blog` (listing), `/blog/:slug` (article), `/blog/new` (editor), `/blog/edit/:postId` (edit)
 
-### Example structure (Pricing):
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "ResearchCollabPro Plans",
-  "offers": [
-    { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "PKR" },
-    { "@type": "Offer", "name": "Pro", "price": "2499", "priceCurrency": "PKR" }
-  ]
-}
-```
+### Content Rendering
+- Switch from `dangerouslySetInnerHTML` to `react-markdown` for safe rendering
+- Content stored as markdown in the database
 
-### Example structure (Tools - ItemList):
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "itemListElement": [
-    {
-      "@type": "SoftwareApplication",
-      "name": "ChatGPT 5.3",
-      "aggregateRating": { "ratingValue": 4.9, "reviewCount": 2450 }
-    }
-  ]
-}
-```
-
-## Files to Modify
-
+### Files Modified
 | File | Change |
 |------|--------|
-| `src/pages/PricingPage.tsx` | Add `jsonLd` prop to SEOHead |
-| `src/pages/ToolsPage.tsx` | Add `jsonLd` prop to SEOHead |
-| `src/pages/AboutPage.tsx` | Add `jsonLd` prop to SEOHead |
-| `src/pages/BlogPage.tsx` | Add `jsonLd` prop to SEOHead |
+| `src/pages/BlogPage.tsx` | Replace static data with hooks, add search/category/infinite scroll |
+| `src/pages/BlogArticlePage.tsx` | Replace static data with `useBlogPost` hook + markdown rendering |
+| `src/pages/BlogEditorPage.tsx` | **New file** - Create/edit blog post form |
+| `src/App.tsx` | Add lazy import + routes for blog editor |
 
-No new files or dependencies required.
+### No Database Changes Needed
+The `blog_posts` table already has the correct schema and RLS policies.
