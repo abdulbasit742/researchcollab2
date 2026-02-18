@@ -37,9 +37,8 @@ export interface IntegrityJobRun {
   started_at: string;
   completed_at: string | null;
   status: "running" | "completed" | "failed";
-  issues_found: number;
-  issues_fixed: number;
-  issues_flagged: number;
+  records_processed: number;
+  records_affected: number;
   error_message: string | null;
 }
 
@@ -73,7 +72,7 @@ export function useObservability() {
         supabase.from("platform_alerts" as any).select("*").order("created_at", { ascending: false }).limit(50),
         supabase.from("platform_events" as any).select("*").order("created_at", { ascending: false }).limit(100),
         supabase.from("platform_integrity_logs" as any).select("*").order("created_at", { ascending: false }).limit(100),
-        supabase.from("integrity_job_runs" as any).select("*").order("started_at", { ascending: false }).limit(50),
+        supabase.from("background_job_runs" as any).select("*").order("started_at", { ascending: false }).limit(50),
       ]);
 
       if (!healthRes.error) setHealthStatus((healthRes.data as unknown as PlatformHealthStatus[]) || []);

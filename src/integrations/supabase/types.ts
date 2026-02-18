@@ -25253,6 +25253,39 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          alert_type: string
+          context: Json | null
+          created_at: string
+          id: string
+          message: string
+          resolved_at: string | null
+          severity: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          alert_type: string
+          context?: Json | null
+          created_at?: string
+          id?: string
+          message: string
+          resolved_at?: string | null
+          severity?: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          alert_type?: string
+          context?: Json | null
+          created_at?: string
+          id?: string
+          message?: string
+          resolved_at?: string | null
+          severity?: string
+        }
+        Relationships: []
+      }
       platform_charters: {
         Row: {
           amendment_process: string | null
@@ -25435,6 +25468,39 @@ export type Database = {
           },
         ]
       }
+      platform_events: {
+        Row: {
+          context: Json | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          event_type: string
+          id: string
+          severity: string
+          user_id: string | null
+        }
+        Insert: {
+          context?: Json | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type: string
+          id?: string
+          severity?: string
+          user_id?: string | null
+        }
+        Update: {
+          context?: Json | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type?: string
+          id?: string
+          severity?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       platform_evolution_proposals: {
         Row: {
           constitutional_implications: string | null
@@ -25585,6 +25651,72 @@ export type Database = {
           platform_fee_amount?: number
           platform_fee_percentage?: number
           trust_tier?: string | null
+        }
+        Relationships: []
+      }
+      platform_health_status: {
+        Row: {
+          component: string
+          created_at: string
+          details: Json | null
+          id: string
+          last_check_at: string
+          status: string
+        }
+        Insert: {
+          component: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          last_check_at?: string
+          status?: string
+        }
+        Update: {
+          component?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          last_check_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      platform_integrity_logs: {
+        Row: {
+          affected_ids: string[] | null
+          affected_table: string
+          auto_fixed: boolean | null
+          created_at: string
+          id: string
+          issue_type: string
+          job_name: string
+          metadata: Json | null
+          requires_admin_action: boolean | null
+          severity: string
+        }
+        Insert: {
+          affected_ids?: string[] | null
+          affected_table: string
+          auto_fixed?: boolean | null
+          created_at?: string
+          id?: string
+          issue_type: string
+          job_name: string
+          metadata?: Json | null
+          requires_admin_action?: boolean | null
+          severity?: string
+        }
+        Update: {
+          affected_ids?: string[] | null
+          affected_table?: string
+          auto_fixed?: boolean | null
+          created_at?: string
+          id?: string
+          issue_type?: string
+          job_name?: string
+          metadata?: Json | null
+          requires_admin_action?: boolean | null
+          severity?: string
         }
         Relationships: []
       }
