@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Target, Lock, Shield, TrendingUp, AlertTriangle, CheckCircle2, XCircle, Clock, BarChart3, Briefcase } from "lucide-react";
+import { Target, Lock, Shield, TrendingUp, AlertTriangle, CheckCircle2, XCircle, Clock, BarChart3, Briefcase, Flame, Calendar } from "lucide-react";
 
 // ── Static constraint data ──
 const PRIORITY_FEATURES = [
@@ -61,8 +61,72 @@ const MONTHLY_CHECKS = [
   "Did revenue improve?",
 ];
 
+const PHASES = [
+  {
+    title: "Phase 1 — Traction Ignition",
+    days: "Day 1–30",
+    goal: "Fund 50–100 FYPs in one focused region",
+    actions: [
+      "Select 3–5 universities only",
+      "Meet department heads physically/virtually",
+      "Offer free pilot integration",
+      "Onboard FYP coordinators",
+      "Identify 10–15 corporate sponsors",
+      "Create sponsor problem statements",
+      "Use quick-funding escrow flow",
+      "Manually assist first 30 funded projects",
+      "Monitor milestone structure tightly",
+      "Ensure zero escrow errors",
+    ],
+    dailyMetrics: ["FYPs created", "FYPs funded", "Escrow deposits", "Active sponsors", "Milestones completed", "Disputes opened", "Platform uptime"],
+  },
+  {
+    title: "Phase 2 — Execution Proof",
+    days: "Day 31–60",
+    goal: "Show repeatable funded project completion",
+    actions: [
+      "Push milestone discipline",
+      "Personally monitor delayed projects",
+      "Intervene early in disputes",
+      "Collect sponsor feedback",
+      "Collect student testimonials",
+      "Publish internal execution report",
+      "Highlight successful completions",
+      "Encourage sponsors to re-fund",
+      "Track first hiring cases",
+      "Identify top-performing students",
+    ],
+    targets: ["100+ funded FYPs cumulative", "70%+ milestone adherence", "Sponsor re-engagement measurable", "10+ completed funded projects", "First verified hiring cases"],
+  },
+  {
+    title: "Phase 3 — Momentum Consolidation",
+    days: "Day 61–90",
+    goal: "Establish economic credibility",
+    actions: [
+      "Publish regional impact summary",
+      "Show capital deployed",
+      "Show completed projects & hiring conversions",
+      "Secure 2–3 long-term sponsor agreements",
+      "Negotiate university enterprise package",
+      "Improve onboarding friction",
+      "Simplify dashboards further",
+      "Optimize escrow speed",
+    ],
+    targets: ["200+ funded FYPs cumulative", "Real escrow volume visible", "20+ project completions", "5–15 verified hires", "Sponsor retention > 40%", "Dispute rate controlled", "Positive revenue trajectory"],
+  },
+];
+
+const DAILY_FOUNDER_QUESTIONS = [
+  "Did we fund more projects?",
+  "Did we increase escrow volume?",
+  "Did we reduce disputes?",
+  "Did we increase sponsor trust?",
+  "Did someone get hired?",
+  "Did revenue increase?",
+];
+
 export default function FocusDashboardPage() {
-  const [tab, setTab] = useState("kpis");
+  const [tab, setTab] = useState("90day");
   const gatesMet = EXPANSION_GATES.filter(g => g.met).length;
 
   return (
@@ -90,13 +154,108 @@ export default function FocusDashboardPage() {
         </div>
 
         <Tabs value={tab} onValueChange={setTab}>
-          <TabsList className="grid grid-cols-2 md:grid-cols-5 w-full">
+          <TabsList className="grid grid-cols-3 md:grid-cols-6 w-full">
+            <TabsTrigger value="90day" className="gap-1"><Flame className="h-3.5 w-3.5" /><span className="hidden sm:inline">90-Day Plan</span></TabsTrigger>
             <TabsTrigger value="kpis" className="gap-1"><BarChart3 className="h-3.5 w-3.5" /><span className="hidden sm:inline">Focus KPIs</span></TabsTrigger>
             <TabsTrigger value="gates" className="gap-1"><Lock className="h-3.5 w-3.5" /><span className="hidden sm:inline">Expansion Lock</span></TabsTrigger>
             <TabsTrigger value="blocked" className="gap-1"><XCircle className="h-3.5 w-3.5" /><span className="hidden sm:inline">Not Building</span></TabsTrigger>
             <TabsTrigger value="discipline" className="gap-1"><Shield className="h-3.5 w-3.5" /><span className="hidden sm:inline">Founder Rules</span></TabsTrigger>
             <TabsTrigger value="review" className="gap-1"><Clock className="h-3.5 w-3.5" /><span className="hidden sm:inline">Monthly Review</span></TabsTrigger>
           </TabsList>
+
+          {/* 90-Day Survival Plan */}
+          <TabsContent value="90day" className="mt-6 space-y-6">
+            {/* Phase Cards */}
+            {PHASES.map((phase, pi) => (
+              <Card key={pi} className={pi === 0 ? "border-primary/30" : ""}>
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Calendar className="h-5 w-5 text-primary" />
+                      {phase.title}
+                    </CardTitle>
+                    <Badge variant="outline">{phase.days}</Badge>
+                  </div>
+                  <p className="text-sm font-medium text-primary">{phase.goal}</p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2">Actions</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5">
+                      {phase.actions.map((a, i) => (
+                        <div key={i} className="flex items-start gap-2 text-sm p-2 rounded border bg-muted/20">
+                          <span className="text-primary font-bold text-xs mt-0.5">{i + 1}.</span>
+                          <span>{a}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {"dailyMetrics" in phase && (
+                    <div>
+                      <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2">Daily Metrics</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {phase.dailyMetrics.map((m) => (
+                          <Badge key={m} variant="secondary" className="text-xs">{m}</Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {"targets" in phase && (
+                    <div>
+                      <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2">Target Outcomes</h4>
+                      <div className="space-y-1">
+                        {phase.targets.map((t) => (
+                          <div key={t} className="flex items-center gap-2 text-sm">
+                            <Target className="h-3.5 w-3.5 text-primary shrink-0" />
+                            {t}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+
+            {/* Daily Founder Priority */}
+            <Card className="bg-muted/30 border-primary/20">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Flame className="h-5 w-5 text-primary" />
+                  Daily Founder Priority
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">If answer is "No" to any — fix core, don't build new.</p>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {DAILY_FOUNDER_QUESTIONS.map((q, i) => (
+                    <div key={i} className="flex items-center gap-2 p-3 rounded-lg border bg-background text-sm font-medium">
+                      <span className="text-primary font-bold">{i + 1}.</span>
+                      {q}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* 90-Day Success Definition */}
+            <Card className="border-primary/20">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">90-Day Success Definition</CardTitle>
+                <p className="text-sm text-muted-foreground">At day 90, RCollab must feel:</p>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2">
+                  {["Real", "Used", "Trusted", "Funded", "Operational", "Valuable", "Repeatable"].map((w) => (
+                    <Badge key={w} className="bg-primary/10 text-primary border-primary/20 text-sm px-3 py-1">{w}</Badge>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-3 italic">
+                  Survival {">"} Scale · Proof {">"} Vision · Execution {">"} Expansion
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           {/* Focus KPIs */}
           <TabsContent value="kpis" className="mt-6">
