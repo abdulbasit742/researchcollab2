@@ -44,20 +44,6 @@ export default function AuthPage() {
   const [lastName, setLastName] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [copiedField, setCopiedField] = useState<string | null>(null);
-
-  const DEMO_EMAIL = "abdulbasit@gmail.com";
-  const DEMO_PASSWORD = "abdulbasit";
-
-  const copyToClipboard = (text: string, field: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedField(field);
-    setTimeout(() => setCopiedField(null), 1500);
-  };
-
-  const fillDemoCredentials = () => {
-    setEmail(DEMO_EMAIL);
-    setPassword(DEMO_PASSWORD);
-  };
   // Redirect if already authenticated
   useEffect(() => {
     if (!authLoading && user && userRole) {
@@ -188,31 +174,7 @@ export default function AuthPage() {
               {/* Sign In Tab */}
               <TabsContent value="signin" className="mt-0">
                 <form onSubmit={handleSignIn} className="space-y-4">
-                  {/* Demo Account Banner */}
-                  <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 space-y-2">
-                    <p className="text-xs font-semibold text-primary">🎯 Demo Account — Try the platform instantly</p>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between gap-2 rounded-md bg-background/80 px-2.5 py-1.5">
-                        <span className="text-xs text-muted-foreground truncate">
-                          <span className="font-medium text-foreground">{DEMO_EMAIL}</span>
-                        </span>
-                        <button type="button" onClick={() => copyToClipboard(DEMO_EMAIL, "email")} className="shrink-0 text-muted-foreground hover:text-primary transition-colors">
-                          {copiedField === "email" ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
-                        </button>
-                      </div>
-                      <div className="flex items-center justify-between gap-2 rounded-md bg-background/80 px-2.5 py-1.5">
-                        <span className="text-xs text-muted-foreground truncate">
-                          <span className="font-medium text-foreground">{DEMO_PASSWORD}</span>
-                        </span>
-                        <button type="button" onClick={() => copyToClipboard(DEMO_PASSWORD, "password")} className="shrink-0 text-muted-foreground hover:text-primary transition-colors">
-                          {copiedField === "password" ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
-                        </button>
-                      </div>
-                    </div>
-                    <Button type="button" variant="outline" size="sm" className="w-full text-xs h-7" onClick={fillDemoCredentials}>
-                      Auto-fill Demo Credentials
-                    </Button>
-                  </div>
+                  {/* Sign in to your account */}
                   <div className="space-y-2">
                     <Label htmlFor="signin-email">Email</Label>
                     <div className="relative">
