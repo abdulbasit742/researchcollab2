@@ -1,98 +1,110 @@
 import { motion } from "framer-motion";
-import { UserPlus, Users, Trophy } from "lucide-react";
+import { UserPlus, Search, Shield, TrendingUp, ArrowDown } from "lucide-react";
 
 const steps = [
   {
     icon: UserPlus,
-    title: "Sign Up Free",
-    description: "Create your academic profile in under 2 minutes.",
+    number: "01",
+    title: "Build Your Proof",
+    description: "Create a verified profile backed by real outcomes — not self-reported claims. Your trust score starts building from day one.",
+    color: "bg-primary",
   },
   {
-    icon: Users,
-    title: "Find Collaborators",
-    description: "AI matches you with researchers in your field worldwide.",
+    icon: Search,
+    number: "02",
+    title: "Get Matched by AI",
+    description: "Our intelligence engine finds opportunities based on your skills, trust score, and success probability — not just keywords.",
+    color: "bg-violet-500",
   },
   {
-    icon: Trophy,
-    title: "Publish & Earn",
-    description: "Collaborate on papers, complete tasks, and earn real income.",
+    icon: Shield,
+    number: "03",
+    title: "Execute with Protection",
+    description: "Every deal is escrow-backed with milestone triggers. Funds are locked until you deliver. Both sides are protected.",
+    color: "bg-emerald-500",
+  },
+  {
+    icon: TrendingUp,
+    number: "04",
+    title: "Compound Your Value",
+    description: "Every completed project increases your trust score, unlocks better rates, and attracts higher-quality opportunities automatically.",
+    color: "bg-amber-500",
   },
 ];
 
 export function HowItWorksSection() {
   return (
-    <section className="py-12 sm:py-16 md:py-24 relative overflow-hidden">
+    <section className="py-16 md:py-28 relative overflow-hidden bg-muted/20">
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="text-center mb-10 md:mb-16"
+          className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-3 sm:mb-4">
-            How It <span className="text-primary">Works</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+            How Professional <span className="text-primary">Execution</span> Works
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-lg max-w-xl mx-auto">
-            Three simple steps to transform your research career.
+          <p className="mt-3 text-sm md:text-lg text-muted-foreground max-w-xl mx-auto">
+            A self-reinforcing loop where every outcome makes you more valuable.
           </p>
         </motion.div>
 
-        <div className="relative max-w-4xl mx-auto">
-          {/* Horizontal connecting line (desktop) */}
-          <div className="absolute top-1/2 left-0 right-0 h-px bg-border hidden md:block" />
-          <motion.div
-            className="absolute top-1/2 left-0 right-0 h-px bg-primary origin-left hidden md:block"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-            viewport={{ once: true }}
-          />
-
-          {/* Vertical connecting line (mobile) */}
-          <div className="absolute left-8 top-16 bottom-16 w-px bg-border md:hidden" />
-          <motion.div
-            className="absolute left-8 top-16 bottom-16 w-px bg-primary origin-top md:hidden"
-            initial={{ scaleY: 0 }}
-            whileInView={{ scaleY: 1 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-            viewport={{ once: true }}
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6 relative">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
             {steps.map((step, i) => (
               <motion.div
                 key={step.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.2 }}
+                transition={{ duration: 0.5, delay: i * 0.12 }}
                 viewport={{ once: true }}
-                className="flex flex-row md:flex-col items-center md:items-center text-left md:text-center gap-4 md:gap-0"
+                className="relative group"
               >
-                {/* Step number + icon */}
-                <div className="relative mb-0 md:mb-5 shrink-0">
-                  <motion.div
-                    className="h-14 w-14 md:h-16 md:w-16 rounded-2xl bg-primary/10 border-2 border-primary/30 flex items-center justify-center relative z-10 bg-background"
-                    whileInView={{
-                      borderColor: ["hsl(var(--primary) / 0.3)", "hsl(var(--primary) / 0.8)", "hsl(var(--primary) / 0.3)"],
-                    }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
-                    viewport={{ once: true }}
-                  >
-                    <step.icon className="h-6 w-6 md:h-7 md:w-7 text-primary" />
-                  </motion.div>
-                  <span className="absolute -top-1.5 -right-1.5 md:-top-2 md:-right-2 h-5 w-5 md:h-6 md:w-6 rounded-full bg-primary text-primary-foreground text-[10px] md:text-xs font-bold flex items-center justify-center z-20">
-                    {i + 1}
-                  </span>
+                <div className="rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-6 md:p-8 transition-all duration-300 hover:shadow-lg hover:border-primary/20">
+                  <div className="flex items-start gap-4">
+                    <div className="shrink-0">
+                      <div className={`h-12 w-12 rounded-xl ${step.color} flex items-center justify-center shadow-lg`}>
+                        <step.icon className="h-6 w-6 text-white" />
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-primary/50 uppercase tracking-widest">{step.number}</span>
+                      <h3 className="text-lg md:text-xl font-bold mt-1 mb-2 group-hover:text-primary transition-colors">{step.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+                    </div>
+                  </div>
                 </div>
-
-                <div>
-                  <h3 className="text-base md:text-lg font-semibold mb-1 md:mb-2">{step.title}</h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground max-w-[220px]">{step.description}</p>
-                </div>
+                
+                {/* Connector arrow */}
+                {i < steps.length - 1 && i % 2 === 0 && (
+                  <div className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10">
+                    <ArrowDown className="h-4 w-4 text-primary/30 rotate-[-90deg]" />
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>
+
+          {/* Loop indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            viewport={{ once: true }}
+            className="mt-8 text-center"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-xs font-medium text-primary">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              >
+                ↻
+              </motion.div>
+              Self-reinforcing loop — every outcome compounds your value
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
