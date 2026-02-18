@@ -17,38 +17,36 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Optional: require admin auth for manual triggers
+    // SECURITY FIX: Always require admin authentication — no unauthenticated access
     const authHeader = req.headers.get("Authorization");
-    const isScheduled = !authHeader; // Cron jobs won't have auth
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-    if (authHeader && authHeader.startsWith("Bearer ")) {
-      const supabaseAuth = createClient(
-        Deno.env.get("SUPABASE_URL")!,
-        Deno.env.get("SUPABASE_ANON_KEY")!,
-        { global: { headers: { Authorization: authHeader } } }
-      );
-      const token = authHeader.replace("Bearer ", "");
-      const { data: claims, error: claimsError } = await supabaseAuth.auth.getClaims(token);
-      if (claimsError || !claims?.claims?.sub) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+    const supabaseAuth = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+    const token = authHeader.replace("Bearer ", "");
+    const { data: claims, error: claimsError } = await supabaseAuth.auth.getClaims(token);
+    if (claimsError || !claims?.claims?.sub) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-      // Check admin
-      const { data: roleData } = await supabaseAdmin
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", claims.claims.sub)
-        .maybeSingle();
-
-      if (roleData?.role !== "admin") {
-        return new Response(JSON.stringify({ error: "Admin access required" }), {
-          status: 403,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+    // Check admin role
+    const { data: isAdmin } = await supabaseAdmin.rpc("is_admin", { check_user_id: claims.claims.sub });
+    if (!isAdmin) {
+      return new Response(JSON.stringify({ error: "Admin access required" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const results: Record<string, unknown> = {};
@@ -77,9 +75,9 @@ Deno.serve(async (req) => {
       ? { error: cleanupError.message }
       : cleanupCount;
 
-    // Step 4: Trust decay (re-run existing)
+    // Step 4: Trust decay check
     const { error: trustError } = await supabaseAdmin.rpc(
-      "detect_orphaned_states" // Already includes trust-related checks
+      "detect_orphaned_states"
     );
     if (trustError) {
       results.trust_check = { error: trustError.message };
@@ -92,12 +90,12 @@ Deno.serve(async (req) => {
     // If critical issues found, log alert
     if (hasCritical) {
       await supabaseAdmin.from("admin_audit_logs").insert({
-        admin_id: "00000000-0000-0000-0000-000000000000", // system
+        admin_id: claims.claims.sub,
         action: "execution_health_critical",
         entity_type: "system",
         details: {
           ...results,
-          triggered_by: isScheduled ? "cron" : "manual",
+          triggered_by: "manual",
         },
       });
     }

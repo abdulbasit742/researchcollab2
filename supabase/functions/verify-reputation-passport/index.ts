@@ -6,16 +6,57 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+// Rate limit: track verification attempts per IP (in-memory, per-instance)
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 30; // max 30 verifications per minute per IP
+const RATE_WINDOW_MS = 60_000;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    // Rate limiting for this public endpoint
+    const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    if (isRateLimited(clientIp)) {
+      return new Response(JSON.stringify({ error: "Rate limit exceeded. Try again later." }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const { passport_id, signed_hash } = await req.json();
 
     if (!passport_id || !signed_hash) {
       return new Response(JSON.stringify({ error: "passport_id and signed_hash required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Validate input format to prevent injection
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(passport_id)) {
+      return new Response(JSON.stringify({ error: "Invalid passport_id format" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (typeof signed_hash !== "string" || signed_hash.length > 512) {
+      return new Response(JSON.stringify({ error: "Invalid signed_hash format" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -45,13 +86,13 @@ Deno.serve(async (req) => {
     // Log verification attempt
     await supabase.from("external_verification_logs").insert({
       passport_id,
-      external_platform: req.headers.get("origin") ?? "unknown",
+      external_platform: (req.headers.get("origin") ?? "unknown").substring(0, 255),
     });
 
     // Record verification
     await supabase.from("passport_verifications").insert({
       passport_id,
-      verifier_entity: req.headers.get("origin") ?? "api",
+      verifier_entity: (req.headers.get("origin") ?? "api").substring(0, 255),
       verification_status: hashMatch && !expired ? "verified" : "failed",
       verified_at: new Date().toISOString(),
     });
