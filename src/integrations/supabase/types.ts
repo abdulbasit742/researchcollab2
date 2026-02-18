@@ -9658,6 +9658,56 @@ export type Database = {
         }
         Relationships: []
       }
+      equity_allocations: {
+        Row: {
+          cap_table_version: number | null
+          created_at: string | null
+          holder_id: string
+          holder_type: string
+          id: string
+          linked_contract_id: string | null
+          percentage: number | null
+          role: string | null
+          shares: number
+          startup_id: string
+          vesting_schedule_id: string | null
+        }
+        Insert: {
+          cap_table_version?: number | null
+          created_at?: string | null
+          holder_id: string
+          holder_type: string
+          id?: string
+          linked_contract_id?: string | null
+          percentage?: number | null
+          role?: string | null
+          shares?: number
+          startup_id: string
+          vesting_schedule_id?: string | null
+        }
+        Update: {
+          cap_table_version?: number | null
+          created_at?: string | null
+          holder_id?: string
+          holder_type?: string
+          id?: string
+          linked_contract_id?: string | null
+          percentage?: number | null
+          role?: string | null
+          shares?: number
+          startup_id?: string
+          vesting_schedule_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "equity_allocations_vesting_schedule_id_fkey"
+            columns: ["vesting_schedule_id"]
+            isOneToOne: false
+            referencedRelation: "vesting_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       equity_metrics_snapshots: {
         Row: {
           computed_at: string
@@ -9690,6 +9740,56 @@ export type Database = {
           scope_type?: string
         }
         Relationships: []
+      }
+      equity_transaction_logs: {
+        Row: {
+          action_type: string
+          created_at: string | null
+          from_holder_id: string | null
+          id: string
+          linked_contract_id: string | null
+          linked_funding_round_id: string | null
+          performed_by: string
+          reason: string | null
+          shares: number
+          startup_id: string
+          to_holder_id: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string | null
+          from_holder_id?: string | null
+          id?: string
+          linked_contract_id?: string | null
+          linked_funding_round_id?: string | null
+          performed_by: string
+          reason?: string | null
+          shares: number
+          startup_id: string
+          to_holder_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string | null
+          from_holder_id?: string | null
+          id?: string
+          linked_contract_id?: string | null
+          linked_funding_round_id?: string | null
+          performed_by?: string
+          reason?: string | null
+          shares?: number
+          startup_id?: string
+          to_holder_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "equity_transaction_logs_linked_funding_round_id_fkey"
+            columns: ["linked_funding_round_id"]
+            isOneToOne: false
+            referencedRelation: "funding_rounds"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       escrow_audit_logs: {
         Row: {
@@ -12320,6 +12420,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      funding_rounds: {
+        Row: {
+          closed_at: string | null
+          created_at: string | null
+          equity_issued: number | null
+          id: string
+          investment_amount: number | null
+          lead_investor_id: string | null
+          post_money_valuation: number | null
+          round_type: string
+          startup_id: string
+          status: string | null
+          valuation: number | null
+        }
+        Insert: {
+          closed_at?: string | null
+          created_at?: string | null
+          equity_issued?: number | null
+          id?: string
+          investment_amount?: number | null
+          lead_investor_id?: string | null
+          post_money_valuation?: number | null
+          round_type: string
+          startup_id: string
+          status?: string | null
+          valuation?: number | null
+        }
+        Update: {
+          closed_at?: string | null
+          created_at?: string | null
+          equity_issued?: number | null
+          id?: string
+          investment_amount?: number | null
+          lead_investor_id?: string | null
+          post_money_valuation?: number | null
+          round_type?: string
+          startup_id?: string
+          status?: string | null
+          valuation?: number | null
+        }
+        Relationships: []
       }
       fyp_applications: {
         Row: {
@@ -32807,6 +32949,45 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_type?: string
+        }
+        Relationships: []
+      }
+      vesting_schedules: {
+        Row: {
+          cliff_period: number
+          created_at: string | null
+          holder_id: string
+          id: string
+          shares_vested: number | null
+          start_date: string
+          startup_id: string
+          total_shares: number
+          vesting_duration: number
+          vesting_interval: string | null
+        }
+        Insert: {
+          cliff_period?: number
+          created_at?: string | null
+          holder_id: string
+          id?: string
+          shares_vested?: number | null
+          start_date: string
+          startup_id: string
+          total_shares: number
+          vesting_duration?: number
+          vesting_interval?: string | null
+        }
+        Update: {
+          cliff_period?: number
+          created_at?: string | null
+          holder_id?: string
+          id?: string
+          shares_vested?: number | null
+          start_date?: string
+          startup_id?: string
+          total_shares?: number
+          vesting_duration?: number
+          vesting_interval?: string | null
         }
         Relationships: []
       }
