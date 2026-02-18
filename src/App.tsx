@@ -276,6 +276,9 @@ const EnterpriseScalingPage = lazy(() => import("./pages/EnterpriseScalingPage")
 const InnovationIntelligencePage = lazy(() => import("./pages/InnovationIntelligencePage"));
 const CorporateAlliancePage = lazy(() => import("./pages/CorporateAlliancePage"));
 const IntelligenceMarketplacePage = lazy(() => import("./pages/IntelligenceMarketplacePage"));
+const GovernmentRolloutPage = lazy(() => import("./pages/GovernmentRolloutPage"));
+const DeveloperEcosystemPage = lazy(() => import("./pages/DeveloperEcosystemPage"));
+const SupremacyUpgradePage = lazy(() => import("./pages/SupremacyUpgradePage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -575,6 +578,9 @@ const AppContent = () => {
             <Route path="/intelligence" element={<InnovationIntelligencePage />} />
             <Route path="/alliance/corporate" element={<CorporateAlliancePage />} />
             <Route path="/intelligence/marketplace" element={<IntelligenceMarketplacePage />} />
+            <Route path="/government/rollout" element={<GovernmentRolloutPage />} />
+            <Route path="/ecosystem/apps" element={<DeveloperEcosystemPage />} />
+            <Route path="/system/supremacy" element={<SupremacyUpgradePage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />

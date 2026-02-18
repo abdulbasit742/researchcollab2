@@ -4146,6 +4146,45 @@ export type Database = {
         }
         Relationships: []
       }
+      capital_velocity_index: {
+        Row: {
+          avg_deal_cycle_days: number | null
+          avg_escrow_hold_hours: number | null
+          capital_idle_pct: number | null
+          computed_at: string | null
+          dispute_delay_hours: number | null
+          id: string
+          node_id: string | null
+          period: string | null
+          release_frequency_per_week: number | null
+          velocity_score: number | null
+        }
+        Insert: {
+          avg_deal_cycle_days?: number | null
+          avg_escrow_hold_hours?: number | null
+          capital_idle_pct?: number | null
+          computed_at?: string | null
+          dispute_delay_hours?: number | null
+          id?: string
+          node_id?: string | null
+          period?: string | null
+          release_frequency_per_week?: number | null
+          velocity_score?: number | null
+        }
+        Update: {
+          avg_deal_cycle_days?: number | null
+          avg_escrow_hold_hours?: number | null
+          capital_idle_pct?: number | null
+          computed_at?: string | null
+          dispute_delay_hours?: number | null
+          id?: string
+          node_id?: string | null
+          period?: string | null
+          release_frequency_per_week?: number | null
+          velocity_score?: number | null
+        }
+        Relationships: []
+      }
       career_milestones: {
         Row: {
           achieved_at: string
@@ -7694,6 +7733,39 @@ export type Database = {
         }
         Relationships: []
       }
+      data_moat_metrics: {
+        Row: {
+          compounding_score: number | null
+          id: string
+          measured_at: string | null
+          unique_arbitration_cases: number | null
+          unique_capital_flows: number | null
+          unique_employment_transitions: number | null
+          unique_projects: number | null
+          unique_startup_lifecycles: number | null
+        }
+        Insert: {
+          compounding_score?: number | null
+          id?: string
+          measured_at?: string | null
+          unique_arbitration_cases?: number | null
+          unique_capital_flows?: number | null
+          unique_employment_transitions?: number | null
+          unique_projects?: number | null
+          unique_startup_lifecycles?: number | null
+        }
+        Update: {
+          compounding_score?: number | null
+          id?: string
+          measured_at?: string | null
+          unique_arbitration_cases?: number | null
+          unique_capital_flows?: number | null
+          unique_employment_transitions?: number | null
+          unique_projects?: number | null
+          unique_startup_lifecycles?: number | null
+        }
+        Relationships: []
+      }
       data_residency_profiles: {
         Row: {
           consent_version: string | null
@@ -9955,6 +10027,167 @@ export type Database = {
             columns: ["country_id"]
             isOneToOne: false
             referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecosystem_apps: {
+        Row: {
+          app_name: string
+          app_type: string | null
+          bias_compliance_passed: boolean | null
+          certification_status: string | null
+          compliance_review_passed: boolean | null
+          created_at: string | null
+          data_sovereignty_checked: boolean | null
+          description: string | null
+          developer_id: string | null
+          ecosystem_fee_pct: number | null
+          id: string
+          install_count: number | null
+          marketplace_listed: boolean | null
+          security_audit_passed: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          app_name: string
+          app_type?: string | null
+          bias_compliance_passed?: boolean | null
+          certification_status?: string | null
+          compliance_review_passed?: boolean | null
+          created_at?: string | null
+          data_sovereignty_checked?: boolean | null
+          description?: string | null
+          developer_id?: string | null
+          ecosystem_fee_pct?: number | null
+          id?: string
+          install_count?: number | null
+          marketplace_listed?: boolean | null
+          security_audit_passed?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          app_name?: string
+          app_type?: string | null
+          bias_compliance_passed?: boolean | null
+          certification_status?: string | null
+          compliance_review_passed?: boolean | null
+          created_at?: string | null
+          data_sovereignty_checked?: boolean | null
+          description?: string | null
+          developer_id?: string | null
+          ecosystem_fee_pct?: number | null
+          id?: string
+          install_count?: number | null
+          marketplace_listed?: boolean | null
+          security_audit_passed?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecosystem_apps_developer_id_fkey"
+            columns: ["developer_id"]
+            isOneToOne: false
+            referencedRelation: "ecosystem_developers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecosystem_developers: {
+        Row: {
+          api_access_tier: number | null
+          api_key_hash: string | null
+          certification_status: string | null
+          created_at: string | null
+          developer_type: string | null
+          id: string
+          node_scope: string[] | null
+          organization_name: string
+          rate_limit_per_day: number | null
+          revenue_generated: number | null
+          risk_score: number | null
+          total_api_calls: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          api_access_tier?: number | null
+          api_key_hash?: string | null
+          certification_status?: string | null
+          created_at?: string | null
+          developer_type?: string | null
+          id?: string
+          node_scope?: string[] | null
+          organization_name: string
+          rate_limit_per_day?: number | null
+          revenue_generated?: number | null
+          risk_score?: number | null
+          total_api_calls?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          api_access_tier?: number | null
+          api_key_hash?: string | null
+          certification_status?: string | null
+          created_at?: string | null
+          developer_type?: string | null
+          id?: string
+          node_scope?: string[] | null
+          organization_name?: string
+          rate_limit_per_day?: number | null
+          revenue_generated?: number | null
+          risk_score?: number | null
+          total_api_calls?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      ecosystem_revenue_logs: {
+        Row: {
+          amount: number
+          app_id: string | null
+          created_at: string | null
+          developer_id: string | null
+          developer_share: number | null
+          id: string
+          platform_share: number | null
+          revenue_type: string | null
+        }
+        Insert: {
+          amount: number
+          app_id?: string | null
+          created_at?: string | null
+          developer_id?: string | null
+          developer_share?: number | null
+          id?: string
+          platform_share?: number | null
+          revenue_type?: string | null
+        }
+        Update: {
+          amount?: number
+          app_id?: string | null
+          created_at?: string | null
+          developer_id?: string | null
+          developer_share?: number | null
+          id?: string
+          platform_share?: number | null
+          revenue_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecosystem_revenue_logs_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "ecosystem_apps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ecosystem_revenue_logs_developer_id_fkey"
+            columns: ["developer_id"]
+            isOneToOne: false
+            referencedRelation: "ecosystem_developers"
             referencedColumns: ["id"]
           },
         ]
@@ -14942,6 +15175,62 @@ export type Database = {
         }
         Relationships: []
       }
+      government_fund_compliance: {
+        Row: {
+          allocated_amount: number | null
+          compliance_status: string | null
+          created_at: string | null
+          disbursed_amount: number | null
+          dispute_rate: number | null
+          escrow_adherence_pct: number | null
+          fund_name: string
+          id: string
+          misuse_risk_score: number | null
+          partner_id: string | null
+          period_end: string | null
+          period_start: string | null
+          policy_objective: string | null
+        }
+        Insert: {
+          allocated_amount?: number | null
+          compliance_status?: string | null
+          created_at?: string | null
+          disbursed_amount?: number | null
+          dispute_rate?: number | null
+          escrow_adherence_pct?: number | null
+          fund_name: string
+          id?: string
+          misuse_risk_score?: number | null
+          partner_id?: string | null
+          period_end?: string | null
+          period_start?: string | null
+          policy_objective?: string | null
+        }
+        Update: {
+          allocated_amount?: number | null
+          compliance_status?: string | null
+          created_at?: string | null
+          disbursed_amount?: number | null
+          dispute_rate?: number | null
+          escrow_adherence_pct?: number | null
+          fund_name?: string
+          id?: string
+          misuse_risk_score?: number | null
+          partner_id?: string | null
+          period_end?: string | null
+          period_start?: string | null
+          policy_objective?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "government_fund_compliance_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "government_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       government_grant_pools: {
         Row: {
           allocated_amount: number
@@ -15003,6 +15292,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      government_partners: {
+        Row: {
+          anti_capture_acknowledged: boolean | null
+          certification_expires_at: string | null
+          certification_status: string | null
+          compliance_level: string | null
+          country_node_id: string | null
+          created_at: string | null
+          data_visibility_scope: string | null
+          funding_commitment: number | null
+          id: string
+          is_active: boolean | null
+          ministry_name: string
+          participation_scope: string | null
+          participation_type: string | null
+          policy_alignment_status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          anti_capture_acknowledged?: boolean | null
+          certification_expires_at?: string | null
+          certification_status?: string | null
+          compliance_level?: string | null
+          country_node_id?: string | null
+          created_at?: string | null
+          data_visibility_scope?: string | null
+          funding_commitment?: number | null
+          id?: string
+          is_active?: boolean | null
+          ministry_name: string
+          participation_scope?: string | null
+          participation_type?: string | null
+          policy_alignment_status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          anti_capture_acknowledged?: boolean | null
+          certification_expires_at?: string | null
+          certification_status?: string | null
+          compliance_level?: string | null
+          country_node_id?: string | null
+          created_at?: string | null
+          data_visibility_scope?: string | null
+          funding_commitment?: number | null
+          id?: string
+          is_active?: boolean | null
+          ministry_name?: string
+          participation_scope?: string | null
+          participation_type?: string | null
+          policy_alignment_status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       government_report_executions: {
         Row: {
@@ -23023,6 +23366,42 @@ export type Database = {
           },
         ]
       }
+      performance_metrics: {
+        Row: {
+          api_response_time_ms: number | null
+          cache_hit_rate: number | null
+          db_load_pct: number | null
+          endpoint: string | null
+          id: string
+          memory_usage_mb: number | null
+          metric_type: string
+          query_latency_ms: number | null
+          recorded_at: string | null
+        }
+        Insert: {
+          api_response_time_ms?: number | null
+          cache_hit_rate?: number | null
+          db_load_pct?: number | null
+          endpoint?: string | null
+          id?: string
+          memory_usage_mb?: number | null
+          metric_type: string
+          query_latency_ms?: number | null
+          recorded_at?: string | null
+        }
+        Update: {
+          api_response_time_ms?: number | null
+          cache_hit_rate?: number | null
+          db_load_pct?: number | null
+          endpoint?: string | null
+          id?: string
+          memory_usage_mb?: number | null
+          metric_type?: string
+          query_latency_ms?: number | null
+          recorded_at?: string | null
+        }
+        Relationships: []
+      }
       permission_audit_logs: {
         Row: {
           action_key: string
@@ -28499,6 +28878,42 @@ export type Database = {
           },
         ]
       }
+      retention_predictions: {
+        Row: {
+          capital_withdrawal_risk_pct: number | null
+          churn_risk_pct: number | null
+          disengagement_risk_pct: number | null
+          dropout_risk_pct: number | null
+          id: string
+          nudge_sent: boolean | null
+          nudge_type: string | null
+          predicted_at: string | null
+          user_id: string
+        }
+        Insert: {
+          capital_withdrawal_risk_pct?: number | null
+          churn_risk_pct?: number | null
+          disengagement_risk_pct?: number | null
+          dropout_risk_pct?: number | null
+          id?: string
+          nudge_sent?: boolean | null
+          nudge_type?: string | null
+          predicted_at?: string | null
+          user_id: string
+        }
+        Update: {
+          capital_withdrawal_risk_pct?: number | null
+          churn_risk_pct?: number | null
+          disengagement_risk_pct?: number | null
+          dropout_risk_pct?: number | null
+          id?: string
+          nudge_sent?: boolean | null
+          nudge_type?: string | null
+          predicted_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       revenue_distribution_metrics: {
         Row: {
           created_at: string | null
@@ -33696,6 +34111,51 @@ export type Database = {
           unique_counterparties?: number | null
           user_id?: string
           velocity_score?: number | null
+        }
+        Relationships: []
+      }
+      trust_weighting_config: {
+        Row: {
+          bias_audit_date: string | null
+          bias_audit_result: string | null
+          config_version: number
+          created_at: string | null
+          delivery_weight: number | null
+          dispute_weight: number | null
+          financial_weight: number | null
+          id: string
+          is_active: boolean | null
+          projects_weight: number | null
+          rating_weight: number | null
+          verification_weight: number | null
+        }
+        Insert: {
+          bias_audit_date?: string | null
+          bias_audit_result?: string | null
+          config_version: number
+          created_at?: string | null
+          delivery_weight?: number | null
+          dispute_weight?: number | null
+          financial_weight?: number | null
+          id?: string
+          is_active?: boolean | null
+          projects_weight?: number | null
+          rating_weight?: number | null
+          verification_weight?: number | null
+        }
+        Update: {
+          bias_audit_date?: string | null
+          bias_audit_result?: string | null
+          config_version?: number
+          created_at?: string | null
+          delivery_weight?: number | null
+          dispute_weight?: number | null
+          financial_weight?: number | null
+          id?: string
+          is_active?: boolean | null
+          projects_weight?: number | null
+          rating_weight?: number | null
+          verification_weight?: number | null
         }
         Relationships: []
       }
