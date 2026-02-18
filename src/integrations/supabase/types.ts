@@ -29125,6 +29125,105 @@ export type Database = {
         }
         Relationships: []
       }
+      sip_amendment_logs: {
+        Row: {
+          activation_date: string | null
+          amendment_title: string
+          created_at: string | null
+          description: string
+          id: string
+          proposed_by: string | null
+          review_window_ends: string | null
+          status: string | null
+          target_version: string | null
+          technical_review_notes: string | null
+          votes_abstain: number | null
+          votes_against: number | null
+          votes_for: number | null
+        }
+        Insert: {
+          activation_date?: string | null
+          amendment_title: string
+          created_at?: string | null
+          description: string
+          id?: string
+          proposed_by?: string | null
+          review_window_ends?: string | null
+          status?: string | null
+          target_version?: string | null
+          technical_review_notes?: string | null
+          votes_abstain?: number | null
+          votes_against?: number | null
+          votes_for?: number | null
+        }
+        Update: {
+          activation_date?: string | null
+          amendment_title?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          proposed_by?: string | null
+          review_window_ends?: string | null
+          status?: string | null
+          target_version?: string | null
+          technical_review_notes?: string | null
+          votes_abstain?: number | null
+          votes_against?: number | null
+          votes_for?: number | null
+        }
+        Relationships: []
+      }
+      sip_certified_nodes: {
+        Row: {
+          arbitration_compliance: boolean | null
+          certification_level: string | null
+          certified_at: string | null
+          created_at: string | null
+          data_compliance: boolean | null
+          escrow_integrity: boolean | null
+          id: string
+          is_active: boolean | null
+          jurisdiction: string | null
+          last_audit_at: string | null
+          next_audit_due: string | null
+          node_name: string
+          node_type: string
+          trust_transparency: boolean | null
+        }
+        Insert: {
+          arbitration_compliance?: boolean | null
+          certification_level?: string | null
+          certified_at?: string | null
+          created_at?: string | null
+          data_compliance?: boolean | null
+          escrow_integrity?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          jurisdiction?: string | null
+          last_audit_at?: string | null
+          next_audit_due?: string | null
+          node_name: string
+          node_type: string
+          trust_transparency?: boolean | null
+        }
+        Update: {
+          arbitration_compliance?: boolean | null
+          certification_level?: string | null
+          certified_at?: string | null
+          created_at?: string | null
+          data_compliance?: boolean | null
+          escrow_integrity?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          jurisdiction?: string | null
+          last_audit_at?: string | null
+          next_audit_due?: string | null
+          node_name?: string
+          node_type?: string
+          trust_transparency?: boolean | null
+        }
+        Relationships: []
+      }
       sip_events: {
         Row: {
           actor_id: string | null
@@ -29170,6 +29269,114 @@ export type Database = {
           risk_score?: number | null
           sip_version?: string | null
           trust_delta?: number | null
+        }
+        Relationships: []
+      }
+      sip_foundation_board: {
+        Row: {
+          appointed_at: string | null
+          bio: string | null
+          created_at: string | null
+          id: string
+          influence_weight: number | null
+          is_active: boolean | null
+          member_name: string
+          member_type: string
+          organization: string | null
+          term_ends_at: string | null
+        }
+        Insert: {
+          appointed_at?: string | null
+          bio?: string | null
+          created_at?: string | null
+          id?: string
+          influence_weight?: number | null
+          is_active?: boolean | null
+          member_name: string
+          member_type: string
+          organization?: string | null
+          term_ends_at?: string | null
+        }
+        Update: {
+          appointed_at?: string | null
+          bio?: string | null
+          created_at?: string | null
+          id?: string
+          influence_weight?: number | null
+          is_active?: boolean | null
+          member_name?: string
+          member_type?: string
+          organization?: string | null
+          term_ends_at?: string | null
+        }
+        Relationships: []
+      }
+      sip_governance_decisions: {
+        Row: {
+          created_at: string | null
+          decided_by: string | null
+          decision_title: string
+          decision_type: string | null
+          description: string | null
+          effective_from: string | null
+          id: string
+          outcome: string | null
+          quorum_met: boolean | null
+          vote_summary: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          decided_by?: string | null
+          decision_title: string
+          decision_type?: string | null
+          description?: string | null
+          effective_from?: string | null
+          id?: string
+          outcome?: string | null
+          quorum_met?: boolean | null
+          vote_summary?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          decided_by?: string | null
+          decision_title?: string
+          decision_type?: string | null
+          description?: string | null
+          effective_from?: string | null
+          id?: string
+          outcome?: string | null
+          quorum_met?: boolean | null
+          vote_summary?: Json | null
+        }
+        Relationships: []
+      }
+      sip_neutrality_charter: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          enacted_at: string | null
+          id: string
+          is_immutable: boolean | null
+          principle_name: string
+          principle_text: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          enacted_at?: string | null
+          id?: string
+          is_immutable?: boolean | null
+          principle_name: string
+          principle_text: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          enacted_at?: string | null
+          id?: string
+          is_immutable?: boolean | null
+          principle_name?: string
+          principle_text?: string
         }
         Relationships: []
       }
