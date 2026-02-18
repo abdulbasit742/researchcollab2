@@ -268,6 +268,7 @@ const CorporatePortfolioDashboardPage = lazy(() => import("./pages/CorporatePort
 const SpinOffDashboardPage = lazy(() => import("./pages/SpinOffDashboardPage"));
 const EquityDashboardPage = lazy(() => import("./pages/EquityDashboardPage"));
 const SIPProtocolPage = lazy(() => import("./pages/SIPProtocolPage"));
+const SIPFoundationPage = lazy(() => import("./pages/SIPFoundationPage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -559,6 +560,7 @@ const AppContent = () => {
             <Route path="/spinoffs" element={<SpinOffDashboardPage />} />
             <Route path="/equity" element={<EquityDashboardPage />} />
             <Route path="/protocol" element={<SIPProtocolPage />} />
+            <Route path="/foundation" element={<SIPFoundationPage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
