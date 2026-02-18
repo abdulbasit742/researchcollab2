@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Bookmark, BookmarkCheck, Sparkles, ExternalLink, Users, Calendar, Quote, Lock, Crown } from "lucide-react";
+import { Bookmark, BookmarkCheck, Sparkles, ExternalLink, Users, Calendar, Quote, Lock, Crown, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { ResearchPaper } from "@/hooks/useResearchPapers";
 import type { UserResearchTier } from "@/hooks/useResearchPapers";
@@ -22,6 +22,18 @@ const TYPE_COLORS: Record<string, string> = {
   "Patent": "default",
 };
 
+function CitationBadge({ citations }: { citations: number }) {
+  const tier = citations >= 1000 ? "text-amber-500 bg-amber-500/10 border-amber-500/20" :
+               citations >= 100 ? "text-primary bg-primary/10 border-primary/20" :
+               "text-muted-foreground bg-muted/50 border-border/50";
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold border ${tier}`}>
+      <TrendingUp className="h-2.5 w-2.5" />
+      {citations >= 1000 ? `${(citations / 1000).toFixed(0)}K` : citations.toLocaleString()}
+    </span>
+  );
+}
+
 interface PaperCardProps {
   paper: ResearchPaper;
   onSummarize: (paper: ResearchPaper) => void;
@@ -36,7 +48,7 @@ interface PaperCardProps {
 
 export function PaperCard({ paper, onSummarize, onToggleBookmark, isLoading, selectable, selected, onSelect, userTier = "free", isLocked = false }: PaperCardProps) {
   return (
-    <Card variant="elevated" className={`group relative ${selected ? "ring-2 ring-primary" : ""}`}>
+    <Card variant="elevated" className={`group relative transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/20 ${selected ? "ring-2 ring-primary" : ""}`}>
       {/* Lock overlay for restricted papers */}
       {isLocked && (
         <div className="absolute inset-0 z-10 bg-background/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center gap-3">
@@ -64,30 +76,36 @@ export function PaperCard({ paper, onSummarize, onToggleBookmark, isLoading, sel
               />
             )}
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <Badge variant={(TYPE_COLORS[paper.type] as any) || "default"}>{paper.type}</Badge>
-                <Badge variant={paper.access === "Open Access" ? "success" : "outline"}>{paper.access}</Badge>
+              <div className="flex items-center gap-1.5 mb-2 flex-wrap">
+                <Badge variant={(TYPE_COLORS[paper.type] as any) || "default"} className="text-[10px]">{paper.type}</Badge>
+                <Badge variant={paper.access === "Open Access" ? "success" : "outline"} className="text-[10px]">{paper.access}</Badge>
                 {paper.access === "Restricted" && (
-                  <Badge variant="secondary" className="text-[10px] gap-1">
+                  <Badge variant="secondary" className="text-[10px] gap-0.5">
                     <Crown className="h-2.5 w-2.5" />
                     Pro+
                   </Badge>
                 )}
-                {paper.summarized && <Badge variant="premium">AI Analyzed</Badge>}
+                {paper.summarized && (
+                  <Badge variant="premium" className="text-[10px] gap-0.5">
+                    <Sparkles className="h-2.5 w-2.5" />
+                    AI Analyzed
+                  </Badge>
+                )}
+                <CitationBadge citations={paper.citations} />
               </div>
-              <CardTitle className="text-base leading-snug">{paper.title}</CardTitle>
+              <CardTitle className="text-sm leading-snug group-hover:text-primary transition-colors">{paper.title}</CardTitle>
             </div>
           </div>
           <Button
             variant="ghost"
             size="icon"
-            className="shrink-0"
+            className="shrink-0 h-8 w-8"
             onClick={() => onToggleBookmark(paper.id)}
           >
             {paper.bookmarked ? (
               <BookmarkCheck className="h-4 w-4 text-primary" />
             ) : (
-              <Bookmark className="h-4 w-4" />
+              <Bookmark className="h-4 w-4 opacity-50 group-hover:opacity-100 transition-opacity" />
             )}
           </Button>
         </div>
@@ -103,39 +121,35 @@ export function PaperCard({ paper, onSummarize, onToggleBookmark, isLoading, sel
             <Calendar className="h-3 w-3" />
             {paper.year}
           </span>
-          <span className="flex items-center gap-1">
-            <Quote className="h-3 w-3" />
-            {paper.citations.toLocaleString()} citations
-          </span>
         </div>
 
-        <p className="text-sm text-muted-foreground line-clamp-3">{paper.abstract}</p>
+        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{paper.abstract}</p>
 
-        <div className="text-xs text-muted-foreground">{paper.journal}</div>
+        <div className="text-[11px] text-muted-foreground/70 font-medium">{paper.journal}</div>
 
         <div className="flex items-center gap-2 pt-1">
           {isLocked ? (
-            <Button size="sm" variant="outline" className="gap-1.5" asChild>
+            <Button size="sm" variant="outline" className="gap-1.5 text-xs h-8" asChild>
               <Link to="/pricing">
-                <Crown className="h-3.5 w-3.5" />
-                Upgrade to Access
+                <Crown className="h-3 w-3" />
+                Upgrade
               </Link>
             </Button>
           ) : (
             <Button
               size="sm"
               variant="default"
-              className="gap-1.5"
+              className="gap-1.5 text-xs h-8 shadow-sm"
               onClick={() => onSummarize(paper)}
               disabled={isLoading}
             >
-              <Sparkles className="h-3.5 w-3.5" />
+              <Sparkles className="h-3 w-3" />
               {paper.summarized ? "View Summary" : "AI Summarize"}
             </Button>
           )}
-          <Button size="sm" variant="outline" className="gap-1.5" asChild>
+          <Button size="sm" variant="outline" className="gap-1.5 text-xs h-8" asChild>
             <a href={`https://doi.org/${paper.doi}`} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="h-3.5 w-3.5" />
+              <ExternalLink className="h-3 w-3" />
               DOI
             </a>
           </Button>
