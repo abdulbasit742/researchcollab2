@@ -2741,6 +2741,94 @@ export type Database = {
           },
         ]
       }
+      alliance_performance_metrics: {
+        Row: {
+          alliance_id: string
+          calculated_at: string
+          capital_deployed: number | null
+          employment_hires: number | null
+          id: string
+          period: string
+          projects_funded: number | null
+          risk_exposure: number | null
+          roi_proxy: number | null
+          sector_success_rate: number | null
+          startup_investments: number | null
+        }
+        Insert: {
+          alliance_id: string
+          calculated_at?: string
+          capital_deployed?: number | null
+          employment_hires?: number | null
+          id?: string
+          period: string
+          projects_funded?: number | null
+          risk_exposure?: number | null
+          roi_proxy?: number | null
+          sector_success_rate?: number | null
+          startup_investments?: number | null
+        }
+        Update: {
+          alliance_id?: string
+          calculated_at?: string
+          capital_deployed?: number | null
+          employment_hires?: number | null
+          id?: string
+          period?: string
+          projects_funded?: number | null
+          risk_exposure?: number | null
+          roi_proxy?: number | null
+          sector_success_rate?: number | null
+          startup_investments?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alliance_performance_metrics_alliance_id_fkey"
+            columns: ["alliance_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_alliances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      alliance_risk_alerts: {
+        Row: {
+          alliance_id: string
+          description: string | null
+          detected_at: string
+          id: string
+          is_resolved: boolean | null
+          risk_type: string
+          severity: string
+        }
+        Insert: {
+          alliance_id: string
+          description?: string | null
+          detected_at?: string
+          id?: string
+          is_resolved?: boolean | null
+          risk_type: string
+          severity?: string
+        }
+        Update: {
+          alliance_id?: string
+          description?: string | null
+          detected_at?: string
+          id?: string
+          is_resolved?: boolean | null
+          risk_type?: string
+          severity?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alliance_risk_alerts_alliance_id_fkey"
+            columns: ["alliance_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_alliances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       allocation_simulations: {
         Row: {
           country_id: string | null
@@ -5985,6 +6073,54 @@ export type Database = {
           },
         ]
       }
+      corporate_alliances: {
+        Row: {
+          alliance_tier: string
+          annual_rnd_commitment: number | null
+          company_name: string
+          compliance_status: string | null
+          contact_email: string | null
+          created_at: string
+          hq_country: string
+          id: string
+          intelligence_subscription_level: string | null
+          logo_url: string | null
+          participating_nodes: string[] | null
+          sector_focus: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          alliance_tier?: string
+          annual_rnd_commitment?: number | null
+          company_name: string
+          compliance_status?: string | null
+          contact_email?: string | null
+          created_at?: string
+          hq_country: string
+          id?: string
+          intelligence_subscription_level?: string | null
+          logo_url?: string | null
+          participating_nodes?: string[] | null
+          sector_focus?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          alliance_tier?: string
+          annual_rnd_commitment?: number | null
+          company_name?: string
+          compliance_status?: string | null
+          contact_email?: string | null
+          created_at?: string
+          hq_country?: string
+          id?: string
+          intelligence_subscription_level?: string | null
+          logo_url?: string | null
+          participating_nodes?: string[] | null
+          sector_focus?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       corporate_governance_roles: {
         Row: {
           corporate_id: string
@@ -6060,6 +6196,108 @@ export type Database = {
             columns: ["corporate_id"]
             isOneToOne: false
             referencedRelation: "corporate_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      corporate_rnd_allocations: {
+        Row: {
+          alliance_id: string
+          allocated_amount: number
+          allocation_period: string | null
+          created_at: string
+          id: string
+          node_id: string | null
+          sector: string
+          status: string | null
+          university_tier_filter: string | null
+        }
+        Insert: {
+          alliance_id: string
+          allocated_amount?: number
+          allocation_period?: string | null
+          created_at?: string
+          id?: string
+          node_id?: string | null
+          sector: string
+          status?: string | null
+          university_tier_filter?: string | null
+        }
+        Update: {
+          alliance_id?: string
+          allocated_amount?: number
+          allocation_period?: string | null
+          created_at?: string
+          id?: string
+          node_id?: string | null
+          sector?: string
+          status?: string | null
+          university_tier_filter?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corporate_rnd_allocations_alliance_id_fkey"
+            columns: ["alliance_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_alliances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "corporate_rnd_allocations_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      corporate_talent_pipelines: {
+        Row: {
+          alliance_id: string
+          created_at: string
+          id: string
+          node_id: string | null
+          pipeline_type: string
+          positions_available: number | null
+          positions_filled: number | null
+          sector: string | null
+          status: string | null
+        }
+        Insert: {
+          alliance_id: string
+          created_at?: string
+          id?: string
+          node_id?: string | null
+          pipeline_type: string
+          positions_available?: number | null
+          positions_filled?: number | null
+          sector?: string | null
+          status?: string | null
+        }
+        Update: {
+          alliance_id?: string
+          created_at?: string
+          id?: string
+          node_id?: string | null
+          pipeline_type?: string
+          positions_available?: number | null
+          positions_filled?: number | null
+          sector?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corporate_talent_pipelines_alliance_id_fkey"
+            columns: ["alliance_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_alliances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "corporate_talent_pipelines_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
             referencedColumns: ["id"]
           },
         ]
@@ -29305,6 +29543,53 @@ export type Database = {
             columns: ["country_id"]
             isOneToOne: false
             referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sector_innovation_tracks: {
+        Row: {
+          alliance_id: string
+          budget: number | null
+          created_at: string
+          description: string | null
+          id: string
+          participating_node_ids: string[] | null
+          sector: string
+          status: string | null
+          title: string
+          track_type: string
+        }
+        Insert: {
+          alliance_id: string
+          budget?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          participating_node_ids?: string[] | null
+          sector: string
+          status?: string | null
+          title: string
+          track_type: string
+        }
+        Update: {
+          alliance_id?: string
+          budget?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          participating_node_ids?: string[] | null
+          sector?: string
+          status?: string | null
+          title?: string
+          track_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sector_innovation_tracks_alliance_id_fkey"
+            columns: ["alliance_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_alliances"
             referencedColumns: ["id"]
           },
         ]
