@@ -266,6 +266,7 @@ const CapitalPoolDashboardPage = lazy(() => import("./pages/CapitalPoolDashboard
 // Corporate R&D, Spin-Off, National Infrastructure, Partners, E2E OS
 const CorporatePortfolioDashboardPage = lazy(() => import("./pages/CorporatePortfolioDashboardPage"));
 const SpinOffDashboardPage = lazy(() => import("./pages/SpinOffDashboardPage"));
+const EquityDashboardPage = lazy(() => import("./pages/EquityDashboardPage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -555,6 +556,7 @@ const AppContent = () => {
             {/* Corporate R&D, Spin-Off, National Infrastructure, Partners, E2E OS */}
             <Route path="/corporate/portfolio" element={<CorporatePortfolioDashboardPage />} />
             <Route path="/spinoffs" element={<SpinOffDashboardPage />} />
+            <Route path="/equity" element={<EquityDashboardPage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
