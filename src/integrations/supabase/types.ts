@@ -6606,6 +6606,59 @@ export type Database = {
           },
         ]
       }
+      corporate_hiring_candidates: {
+        Row: {
+          ai_hiring_match_pct: number | null
+          corporate_id: string | null
+          created_at: string
+          delivery_consistency: number | null
+          dispute_exposure: number | null
+          employment_stability_prediction: number | null
+          escrow_work_history_count: number | null
+          id: string
+          skill_roi_index: number | null
+          status: string | null
+          trust_score: number | null
+          user_id: string
+        }
+        Insert: {
+          ai_hiring_match_pct?: number | null
+          corporate_id?: string | null
+          created_at?: string
+          delivery_consistency?: number | null
+          dispute_exposure?: number | null
+          employment_stability_prediction?: number | null
+          escrow_work_history_count?: number | null
+          id?: string
+          skill_roi_index?: number | null
+          status?: string | null
+          trust_score?: number | null
+          user_id: string
+        }
+        Update: {
+          ai_hiring_match_pct?: number | null
+          corporate_id?: string | null
+          created_at?: string
+          delivery_consistency?: number | null
+          dispute_exposure?: number | null
+          employment_stability_prediction?: number | null
+          escrow_work_history_count?: number | null
+          id?: string
+          skill_roi_index?: number | null
+          status?: string | null
+          trust_score?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corporate_hiring_candidates_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       corporate_hiring_pipeline: {
         Row: {
           corporate_id: string
@@ -8840,6 +8893,53 @@ export type Database = {
             columns: ["domain_id"]
             isOneToOne: false
             referencedRelation: "enterprise_domains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      delivery_consistency_index: {
+        Row: {
+          budget_adherence_pct: number | null
+          computed_at: string
+          consistency_score: number | null
+          dispute_frequency: number | null
+          id: string
+          milestone_variance: number | null
+          on_time_completion_pct: number | null
+          rehire_rate: number | null
+          sponsor_repeat_rate: number | null
+          user_id: string
+        }
+        Insert: {
+          budget_adherence_pct?: number | null
+          computed_at?: string
+          consistency_score?: number | null
+          dispute_frequency?: number | null
+          id?: string
+          milestone_variance?: number | null
+          on_time_completion_pct?: number | null
+          rehire_rate?: number | null
+          sponsor_repeat_rate?: number | null
+          user_id: string
+        }
+        Update: {
+          budget_adherence_pct?: number | null
+          computed_at?: string
+          consistency_score?: number | null
+          dispute_frequency?: number | null
+          id?: string
+          milestone_variance?: number | null
+          on_time_completion_pct?: number | null
+          rehire_rate?: number | null
+          sponsor_repeat_rate?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "delivery_consistency_index_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -12154,6 +12254,48 @@ export type Database = {
           minimum_trust_score?: number
           requires_escrow_history?: boolean
           requires_verification?: boolean
+        }
+        Relationships: []
+      }
+      feature_alignment_audit: {
+        Row: {
+          adoption_impact: string | null
+          audited_by: string | null
+          complexity_cost: string | null
+          created_at: string
+          engine_alignment: number | null
+          feature_name: string
+          id: string
+          keep_or_cut: string | null
+          notes: string | null
+          revenue_impact: string | null
+          updated_at: string
+        }
+        Insert: {
+          adoption_impact?: string | null
+          audited_by?: string | null
+          complexity_cost?: string | null
+          created_at?: string
+          engine_alignment?: number | null
+          feature_name: string
+          id?: string
+          keep_or_cut?: string | null
+          notes?: string | null
+          revenue_impact?: string | null
+          updated_at?: string
+        }
+        Update: {
+          adoption_impact?: string | null
+          audited_by?: string | null
+          complexity_cost?: string | null
+          created_at?: string
+          engine_alignment?: number | null
+          feature_name?: string
+          id?: string
+          keep_or_cut?: string | null
+          notes?: string | null
+          revenue_impact?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -23583,6 +23725,56 @@ export type Database = {
         }
         Relationships: []
       }
+      opportunity_routing: {
+        Row: {
+          accepted_at: string | null
+          id: string
+          match_score: number | null
+          opportunity_id: string | null
+          opportunity_type: string
+          rejected_at: string | null
+          routed_at: string
+          skill_match_pct: number | null
+          status: string | null
+          trust_weight: number | null
+          user_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          id?: string
+          match_score?: number | null
+          opportunity_id?: string | null
+          opportunity_type: string
+          rejected_at?: string | null
+          routed_at?: string
+          skill_match_pct?: number | null
+          status?: string | null
+          trust_weight?: number | null
+          user_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          id?: string
+          match_score?: number | null
+          opportunity_id?: string | null
+          opportunity_type?: string
+          rejected_at?: string | null
+          routed_at?: string
+          skill_match_pct?: number | null
+          status?: string | null
+          trust_weight?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_routing_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ops_metrics_snapshots: {
         Row: {
           completed_outcomes: number
@@ -26788,6 +26980,59 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_value_scores: {
+        Row: {
+          capital_handled: number | null
+          computed_at: string
+          dispute_avoidance_score: number | null
+          execution_speed_score: number | null
+          hiring_likelihood_pct: number | null
+          id: string
+          overall_value_score: number | null
+          reliability_score: number | null
+          skill_depth_score: number | null
+          startup_success_score: number | null
+          trust_stability_score: number | null
+          user_id: string
+        }
+        Insert: {
+          capital_handled?: number | null
+          computed_at?: string
+          dispute_avoidance_score?: number | null
+          execution_speed_score?: number | null
+          hiring_likelihood_pct?: number | null
+          id?: string
+          overall_value_score?: number | null
+          reliability_score?: number | null
+          skill_depth_score?: number | null
+          startup_success_score?: number | null
+          trust_stability_score?: number | null
+          user_id: string
+        }
+        Update: {
+          capital_handled?: number | null
+          computed_at?: string
+          dispute_avoidance_score?: number | null
+          execution_speed_score?: number | null
+          hiring_likelihood_pct?: number | null
+          id?: string
+          overall_value_score?: number | null
+          reliability_score?: number | null
+          skill_depth_score?: number | null
+          startup_success_score?: number | null
+          trust_stability_score?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_value_scores_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profile_analytics: {
         Row: {
           connection_requests_received: number
@@ -28034,6 +28279,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      regional_domination_metrics: {
+        Row: {
+          capital_cycle_days: number | null
+          corporate_sponsors_active: number | null
+          dispute_rate: number | null
+          dominance_score: number | null
+          employment_conversion_pct: number | null
+          escrow_volume: number | null
+          funded_fyp_count: number | null
+          id: string
+          milestone_completion_rate: number | null
+          period: string
+          recorded_at: string
+          region_name: string
+          retention_rate: number | null
+          revenue_growth_pct: number | null
+          startup_spinoffs: number | null
+          university_integrations: number | null
+        }
+        Insert: {
+          capital_cycle_days?: number | null
+          corporate_sponsors_active?: number | null
+          dispute_rate?: number | null
+          dominance_score?: number | null
+          employment_conversion_pct?: number | null
+          escrow_volume?: number | null
+          funded_fyp_count?: number | null
+          id?: string
+          milestone_completion_rate?: number | null
+          period: string
+          recorded_at?: string
+          region_name: string
+          retention_rate?: number | null
+          revenue_growth_pct?: number | null
+          startup_spinoffs?: number | null
+          university_integrations?: number | null
+        }
+        Update: {
+          capital_cycle_days?: number | null
+          corporate_sponsors_active?: number | null
+          dispute_rate?: number | null
+          dominance_score?: number | null
+          employment_conversion_pct?: number | null
+          escrow_volume?: number | null
+          funded_fyp_count?: number | null
+          id?: string
+          milestone_completion_rate?: number | null
+          period?: string
+          recorded_at?: string
+          region_name?: string
+          retention_rate?: number | null
+          revenue_growth_pct?: number | null
+          startup_spinoffs?: number | null
+          university_integrations?: number | null
+        }
+        Relationships: []
       }
       regional_governance: {
         Row: {
@@ -37283,6 +37585,56 @@ export type Database = {
           verification_type?: string
         }
         Relationships: []
+      }
+      verified_skills: {
+        Row: {
+          ai_quality_score: number | null
+          badge_level: string
+          created_at: string
+          id: string
+          last_validated_at: string | null
+          milestones_delivered: number | null
+          peer_reviews: number | null
+          skill_name: string
+          sponsor_confirmations: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_quality_score?: number | null
+          badge_level?: string
+          created_at?: string
+          id?: string
+          last_validated_at?: string | null
+          milestones_delivered?: number | null
+          peer_reviews?: number | null
+          skill_name: string
+          sponsor_confirmations?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_quality_score?: number | null
+          badge_level?: string
+          created_at?: string
+          id?: string
+          last_validated_at?: string | null
+          milestones_delivered?: number | null
+          peer_reviews?: number | null
+          skill_name?: string
+          sponsor_confirmations?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verified_skills_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       vesting_schedules: {
         Row: {
