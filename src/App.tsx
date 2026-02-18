@@ -275,6 +275,7 @@ const GlobalNodeDeploymentPage = lazy(() => import("./pages/GlobalNodeDeployment
 const EnterpriseScalingPage = lazy(() => import("./pages/EnterpriseScalingPage"));
 const InnovationIntelligencePage = lazy(() => import("./pages/InnovationIntelligencePage"));
 const CorporateAlliancePage = lazy(() => import("./pages/CorporateAlliancePage"));
+const IntelligenceMarketplacePage = lazy(() => import("./pages/IntelligenceMarketplacePage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -573,6 +574,7 @@ const AppContent = () => {
             <Route path="/internal/performance" element={<EnterpriseScalingPage />} />
             <Route path="/intelligence" element={<InnovationIntelligencePage />} />
             <Route path="/alliance/corporate" element={<CorporateAlliancePage />} />
+            <Route path="/intelligence/marketplace" element={<IntelligenceMarketplacePage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
