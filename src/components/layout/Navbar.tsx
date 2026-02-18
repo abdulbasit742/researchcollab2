@@ -235,10 +235,10 @@ export function Navbar() {
           <NotificationBell />
           {user ? (
             <>
-              <Link to="/progress">
+              <Link to="/career">
                 <Button variant="ghost" size="sm" className="gap-2">
                   <TrendingUp className="h-4 w-4" />
-                  Progress
+                  Career
                 </Button>
               </Link>
               <Link to="/profile">
@@ -309,10 +309,10 @@ export function Navbar() {
               <div className="pt-3 border-t space-y-2">
                 {user ? (
                   <>
-                    <Link to="/progress" onClick={() => setIsOpen(false)}>
+                    <Link to="/career" onClick={() => setIsOpen(false)}>
                       <Button variant="outline" className="w-full justify-start gap-2 h-11">
                         <TrendingUp className="h-4 w-4" />
-                        Career Progress
+                        Career
                       </Button>
                     </Link>
                     <Link to="/profile" onClick={() => setIsOpen(false)}>
