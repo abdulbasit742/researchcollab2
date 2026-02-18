@@ -3505,6 +3505,57 @@ export type Database = {
           },
         ]
       }
+      board_reports: {
+        Row: {
+          alliance_growth: Json | null
+          arbitration_metrics: Json | null
+          capital_efficiency: Json | null
+          compliance_status: Json | null
+          generated_at: string
+          id: string
+          intelligence_revenue: Json | null
+          is_published: boolean | null
+          kpi_summary: Json | null
+          node_expansion: Json | null
+          report_quarter: string
+          report_year: number
+          risk_dashboard: Json | null
+          security_overview: Json | null
+        }
+        Insert: {
+          alliance_growth?: Json | null
+          arbitration_metrics?: Json | null
+          capital_efficiency?: Json | null
+          compliance_status?: Json | null
+          generated_at?: string
+          id?: string
+          intelligence_revenue?: Json | null
+          is_published?: boolean | null
+          kpi_summary?: Json | null
+          node_expansion?: Json | null
+          report_quarter: string
+          report_year: number
+          risk_dashboard?: Json | null
+          security_overview?: Json | null
+        }
+        Update: {
+          alliance_growth?: Json | null
+          arbitration_metrics?: Json | null
+          capital_efficiency?: Json | null
+          compliance_status?: Json | null
+          generated_at?: string
+          id?: string
+          intelligence_revenue?: Json | null
+          is_published?: boolean | null
+          kpi_summary?: Json | null
+          node_expansion?: Json | null
+          report_quarter?: string
+          report_year?: number
+          risk_dashboard?: Json | null
+          security_overview?: Json | null
+        }
+        Relationships: []
+      }
       bridge_roles: {
         Row: {
           created_at: string
@@ -5116,6 +5167,54 @@ export type Database = {
           id?: string
           migration_support_commitment?: string | null
           version?: string
+        }
+        Relationships: []
+      }
+      competitor_analysis: {
+        Row: {
+          arbitration_structure: number | null
+          capital_integration: number | null
+          competitor_name: string
+          competitor_type: string
+          cross_border_capability: number | null
+          escrow_integrity: number | null
+          governance_neutrality: number | null
+          id: string
+          institutional_scalability: number | null
+          intelligence_forecasting: number | null
+          overall_score: number | null
+          trust_verifiability: number | null
+          updated_at: string
+        }
+        Insert: {
+          arbitration_structure?: number | null
+          capital_integration?: number | null
+          competitor_name: string
+          competitor_type: string
+          cross_border_capability?: number | null
+          escrow_integrity?: number | null
+          governance_neutrality?: number | null
+          id?: string
+          institutional_scalability?: number | null
+          intelligence_forecasting?: number | null
+          overall_score?: number | null
+          trust_verifiability?: number | null
+          updated_at?: string
+        }
+        Update: {
+          arbitration_structure?: number | null
+          capital_integration?: number | null
+          competitor_name?: string
+          competitor_type?: string
+          cross_border_capability?: number | null
+          escrow_integrity?: number | null
+          governance_neutrality?: number | null
+          id?: string
+          institutional_scalability?: number | null
+          intelligence_forecasting?: number | null
+          overall_score?: number | null
+          trust_verifiability?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -18890,6 +18989,72 @@ export type Database = {
           },
         ]
       }
+      investor_metrics: {
+        Row: {
+          cac: number | null
+          capital_velocity: number | null
+          churn_rate: number | null
+          corporate_alliance_count: number | null
+          created_at: string
+          dispute_rate_percent: number | null
+          employment_conversion_rate: number | null
+          escrow_volume: number | null
+          gmv: number | null
+          government_participation_count: number | null
+          id: string
+          intelligence_subscription_growth: number | null
+          ltv: number | null
+          metric_date: string
+          net_platform_revenue: number | null
+          node_growth_rate: number | null
+          retention_rate: number | null
+          startup_survival_rate: number | null
+          take_rate_percent: number | null
+        }
+        Insert: {
+          cac?: number | null
+          capital_velocity?: number | null
+          churn_rate?: number | null
+          corporate_alliance_count?: number | null
+          created_at?: string
+          dispute_rate_percent?: number | null
+          employment_conversion_rate?: number | null
+          escrow_volume?: number | null
+          gmv?: number | null
+          government_participation_count?: number | null
+          id?: string
+          intelligence_subscription_growth?: number | null
+          ltv?: number | null
+          metric_date?: string
+          net_platform_revenue?: number | null
+          node_growth_rate?: number | null
+          retention_rate?: number | null
+          startup_survival_rate?: number | null
+          take_rate_percent?: number | null
+        }
+        Update: {
+          cac?: number | null
+          capital_velocity?: number | null
+          churn_rate?: number | null
+          corporate_alliance_count?: number | null
+          created_at?: string
+          dispute_rate_percent?: number | null
+          employment_conversion_rate?: number | null
+          escrow_volume?: number | null
+          gmv?: number | null
+          government_participation_count?: number | null
+          id?: string
+          intelligence_subscription_growth?: number | null
+          ltv?: number | null
+          metric_date?: string
+          net_platform_revenue?: number | null
+          node_growth_rate?: number | null
+          retention_rate?: number | null
+          startup_survival_rate?: number | null
+          take_rate_percent?: number | null
+        }
+        Relationships: []
+      }
       ip_contracts: {
         Row: {
           contract_hash: string | null
@@ -20841,6 +21006,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      moat_pillars: {
+        Row: {
+          composite_score: number | null
+          data_advantage_depth: number | null
+          description: string | null
+          id: string
+          pillar_name: string
+          replicability_risk: number | null
+          switching_cost: number | null
+          time_to_replicate_months: number | null
+          updated_at: string
+        }
+        Insert: {
+          composite_score?: number | null
+          data_advantage_depth?: number | null
+          description?: string | null
+          id?: string
+          pillar_name: string
+          replicability_risk?: number | null
+          switching_cost?: number | null
+          time_to_replicate_months?: number | null
+          updated_at?: string
+        }
+        Update: {
+          composite_score?: number | null
+          data_advantage_depth?: number | null
+          description?: string | null
+          id?: string
+          pillar_name?: string
+          replicability_risk?: number | null
+          switching_cost?: number | null
+          time_to_replicate_months?: number | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       mobility_agreements: {
         Row: {
@@ -29031,6 +29232,57 @@ export type Database = {
         }
         Relationships: []
       }
+      revenue_projections: {
+        Row: {
+          created_at: string
+          ecosystem_commissions: number | null
+          enterprise_contracts: number | null
+          escrow_commission: number | null
+          government_contracts: number | null
+          gross_margin: number | null
+          id: string
+          infrastructure_cost: number | null
+          intelligence_subscriptions: number | null
+          node_count: number | null
+          operating_margin: number | null
+          scenario_name: string
+          total_revenue: number | null
+          user_count_tier: string
+        }
+        Insert: {
+          created_at?: string
+          ecosystem_commissions?: number | null
+          enterprise_contracts?: number | null
+          escrow_commission?: number | null
+          government_contracts?: number | null
+          gross_margin?: number | null
+          id?: string
+          infrastructure_cost?: number | null
+          intelligence_subscriptions?: number | null
+          node_count?: number | null
+          operating_margin?: number | null
+          scenario_name: string
+          total_revenue?: number | null
+          user_count_tier: string
+        }
+        Update: {
+          created_at?: string
+          ecosystem_commissions?: number | null
+          enterprise_contracts?: number | null
+          escrow_commission?: number | null
+          government_contracts?: number | null
+          gross_margin?: number | null
+          id?: string
+          infrastructure_cost?: number | null
+          intelligence_subscriptions?: number | null
+          node_count?: number | null
+          operating_margin?: number | null
+          scenario_name?: string
+          total_revenue?: number | null
+          user_count_tier?: string
+        }
+        Relationships: []
+      }
       revenue_shares: {
         Row: {
           beneficiary_id: string | null
@@ -29241,6 +29493,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      risk_disclosures: {
+        Row: {
+          description: string
+          id: string
+          impact_score: number | null
+          mitigation_strategy: string | null
+          probability: number | null
+          residual_risk: number | null
+          risk_category: string
+          risk_level: string
+          updated_at: string
+        }
+        Insert: {
+          description: string
+          id?: string
+          impact_score?: number | null
+          mitigation_strategy?: string | null
+          probability?: number | null
+          residual_risk?: number | null
+          risk_category: string
+          risk_level?: string
+          updated_at?: string
+        }
+        Update: {
+          description?: string
+          id?: string
+          impact_score?: number | null
+          mitigation_strategy?: string | null
+          probability?: number | null
+          residual_risk?: number | null
+          risk_category?: string
+          risk_level?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       risk_exposure_log: {
         Row: {
@@ -34159,6 +34447,48 @@ export type Database = {
         }
         Relationships: []
       }
+      unit_economics: {
+        Row: {
+          cost: number | null
+          created_at: string
+          cross_sell_probability: number | null
+          id: string
+          infrastructure_load: number | null
+          period: string
+          retention: number | null
+          revenue: number | null
+          segment: string
+          upsell_probability: number | null
+          user_count: number | null
+        }
+        Insert: {
+          cost?: number | null
+          created_at?: string
+          cross_sell_probability?: number | null
+          id?: string
+          infrastructure_load?: number | null
+          period?: string
+          retention?: number | null
+          revenue?: number | null
+          segment: string
+          upsell_probability?: number | null
+          user_count?: number | null
+        }
+        Update: {
+          cost?: number | null
+          created_at?: string
+          cross_sell_probability?: number | null
+          id?: string
+          infrastructure_load?: number | null
+          period?: string
+          retention?: number | null
+          revenue?: number | null
+          segment?: string
+          upsell_probability?: number | null
+          user_count?: number | null
+        }
+        Relationships: []
+      }
       university_compliance_scores: {
         Row: {
           computed_at: string | null
@@ -34941,6 +35271,72 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_level?: string
+        }
+        Relationships: []
+      }
+      valuation_models: {
+        Row: {
+          alliance_density: number | null
+          created_at: string
+          data_moat_score: number | null
+          fintech_multiple: number | null
+          gmv_growth: number | null
+          government_contracts_count: number | null
+          id: string
+          infra_multiple: number | null
+          intelligence_arr: number | null
+          intelligence_multiple: number | null
+          model_date: string
+          node_velocity: number | null
+          retention: number | null
+          revenue_growth: number | null
+          saas_multiple: number | null
+          take_rate: number | null
+          valuation_high: number | null
+          valuation_low: number | null
+          valuation_mid: number | null
+        }
+        Insert: {
+          alliance_density?: number | null
+          created_at?: string
+          data_moat_score?: number | null
+          fintech_multiple?: number | null
+          gmv_growth?: number | null
+          government_contracts_count?: number | null
+          id?: string
+          infra_multiple?: number | null
+          intelligence_arr?: number | null
+          intelligence_multiple?: number | null
+          model_date?: string
+          node_velocity?: number | null
+          retention?: number | null
+          revenue_growth?: number | null
+          saas_multiple?: number | null
+          take_rate?: number | null
+          valuation_high?: number | null
+          valuation_low?: number | null
+          valuation_mid?: number | null
+        }
+        Update: {
+          alliance_density?: number | null
+          created_at?: string
+          data_moat_score?: number | null
+          fintech_multiple?: number | null
+          gmv_growth?: number | null
+          government_contracts_count?: number | null
+          id?: string
+          infra_multiple?: number | null
+          intelligence_arr?: number | null
+          intelligence_multiple?: number | null
+          model_date?: string
+          node_velocity?: number | null
+          retention?: number | null
+          revenue_growth?: number | null
+          saas_multiple?: number | null
+          take_rate?: number | null
+          valuation_high?: number | null
+          valuation_low?: number | null
+          valuation_mid?: number | null
         }
         Relationships: []
       }
