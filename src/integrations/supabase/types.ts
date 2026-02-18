@@ -2941,6 +2941,42 @@ export type Database = {
         }
         Relationships: []
       }
+      anti_capture_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          description: string
+          detected_values: Json | null
+          id: string
+          resolved_at: string | null
+          review_status: string | null
+          severity: string
+          threshold_breached: number | null
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string
+          description: string
+          detected_values?: Json | null
+          id?: string
+          resolved_at?: string | null
+          review_status?: string | null
+          severity?: string
+          threshold_breached?: number | null
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          description?: string
+          detected_values?: Json | null
+          id?: string
+          resolved_at?: string | null
+          review_status?: string | null
+          severity?: string
+          threshold_breached?: number | null
+        }
+        Relationships: []
+      }
       antifragility_metrics: {
         Row: {
           details: Json | null
@@ -3769,6 +3805,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      capital_raise_rounds: {
+        Row: {
+          closed_at: string | null
+          created_at: string
+          governance_clauses: Json | null
+          id: string
+          max_single_investor_pct: number | null
+          opened_at: string | null
+          post_money_valuation: number | null
+          pre_money_valuation: number | null
+          raised_amount: number | null
+          round_name: string
+          round_type: string
+          share_class_issued: string | null
+          status: string | null
+          target_amount: number
+        }
+        Insert: {
+          closed_at?: string | null
+          created_at?: string
+          governance_clauses?: Json | null
+          id?: string
+          max_single_investor_pct?: number | null
+          opened_at?: string | null
+          post_money_valuation?: number | null
+          pre_money_valuation?: number | null
+          raised_amount?: number | null
+          round_name: string
+          round_type: string
+          share_class_issued?: string | null
+          status?: string | null
+          target_amount: number
+        }
+        Update: {
+          closed_at?: string | null
+          created_at?: string
+          governance_clauses?: Json | null
+          id?: string
+          max_single_investor_pct?: number | null
+          opened_at?: string | null
+          post_money_valuation?: number | null
+          pre_money_valuation?: number | null
+          raised_amount?: number | null
+          round_name?: string
+          round_type?: string
+          share_class_issued?: string | null
+          status?: string | null
+          target_amount?: number
+        }
+        Relationships: []
       }
       capital_recovery_registry: {
         Row: {
@@ -11904,6 +11991,42 @@ export type Database = {
           },
         ]
       }
+      founder_equity_safeguards: {
+        Row: {
+          created_at: string
+          current_value: number | null
+          description: string
+          enforcement_mechanism: string | null
+          id: string
+          is_active: boolean | null
+          is_breached: boolean | null
+          safeguard_type: string
+          threshold_value: number | null
+        }
+        Insert: {
+          created_at?: string
+          current_value?: number | null
+          description: string
+          enforcement_mechanism?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_breached?: boolean | null
+          safeguard_type: string
+          threshold_value?: number | null
+        }
+        Update: {
+          created_at?: string
+          current_value?: number | null
+          description?: string
+          enforcement_mechanism?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_breached?: boolean | null
+          safeguard_type?: string
+          threshold_value?: number | null
+        }
+        Relationships: []
+      }
       fraud_detection_logs: {
         Row: {
           action_taken: string | null
@@ -14038,6 +14161,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      governance_role_assignments: {
+        Row: {
+          appointed_at: string
+          created_at: string
+          external_name: string | null
+          external_org: string | null
+          id: string
+          is_active: boolean
+          role_id: string
+          sunset_schedule: Json | null
+          term_ends_at: string | null
+          user_id: string | null
+          vote_weight: number
+        }
+        Insert: {
+          appointed_at?: string
+          created_at?: string
+          external_name?: string | null
+          external_org?: string | null
+          id?: string
+          is_active?: boolean
+          role_id: string
+          sunset_schedule?: Json | null
+          term_ends_at?: string | null
+          user_id?: string | null
+          vote_weight?: number
+        }
+        Update: {
+          appointed_at?: string
+          created_at?: string
+          external_name?: string | null
+          external_org?: string | null
+          id?: string
+          is_active?: boolean
+          role_id?: string
+          sunset_schedule?: Json | null
+          term_ends_at?: string | null
+          user_id?: string | null
+          vote_weight?: number
+        }
+        Relationships: []
       }
       governance_roles: {
         Row: {
@@ -16720,6 +16885,42 @@ export type Database = {
           institution_id?: string
           total_skill_liquidity?: number | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      institutional_memory: {
+        Row: {
+          category: string
+          created_at: string
+          decided_by: string | null
+          description: string
+          id: string
+          impact_assessment: Json | null
+          is_public: boolean | null
+          reasoning: string | null
+          title: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          decided_by?: string | null
+          description: string
+          id?: string
+          impact_assessment?: Json | null
+          is_public?: boolean | null
+          reasoning?: string | null
+          title: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          decided_by?: string | null
+          description?: string
+          id?: string
+          impact_assessment?: Json | null
+          is_public?: boolean | null
+          reasoning?: string | null
+          title?: string
         }
         Relationships: []
       }
@@ -30105,6 +30306,54 @@ export type Database = {
         }
         Relationships: []
       }
+      strategic_investors: {
+        Row: {
+          created_at: string
+          equity_percentage: number | null
+          governance_protection_clauses: Json | null
+          horizon_years: number | null
+          id: string
+          investment_amount: number | null
+          investor_name: string
+          investor_type: string
+          is_active: boolean | null
+          screening_criteria: Json | null
+          screening_status: string | null
+          share_class: string
+          voting_rights_percentage: number | null
+        }
+        Insert: {
+          created_at?: string
+          equity_percentage?: number | null
+          governance_protection_clauses?: Json | null
+          horizon_years?: number | null
+          id?: string
+          investment_amount?: number | null
+          investor_name: string
+          investor_type: string
+          is_active?: boolean | null
+          screening_criteria?: Json | null
+          screening_status?: string | null
+          share_class?: string
+          voting_rights_percentage?: number | null
+        }
+        Update: {
+          created_at?: string
+          equity_percentage?: number | null
+          governance_protection_clauses?: Json | null
+          horizon_years?: number | null
+          id?: string
+          investment_amount?: number | null
+          investor_name?: string
+          investor_type?: string
+          is_active?: boolean | null
+          screening_criteria?: Json | null
+          screening_status?: string | null
+          share_class?: string
+          voting_rights_percentage?: number | null
+        }
+        Relationships: []
+      }
       structural_friction_log: {
         Row: {
           details: Json | null
@@ -30359,6 +30608,51 @@ export type Database = {
           name?: string
           subsidy_percentage?: number | null
           subsidy_scope?: string
+        }
+        Relationships: []
+      }
+      succession_events: {
+        Row: {
+          audit_review_status: string | null
+          board_vote_scheduled_at: string | null
+          created_at: string
+          id: string
+          incoming_user_id: string | null
+          interim_appointed: boolean | null
+          notes: string | null
+          outgoing_role: string | null
+          outgoing_user_id: string | null
+          resolved_at: string | null
+          status: string
+          trigger_type: string
+        }
+        Insert: {
+          audit_review_status?: string | null
+          board_vote_scheduled_at?: string | null
+          created_at?: string
+          id?: string
+          incoming_user_id?: string | null
+          interim_appointed?: boolean | null
+          notes?: string | null
+          outgoing_role?: string | null
+          outgoing_user_id?: string | null
+          resolved_at?: string | null
+          status?: string
+          trigger_type: string
+        }
+        Update: {
+          audit_review_status?: string | null
+          board_vote_scheduled_at?: string | null
+          created_at?: string
+          id?: string
+          incoming_user_id?: string | null
+          interim_appointed?: boolean | null
+          notes?: string | null
+          outgoing_role?: string | null
+          outgoing_user_id?: string | null
+          resolved_at?: string | null
+          status?: string
+          trigger_type?: string
         }
         Relationships: []
       }
