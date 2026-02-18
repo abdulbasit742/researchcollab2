@@ -281,6 +281,7 @@ const DeveloperEcosystemPage = lazy(() => import("./pages/DeveloperEcosystemPage
 const SupremacyUpgradePage = lazy(() => import("./pages/SupremacyUpgradePage"));
 const InvestorDashboardPage = lazy(() => import("./pages/InvestorDashboardPage"));
 const GlobalDominationBlueprintPage = lazy(() => import("./pages/GlobalDominationBlueprintPage"));
+const WarRoomPage = lazy(() => import("./pages/WarRoomPage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -585,6 +586,7 @@ const AppContent = () => {
             <Route path="/system/supremacy" element={<SupremacyUpgradePage />} />
             <Route path="/investor/dashboard" element={<InvestorDashboardPage />} />
             <Route path="/strategy/blueprint" element={<GlobalDominationBlueprintPage />} />
+            <Route path="/internal/war-room" element={<WarRoomPage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
