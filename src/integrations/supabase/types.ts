@@ -32161,6 +32161,207 @@ export type Database = {
         }
         Relationships: []
       }
+      strategic_milestones: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          current_value: string | null
+          due_date: string | null
+          id: string
+          metric_type: string | null
+          milestone_name: string
+          phase_id: string
+          status: string
+          target_value: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          current_value?: string | null
+          due_date?: string | null
+          id?: string
+          metric_type?: string | null
+          milestone_name: string
+          phase_id: string
+          status?: string
+          target_value?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          current_value?: string | null
+          due_date?: string | null
+          id?: string
+          metric_type?: string | null
+          milestone_name?: string
+          phase_id?: string
+          status?: string
+          target_value?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "strategic_milestones_phase_id_fkey"
+            columns: ["phase_id"]
+            isOneToOne: false
+            referencedRelation: "strategic_phases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      strategic_moat_tracking: {
+        Row: {
+          created_at: string
+          current_depth_score: number | null
+          data_points_accumulated: number | null
+          id: string
+          measured_at: string
+          phase_id: string | null
+          pillar_category: string
+          pillar_name: string
+          replicability_risk: string | null
+          switching_cost_index: number | null
+          time_to_replicate_years: number | null
+        }
+        Insert: {
+          created_at?: string
+          current_depth_score?: number | null
+          data_points_accumulated?: number | null
+          id?: string
+          measured_at?: string
+          phase_id?: string | null
+          pillar_category: string
+          pillar_name: string
+          replicability_risk?: string | null
+          switching_cost_index?: number | null
+          time_to_replicate_years?: number | null
+        }
+        Update: {
+          created_at?: string
+          current_depth_score?: number | null
+          data_points_accumulated?: number | null
+          id?: string
+          measured_at?: string
+          phase_id?: string | null
+          pillar_category?: string
+          pillar_name?: string
+          replicability_risk?: string | null
+          switching_cost_index?: number | null
+          time_to_replicate_years?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "strategic_moat_tracking_phase_id_fkey"
+            columns: ["phase_id"]
+            isOneToOne: false
+            referencedRelation: "strategic_phases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      strategic_phases: {
+        Row: {
+          capital_strategy: string | null
+          created_at: string
+          focus_statement: string | null
+          id: string
+          objectives: Json | null
+          organizational_model: string | null
+          phase_name: string
+          phase_number: number
+          progress_pct: number | null
+          status: string
+          targets: Json | null
+          updated_at: string
+          year_end: number
+          year_start: number
+        }
+        Insert: {
+          capital_strategy?: string | null
+          created_at?: string
+          focus_statement?: string | null
+          id?: string
+          objectives?: Json | null
+          organizational_model?: string | null
+          phase_name: string
+          phase_number: number
+          progress_pct?: number | null
+          status?: string
+          targets?: Json | null
+          updated_at?: string
+          year_end: number
+          year_start: number
+        }
+        Update: {
+          capital_strategy?: string | null
+          created_at?: string
+          focus_statement?: string | null
+          id?: string
+          objectives?: Json | null
+          organizational_model?: string | null
+          phase_name?: string
+          phase_number?: number
+          progress_pct?: number | null
+          status?: string
+          targets?: Json | null
+          updated_at?: string
+          year_end?: number
+          year_start?: number
+        }
+        Relationships: []
+      }
+      strategic_risk_registry: {
+        Row: {
+          created_at: string
+          id: string
+          last_audit_at: string | null
+          likelihood: string
+          mitigation_strategy: string | null
+          monitoring_metric: string | null
+          phase_id: string | null
+          risk_category: string
+          risk_name: string
+          severity: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_audit_at?: string | null
+          likelihood?: string
+          mitigation_strategy?: string | null
+          monitoring_metric?: string | null
+          phase_id?: string | null
+          risk_category: string
+          risk_name: string
+          severity?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_audit_at?: string | null
+          likelihood?: string
+          mitigation_strategy?: string | null
+          monitoring_metric?: string | null
+          phase_id?: string | null
+          risk_category?: string
+          risk_name?: string
+          severity?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "strategic_risk_registry_phase_id_fkey"
+            columns: ["phase_id"]
+            isOneToOne: false
+            referencedRelation: "strategic_phases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       structural_friction_log: {
         Row: {
           details: Json | null
