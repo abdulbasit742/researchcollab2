@@ -2,13 +2,12 @@ import { forwardRef } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { HeroSection } from "@/components/home/HeroSection";
-import { GlobalNetworkMap } from "@/components/home/GlobalNetworkMap";
 import { StatsSection } from "@/components/home/StatsSection";
 import { TrustedByMarquee } from "@/components/home/TrustedByMarquee";
-import { FeaturedToolsCarousel } from "@/components/home/FeaturedToolsCarousel";
-import { HowItWorksSection } from "@/components/home/HowItWorksSection";
+import { CompetitorComparisonSection } from "@/components/home/CompetitorComparisonSection";
 import { FeaturesSection } from "@/components/home/FeaturesSection";
-import { ResearchDiscoverySection } from "@/components/home/ResearchDiscoverySection";
+import { HowItWorksSection } from "@/components/home/HowItWorksSection";
+import { FeaturedToolsCarousel } from "@/components/home/FeaturedToolsCarousel";
 import { WhyChooseSection } from "@/components/home/WhyChooseSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CTASection } from "@/components/home/CTASection";
@@ -27,31 +26,30 @@ const Index = forwardRef<HTMLDivElement>((_props, ref) => {
     <MainLayout>
       <SEOHead
         canonicalPath="/"
-        keywords="research collaboration, AI tools, academic services, FYP help, thesis writing, student earning, research grants"
+        keywords="professional collaboration, escrow payments, trust scores, AI matching, verified outcomes, research platform"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebApplication",
-          "name": "ResearchCollabPro",
+          "name": "RCollab",
           "url": "https://academic-forge-flow.lovable.app",
-          "description": "Connect with researchers worldwide, access premium AI tools, earn money with your academic skills.",
-          "applicationCategory": "EducationalApplication",
+          "description": "The world's first escrow-backed professional platform where trust is earned through verified outcomes.",
+          "applicationCategory": "BusinessApplication",
           "operatingSystem": "Web",
           "offers": {
             "@type": "Offer",
             "price": "0",
-            "priceCurrency": "PKR"
+            "priceCurrency": "USD"
           }
         }}
       />
       <OnboardingPopup />
       <HeroSection />
-      <GlobalNetworkMap />
-      <StatsSection />
       <TrustedByMarquee />
-      <FeaturedToolsCarousel />
-      <HowItWorksSection />
+      <StatsSection />
+      <CompetitorComparisonSection />
       <FeaturesSection />
-      <ResearchDiscoverySection />
+      <HowItWorksSection />
+      <FeaturedToolsCarousel />
       <WhyChooseSection />
       <TestimonialsSection />
       <CTASection />

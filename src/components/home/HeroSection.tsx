@@ -1,287 +1,200 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Search, ArrowRight, Sparkles, GraduationCap, BookOpen, FlaskConical } from "lucide-react";
-import { FloatingOrbs } from "@/components/decorations/FloatingOrbs";
-import { useParallax } from "@/hooks/useParallax";
+import { ArrowRight, Shield, Banknote, Brain, TrendingUp, Users, Zap } from "lucide-react";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
-import { LiveActivityFeed } from "@/components/home/LiveActivityFeed";
-
-const typingWords = ["Research Papers", "Global Collaborators", "AI-Powered Tools", "Real Earning"];
-
-const disciplines = [
-  "Computer Science", "Biology", "Physics", "Chemistry", "Mathematics",
-  "Engineering", "Medicine", "Psychology", "Economics", "Environmental Science",
-];
-
-const locations = [
-  "United States", "United Kingdom", "Germany", "China", "India",
-  "Australia", "Canada", "Japan", "France", "Netherlands",
-];
-
-const floatingIcons = [
-  { Icon: GraduationCap, x: "15%", y: "25%", delay: 0, speed: 0.15 },
-  { Icon: BookOpen, x: "85%", y: "20%", delay: 1, speed: 0.25 },
-  { Icon: FlaskConical, x: "10%", y: "70%", delay: 2, speed: 0.2 },
-  { Icon: Sparkles, x: "90%", y: "65%", delay: 1.5, speed: 0.3 },
-];
-
-const cyclingPlaceholders = [
-  "Try: machine learning",
-  "Try: climate change",
-  "Try: quantum computing",
-  "Try: gene therapy",
-  "Try: neural networks",
-];
+import heroNetworkBg from "@/assets/hero-network-bg.jpg";
 
 const heroStats = [
-  { value: 12000, suffix: "+", label: "Papers" },
-  { value: 5000, suffix: "+", label: "Researchers" },
-  { value: 50, suffix: "+", label: "Fields" },
-  { value: 98, suffix: "%", label: "Satisfaction" },
+  { value: 12000, suffix: "+", label: "Verified Outcomes", icon: TrendingUp },
+  { value: 5000, suffix: "+", label: "Professionals", icon: Users },
+  { value: 2.4, suffix: "M", label: "Escrow Protected", prefix: "$", icon: Shield },
+  { value: 98, suffix: "%", label: "Delivery Rate", icon: Zap },
+];
+
+const competitorKills = [
+  { platform: "LinkedIn", weakness: "Self-reported claims", ours: "Verified proof-of-work" },
+  { platform: "Upwork", weakness: "Race-to-the-bottom pricing", ours: "Trust-weighted value" },
+  { platform: "Fiverr", weakness: "No accountability", ours: "Escrow-backed execution" },
 ];
 
 export function HeroSection() {
   const navigate = useNavigate();
-  const [keyword, setKeyword] = useState("");
-  const [discipline, setDiscipline] = useState("");
-  const [location, setLocation] = useState("");
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
-  const [typingIndex, setTypingIndex] = useState(0);
-  const [displayedText, setDisplayedText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const { scrollY, isDisabled } = useParallax({ speed: 0.3 });
-  const orbsY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.15));
-  const gradientY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.08));
-  const contentY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.1));
-  const searchY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.12));
-
-  // Parallax transforms for floating icons - must be called unconditionally
-  const iconY0 = useTransform(scrollY, (v) => (isDisabled ? 0 : v * floatingIcons[0].speed));
-  const iconY1 = useTransform(scrollY, (v) => (isDisabled ? 0 : v * floatingIcons[1].speed));
-  const iconY2 = useTransform(scrollY, (v) => (isDisabled ? 0 : v * floatingIcons[2].speed));
-  const iconY3 = useTransform(scrollY, (v) => (isDisabled ? 0 : v * floatingIcons[3].speed));
-  const iconYValues = [iconY0, iconY1, iconY2, iconY3];
+  const [activeKill, setActiveKill] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPlaceholderIndex((prev) => (prev + 1) % cyclingPlaceholders.length);
+      setActiveKill((prev) => (prev + 1) % competitorKills.length);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
 
-  // Typewriter effect
-  useEffect(() => {
-    const currentWord = typingWords[typingIndex];
-    const speed = isDeleting ? 40 : 80;
-
-    if (!isDeleting && displayedText === currentWord) {
-      const timeout = setTimeout(() => setIsDeleting(true), 1800);
-      return () => clearTimeout(timeout);
-    }
-    if (isDeleting && displayedText === "") {
-      setIsDeleting(false);
-      setTypingIndex((prev) => (prev + 1) % typingWords.length);
-      return;
-    }
-
-    const timeout = setTimeout(() => {
-      setDisplayedText(
-        isDeleting
-          ? currentWord.substring(0, displayedText.length - 1)
-          : currentWord.substring(0, displayedText.length + 1)
-      );
-    }, speed);
-    return () => clearTimeout(timeout);
-  }, [displayedText, isDeleting, typingIndex]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const params = new URLSearchParams();
-    if (keyword.trim()) params.set("q", keyword.trim());
-    if (discipline) params.set("discipline", discipline);
-    if (location) params.set("location", location);
-    navigate(`/search?${params.toString()}`);
-  };
-
   return (
-    <section data-tour="hero" className="relative overflow-hidden gradient-hero min-h-[600px] md:min-h-[700px]">
-      <motion.div style={{ y: orbsY }} className="absolute inset-0">
-        <FloatingOrbs variant="hero" />
-      </motion.div>
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+      {/* Dark hero background with network visualization */}
+      <div className="absolute inset-0">
+        <img 
+          src={heroNetworkBg} 
+          alt="" 
+          className="w-full h-full object-cover opacity-40"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/95 via-foreground/85 to-foreground/95" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/5" />
+      </div>
 
-      {floatingIcons.map(({ Icon, x, y, delay }, index) => (
-        <motion.div
-          key={index}
-          className="absolute hidden md:flex items-center justify-center w-12 h-12 rounded-xl bg-card/50 backdrop-blur-sm border border-border/30 shadow-lg will-change-transform"
-          style={{ left: x, top: y, y: iconYValues[index] }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: delay + 0.5, duration: 0.5 }}
-        >
-          <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 3, delay, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Icon className="h-6 w-6 text-primary" />
-          </motion.div>
-        </motion.div>
-      ))}
+      {/* Animated grid overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(hsl(var(--primary)/0.03)_1px,transparent_1px),linear-gradient(90deg,hsl(var(--primary)/0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
-      <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-transparent via-background/5 to-background/20 pointer-events-none"
-        style={{ y: gradientY }}
+      {/* Glowing orbs */}
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-primary/8 blur-[120px]"
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-primary/6 blur-[100px]"
+        animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="container relative py-12 px-4 md:py-32 md:px-6">
-        <motion.div className="mx-auto max-w-4xl text-center" style={{ y: contentY }}>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium text-primary border border-primary/20 backdrop-blur-sm">
-              <Sparkles className="h-3 w-3 md:h-4 md:w-4 animate-pulse" />
-              Built for researchers, by researchers
+      <div className="container relative z-10 py-20 md:py-32 px-4 md:px-6">
+        <div className="max-w-5xl mx-auto">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-6 md:mb-8"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm px-4 py-2 text-xs md:text-sm font-medium text-primary">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+              </span>
+              The Professional Operating System
             </div>
           </motion.div>
 
+          {/* Main headline */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-2xl font-extrabold tracking-tight xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight"
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight leading-[0.95] text-background"
           >
-            Looking for{" "}
-            <span className="text-gradient animate-gradient-text bg-[length:200%_auto]">
-              {displayedText}
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.5, repeat: Infinity }}
-                className="inline-block w-[2px] h-[0.9em] bg-primary ml-0.5 align-middle"
-              />
+            Stop Claiming.
+            <br />
+            <span className="text-gradient bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+              Start Proving.
             </span>
-            <br className="hidden xs:block" />
-            <span className="xs:hidden"> </span>
-            Opportunities?
           </motion.h1>
 
+          {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mx-auto mt-4 md:mt-6 max-w-2xl text-sm md:text-lg lg:text-xl text-muted-foreground px-2"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-6 md:mt-8 text-base md:text-xl lg:text-2xl text-background/60 max-w-2xl leading-relaxed"
           >
-            Connect with researchers globally, access cutting-edge AI tools, and earn money 
-            with your academic skills. Your all-in-one research collaboration platform.
+            The world's first escrow-backed professional platform where trust is earned 
+            through verified outcomes — not vanity metrics.
           </motion.p>
 
-          {/* Animated stats bar */}
+          {/* Competitor displacement ticker */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="mt-6 md:mt-8 flex items-center justify-center gap-4 md:gap-8 flex-wrap"
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-8 md:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6"
           >
-            {heroStats.map((stat, i) => (
-              <div key={stat.label} className="flex flex-col items-center">
-                <span className="text-lg md:text-2xl font-bold text-primary">
-                  <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={2000} delay={i * 150} />
-                </span>
-                <span className="text-[10px] md:text-xs text-muted-foreground font-medium">{stat.label}</span>
-              </div>
-            ))}
+            <span className="text-xs font-semibold uppercase tracking-widest text-background/40">Replaces</span>
+            <div className="flex items-center gap-3 h-8 overflow-hidden">
+              {competitorKills.map((kill, i) => (
+                <motion.div
+                  key={kill.platform}
+                  initial={false}
+                  animate={{ 
+                    opacity: i === activeKill ? 1 : 0.3,
+                    scale: i === activeKill ? 1 : 0.95,
+                  }}
+                  className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+                    i === activeKill 
+                      ? "bg-primary/20 text-primary border border-primary/30" 
+                      : "bg-background/5 text-background/30 border border-background/10"
+                  }`}
+                >
+                  <span className="line-through opacity-60">{kill.platform}</span>
+                  {i === activeKill && (
+                    <motion.span
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="text-primary font-semibold"
+                    >
+                      → {kill.ours}
+                    </motion.span>
+                  )}
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
 
+          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-6 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4"
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-10 md:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4"
           >
-            <Link to="/auth?tab=signup" className="w-full sm:w-auto">
-              <Button variant="premium" size="lg" className="w-full sm:w-auto h-12 md:h-14 text-sm md:text-base touch-manipulation active:scale-95 transition-transform">
-                Get Started Free
-                <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
+            <Link to="/auth?tab=signup">
+              <Button
+                size="lg"
+                className="h-14 px-8 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_30px_hsl(var(--primary)/0.4)] hover:shadow-[0_0_50px_hsl(var(--primary)/0.5)] transition-all duration-300"
+              >
+                Build Your Proof
+                <ArrowRight className="h-5 w-5 ml-2" />
               </Button>
             </Link>
-            <Link to="/tools" className="w-full sm:w-auto">
-              <Button variant="hero-outline" size="lg" className="w-full sm:w-auto h-12 md:h-14 text-sm md:text-base touch-manipulation active:scale-95 transition-transform">
-                Explore AI Tools
+            <Link to="/earn">
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-14 px-8 text-base font-semibold border-background/20 text-background/80 hover:bg-background/10 hover:text-background hover:border-background/40 transition-all"
+              >
+                <Banknote className="h-5 w-5 mr-2" />
+                Start Earning
               </Button>
             </Link>
           </motion.div>
 
-          {/* Search Bar */}
+          {/* Stats bar */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            style={{ y: searchY }}
-            className="mt-8 md:mt-16 mx-auto max-w-3xl px-2"
+            transition={{ duration: 0.7, delay: 0.6 }}
+            className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 border-t border-background/10 pt-8 md:pt-10"
           >
-            <form onSubmit={handleSearch} aria-label="Search researchers and papers" className="rounded-xl md:rounded-2xl bg-card/80 backdrop-blur-xl p-3 md:p-4 shadow-xl border border-border/50 glow-focus transition-all duration-300 hover:shadow-2xl hover:border-primary/20">
-              <div className="flex flex-col gap-3 md:flex-row md:gap-4">
-                <div className="hidden md:block">
-                  <Select value={discipline} onValueChange={setDiscipline}>
-                    <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation bg-background/50">
-                      <SelectValue placeholder="Discipline" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {disciplines.map((d) => (
-                        <SelectItem key={d} value={d.toLowerCase()}>{d}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+            {heroStats.map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 + i * 0.1 }}
+                className="group"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <stat.icon className="h-4 w-4 text-primary/60" />
+                  <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-background tracking-tight">
+                    {stat.prefix || ""}
+                    <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={2500} delay={i * 200} />
+                  </span>
                 </div>
-
-                <div className="hidden md:block">
-                  <Select value={location} onValueChange={setLocation}>
-                    <SelectTrigger className="w-full md:w-48 h-11 touch-manipulation bg-background/50">
-                      <SelectValue placeholder="Location" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {locations.map((l) => (
-                        <SelectItem key={l} value={l.toLowerCase()}>{l}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex-1 flex flex-col xs:flex-row gap-2">
-                  <label htmlFor="hero-search" className="sr-only">Search keyword</label>
-                  <Input
-                    id="hero-search"
-                    placeholder={cyclingPlaceholders[placeholderIndex]}
-                    className="flex-1 h-11 min-h-[44px] bg-background/50 transition-all text-base"
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
-                  />
-                  <Button type="submit" size="default" className="h-11 px-6 w-full xs:w-auto touch-manipulation active:scale-95 transition-transform">
-                    <Search className="h-4 w-4 mr-2" />
-                    Search
-                  </Button>
-                </div>
-              </div>
-            </form>
+                <span className="text-xs md:text-sm text-background/40 font-medium">{stat.label}</span>
+              </motion.div>
+            ))}
           </motion.div>
-
-          {/* Live Activity Feed */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="mt-6"
-          >
-            <LiveActivityFeed />
-          </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

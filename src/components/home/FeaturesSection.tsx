@@ -1,193 +1,112 @@
 import { Link } from "react-router-dom";
-import { motion, useTransform } from "framer-motion";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Wrench, Users, DollarSign, FileText, Sparkles, Shield } from "lucide-react";
-import { useParallax } from "@/hooks/useParallax";
+import { ArrowRight, Shield, Brain, DollarSign, Scale, Award, Fingerprint, TrendingUp, Zap } from "lucide-react";
 
 const features = [
   {
-    icon: Wrench,
-    title: "AI Research Tools",
-    description: "Access ChatGPT, Gemini, Claude, and more powerful AI tools designed for academic research.",
-    badge: "Premium",
-    badgeVariant: "premium" as const,
-    href: "/tools",
-    color: "from-violet-500 to-purple-600",
+    icon: Shield,
+    title: "Escrow-Backed Execution",
+    description: "Every deal is financially protected. Funds are locked until milestones are verified and delivered — no more payment anxiety.",
+    tag: "Core",
+    color: "from-emerald-500 to-teal-600",
+    href: "/deals",
   },
   {
-    icon: Users,
-    title: "Find Collaborators",
-    description: "Connect with researchers, students, and experts worldwide based on your interests and verified skills.",
-    badge: "Smart Match",
-    badgeVariant: "info" as const,
-    href: "/collaborations",
-    color: "from-blue-500 to-cyan-500",
+    icon: TrendingUp,
+    title: "Non-Gameable Trust Scores",
+    description: "Trust earned through verified outcomes, peer reviews, and delivery consistency — with velocity caps and gaming detection.",
+    tag: "Unique",
+    color: "from-primary to-blue-600",
+    href: "/leaderboard",
+  },
+  {
+    icon: Brain,
+    title: "AI Capital Intelligence",
+    description: "Our proprietary AI allocates capital, predicts project success, and matches talent based on deep outcome data — not keywords.",
+    tag: "AI",
+    color: "from-violet-500 to-purple-600",
+    href: "/tools",
   },
   {
     icon: DollarSign,
-    title: "Earn Money",
-    description: "Monetize your skills by bidding on projects, offering services, and helping with academic work.",
-    badge: "Top Feature",
-    badgeVariant: "success" as const,
+    title: "Earn What You're Worth",
+    description: "Trust-weighted commissions from 6% to 12%. The more you deliver, the less you pay. No race-to-the-bottom pricing.",
+    tag: "Economics",
+    color: "from-amber-500 to-orange-600",
     href: "/earn",
-    color: "from-emerald-500 to-teal-500",
   },
   {
-    icon: FileText,
-    title: "FYP & Academic Services",
-    description: "Find or offer help with final year projects, thesis writing, data analysis, and more.",
-    badge: "Popular",
-    badgeVariant: "warning" as const,
-    href: "/fyp-services",
-    color: "from-orange-500 to-amber-500",
+    icon: Scale,
+    title: "Digital Arbitration Court",
+    description: "Structured dispute resolution with evidence submission, faculty mediation, and binding verdicts — not just a support ticket.",
+    tag: "Legal",
+    color: "from-rose-500 to-red-600",
+    href: "/arbitration-court",
   },
   {
-    icon: Sparkles,
-    title: "Research Grants",
-    description: "Discover funding opportunities, grant calls, and fellowship programs worldwide.",
-    badge: "New",
-    badgeVariant: "new" as const,
-    href: "/grants",
-    color: "from-pink-500 to-rose-500",
-  },
-  {
-    icon: Shield,
-    title: "Secure Platform",
-    description: "Enterprise-grade security with encrypted communications and verified user profiles.",
-    badge: "Trusted",
-    badgeVariant: "secondary" as const,
-    href: "/about",
-    color: "from-slate-500 to-gray-600",
+    icon: Fingerprint,
+    title: "Sovereign Reputation Passport",
+    description: "Your trust score, outcomes, and credentials exported as W3C Verifiable Credentials. Own your professional identity.",
+    tag: "Identity",
+    color: "from-cyan-500 to-blue-600",
+    href: "/passport",
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-};
-
 export function FeaturesSection() {
-  const { scrollY, isDisabled } = useParallax({ speed: 0.1 });
-  
-  // Background gradient parallax
-  const bgY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * 0.03));
-
   return (
-    <section data-tour="features" className="py-12 md:py-20 lg:py-28 relative overflow-hidden">
-      {/* Subtle background gradient with parallax */}
-      <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent pointer-events-none"
-        style={{ y: bgY }}
-      />
+    <section className="py-16 md:py-28 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.03),transparent_60%)]" />
 
       <div className="container px-4 md:px-6 relative">
-        <div className="text-center mb-8 md:mb-16">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="inline-block mb-4"
-          >
-            <Badge variant="outline" className="px-4 py-1.5 text-sm font-medium">
-              ✨ All-in-One Platform
-            </Badge>
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="text-2xl font-bold xs:text-3xl md:text-4xl lg:text-5xl"
-          >
-            Everything You Need for{" "}
-            <span className="text-gradient animate-gradient-text bg-[length:200%_auto]">Research Success</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            viewport={{ once: true }}
-            className="mt-3 md:mt-4 text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto px-2"
-          >
-            One platform for collaboration, AI tools, and earning opportunities
-          </motion.p>
-        </div>
-
-        <motion.div 
-          className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="text-center mb-10 md:mb-16"
         >
-          {features.map((feature, index) => {
-            // Staggered row parallax - cards in different rows move at slightly different speeds
-            const row = Math.floor(index / 3);
-            const cardY = useTransform(scrollY, (v) => (isDisabled ? 0 : v * (0.02 + row * 0.01)));
-            
-            return (
-              <motion.div
-                key={feature.title}
-                variants={itemVariants}
-                style={{ y: cardY }}
-                className="will-change-transform"
-              >
-                <Card variant="premium" className="h-full flex flex-col group">
-                  <CardHeader className="p-4 md:p-6">
-                    <div className="flex items-start justify-between gap-2">
-                      <motion.div
-                        className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-lg md:rounded-xl bg-gradient-to-br ${feature.color} shadow-lg`}
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                      >
-                        <feature.icon className="h-5 w-5 md:h-6 md:w-6 text-white" />
-                      </motion.div>
-                      <motion.div
-                        whileHover={{ y: -2 }}
-                        transition={{ type: "spring", stiffness: 400 }}
-                      >
-                        <Badge variant={feature.badgeVariant} className="text-xs shrink-0">
-                          {feature.badge}
-                        </Badge>
-                      </motion.div>
-                    </div>
-                    <CardTitle className="mt-3 md:mt-4 text-base md:text-lg group-hover:text-primary transition-colors">
-                      {feature.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-1 p-4 pt-0 md:p-6 md:pt-0">
-                    <p className="text-muted-foreground text-sm line-clamp-3">{feature.description}</p>
-                  </CardContent>
-                  <CardFooter className="p-4 pt-0 md:p-6 md:pt-0">
-                    <Link to={feature.href} className="w-full">
-                      <Button variant="ghost" className="w-full justify-between group/btn h-10 touch-manipulation text-sm hover:bg-primary/5">
-                        Learn More
-                        <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                      </Button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-            );
-          })}
+          <Badge variant="outline" className="mb-4 px-4 py-1.5 text-sm font-medium border-primary/20 text-primary">
+            Not Another Marketplace
+          </Badge>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+            Infrastructure for{" "}
+            <span className="text-primary">Professional Execution</span>
+          </h2>
+          <p className="mt-3 text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto">
+            Every feature is designed to make professional work safer, faster, and more accountable.
+          </p>
         </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto">
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+              viewport={{ once: true }}
+            >
+              <Link to={feature.href} className="block h-full group">
+                <div className="h-full rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-6 md:p-7 transition-all duration-300 hover:shadow-xl hover:border-primary/20 hover:-translate-y-1 flex flex-col">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${feature.color} shadow-lg transition-transform duration-300 group-hover:scale-110`}>
+                      <feature.icon className="h-5 w-5 text-white" />
+                    </div>
+                    <Badge variant="secondary" className="text-[10px] font-semibold">{feature.tag}</Badge>
+                  </div>
+                  <h3 className="text-base md:text-lg font-bold mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed flex-1">{feature.description}</p>
+                  <div className="flex items-center gap-1 text-xs text-primary font-semibold mt-4 group-hover:gap-2 transition-all">
+                    Learn more
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
