@@ -22,11 +22,30 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // JWT Authentication
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const anonClient = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(authHeader.replace("Bearer ", ""));
+    if (claimsError || !claimsData?.claims?.sub) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const authenticatedUserId = claimsData.claims.sub as string;
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { user_id } = await req.json().catch(() => ({}));
+    // Only analyze the authenticated user's own data (no impersonation)
+    const targetUsers: string[] = [authenticatedUserId];
 
     const result: AnalysisResult = {
       insights_created: 0,
@@ -34,19 +53,6 @@ Deno.serve(async (req) => {
       entropy_calculated: 0,
       deal_health_updated: 0,
     };
-
-    // Get target users (single user or all active users)
-    let targetUsers: string[] = [];
-    if (user_id) {
-      targetUsers = [user_id];
-    } else {
-      const { data: activeUsers } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("is_active", true)
-        .limit(100);
-      targetUsers = activeUsers?.map((u: { id: string }) => u.id) || [];
-    }
 
     for (const userId of targetUsers) {
       // 1. Analyze Relationship Entropy

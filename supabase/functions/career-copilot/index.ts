@@ -8,7 +8,7 @@ const corsHeaders = {
 
 interface CareerCopilotRequest {
   type: "ask" | "trust-analysis" | "opportunity-advice" | "failure-recovery" | "weekly-insights";
-  user_id: string;
+  user_id: string; // Will be overridden by JWT
   question?: string;
   opportunity_id?: string;
   project_id?: string;
@@ -20,7 +20,28 @@ serve(async (req) => {
   }
 
   try {
+    // JWT Authentication
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const anonClient = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(authHeader.replace("Bearer ", ""));
+    if (claimsError || !claimsData?.claims?.sub) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const userId = claimsData.claims.sub as string;
+
     const request: CareerCopilotRequest = await req.json();
+    // Override user_id with authenticated user - prevent impersonation
+    request.user_id = userId;
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -35,25 +56,25 @@ serve(async (req) => {
     const { data: profile } = await supabase
       .from("profiles")
       .select("*")
-      .eq("id", request.user_id)
+      .eq("id", userId)
       .single();
 
     const { data: trustProfile } = await supabase
       .from("user_trust_profiles")
       .select("*")
-      .eq("user_id", request.user_id)
+      .eq("user_id", userId)
       .maybeSingle();
 
     const { data: ledger } = await supabase
       .from("consequence_ledgers")
       .select("*")
-      .eq("user_id", request.user_id)
+      .eq("user_id", userId)
       .maybeSingle();
 
     const { data: recentRecords } = await supabase
       .from("accountability_records")
       .select("*")
-      .eq("executor_id", request.user_id)
+      .eq("executor_id", userId)
       .order("created_at", { ascending: false })
       .limit(5);
 
