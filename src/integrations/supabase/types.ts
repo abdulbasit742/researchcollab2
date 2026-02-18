@@ -21321,6 +21321,51 @@ export type Database = {
         }
         Relationships: []
       }
+      ledger_entries: {
+        Row: {
+          account_id: string
+          account_type: string
+          amount: number
+          created_at: string
+          currency: string
+          description: string | null
+          entry_type: string
+          id: string
+          is_immutable: boolean
+          reference_id: string | null
+          reference_type: string | null
+          transaction_id: string
+        }
+        Insert: {
+          account_id: string
+          account_type: string
+          amount: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          entry_type: string
+          id?: string
+          is_immutable?: boolean
+          reference_id?: string | null
+          reference_type?: string | null
+          transaction_id: string
+        }
+        Update: {
+          account_id?: string
+          account_type?: string
+          amount?: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          entry_type?: string
+          id?: string
+          is_immutable?: boolean
+          reference_id?: string | null
+          reference_type?: string | null
+          transaction_id?: string
+        }
+        Relationships: []
+      }
       lesson_progress: {
         Row: {
           completed: boolean
@@ -28051,6 +28096,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      rate_limit_events: {
+        Row: {
+          action_type: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       rate_limits: {
         Row: {
@@ -38786,6 +38852,29 @@ export type Database = {
       partial_release_milestone: {
         Args: { p_amount: number; p_milestone_id: string; p_reason: string }
         Returns: boolean
+      }
+      reconcile_escrow_balances: {
+        Args: never
+        Returns: {
+          calculated_escrow: number
+          discrepancy: number
+          user_id: string
+          wallet_escrow: number
+        }[]
+      }
+      record_ledger_entry: {
+        Args: {
+          p_amount: number
+          p_credit_account_id: string
+          p_credit_account_type: string
+          p_currency?: string
+          p_debit_account_id: string
+          p_debit_account_type: string
+          p_description?: string
+          p_reference_id?: string
+          p_reference_type?: string
+        }
+        Returns: string
       }
       register_outcome: {
         Args: {
