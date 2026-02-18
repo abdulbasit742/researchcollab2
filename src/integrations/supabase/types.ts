@@ -29125,6 +29125,180 @@ export type Database = {
         }
         Relationships: []
       }
+      sip_events: {
+        Row: {
+          actor_id: string | null
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          event_type: string
+          id: string
+          impact_value: number | null
+          ledger_reference: string | null
+          metadata: Json | null
+          node_id: string
+          risk_score: number | null
+          sip_version: string | null
+          trust_delta: number | null
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          event_type: string
+          id?: string
+          impact_value?: number | null
+          ledger_reference?: string | null
+          metadata?: Json | null
+          node_id?: string
+          risk_score?: number | null
+          sip_version?: string | null
+          trust_delta?: number | null
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          event_type?: string
+          id?: string
+          impact_value?: number | null
+          ledger_reference?: string | null
+          metadata?: Json | null
+          node_id?: string
+          risk_score?: number | null
+          sip_version?: string | null
+          trust_delta?: number | null
+        }
+        Relationships: []
+      }
+      sip_node_registry: {
+        Row: {
+          api_token_hash: string | null
+          capabilities: Json | null
+          country_code: string | null
+          created_at: string | null
+          endpoint_url: string | null
+          id: string
+          is_active: boolean | null
+          isolation_mode: string | null
+          jurisdiction: string | null
+          node_id: string
+          node_name: string
+          operator_name: string | null
+          trust_framework_version: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          api_token_hash?: string | null
+          capabilities?: Json | null
+          country_code?: string | null
+          created_at?: string | null
+          endpoint_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          isolation_mode?: string | null
+          jurisdiction?: string | null
+          node_id: string
+          node_name: string
+          operator_name?: string | null
+          trust_framework_version?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          api_token_hash?: string | null
+          capabilities?: Json | null
+          country_code?: string | null
+          created_at?: string | null
+          endpoint_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          isolation_mode?: string | null
+          jurisdiction?: string | null
+          node_id?: string
+          node_name?: string
+          operator_name?: string | null
+          trust_framework_version?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      sip_trust_snapshots: {
+        Row: {
+          collaboration_index: number | null
+          compliance_index: number | null
+          consistency_index: number | null
+          created_at: string | null
+          delivery_index: number | null
+          financial_reliability_index: number | null
+          id: string
+          node_id: string
+          snapshot_version: string | null
+          trust_score: number
+          user_id: string
+        }
+        Insert: {
+          collaboration_index?: number | null
+          compliance_index?: number | null
+          consistency_index?: number | null
+          created_at?: string | null
+          delivery_index?: number | null
+          financial_reliability_index?: number | null
+          id?: string
+          node_id?: string
+          snapshot_version?: string | null
+          trust_score: number
+          user_id: string
+        }
+        Update: {
+          collaboration_index?: number | null
+          compliance_index?: number | null
+          consistency_index?: number | null
+          created_at?: string | null
+          delivery_index?: number | null
+          financial_reliability_index?: number | null
+          id?: string
+          node_id?: string
+          snapshot_version?: string | null
+          trust_score?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sip_versions: {
+        Row: {
+          activation_date: string | null
+          approved_by: string | null
+          change_summary: string
+          compatibility_notes: string | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          version: string
+        }
+        Insert: {
+          activation_date?: string | null
+          approved_by?: string | null
+          change_summary: string
+          compatibility_notes?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          version: string
+        }
+        Update: {
+          activation_date?: string | null
+          approved_by?: string | null
+          change_summary?: string
+          compatibility_notes?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          version?: string
+        }
+        Relationships: []
+      }
       skill_endorsements: {
         Row: {
           created_at: string
