@@ -59,3 +59,6 @@ verify_jwt = false
 
 [functions.forecast-revenue]
 verify_jwt = false
+
+[functions.export-audit-logs]
+verify_jwt = false
