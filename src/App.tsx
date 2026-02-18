@@ -280,6 +280,7 @@ const GovernmentRolloutPage = lazy(() => import("./pages/GovernmentRolloutPage")
 const DeveloperEcosystemPage = lazy(() => import("./pages/DeveloperEcosystemPage"));
 const SupremacyUpgradePage = lazy(() => import("./pages/SupremacyUpgradePage"));
 const InvestorDashboardPage = lazy(() => import("./pages/InvestorDashboardPage"));
+const GlobalDominationBlueprintPage = lazy(() => import("./pages/GlobalDominationBlueprintPage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -583,6 +584,7 @@ const AppContent = () => {
             <Route path="/ecosystem/apps" element={<DeveloperEcosystemPage />} />
             <Route path="/system/supremacy" element={<SupremacyUpgradePage />} />
             <Route path="/investor/dashboard" element={<InvestorDashboardPage />} />
+            <Route path="/strategy/blueprint" element={<GlobalDominationBlueprintPage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
