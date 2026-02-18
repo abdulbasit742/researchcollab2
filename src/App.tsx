@@ -286,6 +286,9 @@ const CompetitorDisplacementPage = lazy(() => import("./pages/CompetitorDisplace
 const AIMoatDominationPage = lazy(() => import("./pages/AIMoatDominationPage"));
 const IPOReadinessPage = lazy(() => import("./pages/IPOReadinessPage"));
 const ResearchDominationPage = lazy(() => import("./pages/ResearchDominationPage"));
+const ProfessionalIdentityPage = lazy(() => import("./pages/ProfessionalIdentityPage"));
+const SimplificationProtocolPage = lazy(() => import("./pages/SimplificationProtocolPage"));
+const RegionalDominationPage = lazy(() => import("./pages/RegionalDominationPage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -595,6 +598,9 @@ const AppContent = () => {
             <Route path="/strategy/displacement" element={<CompetitorDisplacementPage />} />
             <Route path="/internal/ai-moat" element={<AIMoatDominationPage />} />
             <Route path="/ipo-readiness" element={<IPOReadinessPage />} />
+            <Route path="/identity/professional" element={<ProfessionalIdentityPage />} />
+            <Route path="/internal/simplification" element={<SimplificationProtocolPage />} />
+            <Route path="/strategy/regional" element={<RegionalDominationPage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
