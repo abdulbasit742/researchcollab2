@@ -6208,6 +6208,60 @@ export type Database = {
           },
         ]
       }
+      country_nodes: {
+        Row: {
+          certification_expires_at: string | null
+          certification_status: string | null
+          compliance_status: string | null
+          country_code: string | null
+          country_name: string
+          created_at: string
+          currency_supported: string[] | null
+          data_residency_location: string | null
+          foundation_alignment_status: string | null
+          id: string
+          launch_date: string | null
+          legal_entity_reference: string | null
+          node_configuration: Json | null
+          node_status: string
+          risk_level: string | null
+        }
+        Insert: {
+          certification_expires_at?: string | null
+          certification_status?: string | null
+          compliance_status?: string | null
+          country_code?: string | null
+          country_name: string
+          created_at?: string
+          currency_supported?: string[] | null
+          data_residency_location?: string | null
+          foundation_alignment_status?: string | null
+          id?: string
+          launch_date?: string | null
+          legal_entity_reference?: string | null
+          node_configuration?: Json | null
+          node_status?: string
+          risk_level?: string | null
+        }
+        Update: {
+          certification_expires_at?: string | null
+          certification_status?: string | null
+          compliance_status?: string | null
+          country_code?: string | null
+          country_name?: string
+          created_at?: string
+          currency_supported?: string[] | null
+          data_residency_location?: string | null
+          foundation_alignment_status?: string | null
+          id?: string
+          launch_date?: string | null
+          legal_entity_reference?: string | null
+          node_configuration?: Json | null
+          node_status?: string
+          risk_level?: string | null
+        }
+        Relationships: []
+      }
       country_policies: {
         Row: {
           compliance_notes: string | null
@@ -7720,6 +7774,56 @@ export type Database = {
           impact_level?: string
         }
         Relationships: []
+      }
+      decision_matrix: {
+        Row: {
+          approver_role: string
+          created_at: string
+          decision_type: string
+          documentation_required: boolean | null
+          domain_id: string | null
+          escalation_path: string | null
+          id: string
+          is_active: boolean | null
+          proposer_role: string
+          reviewer_role: string
+          veto_authority: string | null
+        }
+        Insert: {
+          approver_role: string
+          created_at?: string
+          decision_type: string
+          documentation_required?: boolean | null
+          domain_id?: string | null
+          escalation_path?: string | null
+          id?: string
+          is_active?: boolean | null
+          proposer_role: string
+          reviewer_role: string
+          veto_authority?: string | null
+        }
+        Update: {
+          approver_role?: string
+          created_at?: string
+          decision_type?: string
+          documentation_required?: boolean | null
+          domain_id?: string | null
+          escalation_path?: string | null
+          id?: string
+          is_active?: boolean | null
+          proposer_role?: string
+          reviewer_role?: string
+          veto_authority?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "decision_matrix_domain_id_fkey"
+            columns: ["domain_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_domains"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       deployment_admins: {
         Row: {
@@ -9709,6 +9813,42 @@ export type Database = {
         }
         Relationships: []
       }
+      enterprise_domains: {
+        Row: {
+          authority_scope: Json | null
+          created_at: string
+          decision_boundaries: Json | null
+          domain_director: string | null
+          domain_name: string
+          id: string
+          is_active: boolean | null
+          kpi_ownership: string[] | null
+          tier: number
+        }
+        Insert: {
+          authority_scope?: Json | null
+          created_at?: string
+          decision_boundaries?: Json | null
+          domain_director?: string | null
+          domain_name: string
+          id?: string
+          is_active?: boolean | null
+          kpi_ownership?: string[] | null
+          tier?: number
+        }
+        Update: {
+          authority_scope?: Json | null
+          created_at?: string
+          decision_boundaries?: Json | null
+          domain_director?: string | null
+          domain_name?: string
+          id?: string
+          is_active?: boolean | null
+          kpi_ownership?: string[] | null
+          tier?: number
+        }
+        Relationships: []
+      }
       equity_adjustment_rules: {
         Row: {
           adjustment_bounds: Json | null
@@ -10488,6 +10628,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      expansion_throttle_rules: {
+        Row: {
+          created_at: string
+          current_value: number | null
+          id: string
+          is_active: boolean | null
+          is_blocking: boolean | null
+          rule_description: string | null
+          rule_name: string
+          threshold_value: number | null
+        }
+        Insert: {
+          created_at?: string
+          current_value?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_blocking?: boolean | null
+          rule_description?: string | null
+          rule_name: string
+          threshold_value?: number | null
+        }
+        Update: {
+          created_at?: string
+          current_value?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_blocking?: boolean | null
+          rule_description?: string | null
+          rule_name?: string
+          threshold_value?: number | null
+        }
+        Relationships: []
       }
       export_packages: {
         Row: {
@@ -20417,6 +20590,100 @@ export type Database = {
           },
         ]
       }
+      node_launch_workspaces: {
+        Row: {
+          arbitration_alignment: string | null
+          capital_readiness: Json | null
+          compliance_tracker: Json | null
+          created_at: string
+          data_residency_config: Json | null
+          foundation_certification: string | null
+          id: string
+          legal_checklist: Json | null
+          node_id: string
+          overall_progress: number | null
+          updated_at: string
+        }
+        Insert: {
+          arbitration_alignment?: string | null
+          capital_readiness?: Json | null
+          compliance_tracker?: Json | null
+          created_at?: string
+          data_residency_config?: Json | null
+          foundation_certification?: string | null
+          id?: string
+          legal_checklist?: Json | null
+          node_id: string
+          overall_progress?: number | null
+          updated_at?: string
+        }
+        Update: {
+          arbitration_alignment?: string | null
+          capital_readiness?: Json | null
+          compliance_tracker?: Json | null
+          created_at?: string
+          data_residency_config?: Json | null
+          foundation_certification?: string | null
+          id?: string
+          legal_checklist?: Json | null
+          node_id?: string
+          overall_progress?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "node_launch_workspaces_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      node_onboarding_status: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          id: string
+          node_id: string
+          notes: string | null
+          status: string
+          step_name: string
+          step_order: number
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          node_id: string
+          notes?: string | null
+          status?: string
+          step_name: string
+          step_order?: number
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          node_id?: string
+          notes?: string | null
+          status?: string
+          step_name?: string
+          step_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "node_onboarding_status_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       node_reputation_scores: {
         Row: {
           capital_compliance: number | null
@@ -20457,6 +20724,50 @@ export type Database = {
             columns: ["node_id"]
             isOneToOne: true
             referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      node_risk_alerts: {
+        Row: {
+          created_at: string
+          description: string
+          detected_values: Json | null
+          id: string
+          node_id: string
+          resolved_at: string | null
+          review_status: string | null
+          risk_type: string
+          severity: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          detected_values?: Json | null
+          id?: string
+          node_id: string
+          resolved_at?: string | null
+          review_status?: string | null
+          risk_type: string
+          severity?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          detected_values?: Json | null
+          id?: string
+          node_id?: string
+          resolved_at?: string | null
+          review_status?: string | null
+          risk_type?: string
+          severity?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "node_risk_alerts_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
             referencedColumns: ["id"]
           },
         ]

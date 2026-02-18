@@ -271,6 +271,8 @@ const SIPProtocolPage = lazy(() => import("./pages/SIPProtocolPage"));
 const SIPFoundationPage = lazy(() => import("./pages/SIPFoundationPage"));
 const FounderTransitionPage = lazy(() => import("./pages/FounderTransitionPage"));
 const StrategicCapitalPage = lazy(() => import("./pages/StrategicCapitalPage"));
+const GlobalNodeDeploymentPage = lazy(() => import("./pages/GlobalNodeDeploymentPage"));
+const EnterpriseScalingPage = lazy(() => import("./pages/EnterpriseScalingPage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -565,6 +567,8 @@ const AppContent = () => {
             <Route path="/foundation" element={<SIPFoundationPage />} />
             <Route path="/foundation/governance" element={<FounderTransitionPage />} />
             <Route path="/investor/strategic" element={<StrategicCapitalPage />} />
+            <Route path="/nodes" element={<GlobalNodeDeploymentPage />} />
+            <Route path="/internal/performance" element={<EnterpriseScalingPage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
