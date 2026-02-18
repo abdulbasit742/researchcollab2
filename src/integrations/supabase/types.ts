@@ -5719,6 +5719,48 @@ export type Database = {
         }
         Relationships: []
       }
+      consent_records: {
+        Row: {
+          consent_text_hash: string | null
+          consent_type: string
+          consent_version: string
+          created_at: string
+          granted: boolean
+          granted_at: string | null
+          id: string
+          ip_address: string | null
+          revoked_at: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          consent_text_hash?: string | null
+          consent_type: string
+          consent_version?: string
+          created_at?: string
+          granted: boolean
+          granted_at?: string | null
+          id?: string
+          ip_address?: string | null
+          revoked_at?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          consent_text_hash?: string | null
+          consent_type?: string
+          consent_version?: string
+          created_at?: string
+          granted?: boolean
+          granted_at?: string | null
+          id?: string
+          ip_address?: string | null
+          revoked_at?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       consequence_ledgers: {
         Row: {
           completion_rate: number | null
@@ -8515,6 +8557,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      data_retention_policies: {
+        Row: {
+          created_at: string
+          deletion_strategy: string
+          id: string
+          is_active: boolean | null
+          last_enforced_at: string | null
+          legal_basis: string | null
+          retention_days: number
+          table_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deletion_strategy?: string
+          id?: string
+          is_active?: boolean | null
+          last_enforced_at?: string | null
+          legal_basis?: string | null
+          retention_days: number
+          table_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deletion_strategy?: string
+          id?: string
+          is_active?: boolean | null
+          last_enforced_at?: string | null
+          legal_basis?: string | null
+          retention_days?: number
+          table_name?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       dataset_access_requests: {
         Row: {
@@ -15469,6 +15547,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      gdpr_requests: {
+        Row: {
+          completion_deadline: string
+          created_at: string
+          export_expires_at: string | null
+          export_url: string | null
+          id: string
+          notes: string | null
+          processed_at: string | null
+          processed_by: string | null
+          rejection_reason: string | null
+          request_type: string
+          requested_at: string
+          scope: Json | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completion_deadline?: string
+          created_at?: string
+          export_expires_at?: string | null
+          export_url?: string | null
+          id?: string
+          notes?: string | null
+          processed_at?: string | null
+          processed_by?: string | null
+          rejection_reason?: string | null
+          request_type: string
+          requested_at?: string
+          scope?: Json | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completion_deadline?: string
+          created_at?: string
+          export_expires_at?: string | null
+          export_url?: string | null
+          id?: string
+          notes?: string | null
+          processed_at?: string | null
+          processed_by?: string | null
+          rejection_reason?: string | null
+          request_type?: string
+          requested_at?: string
+          scope?: Json | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       global_intelligence_warehouse: {
         Row: {
@@ -38927,10 +39056,12 @@ export type Database = {
         Returns: string
       }
       generate_scholar_id: { Args: never; Returns: string }
+      generate_user_data_export: { Args: { p_user_id: string }; Returns: Json }
       get_collaboration_dampening: {
         Args: { p_user_a: string; p_user_b: string }
         Returns: number
       }
+      get_compliance_summary: { Args: never; Returns: Json }
       get_connection_degree: {
         Args: { source_user: string; target_user: string }
         Returns: number
@@ -39045,6 +39176,10 @@ export type Database = {
       }
       process_auto_release_milestones: { Args: never; Returns: Json }
       process_trust_decay: { Args: never; Returns: Json }
+      process_user_erasure: {
+        Args: { p_admin_id: string; p_user_id: string }
+        Returns: Json
+      }
       reconcile_escrow_balances: {
         Args: never
         Returns: {
