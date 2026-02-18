@@ -293,6 +293,9 @@ const FocusDashboardPage = lazy(() => import("./pages/FocusDashboardPage"));
 const UniversitySalesKitPage = lazy(() => import("./pages/UniversitySalesKitPage"));
 const CorporateSalesKitPage = lazy(() => import("./pages/CorporateSalesKitPage"));
 const TractionDashboardPage = lazy(() => import("./pages/TractionDashboardPage"));
+const UniversityDemoPage = lazy(() => import("./pages/UniversityDemoPage"));
+const UniversityROICalculatorPage = lazy(() => import("./pages/UniversityROICalculatorPage"));
+const UniversityAcquisitionPage = lazy(() => import("./pages/UniversityAcquisitionPage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -609,6 +612,9 @@ const AppContent = () => {
             <Route path="/sales/university-kit" element={<UniversitySalesKitPage />} />
             <Route path="/sales/corporate-kit" element={<CorporateSalesKitPage />} />
             <Route path="/internal/traction" element={<TractionDashboardPage />} />
+            <Route path="/demo/university" element={<UniversityDemoPage />} />
+            <Route path="/sales/university-roi" element={<UniversityROICalculatorPage />} />
+            <Route path="/internal/university-acquisition" element={<UniversityAcquisitionPage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
