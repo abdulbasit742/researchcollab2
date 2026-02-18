@@ -4,34 +4,34 @@ import { Button } from "@/components/ui/button";
 import {
   Briefcase,
   DollarSign,
-  Award,
-  MessageSquare,
+  Target,
+  Shield,
   Zap,
 } from "lucide-react";
 
 const quickActions = [
   {
     icon: Briefcase,
-    label: "Browse Projects",
-    href: "/offers",
+    label: "Create FYP",
+    href: "/fyp/submit-problem",
     variant: "default" as const,
   },
   {
     icon: DollarSign,
-    label: "Post Project",
+    label: "Sponsor Funding",
     href: "/earn",
     variant: "outline" as const,
   },
   {
-    icon: Award,
-    label: "Find Grants",
-    href: "/grants",
+    icon: Target,
+    label: "Browse Opportunities",
+    href: "/offers",
     variant: "outline" as const,
   },
   {
-    icon: MessageSquare,
-    label: "Messages",
-    href: "/messages",
+    icon: Shield,
+    label: "Trust Profile",
+    href: "/profile",
     variant: "outline" as const,
   },
 ];

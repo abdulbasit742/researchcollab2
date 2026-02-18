@@ -1,9 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, MessageCircle, Target, User, DollarSign } from "lucide-react";
+import { Home, Briefcase, Target, User, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useNotifications } from "@/hooks/useNotifications";
-import { useEarnNotificationCount } from "@/hooks/useEarning";
 import { useDemoWalkthrough } from "@/contexts/DemoWalkthroughContext";
 import { cn } from "@/lib/utils";
 
@@ -17,15 +15,13 @@ interface NavItem {
 export function MobileBottomNav() {
   const location = useLocation();
   const isMobile = useIsMobile();
-  const { unreadCount } = useNotifications();
-  const earnNotifCount = useEarnNotificationCount();
   const { isActive: isTourActive } = useDemoWalkthrough();
 
   const navItems: NavItem[] = [
-    { icon: Home, label: "Home", route: "/home" },
+    { icon: Home, label: "Dashboard", route: "/home" },
+    { icon: Briefcase, label: "FYP", route: "/fyp" },
     { icon: Target, label: "Opportunities", route: "/offers" },
-    { icon: MessageCircle, label: "Messages", route: "/messages", badge: unreadCount },
-    { icon: DollarSign, label: "Earn", route: "/earn", badge: earnNotifCount },
+    { icon: DollarSign, label: "Deals", route: "/deals" },
     { icon: User, label: "Profile", route: "/profile" },
   ];
 

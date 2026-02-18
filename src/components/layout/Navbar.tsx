@@ -1,171 +1,37 @@
-import { useState, useEffect, forwardRef } from "react";
- import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { NotificationBell } from "@/components/layout/NotificationBell";
- import { VoiceSearchButton } from "@/components/search/VoiceSearchButton";
+import { VoiceSearchButton } from "@/components/search/VoiceSearchButton";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUnreadCount } from "@/hooks/useMessaging";
 import {
   Menu,
   X,
   GraduationCap,
-  Users,
   Briefcase,
-  MessageSquare,
   Home,
   Target,
   User,
   LogOut,
-  TrendingUp,
-  Search,
   DollarSign,
-  BookOpen,
 } from "lucide-react";
-import { useEarnNotificationCount } from "@/hooks/useEarning";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
-// Simplified, focused navigation - only core actions
+// Pilot-focused navigation — 5 core modules only
 const navItems = [
-  { label: "Home", href: "/home", icon: Home },
-  { label: "Network", href: "/network", icon: Users },
+  { label: "Dashboard", href: "/home", icon: Home },
+  { label: "FYP", href: "/fyp", icon: Briefcase },
   { label: "Opportunities", href: "/offers", icon: Target },
-  { label: "Research", href: "/research-papers", icon: BookOpen },
-  { label: "Deals", href: "/deals", icon: Briefcase },
+  { label: "Deals", href: "/deals", icon: DollarSign },
 ];
-
-const EarnNavItem = forwardRef<HTMLAnchorElement, { onClick?: () => void }>(({ onClick }, ref) => {
-  const location = useLocation();
-  const earnCount = useEarnNotificationCount();
-  const isActive = location.pathname.startsWith("/earn");
-
-  return (
-    <Link
-      ref={ref}
-      to="/earn"
-      onClick={onClick}
-      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors relative ${
-        isActive
-          ? "bg-primary/10 text-primary"
-          : "text-muted-foreground hover:text-foreground hover:bg-muted"
-      }`}
-    >
-      <div className="relative">
-        <DollarSign className="h-4 w-4" />
-        {earnCount > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 h-4 w-4 flex items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-medium">
-            {earnCount > 9 ? "9+" : earnCount}
-          </span>
-        )}
-      </div>
-      Earn
-    </Link>
-  );
-});
-EarnNavItem.displayName = "EarnNavItem";
-
-const MobileEarnNavItem = forwardRef<HTMLAnchorElement, { onClick?: () => void }>(({ onClick }, ref) => {
-  const location = useLocation();
-  const earnCount = useEarnNotificationCount();
-  const isActive = location.pathname.startsWith("/earn");
-
-  return (
-    <Link
-      ref={ref}
-      to="/earn"
-      onClick={onClick}
-      className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-        isActive
-          ? "bg-primary/10 text-primary"
-          : "text-muted-foreground hover:text-foreground hover:bg-muted"
-      }`}
-    >
-      <div className="relative">
-        <DollarSign className="h-5 w-5" />
-        {earnCount > 0 && (
-          <span className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-medium">
-            {earnCount > 9 ? "9+" : earnCount}
-          </span>
-        )}
-      </div>
-      Earn
-      {earnCount > 0 && (
-        <span className="ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
-          {earnCount}
-        </span>
-      )}
-    </Link>
-  );
-});
-MobileEarnNavItem.displayName = "MobileEarnNavItem";
-
-function MessagesNavItem({ onClick }: { onClick?: () => void }) {
-  const location = useLocation();
-  const unreadCount = useUnreadCount();
-  const isActive = location.pathname.startsWith("/messages");
-
-  return (
-    <Link
-      to="/messages"
-      onClick={onClick}
-      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors relative ${
-        isActive
-          ? "bg-primary/10 text-primary"
-          : "text-muted-foreground hover:text-foreground hover:bg-muted"
-      }`}
-    >
-      <div className="relative">
-        <MessageSquare className="h-4 w-4" />
-        {unreadCount > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 h-4 w-4 flex items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-medium">
-            {unreadCount > 9 ? "9+" : unreadCount}
-          </span>
-        )}
-      </div>
-      Messages
-    </Link>
-  );
-}
-
-function MobileMessagesNavItem({ onClick }: { onClick?: () => void }) {
-  const location = useLocation();
-  const unreadCount = useUnreadCount();
-  const isActive = location.pathname.startsWith("/messages");
-
-  return (
-    <Link
-      to="/messages"
-      onClick={onClick}
-      className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-        isActive
-          ? "bg-primary/10 text-primary"
-          : "text-muted-foreground hover:text-foreground hover:bg-muted"
-      }`}
-    >
-      <div className="relative">
-        <MessageSquare className="h-5 w-5" />
-        {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-medium">
-            {unreadCount > 9 ? "9+" : unreadCount}
-          </span>
-        )}
-      </div>
-      Messages
-      {unreadCount > 0 && (
-        <span className="ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
-          {unreadCount}
-        </span>
-      )}
-    </Link>
-  );
-}
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const { user, signOut } = useAuth();
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -175,22 +41,22 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-   const handleVoiceSearch = (transcript: string) => {
-     if (transcript.trim()) {
-       navigate(`/search?q=${encodeURIComponent(transcript.trim())}`);
-     }
-   };
- 
+  const handleVoiceSearch = (transcript: string) => {
+    if (transcript.trim()) {
+      navigate(`/search?q=${encodeURIComponent(transcript.trim())}`);
+    }
+  };
+
   const handleSignOut = async () => {
     await signOut();
     setIsOpen(false);
   };
 
   return (
-    <header 
+    <header
       className={`sticky top-0 z-50 w-full border-b backdrop-blur-xl safe-area-top transition-all duration-200 ${
-        isScrolled 
-          ? "bg-background/95 border-border shadow-sm" 
+        isScrolled
+          ? "bg-background/95 border-border shadow-sm"
           : "bg-background/80 border-transparent"
       }`}
     >
@@ -201,18 +67,18 @@ export function Navbar() {
             <GraduationCap className="h-4 w-4 text-primary-foreground" />
           </div>
           <span className="text-lg font-bold">
-            <span className="text-primary">ResearchCollabPro</span>
+            <span className="text-primary">RCollab</span>
           </span>
         </Link>
 
-        {/* Desktop Navigation - Clean, minimal */}
+        {/* Desktop Navigation - Core modules only */}
         <nav className="hidden lg:flex items-center gap-1">
           {navItems.map((item) => (
             <Link
               key={item.href}
               to={item.href}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                location.pathname === item.href
+                location.pathname.startsWith(item.href)
                   ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
@@ -221,26 +87,18 @@ export function Navbar() {
               {item.label}
             </Link>
           ))}
-          <MessagesNavItem />
-          <EarnNavItem />
         </nav>
 
-        {/* Desktop Actions - Simplified */}
+        {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-2">
-           <VoiceSearchButton
-             onTranscript={handleVoiceSearch}
-             className="h-9 w-9"
-           />
+          <VoiceSearchButton
+            onTranscript={handleVoiceSearch}
+            className="h-9 w-9"
+          />
           <ThemeToggle />
           <NotificationBell />
           {user ? (
             <>
-              <Link to="/career">
-                <Button variant="ghost" size="sm" className="gap-2">
-                  <TrendingUp className="h-4 w-4" />
-                  Career
-                </Button>
-              </Link>
               <Link to="/profile">
                 <Button variant="ghost" size="sm" className="gap-2">
                   <User className="h-4 w-4" />
@@ -278,7 +136,7 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Navigation - Streamlined */}
+      {/* Mobile Navigation */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -294,7 +152,7 @@ export function Navbar() {
                   to={item.href}
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors touch-manipulation ${
-                    location.pathname === item.href
+                    location.pathname.startsWith(item.href)
                       ? "bg-primary/10 text-primary"
                       : "text-muted-foreground hover:bg-muted"
                   }`}
@@ -303,18 +161,10 @@ export function Navbar() {
                   {item.label}
                 </Link>
               ))}
-              <MobileMessagesNavItem onClick={() => setIsOpen(false)} />
-              <MobileEarnNavItem onClick={() => setIsOpen(false)} />
-              
+
               <div className="pt-3 border-t space-y-2">
                 {user ? (
                   <>
-                    <Link to="/career" onClick={() => setIsOpen(false)}>
-                      <Button variant="outline" className="w-full justify-start gap-2 h-11">
-                        <TrendingUp className="h-4 w-4" />
-                        Career
-                      </Button>
-                    </Link>
                     <Link to="/profile" onClick={() => setIsOpen(false)}>
                       <Button variant="outline" className="w-full justify-start gap-2 h-11">
                         <User className="h-4 w-4" />
