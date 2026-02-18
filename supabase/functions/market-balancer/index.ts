@@ -43,6 +43,26 @@ serve(async (req: Request) => {
   }
 
   try {
+    // =========================================================================
+    // PRECONDITION CHECKS
+    // =========================================================================
+    
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    if (!supabaseUrl || !supabaseKey) {
+      const error: ErrorResponse = {
+        error_code: "MISSING_ENV",
+        error: "Required environment variables not configured",
+        missing: !supabaseUrl ? "SUPABASE_URL" : "SUPABASE_SERVICE_ROLE_KEY",
+        action: "Ensure Lovable Cloud is properly connected",
+      };
+      return new Response(JSON.stringify(error), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 500,
+      });
+    }
+
     // JWT Authentication - Admin only
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
@@ -50,7 +70,7 @@ serve(async (req: Request) => {
         status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const anonClient = createClient(supabaseUrl!, Deno.env.get("SUPABASE_ANON_KEY")!, {
+    const anonClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
       global: { headers: { Authorization: authHeader } },
     });
     const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(authHeader.replace("Bearer ", ""));
@@ -59,13 +79,6 @@ serve(async (req: Request) => {
         status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-
-    // =========================================================================
-    // PRECONDITION CHECKS
-    // =========================================================================
-    
-    const supabaseUrl = Deno.env.get("SUPABASE_URL");
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
     if (!supabaseUrl || !supabaseKey) {
       const error: ErrorResponse = {
