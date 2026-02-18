@@ -282,6 +282,8 @@ const SupremacyUpgradePage = lazy(() => import("./pages/SupremacyUpgradePage"));
 const InvestorDashboardPage = lazy(() => import("./pages/InvestorDashboardPage"));
 const GlobalDominationBlueprintPage = lazy(() => import("./pages/GlobalDominationBlueprintPage"));
 const WarRoomPage = lazy(() => import("./pages/WarRoomPage"));
+const CompetitorDisplacementPage = lazy(() => import("./pages/CompetitorDisplacementPage"));
+const AIMoatDominationPage = lazy(() => import("./pages/AIMoatDominationPage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -587,6 +589,8 @@ const AppContent = () => {
             <Route path="/investor/dashboard" element={<InvestorDashboardPage />} />
             <Route path="/strategy/blueprint" element={<GlobalDominationBlueprintPage />} />
             <Route path="/internal/war-room" element={<WarRoomPage />} />
+            <Route path="/strategy/displacement" element={<CompetitorDisplacementPage />} />
+            <Route path="/internal/ai-moat" element={<AIMoatDominationPage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
