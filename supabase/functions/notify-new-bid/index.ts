@@ -23,6 +23,23 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // JWT Authentication
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+    const anonClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(authHeader.replace("Bearer ", ""));
+    if (claimsError || !claimsData?.claims?.sub) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
     if (!RESEND_API_KEY) {
       console.log("RESEND_API_KEY not configured, skipping email notification");
       return new Response(
