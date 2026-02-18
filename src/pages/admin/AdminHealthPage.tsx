@@ -215,9 +215,8 @@ export default function AdminHealthPage() {
                         <TableHead>Started</TableHead>
                         <TableHead>Job</TableHead>
                         <TableHead>Status</TableHead>
-                        <TableHead>Found</TableHead>
-                        <TableHead>Fixed</TableHead>
-                        <TableHead>Flagged</TableHead>
+                        <TableHead>Processed</TableHead>
+                        <TableHead>Affected</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -226,9 +225,8 @@ export default function AdminHealthPage() {
                           <TableCell className="text-sm">{format(new Date(j.started_at), "MMM d HH:mm")}</TableCell>
                           <TableCell>{j.job_name}</TableCell>
                           <TableCell><Badge variant={j.status === "completed" ? "secondary" : j.status === "failed" ? "destructive" : "default"}>{j.status}</Badge></TableCell>
-                          <TableCell>{j.issues_found}</TableCell>
-                          <TableCell>{j.issues_fixed}</TableCell>
-                          <TableCell>{j.issues_flagged}</TableCell>
+                          <TableCell>{j.records_processed}</TableCell>
+                          <TableCell>{j.records_affected}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
