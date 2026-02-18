@@ -290,6 +290,7 @@ const ProfessionalIdentityPage = lazy(() => import("./pages/ProfessionalIdentity
 const SimplificationProtocolPage = lazy(() => import("./pages/SimplificationProtocolPage"));
 const RegionalDominationPage = lazy(() => import("./pages/RegionalDominationPage"));
 const ThreeYearDominationPage = lazy(() => import("./pages/ThreeYearDominationPage"));
+const SecurityHardeningPage = lazy(() => import("./pages/SecurityHardeningPage"));
 const FocusDashboardPage = lazy(() => import("./pages/FocusDashboardPage"));
 const UniversitySalesKitPage = lazy(() => import("./pages/UniversitySalesKitPage"));
 const CorporateSalesKitPage = lazy(() => import("./pages/CorporateSalesKitPage"));
@@ -610,6 +611,7 @@ const AppContent = () => {
             <Route path="/internal/simplification" element={<SimplificationProtocolPage />} />
             <Route path="/strategy/regional" element={<RegionalDominationPage />} />
             <Route path="/strategy/3-year" element={<ThreeYearDominationPage />} />
+            <Route path="/internal/security-dashboard" element={<SecurityHardeningPage />} />
             <Route path="/internal/focus-dashboard" element={<FocusDashboardPage />} />
             <Route path="/sales/university-kit" element={<UniversitySalesKitPage />} />
             <Route path="/sales/corporate-kit" element={<CorporateSalesKitPage />} />
