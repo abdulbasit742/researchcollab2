@@ -1,75 +1,86 @@
 import { motion } from "framer-motion";
-import { Check, X, Minus, Shield, TrendingUp, Brain, Banknote, Scale, Award } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Check, X, Minus, Shield, TrendingUp, Brain, Banknote, Scale, Award, Microscope, GraduationCap, Globe } from "lucide-react";
+
+const platforms = ["LinkedIn", "Upwork", "Fiverr", "G. Scholar", "ResearchGate"];
 
 const categories = [
   {
     icon: Shield,
-    label: "Payment Protection",
-    linkedin: "none",
-    upwork: "partial",
-    fiverr: "partial",
+    label: "Escrow Payment Protection",
+    scores: ["none", "partial", "partial", "none", "none"],
     rcollab: "full",
-    rcollabDetail: "Escrow-backed with milestone triggers",
+    detail: "Milestone-triggered escrow with atomic release",
   },
   {
     icon: TrendingUp,
     label: "Verified Trust Scores",
-    linkedin: "none",
-    upwork: "basic",
-    fiverr: "basic",
+    scores: ["none", "basic", "basic", "none", "none"],
     rcollab: "full",
-    rcollabDetail: "Non-gameable, outcome-based scoring",
+    detail: "Non-gameable, outcome-based with velocity caps",
   },
   {
     icon: Brain,
-    label: "AI-Powered Matching",
-    linkedin: "basic",
-    upwork: "basic",
-    fiverr: "none",
+    label: "AI Matching & Intelligence",
+    scores: ["basic", "basic", "none", "none", "none"],
     rcollab: "full",
-    rcollabDetail: "Skills + trust + timing fit scoring",
+    detail: "Skills + trust + timing + success probability",
   },
   {
     icon: Banknote,
-    label: "Fair Pricing",
-    linkedin: "none",
-    upwork: "none",
-    fiverr: "none",
+    label: "Fair Trust-Based Pricing",
+    scores: ["none", "none", "none", "none", "none"],
     rcollab: "full",
-    rcollabDetail: "Trust-weighted commissions (6-12%)",
+    detail: "6-12% commission — top performers pay least",
   },
   {
     icon: Scale,
-    label: "Dispute Resolution",
-    linkedin: "none",
-    upwork: "basic",
-    fiverr: "basic",
+    label: "Digital Arbitration Court",
+    scores: ["none", "basic", "basic", "none", "none"],
     rcollab: "full",
-    rcollabDetail: "Digital arbitration court with evidence",
+    detail: "Evidence-based verdicts with faculty mediation",
   },
   {
     icon: Award,
-    label: "Portable Credentials",
-    linkedin: "basic",
-    upwork: "none",
-    fiverr: "none",
+    label: "Portable Credentials (DID)",
+    scores: ["basic", "none", "none", "none", "none"],
     rcollab: "full",
-    rcollabDetail: "W3C Verifiable Credentials (DID)",
+    detail: "W3C Verifiable Credentials you own forever",
+  },
+  {
+    icon: Microscope,
+    label: "Research Intelligence",
+    scores: ["none", "none", "none", "basic", "basic"],
+    rcollab: "full",
+    detail: "AI gap detection, lit review, paper analysis",
+  },
+  {
+    icon: GraduationCap,
+    label: "Academic Integration",
+    scores: ["none", "none", "none", "partial", "partial"],
+    rcollab: "full",
+    detail: "FYP tracking, course linking, supervisor tools",
+  },
+  {
+    icon: Globe,
+    label: "Sovereign Data Ownership",
+    scores: ["none", "none", "none", "none", "none"],
+    rcollab: "full",
+    detail: "Your data, your identity, exportable anytime",
   },
 ];
 
-function StatusIcon({ status }: { status: string }) {
-  if (status === "full") return <Check className="h-5 w-5 text-primary" />;
-  if (status === "partial" || status === "basic") return <Minus className="h-4 w-4 text-warning" />;
-  return <X className="h-4 w-4 text-destructive/50" />;
+function StatusCell({ status }: { status: string }) {
+  if (status === "full") return <Check className="h-5 w-5 text-emerald-400" />;
+  if (status === "partial" || status === "basic")
+    return <Minus className="h-4 w-4 text-amber-400/60" />;
+  return <X className="h-4 w-4 text-white/15" />;
 }
 
 export function CompetitorComparisonSection() {
   return (
-    <section className="py-16 md:py-28 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/30 to-background" />
+    <section className="py-20 md:py-32 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[#030712]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#030712] to-background" />
 
       <div className="container px-4 md:px-6 relative">
         <motion.div
@@ -77,93 +88,90 @@ export function CompetitorComparisonSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-14"
         >
-          <Badge variant="outline" className="mb-4 px-4 py-1.5 text-sm font-medium border-primary/20 text-primary">
-            Why We Win
-          </Badge>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
-            They Connect People.
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary mb-6 uppercase tracking-wider">
+            Competitive Analysis
+          </div>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
+            One Platform.
             <br />
-            <span className="text-primary">We Guarantee Outcomes.</span>
+            <span className="bg-gradient-to-r from-primary via-[hsl(200,80%,60%)] to-primary bg-clip-text text-transparent">
+              Six Platforms Replaced.
+            </span>
           </h2>
-          <p className="mt-4 text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Every feature is built to protect your work, money, and reputation.
+          <p className="mt-4 text-base md:text-lg text-white/40 max-w-2xl mx-auto">
+            We don't compete on features. We make entire categories obsolete.
           </p>
         </motion.div>
 
-        {/* Comparison table - Desktop */}
-        <div className="hidden md:block max-w-5xl mx-auto">
-          <div className="rounded-2xl border border-border/50 overflow-hidden bg-card/50 backdrop-blur-sm">
+        {/* Desktop table */}
+        <div className="hidden lg:block max-w-6xl mx-auto">
+          <div className="rounded-2xl border border-white/8 overflow-hidden backdrop-blur-sm">
             {/* Header */}
-            <div className="grid grid-cols-5 gap-0 border-b border-border/50 bg-muted/50">
-              <div className="p-4 text-sm font-semibold text-foreground">Feature</div>
-              <div className="p-4 text-center text-sm font-medium text-muted-foreground">LinkedIn</div>
-              <div className="p-4 text-center text-sm font-medium text-muted-foreground">Upwork</div>
-              <div className="p-4 text-center text-sm font-medium text-muted-foreground">Fiverr</div>
-              <div className="p-4 text-center text-sm font-bold text-primary bg-primary/5">RCollab</div>
+            <div className="grid grid-cols-8 gap-0 border-b border-white/8 bg-white/3">
+              <div className="col-span-2 p-5 text-sm font-bold text-white/80">Capability</div>
+              {platforms.map((p) => (
+                <div key={p} className="p-5 text-center text-xs font-medium text-white/30 uppercase tracking-wider">{p}</div>
+              ))}
+              <div className="p-5 text-center text-sm font-bold text-primary bg-primary/8 border-l border-primary/20">RCollab</div>
             </div>
 
-            {/* Rows */}
             {categories.map((cat, i) => (
               <motion.div
                 key={cat.label}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
+                transition={{ duration: 0.3, delay: i * 0.05 }}
                 viewport={{ once: true }}
-                className="grid grid-cols-5 gap-0 border-b border-border/30 last:border-0 hover:bg-muted/20 transition-colors"
+                className="grid grid-cols-8 gap-0 border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors"
               >
-                <div className="p-4 flex items-center gap-3">
-                  <cat.icon className="h-4 w-4 text-muted-foreground shrink-0" />
-                  <span className="text-sm font-medium">{cat.label}</span>
+                <div className="col-span-2 p-4 flex items-center gap-3">
+                  <cat.icon className="h-4 w-4 text-white/30 shrink-0" />
+                  <span className="text-sm font-medium text-white/70">{cat.label}</span>
                 </div>
-                <div className="p-4 flex items-center justify-center"><StatusIcon status={cat.linkedin} /></div>
-                <div className="p-4 flex items-center justify-center"><StatusIcon status={cat.upwork} /></div>
-                <div className="p-4 flex items-center justify-center"><StatusIcon status={cat.fiverr} /></div>
-                <div className="p-4 flex flex-col items-center justify-center gap-1 bg-primary/5">
-                  <StatusIcon status={cat.rcollab} />
-                  <span className="text-[10px] text-primary/70 font-medium text-center leading-tight">{cat.rcollabDetail}</span>
+                {cat.scores.map((s, j) => (
+                  <div key={j} className="p-4 flex items-center justify-center">
+                    <StatusCell status={s} />
+                  </div>
+                ))}
+                <div className="p-4 flex flex-col items-center justify-center gap-1 bg-primary/5 border-l border-primary/10">
+                  <StatusCell status={cat.rcollab} />
+                  <span className="text-[10px] text-primary/60 font-medium text-center leading-tight max-w-[140px]">{cat.detail}</span>
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Comparison cards - Mobile */}
-        <div className="md:hidden space-y-3 max-w-lg mx-auto">
+        {/* Mobile cards */}
+        <div className="lg:hidden space-y-3 max-w-lg mx-auto">
           {categories.map((cat, i) => (
             <motion.div
               key={cat.label}
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: i * 0.06 }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
               viewport={{ once: true }}
-              className="rounded-xl border border-border/50 bg-card/50 p-4"
+              className="rounded-xl border border-white/8 bg-white/[0.02] p-4"
             >
               <div className="flex items-center gap-2 mb-3">
                 <cat.icon className="h-4 w-4 text-primary" />
-                <span className="text-sm font-semibold">{cat.label}</span>
+                <span className="text-sm font-semibold text-white/80">{cat.label}</span>
               </div>
-              <div className="grid grid-cols-4 gap-2 text-center">
-                <div className="flex flex-col items-center gap-1">
-                  <StatusIcon status={cat.linkedin} />
-                  <span className="text-[10px] text-muted-foreground">LinkedIn</span>
-                </div>
-                <div className="flex flex-col items-center gap-1">
-                  <StatusIcon status={cat.upwork} />
-                  <span className="text-[10px] text-muted-foreground">Upwork</span>
-                </div>
-                <div className="flex flex-col items-center gap-1">
-                  <StatusIcon status={cat.fiverr} />
-                  <span className="text-[10px] text-muted-foreground">Fiverr</span>
-                </div>
-                <div className="flex flex-col items-center gap-1 bg-primary/5 rounded-lg py-1">
-                  <StatusIcon status={cat.rcollab} />
-                  <span className="text-[10px] text-primary font-bold">RCollab</span>
+              <div className="grid grid-cols-6 gap-2 text-center mb-2">
+                {platforms.map((p, j) => (
+                  <div key={p} className="flex flex-col items-center gap-1">
+                    <StatusCell status={cat.scores[j]} />
+                    <span className="text-[9px] text-white/25">{p.split(" ")[0]}</span>
+                  </div>
+                ))}
+                <div className="flex flex-col items-center gap-1 bg-primary/10 rounded-lg py-1">
+                  <StatusCell status={cat.rcollab} />
+                  <span className="text-[9px] text-primary font-bold">RCollab</span>
                 </div>
               </div>
-              <p className="mt-2 text-[11px] text-primary/70 font-medium">{cat.rcollabDetail}</p>
+              <p className="text-[11px] text-primary/50 font-medium">{cat.detail}</p>
             </motion.div>
           ))}
         </div>
