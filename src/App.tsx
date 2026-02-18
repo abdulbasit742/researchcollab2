@@ -289,6 +289,7 @@ const ResearchDominationPage = lazy(() => import("./pages/ResearchDominationPage
 const ProfessionalIdentityPage = lazy(() => import("./pages/ProfessionalIdentityPage"));
 const SimplificationProtocolPage = lazy(() => import("./pages/SimplificationProtocolPage"));
 const RegionalDominationPage = lazy(() => import("./pages/RegionalDominationPage"));
+const FocusDashboardPage = lazy(() => import("./pages/FocusDashboardPage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -601,6 +602,7 @@ const AppContent = () => {
             <Route path="/identity/professional" element={<ProfessionalIdentityPage />} />
             <Route path="/internal/simplification" element={<SimplificationProtocolPage />} />
             <Route path="/strategy/regional" element={<RegionalDominationPage />} />
+            <Route path="/internal/focus-dashboard" element={<FocusDashboardPage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
