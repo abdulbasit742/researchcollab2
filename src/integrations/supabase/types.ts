@@ -38801,6 +38801,7 @@ export type Database = {
         Args: { p_new_score: number; p_reason: string; p_user_id: string }
         Returns: boolean
       }
+      apply_trust_curve: { Args: { raw_score: number }; Returns: number }
       apply_trust_decay: {
         Args: { p_days_inactive: number; p_user_id: string }
         Returns: undefined
@@ -38891,6 +38892,7 @@ export type Database = {
       }
       detect_orphaned_states: { Args: never; Returns: Json }
       detect_suspicious_activity: { Args: never; Returns: Json }
+      detect_trust_gaming_patterns: { Args: never; Returns: Json }
       execute_escrow_lock: {
         Args: { p_buyer_id: string; p_offer_id: string; p_total_amount: number }
         Returns: Json
