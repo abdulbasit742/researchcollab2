@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -14,7 +15,19 @@ import { ResearchGapCard } from "@/components/research/ResearchGapCard";
 import { LitReviewDialog } from "@/components/research/LitReviewDialog";
 import { AnnotatedBibDialog } from "@/components/research/AnnotatedBibDialog";
 import { useResearchPapers, type ResearchPaper, type PaperComparison } from "@/hooks/useResearchPapers";
-import { Search, BookOpen, FileText, GitCompareArrows, X, FileEdit, BookMarked } from "lucide-react";
+import {
+  Search, BookOpen, FileText, GitCompareArrows, X, FileEdit, BookMarked,
+  Sparkles, Lightbulb, MessageSquare, Microscope, Brain, TrendingUp,
+} from "lucide-react";
+
+const AI_QUICK_TOOLS = [
+  { icon: Sparkles, label: "AI Summarize", description: "Analyze any paper instantly" },
+  { icon: MessageSquare, label: "Chat with Papers", description: "Ask questions in natural language" },
+  { icon: Lightbulb, label: "Gap Finder", description: "Discover research whitespace" },
+  { icon: GitCompareArrows, label: "Compare Papers", description: "Side-by-side analysis" },
+  { icon: FileEdit, label: "Lit Review", description: "Auto-generate reviews" },
+  { icon: BookMarked, label: "Bibliography", description: "Export-ready citations" },
+];
 
 export default function ResearchPapersPage() {
   const {
@@ -65,35 +78,79 @@ export default function ResearchPapersPage() {
 
   return (
     <MainLayout>
-      <div className="container py-6 px-4">
-        {/* Header */}
-        <div className="mb-6 flex items-center justify-between flex-wrap gap-3">
-          <div>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <BookOpen className="h-6 w-6 text-primary" />
-              Research Papers Hub
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Browse, analyze, and track research papers with AI-powered insights
-            </p>
+      {/* Research Hub Hero Header */}
+      <div className="relative overflow-hidden border-b border-border/50">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/3" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(var(--primary)/0.08),transparent_60%)]" />
+
+        <div className="container relative py-8 md:py-12 px-4">
+          <div className="max-w-4xl">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-medium text-primary mb-4">
+                <Microscope className="h-3.5 w-3.5" />
+                Research Intelligence Hub
+              </div>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+                Research Papers{" "}
+                <span className="text-primary">+ AI Analysis</span>
+              </h1>
+              <p className="text-muted-foreground mt-2 text-sm md:text-base max-w-xl">
+                Discover, summarize, compare, and execute on research — powered by AI tools
+                that Google Scholar doesn't have.
+              </p>
+            </motion.div>
+
+            {/* AI Tool Pills */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              className="mt-5 flex flex-wrap gap-2"
+            >
+              {AI_QUICK_TOOLS.map((tool) => (
+                <div
+                  key={tool.label}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border/50 bg-card/80 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:border-primary/30 hover:text-primary transition-colors cursor-default"
+                >
+                  <tool.icon className="h-3 w-3" />
+                  {tool.label}
+                </div>
+              ))}
+            </motion.div>
           </div>
+        </div>
+      </div>
+
+      <div className="container py-6 px-4">
+        {/* Action bar */}
+        <div className="mb-5 flex items-center justify-between flex-wrap gap-3">
+          <Tabs value={showBookmarked ? "bookmarked" : "all"} onValueChange={(v) => setShowBookmarked(v === "bookmarked")}>
+            <TabsList>
+              <TabsTrigger value="all">All Papers</TabsTrigger>
+              <TabsTrigger value="bookmarked">Bookmarked</TabsTrigger>
+            </TabsList>
+          </Tabs>
           <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
             <div className="flex items-center gap-2 w-max sm:w-auto sm:flex-wrap">
-              <Button variant="outline" size="sm" className="gap-2 whitespace-nowrap" onClick={() => setLitReviewOpen(true)}>
-                <FileEdit className="h-4 w-4" />
+              <Button variant="outline" size="sm" className="gap-1.5 whitespace-nowrap" onClick={() => setLitReviewOpen(true)}>
+                <FileEdit className="h-3.5 w-3.5" />
                 Lit Review
               </Button>
-              <Button variant="outline" size="sm" className="gap-2 whitespace-nowrap" onClick={() => setAnnotatedBibOpen(true)}>
-                <BookMarked className="h-4 w-4" />
+              <Button variant="outline" size="sm" className="gap-1.5 whitespace-nowrap" onClick={() => setAnnotatedBibOpen(true)}>
+                <BookMarked className="h-3.5 w-3.5" />
                 Bibliography
               </Button>
               <Button
                 variant={compareMode ? "default" : "outline"}
                 size="sm"
-                className="gap-2 whitespace-nowrap"
+                className="gap-1.5 whitespace-nowrap"
                 onClick={() => { setCompareMode(!compareMode); if (compareMode) clearCompareSelection(); }}
               >
-                <GitCompareArrows className="h-4 w-4" />
+                <GitCompareArrows className="h-3.5 w-3.5" />
                 {compareMode ? "Exit Compare" : "Compare"}
               </Button>
             </div>
@@ -103,23 +160,15 @@ export default function ResearchPapersPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Main Content */}
           <div className="space-y-4">
-            {/* Tabs */}
-            <Tabs value={showBookmarked ? "bookmarked" : "all"} onValueChange={(v) => setShowBookmarked(v === "bookmarked")}>
-              <TabsList>
-                <TabsTrigger value="all">All Papers</TabsTrigger>
-                <TabsTrigger value="bookmarked">Bookmarked</TabsTrigger>
-              </TabsList>
-            </Tabs>
-
             {/* Search & Filters */}
             <div className="space-y-3">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search papers by title or author..."
+                  placeholder="Search papers by title, author, or keyword..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-9"
+                  className="pl-9 h-11"
                 />
               </div>
               <div className="grid grid-cols-2 sm:flex sm:flex-row gap-2 sm:gap-3">
@@ -164,6 +213,12 @@ export default function ResearchPapersPage() {
               </span>
               <span>•</span>
               <span>{readingHistory.length} analyzed this session</span>
+              {compareMode && (
+                <>
+                  <span>•</span>
+                  <span className="text-primary font-medium">{selectedForCompare.length} selected for compare</span>
+                </>
+              )}
             </div>
 
             {/* Papers grid */}
@@ -185,9 +240,10 @@ export default function ResearchPapersPage() {
             </div>
 
             {papers.length === 0 && (
-              <div className="text-center py-12 text-muted-foreground">
-                <BookOpen className="h-10 w-10 mx-auto mb-3 opacity-50" />
-                <p>{showBookmarked ? "No bookmarked papers yet." : "No papers match your filters."}</p>
+              <div className="text-center py-16 text-muted-foreground">
+                <BookOpen className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                <p className="text-lg font-medium">{showBookmarked ? "No bookmarked papers yet." : "No papers match your filters."}</p>
+                <p className="text-sm mt-1">Try adjusting your search or filters.</p>
               </div>
             )}
           </div>
@@ -215,7 +271,7 @@ export default function ResearchPapersPage() {
 
       {/* Compare floating bar */}
       {compareMode && selectedForCompare.length > 0 && (
-        <div className="fixed bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 bg-card border shadow-lg rounded-full px-4 sm:px-6 py-3 flex items-center gap-3 sm:gap-4">
+        <div className="fixed bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 bg-card border shadow-2xl rounded-full px-4 sm:px-6 py-3 flex items-center gap-3 sm:gap-4">
           <span className="text-sm font-medium">{selectedForCompare.length} paper(s) selected</span>
           <Button size="sm" onClick={handleCompare} disabled={selectedForCompare.length < 2 || aiLoading} className="gap-2">
             <GitCompareArrows className="h-3.5 w-3.5" />
@@ -227,7 +283,7 @@ export default function ResearchPapersPage() {
         </div>
       )}
 
-      {/* Summary Dialog */}
+      {/* Dialogs */}
       <PaperSummaryDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
@@ -241,8 +297,6 @@ export default function ResearchPapersPage() {
         onSimplify={simplifySummary}
         chatLoading={aiLoading}
       />
-
-      {/* Compare Dialog */}
       <CompareDialog
         open={compareDialogOpen}
         onOpenChange={setCompareDialogOpen}
@@ -250,8 +304,6 @@ export default function ResearchPapersPage() {
         comparison={comparison}
         loading={comparing}
       />
-
-      {/* Lit Review Dialog */}
       <LitReviewDialog
         open={litReviewOpen}
         onOpenChange={setLitReviewOpen}
@@ -259,8 +311,6 @@ export default function ResearchPapersPage() {
         loading={aiLoading}
         analyzedCount={readingHistory.length}
       />
-
-      {/* Annotated Bibliography Dialog */}
       <AnnotatedBibDialog
         open={annotatedBibOpen}
         onOpenChange={setAnnotatedBibOpen}
