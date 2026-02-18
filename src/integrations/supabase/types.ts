@@ -2015,6 +2015,102 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_data_depth_index: {
+        Row: {
+          arbitration_verdict_patterns: number | null
+          corporate_funding_cycles: number | null
+          cross_node_allocation_variance: number | null
+          employment_outcome_depth: number | null
+          escrow_transaction_depth: number | null
+          founder_trust_evolution_points: number | null
+          government_capital_patterns: number | null
+          id: string
+          milestone_completion_depth: number | null
+          overall_depth_score: number | null
+          period: string
+          recorded_at: string
+          startup_lifecycle_duration_avg: number | null
+        }
+        Insert: {
+          arbitration_verdict_patterns?: number | null
+          corporate_funding_cycles?: number | null
+          cross_node_allocation_variance?: number | null
+          employment_outcome_depth?: number | null
+          escrow_transaction_depth?: number | null
+          founder_trust_evolution_points?: number | null
+          government_capital_patterns?: number | null
+          id?: string
+          milestone_completion_depth?: number | null
+          overall_depth_score?: number | null
+          period: string
+          recorded_at?: string
+          startup_lifecycle_duration_avg?: number | null
+        }
+        Update: {
+          arbitration_verdict_patterns?: number | null
+          corporate_funding_cycles?: number | null
+          cross_node_allocation_variance?: number | null
+          employment_outcome_depth?: number | null
+          escrow_transaction_depth?: number | null
+          founder_trust_evolution_points?: number | null
+          government_capital_patterns?: number | null
+          id?: string
+          milestone_completion_depth?: number | null
+          overall_depth_score?: number | null
+          period?: string
+          recorded_at?: string
+          startup_lifecycle_duration_avg?: number | null
+        }
+        Relationships: []
+      }
+      ai_decision_audit_logs: {
+        Row: {
+          alternative_scenarios: Json | null
+          bias_audit_score: number | null
+          confidence_interval: number | null
+          created_at: string
+          decided_at: string
+          decision_type: string
+          historical_comparison: Json | null
+          id: string
+          model_version: string | null
+          outcome_entity_id: string | null
+          outcome_entity_type: string | null
+          risk_factors: Json | null
+          top_weighted_features: Json | null
+        }
+        Insert: {
+          alternative_scenarios?: Json | null
+          bias_audit_score?: number | null
+          confidence_interval?: number | null
+          created_at?: string
+          decided_at?: string
+          decision_type: string
+          historical_comparison?: Json | null
+          id?: string
+          model_version?: string | null
+          outcome_entity_id?: string | null
+          outcome_entity_type?: string | null
+          risk_factors?: Json | null
+          top_weighted_features?: Json | null
+        }
+        Update: {
+          alternative_scenarios?: Json | null
+          bias_audit_score?: number | null
+          confidence_interval?: number | null
+          created_at?: string
+          decided_at?: string
+          decision_type?: string
+          historical_comparison?: Json | null
+          id?: string
+          model_version?: string | null
+          outcome_entity_id?: string | null
+          outcome_entity_type?: string | null
+          risk_factors?: Json | null
+          top_weighted_features?: Json | null
+        }
+        Relationships: []
+      }
       ai_governance_logs: {
         Row: {
           bias_flag: boolean | null
@@ -5218,6 +5314,51 @@ export type Database = {
         }
         Relationships: []
       }
+      competitor_threat_index: {
+        Row: {
+          ai_positioning_threat: number | null
+          assessed_at: string
+          category: string
+          competitor_name: string
+          created_at: string
+          enterprise_client_risk: number | null
+          feature_imitation_score: number | null
+          funding_threat_level: string | null
+          id: string
+          market_narrative_shift: number | null
+          notes: string | null
+          overall_threat_level: string | null
+        }
+        Insert: {
+          ai_positioning_threat?: number | null
+          assessed_at?: string
+          category: string
+          competitor_name: string
+          created_at?: string
+          enterprise_client_risk?: number | null
+          feature_imitation_score?: number | null
+          funding_threat_level?: string | null
+          id?: string
+          market_narrative_shift?: number | null
+          notes?: string | null
+          overall_threat_level?: string | null
+        }
+        Update: {
+          ai_positioning_threat?: number | null
+          assessed_at?: string
+          category?: string
+          competitor_name?: string
+          created_at?: string
+          enterprise_client_risk?: number | null
+          feature_imitation_score?: number | null
+          funding_threat_level?: string | null
+          id?: string
+          market_narrative_shift?: number | null
+          notes?: string | null
+          overall_threat_level?: string | null
+        }
+        Relationships: []
+      }
       complexity_budget_registry: {
         Row: {
           active_modules: number | null
@@ -7832,6 +7973,51 @@ export type Database = {
         }
         Relationships: []
       }
+      data_moat_growth_index: {
+        Row: {
+          cross_node_capital_flows: number | null
+          id: string
+          intelligence_forecasting_history: number | null
+          moat_depth_score: number | null
+          period: string
+          recorded_at: string
+          total_arbitration_cases: number | null
+          total_employment_conversions: number | null
+          total_equity_allocations: number | null
+          total_escrow_transactions: number | null
+          total_milestone_completions: number | null
+          total_startup_spinoffs: number | null
+        }
+        Insert: {
+          cross_node_capital_flows?: number | null
+          id?: string
+          intelligence_forecasting_history?: number | null
+          moat_depth_score?: number | null
+          period: string
+          recorded_at?: string
+          total_arbitration_cases?: number | null
+          total_employment_conversions?: number | null
+          total_equity_allocations?: number | null
+          total_escrow_transactions?: number | null
+          total_milestone_completions?: number | null
+          total_startup_spinoffs?: number | null
+        }
+        Update: {
+          cross_node_capital_flows?: number | null
+          id?: string
+          intelligence_forecasting_history?: number | null
+          moat_depth_score?: number | null
+          period?: string
+          recorded_at?: string
+          total_arbitration_cases?: number | null
+          total_employment_conversions?: number | null
+          total_equity_allocations?: number | null
+          total_escrow_transactions?: number | null
+          total_milestone_completions?: number | null
+          total_startup_spinoffs?: number | null
+        }
+        Relationships: []
+      }
       data_moat_metrics: {
         Row: {
           compounding_score: number | null
@@ -9033,6 +9219,39 @@ export type Database = {
           id?: string
           signal_type?: string
           signal_value?: number | null
+        }
+        Relationships: []
+      }
+      displacement_pillars: {
+        Row: {
+          advantage_multiplier: number | null
+          competitor_avg_score: number | null
+          created_at: string
+          description: string | null
+          id: string
+          last_assessed_at: string
+          pillar_name: string
+          rcollab_score: number | null
+        }
+        Insert: {
+          advantage_multiplier?: number | null
+          competitor_avg_score?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_assessed_at?: string
+          pillar_name: string
+          rcollab_score?: number | null
+        }
+        Update: {
+          advantage_multiplier?: number | null
+          competitor_avg_score?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_assessed_at?: string
+          pillar_name?: string
+          rcollab_score?: number | null
         }
         Relationships: []
       }
@@ -33086,6 +33305,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      switching_cost_index: {
+        Row: {
+          arbitration_record_count: number | null
+          calculated_at: string
+          capital_history_depth: number | null
+          corporate_integration_depth: number | null
+          created_at: string
+          escrow_history_count: number | null
+          id: string
+          intelligence_subscription_reliance: number | null
+          overall_switching_cost: number | null
+          startup_equity_dependency: number | null
+          trust_compounding_score: number | null
+          user_id: string
+        }
+        Insert: {
+          arbitration_record_count?: number | null
+          calculated_at?: string
+          capital_history_depth?: number | null
+          corporate_integration_depth?: number | null
+          created_at?: string
+          escrow_history_count?: number | null
+          id?: string
+          intelligence_subscription_reliance?: number | null
+          overall_switching_cost?: number | null
+          startup_equity_dependency?: number | null
+          trust_compounding_score?: number | null
+          user_id: string
+        }
+        Update: {
+          arbitration_record_count?: number | null
+          calculated_at?: string
+          capital_history_depth?: number | null
+          corporate_integration_depth?: number | null
+          created_at?: string
+          escrow_history_count?: number | null
+          id?: string
+          intelligence_subscription_reliance?: number | null
+          overall_switching_cost?: number | null
+          startup_equity_dependency?: number | null
+          trust_compounding_score?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       system_health_snapshots: {
         Row: {
