@@ -285,6 +285,7 @@ const WarRoomPage = lazy(() => import("./pages/WarRoomPage"));
 const CompetitorDisplacementPage = lazy(() => import("./pages/CompetitorDisplacementPage"));
 const AIMoatDominationPage = lazy(() => import("./pages/AIMoatDominationPage"));
 const IPOReadinessPage = lazy(() => import("./pages/IPOReadinessPage"));
+const ResearchDominationPage = lazy(() => import("./pages/ResearchDominationPage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -542,6 +543,7 @@ const AppContent = () => {
             <Route path="/research/economic-impact" element={<ResearchEconomicImpactPage />} />
             <Route path="/institutions/research-intelligence" element={<InstitutionResearchIntelligencePage />} />
             <Route path="/research/match" element={<ResearchMatchPage />} />
+            <Route path="/research/domination" element={<ResearchDominationPage />} />
             {/* RLCMA */}
             <Route path="/institutions/commercialization" element={<InstitutionCommercializationPage />} />
             <Route path="/institutions/epr-rankings" element={<ExecutionProductivityRankingsPage />} />
