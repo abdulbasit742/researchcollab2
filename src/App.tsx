@@ -290,6 +290,9 @@ const ProfessionalIdentityPage = lazy(() => import("./pages/ProfessionalIdentity
 const SimplificationProtocolPage = lazy(() => import("./pages/SimplificationProtocolPage"));
 const RegionalDominationPage = lazy(() => import("./pages/RegionalDominationPage"));
 const FocusDashboardPage = lazy(() => import("./pages/FocusDashboardPage"));
+const UniversitySalesKitPage = lazy(() => import("./pages/UniversitySalesKitPage"));
+const CorporateSalesKitPage = lazy(() => import("./pages/CorporateSalesKitPage"));
+const TractionDashboardPage = lazy(() => import("./pages/TractionDashboardPage"));
 const AdminCommandCenterPage = lazy(() => import("./pages/admin/AdminCommandCenterPage"));
 const AdminNationalEconomyPage = lazy(() => import("./pages/admin/AdminNationalEconomyPage"));
 const AdminPartnerNetworkPage = lazy(() => import("./pages/admin/AdminPartnerNetworkPage"));
@@ -603,6 +606,9 @@ const AppContent = () => {
             <Route path="/internal/simplification" element={<SimplificationProtocolPage />} />
             <Route path="/strategy/regional" element={<RegionalDominationPage />} />
             <Route path="/internal/focus-dashboard" element={<FocusDashboardPage />} />
+            <Route path="/sales/university-kit" element={<UniversitySalesKitPage />} />
+            <Route path="/sales/corporate-kit" element={<CorporateSalesKitPage />} />
+            <Route path="/internal/traction" element={<TractionDashboardPage />} />
             <Route path="/admin/command-center" element={<AdminCommandCenterPage />} />
             <Route path="/admin/national-economy" element={<AdminNationalEconomyPage />} />
             <Route path="/admin/partners" element={<AdminPartnerNetworkPage />} />
