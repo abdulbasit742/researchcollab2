@@ -4019,6 +4019,63 @@ export type Database = {
         }
         Relationships: []
       }
+      capital_allocation_scores: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          confidence_score: number | null
+          created_at: string | null
+          historical_roi_proxy: number | null
+          id: string
+          projected_capital_efficiency: number | null
+          projected_dispute_risk: number | null
+          projected_employment_conversion: number | null
+          projected_startup_yield: number | null
+          projected_survival_variance: number | null
+          requires_human_approval: boolean | null
+          risk_clustering_detected: boolean | null
+          sector_allocation: Json | null
+          simulation_name: string
+          total_capital: number | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          historical_roi_proxy?: number | null
+          id?: string
+          projected_capital_efficiency?: number | null
+          projected_dispute_risk?: number | null
+          projected_employment_conversion?: number | null
+          projected_startup_yield?: number | null
+          projected_survival_variance?: number | null
+          requires_human_approval?: boolean | null
+          risk_clustering_detected?: boolean | null
+          sector_allocation?: Json | null
+          simulation_name: string
+          total_capital?: number | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          historical_roi_proxy?: number | null
+          id?: string
+          projected_capital_efficiency?: number | null
+          projected_dispute_risk?: number | null
+          projected_employment_conversion?: number | null
+          projected_startup_yield?: number | null
+          projected_survival_variance?: number | null
+          requires_human_approval?: boolean | null
+          risk_clustering_detected?: boolean | null
+          sector_allocation?: Json | null
+          simulation_name?: string
+          total_capital?: number | null
+        }
+        Relationships: []
+      }
       capital_efficiency_index: {
         Row: {
           completion_rate: number | null
@@ -9576,6 +9633,51 @@ export type Database = {
           deal_id?: string
           id?: string
           predicted_risk_score?: number | null
+        }
+        Relationships: []
+      }
+      dispute_predictions: {
+        Row: {
+          actual_outcome: string | null
+          contract_id: string | null
+          failure_likelihood: number | null
+          founder_burnout_indicator: number | null
+          id: string
+          milestone_id: string | null
+          predicted_at: string | null
+          prediction_accurate: boolean | null
+          prevention_triggered: boolean | null
+          recommended_actions: string[] | null
+          risk_level: string | null
+          sponsor_dispute_probability: number | null
+        }
+        Insert: {
+          actual_outcome?: string | null
+          contract_id?: string | null
+          failure_likelihood?: number | null
+          founder_burnout_indicator?: number | null
+          id?: string
+          milestone_id?: string | null
+          predicted_at?: string | null
+          prediction_accurate?: boolean | null
+          prevention_triggered?: boolean | null
+          recommended_actions?: string[] | null
+          risk_level?: string | null
+          sponsor_dispute_probability?: number | null
+        }
+        Update: {
+          actual_outcome?: string | null
+          contract_id?: string | null
+          failure_likelihood?: number | null
+          founder_burnout_indicator?: number | null
+          id?: string
+          milestone_id?: string | null
+          predicted_at?: string | null
+          prediction_accurate?: boolean | null
+          prevention_triggered?: boolean | null
+          recommended_actions?: string[] | null
+          risk_level?: string | null
+          sponsor_dispute_probability?: number | null
         }
         Relationships: []
       }
@@ -21799,6 +21901,54 @@ export type Database = {
           },
         ]
       }
+      model_accuracy_index: {
+        Row: {
+          allocation_accuracy_delta: number | null
+          bias_risk_score: number | null
+          correct_predictions: number | null
+          drift_detected: boolean | null
+          forecast_error_band: number | null
+          id: string
+          measured_at: string | null
+          model_name: string
+          model_version: string
+          prediction_accuracy: number | null
+          retraining_due: string | null
+          survival_prediction_variance: number | null
+          total_predictions: number | null
+        }
+        Insert: {
+          allocation_accuracy_delta?: number | null
+          bias_risk_score?: number | null
+          correct_predictions?: number | null
+          drift_detected?: boolean | null
+          forecast_error_band?: number | null
+          id?: string
+          measured_at?: string | null
+          model_name: string
+          model_version: string
+          prediction_accuracy?: number | null
+          retraining_due?: string | null
+          survival_prediction_variance?: number | null
+          total_predictions?: number | null
+        }
+        Update: {
+          allocation_accuracy_delta?: number | null
+          bias_risk_score?: number | null
+          correct_predictions?: number | null
+          drift_detected?: boolean | null
+          forecast_error_band?: number | null
+          id?: string
+          measured_at?: string | null
+          model_name?: string
+          model_version?: string
+          prediction_accuracy?: number | null
+          retraining_due?: string | null
+          survival_prediction_variance?: number | null
+          total_predictions?: number | null
+        }
+        Relationships: []
+      }
       multi_node_index_data: {
         Row: {
           calculated_at: string | null
@@ -31133,6 +31283,51 @@ export type Database = {
         }
         Relationships: []
       }
+      sector_acceleration: {
+        Row: {
+          acceleration_confidence: number | null
+          detected_at: string | null
+          founder_clustering: boolean | null
+          funding_velocity_spike: boolean | null
+          government_targeting_shift: boolean | null
+          hiring_surge_detected: boolean | null
+          id: string
+          momentum_score: number | null
+          node_id: string | null
+          sector_name: string
+          sponsor_density_growth: number | null
+          volatility_band: string | null
+        }
+        Insert: {
+          acceleration_confidence?: number | null
+          detected_at?: string | null
+          founder_clustering?: boolean | null
+          funding_velocity_spike?: boolean | null
+          government_targeting_shift?: boolean | null
+          hiring_surge_detected?: boolean | null
+          id?: string
+          momentum_score?: number | null
+          node_id?: string | null
+          sector_name: string
+          sponsor_density_growth?: number | null
+          volatility_band?: string | null
+        }
+        Update: {
+          acceleration_confidence?: number | null
+          detected_at?: string | null
+          founder_clustering?: boolean | null
+          funding_velocity_spike?: boolean | null
+          government_targeting_shift?: boolean | null
+          hiring_surge_detected?: boolean | null
+          id?: string
+          momentum_score?: number | null
+          node_id?: string | null
+          sector_name?: string
+          sponsor_density_growth?: number | null
+          volatility_band?: string | null
+        }
+        Relationships: []
+      }
       sector_acceleration_signals: {
         Row: {
           detected_at: string
@@ -33710,6 +33905,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      survival_predictions: {
+        Row: {
+          ai_confidence_score: number | null
+          arbitration_exposure: number | null
+          capital_efficiency_score: number | null
+          capital_stage_timing: number | null
+          corporate_sponsor_behavior: number | null
+          equity_dilution_pattern: number | null
+          founder_delivery_consistency: number | null
+          founder_id: string | null
+          id: string
+          milestone_adherence: number | null
+          model_version: string | null
+          predicted_at: string | null
+          risk_band: string | null
+          sector_volatility: number | null
+          startup_id: string | null
+          survival_probability: number | null
+          trust_trajectory_slope: number | null
+        }
+        Insert: {
+          ai_confidence_score?: number | null
+          arbitration_exposure?: number | null
+          capital_efficiency_score?: number | null
+          capital_stage_timing?: number | null
+          corporate_sponsor_behavior?: number | null
+          equity_dilution_pattern?: number | null
+          founder_delivery_consistency?: number | null
+          founder_id?: string | null
+          id?: string
+          milestone_adherence?: number | null
+          model_version?: string | null
+          predicted_at?: string | null
+          risk_band?: string | null
+          sector_volatility?: number | null
+          startup_id?: string | null
+          survival_probability?: number | null
+          trust_trajectory_slope?: number | null
+        }
+        Update: {
+          ai_confidence_score?: number | null
+          arbitration_exposure?: number | null
+          capital_efficiency_score?: number | null
+          capital_stage_timing?: number | null
+          corporate_sponsor_behavior?: number | null
+          equity_dilution_pattern?: number | null
+          founder_delivery_consistency?: number | null
+          founder_id?: string | null
+          id?: string
+          milestone_adherence?: number | null
+          model_version?: string | null
+          predicted_at?: string | null
+          risk_band?: string | null
+          sector_volatility?: number | null
+          startup_id?: string | null
+          survival_probability?: number | null
+          trust_trajectory_slope?: number | null
+        }
+        Relationships: []
       }
       swarm_decisions: {
         Row: {
