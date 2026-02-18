@@ -3518,6 +3518,45 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_preparation_items: {
+        Row: {
+          audit_type: string
+          auto_generated: boolean | null
+          created_at: string | null
+          documentation_url: string | null
+          id: string
+          item_name: string
+          last_reviewed: string | null
+          notes: string | null
+          reviewer_id: string | null
+          status: string | null
+        }
+        Insert: {
+          audit_type: string
+          auto_generated?: boolean | null
+          created_at?: string | null
+          documentation_url?: string | null
+          id?: string
+          item_name: string
+          last_reviewed?: string | null
+          notes?: string | null
+          reviewer_id?: string | null
+          status?: string | null
+        }
+        Update: {
+          audit_type?: string
+          auto_generated?: boolean | null
+          created_at?: string | null
+          documentation_url?: string | null
+          id?: string
+          item_name?: string
+          last_reviewed?: string | null
+          notes?: string | null
+          reviewer_id?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       bias_monitoring_records: {
         Row: {
           affected_group: string | null
@@ -3600,6 +3639,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      board_governance_matrix: {
+        Row: {
+          appointed_at: string | null
+          committee_memberships: string[] | null
+          created_at: string | null
+          decision_authority: Json | null
+          holder_name: string | null
+          id: string
+          is_active: boolean | null
+          is_independent: boolean | null
+          seat_title: string
+          seat_type: string
+          term_expires_at: string | null
+        }
+        Insert: {
+          appointed_at?: string | null
+          committee_memberships?: string[] | null
+          created_at?: string | null
+          decision_authority?: Json | null
+          holder_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_independent?: boolean | null
+          seat_title: string
+          seat_type: string
+          term_expires_at?: string | null
+        }
+        Update: {
+          appointed_at?: string | null
+          committee_memberships?: string[] | null
+          created_at?: string | null
+          decision_authority?: Json | null
+          holder_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_independent?: boolean | null
+          seat_title?: string
+          seat_type?: string
+          term_expires_at?: string | null
+        }
+        Relationships: []
       }
       board_reports: {
         Row: {
@@ -12959,6 +13040,81 @@ export type Database = {
         }
         Relationships: []
       }
+      financial_reporting_periods: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          burn_multiple: number | null
+          cash_flow: number | null
+          contribution_margin_per_segment: Json | null
+          cost_of_revenue: number | null
+          created_at: string | null
+          deferred_revenue: number | null
+          ebitda: number | null
+          end_date: string
+          escrow_liability: number | null
+          gross_margin: number | null
+          id: string
+          multi_currency_normalized: boolean | null
+          net_income: number | null
+          operating_margin: number | null
+          period_label: string
+          period_type: string
+          revenue_by_segment: Json | null
+          runway_months: number | null
+          start_date: string
+          status: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          burn_multiple?: number | null
+          cash_flow?: number | null
+          contribution_margin_per_segment?: Json | null
+          cost_of_revenue?: number | null
+          created_at?: string | null
+          deferred_revenue?: number | null
+          ebitda?: number | null
+          end_date: string
+          escrow_liability?: number | null
+          gross_margin?: number | null
+          id?: string
+          multi_currency_normalized?: boolean | null
+          net_income?: number | null
+          operating_margin?: number | null
+          period_label: string
+          period_type?: string
+          revenue_by_segment?: Json | null
+          runway_months?: number | null
+          start_date: string
+          status?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          burn_multiple?: number | null
+          cash_flow?: number | null
+          contribution_margin_per_segment?: Json | null
+          cost_of_revenue?: number | null
+          created_at?: string | null
+          deferred_revenue?: number | null
+          ebitda?: number | null
+          end_date?: string
+          escrow_liability?: number | null
+          gross_margin?: number | null
+          id?: string
+          multi_currency_normalized?: boolean | null
+          net_income?: number | null
+          operating_margin?: number | null
+          period_label?: string
+          period_type?: string
+          revenue_by_segment?: Json | null
+          runway_months?: number | null
+          start_date?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
       financial_transparency_reports: {
         Row: {
           approved_by: string | null
@@ -19132,6 +19288,42 @@ export type Database = {
         }
         Relationships: []
       }
+      internal_controls_log: {
+        Row: {
+          actor_id: string | null
+          control_type: string
+          details: Json | null
+          event_description: string
+          id: string
+          logged_at: string | null
+          override_detected: boolean | null
+          reconciliation_status: string | null
+          severity: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          control_type: string
+          details?: Json | null
+          event_description: string
+          id?: string
+          logged_at?: string | null
+          override_detected?: boolean | null
+          reconciliation_status?: string | null
+          severity?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          control_type?: string
+          details?: Json | null
+          event_description?: string
+          id?: string
+          logged_at?: string | null
+          override_detected?: boolean | null
+          reconciliation_status?: string | null
+          severity?: string | null
+        }
+        Relationships: []
+      }
       international_institutions: {
         Row: {
           accreditation_status: string | null
@@ -19716,6 +19908,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ipo_kpi_snapshots: {
+        Row: {
+          cac: number | null
+          churn_rate: number | null
+          created_at: string | null
+          data_moat_growth_index: number | null
+          dispute_rate: number | null
+          employment_conversion_rate: number | null
+          gmv: number | null
+          gross_margin: number | null
+          id: string
+          intelligence_arr: number | null
+          ltv: number | null
+          net_revenue: number | null
+          net_revenue_retention: number | null
+          node_expansion_rate: number | null
+          snapshot_date: string
+          startup_survival_rate: number | null
+          take_rate: number | null
+        }
+        Insert: {
+          cac?: number | null
+          churn_rate?: number | null
+          created_at?: string | null
+          data_moat_growth_index?: number | null
+          dispute_rate?: number | null
+          employment_conversion_rate?: number | null
+          gmv?: number | null
+          gross_margin?: number | null
+          id?: string
+          intelligence_arr?: number | null
+          ltv?: number | null
+          net_revenue?: number | null
+          net_revenue_retention?: number | null
+          node_expansion_rate?: number | null
+          snapshot_date: string
+          startup_survival_rate?: number | null
+          take_rate?: number | null
+        }
+        Update: {
+          cac?: number | null
+          churn_rate?: number | null
+          created_at?: string | null
+          data_moat_growth_index?: number | null
+          dispute_rate?: number | null
+          employment_conversion_rate?: number | null
+          gmv?: number | null
+          gross_margin?: number | null
+          id?: string
+          intelligence_arr?: number | null
+          ltv?: number | null
+          net_revenue?: number | null
+          net_revenue_retention?: number | null
+          node_expansion_rate?: number | null
+          snapshot_date?: string
+          startup_survival_rate?: number | null
+          take_rate?: number | null
+        }
+        Relationships: []
       }
       job_applications: {
         Row: {
