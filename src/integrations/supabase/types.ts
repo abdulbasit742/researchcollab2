@@ -2261,16 +2261,58 @@ export type Database = {
           },
         ]
       }
+      ai_model_performance_logs: {
+        Row: {
+          id: string
+          logged_at: string
+          metric_name: string
+          metric_value: number
+          model_id: string | null
+          outcome_variance: number | null
+          retraining_triggered: boolean | null
+        }
+        Insert: {
+          id?: string
+          logged_at?: string
+          metric_name: string
+          metric_value: number
+          model_id?: string | null
+          outcome_variance?: number | null
+          retraining_triggered?: boolean | null
+        }
+        Update: {
+          id?: string
+          logged_at?: string
+          metric_name?: string
+          metric_value?: number
+          model_id?: string | null
+          outcome_variance?: number | null
+          retraining_triggered?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_model_performance_logs_model_id_fkey"
+            columns: ["model_id"]
+            isOneToOne: false
+            referencedRelation: "ai_model_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_model_registry: {
         Row: {
+          access_tier: string | null
           approval_council: string | null
           approved_at: string | null
           bias_assessment: Json | null
           capabilities: string[]
           created_at: string
           id: string
+          is_exportable: boolean | null
+          layer_label: string | null
           limitations: string[] | null
           model_identifier: string
+          model_layer: number | null
           provider: string
           replacement_model_id: string | null
           safety_rating: string | null
@@ -2279,14 +2321,18 @@ export type Database = {
           usage_restrictions: Json | null
         }
         Insert: {
+          access_tier?: string | null
           approval_council?: string | null
           approved_at?: string | null
           bias_assessment?: Json | null
           capabilities: string[]
           created_at?: string
           id?: string
+          is_exportable?: boolean | null
+          layer_label?: string | null
           limitations?: string[] | null
           model_identifier: string
+          model_layer?: number | null
           provider: string
           replacement_model_id?: string | null
           safety_rating?: string | null
@@ -2295,14 +2341,18 @@ export type Database = {
           usage_restrictions?: Json | null
         }
         Update: {
+          access_tier?: string | null
           approval_council?: string | null
           approved_at?: string | null
           bias_assessment?: Json | null
           capabilities?: string[]
           created_at?: string
           id?: string
+          is_exportable?: boolean | null
+          layer_label?: string | null
           limitations?: string[] | null
           model_identifier?: string
+          model_layer?: number | null
           provider?: string
           replacement_model_id?: string | null
           safety_rating?: string | null
@@ -3702,6 +3752,62 @@ export type Database = {
             columns: ["country_id"]
             isOneToOne: false
             referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      capital_efficiency_scores: {
+        Row: {
+          allocation_confidence: number
+          approved_at: string | null
+          approved_by: string | null
+          calculated_at: string
+          cost_adjusted_return: number | null
+          id: string
+          innovation_saturation: number | null
+          node_id: string | null
+          portfolio_risk: number | null
+          requires_human_approval: boolean
+          sector: string | null
+          sector_correlation: number | null
+          talent_density_weight: number | null
+        }
+        Insert: {
+          allocation_confidence: number
+          approved_at?: string | null
+          approved_by?: string | null
+          calculated_at?: string
+          cost_adjusted_return?: number | null
+          id?: string
+          innovation_saturation?: number | null
+          node_id?: string | null
+          portfolio_risk?: number | null
+          requires_human_approval?: boolean
+          sector?: string | null
+          sector_correlation?: number | null
+          talent_density_weight?: number | null
+        }
+        Update: {
+          allocation_confidence?: number
+          approved_at?: string | null
+          approved_by?: string | null
+          calculated_at?: string
+          cost_adjusted_return?: number | null
+          id?: string
+          innovation_saturation?: number | null
+          node_id?: string | null
+          portfolio_risk?: number | null
+          requires_human_approval?: boolean
+          sector?: string | null
+          sector_correlation?: number | null
+          talent_density_weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capital_efficiency_scores_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
             referencedColumns: ["id"]
           },
         ]
@@ -9713,6 +9819,50 @@ export type Database = {
           validation_score?: number | null
         }
         Relationships: []
+      }
+      employment_forecasts: {
+        Row: {
+          demand_surge_detected: boolean | null
+          forecast_date: string
+          forecast_period: string | null
+          hiring_likelihood: number | null
+          id: string
+          node_id: string | null
+          sector: string | null
+          talent_oversupply_risk: string | null
+          university_employability_trajectory: string | null
+        }
+        Insert: {
+          demand_surge_detected?: boolean | null
+          forecast_date?: string
+          forecast_period?: string | null
+          hiring_likelihood?: number | null
+          id?: string
+          node_id?: string | null
+          sector?: string | null
+          talent_oversupply_risk?: string | null
+          university_employability_trajectory?: string | null
+        }
+        Update: {
+          demand_surge_detected?: boolean | null
+          forecast_date?: string
+          forecast_period?: string | null
+          hiring_likelihood?: number | null
+          id?: string
+          node_id?: string | null
+          sector?: string | null
+          talent_oversupply_risk?: string | null
+          university_employability_trajectory?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employment_forecasts_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       endowment_funds: {
         Row: {
@@ -16019,6 +16169,47 @@ export type Database = {
             columns: ["corporate_id"]
             isOneToOne: false
             referencedRelation: "corporate_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      innovation_risk_warnings: {
+        Row: {
+          description: string | null
+          detected_at: string
+          id: string
+          is_resolved: boolean | null
+          node_id: string | null
+          resolved_at: string | null
+          risk_type: string
+          severity: string
+        }
+        Insert: {
+          description?: string | null
+          detected_at?: string
+          id?: string
+          is_resolved?: boolean | null
+          node_id?: string | null
+          resolved_at?: string | null
+          risk_type: string
+          severity?: string
+        }
+        Update: {
+          description?: string | null
+          detected_at?: string
+          id?: string
+          is_resolved?: boolean | null
+          node_id?: string | null
+          resolved_at?: string | null
+          risk_type?: string
+          severity?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "innovation_risk_warnings_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
             referencedColumns: ["id"]
           },
         ]
@@ -28540,6 +28731,51 @@ export type Database = {
           },
         ]
       }
+      scenario_simulations: {
+        Row: {
+          confidence_band: string | null
+          created_at: string
+          created_by: string | null
+          explainability: Json | null
+          id: string
+          projected_capital_efficiency: number | null
+          projected_dispute_likelihood: number | null
+          projected_employment_gain: number | null
+          projected_risk_level: string | null
+          projected_startup_yield: number | null
+          simulation_name: string
+          variables: Json
+        }
+        Insert: {
+          confidence_band?: string | null
+          created_at?: string
+          created_by?: string | null
+          explainability?: Json | null
+          id?: string
+          projected_capital_efficiency?: number | null
+          projected_dispute_likelihood?: number | null
+          projected_employment_gain?: number | null
+          projected_risk_level?: string | null
+          projected_startup_yield?: number | null
+          simulation_name: string
+          variables: Json
+        }
+        Update: {
+          confidence_band?: string | null
+          created_at?: string
+          created_by?: string | null
+          explainability?: Json | null
+          id?: string
+          projected_capital_efficiency?: number | null
+          projected_dispute_likelihood?: number | null
+          projected_employment_gain?: number | null
+          projected_risk_level?: string | null
+          projected_startup_yield?: number | null
+          simulation_name?: string
+          variables?: Json
+        }
+        Relationships: []
+      }
       schema_changes: {
         Row: {
           backward_compatible: boolean
@@ -28987,6 +29223,44 @@ export type Database = {
           visibility_scope?: string
         }
         Relationships: []
+      }
+      sector_acceleration_signals: {
+        Row: {
+          detected_at: string
+          id: string
+          intensity: number | null
+          metadata: Json | null
+          node_id: string | null
+          sector: string
+          signal_type: string
+        }
+        Insert: {
+          detected_at?: string
+          id?: string
+          intensity?: number | null
+          metadata?: Json | null
+          node_id?: string | null
+          sector: string
+          signal_type: string
+        }
+        Update: {
+          detected_at?: string
+          id?: string
+          intensity?: number | null
+          metadata?: Json | null
+          node_id?: string | null
+          sector?: string
+          signal_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sector_acceleration_signals_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sector_growth_metrics: {
         Row: {
@@ -30311,6 +30585,51 @@ export type Database = {
           sheet_data?: Json
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      startup_survival_scores: {
+        Row: {
+          arbitration_history_score: number | null
+          calculated_at: string
+          capital_stage: string | null
+          confidence_band: string | null
+          equity_health: number | null
+          founder_track_record: number | null
+          fyp_origin_score: number | null
+          id: string
+          sector_volatility: number | null
+          startup_entity_id: string | null
+          survival_probability: number
+          top_factors: Json | null
+        }
+        Insert: {
+          arbitration_history_score?: number | null
+          calculated_at?: string
+          capital_stage?: string | null
+          confidence_band?: string | null
+          equity_health?: number | null
+          founder_track_record?: number | null
+          fyp_origin_score?: number | null
+          id?: string
+          sector_volatility?: number | null
+          startup_entity_id?: string | null
+          survival_probability: number
+          top_factors?: Json | null
+        }
+        Update: {
+          arbitration_history_score?: number | null
+          calculated_at?: string
+          capital_stage?: string | null
+          confidence_band?: string | null
+          equity_health?: number | null
+          founder_track_record?: number | null
+          fyp_origin_score?: number | null
+          id?: string
+          sector_volatility?: number | null
+          startup_entity_id?: string | null
+          survival_probability?: number
+          top_factors?: Json | null
         }
         Relationships: []
       }
