@@ -3557,6 +3557,42 @@ export type Database = {
         }
         Relationships: []
       }
+      background_job_runs: {
+        Row: {
+          completed_at: string | null
+          error_message: string | null
+          id: string
+          job_name: string
+          metadata: Json | null
+          records_affected: number | null
+          records_processed: number | null
+          started_at: string
+          status: string
+        }
+        Insert: {
+          completed_at?: string | null
+          error_message?: string | null
+          id?: string
+          job_name: string
+          metadata?: Json | null
+          records_affected?: number | null
+          records_processed?: number | null
+          started_at?: string
+          status?: string
+        }
+        Update: {
+          completed_at?: string | null
+          error_message?: string | null
+          id?: string
+          job_name?: string
+          metadata?: Json | null
+          records_affected?: number | null
+          records_processed?: number | null
+          started_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
       bias_monitoring_records: {
         Row: {
           affected_group: string | null
@@ -38712,6 +38748,10 @@ export type Database = {
         Args: { p_gate_name: string; p_user_id: string }
         Returns: Json
       }
+      check_trust_velocity: {
+        Args: { p_delta: number; p_user_id: string }
+        Returns: boolean
+      }
       compute_consequence_ledger: {
         Args: { p_user_id: string }
         Returns: undefined
@@ -38724,12 +38764,13 @@ export type Database = {
         Args: { p_offer_id: string }
         Returns: string
       }
+      detect_suspicious_activity: { Args: never; Returns: Json }
       execute_escrow_lock: {
         Args: { p_buyer_id: string; p_offer_id: string; p_total_amount: number }
         Returns: Json
       }
       execute_escrow_refund: {
-        Args: { p_offer_id: string; p_refund_reason?: string }
+        Args: { p_offer_id: string; p_refund_reason: string }
         Returns: Json
       }
       execute_milestone_release: {
@@ -38853,6 +38894,8 @@ export type Database = {
         Args: { p_amount: number; p_milestone_id: string; p_reason: string }
         Returns: boolean
       }
+      process_auto_release_milestones: { Args: never; Returns: Json }
+      process_trust_decay: { Args: never; Returns: Json }
       reconcile_escrow_balances: {
         Args: never
         Returns: {
