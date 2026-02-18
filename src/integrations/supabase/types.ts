@@ -4047,6 +4047,39 @@ export type Database = {
           },
         ]
       }
+      capital_influence_risk: {
+        Row: {
+          assessed_at: string | null
+          board_seat_clustering: number | null
+          governance_pressure_score: number | null
+          id: string
+          notes: string | null
+          overall_risk_score: number | null
+          share_concentration: number | null
+          voting_imbalance: number | null
+        }
+        Insert: {
+          assessed_at?: string | null
+          board_seat_clustering?: number | null
+          governance_pressure_score?: number | null
+          id?: string
+          notes?: string | null
+          overall_risk_score?: number | null
+          share_concentration?: number | null
+          voting_imbalance?: number | null
+        }
+        Update: {
+          assessed_at?: string | null
+          board_seat_clustering?: number | null
+          governance_pressure_score?: number | null
+          id?: string
+          notes?: string | null
+          overall_risk_score?: number | null
+          share_concentration?: number | null
+          voting_imbalance?: number | null
+        }
+        Relationships: []
+      }
       capital_partnerships: {
         Row: {
           allocation_rules: Json | null
@@ -7741,6 +7774,57 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      data_access_audit_logs: {
+        Row: {
+          approved: boolean | null
+          data_scope: string | null
+          id: string
+          logged_at: string | null
+          queried_by: string | null
+          query_summary: string | null
+          query_type: string
+          source_node_id: string | null
+          target_node_id: string | null
+        }
+        Insert: {
+          approved?: boolean | null
+          data_scope?: string | null
+          id?: string
+          logged_at?: string | null
+          queried_by?: string | null
+          query_summary?: string | null
+          query_type: string
+          source_node_id?: string | null
+          target_node_id?: string | null
+        }
+        Update: {
+          approved?: boolean | null
+          data_scope?: string | null
+          id?: string
+          logged_at?: string | null
+          queried_by?: string | null
+          query_summary?: string | null
+          query_type?: string
+          source_node_id?: string | null
+          target_node_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_access_audit_logs_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_access_audit_logs_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
             referencedColumns: ["id"]
           },
         ]
@@ -22007,6 +22091,97 @@ export type Database = {
           },
         ]
       }
+      node_certifications: {
+        Row: {
+          ai_bias_audit: boolean | null
+          arbitration_independence: boolean | null
+          certification_type: string
+          certified_at: string | null
+          compliance_audit: boolean | null
+          created_at: string | null
+          escrow_integrity: boolean | null
+          expires_at: string | null
+          id: string
+          is_certified: boolean | null
+          node_id: string
+          renewed_at: string | null
+          trust_transparency: boolean | null
+        }
+        Insert: {
+          ai_bias_audit?: boolean | null
+          arbitration_independence?: boolean | null
+          certification_type?: string
+          certified_at?: string | null
+          compliance_audit?: boolean | null
+          created_at?: string | null
+          escrow_integrity?: boolean | null
+          expires_at?: string | null
+          id?: string
+          is_certified?: boolean | null
+          node_id: string
+          renewed_at?: string | null
+          trust_transparency?: boolean | null
+        }
+        Update: {
+          ai_bias_audit?: boolean | null
+          arbitration_independence?: boolean | null
+          certification_type?: string
+          certified_at?: string | null
+          compliance_audit?: boolean | null
+          created_at?: string | null
+          escrow_integrity?: boolean | null
+          expires_at?: string | null
+          id?: string
+          is_certified?: boolean | null
+          node_id?: string
+          renewed_at?: string | null
+          trust_transparency?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "node_certifications_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      node_configurations: {
+        Row: {
+          config_key: string
+          config_value: Json
+          description: string | null
+          id: string
+          node_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          config_key: string
+          config_value?: Json
+          description?: string | null
+          id?: string
+          node_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          config_key?: string
+          config_value?: Json
+          description?: string | null
+          id?: string
+          node_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "node_configurations_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       node_launch_workspaces: {
         Row: {
           arbitration_alignment: string | null
@@ -22094,6 +22269,56 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "node_onboarding_status_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      node_political_risk: {
+        Row: {
+          assessed_at: string | null
+          capital_control_risk: number | null
+          currency_volatility: number | null
+          government_turnover_risk: number | null
+          id: string
+          next_review: string | null
+          node_id: string
+          overall_risk_score: number | null
+          political_instability_score: number | null
+          regulatory_unpredictability: number | null
+          risk_level: string | null
+        }
+        Insert: {
+          assessed_at?: string | null
+          capital_control_risk?: number | null
+          currency_volatility?: number | null
+          government_turnover_risk?: number | null
+          id?: string
+          next_review?: string | null
+          node_id: string
+          overall_risk_score?: number | null
+          political_instability_score?: number | null
+          regulatory_unpredictability?: number | null
+          risk_level?: string | null
+        }
+        Update: {
+          assessed_at?: string | null
+          capital_control_risk?: number | null
+          currency_volatility?: number | null
+          government_turnover_risk?: number | null
+          id?: string
+          next_review?: string | null
+          node_id?: string
+          overall_risk_score?: number | null
+          political_instability_score?: number | null
+          regulatory_unpredictability?: number | null
+          risk_level?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "node_political_risk_node_id_fkey"
             columns: ["node_id"]
             isOneToOne: false
             referencedRelation: "country_nodes"
@@ -27439,6 +27664,53 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      regulatory_alerts: {
+        Row: {
+          action_taken: string | null
+          alert_type: string
+          description: string | null
+          detected_at: string | null
+          id: string
+          node_id: string | null
+          resolved_at: string | null
+          severity: string | null
+          status: string | null
+          title: string
+        }
+        Insert: {
+          action_taken?: string | null
+          alert_type: string
+          description?: string | null
+          detected_at?: string | null
+          id?: string
+          node_id?: string | null
+          resolved_at?: string | null
+          severity?: string | null
+          status?: string | null
+          title: string
+        }
+        Update: {
+          action_taken?: string | null
+          alert_type?: string
+          description?: string | null
+          detected_at?: string | null
+          id?: string
+          node_id?: string | null
+          resolved_at?: string | null
+          severity?: string | null
+          status?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regulatory_alerts_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "country_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       regulatory_partners: {
         Row: {
