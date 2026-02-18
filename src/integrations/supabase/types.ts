@@ -7380,6 +7380,48 @@ export type Database = {
           },
         ]
       }
+      custom_intelligence_requests: {
+        Row: {
+          budget_range: string | null
+          created_at: string | null
+          deliverable_url: string | null
+          id: string
+          regions: string[] | null
+          request_type: string
+          requester_id: string
+          scope_description: string
+          sectors: string[] | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          budget_range?: string | null
+          created_at?: string | null
+          deliverable_url?: string | null
+          id?: string
+          regions?: string[] | null
+          request_type: string
+          requester_id: string
+          scope_description: string
+          sectors?: string[] | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          budget_range?: string | null
+          created_at?: string | null
+          deliverable_url?: string | null
+          id?: string
+          regions?: string[] | null
+          request_type?: string
+          requester_id?: string
+          scope_description?: string
+          sectors?: string[] | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       dashboard_audit_logs: {
         Row: {
           action: string
@@ -17920,14 +17962,151 @@ export type Database = {
           },
         ]
       }
+      intelligence_products: {
+        Row: {
+          aggregation_level: string | null
+          compliance_status: string | null
+          created_at: string | null
+          data_scope: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          price_annual: number | null
+          price_monthly: number | null
+          pricing_model: string | null
+          product_name: string
+          product_type: string
+          sample_preview: Json | null
+          subscription_tier: string | null
+          update_frequency: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          aggregation_level?: string | null
+          compliance_status?: string | null
+          created_at?: string | null
+          data_scope?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          price_annual?: number | null
+          price_monthly?: number | null
+          pricing_model?: string | null
+          product_name: string
+          product_type: string
+          sample_preview?: Json | null
+          subscription_tier?: string | null
+          update_frequency?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          aggregation_level?: string | null
+          compliance_status?: string | null
+          created_at?: string | null
+          data_scope?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          price_annual?: number | null
+          price_monthly?: number | null
+          pricing_model?: string | null
+          product_name?: string
+          product_type?: string
+          sample_preview?: Json | null
+          subscription_tier?: string | null
+          update_frequency?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      intelligence_publication_audits: {
+        Row: {
+          aggregation_threshold_met: boolean | null
+          audit_passed: boolean | null
+          audited_at: string | null
+          audited_by: string | null
+          bias_impact_checked: boolean | null
+          compliance_active: boolean | null
+          id: string
+          no_identifiable_data: boolean | null
+          node_consent_obtained: boolean | null
+          product_id: string | null
+        }
+        Insert: {
+          aggregation_threshold_met?: boolean | null
+          audit_passed?: boolean | null
+          audited_at?: string | null
+          audited_by?: string | null
+          bias_impact_checked?: boolean | null
+          compliance_active?: boolean | null
+          id?: string
+          no_identifiable_data?: boolean | null
+          node_consent_obtained?: boolean | null
+          product_id?: string | null
+        }
+        Update: {
+          aggregation_threshold_met?: boolean | null
+          audit_passed?: boolean | null
+          audited_at?: string | null
+          audited_by?: string | null
+          bias_impact_checked?: boolean | null
+          compliance_active?: boolean | null
+          id?: string
+          no_identifiable_data?: boolean | null
+          node_consent_obtained?: boolean | null
+          product_id?: string | null
+        }
+        Relationships: []
+      }
+      intelligence_revenue_logs: {
+        Row: {
+          amount: number
+          commercial_share: number | null
+          created_at: string | null
+          currency: string | null
+          foundation_share: number | null
+          id: string
+          node_reserve_share: number | null
+          product_id: string | null
+          subscription_id: string | null
+        }
+        Insert: {
+          amount: number
+          commercial_share?: number | null
+          created_at?: string | null
+          currency?: string | null
+          foundation_share?: number | null
+          id?: string
+          node_reserve_share?: number | null
+          product_id?: string | null
+          subscription_id?: string | null
+        }
+        Update: {
+          amount?: number
+          commercial_share?: number | null
+          created_at?: string | null
+          currency?: string | null
+          foundation_share?: number | null
+          id?: string
+          node_reserve_share?: number | null
+          product_id?: string | null
+          subscription_id?: string | null
+        }
+        Relationships: []
+      }
       intelligence_subscriptions: {
         Row: {
+          access_scope: string | null
+          api_access_enabled: boolean | null
+          billing_cycle: string | null
           country_id: string | null
           created_at: string | null
           expires_at: string | null
           id: string
           is_global: boolean | null
           price_monthly: number | null
+          product_id: string | null
+          renewal_date: string | null
           started_at: string | null
           status: string | null
           subscriber_id: string
@@ -17935,12 +18114,17 @@ export type Database = {
           tier: string
         }
         Insert: {
+          access_scope?: string | null
+          api_access_enabled?: boolean | null
+          billing_cycle?: string | null
           country_id?: string | null
           created_at?: string | null
           expires_at?: string | null
           id?: string
           is_global?: boolean | null
           price_monthly?: number | null
+          product_id?: string | null
+          renewal_date?: string | null
           started_at?: string | null
           status?: string | null
           subscriber_id: string
@@ -17948,12 +18132,17 @@ export type Database = {
           tier?: string
         }
         Update: {
+          access_scope?: string | null
+          api_access_enabled?: boolean | null
+          billing_cycle?: string | null
           country_id?: string | null
           created_at?: string | null
           expires_at?: string | null
           id?: string
           is_global?: boolean | null
           price_monthly?: number | null
+          product_id?: string | null
+          renewal_date?: string | null
           started_at?: string | null
           status?: string | null
           subscriber_id?: string
