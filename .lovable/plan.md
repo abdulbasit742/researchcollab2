@@ -1,82 +1,70 @@
 
-# WhyChooseSection Redesign -- Dark Cinematic "Proof Engine"
 
-## Problem
-The current WhyChooseSection uses a light theme with generic card styling that clashes with the dark cinematic aesthetic of Hero, CompetitorComparison, and the newly redesigned Testimonials sections. It also overlaps heavily with StatsSection in content (both show platform metrics). The section needs to be merged, elevated, and visually differentiated.
+# TrustedByMarquee -- Dark Glassmorphism with Institution Logos
 
-## Solution
-Rewrite WhyChooseSection as a bold, dark-themed "Proof Engine" section that combines the 4 outcome proof points with animated visual data bars and a before/after comparison feel -- making metrics visceral, not just numbers in boxes.
+## Overview
+Replace the light-themed text-only marquee with a dark cinematic glassmorphism section featuring real institution logos, matching the Hero/Testimonials/ProofEngine dark aesthetic.
 
 ## What Changes
 
-### 1. Dark Cinematic Background
-- Match Hero/Testimonials: `bg-gradient-to-b from-[#030712] via-[#0a1628] to-[#030712]`
-- Radial glow orb, scan lines, dot grid (same as other redesigned sections)
+### 1. Dark Section Background
+- Replace default light `py-10` section with dark gradient background: `bg-gradient-to-b from-[#030712] via-[#060e1f] to-[#030712]`
+- Add a subtle horizontal divider glow line at top/bottom
 
-### 2. New Section Header
-- Headline: **"The Proof Engine."**
-- Subheadline: "Every metric below is computed from real transactions -- not surveys, not marketing decks."
-- Badge pill: "Verified Data"
+### 2. Institution Logos via Clearbit/Logo.dev
+Use freely available logo APIs to show real university logos. Each institution entry becomes an object with name, domain, and short abbreviation:
 
-### 3. Reimagined Outcome Cards with Visual Data Bars
-Each of the 4 outcomes gets an animated horizontal progress/comparison bar that makes the metric visual:
-
-- **3.2x Delivery Rate**: Animated bar showing RCollab at 96% vs competitors at 30% -- two bars side by side
-- **67% Faster Matching**: Animated bar filling to 67% with a timer icon
-- **0 Disputes Unresolved**: A "gauge" style indicator at 100% resolution with a green glow
-- **6-12% Commission**: Comparison bar showing RCollab's 6-12% vs competitors' 20-30%
-
-Each card:
-- Dark glassmorphism: `bg-white/5 backdrop-blur-xl border border-white/10`
-- Gradient accent line at top of card
-- The large metric number with gradient text (kept from current)
-- NEW: Animated horizontal bar underneath the metric using framer-motion spring
-- Hover: card lifts with border glow
-
-### 4. Layout
-- 2x2 grid on desktop, single column on mobile
-- Each card is taller to accommodate the visual bar
-- Staggered entrance animations
-
-### 5. Animated Bars (framer-motion)
-- Each bar animates from 0 to target width on scroll into view
-- Uses `useInView` from framer-motion
-- RCollab bar uses gradient fill, competitor bar uses dim white/10 fill
-- Small labels on each bar end
-
-## Technical Details
-
-### Files Modified
-- `src/components/home/WhyChooseSection.tsx` -- full rewrite
-
-### No Other File Changes
-- Index.tsx stays the same (WhyChooseSection import/position unchanged)
-- StatsSection remains as-is (it serves a different purpose as a quick stats strip)
-
-### Data Structure
 ```typescript
-const outcomes = [
-  {
-    metric: "3.2x",
-    label: "Higher Delivery Rates",
-    versus: "vs. Upwork / Fiverr average",
-    description: "Escrow + trust scoring eliminates low-quality bids, no-shows, and payment disputes.",
-    gradient: "from-emerald-400 to-teal-500",
-    bar: { rcollab: 96, competitor: 30, unit: "%" },
-  },
-  // ... similar for all 4
+const institutions = [
+  { name: "MIT", domain: "mit.edu" },
+  { name: "Stanford", domain: "stanford.edu" },
+  { name: "Oxford", domain: "ox.ac.uk" },
+  { name: "ETH Zurich", domain: "ethz.ch" },
+  { name: "University of Tokyo", domain: "u-tokyo.ac.jp" },
+  { name: "Tsinghua University", domain: "tsinghua.edu.cn" },
+  { name: "Cambridge", domain: "cam.ac.uk" },
+  { name: "Harvard", domain: "harvard.edu" },
+  { name: "NUS", domain: "nus.edu.sg" },
+  { name: "Imperial College", domain: "imperial.ac.uk" },
+  { name: "University of Melbourne", domain: "unimelb.edu.au" },
+  { name: "Sorbonne", domain: "sorbonne-universite.fr" },
 ];
 ```
 
-### Component Structure
-- `WhyChooseSection` -- main section with background, header, grid
-- `OutcomeCard` -- individual card with metric, description, and animated bar
-- `ComparisonBar` -- reusable animated bar that triggers on scroll
+Logos will be fetched from `https://logo.clearbit.com/{domain}` (free, no API key). A fallback to the existing `GraduationCap` icon + initials will be shown if the logo fails to load.
 
-### Animation Approach
-- `motion.div` with `whileInView` for card entrance (fade + scale)
-- Bars use `motion.div` with `initial={{ width: 0 }}` and `whileInView={{ width: targetPercent + "%" }}` with a spring transition
-- Cards use `whileHover={{ y: -8 }}` for lift effect
+### 3. Glassmorphism Card Styling
+Replace current light cards with dark glass pills:
+- `bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] hover:border-white/15`
+- Logo image: 20x20px rounded with a subtle white ring
+- Text: `text-white/60` with `font-medium`
+- Slightly larger padding for a more premium feel
 
-### Dependencies
-- No new dependencies (uses existing framer-motion, lucide-react)
+### 4. Header Text Update
+- Change color from `text-muted-foreground` to `text-white/40`
+- Keep the uppercase tracking-widest style
+- Add the subtle "Verified Data" dot indicator (green dot) before the text for consistency
+
+### 5. Edge Fade Mask
+- Keep the existing `[mask-image:linear-gradient(...)]` horizontal fade but adjust opacity for dark backgrounds
+
+## Technical Details
+
+### File Modified
+- `src/components/home/TrustedByMarquee.tsx` -- full rewrite
+
+### No Other Changes Needed
+- Marquee CSS animations in `src/index.css` remain unchanged
+- No new dependencies required
+
+### Logo Fallback Strategy
+Each logo `<img>` gets an `onError` handler that hides the image and shows the `GraduationCap` icon instead, ensuring graceful degradation if Clearbit is unavailable or a domain doesn't have a logo.
+
+### Card Layout (per pill)
+```text
++------------------------------------+
+| [Logo 20px]  Institution Name      |
++------------------------------------+
+```
+Dark glass background, white/8 border, subtle hover glow.
+
