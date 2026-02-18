@@ -57,7 +57,7 @@ export default function BlogPage() {
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Blog",
-          name: "ResearchCollabPro Blog",
+          name: "RCollab Blog",
           blogPost: jsonLdPosts,
         }}
       />

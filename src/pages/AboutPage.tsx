@@ -60,13 +60,13 @@ export default function AboutPage() {
     <MainLayout>
       <SEOHead
         title="About Us"
-        description="Learn about ResearchCollabPro's mission to connect researchers, build trust in academia, and create fair earning opportunities for students worldwide."
+        description="Learn about RCollab's mission to connect researchers, build trust in academia, and create fair earning opportunities for students worldwide."
         canonicalPath="/about"
-        keywords="about ResearchCollabPro, research collaboration mission, academic platform"
+        keywords="about RCollab, research collaboration mission, academic platform"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Organization",
-          "name": "ResearchCollabPro",
+          "name": "RCollab",
           "url": "https://academic-forge-flow.lovable.app",
           "description": "Connect with researchers worldwide, access premium AI tools, earn money with your academic skills.",
           "foundingDate": "2024",
@@ -160,7 +160,7 @@ export default function AboutPage() {
               <Badge variant="outline" className="mb-4">Our Approach</Badge>
               <h2 className="text-3xl font-bold mb-4">Built with Discipline</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                ResearchCollabPro isn't built for hype. Every feature is earned through real usage,
+                RCollab isn't built for hype. Every feature is earned through real usage,
                 every metric reflects actual outcomes, and every system is designed to
                 protect the people who use it.
               </p>

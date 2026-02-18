@@ -128,7 +128,7 @@ const ContactPage = () => {
     <MainLayout>
       <SEOHead
         title="Contact Us"
-        description="Get in touch with ResearchCollabPro. We're here to help with partnerships, support, and inquiries."
+        description="Get in touch with RCollab. We're here to help with partnerships, support, and inquiries."
         canonicalPath="/contact"
         keywords="contact, support, partnerships, research platform help"
       />

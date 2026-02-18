@@ -92,7 +92,7 @@ export function PortableIdentityExport() {
           </CardTitle>
           <CardDescription>
             Download your complete professional identity as a portable, cryptographically signed JSON file.
-            This record can be verified by any institution without depending on ResearchCollabPro.
+            This record can be verified by any institution without depending on RCollab.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

@@ -117,7 +117,7 @@ export function ReputationExport({ userId }: ReputationExportProps) {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Issuer</span>
-                  <span>ResearchCollabPro Trust Authority</span>
+                  <span>RCollab Trust Authority</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Issued</span>

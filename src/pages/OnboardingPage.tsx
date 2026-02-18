@@ -164,7 +164,7 @@ export default function OnboardingPage() {
       await refreshProfile();
       celebrate(CELEBRATION_PRESETS.onboardingComplete);
 
-      toast({ title: "Profile Complete!", description: "Welcome to ResearchCollabPro! Your profile is ready." });
+      toast({ title: "Profile Complete!", description: "Welcome to RCollab! Your profile is ready." });
       setTimeout(() => navigate("/home"), 2500);
     } catch (error: any) {
       console.error("Onboarding error:", error);
@@ -203,7 +203,7 @@ export default function OnboardingPage() {
             <GraduationCap className="h-6 w-6 text-primary-foreground" />
           </div>
           <span className="text-2xl font-bold">
-            <span className="text-primary">ResearchCollabPro</span>
+            <span className="text-primary">RCollab</span>
           </span>
         </div>
 

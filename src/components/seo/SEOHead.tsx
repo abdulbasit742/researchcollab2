@@ -11,7 +11,7 @@ interface SEOHeadProps {
   keywords?: string;
 }
 
-const SITE_NAME = "ResearchCollabPro";
+const SITE_NAME = "RCollab";
 const DEFAULT_DESCRIPTION =
   "Connect with researchers worldwide, access premium AI tools, earn money with your academic skills. The all-in-one platform for research collaboration and academic success.";
 const BASE_URL = "https://academic-forge-flow.lovable.app";

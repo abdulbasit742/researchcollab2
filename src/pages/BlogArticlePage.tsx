@@ -61,7 +61,7 @@ export default function BlogArticlePage() {
     <MainLayout>
       <SEOHead
         title={article.title}
-        description={article.excerpt || `Read ${article.title} on ResearchCollabPro Blog`}
+        description={article.excerpt || `Read ${article.title} on RCollab Blog`}
         canonicalPath={`/blog/${article.slug || article.id}`}
         jsonLd={{
           "@context": "https://schema.org",
