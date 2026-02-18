@@ -12103,6 +12103,45 @@ export type Database = {
           },
         ]
       }
+      execution_health_snapshots: {
+        Row: {
+          details: Json | null
+          failed_jobs_24h: number
+          id: string
+          orphaned_escrows: number
+          overall_health: string
+          snapshot_at: string
+          stale_processing_keys: number
+          stuck_milestones: number
+          stuck_offers: number
+          wallet_mismatches: number
+        }
+        Insert: {
+          details?: Json | null
+          failed_jobs_24h?: number
+          id?: string
+          orphaned_escrows?: number
+          overall_health?: string
+          snapshot_at?: string
+          stale_processing_keys?: number
+          stuck_milestones?: number
+          stuck_offers?: number
+          wallet_mismatches?: number
+        }
+        Update: {
+          details?: Json | null
+          failed_jobs_24h?: number
+          id?: string
+          orphaned_escrows?: number
+          overall_health?: string
+          snapshot_at?: string
+          stale_processing_keys?: number
+          stuck_milestones?: number
+          stuck_offers?: number
+          wallet_mismatches?: number
+        }
+        Relationships: []
+      }
       expansion_throttle_rules: {
         Row: {
           created_at: string
@@ -16928,6 +16967,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      idempotency_keys: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          expires_at: string
+          function_name: string
+          id: string
+          idempotency_key: string
+          request_params: Json | null
+          response: Json | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          function_name: string
+          id?: string
+          idempotency_key: string
+          request_params?: Json | null
+          response?: Json | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          function_name?: string
+          id?: string
+          idempotency_key?: string
+          request_params?: Json | null
+          response?: Json | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       impact_adoptions: {
         Row: {
@@ -24208,6 +24286,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      orphaned_state_logs: {
+        Row: {
+          anomaly_type: string
+          auto_resolved: boolean
+          description: string
+          detected_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          metadata: Json | null
+          resolution_action: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+        }
+        Insert: {
+          anomaly_type: string
+          auto_resolved?: boolean
+          description: string
+          detected_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          metadata?: Json | null
+          resolution_action?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+        }
+        Update: {
+          anomaly_type?: string
+          auto_resolved?: boolean
+          description?: string
+          detected_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          metadata?: Json | null
+          resolution_action?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+        }
+        Relationships: []
       }
       outcome_feed_items: {
         Row: {
@@ -38695,6 +38818,7 @@ export type Database = {
         Args: { user_a: string; user_b: string }
         Returns: boolean
       }
+      auto_release_stale_milestones: { Args: never; Returns: number }
       calculate_affiliate_commission_rate: {
         Args: { p_affiliate_id: string }
         Returns: number
@@ -38752,6 +38876,7 @@ export type Database = {
         Args: { p_delta: number; p_user_id: string }
         Returns: boolean
       }
+      cleanup_expired_idempotency_keys: { Args: never; Returns: number }
       compute_consequence_ledger: {
         Args: { p_user_id: string }
         Returns: undefined
@@ -38764,6 +38889,7 @@ export type Database = {
         Args: { p_offer_id: string }
         Returns: string
       }
+      detect_orphaned_states: { Args: never; Returns: Json }
       detect_suspicious_activity: { Args: never; Returns: Json }
       execute_escrow_lock: {
         Args: { p_buyer_id: string; p_offer_id: string; p_total_amount: number }
@@ -38840,6 +38966,27 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      idempotent_escrow_lock: {
+        Args: {
+          p_buyer_id: string
+          p_idempotency_key: string
+          p_offer_id: string
+          p_total_amount: number
+        }
+        Returns: Json
+      }
+      idempotent_escrow_refund: {
+        Args: {
+          p_idempotency_key: string
+          p_offer_id: string
+          p_refund_reason?: string
+        }
+        Returns: Json
+      }
+      idempotent_escrow_release: {
+        Args: { p_idempotency_key: string; p_milestone_id: string }
+        Returns: Json
       }
       is_admin: { Args: { check_user_id: string }; Returns: boolean }
       is_ai_feature_enabled: {
