@@ -62,3 +62,6 @@ verify_jwt = false
 
 [functions.export-audit-logs]
 verify_jwt = false
+
+[functions.execution-health-monitor]
+verify_jwt = false
