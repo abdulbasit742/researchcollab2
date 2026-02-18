@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDocuments } from "@/hooks/useDocuments";
@@ -11,21 +11,25 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
   FileText, Table2, Presentation, Plus, Search, Clock,
-  MoreHorizontal, Trash2, Archive, Sparkles
+  MoreHorizontal, Trash2, Archive, Sparkles, Upload
 } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { format } from "date-fns";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const ProductivityDashboardPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   const { documents, fetchDocuments, createDocument, deleteDocument, loading: docsLoading } = useDocuments();
   const { spreadsheets, fetchSpreadsheets, createSpreadsheet, deleteSpreadsheet, loading: sheetsLoading } = useSpreadsheets();
   const { presentations, fetchPresentations, createPresentation, deletePresentation, loading: slidesLoading } = usePresentations();
   const [search, setSearch] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (user) {
@@ -35,19 +39,69 @@ const ProductivityDashboardPage = () => {
     }
   }, [user]);
 
+  const requireAuth = () => {
+    if (!user) {
+      toast({ title: "Sign in required", description: "Please sign in to create or upload files.", variant: "destructive" });
+      navigate("/auth");
+      return false;
+    }
+    return true;
+  };
+
   const handleNewDoc = async () => {
+    if (!requireAuth()) return;
     const doc = await createDocument();
     if (doc) navigate(`/documents/${doc.id}`);
   };
 
   const handleNewSheet = async () => {
+    if (!requireAuth()) return;
     const sheet = await createSpreadsheet();
     if (sheet) navigate(`/sheets/${sheet.id}`);
   };
 
   const handleNewSlides = async () => {
+    if (!requireAuth()) return;
     const pres = await createPresentation();
     if (pres) navigate(`/slides/${pres.id}`);
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!requireAuth()) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    
+    for (const file of Array.from(files)) {
+      const ext = file.name.split(".").pop()?.toLowerCase();
+      
+      if (["txt", "md", "html", "htm"].includes(ext || "")) {
+        // Create as document with file content
+        const text = await file.text();
+        const doc = await createDocument(file.name.replace(/\.[^/.]+$/, ""));
+        if (doc) {
+          toast({ title: "File imported", description: `"${file.name}" imported as document` });
+        }
+      } else if (["csv", "tsv"].includes(ext || "")) {
+        // Create as spreadsheet
+        const text = await file.text();
+        const rows = text.split("\n").map(row => row.split(ext === "tsv" ? "\t" : ",").slice(0, 10));
+        const sheet = await createSpreadsheet(file.name.replace(/\.[^/.]+$/, ""));
+        if (sheet) {
+          toast({ title: "File imported", description: `"${file.name}" imported as spreadsheet` });
+        }
+      } else {
+        // Upload to storage as generic file
+        const path = `${user!.id}/${Date.now()}-${file.name}`;
+        const { error } = await supabase.storage.from("documents").upload(path, file);
+        if (error) {
+          toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+        } else {
+          toast({ title: "File uploaded", description: `"${file.name}" uploaded successfully` });
+        }
+      }
+    }
+    // Reset input
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const filteredDocs = documents.filter(d => d.title.toLowerCase().includes(search.toLowerCase()));
@@ -77,6 +131,17 @@ const ProductivityDashboardPage = () => {
             <Button onClick={handleNewSlides} size="sm" variant="outline" className="gap-1.5">
               <Presentation className="h-4 w-4" /> New Slides
             </Button>
+            <Button onClick={() => { if (requireAuth()) fileInputRef.current?.click(); }} size="sm" variant="outline" className="gap-1.5">
+              <Upload className="h-4 w-4" /> Upload
+            </Button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept=".txt,.md,.html,.htm,.csv,.tsv,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg,.gif"
+              className="hidden"
+              onChange={handleFileUpload}
+            />
           </div>
         </div>
 
