@@ -1,4 +1,3 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -8,8 +7,8 @@ const corsHeaders = {
 };
 
 interface TrustComputeRequest {
-  user_id: string;
   action?: "compute" | "apply_event" | "decay" | "freeze" | "unfreeze";
+  target_user_id?: string; // Only for admin actions (freeze/unfreeze)
   event?: {
     event_type: string;
     event_source: string;
@@ -29,21 +28,63 @@ interface TrustComponents {
   consistency_score: number;
 }
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    // ─── Authentication ─────────────────────────────────────────
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Verify JWT and extract user ID
+    const anonClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const token = authHeader.replace("Bearer ", "");
+    const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims?.sub) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const callerUserId = claimsData.claims.sub as string;
 
     const body: TrustComputeRequest = await req.json();
-    const { user_id, action = "compute", event, reason } = body;
+    const { action = "compute", event, reason, target_user_id } = body;
 
-    if (!user_id) {
-      throw new Error("user_id is required");
+    // For freeze/unfreeze, require admin and use target_user_id
+    // For all other actions, operate on the caller's own profile
+    let user_id = callerUserId;
+
+    if (action === "freeze" || action === "unfreeze") {
+      // Check if caller is admin
+      const { data: isAdmin } = await supabase.rpc("is_admin", { check_user_id: callerUserId });
+      if (!isAdmin) {
+        return new Response(JSON.stringify({ error: "Only admins can freeze/unfreeze trust profiles" }), {
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      if (!target_user_id) {
+        return new Response(JSON.stringify({ error: "target_user_id required for freeze/unfreeze" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      user_id = target_user_id;
     }
 
     // Get current trust profile
@@ -70,12 +111,10 @@ serve(async (req: Request) => {
 
     switch (action) {
       case "compute": {
-        // Full trust score computation using 5-dimension formula
         const components = await computeTrustComponents(supabase, user_id);
         const totalScore = calculateTotalScore(components);
         const tier = determineTier(totalScore);
 
-        // Update trust profile
         const { error: updateError } = await supabase
           .from("user_trust_profiles")
           .update({
@@ -87,7 +126,6 @@ serve(async (req: Request) => {
 
         if (updateError) throw updateError;
 
-        // Log state transition
         await logStateTransition(supabase, "trust_profile", user_id, "active", "computed", "Trust score recomputed");
 
         result = {
@@ -103,11 +141,58 @@ serve(async (req: Request) => {
       case "apply_event": {
         if (!event) throw new Error("event is required for apply_event action");
 
+        // ─── Trust Velocity Limiting ────────────────────────────
+        if (event.trust_delta > 0) {
+          const dailyCap = 15;
+          const weeklyCap = 40;
+
+          // Check daily velocity
+          const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+          const { data: dailyEvents } = await supabase
+            .from("trust_events")
+            .select("trust_delta")
+            .eq("user_id", user_id)
+            .gt("trust_delta", 0)
+            .gte("created_at", oneDayAgo);
+
+          const dailyTotal = (dailyEvents || []).reduce((sum: number, e: any) => sum + (e.trust_delta || 0), 0);
+          if (dailyTotal + event.trust_delta > dailyCap) {
+            return new Response(JSON.stringify({
+              error: "Daily trust velocity cap exceeded",
+              daily_used: dailyTotal,
+              daily_cap: dailyCap,
+            }), {
+              status: 429,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+          }
+
+          // Check weekly velocity
+          const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+          const { data: weeklyEvents } = await supabase
+            .from("trust_events")
+            .select("trust_delta")
+            .eq("user_id", user_id)
+            .gt("trust_delta", 0)
+            .gte("created_at", oneWeekAgo);
+
+          const weeklyTotal = (weeklyEvents || []).reduce((sum: number, e: any) => sum + (e.trust_delta || 0), 0);
+          if (weeklyTotal + event.trust_delta > weeklyCap) {
+            return new Response(JSON.stringify({
+              error: "Weekly trust velocity cap exceeded",
+              weekly_used: weeklyTotal,
+              weekly_cap: weeklyCap,
+            }), {
+              status: 429,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+          }
+        }
+
         const oldScore = trustProfile?.trust_score || 0;
         const newScore = Math.max(0, Math.min(100, oldScore + event.trust_delta));
         const newTier = determineTier(newScore);
 
-        // Insert trust event
         const { error: eventError } = await supabase
           .from("trust_events")
           .insert({
@@ -124,7 +209,6 @@ serve(async (req: Request) => {
 
         if (eventError) throw eventError;
 
-        // Update trust profile
         const { error: updateError } = await supabase
           .from("user_trust_profiles")
           .update({
@@ -148,7 +232,6 @@ serve(async (req: Request) => {
       }
 
       case "decay": {
-        // Apply trust decay for inactivity
         const lastActivity = trustProfile?.last_activity_at;
         if (!lastActivity) {
           result = { success: true, message: "No activity to decay from" };
@@ -164,12 +247,10 @@ serve(async (req: Request) => {
           break;
         }
 
-        // Decay rate: 1 point per 30 days of inactivity, max 10 points
         const decayAmount = Math.min(10, Math.floor(daysSinceActivity / 30));
         const oldScore = trustProfile?.trust_score || 0;
         const newScore = Math.max(0, oldScore - decayAmount);
 
-        // Apply decay
         const { error: decayError } = await supabase
           .from("trust_events")
           .insert({
@@ -217,14 +298,13 @@ serve(async (req: Request) => {
 
         if (freezeError) throw freezeError;
 
-        // Log admin action
         await supabase
           .from("admin_audit_logs")
           .insert({
             action: "freeze_trust",
             entity_type: "user",
             entity_id: user_id,
-            admin_id: user_id, // Should be passed from auth context
+            admin_id: callerUserId,
             details: { reason },
           });
 
@@ -244,6 +324,16 @@ serve(async (req: Request) => {
           .eq("user_id", user_id);
 
         if (unfreezeError) throw unfreezeError;
+
+        await supabase
+          .from("admin_audit_logs")
+          .insert({
+            action: "unfreeze_trust",
+            entity_type: "user",
+            entity_id: user_id,
+            admin_id: callerUserId,
+            details: { reason },
+          });
 
         result = { success: true, user_id, frozen: false };
         break;
@@ -269,7 +359,6 @@ serve(async (req: Request) => {
 });
 
 async function computeTrustComponents(supabase: ReturnType<typeof createClient>, userId: string): Promise<TrustComponents> {
-  // Get trust score components
   const { data: components } = await supabase
     .from("trust_score_components")
     .select("*")
@@ -286,7 +375,6 @@ async function computeTrustComponents(supabase: ReturnType<typeof createClient>,
     };
   }
 
-  // Calculate delivery score (40% weight) - Failures hurt more than success helps
   const deliveryScore = Math.max(0, Math.min(100,
     (components.projects_completed * 10) +
     (components.partial_deliveries * 5) -
@@ -294,7 +382,6 @@ async function computeTrustComponents(supabase: ReturnType<typeof createClient>,
     ((components.on_time_rate || 0) * 0.5)
   ));
 
-  // Calculate financial score (25% weight)
   const financialScore = Math.max(0, Math.min(100,
     (components.escrow_releases_successful * 8) -
     (components.disputes_raised * 5) -
@@ -303,14 +390,12 @@ async function computeTrustComponents(supabase: ReturnType<typeof createClient>,
     (components.escrow_cancellations * 15)
   ));
 
-  // Calculate collaboration score (15% weight)
   const collaborationScore = Math.max(0, Math.min(100,
     ((components.avg_peer_rating || 0) * 20) +
     (components.repeat_collaborations * 5) -
     (components.abandoned_collaborations * 30)
   ));
 
-  // Calculate institutional score (10% weight)
   const institutionalScore = Math.max(0, Math.min(100,
     (components.verifications_count * 20) +
     (components.institutional_affiliations * 10) +
@@ -318,7 +403,6 @@ async function computeTrustComponents(supabase: ReturnType<typeof createClient>,
     (components.institutional_disputes * 25)
   ));
 
-  // Calculate consistency score (10% weight)
   const consistencyScore = Math.max(0, Math.min(100,
     Math.min((components.active_months || 0) * 5, 50) -
     Math.min((components.longest_inactive_days || 0) / 10, 30) -
@@ -367,6 +451,6 @@ async function logStateTransition(
       from_state: fromState,
       to_state: toState,
       trigger_reason: reason,
-      triggered_by: null, // System action
+      triggered_by: null,
     });
 }

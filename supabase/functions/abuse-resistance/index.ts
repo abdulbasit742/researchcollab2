@@ -2,15 +2,9 @@
  * ABUSE RESISTANCE ENGINE
  * System 35 Enhanced: Economic Safety & Abuse Dampening
  * 
- * Detects and prevents:
- * - Trust farming
- * - Economic exploits
- * - Spam/flooding
- * - Reciprocal trust inflation
- * - Dormant account resurrection abuse
+ * Now requires JWT authentication - user_id extracted from token.
  */
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -20,19 +14,18 @@ const corsHeaders = {
 };
 
 type AbuseCheckAction = 
-  | "check_trust_event"      // Before applying trust event
-  | "check_transaction"      // Before processing transaction
-  | "check_opportunity"      // Before posting opportunity
-  | "check_deal_creation"    // Before creating deal
-  | "check_ai_usage"         // Before AI recommendation
-  | "detect_patterns"        // Run pattern detection
-  | "get_user_status"        // Get current abuse status
-  | "apply_penalty"          // Apply penalty
-  | "resolve_flag";          // Resolve abuse flag
+  | "check_trust_event"
+  | "check_transaction"
+  | "check_opportunity"
+  | "check_deal_creation"
+  | "check_ai_usage"
+  | "detect_patterns"
+  | "get_user_status"
+  | "apply_penalty"
+  | "resolve_flag";
 
 interface AbuseCheckRequest {
   action: AbuseCheckAction;
-  user_id: string;
   data?: Record<string, unknown>;
 }
 
@@ -45,25 +38,47 @@ interface AbuseCheckResult {
   warnings?: string[];
 }
 
-// Threshold cache (loaded from DB)
+// Threshold cache
 let thresholdCache: Record<string, number> = {};
 let thresholdCacheTime = 0;
-const CACHE_TTL = 60000; // 1 minute
+const CACHE_TTL = 60000;
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    // ─── Authentication ─────────────────────────────────────────
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const body: AbuseCheckRequest = await req.json();
-    const { action, user_id, data } = body;
+    // Verify JWT
+    const anonClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const token = authHeader.replace("Bearer ", "");
+    const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims?.sub) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-    if (!user_id) throw new Error("user_id is required");
+    const user_id = claimsData.claims.sub as string;
+
+    const body: AbuseCheckRequest = await req.json();
+    const { action, data } = body;
 
     // Load thresholds if cache expired
     if (Date.now() - thresholdCacheTime > CACHE_TTL) {
@@ -77,47 +92,58 @@ serve(async (req: Request) => {
         result = await checkTrustEvent(supabase, user_id, data);
         break;
       }
-
       case "check_transaction": {
         result = await checkTransaction(supabase, user_id, data);
         break;
       }
-
       case "check_opportunity": {
         result = await checkOpportunity(supabase, user_id);
         break;
       }
-
       case "check_deal_creation": {
         result = await checkDealCreation(supabase, user_id, data);
         break;
       }
-
       case "check_ai_usage": {
         result = await checkAIUsage(supabase, user_id);
         break;
       }
-
       case "detect_patterns": {
         result = await detectAbusePatterns(supabase, user_id);
         break;
       }
-
       case "get_user_status": {
         result = await getUserAbuseStatus(supabase, user_id);
         break;
       }
-
       case "apply_penalty": {
-        result = await applyPenalty(supabase, user_id, data);
+        // Only admins can apply penalties
+        const { data: isAdmin } = await supabase.rpc("is_admin", { check_user_id: user_id });
+        if (!isAdmin) {
+          return new Response(JSON.stringify({ error: "Only admins can apply penalties" }), {
+            status: 403,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        const targetUserId = data?.target_user_id as string;
+        if (!targetUserId) throw new Error("target_user_id required");
+        result = await applyPenalty(supabase, targetUserId, data);
         break;
       }
-
       case "resolve_flag": {
-        result = await resolveFlag(supabase, user_id, data);
+        // Only admins can resolve flags
+        const { data: isAdminResolve } = await supabase.rpc("is_admin", { check_user_id: user_id });
+        if (!isAdminResolve) {
+          return new Response(JSON.stringify({ error: "Only admins can resolve flags" }), {
+            status: 403,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        const targetId = data?.target_user_id as string;
+        if (!targetId) throw new Error("target_user_id required");
+        result = await resolveFlag(supabase, targetId, data);
         break;
       }
-
       default:
         throw new Error(`Unknown action: ${action}`);
     }
@@ -172,7 +198,6 @@ async function checkTrustEvent(
   const warnings: string[] = [];
   let dampeningFactor = 1.0;
 
-  // 1. Check if user is under review
   const { data: profile } = await supabase
     .from("user_trust_profiles")
     .select("is_under_review, is_frozen, resurrection_cooldown_until, trust_velocity_24h, trust_velocity_7d")
@@ -188,7 +213,6 @@ async function checkTrustEvent(
     dampeningFactor *= 0.5;
   }
 
-  // 2. Check resurrection cooldown (dormant account abuse)
   if (profile?.resurrection_cooldown_until) {
     const cooldownEnd = new Date(profile.resurrection_cooldown_until);
     if (cooldownEnd > new Date()) {
@@ -201,7 +225,6 @@ async function checkTrustEvent(
     }
   }
 
-  // 3. Check velocity caps (anti-farming)
   const dailyCap = getThreshold("trust_velocity_cap_daily", 15);
   const weeklyCap = getThreshold("trust_velocity_cap_weekly", 40);
 
@@ -211,14 +234,13 @@ async function checkTrustEvent(
 
     if (newDaily > dailyCap) {
       warnings.push(`Daily trust velocity cap (${dailyCap}) exceeded`);
-      dampeningFactor *= 0.25; // Severe dampening
+      dampeningFactor *= 0.25;
     } else if (newWeekly > weeklyCap) {
       warnings.push(`Weekly trust velocity cap (${weeklyCap}) exceeded`);
       dampeningFactor *= 0.5;
     }
   }
 
-  // 4. Check reciprocal relationship (trust ring detection)
   if (counterpartyId) {
     const reciprocalDampening = getThreshold("reciprocal_trust_dampening", 0.5);
     
@@ -237,11 +259,9 @@ async function checkTrustEvent(
       dampeningFactor *= reciprocalDampening;
     }
 
-    // Update or create reciprocal tracking
     await updateReciprocalTracking(supabase, userId, counterpartyId, "trust_event");
   }
 
-  // 5. Check minimum entropy (unique counterparties)
   const minEntropy = getThreshold("min_outcome_entropy", 3);
   const { count: uniqueCounterparties } = await supabase
     .from("trust_events")
@@ -253,7 +273,6 @@ async function checkTrustEvent(
     warnings.push("Low counterparty entropy detected");
   }
 
-  // Log detection if suspicious
   if (warnings.length > 2 || dampeningFactor < 0.5) {
     await logAbuseDetection(supabase, userId, "trust_farming_suspected", "moderate", "trust_check", {
       warnings,
@@ -282,7 +301,6 @@ async function checkTransaction(
   const counterpartyId = data?.counterparty_id as string;
   const warnings: string[] = [];
 
-  // 1. Get wallet status
   const { data: wallet } = await supabase
     .from("wallets")
     .select("is_frozen, is_under_review, transaction_velocity_1h, transaction_velocity_24h, micro_transaction_count_24h, circular_flow_score")
@@ -293,40 +311,27 @@ async function checkTransaction(
     return { allowed: false, reason: "Wallet is frozen" };
   }
 
-  // 2. Check hourly velocity cap
   const hourlyVelocityCap = getThreshold("economic_velocity_cap_hourly", 10);
   if ((wallet?.transaction_velocity_1h || 0) >= hourlyVelocityCap) {
-    return {
-      allowed: false,
-      reason: "Hourly transaction limit exceeded",
-      cooldown_seconds: 3600,
-    };
+    return { allowed: false, reason: "Hourly transaction limit exceeded", cooldown_seconds: 3600 };
   }
 
-  // 3. Check daily velocity cap
   const dailyVelocityCap = getThreshold("economic_velocity_cap_daily", 50);
   if ((wallet?.transaction_velocity_24h || 0) >= dailyVelocityCap) {
-    return {
-      allowed: false,
-      reason: "Daily transaction limit exceeded",
-      cooldown_seconds: 86400,
-    };
+    return { allowed: false, reason: "Daily transaction limit exceeded", cooldown_seconds: 86400 };
   }
 
-  // 4. Check micro-transaction abuse
   const microThreshold = getThreshold("economic_micro_threshold", 500);
   if (amount < microThreshold) {
     const microCount = (wallet?.micro_transaction_count_24h || 0) + 1;
     if (microCount > 20) {
       warnings.push("Excessive micro-transactions detected");
       await logAbuseDetection(supabase, userId, "fee_arbitrage_attempt", "moderate", "transaction_check", {
-        micro_count: microCount,
-        amount,
+        micro_count: microCount, amount,
       });
     }
   }
 
-  // 5. Check circular flow (money laundering pattern)
   const circularThreshold = getThreshold("circular_flow_threshold", 0.3);
   if ((wallet?.circular_flow_score || 0) > circularThreshold) {
     warnings.push("Circular transaction pattern detected");
@@ -335,7 +340,6 @@ async function checkTransaction(
     }
   }
 
-  // 6. Update reciprocal tracking for economic transactions
   if (counterpartyId) {
     await updateReciprocalTracking(supabase, userId, counterpartyId, "transaction");
   }
@@ -354,13 +358,9 @@ async function checkOpportunity(
   const dailyLimit = getThreshold("opportunity_post_rate_daily", 5);
   const weeklyLimit = getThreshold("opportunity_post_rate_weekly", 15);
 
-  // Check rate limit
   const rateCheck = await checkRateLimit(supabase, userId, "opportunity_post", dailyLimit, 24);
-  if (!rateCheck.allowed) {
-    return rateCheck;
-  }
+  if (!rateCheck.allowed) return rateCheck;
 
-  // Check weekly limit
   const { count: weeklyCount } = await supabase
     .from("offers")
     .select("id", { count: "exact", head: true })
@@ -371,7 +371,6 @@ async function checkOpportunity(
     return { allowed: false, reason: "Weekly opportunity posting limit reached" };
   }
 
-  // Check for keyword stuffing / spam patterns
   const { data: recentOffers } = await supabase
     .from("offers")
     .select("title, description, spam_score")
@@ -379,7 +378,7 @@ async function checkOpportunity(
     .order("created_at", { ascending: false })
     .limit(5);
 
-  const avgSpamScore = recentOffers?.reduce((sum, o) => sum + (o.spam_score || 0), 0) / (recentOffers?.length || 1);
+  const avgSpamScore = recentOffers?.reduce((sum: number, o: any) => sum + (o.spam_score || 0), 0) / (recentOffers?.length || 1);
   if (avgSpamScore > 0.7) {
     return { allowed: false, reason: "Content quality too low - suspected spam" };
   }
@@ -399,13 +398,11 @@ async function checkDealCreation(
   const amount = (data?.amount as number) || 0;
   const warnings: string[] = [];
 
-  // 1. Check minimum deal amount
   const minAmount = getThreshold("min_deal_amount", 1000);
   if (amount < minAmount) {
     return { allowed: false, reason: `Minimum deal amount is ${minAmount} PKR` };
   }
 
-  // 2. Check dispute rate
   const { data: profile } = await supabase
     .from("user_trust_profiles")
     .select("dispute_rate")
@@ -415,16 +412,9 @@ async function checkDealCreation(
   const disputeThreshold = getThreshold("dispute_rate_threshold", 0.25);
   if ((profile?.dispute_rate || 0) > disputeThreshold) {
     warnings.push("High dispute rate - deal under enhanced monitoring");
-    
-    // Require proof-of-work for high dispute rate users
-    return {
-      allowed: true,
-      warnings,
-      penalty_applied: "enhanced_monitoring",
-    };
+    return { allowed: true, warnings, penalty_applied: "enhanced_monitoring" };
   }
 
-  // 3. Check for active dispute abuse
   const { count: activeDisputes } = await supabase
     .from("disputes")
     .select("id", { count: "exact", head: true })
@@ -462,208 +452,174 @@ async function detectAbusePatterns(
   const actionsTaken: string[] = [];
   let riskScore = 0;
 
-  // 1. Trust farming detection
   const { data: trustEvents } = await supabase
     .from("trust_events")
     .select("trust_delta, reference_id, created_at")
     .eq("user_id", userId)
     .gte("created_at", new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
 
-  const positiveEvents = trustEvents?.filter(e => e.trust_delta > 0) || [];
-  const uniqueRefs = new Set(positiveEvents.map(e => e.reference_id)).size;
+  const positiveEvents = trustEvents?.filter((e: any) => e.trust_delta > 0) || [];
+  const uniqueRefs = new Set(positiveEvents.map((e: any) => e.reference_id)).size;
   
   if (positiveEvents.length > 10 && uniqueRefs < 3) {
     patternsDetected.push("trust_farming_low_entropy");
     riskScore += 30;
   }
 
-  // 2. Circular transaction detection
   const { data: transactions } = await supabase
     .from("wallet_transactions")
     .select("type, amount, reference_id")
     .eq("user_id", userId)
     .gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
 
-  const inflow = transactions?.filter(t => t.type === "credit").reduce((s, t) => s + t.amount, 0) || 0;
-  const outflow = transactions?.filter(t => t.type === "debit").reduce((s, t) => s + t.amount, 0) || 0;
+  const inflow = transactions?.filter((t: any) => t.type === "credit").reduce((s: number, t: any) => s + t.amount, 0) || 0;
+  const outflow = transactions?.filter((t: any) => t.type === "debit").reduce((s: number, t: any) => s + t.amount, 0) || 0;
   
   if (inflow > 0 && outflow > 0 && Math.abs(inflow - outflow) < inflow * 0.1) {
     patternsDetected.push("circular_flow_suspected");
     riskScore += 25;
   }
 
-  // 3. Rapid velocity detection
   const velocity1h = transactions?.length || 0;
   if (velocity1h > 5) {
     patternsDetected.push("high_transaction_velocity");
     riskScore += 15;
   }
 
-  // 4. Reciprocal trust ring detection
-  const { data: reciprocals } = await supabase
-    .from("reciprocal_relationships")
-    .select("mutual_trust_events")
-    .or(`user_a_id.eq.${userId},user_b_id.eq.${userId}`)
-    .gt("mutual_trust_events", 3);
-
-  if ((reciprocals?.length || 0) > 2) {
-    patternsDetected.push("reciprocal_trust_ring");
-    riskScore += 20;
-  }
-
-  // Apply automatic actions based on risk
-  if (riskScore >= 50) {
-    await supabase
-      .from("user_trust_profiles")
-      .update({ is_under_review: true, review_reason: patternsDetected.join(", ") })
-      .eq("user_id", userId);
-    actionsTaken.push("Account flagged for review");
-
-    await logAbuseDetection(supabase, userId, "multi_pattern_abuse", "severe", "pattern_detection", {
+  if (riskScore >= 40) {
+    await logAbuseDetection(supabase, userId, "multi_pattern_abuse", "high", "pattern_detection", {
       patterns: patternsDetected,
       risk_score: riskScore,
     });
-  } else if (riskScore >= 30) {
-    await logAbuseDetection(supabase, userId, "suspicious_activity", "warning", "pattern_detection", {
-      patterns: patternsDetected,
-      risk_score: riskScore,
-    });
-    actionsTaken.push("Warning logged");
+    actionsTaken.push("flagged_for_review");
   }
 
   return { patterns_detected: patternsDetected, risk_score: riskScore, actions_taken: actionsTaken };
 }
 
 // ============================================
-// USER STATUS
+// USER ABUSE STATUS
 // ============================================
 
 async function getUserAbuseStatus(
   supabase: ReturnType<typeof createClient>,
   userId: string
 ): Promise<Record<string, unknown>> {
-  const { data: profile } = await supabase
+  const { data: detections } = await supabase
+    .from("abuse_detections")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("resolved", false)
+    .order("created_at", { ascending: false })
+    .limit(10);
+
+  const { data: trustProfile } = await supabase
     .from("user_trust_profiles")
-    .select("is_frozen, is_under_review, review_reason, trust_velocity_24h, trust_velocity_7d")
+    .select("is_frozen, is_under_review, trust_velocity_24h, trust_velocity_7d")
     .eq("user_id", userId)
     .maybeSingle();
 
   const { data: wallet } = await supabase
     .from("wallets")
-    .select("is_frozen, is_under_review, transaction_velocity_24h, circular_flow_score, risk_score")
+    .select("is_frozen, is_under_review, circular_flow_score")
     .eq("user_id", userId)
     .maybeSingle();
 
-  const { data: recentFlags } = await supabase
-    .from("abuse_detections")
-    .select("pattern_type, severity, created_at, resolved")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
-    .limit(5);
-
-  const { data: rateLimits } = await supabase
-    .from("user_rate_limits")
-    .select("action_type, action_count, max_allowed, is_blocked, blocked_until")
-    .eq("user_id", userId);
-
   return {
+    active_flags: detections?.length || 0,
+    detections: detections || [],
     trust_status: {
-      frozen: profile?.is_frozen || false,
-      under_review: profile?.is_under_review || false,
-      review_reason: profile?.review_reason,
-      velocity_24h: profile?.trust_velocity_24h || 0,
-      velocity_7d: profile?.trust_velocity_7d || 0,
+      frozen: trustProfile?.is_frozen || false,
+      under_review: trustProfile?.is_under_review || false,
+      velocity_24h: trustProfile?.trust_velocity_24h || 0,
+      velocity_7d: trustProfile?.trust_velocity_7d || 0,
     },
-    economic_status: {
-      wallet_frozen: wallet?.is_frozen || false,
-      wallet_under_review: wallet?.is_under_review || false,
-      velocity_24h: wallet?.transaction_velocity_24h || 0,
+    wallet_status: {
+      frozen: wallet?.is_frozen || false,
+      under_review: wallet?.is_under_review || false,
       circular_flow_score: wallet?.circular_flow_score || 0,
-      risk_score: wallet?.risk_score || 0,
     },
-    recent_flags: recentFlags || [],
-    rate_limits: rateLimits || [],
   };
 }
 
 // ============================================
-// PENALTY APPLICATION
+// PENALTY APPLICATION (Admin only)
 // ============================================
 
 async function applyPenalty(
   supabase: ReturnType<typeof createClient>,
   userId: string,
   data?: Record<string, unknown>
-): Promise<{ success: boolean; penalty: string }> {
-  const penaltyType = data?.penalty_type as string;
-  const reason = data?.reason as string;
+): Promise<Record<string, unknown>> {
+  const penaltyType = (data?.penalty_type as string) || "warning";
+  const reason = (data?.reason as string) || "Abuse pattern detected";
 
-  switch (penaltyType) {
-    case "freeze_trust":
-      await supabase
-        .from("user_trust_profiles")
-        .update({ is_frozen: true, frozen_reason: reason, frozen_at: new Date().toISOString() })
-        .eq("user_id", userId);
-      break;
+  if (penaltyType === "trust_reduction") {
+    const reduction = (data?.reduction as number) || 10;
+    const { data: profile } = await supabase
+      .from("user_trust_profiles")
+      .select("trust_score")
+      .eq("user_id", userId)
+      .single();
 
-    case "freeze_wallet":
-      await supabase
-        .from("wallets")
-        .update({ is_frozen: true, frozen_reason: reason })
-        .eq("user_id", userId);
-      break;
+    const oldScore = profile?.trust_score || 0;
+    const newScore = Math.max(0, oldScore - reduction);
 
-    case "flag_for_review":
-      await supabase
-        .from("user_trust_profiles")
-        .update({ is_under_review: true, review_reason: reason })
-        .eq("user_id", userId);
-      break;
+    await supabase
+      .from("user_trust_profiles")
+      .update({ trust_score: newScore, updated_at: new Date().toISOString() })
+      .eq("user_id", userId);
 
-    case "apply_cooldown":
-      const cooldownDays = (data?.cooldown_days as number) || 7;
-      await supabase
-        .from("user_trust_profiles")
-        .update({ 
-          resurrection_cooldown_until: new Date(Date.now() + cooldownDays * 24 * 60 * 60 * 1000).toISOString() 
-        })
-        .eq("user_id", userId);
-      break;
+    await supabase.from("trust_events").insert({
+      user_id: userId,
+      event_type: "abuse_penalty",
+      event_source: "abuse_resistance",
+      trust_delta: -reduction,
+      trust_before: oldScore,
+      trust_after: newScore,
+      evidence_summary: reason,
+    });
 
-    default:
-      throw new Error(`Unknown penalty type: ${penaltyType}`);
+    return { success: true, penalty: "trust_reduction", old_score: oldScore, new_score: newScore };
   }
 
-  await logAbuseDetection(supabase, userId, `penalty_${penaltyType}`, "moderate", "admin_action", { reason });
+  if (penaltyType === "freeze") {
+    await supabase
+      .from("user_trust_profiles")
+      .update({ is_frozen: true, frozen_reason: reason, frozen_at: new Date().toISOString() })
+      .eq("user_id", userId);
+    return { success: true, penalty: "freeze", reason };
+  }
 
-  return { success: true, penalty: penaltyType };
+  return { success: true, penalty: "warning", reason };
 }
 
 // ============================================
-// FLAG RESOLUTION
+// RESOLVE FLAG (Admin only)
 // ============================================
 
 async function resolveFlag(
   supabase: ReturnType<typeof createClient>,
   userId: string,
   data?: Record<string, unknown>
-): Promise<{ success: boolean }> {
+): Promise<Record<string, unknown>> {
   const flagId = data?.flag_id as string;
-  const resolverId = data?.resolver_id as string;
-  const notes = data?.notes as string;
+  const resolution = (data?.resolution as string) || "resolved";
 
-  await supabase
-    .from("abuse_detections")
-    .update({
-      resolved: true,
-      resolved_by: resolverId,
-      resolved_at: new Date().toISOString(),
-      resolution_notes: notes,
-    })
-    .eq("id", flagId)
-    .eq("user_id", userId);
+  if (flagId) {
+    await supabase
+      .from("abuse_detections")
+      .update({ resolved: true, resolved_at: new Date().toISOString(), resolution_notes: resolution })
+      .eq("id", flagId);
+  } else {
+    await supabase
+      .from("abuse_detections")
+      .update({ resolved: true, resolved_at: new Date().toISOString(), resolution_notes: resolution })
+      .eq("user_id", userId)
+      .eq("resolved", false);
+  }
 
-  return { success: true };
+  return { success: true, resolved: true };
 }
 
 // ============================================
@@ -674,83 +630,24 @@ async function checkRateLimit(
   supabase: ReturnType<typeof createClient>,
   userId: string,
   actionType: string,
-  maxAllowed: number,
+  limit: number,
   windowHours: number
 ): Promise<AbuseCheckResult> {
-  const { data: existing } = await supabase
-    .from("user_rate_limits")
-    .select("*")
-    .eq("user_id", userId)
-    .eq("action_type", actionType)
-    .maybeSingle();
+  const windowStart = new Date(Date.now() - windowHours * 60 * 60 * 1000).toISOString();
+  
+  const { count } = await supabase
+    .from("state_transition_logs")
+    .select("id", { count: "exact", head: true })
+    .eq("triggered_by", userId)
+    .eq("entity_type", actionType)
+    .gte("created_at", windowStart);
 
-  if (existing) {
-    const windowStart = new Date(existing.window_start);
-    const windowEnd = new Date(windowStart.getTime() + existing.window_hours * 60 * 60 * 1000);
-
-    if (new Date() > windowEnd) {
-      // Reset window
-      await supabase
-        .from("user_rate_limits")
-        .update({
-          window_start: new Date().toISOString(),
-          action_count: 1,
-          is_blocked: false,
-          blocked_reason: null,
-          blocked_until: null,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", existing.id);
-      return { allowed: true };
-    }
-
-    if (existing.is_blocked) {
-      const remainingSeconds = Math.ceil((new Date(existing.blocked_until!).getTime() - Date.now()) / 1000);
-      return {
-        allowed: false,
-        reason: existing.blocked_reason || "Rate limit exceeded",
-        cooldown_seconds: Math.max(0, remainingSeconds),
-      };
-    }
-
-    if (existing.action_count >= maxAllowed) {
-      await supabase
-        .from("user_rate_limits")
-        .update({
-          is_blocked: true,
-          blocked_reason: `${actionType} rate limit exceeded`,
-          blocked_until: windowEnd.toISOString(),
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", existing.id);
-
-      const remainingSeconds = Math.ceil((windowEnd.getTime() - Date.now()) / 1000);
-      return {
-        allowed: false,
-        reason: `${actionType} rate limit exceeded`,
-        cooldown_seconds: remainingSeconds,
-      };
-    }
-
-    // Increment counter
-    await supabase
-      .from("user_rate_limits")
-      .update({
-        action_count: existing.action_count + 1,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", existing.id);
-  } else {
-    // Create new rate limit entry
-    await supabase
-      .from("user_rate_limits")
-      .insert({
-        user_id: userId,
-        action_type: actionType,
-        window_hours: windowHours,
-        action_count: 1,
-        max_allowed: maxAllowed,
-      });
+  if ((count || 0) >= limit) {
+    return {
+      allowed: false,
+      reason: `Rate limit exceeded for ${actionType} (${limit} per ${windowHours}h)`,
+      cooldown_seconds: windowHours * 3600,
+    };
   }
 
   return { allowed: true };
@@ -758,69 +655,33 @@ async function checkRateLimit(
 
 async function updateReciprocalTracking(
   supabase: ReturnType<typeof createClient>,
-  userAId: string,
-  userBId: string,
-  eventType: "trust_event" | "transaction" | "collaboration"
+  userA: string,
+  userB: string,
+  eventType: string
 ): Promise<void> {
-  const [smallerId, largerId] = userAId < userBId ? [userAId, userBId] : [userBId, userAId];
-
+  const [firstId, secondId] = [userA, userB].sort();
+  
   const { data: existing } = await supabase
     .from("reciprocal_relationships")
-    .select("*")
-    .eq("user_a_id", smallerId)
-    .eq("user_b_id", largerId)
+    .select("id, mutual_trust_events, mutual_economic_events")
+    .or(`and(user_a_id.eq.${firstId},user_b_id.eq.${secondId})`)
     .maybeSingle();
 
   if (existing) {
-    const updates: Record<string, unknown> = {
-      last_interaction_at: new Date().toISOString(),
-    };
-
-    switch (eventType) {
-      case "trust_event":
-        updates.mutual_trust_events = existing.mutual_trust_events + 1;
-        break;
-      case "transaction":
-        updates.mutual_transactions = existing.mutual_transactions + 1;
-        break;
-      case "collaboration":
-        updates.mutual_collaborations = existing.mutual_collaborations + 1;
-        break;
-    }
-
-    // Flag if too many mutual events
-    if ((existing.mutual_trust_events + 1) > 5) {
-      updates.is_flagged = true;
-      updates.flag_reason = "Excessive reciprocal trust events";
-    }
-
+    const field = eventType === "trust_event" ? "mutual_trust_events" : "mutual_economic_events";
     await supabase
       .from("reciprocal_relationships")
-      .update(updates)
+      .update({ [field]: (existing[field] || 0) + 1, last_interaction_at: new Date().toISOString() })
       .eq("id", existing.id);
   } else {
-    const insert: Record<string, unknown> = {
-      user_a_id: smallerId,
-      user_b_id: largerId,
-      first_interaction_at: new Date().toISOString(),
-      last_interaction_at: new Date().toISOString(),
-    };
-
-    switch (eventType) {
-      case "trust_event":
-        insert.mutual_trust_events = 1;
-        break;
-      case "transaction":
-        insert.mutual_transactions = 1;
-        break;
-      case "collaboration":
-        insert.mutual_collaborations = 1;
-        break;
-    }
-
     await supabase
       .from("reciprocal_relationships")
-      .insert(insert);
+      .insert({
+        user_a_id: firstId,
+        user_b_id: secondId,
+        [eventType === "trust_event" ? "mutual_trust_events" : "mutual_economic_events"]: 1,
+        last_interaction_at: new Date().toISOString(),
+      });
   }
 }
 

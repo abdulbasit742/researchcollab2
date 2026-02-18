@@ -1,4 +1,3 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -24,7 +23,6 @@ interface DealRuntimeRequest {
   action: DealAction;
   deal_id?: string;
   milestone_id?: string;
-  user_id: string;
   idempotency_key?: string;
   data?: Record<string, unknown>;
 }
@@ -52,14 +50,12 @@ const MILESTONE_STATES: Record<string, string[]> = {
   cancelled: [],
 };
 
-// ─── Structured Logger ───────────────────────────────────────────
 function structuredLog(level: "info" | "warn" | "error", action: string, details: Record<string, unknown>) {
   const entry = { level, ts: new Date().toISOString(), fn: "deal-runtime", action, ...details };
   if (level === "error") console.error(JSON.stringify(entry));
   else console.log(JSON.stringify(entry));
 }
 
-// ─── Timeout wrapper ────────────────────────────────────────────
 function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
   return Promise.race([
     promise,
@@ -69,7 +65,6 @@ function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise
   ]);
 }
 
-// ─── Error categorization ───────────────────────────────────────
 type ErrorCategory = "validation" | "state_violation" | "financial" | "not_found" | "auth" | "timeout" | "internal";
 
 function categorizeError(err: Error): { category: ErrorCategory; status: number } {
@@ -83,7 +78,7 @@ function categorizeError(err: Error): { category: ErrorCategory; status: number 
   return { category: "internal", status: 500 };
 }
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -92,15 +87,37 @@ serve(async (req: Request) => {
   let action = "unknown";
 
   try {
+    // ─── Authentication ─────────────────────────────────────────
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // Verify JWT and extract user ID
+    const anonClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const token = authHeader.replace("Bearer ", "");
+    const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims?.sub) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const user_id = claimsData.claims.sub as string;
+
     const body: DealRuntimeRequest = await req.json();
     action = body.action;
-    const { deal_id, milestone_id, user_id, idempotency_key, data } = body;
-
-    if (!user_id) throw new Error("user_id is required");
+    const { deal_id, milestone_id, idempotency_key, data } = body;
 
     structuredLog("info", action, { deal_id, milestone_id, user_id, idempotency_key });
 
@@ -133,7 +150,6 @@ serve(async (req: Request) => {
           milestones: { title: string; amount: number; deadline?: string }[];
         };
 
-        // Validate offer exists and is open
         const { data: offer, error: offerError } = await withTimeout(
           supabase.from("offers").select("id, status, price").eq("id", offer_id).single(),
           5000, "fetch offer"
@@ -142,7 +158,6 @@ serve(async (req: Request) => {
         if (offerError || !offer) throw new Error("Offer not found");
         if (offer.status !== "open") throw new Error("Offer is not open for deals");
 
-        // Validate milestones sum to total amount
         if (milestones && milestones.length > 0) {
           const milestoneSum = milestones.reduce((sum, m) => sum + m.amount, 0);
           if (Math.abs(milestoneSum - amount) > 0.01) {
@@ -150,7 +165,6 @@ serve(async (req: Request) => {
           }
         }
 
-        // Update offer to proposed status
         const { data: deal, error: dealError } = await supabase
           .from("offers")
           .update({
@@ -165,7 +179,6 @@ serve(async (req: Request) => {
 
         if (dealError) throw dealError;
 
-        // Create milestones
         if (milestones && milestones.length > 0) {
           const milestoneInserts = milestones.map((m, index) => ({
             offer_id: offer_id,
@@ -208,7 +221,6 @@ serve(async (req: Request) => {
           throw new Error("Deal has no valid amount");
         }
 
-        // Call atomic escrow lock function
         const { data: lockResult, error: lockError } = await withTimeout(
           supabase.rpc("execute_escrow_lock", {
             p_offer_id: deal_id,
@@ -220,7 +232,6 @@ serve(async (req: Request) => {
 
         if (lockError) throw new Error(`Escrow lock failed: ${lockError.message}`);
 
-        // Update deal status to active
         const { error: updateError } = await supabase
           .from("offers")
           .update({ status: "active", updated_at: new Date().toISOString() })
@@ -350,7 +361,6 @@ serve(async (req: Request) => {
 
         if (releaseError) throw new Error(`Payment release failed: ${releaseError.message}`);
 
-        // Apply trust event for successful payment
         const { data: msData } = await supabase
           .from("milestones")
           .select("id, offers!inner(sender_id)")
@@ -364,7 +374,7 @@ serve(async (req: Request) => {
             trust_delta: 3,
             reference_type: "milestone",
             reference_id: milestone_id,
-            evidence_summary: `Payment of ${releaseResult.net_to_provider} released (fee: ${releaseResult.platform_fee})`,
+            evidence_summary: `Payment released`,
           });
         }
 
@@ -424,6 +434,12 @@ serve(async (req: Request) => {
       // ─── RESOLVE DISPUTE ───────────────────────────────────────
       case "resolve_dispute": {
         if (!deal_id) throw new Error("deal_id required");
+
+        // Only admins can resolve disputes
+        const { data: isAdmin } = await supabase.rpc("is_admin", { check_user_id: user_id });
+        if (!isAdmin) {
+          throw new Error("Only admins can resolve disputes");
+        }
 
         const { resolution, winner_id } = data as { resolution: string; winner_id?: string };
 
