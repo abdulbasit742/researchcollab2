@@ -34,7 +34,7 @@ export function LoadingScreen({ isLoading, progress, isComplete }: LoadingScreen
               transition={{ delay: 0.4, duration: 0.5 }}
             >
               <h1 className="text-2xl md:text-3xl font-bold">
-                <span className="text-gradient">ResearchCollabPro</span>
+                <span className="text-gradient">RCollab</span>
               </h1>
               <motion.p
                 className="text-sm text-muted-foreground"

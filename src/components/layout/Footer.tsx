@@ -48,7 +48,7 @@ export const Footer = forwardRef<HTMLElement>((_props, ref) => {
               <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
                 <GraduationCap className="h-4 w-4 text-primary-foreground" />
               </div>
-              <span className="font-bold text-lg">ResearchCollabPro</span>
+              <span className="font-bold text-lg">RCollab</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
               Professional infrastructure where trust, work, and opportunity compound over time.
@@ -144,7 +144,7 @@ export const Footer = forwardRef<HTMLElement>((_props, ref) => {
         <Separator className="my-8" />
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© {currentYear} ResearchCollabPro. All rights reserved.</p>
+          <p>© {currentYear} RCollab. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <Link to="/contact" className="flex items-center gap-1.5 hover:text-foreground transition-colors">
               <Mail className="h-3.5 w-3.5" />

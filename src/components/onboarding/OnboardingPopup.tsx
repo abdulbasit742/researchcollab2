@@ -97,7 +97,7 @@ export function OnboardingPopup() {
           </button>
           <DialogHeader>
             <DialogTitle className="text-lg sm:text-xl font-bold text-primary-foreground pr-6">
-              Welcome to ResearchCollabPro! 🎓
+              Welcome to RCollab! 🎓
             </DialogTitle>
           </DialogHeader>
           <p className="mt-1 text-sm text-primary-foreground/90">
