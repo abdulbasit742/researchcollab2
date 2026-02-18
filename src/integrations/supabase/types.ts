@@ -9555,6 +9555,42 @@ export type Database = {
         }
         Relationships: []
       }
+      dominance_conditions: {
+        Row: {
+          category: string
+          condition_name: string
+          created_at: string
+          evidence: string | null
+          id: string
+          is_met: boolean | null
+          target_description: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          category: string
+          condition_name: string
+          created_at?: string
+          evidence?: string | null
+          id?: string
+          is_met?: boolean | null
+          target_description?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          category?: string
+          condition_name?: string
+          created_at?: string
+          evidence?: string | null
+          id?: string
+          is_met?: boolean | null
+          target_description?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: []
+      }
       due_diligence_contributions: {
         Row: {
           check_type: string
@@ -31007,6 +31043,51 @@ export type Database = {
         }
         Relationships: []
       }
+      service_boundary_health: {
+        Row: {
+          created_at: string
+          error_rate_pct: number | null
+          id: string
+          isolation_verified: boolean | null
+          last_health_check: string | null
+          latency_ms: number | null
+          notes: string | null
+          scaling_ready: boolean | null
+          service_domain: string
+          service_name: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          error_rate_pct?: number | null
+          id?: string
+          isolation_verified?: boolean | null
+          last_health_check?: string | null
+          latency_ms?: number | null
+          notes?: string | null
+          scaling_ready?: boolean | null
+          service_domain: string
+          service_name: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          error_rate_pct?: number | null
+          id?: string
+          isolation_verified?: boolean | null
+          last_health_check?: string | null
+          latency_ms?: number | null
+          notes?: string | null
+          scaling_ready?: boolean | null
+          service_domain?: string
+          service_name?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       settlement_logs: {
         Row: {
           amount: number
@@ -36132,6 +36213,128 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      war_plan_phases: {
+        Row: {
+          actions: Json | null
+          created_at: string
+          id: string
+          kpi_targets: Json | null
+          month_end: number
+          month_start: number
+          objective: string | null
+          phase_name: string
+          phase_number: number
+          progress_pct: number | null
+          status: string
+          targets: Json | null
+          updated_at: string
+        }
+        Insert: {
+          actions?: Json | null
+          created_at?: string
+          id?: string
+          kpi_targets?: Json | null
+          month_end: number
+          month_start: number
+          objective?: string | null
+          phase_name: string
+          phase_number: number
+          progress_pct?: number | null
+          status?: string
+          targets?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          actions?: Json | null
+          created_at?: string
+          id?: string
+          kpi_targets?: Json | null
+          month_end?: number
+          month_start?: number
+          objective?: string | null
+          phase_name?: string
+          phase_number?: number
+          progress_pct?: number | null
+          status?: string
+          targets?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      war_room_kpi_snapshots: {
+        Row: {
+          ai_allocation_accuracy_pct: number | null
+          arbitration_backlog: number | null
+          capital_cycle_time_days: number | null
+          created_at: string
+          deal_completion_rate: number | null
+          dispute_rate_pct: number | null
+          employment_conversion_pct: number | null
+          escrow_funding_volume: number | null
+          fyp_onboarding_rate: number | null
+          gmv_processed: number | null
+          id: string
+          intelligence_arr: number | null
+          phase_id: string | null
+          snapshot_date: string
+          sponsor_acquisition_rate: number | null
+          startup_survival_pct: number | null
+          system_uptime_pct: number | null
+          user_retention_pct: number | null
+          week_number: number
+        }
+        Insert: {
+          ai_allocation_accuracy_pct?: number | null
+          arbitration_backlog?: number | null
+          capital_cycle_time_days?: number | null
+          created_at?: string
+          deal_completion_rate?: number | null
+          dispute_rate_pct?: number | null
+          employment_conversion_pct?: number | null
+          escrow_funding_volume?: number | null
+          fyp_onboarding_rate?: number | null
+          gmv_processed?: number | null
+          id?: string
+          intelligence_arr?: number | null
+          phase_id?: string | null
+          snapshot_date?: string
+          sponsor_acquisition_rate?: number | null
+          startup_survival_pct?: number | null
+          system_uptime_pct?: number | null
+          user_retention_pct?: number | null
+          week_number: number
+        }
+        Update: {
+          ai_allocation_accuracy_pct?: number | null
+          arbitration_backlog?: number | null
+          capital_cycle_time_days?: number | null
+          created_at?: string
+          deal_completion_rate?: number | null
+          dispute_rate_pct?: number | null
+          employment_conversion_pct?: number | null
+          escrow_funding_volume?: number | null
+          fyp_onboarding_rate?: number | null
+          gmv_processed?: number | null
+          id?: string
+          intelligence_arr?: number | null
+          phase_id?: string | null
+          snapshot_date?: string
+          sponsor_acquisition_rate?: number | null
+          startup_survival_pct?: number | null
+          system_uptime_pct?: number | null
+          user_retention_pct?: number | null
+          week_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "war_room_kpi_snapshots_phase_id_fkey"
+            columns: ["phase_id"]
+            isOneToOne: false
+            referencedRelation: "war_plan_phases"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       work_connections: {
         Row: {
