@@ -3,12 +3,7 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { HeroSection } from "@/components/home/HeroSection";
 import { StatsSection } from "@/components/home/StatsSection";
-import { TrustedByMarquee } from "@/components/home/TrustedByMarquee";
-import { CompetitorComparisonSection } from "@/components/home/CompetitorComparisonSection";
-import { FeaturesSection } from "@/components/home/FeaturesSection";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
-import { FeaturedToolsCarousel } from "@/components/home/FeaturedToolsCarousel";
-import { WhyChooseSection } from "@/components/home/WhyChooseSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CTASection } from "@/components/home/CTASection";
 import { OnboardingPopup } from "@/components/onboarding/OnboardingPopup";
@@ -26,13 +21,13 @@ const Index = forwardRef<HTMLDivElement>((_props, ref) => {
     <MainLayout>
       <SEOHead
         canonicalPath="/"
-        keywords="professional collaboration, escrow payments, trust scores, AI matching, verified outcomes, research platform"
+        keywords="FYP funding, escrow payments, trust scores, student projects, sponsor funding, milestone execution"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebApplication",
           "name": "RCollab",
           "url": "https://academic-forge-flow.lovable.app",
-          "description": "The world's first escrow-backed professional platform where trust is earned through verified outcomes.",
+          "description": "Escrow-backed FYP execution platform. Students create, sponsors fund, milestones execute, trust compounds.",
           "applicationCategory": "BusinessApplication",
           "operatingSystem": "Web",
           "offers": {
@@ -44,13 +39,8 @@ const Index = forwardRef<HTMLDivElement>((_props, ref) => {
       />
       <OnboardingPopup />
       <HeroSection />
-      <TrustedByMarquee />
       <StatsSection />
-      <CompetitorComparisonSection />
-      <FeaturesSection />
       <HowItWorksSection />
-      <FeaturedToolsCarousel />
-      <WhyChooseSection />
       <TestimonialsSection />
       <CTASection />
     </MainLayout>
