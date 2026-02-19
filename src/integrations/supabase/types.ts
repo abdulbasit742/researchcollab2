@@ -25130,6 +25130,239 @@ export type Database = {
         }
         Relationships: []
       }
+      pilot_circuit_breaker: {
+        Row: {
+          frozen_at: string | null
+          frozen_by: string | null
+          frozen_reason: string | null
+          id: string
+          incident_count: number
+          is_frozen: boolean
+          last_incident_at: string | null
+          last_reconciliation_at: string | null
+          manual_review_threshold_pkr: number | null
+          max_institutions: number | null
+          max_sponsors: number | null
+          max_students: number | null
+          total_escrow_locked: number | null
+          total_refunded: number | null
+          total_released: number | null
+          transaction_cap_pkr: number | null
+          updated_at: string
+        }
+        Insert: {
+          frozen_at?: string | null
+          frozen_by?: string | null
+          frozen_reason?: string | null
+          id?: string
+          incident_count?: number
+          is_frozen?: boolean
+          last_incident_at?: string | null
+          last_reconciliation_at?: string | null
+          manual_review_threshold_pkr?: number | null
+          max_institutions?: number | null
+          max_sponsors?: number | null
+          max_students?: number | null
+          total_escrow_locked?: number | null
+          total_refunded?: number | null
+          total_released?: number | null
+          transaction_cap_pkr?: number | null
+          updated_at?: string
+        }
+        Update: {
+          frozen_at?: string | null
+          frozen_by?: string | null
+          frozen_reason?: string | null
+          id?: string
+          incident_count?: number
+          is_frozen?: boolean
+          last_incident_at?: string | null
+          last_reconciliation_at?: string | null
+          manual_review_threshold_pkr?: number | null
+          max_institutions?: number | null
+          max_sponsors?: number | null
+          max_students?: number | null
+          total_escrow_locked?: number | null
+          total_refunded?: number | null
+          total_released?: number | null
+          transaction_cap_pkr?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      pilot_execution_metrics: {
+        Row: {
+          actor_id: string | null
+          deal_id: string | null
+          id: string
+          metadata: Json | null
+          metric_type: string
+          milestone_id: string | null
+          recorded_at: string
+          text_value: string | null
+          value: number | null
+        }
+        Insert: {
+          actor_id?: string | null
+          deal_id?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_type: string
+          milestone_id?: string | null
+          recorded_at?: string
+          text_value?: string | null
+          value?: number | null
+        }
+        Update: {
+          actor_id?: string | null
+          deal_id?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_type?: string
+          milestone_id?: string | null
+          recorded_at?: string
+          text_value?: string | null
+          value?: number | null
+        }
+        Relationships: []
+      }
+      pilot_incidents: {
+        Row: {
+          affected_deal_id: string | null
+          affected_user_id: string | null
+          auto_action_taken: string | null
+          created_at: string
+          description: string
+          id: string
+          incident_type: string
+          metadata: Json | null
+          resolution_notes: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+        }
+        Insert: {
+          affected_deal_id?: string | null
+          affected_user_id?: string | null
+          auto_action_taken?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          incident_type: string
+          metadata?: Json | null
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+        }
+        Update: {
+          affected_deal_id?: string | null
+          affected_user_id?: string | null
+          auto_action_taken?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          incident_type?: string
+          metadata?: Json | null
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+        }
+        Relationships: []
+      }
+      pilot_participants: {
+        Row: {
+          added_by: string | null
+          created_at: string
+          id: string
+          institution_id: string | null
+          notes: string | null
+          participant_role: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          added_by?: string | null
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          notes?: string | null
+          participant_role: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          added_by?: string | null
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          notes?: string | null
+          participant_role?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pilot_participants_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pilot_transaction_log: {
+        Row: {
+          action_type: string
+          actor_id: string
+          amount: number | null
+          created_at: string
+          currency: string
+          deal_id: string | null
+          id: string
+          ledger_entry_id: string | null
+          metadata: Json | null
+          milestone_id: string | null
+          reconciliation_checked_at: string | null
+          reconciliation_status: string | null
+        }
+        Insert: {
+          action_type: string
+          actor_id: string
+          amount?: number | null
+          created_at?: string
+          currency?: string
+          deal_id?: string | null
+          id?: string
+          ledger_entry_id?: string | null
+          metadata?: Json | null
+          milestone_id?: string | null
+          reconciliation_checked_at?: string | null
+          reconciliation_status?: string | null
+        }
+        Update: {
+          action_type?: string
+          actor_id?: string
+          amount?: number | null
+          created_at?: string
+          currency?: string
+          deal_id?: string | null
+          id?: string
+          ledger_entry_id?: string | null
+          metadata?: Json | null
+          milestone_id?: string | null
+          reconciliation_checked_at?: string | null
+          reconciliation_status?: string | null
+        }
+        Relationships: []
+      }
       pinned_messages: {
         Row: {
           created_at: string | null
@@ -39126,6 +39359,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_pilot_transaction_cap: { Args: { p_amount: number }; Returns: Json }
       check_rate_limit: {
         Args: { p_action_type: string; p_user_id: string }
         Returns: boolean
@@ -39275,6 +39509,8 @@ export type Database = {
         Args: { _institution_id: string; _user_id: string }
         Returns: boolean
       }
+      is_pilot_frozen: { Args: never; Returns: boolean }
+      is_pilot_participant: { Args: { p_user_id: string }; Returns: boolean }
       is_shadow_banned: { Args: { check_user_id: string }; Returns: boolean }
       is_user_restricted: {
         Args: { p_restriction_type?: string; p_user_id: string }
