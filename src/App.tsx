@@ -108,6 +108,7 @@ const AdminFeedModerationPage = lazy(() => import("./pages/admin/AdminFeedModera
 const AdminGovernancePage = lazy(() => import("./pages/admin/AdminGovernancePage"));
 const AdminComplianceDashboardPage = lazy(() => import("./pages/admin/AdminComplianceDashboardPage"));
 const AdminSchemaPage = lazy(() => import("./pages/admin/AdminSchemaPage"));
+const PilotDashboardPage = lazy(() => import("./pages/admin/PilotDashboardPage"));
 
 // Suspense fallback
 const SuspenseFallback = () => (
@@ -225,6 +226,7 @@ const AppContent = () => {
           <Route path="/admin/governance" element={<AdminGovernancePage />} />
           <Route path="/admin/compliance" element={<AdminComplianceDashboardPage />} />
           <Route path="/admin/schema" element={<AdminSchemaPage />} />
+          <Route path="/admin/pilot" element={<PilotDashboardPage />} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}
           {/* Dashboard consolidation */}

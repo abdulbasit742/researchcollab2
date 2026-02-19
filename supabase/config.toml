@@ -65,3 +65,6 @@ verify_jwt = false
 
 [functions.execution-health-monitor]
 verify_jwt = false
+
+[functions.pilot-circuit-breaker]
+verify_jwt = false
