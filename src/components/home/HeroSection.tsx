@@ -2,25 +2,22 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Shield, Banknote, TrendingUp, Users, Zap, Globe, Brain, Scale, Award } from "lucide-react";
+import { ArrowRight, Shield, Banknote, TrendingUp, Users, Zap } from "lucide-react";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import heroDarkMesh from "@/assets/hero-dark-mesh.jpg";
 
 const heroStats = [
-  { value: 15000, suffix: "+", label: "Verified Outcomes", icon: TrendingUp },
-  { value: 8200, suffix: "+", label: "Professionals", icon: Users },
-  { value: 4.7, suffix: "M", label: "Capital Protected", prefix: "$", icon: Shield },
-  { value: 98, suffix: "%", label: "Delivery Rate", icon: Zap },
-  { value: 120, suffix: "+", label: "Countries", icon: Globe },
+  { value: 342, suffix: "+", label: "Active FYPs", icon: TrendingUp },
+  { value: 186, suffix: "+", label: "Funded Projects", icon: Shield },
+  { value: 2.1, suffix: "M", label: "Escrow Locked", prefix: "PKR ", icon: Banknote },
+  { value: 94, suffix: "%", label: "Milestone Rate", icon: Zap },
+  { value: 47, suffix: "", label: "Hiring Conversions", icon: Users },
 ];
 
 const platformKills = [
-  { name: "LinkedIn", weakness: "Vanity metrics & self-reported claims", kill: "Verified proof-of-work identity" },
-  { name: "Upwork", weakness: "Race-to-the-bottom pricing", kill: "Trust-weighted value economics" },
-  { name: "Fiverr", weakness: "Zero accountability or protection", kill: "Escrow-backed milestone execution" },
-  { name: "Google Scholar", weakness: "Discovery without execution tools", kill: "AI research intelligence + collaboration" },
-  { name: "ResearchGate", weakness: "Static profiles, no outcomes", kill: "Dynamic trust scores from real results" },
-  { name: "Freelancer", weakness: "Contest-based devaluation", kill: "Outcome-based reputation compounding" },
+  { name: "Freelancer", weakness: "No accountability", kill: "Escrow-backed milestone execution" },
+  { name: "LinkedIn", weakness: "Vanity metrics", kill: "Verified proof-of-work identity" },
+  { name: "Upwork", weakness: "Race-to-bottom pricing", kill: "Trust-weighted value economics" },
 ];
 
 export function HeroSection() {
@@ -131,8 +128,8 @@ export function HeroSection() {
             <Link to="/fyp">
               <Button
                 size="lg"
-                variant="outline"
-                className="h-16 px-10 text-base font-semibold border-white/15 text-white/80 hover:bg-white/5 hover:text-white hover:border-white/30 transition-all rounded-xl backdrop-blur-sm"
+                variant="ghost"
+                className="h-16 px-10 text-base font-semibold border border-white/15 text-white/80 hover:bg-white/5 hover:text-white hover:border-white/30 transition-all rounded-xl backdrop-blur-sm"
               >
                 <Banknote className="h-5 w-5 mr-2" />
                 Fund a Project

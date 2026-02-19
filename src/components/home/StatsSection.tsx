@@ -1,58 +1,57 @@
 import { motion } from "framer-motion";
-import { Shield, Globe, Award, Zap, DollarSign, Brain } from "lucide-react";
+import { Shield, Award, Zap, DollarSign, UserCheck, Briefcase } from "lucide-react";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 
 const stats = [
   {
+    icon: Briefcase,
+    value: 342,
+    suffix: "+",
+    label: "Active FYPs",
+    sublabel: "Student projects in execution",
+    gradient: "from-primary to-blue-500",
+  },
+  {
     icon: DollarSign,
-    value: 4.7,
-    suffix: "M+",
-    prefix: "$",
-    label: "Capital Protected",
-    sublabel: "Every transaction escrow-backed",
+    value: 186,
+    suffix: "+",
+    label: "Funded Projects",
+    sublabel: "Sponsor-backed with escrow",
     gradient: "from-emerald-400 to-teal-500",
   },
   {
     icon: Shield,
-    value: 98,
-    suffix: "%",
-    label: "Delivery Rate",
-    sublabel: "Verified milestone completions",
-    gradient: "from-primary to-blue-500",
+    value: 2.1,
+    suffix: "M+",
+    prefix: "PKR ",
+    label: "Escrow Volume",
+    sublabel: "Capital locked and protected",
+    gradient: "from-violet-400 to-purple-500",
     live: true,
   },
   {
-    icon: Globe,
-    value: 120,
-    suffix: "+",
-    label: "Countries",
-    sublabel: "Global professional network",
-    gradient: "from-violet-400 to-purple-500",
-  },
-  {
     icon: Award,
-    value: 15000,
-    suffix: "+",
-    label: "Verified Outcomes",
-    sublabel: "Not self-reported claims",
+    value: 891,
+    suffix: "",
+    label: "Completed Milestones",
+    sublabel: "Verified deliverables approved",
     gradient: "from-amber-400 to-orange-500",
   },
   {
-    icon: Brain,
-    value: 850,
-    suffix: "K+",
-    label: "AI Decisions Made",
-    sublabel: "Matching, risk, trust scoring",
-    gradient: "from-pink-400 to-rose-500",
+    icon: Zap,
+    value: 94,
+    suffix: "%",
+    label: "Milestone Rate",
+    sublabel: "On-time delivery performance",
+    gradient: "from-primary to-blue-500",
   },
   {
-    icon: Zap,
-    value: 0,
+    icon: UserCheck,
+    value: 47,
     suffix: "",
-    label: "Disputes Unresolved",
-    sublabel: "Digital arbitration court",
+    label: "Hiring Conversions",
+    sublabel: "FYP → employment outcomes",
     gradient: "from-cyan-400 to-blue-500",
-    displayValue: "0",
   },
 ];
 
@@ -71,12 +70,12 @@ export function StatsSection() {
           className="text-center mb-14"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight">
-            Numbers Don't Lie.
+            Execution Metrics.
             <br />
-            <span className="text-primary">Platforms Do.</span>
+            <span className="text-primary">Not Vanity.</span>
           </h2>
           <p className="mt-3 text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
-            Every metric is computed from real transactions — not surveys, not estimates, not self-reports.
+            Every number is computed from real escrow transactions and verified milestone completions.
           </p>
         </motion.div>
 
@@ -91,7 +90,6 @@ export function StatsSection() {
               className="group"
             >
               <div className="relative rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-6 md:p-8 transition-all duration-500 hover:shadow-2xl hover:border-primary/20 hover:-translate-y-2 overflow-hidden">
-                {/* Hover glow */}
                 <div className={`absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-10 blur-3xl transition-opacity duration-500`} />
                 
                 <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${stat.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
@@ -99,12 +97,8 @@ export function StatsSection() {
                 </div>
 
                 <div className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight">
-                  {stat.displayValue !== undefined ? stat.displayValue : (
-                    <>
-                      {stat.prefix || ""}
-                      <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={2200} delay={i * 150} />
-                    </>
-                  )}
+                  {stat.prefix || ""}
+                  <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={2200} delay={i * 150} />
                 </div>
 
                 <div className="mt-2 text-sm font-bold text-foreground/80 flex items-center gap-2">
