@@ -4221,6 +4221,48 @@ export type Database = {
           },
         ]
       }
+      capital_flow_snapshots: {
+        Row: {
+          active_sponsors: number | null
+          avg_deal_cycle_days: number | null
+          completion_rate: number | null
+          created_at: string
+          hiring_conversion_pct: number | null
+          id: string
+          monthly_escrow_volume: number | null
+          snapshot_date: string
+          sponsor_retention_pct: number | null
+          total_funded_fyps: number | null
+          weekly_funding_velocity: number | null
+        }
+        Insert: {
+          active_sponsors?: number | null
+          avg_deal_cycle_days?: number | null
+          completion_rate?: number | null
+          created_at?: string
+          hiring_conversion_pct?: number | null
+          id?: string
+          monthly_escrow_volume?: number | null
+          snapshot_date: string
+          sponsor_retention_pct?: number | null
+          total_funded_fyps?: number | null
+          weekly_funding_velocity?: number | null
+        }
+        Update: {
+          active_sponsors?: number | null
+          avg_deal_cycle_days?: number | null
+          completion_rate?: number | null
+          created_at?: string
+          hiring_conversion_pct?: number | null
+          id?: string
+          monthly_escrow_volume?: number | null
+          snapshot_date?: string
+          sponsor_retention_pct?: number | null
+          total_funded_fyps?: number | null
+          weekly_funding_velocity?: number | null
+        }
+        Relationships: []
+      }
       capital_influence_risk: {
         Row: {
           assessed_at: string | null
@@ -17044,6 +17086,60 @@ export type Database = {
         }
         Relationships: []
       }
+      hiring_conversions: {
+        Row: {
+          created_at: string
+          deal_id: string | null
+          fyp_id: string | null
+          hired: boolean | null
+          hired_date: string | null
+          id: string
+          notes: string | null
+          offer_date: string | null
+          offer_made: boolean | null
+          retention_months: number | null
+          role_title: string | null
+          salary_band: string | null
+          sponsor_id: string | null
+          student_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deal_id?: string | null
+          fyp_id?: string | null
+          hired?: boolean | null
+          hired_date?: string | null
+          id?: string
+          notes?: string | null
+          offer_date?: string | null
+          offer_made?: boolean | null
+          retention_months?: number | null
+          role_title?: string | null
+          salary_band?: string | null
+          sponsor_id?: string | null
+          student_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deal_id?: string | null
+          fyp_id?: string | null
+          hired?: boolean | null
+          hired_date?: string | null
+          id?: string
+          notes?: string | null
+          offer_date?: string | null
+          offer_made?: boolean | null
+          retention_months?: number | null
+          role_title?: string | null
+          salary_band?: string | null
+          sponsor_id?: string | null
+          student_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       idea_evolution: {
         Row: {
           contributors: string[] | null
@@ -29053,6 +29149,45 @@ export type Database = {
           },
         ]
       }
+      refunding_recommendations: {
+        Row: {
+          created_at: string
+          id: string
+          match_score: number | null
+          reason: string | null
+          recommended_fyp_id: string | null
+          recommended_fyp_title: string | null
+          responded_at: string | null
+          sent_at: string | null
+          sponsor_id: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          match_score?: number | null
+          reason?: string | null
+          recommended_fyp_id?: string | null
+          recommended_fyp_title?: string | null
+          responded_at?: string | null
+          sent_at?: string | null
+          sponsor_id: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          match_score?: number | null
+          reason?: string | null
+          recommended_fyp_id?: string | null
+          recommended_fyp_title?: string | null
+          responded_at?: string | null
+          sent_at?: string | null
+          sponsor_id?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
       regional_domination_metrics: {
         Row: {
           capital_cycle_days: number | null
@@ -34150,6 +34285,66 @@ export type Database = {
           status?: string | null
           target_country?: string
           treaty_reference?: string | null
+        }
+        Relationships: []
+      }
+      sponsor_pipeline: {
+        Row: {
+          avg_funding_size: number | null
+          contact_email: string | null
+          contact_person: string | null
+          created_at: string
+          created_by: string | null
+          first_deposit_at: string | null
+          funding_count: number | null
+          id: string
+          meeting_date: string | null
+          notes: string | null
+          onboarded_at: string | null
+          organization: string | null
+          proposal_sent_at: string | null
+          sponsor_name: string
+          stage: string
+          total_funded: number | null
+          updated_at: string
+        }
+        Insert: {
+          avg_funding_size?: number | null
+          contact_email?: string | null
+          contact_person?: string | null
+          created_at?: string
+          created_by?: string | null
+          first_deposit_at?: string | null
+          funding_count?: number | null
+          id?: string
+          meeting_date?: string | null
+          notes?: string | null
+          onboarded_at?: string | null
+          organization?: string | null
+          proposal_sent_at?: string | null
+          sponsor_name: string
+          stage?: string
+          total_funded?: number | null
+          updated_at?: string
+        }
+        Update: {
+          avg_funding_size?: number | null
+          contact_email?: string | null
+          contact_person?: string | null
+          created_at?: string
+          created_by?: string | null
+          first_deposit_at?: string | null
+          funding_count?: number | null
+          id?: string
+          meeting_date?: string | null
+          notes?: string | null
+          onboarded_at?: string | null
+          organization?: string | null
+          proposal_sent_at?: string | null
+          sponsor_name?: string
+          stage?: string
+          total_funded?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
