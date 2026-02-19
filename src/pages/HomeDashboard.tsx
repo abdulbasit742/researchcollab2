@@ -13,7 +13,8 @@ import { GettingStartedChecklist } from "@/components/home/GettingStartedCheckli
 import { FirstTimeUserOverlay } from "@/components/onboarding/FirstTimeUserOverlay";
 import { PostSignupIntentSelector } from "@/components/onboarding/PostSignupIntentSelector";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp } from "lucide-react";
+import { Shield, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function HomeDashboard() {
   const { user, profile, userRole, isLoading: authLoading } = useAuth();
@@ -51,33 +52,59 @@ export default function HomeDashboard() {
       
       <div className="container px-4 py-6 pb-4 max-w-5xl">
         {/* Header */}
-        <div className="mb-4">
-          <h1 className="text-xl font-bold flex items-center gap-2">
-            Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""}
-            {isVerified && (
-              <Badge variant="outline" className="text-primary border-primary/30 gap-1 text-xs">
-                <TrendingUp className="h-3 w-3" />
-                Verified
-              </Badge>
-            )}
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Create → Fund → Execute → Complete → Hire
-          </p>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="mb-5"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-bold flex items-center gap-2">
+                Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""}
+                {isVerified && (
+                  <Badge variant="outline" className="text-primary border-primary/30 gap-1 text-xs">
+                    <Shield className="h-3 w-3" />
+                    Verified
+                  </Badge>
+                )}
+              </h1>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                Create → Fund → Execute → Complete → Hire
+              </p>
+            </div>
+            <Link 
+              to="/fyp/submit-problem" 
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+            >
+              Create FYP
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </motion.div>
 
         {/* Daily State Bar */}
-        <div className="mb-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="mb-5"
+        >
           <DailyStateBar 
             trustScore={currentState.trustScore}
             activeDeals={currentState.activeDeals}
             pendingActions={currentState.pendingActions}
             loading={loading}
           />
-        </div>
+        </motion.div>
 
-        {/* Core Engine Metrics — No vanity */}
-        <div className="mb-6">
+        {/* Core Engine Metrics */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="mb-6"
+        >
           <CoreEngineMetrics
             activeFYPs={currentState.activeDeals + 2}
             fundedFYPs={currentState.activeDeals}
@@ -89,18 +116,13 @@ export default function HomeDashboard() {
             sponsorRetention={currentState.activeDeals > 0 ? 67 : 0}
             loading={loading}
           />
-        </div>
+        </motion.div>
 
         <div className="grid lg:grid-cols-12 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-4">
-            {/* Getting Started */}
             <GettingStartedChecklist />
-
-            {/* What Matters Today */}
             <WhatMattersToday items={todayItems} loading={loading} />
-
-            {/* Escrow Status — if active deals */}
             {currentState.activeDeals > 0 && (
               <EscrowVisualTracker
                 currentStage="submitted"
@@ -113,7 +135,6 @@ export default function HomeDashboard() {
           {/* Sidebar */}
           <aside className="lg:col-span-4 space-y-4">
             <QuickActionsCard />
-
             <TrustExplainer
               trustScore={trustScore}
               trustTier={trustTier}
