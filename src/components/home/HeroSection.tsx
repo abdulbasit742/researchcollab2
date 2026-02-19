@@ -128,14 +128,14 @@ export function HeroSection() {
                 <ArrowRight className="h-5 w-5 ml-3" />
               </Button>
             </Link>
-            <Link to="/earn">
+            <Link to="/fyp">
               <Button
                 size="lg"
                 variant="outline"
                 className="h-16 px-10 text-base font-semibold border-white/15 text-white/80 hover:bg-white/5 hover:text-white hover:border-white/30 transition-all rounded-xl backdrop-blur-sm"
               >
                 <Banknote className="h-5 w-5 mr-2" />
-                Start Earning
+                Fund a Project
               </Button>
             </Link>
           </motion.div>

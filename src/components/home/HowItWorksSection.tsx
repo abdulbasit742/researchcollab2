@@ -1,34 +1,48 @@
 import { motion } from "framer-motion";
-import { UserPlus, Search, Shield, TrendingUp, Repeat } from "lucide-react";
+import { Briefcase, DollarSign, Lock, CheckCircle2, Shield, UserCheck, Repeat } from "lucide-react";
 
 const steps = [
   {
-    icon: UserPlus,
+    icon: Briefcase,
     number: "01",
-    title: "Build Your Proof",
-    description: "Create a verified profile backed by real outcomes. Your trust score starts computing from your first action.",
-    gradient: "from-primary to-blue-600",
+    title: "Student Creates FYP",
+    description: "Submit your final year project with clear scope, milestones, and deliverables. Faculty approves the structure.",
+    gradient: "from-primary to-primary/70",
   },
   {
-    icon: Search,
+    icon: DollarSign,
     number: "02",
-    title: "Get Matched by AI",
-    description: "Our intelligence engine finds opportunities based on skills, trust, and success probability — not just keywords.",
-    gradient: "from-violet-500 to-purple-600",
+    title: "Sponsor Funds Project",
+    description: "Industry sponsors discover and fund student FYPs. Capital is deposited and locked in escrow — protected for both sides.",
+    gradient: "from-primary to-primary/70",
+  },
+  {
+    icon: Lock,
+    number: "03",
+    title: "Escrow Locks Capital",
+    description: "Funds are secured with milestone-based release triggers. No money moves until deliverables are verified and approved.",
+    gradient: "from-primary to-primary/70",
+  },
+  {
+    icon: CheckCircle2,
+    number: "04",
+    title: "Milestones Executed",
+    description: "Students submit work at each milestone. Faculty validates. Sponsor reviews. Payment releases automatically on approval.",
+    gradient: "from-primary to-primary/70",
   },
   {
     icon: Shield,
-    number: "03",
-    title: "Execute with Protection",
-    description: "Every deal is escrow-backed with milestone triggers. Both sides financially protected. Disputes resolved by arbitration.",
-    gradient: "from-emerald-500 to-teal-600",
+    number: "05",
+    title: "Trust Updated",
+    description: "Every completed milestone updates trust scores for all parties. Verified outcomes compound your professional reputation.",
+    gradient: "from-primary to-primary/70",
   },
   {
-    icon: TrendingUp,
-    number: "04",
-    title: "Compound Your Value",
-    description: "Every completed project boosts your trust score, unlocks better rates, and attracts higher-value opportunities.",
-    gradient: "from-amber-500 to-orange-600",
+    icon: UserCheck,
+    number: "06",
+    title: "Hiring Outcome Captured",
+    description: "Top performers get hired by their sponsors. The platform tracks FYP-to-employment conversions — real ROI for universities.",
+    gradient: "from-primary to-primary/70",
   },
 ];
 
@@ -44,45 +58,42 @@ export function HowItWorksSection() {
           className="text-center mb-14"
         >
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight">
-            How <span className="text-primary">Execution</span> Works
+            The <span className="text-primary">Core Loop</span>
           </h2>
           <p className="mt-4 text-sm md:text-lg text-muted-foreground max-w-xl mx-auto">
-            A self-reinforcing flywheel where every outcome makes you exponentially more valuable.
+            Create → Fund → Execute → Complete → Hire. Everything else is noise.
           </p>
         </motion.div>
 
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {steps.map((step, i) => (
               <motion.div
                 key={step.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
                 viewport={{ once: true }}
                 className="relative group"
               >
-                <div className="h-full rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-7 md:p-8 transition-all duration-500 hover:shadow-2xl hover:border-primary/20 hover:-translate-y-2 relative overflow-hidden">
+                <div className="h-full rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-6 md:p-7 transition-all duration-500 hover:shadow-2xl hover:border-primary/20 hover:-translate-y-1 relative overflow-hidden">
                   <div className={`absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br ${step.gradient} opacity-0 group-hover:opacity-[0.07] blur-3xl transition-opacity duration-500`} />
                   
-                  <div className="flex items-start gap-5 relative z-10">
-                    <div className="shrink-0">
-                      <div className={`h-14 w-14 rounded-xl bg-gradient-to-br ${step.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                        <step.icon className="h-7 w-7 text-white" />
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className={`h-10 w-10 rounded-lg bg-gradient-to-br ${step.gradient} flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                        <step.icon className="h-5 w-5 text-primary-foreground" />
                       </div>
+                      <span className="text-xs font-bold text-muted-foreground/50 uppercase tracking-widest">{step.number}</span>
                     </div>
-                    <div>
-                      <span className="text-xs font-bold text-primary/40 uppercase tracking-widest">{step.number}</span>
-                      <h3 className="text-xl font-bold mt-1 mb-3 group-hover:text-primary transition-colors">{step.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
-                    </div>
+                    <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          {/* Loop indicator */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -94,7 +105,7 @@ export function HowItWorksSection() {
               <motion.div animate={{ rotate: 360 }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }}>
                 <Repeat className="h-4 w-4" />
               </motion.div>
-              Self-reinforcing flywheel — every outcome compounds exponentially
+              Every completed FYP compounds trust, revenue, and hiring outcomes
             </div>
           </motion.div>
         </div>
