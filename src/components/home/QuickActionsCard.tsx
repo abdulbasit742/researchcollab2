@@ -17,21 +17,21 @@ const quickActions = [
     variant: "default" as const,
   },
   {
-    icon: DollarSign,
-    label: "Sponsor Funding",
-    href: "/earn",
-    variant: "outline" as const,
-  },
-  {
     icon: Target,
     label: "Browse Opportunities",
     href: "/offers",
     variant: "outline" as const,
   },
   {
+    icon: DollarSign,
+    label: "My Wallet",
+    href: "/wallet",
+    variant: "outline" as const,
+  },
+  {
     icon: Shield,
-    label: "Trust Profile",
-    href: "/profile",
+    label: "Verify Identity",
+    href: "/verification",
     variant: "outline" as const,
   },
 ];
