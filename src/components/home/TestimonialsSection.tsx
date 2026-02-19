@@ -7,88 +7,88 @@ import { AnimatedCounter } from "@/components/ui/animated-counter";
 
 const testimonials = [
   {
-    quote: "The escrow system gave me confidence to hire a statistician I'd never met. Deliverables were exactly as promised.",
-    name: "Dr. Amara Osei",
-    role: "Postdoctoral Researcher",
-    institution: "University of Cape Town",
-    initials: "AO",
-    escrowValue: 12500,
-    trustScore: 94,
-    dealsCompleted: 7,
+    quote: "I submitted my FYP, got funded within a week, and the milestone-based escrow meant I got paid as I delivered. No chasing invoices.",
+    name: "Ahmed Raza",
+    role: "Final Year Student",
+    institution: "LUMS",
+    initials: "AR",
+    escrowValue: 45000,
+    trustScore: 91,
+    dealsCompleted: 3,
     verifiedType: "Escrow Verified",
     gradient: "from-emerald-400 to-teal-500",
   },
   {
-    quote: "I found a co-author for my thesis within a week. The trust scores helped me pick someone reliable.",
-    name: "Lucas Chen",
-    role: "PhD Student",
-    institution: "ETH Zürich",
-    initials: "LC",
-    escrowValue: 8200,
-    trustScore: 91,
-    dealsCompleted: 4,
-    verifiedType: "Identity Verified",
+    quote: "We funded 5 student FYPs last quarter. The escrow system protects our investment and the milestone tracking keeps projects on schedule.",
+    name: "Sarah Mitchell",
+    role: "Industry Sponsor",
+    institution: "TechVentures Ltd",
+    initials: "SM",
+    escrowValue: 250000,
+    trustScore: 96,
+    dealsCompleted: 12,
+    verifiedType: "Escrow Verified",
     gradient: "from-blue-400 to-cyan-500",
   },
   {
-    quote: "The AI literature review tool saved me dozens of hours. It surfaces connections I would have missed.",
-    name: "Prof. María Gutierrez",
-    role: "Full Professor",
-    institution: "Universidad de Buenos Aires",
-    initials: "MG",
-    escrowValue: 31000,
-    trustScore: 97,
-    dealsCompleted: 12,
+    quote: "Two of the students we sponsored through RCollab now work for us full-time. Best hiring pipeline we've found.",
+    name: "Dr. Farhan Ali",
+    role: "R&D Director",
+    institution: "DataSoft Pakistan",
+    initials: "FA",
+    escrowValue: 180000,
+    trustScore: 94,
+    dealsCompleted: 8,
     verifiedType: "Escrow Verified",
     gradient: "from-violet-400 to-purple-500",
   },
   {
-    quote: "As an independent researcher, this platform levels the playing field. I can collaborate with anyone, anywhere.",
-    name: "Kenji Nakamura",
-    role: "Independent Researcher",
-    institution: "Freelance",
-    initials: "KN",
-    escrowValue: 5600,
-    trustScore: 88,
-    dealsCompleted: 3,
+    quote: "The trust score system makes it easy to find reliable students. Every completed milestone builds their verified track record.",
+    name: "Prof. Ayesha Khan",
+    role: "FYP Supervisor",
+    institution: "NUST",
+    initials: "AK",
+    escrowValue: 75000,
+    trustScore: 97,
+    dealsCompleted: 15,
     verifiedType: "Identity Verified",
     gradient: "from-amber-400 to-orange-500",
   },
   {
-    quote: "We use it to connect our R&D team with academic experts. The accountability records are invaluable.",
-    name: "Sarah Mitchell",
-    role: "Industry Collaborator",
-    institution: "BioTech Solutions Ltd",
-    initials: "SM",
-    escrowValue: 47000,
-    trustScore: 96,
-    dealsCompleted: 15,
-    verifiedType: "Escrow Verified",
+    quote: "As a CS student, I built a real product for a real company. The escrow gave me security, and the completion record helped me land my first job.",
+    name: "Zara Imran",
+    role: "CS Graduate",
+    institution: "FAST-NUCES",
+    initials: "ZI",
+    escrowValue: 35000,
+    trustScore: 88,
+    dealsCompleted: 2,
+    verifiedType: "Identity Verified",
     gradient: "from-rose-400 to-pink-500",
   },
   {
-    quote: "I started using this as an undergrad research assistant. The guided workflows made my first collaboration seamless.",
-    name: "Priya Sharma",
-    role: "Undergraduate Student",
-    institution: "IIT Delhi",
-    initials: "PS",
-    escrowValue: 2100,
-    trustScore: 82,
-    dealsCompleted: 2,
-    verifiedType: "Identity Verified",
+    quote: "Our department uses RCollab to connect students with industry. The impact dashboard shows real FYP-to-employment conversion rates.",
+    name: "Dr. Hassan Malik",
+    role: "Department Chair",
+    institution: "UET Lahore",
+    initials: "HM",
+    escrowValue: 120000,
+    trustScore: 95,
+    dealsCompleted: 10,
+    verifiedType: "Escrow Verified",
     gradient: "from-teal-400 to-emerald-500",
   },
 ];
 
 const aggregateStats = [
-  { value: 1247, label: "Verified Reviews", suffix: "" },
-  { value: 0, label: "Fake Reviews Detected", suffix: "" },
-  { value: 4.7, label: "in Reviewed Transactions", suffix: "M", prefix: "$" },
+  { value: 342, label: "Active FYPs", suffix: "+" },
+  { value: 47, label: "Hiring Conversions", suffix: "" },
+  { value: 2.1, label: "PKR Escrow Protected", suffix: "M" },
 ];
 
 function formatEscrow(value: number) {
-  if (value >= 1000) return `$${(value / 1000).toFixed(value % 1000 === 0 ? 0 : 1)}K`;
-  return `$${value}`;
+  if (value >= 1000) return `PKR ${(value / 1000).toFixed(value % 1000 === 0 ? 0 : 1)}K`;
+  return `PKR ${value}`;
 }
 
 function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: number }) {
@@ -204,7 +204,7 @@ export function TestimonialsSection() {
           {aggregateStats.map((stat, i) => (
             <div key={stat.label} className="text-center">
               <div className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-                {stat.prefix || ""}
+                {"prefix" in stat ? (stat as any).prefix : ""}
                 <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={2000} delay={i * 200} />
               </div>
               <div className="text-[11px] sm:text-xs text-white/35 font-medium uppercase tracking-wider mt-1">
