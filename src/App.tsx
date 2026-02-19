@@ -109,6 +109,10 @@ const AdminGovernancePage = lazy(() => import("./pages/admin/AdminGovernancePage
 const AdminComplianceDashboardPage = lazy(() => import("./pages/admin/AdminComplianceDashboardPage"));
 const AdminSchemaPage = lazy(() => import("./pages/admin/AdminSchemaPage"));
 const PilotDashboardPage = lazy(() => import("./pages/admin/PilotDashboardPage"));
+const SponsorPipelinePage = lazy(() => import("./pages/admin/SponsorPipelinePage"));
+const SponsorROIDashboardPage = lazy(() => import("./pages/admin/SponsorROIDashboardPage"));
+const CapitalFlowDashboardPage = lazy(() => import("./pages/admin/CapitalFlowDashboardPage"));
+const HiringConversionPage = lazy(() => import("./pages/admin/HiringConversionPage"));
 
 // Suspense fallback
 const SuspenseFallback = () => (
@@ -227,6 +231,10 @@ const AppContent = () => {
           <Route path="/admin/compliance" element={<AdminComplianceDashboardPage />} />
           <Route path="/admin/schema" element={<AdminSchemaPage />} />
           <Route path="/admin/pilot" element={<PilotDashboardPage />} />
+          <Route path="/admin/sponsor-pipeline" element={<SponsorPipelinePage />} />
+          <Route path="/admin/sponsor-roi" element={<SponsorROIDashboardPage />} />
+          <Route path="/admin/capital-flow" element={<CapitalFlowDashboardPage />} />
+          <Route path="/admin/hiring-conversions" element={<HiringConversionPage />} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}
           {/* Dashboard consolidation */}
