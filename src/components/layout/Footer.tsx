@@ -11,15 +11,12 @@ import {
 const footerLinks = {
   platform: [
     { label: "How It Works", href: "/about" },
-    { label: "Trust System", href: "/about#trust" },
+    { label: "Browse FYPs", href: "/fyp" },
     { label: "Pricing", href: "/pricing" },
-    { label: "For Institutions", href: "/org" },
   ],
   resources: [
     { label: "Help Center", href: "/help" },
-    { label: "Verification", href: "/verification" },
-    { label: "API Documentation", href: "/docs" },
-    { label: "Blog", href: "/blog" },
+    { label: "Contact", href: "/contact" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
