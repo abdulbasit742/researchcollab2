@@ -25332,6 +25332,11 @@ export type Database = {
           milestone_id: string | null
           reconciliation_checked_at: string | null
           reconciliation_status: string | null
+          requires_manual_review: boolean | null
+          review_notes: string | null
+          review_status: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
         }
         Insert: {
           action_type: string
@@ -25346,6 +25351,11 @@ export type Database = {
           milestone_id?: string | null
           reconciliation_checked_at?: string | null
           reconciliation_status?: string | null
+          requires_manual_review?: boolean | null
+          review_notes?: string | null
+          review_status?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
         }
         Update: {
           action_type?: string
@@ -25360,6 +25370,50 @@ export type Database = {
           milestone_id?: string | null
           reconciliation_checked_at?: string | null
           reconciliation_status?: string | null
+          requires_manual_review?: boolean | null
+          review_notes?: string | null
+          review_status?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+        }
+        Relationships: []
+      }
+      pilot_ux_feedback: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          description: string
+          feedback_type: string
+          id: string
+          page_context: string | null
+          resolved: boolean | null
+          screenshot_url: string | null
+          severity: string | null
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          description: string
+          feedback_type: string
+          id?: string
+          page_context?: string | null
+          resolved?: boolean | null
+          screenshot_url?: string | null
+          severity?: string | null
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          description?: string
+          feedback_type?: string
+          id?: string
+          page_context?: string | null
+          resolved?: boolean | null
+          screenshot_url?: string | null
+          severity?: string | null
+          user_id?: string
         }
         Relationships: []
       }
