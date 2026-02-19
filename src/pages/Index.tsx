@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { HeroSection } from "@/components/home/HeroSection";
+import { CoreLoopTimeline } from "@/components/home/CoreLoopTimeline";
 import { StatsSection } from "@/components/home/StatsSection";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
@@ -39,6 +40,7 @@ const Index = forwardRef<HTMLDivElement>((_props, ref) => {
       />
       <OnboardingPopup />
       <HeroSection />
+      <CoreLoopTimeline />
       <StatsSection />
       <HowItWorksSection />
       <TestimonialsSection />

@@ -2,31 +2,34 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Shield, Banknote, TrendingUp, Users, Zap } from "lucide-react";
+import { ArrowRight, Banknote, TrendingUp, Shield, Users, Zap, Lock } from "lucide-react";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import heroDarkMesh from "@/assets/hero-dark-mesh.jpg";
 
 const heroStats = [
   { value: 342, suffix: "+", label: "Active FYPs", icon: TrendingUp },
   { value: 186, suffix: "+", label: "Funded Projects", icon: Shield },
-  { value: 2.1, suffix: "M", label: "Escrow Locked", prefix: "PKR ", icon: Banknote },
+  { value: 2.1, suffix: "M", label: "Escrow Locked", prefix: "PKR ", icon: Lock },
   { value: 94, suffix: "%", label: "Milestone Rate", icon: Zap },
-  { value: 47, suffix: "", label: "Hiring Conversions", icon: Users },
+  { value: 47, suffix: "", label: "Hired", icon: Users },
 ];
 
-const platformKills = [
-  { name: "Freelancer", weakness: "No accountability", kill: "Escrow-backed milestone execution" },
-  { name: "LinkedIn", weakness: "Vanity metrics", kill: "Verified proof-of-work identity" },
-  { name: "Upwork", weakness: "Race-to-bottom pricing", kill: "Trust-weighted value economics" },
+const loopSteps = [
+  "Student creates FYP",
+  "Sponsor funds project",
+  "Escrow locks capital",
+  "Milestones executed",
+  "Trust updated",
+  "Hired",
 ];
 
 export function HeroSection() {
-  const [activeKill, setActiveKill] = useState(0);
+  const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveKill((prev) => (prev + 1) % platformKills.length);
-    }, 2800);
+      setActiveStep((prev) => (prev + 1) % loopSteps.length);
+    }, 2200);
     return () => clearInterval(interval);
   }, []);
 
@@ -39,7 +42,7 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-[hsl(215,65%,45%)]/8 via-transparent to-[hsl(215,65%,45%)]/4" />
       </div>
 
-      {/* Animated scan lines */}
+      {/* Scan lines */}
       <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,100,255,0.015)_50%)] bg-[size:100%_4px] pointer-events-none" />
 
       {/* Pulsing orb */}
@@ -52,7 +55,7 @@ export function HeroSection() {
 
       <div className="container relative z-10 py-24 md:py-32 lg:py-40 px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
-          {/* Platform displacement ticker */}
+          {/* Live core loop ticker */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -64,38 +67,37 @@ export function HeroSection() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
               </span>
-              <span className="text-xs font-medium text-white/60 uppercase tracking-wider">Replacing</span>
+              <span className="text-xs font-medium text-white/40 uppercase tracking-wider">Core Loop</span>
               <AnimatePresence mode="wait">
                 <motion.span
-                  key={activeKill}
+                  key={activeStep}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
                   className="text-sm font-semibold text-white"
                 >
-                  {platformKills[activeKill].name}
-                  <span className="text-primary mx-2">→</span>
-                  <span className="text-primary">{platformKills[activeKill].kill}</span>
+                  <span className="text-white/50 mr-2">0{activeStep + 1}</span>
+                  {loopSteps[activeStep]}
                 </motion.span>
               </AnimatePresence>
             </div>
           </motion.div>
 
-          {/* Main headline */}
+          {/* Main headline — FYP-first */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-[6.5rem] font-extrabold tracking-[-0.03em] leading-[0.9] text-white"
           >
-            The World's First
+            Your FYP.
             <br />
             <span className="bg-gradient-to-r from-[hsl(215,65%,55%)] via-[hsl(200,80%,60%)] to-[hsl(215,65%,55%)] bg-clip-text text-transparent">
-              Proof-of-Work
+              Funded. Executed.
             </span>
             <br />
-            Professional Platform.
+            Career Launched.
           </motion.h1>
 
           {/* Subheadline */}
@@ -105,8 +107,8 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.25 }}
             className="mt-8 text-lg md:text-xl lg:text-2xl text-white/50 max-w-3xl leading-relaxed font-light"
           >
-            Where every dollar is escrow-protected. Every reputation is outcome-verified. 
-            Every match is AI-optimized. No vanity. No gaming. Just execution.
+            Students create FYPs. Sponsors fund them with escrow-protected capital.
+            Milestones execute. Trust compounds. The best students get hired.
           </motion.p>
 
           {/* CTAs */}
@@ -121,7 +123,7 @@ export function HeroSection() {
                 size="lg"
                 className="h-16 px-10 text-base font-bold bg-white text-[#030712] hover:bg-white/90 shadow-[0_0_60px_rgba(255,255,255,0.15)] hover:shadow-[0_0_80px_rgba(255,255,255,0.25)] transition-all duration-500 rounded-xl"
               >
-                Start Building Proof
+                Create Your FYP
                 <ArrowRight className="h-5 w-5 ml-3" />
               </Button>
             </Link>
