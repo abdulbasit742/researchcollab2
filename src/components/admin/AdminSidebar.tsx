@@ -40,6 +40,7 @@ import {
   Star,
   Trophy,
   Target,
+  Gauge,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -111,6 +112,8 @@ const navItems = [
   { icon: TrendingUp, label: "Sponsor ROI", href: "/admin/sponsor-roi" },
   { icon: DollarSign, label: "Capital Flow", href: "/admin/capital-flow" },
   { icon: Users, label: "Hiring Conversions", href: "/admin/hiring-conversions" },
+  { icon: Sparkles, label: "Re-Funding Triggers", href: "/admin/refunding-triggers" },
+  { icon: Gauge, label: "FYP Velocity", href: "/admin/fyp-velocity" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
   { icon: Layers, label: "My OS", href: "/my-os" },
   { icon: TrendingUp, label: "Opportunity Dashboard", href: "/opportunities/dashboard" },
