@@ -115,6 +115,8 @@ const CapitalFlowDashboardPage = lazy(() => import("./pages/admin/CapitalFlowDas
 const HiringConversionPage = lazy(() => import("./pages/admin/HiringConversionPage"));
 const RefundingTriggersPage = lazy(() => import("./pages/admin/RefundingTriggersPage"));
 const FYPVelocityPage = lazy(() => import("./pages/admin/FYPVelocityPage"));
+const SponsorIntelligencePage = lazy(() => import("./pages/admin/SponsorIntelligencePage"));
+const FinancialIntelligencePage = lazy(() => import("./pages/admin/FinancialIntelligencePage"));
 
 // Suspense fallback
 const SuspenseFallback = () => (
@@ -239,6 +241,8 @@ const AppContent = () => {
           <Route path="/admin/hiring-conversions" element={<HiringConversionPage />} />
           <Route path="/admin/refunding-triggers" element={<RefundingTriggersPage />} />
           <Route path="/admin/fyp-velocity" element={<FYPVelocityPage />} />
+          <Route path="/admin/sponsor-intelligence" element={<SponsorIntelligencePage />} />
+          <Route path="/admin/financial-intelligence" element={<FinancialIntelligencePage />} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}
           {/* Dashboard consolidation */}

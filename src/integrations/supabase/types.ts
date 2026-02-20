@@ -34288,21 +34288,100 @@ export type Database = {
         }
         Relationships: []
       }
+      sponsor_engagement_events: {
+        Row: {
+          created_at: string
+          event_date: string
+          event_type: string
+          id: string
+          metadata: Json | null
+          sponsor_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_date?: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          sponsor_id: string
+        }
+        Update: {
+          created_at?: string
+          event_date?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          sponsor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_engagement_events_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsor_pipeline"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sponsor_follow_ups: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          reminder_type: string
+          scheduled_at: string
+          sponsor_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          reminder_type?: string
+          scheduled_at: string
+          sponsor_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          reminder_type?: string
+          scheduled_at?: string
+          sponsor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_follow_ups_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsor_pipeline"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sponsor_pipeline: {
         Row: {
           avg_funding_size: number | null
+          company_size: string | null
           contact_email: string | null
           contact_person: string | null
           created_at: string
           created_by: string | null
           first_deposit_at: string | null
+          follow_up_count: number | null
           funding_count: number | null
           id: string
+          industry: string | null
+          last_contacted_at: string | null
           meeting_date: string | null
           notes: string | null
           onboarded_at: string | null
           organization: string | null
           proposal_sent_at: string | null
+          response_received_at: string | null
+          segment: string | null
           sponsor_name: string
           stage: string
           total_funded: number | null
@@ -34310,18 +34389,24 @@ export type Database = {
         }
         Insert: {
           avg_funding_size?: number | null
+          company_size?: string | null
           contact_email?: string | null
           contact_person?: string | null
           created_at?: string
           created_by?: string | null
           first_deposit_at?: string | null
+          follow_up_count?: number | null
           funding_count?: number | null
           id?: string
+          industry?: string | null
+          last_contacted_at?: string | null
           meeting_date?: string | null
           notes?: string | null
           onboarded_at?: string | null
           organization?: string | null
           proposal_sent_at?: string | null
+          response_received_at?: string | null
+          segment?: string | null
           sponsor_name: string
           stage?: string
           total_funded?: number | null
@@ -34329,18 +34414,24 @@ export type Database = {
         }
         Update: {
           avg_funding_size?: number | null
+          company_size?: string | null
           contact_email?: string | null
           contact_person?: string | null
           created_at?: string
           created_by?: string | null
           first_deposit_at?: string | null
+          follow_up_count?: number | null
           funding_count?: number | null
           id?: string
+          industry?: string | null
+          last_contacted_at?: string | null
           meeting_date?: string | null
           notes?: string | null
           onboarded_at?: string | null
           organization?: string | null
           proposal_sent_at?: string | null
+          response_received_at?: string | null
+          segment?: string | null
           sponsor_name?: string
           stage?: string
           total_funded?: number | null
@@ -34386,6 +34477,56 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      sponsor_scores: {
+        Row: {
+          company_size: string | null
+          created_at: string
+          engagement_score: number | null
+          funding_likelihood: number | null
+          id: string
+          industry: string | null
+          last_scored_at: string | null
+          response_time_avg_hours: number | null
+          retention_probability: number | null
+          segment: string | null
+          sponsor_id: string
+        }
+        Insert: {
+          company_size?: string | null
+          created_at?: string
+          engagement_score?: number | null
+          funding_likelihood?: number | null
+          id?: string
+          industry?: string | null
+          last_scored_at?: string | null
+          response_time_avg_hours?: number | null
+          retention_probability?: number | null
+          segment?: string | null
+          sponsor_id: string
+        }
+        Update: {
+          company_size?: string | null
+          created_at?: string
+          engagement_score?: number | null
+          funding_likelihood?: number | null
+          id?: string
+          industry?: string | null
+          last_scored_at?: string | null
+          response_time_avg_hours?: number | null
+          retention_probability?: number | null
+          segment?: string | null
+          sponsor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_scores_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: true
+            referencedRelation: "sponsor_pipeline"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       spreadsheets: {
         Row: {

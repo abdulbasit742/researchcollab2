@@ -114,6 +114,8 @@ const navItems = [
   { icon: Users, label: "Hiring Conversions", href: "/admin/hiring-conversions" },
   { icon: Sparkles, label: "Re-Funding Triggers", href: "/admin/refunding-triggers" },
   { icon: Gauge, label: "FYP Velocity", href: "/admin/fyp-velocity" },
+  { icon: BarChart3, label: "Sponsor Intelligence", href: "/admin/sponsor-intelligence" },
+  { icon: DollarSign, label: "Financial Intelligence", href: "/admin/financial-intelligence" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
   { icon: Layers, label: "My OS", href: "/my-os" },
   { icon: TrendingUp, label: "Opportunity Dashboard", href: "/opportunities/dashboard" },
