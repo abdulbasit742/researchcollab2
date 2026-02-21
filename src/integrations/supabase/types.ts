@@ -19536,6 +19536,48 @@ export type Database = {
           },
         ]
       }
+      intelligence_anomalies: {
+        Row: {
+          anomaly_type: string
+          created_at: string | null
+          description: string
+          entity_id: string | null
+          entity_type: string
+          evidence: Json | null
+          id: string
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+        }
+        Insert: {
+          anomaly_type: string
+          created_at?: string | null
+          description: string
+          entity_id?: string | null
+          entity_type: string
+          evidence?: Json | null
+          id?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+        }
+        Update: {
+          anomaly_type?: string
+          created_at?: string | null
+          description?: string
+          entity_id?: string | null
+          entity_type?: string
+          evidence?: Json | null
+          id?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+        }
+        Relationships: []
+      }
       intelligence_products: {
         Row: {
           aggregation_level: string | null
@@ -19665,6 +19707,45 @@ export type Database = {
           node_reserve_share?: number | null
           product_id?: string | null
           subscription_id?: string | null
+        }
+        Relationships: []
+      }
+      intelligence_scores: {
+        Row: {
+          computed_at: string
+          entity_id: string
+          entity_type: string
+          expires_at: string | null
+          factors: Json | null
+          health_level: string | null
+          id: string
+          recommendations: string[] | null
+          score_type: string
+          scores: Json
+        }
+        Insert: {
+          computed_at?: string
+          entity_id: string
+          entity_type: string
+          expires_at?: string | null
+          factors?: Json | null
+          health_level?: string | null
+          id?: string
+          recommendations?: string[] | null
+          score_type: string
+          scores?: Json
+        }
+        Update: {
+          computed_at?: string
+          entity_id?: string
+          entity_type?: string
+          expires_at?: string | null
+          factors?: Json | null
+          health_level?: string | null
+          id?: string
+          recommendations?: string[] | null
+          score_type?: string
+          scores?: Json
         }
         Relationships: []
       }

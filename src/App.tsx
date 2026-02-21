@@ -125,6 +125,7 @@ const FinancialIntelligencePage = lazy(() => import("./pages/admin/FinancialInte
 const UniversityImpactDashboardPage = lazy(() => import("./pages/admin/UniversityImpactDashboardPage"));
 const SalesDataPackPage = lazy(() => import("./pages/admin/SalesDataPackPage"));
 const StudentOutcomePage = lazy(() => import("./pages/StudentOutcomePage"));
+const IntelligenceDashboardPage = lazy(() => import("./pages/admin/IntelligenceDashboardPage"));
 
 // Suspense fallback
 const SuspenseFallback = () => (
@@ -258,6 +259,7 @@ const AppContent = () => {
           <Route path="/admin/financial-intelligence" element={<FinancialIntelligencePage />} />
           <Route path="/admin/university-impact" element={<UniversityImpactDashboardPage />} />
           <Route path="/admin/sales-data-pack" element={<SalesDataPackPage />} />
+          <Route path="/admin/intelligence" element={<IntelligenceDashboardPage />} />
           <Route path="/my-outcomes" element={<StudentOutcomePage />} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}
