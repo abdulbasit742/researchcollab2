@@ -16,7 +16,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Heart,
   MessageCircle,
   Share2,
   Bookmark,
@@ -32,11 +31,16 @@ import {
   Megaphone,
   BookOpen,
   FileText,
+  Repeat2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CommentThread } from "./CommentThread";
 import { ShareModal } from "./ShareModal";
 import { ReportPostModal } from "./ReportPostModal";
+import { ReactionPicker, ReactionsSummaryBar, type ReactionType } from "./ReactionPicker";
+import { PostContent } from "./PostContent";
+import { RepostCard } from "./RepostCard";
+import { useReactToPost, usePostReactions } from "@/hooks/useReactions";
 
 const postTypeConfig: Record<string, { icon: React.ElementType; label: string; color: string }> = {
   text: { icon: FileText, label: "Post", color: "bg-muted" },
@@ -62,9 +66,10 @@ interface FeedPostCardProps {
 
 export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) {
   const { user } = useAuth();
-  const likePost = useLikePost();
   const bookmarkPost = useBookmarkPost();
   const deletePost = useDeletePost();
+  const reactToPost = useReactToPost();
+  const { data: reactions } = usePostReactions(post.id);
 
   const [showCommentsPanel, setShowCommentsPanel] = useState(showComments);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -76,8 +81,16 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
   const PostTypeIcon = postConfig.icon;
   const VisIcon = visConfig.icon;
 
-  const handleLike = () => {
-    likePost.mutate({ postId: post.id, isLiked: post.has_liked || false });
+  const currentReaction = reactions?.userReaction || null;
+  const reactionsSummary = reactions?.summary || {};
+  const reactionsCount = reactions?.total || post.likes_count;
+
+  const handleReact = (type: ReactionType) => {
+    reactToPost.mutate({ postId: post.id, reactionType: type });
+  };
+
+  const handleRemoveReaction = () => {
+    reactToPost.mutate({ postId: post.id, reactionType: null });
   };
 
   const handleBookmark = () => {
@@ -108,10 +121,10 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
                     </AvatarFallback>
                   </Avatar>
                 </Link>
-                
+
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <Link 
+                    <Link
                       to={`/u/${post.author_id}`}
                       className="font-semibold hover:text-primary transition-colors"
                     >
@@ -121,6 +134,12 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
                       <Badge variant="secondary" className={cn("text-xs", postConfig.color)}>
                         <PostTypeIcon className="h-3 w-3 mr-1" />
                         {postConfig.label}
+                      </Badge>
+                    )}
+                    {(post as any).repost_of && (
+                      <Badge variant="outline" className="text-xs gap-1">
+                        <Repeat2 className="h-3 w-3" />
+                        Reposted
                       </Badge>
                     )}
                   </div>
@@ -167,10 +186,7 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
                         <Pencil className="h-4 w-4 mr-2" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem 
-                        className="text-destructive"
-                        onClick={handleDelete}
-                      >
+                      <DropdownMenuItem className="text-destructive" onClick={handleDelete}>
                         <Trash2 className="h-4 w-4 mr-2" />
                         Delete
                       </DropdownMenuItem>
@@ -191,8 +207,13 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
           </CardHeader>
 
           <CardContent className="pb-3">
-            <p className="whitespace-pre-wrap text-sm leading-relaxed">{post.content}</p>
-            
+            <PostContent content={post.content} />
+
+            {/* Reposted content */}
+            {(post as any).repost_of && (post as any).original_post && (
+              <RepostCard originalPost={(post as any).original_post} />
+            )}
+
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-3">
@@ -208,9 +229,7 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
           <CardFooter className="pt-0 pb-3 flex-col">
             {/* Engagement Stats */}
             <div className="w-full flex items-center justify-between text-xs text-muted-foreground mb-2 px-1">
-              <span>
-                {post.likes_count > 0 && `${post.likes_count} like${post.likes_count !== 1 ? "s" : ""}`}
-              </span>
+              <ReactionsSummaryBar reactionsCount={reactionsCount} reactionsSummary={reactionsSummary} />
               <div className="flex gap-3">
                 {post.comments_count > 0 && (
                   <span>{post.comments_count} comment{post.comments_count !== 1 ? "s" : ""}</span>
@@ -224,19 +243,14 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
             {/* Action Buttons */}
             <div className="w-full border-t pt-2">
               <div className="flex items-center justify-between">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleLike}
-                  className={cn(
-                    "gap-1.5 flex-1",
-                    post.has_liked && "text-destructive hover:text-destructive"
-                  )}
-                >
-                  <Heart className={cn("h-4 w-4", post.has_liked && "fill-current")} />
-                  <span className="hidden sm:inline">Like</span>
-                </Button>
-                
+                <ReactionPicker
+                  currentReaction={currentReaction}
+                  reactionsCount={reactionsCount}
+                  reactionsSummary={reactionsSummary}
+                  onReact={handleReact}
+                  onRemoveReaction={handleRemoveReaction}
+                />
+
                 <Button
                   variant="ghost"
                   size="sm"
@@ -246,7 +260,7 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
                   <MessageCircle className="h-4 w-4" />
                   <span className="hidden sm:inline">Comment</span>
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   size="sm"
@@ -256,15 +270,12 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
                   <Share2 className="h-4 w-4" />
                   <span className="hidden sm:inline">Share</span>
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={handleBookmark}
-                  className={cn(
-                    "gap-1.5",
-                    post.has_bookmarked && "text-primary"
-                  )}
+                  className={cn("gap-1.5", post.has_bookmarked && "text-primary")}
                 >
                   <Bookmark className={cn("h-4 w-4", post.has_bookmarked && "fill-current")} />
                 </Button>
@@ -281,17 +292,8 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
         </Card>
       </motion.div>
 
-      <ShareModal 
-        post={post} 
-        open={showShareModal} 
-        onOpenChange={setShowShareModal} 
-      />
-      
-      <ReportPostModal
-        postId={post.id}
-        open={showReportModal}
-        onOpenChange={setShowReportModal}
-      />
+      <ShareModal post={post} open={showShareModal} onOpenChange={setShowShareModal} />
+      <ReportPostModal postId={post.id} open={showReportModal} onOpenChange={setShowReportModal} />
     </>
   );
 }

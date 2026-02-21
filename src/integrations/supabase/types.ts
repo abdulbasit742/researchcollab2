@@ -26986,6 +26986,38 @@ export type Database = {
           },
         ]
       }
+      post_reactions: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          reaction_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          reaction_type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          reaction_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_reactions_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       post_shares: {
         Row: {
           created_at: string
@@ -27046,6 +27078,8 @@ export type Database = {
           mentioned_users: string[] | null
           organization_id: string | null
           post_type: Database["public"]["Enums"]["post_type"]
+          repost_comment: string | null
+          repost_of: string | null
           shares_count: number
           tags: string[] | null
           updated_at: string
@@ -27068,6 +27102,8 @@ export type Database = {
           mentioned_users?: string[] | null
           organization_id?: string | null
           post_type?: Database["public"]["Enums"]["post_type"]
+          repost_comment?: string | null
+          repost_of?: string | null
           shares_count?: number
           tags?: string[] | null
           updated_at?: string
@@ -27090,6 +27126,8 @@ export type Database = {
           mentioned_users?: string[] | null
           organization_id?: string | null
           post_type?: Database["public"]["Enums"]["post_type"]
+          repost_comment?: string | null
+          repost_of?: string | null
           shares_count?: number
           tags?: string[] | null
           updated_at?: string
@@ -27108,6 +27146,13 @@ export type Database = {
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_repost_of_fkey"
+            columns: ["repost_of"]
+            isOneToOne: false
+            referencedRelation: "posts"
             referencedColumns: ["id"]
           },
         ]

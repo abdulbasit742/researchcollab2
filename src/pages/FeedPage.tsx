@@ -3,6 +3,7 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { useRealityFeed } from "@/hooks/useAccountability";
 import { useOutcomeFeed } from "@/hooks/useOutcomeFeed";
 import { useProfessionalSignalFeed } from "@/hooks/useProfessionalSignals";
+import { useFeed } from "@/hooks/useFeed";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,6 +25,10 @@ import {
   OpportunitySuggestions,
   PeopleYouMayKnow,
   CareerCopilotCard,
+  PostComposer,
+  FeedPostCard,
+  FeedPostSkeleton,
+  EmptyFeed,
 } from "@/components/feed";
 import {
   RefreshCw,
@@ -31,13 +36,15 @@ import {
   Target,
   Activity,
   Radio,
-  Briefcase,
+  MessageSquare,
 } from "lucide-react";
+
+type FeedTab = "signals" | "reality" | "opportunities" | "posts";
 
 export default function FeedPage() {
   const { user, profile, isLoading: authLoading } = useAuth();
-  const [activeTab, setActiveTab] = useState<"signals" | "reality" | "opportunities">("signals");
-  
+  const [activeTab, setActiveTab] = useState<FeedTab>("signals");
+
   const {
     signals,
     isLoading: signalsLoading,
@@ -46,33 +53,56 @@ export default function FeedPage() {
     refetch: refetchSignals,
   } = useProfessionalSignalFeed();
 
-  const { 
-    events: realityEvents, 
-    loading: realityLoading, 
-    hasMore: realityHasMore, 
-    loadMore: loadMoreReality, 
-    refetch: refetchReality 
+  const {
+    events: realityEvents,
+    loading: realityLoading,
+    hasMore: realityHasMore,
+    loadMore: loadMoreReality,
+    refetch: refetchReality,
   } = useRealityFeed();
-  
-  const { 
-    feedItems, 
-    loading: outcomeLoading, 
-    hasMore: outcomeHasMore, 
-    loadMore: loadMoreOutcome, 
-    refetch: refetchOutcome 
+
+  const {
+    feedItems,
+    loading: outcomeLoading,
+    hasMore: outcomeHasMore,
+    loadMore: loadMoreOutcome,
+    refetch: refetchOutcome,
   } = useOutcomeFeed();
+
+  const {
+    posts,
+    isLoading: postsLoading,
+    hasNextPage: postsHasMore,
+    fetchNextPage: fetchMorePosts,
+    refetch: refetchPosts,
+  } = useFeed();
 
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const loading = activeTab === "signals" ? signalsLoading :
-                  activeTab === "reality" ? realityLoading : outcomeLoading;
-  const hasMore = activeTab === "signals" ? signalsHasMore :
-                  activeTab === "reality" ? realityHasMore : outcomeHasMore;
-  const loadMore = activeTab === "signals" ? loadMoreSignals :
-                   activeTab === "reality" ? loadMoreReality : loadMoreOutcome;
-  const refetch = activeTab === "signals" ? refetchSignals :
-                   activeTab === "reality" ? refetchReality : refetchOutcome;
+  const loading =
+    activeTab === "signals" ? signalsLoading :
+    activeTab === "reality" ? realityLoading :
+    activeTab === "posts" ? postsLoading :
+    outcomeLoading;
+
+  const hasMore =
+    activeTab === "signals" ? signalsHasMore :
+    activeTab === "reality" ? realityHasMore :
+    activeTab === "posts" ? postsHasMore :
+    outcomeHasMore;
+
+  const loadMore =
+    activeTab === "signals" ? loadMoreSignals :
+    activeTab === "reality" ? loadMoreReality :
+    activeTab === "posts" ? fetchMorePosts :
+    loadMoreOutcome;
+
+  const refetch =
+    activeTab === "signals" ? refetchSignals :
+    activeTab === "reality" ? refetchReality :
+    activeTab === "posts" ? refetchPosts :
+    refetchOutcome;
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -110,10 +140,8 @@ export default function FeedPage() {
     <MainLayout>
       <div className="bg-muted/20 min-h-screen">
         <div className="container px-4 py-4 sm:py-6">
-          {/* 3-column professional layout */}
           <div className="grid lg:grid-cols-12 gap-5">
-            
-            {/* Left Column: Identity */}
+            {/* Left Column */}
             <aside className="hidden lg:block lg:col-span-3">
               <div className="sticky top-20 space-y-4">
                 <ProfessionalIdentityCard />
@@ -121,18 +149,22 @@ export default function FeedPage() {
               </div>
             </aside>
 
-            {/* Center Column: Feed */}
+            {/* Center Column */}
             <main className="lg:col-span-6 space-y-4">
-              {/* Update Composer */}
-              <StructuredUpdateComposer />
+              {/* Composer switches based on tab */}
+              {activeTab === "posts" ? <PostComposer /> : <StructuredUpdateComposer />}
 
-              {/* Feed Tabs - Clean, minimal */}
-              <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)}>
+              {/* Feed Tabs */}
+              <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as FeedTab)}>
                 <div className="flex items-center justify-between bg-card rounded-lg border p-1">
-                  <TabsList className="grid w-full grid-cols-3 bg-transparent">
+                  <TabsList className="grid w-full grid-cols-4 bg-transparent">
                     <TabsTrigger value="signals" className="gap-1.5 text-xs sm:text-sm data-[state=active]:bg-muted">
                       <Radio className="h-4 w-4" />
                       <span className="hidden sm:inline">Updates</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="posts" className="gap-1.5 text-xs sm:text-sm data-[state=active]:bg-muted">
+                      <MessageSquare className="h-4 w-4" />
+                      <span className="hidden sm:inline">Posts</span>
                     </TabsTrigger>
                     <TabsTrigger value="reality" className="gap-1.5 text-xs sm:text-sm data-[state=active]:bg-muted">
                       <Activity className="h-4 w-4" />
@@ -147,6 +179,25 @@ export default function FeedPage() {
                     <RefreshCw className="h-4 w-4" />
                   </Button>
                 </div>
+
+                {/* Posts Tab */}
+                <TabsContent value="posts" className="mt-4 space-y-4">
+                  {postsLoading && posts.length === 0 ? (
+                    <div className="space-y-4">
+                      {[1, 2, 3].map((i) => (
+                        <FeedPostSkeleton key={i} />
+                      ))}
+                    </div>
+                  ) : posts.length === 0 ? (
+                    <EmptyFeed />
+                  ) : (
+                    <div className="space-y-4">
+                      {posts.map((post) => (
+                        <FeedPostCard key={post.id} post={post} />
+                      ))}
+                    </div>
+                  )}
+                </TabsContent>
 
                 {/* Professional Signals */}
                 <TabsContent value="signals" className="mt-4 space-y-4">
@@ -169,7 +220,7 @@ export default function FeedPage() {
                         <p className="text-xs text-muted-foreground/70 italic mb-4">
                           This is not social media. Only professional signals appear here.
                         </p>
-                        <Button variant="outline" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                        <Button variant="outline" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
                           Share Your First Update
                         </Button>
                       </CardContent>
@@ -229,18 +280,21 @@ export default function FeedPage() {
                       <span className="text-sm">Loading...</span>
                     </div>
                   )}
-                  {!hasMore && (
-                    activeTab === "signals" ? signals.length > 0 :
-                    activeTab === "reality" ? realityEvents.length > 0 : 
-                    feedItems.length > 0
-                  ) && (
-                    <p className="text-xs text-muted-foreground">You're all caught up</p>
-                  )}
+                  {!hasMore &&
+                    (activeTab === "signals"
+                      ? signals.length > 0
+                      : activeTab === "reality"
+                      ? realityEvents.length > 0
+                      : activeTab === "posts"
+                      ? posts.length > 0
+                      : feedItems.length > 0) && (
+                      <p className="text-xs text-muted-foreground">You're all caught up</p>
+                    )}
                 </div>
               </Tabs>
             </main>
 
-            {/* Right Column: Suggestions */}
+            {/* Right Column */}
             <aside className="hidden lg:block lg:col-span-3">
               <div className="sticky top-20 space-y-4">
                 <OpportunitySuggestions />
