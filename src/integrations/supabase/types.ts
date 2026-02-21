@@ -28583,6 +28583,72 @@ export type Database = {
         }
         Relationships: []
       }
+      proof_of_value_snapshots: {
+        Row: {
+          computed_at: string | null
+          escrow_accuracy_rate: number | null
+          hiring_conversion_rate: number | null
+          id: string
+          institution_id: string | null
+          milestone_success_rate: number | null
+          platform_impact_index: number | null
+          repeat_sponsor_rate: number | null
+          snapshot_date: string
+          sponsor_id: string | null
+          sponsor_satisfaction_score: number | null
+          startup_count: number | null
+          student_completion_rate: number | null
+          time_to_completion_days: number | null
+          time_to_funding_days: number | null
+          total_escrow_volume: number | null
+          total_funded_fyps: number | null
+          total_hires: number | null
+          trust_delta_avg: number | null
+        }
+        Insert: {
+          computed_at?: string | null
+          escrow_accuracy_rate?: number | null
+          hiring_conversion_rate?: number | null
+          id?: string
+          institution_id?: string | null
+          milestone_success_rate?: number | null
+          platform_impact_index?: number | null
+          repeat_sponsor_rate?: number | null
+          snapshot_date?: string
+          sponsor_id?: string | null
+          sponsor_satisfaction_score?: number | null
+          startup_count?: number | null
+          student_completion_rate?: number | null
+          time_to_completion_days?: number | null
+          time_to_funding_days?: number | null
+          total_escrow_volume?: number | null
+          total_funded_fyps?: number | null
+          total_hires?: number | null
+          trust_delta_avg?: number | null
+        }
+        Update: {
+          computed_at?: string | null
+          escrow_accuracy_rate?: number | null
+          hiring_conversion_rate?: number | null
+          id?: string
+          institution_id?: string | null
+          milestone_success_rate?: number | null
+          platform_impact_index?: number | null
+          repeat_sponsor_rate?: number | null
+          snapshot_date?: string
+          sponsor_id?: string | null
+          sponsor_satisfaction_score?: number | null
+          startup_count?: number | null
+          student_completion_rate?: number | null
+          time_to_completion_days?: number | null
+          time_to_funding_days?: number | null
+          total_escrow_volume?: number | null
+          total_funded_fyps?: number | null
+          total_hires?: number | null
+          trust_delta_avg?: number | null
+        }
+        Relationships: []
+      }
       proposal_simulation_results: {
         Row: {
           confidence: number | null

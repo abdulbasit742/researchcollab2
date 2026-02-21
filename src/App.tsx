@@ -122,6 +122,9 @@ const RefundingTriggersPage = lazy(() => import("./pages/admin/RefundingTriggers
 const FYPVelocityPage = lazy(() => import("./pages/admin/FYPVelocityPage"));
 const SponsorIntelligencePage = lazy(() => import("./pages/admin/SponsorIntelligencePage"));
 const FinancialIntelligencePage = lazy(() => import("./pages/admin/FinancialIntelligencePage"));
+const UniversityImpactDashboardPage = lazy(() => import("./pages/admin/UniversityImpactDashboardPage"));
+const SalesDataPackPage = lazy(() => import("./pages/admin/SalesDataPackPage"));
+const StudentOutcomePage = lazy(() => import("./pages/StudentOutcomePage"));
 
 // Suspense fallback
 const SuspenseFallback = () => (
@@ -253,6 +256,9 @@ const AppContent = () => {
           <Route path="/admin/fyp-velocity" element={<FYPVelocityPage />} />
           <Route path="/admin/sponsor-intelligence" element={<SponsorIntelligencePage />} />
           <Route path="/admin/financial-intelligence" element={<FinancialIntelligencePage />} />
+          <Route path="/admin/university-impact" element={<UniversityImpactDashboardPage />} />
+          <Route path="/admin/sales-data-pack" element={<SalesDataPackPage />} />
+          <Route path="/my-outcomes" element={<StudentOutcomePage />} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}
           {/* Dashboard consolidation */}

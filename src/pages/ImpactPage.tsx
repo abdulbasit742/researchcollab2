@@ -9,6 +9,8 @@ import {
   Award, Star, ArrowRight, Briefcase, Shield, Target
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PlatformImpactIndex } from "@/components/impact/PlatformImpactIndex";
+import { useProofOfValueSnapshot } from "@/hooks/useProofOfValue";
 
 const metrics = [
   { title: "Funding Volume", value: "PKR 2.8M", icon: DollarSign, trend: "up" as const, trendValue: "+340K this month" },
@@ -39,6 +41,8 @@ const steps = [
 ];
 
 export default function ImpactPage() {
+  const { data: snapshot } = useProofOfValueSnapshot();
+
   return (
     <>
       <Helmet>
@@ -137,6 +141,22 @@ export default function ImpactPage() {
             </div>
           </div>
         </section>
+
+        {/* Platform Impact Index */}
+        {snapshot && (
+          <section className="max-w-6xl mx-auto px-4 py-8">
+            <PlatformImpactIndex
+              index={snapshot.platform_impact_index}
+              breakdown={{
+                escrowVolume: Math.min(100, (snapshot.total_escrow_volume / 5000000) * 100),
+                completionRate: snapshot.milestone_success_rate,
+                hiringConversion: snapshot.hiring_conversion_rate,
+                sponsorRetention: snapshot.repeat_sponsor_rate,
+                trustStability: Math.min(100, snapshot.student_completion_rate),
+              }}
+            />
+          </section>
+        )}
 
         {/* CTA */}
         <section className="max-w-4xl mx-auto px-4 py-16 text-center">

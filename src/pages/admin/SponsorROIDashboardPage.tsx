@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useSponsorPipeline, useSponsorROI } from "@/hooks/useRevenueEngine";
-import { DollarSign, Target, Users, TrendingUp, CheckCircle, Briefcase, Award } from "lucide-react";
+import { DollarSign, Target, Users, TrendingUp, CheckCircle, Briefcase, Award, Printer } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
+import { useReportExport } from "@/hooks/useReportExport";
+import { SponsorROIReport } from "@/components/reports/SponsorROIReport";
 
 function RingGauge({ value, size = 80, label }: { value: number; size?: number; label: string }) {
   const r = (size - 8) / 2;
@@ -41,6 +44,7 @@ export default function SponsorROIDashboardPage() {
   const funded = sponsors.filter((s: any) => ["funded", "repeat_funder"].includes(s.stage));
   const [selectedId, setSelectedId] = useState<string>("");
   const { data: roi, isLoading } = useSponsorROI(selectedId || undefined);
+  const { exportToPDF } = useReportExport();
 
   const chartData = roi?.sponsorships?.map((s: any, i: number) => ({
     name: `P${i + 1}`,
@@ -62,6 +66,12 @@ export default function SponsorROIDashboardPage() {
           </h1>
           <p className="text-sm text-muted-foreground mt-1">Measurable return for every sponsor</p>
         </motion.div>
+
+        {selectedId && roi && (
+          <Button variant="outline" size="sm" onClick={() => exportToPDF(`Sponsor ROI - ${selectedSponsor?.sponsor_name || "Report"}`)} className="gap-2 print:hidden">
+            <Printer className="h-4 w-4" />Export Report
+          </Button>
+        )}
 
         {/* Sponsor Selector */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
@@ -204,6 +214,22 @@ export default function SponsorROIDashboardPage() {
           </motion.div>
         )}
       </div>
+
+      {/* Print-only report */}
+      {selectedId && roi && selectedSponsor && (
+        <SponsorROIReport
+          sponsorName={selectedSponsor.sponsor_name}
+          organization={selectedSponsor.organization}
+          totalDeployed={roi.totalDeployed}
+          totalProjects={roi.totalProjects}
+          completedProjects={roi.completedProjects}
+          completionRate={roi.completionRate}
+          hiringConversion={roi.hiringConversion}
+          hiredCount={roi.hiredCount}
+          offersM={roi.offersM}
+          hirings={roi.hirings}
+        />
+      )}
     </AdminLayout>
   );
 }
