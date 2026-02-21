@@ -1,70 +1,69 @@
 
 
-# TrustedByMarquee -- Dark Glassmorphism with Institution Logos
+# LinkedIn-Style Social Posting Integration
 
-## Overview
-Replace the light-themed text-only marquee with a dark cinematic glassmorphism section featuring real institution logos, matching the Hero/Testimonials/ProofEngine dark aesthetic.
+## Current State
 
-## What Changes
+RCollab already has a comprehensive posting backend:
+- **Database tables**: `posts`, `post_likes`, `post_comments`, `post_bookmarks`, `post_shares`, `comment_likes`
+- **Components**: `PostComposer`, `FeedPostCard`, `CommentThread`, `ShareModal`, `ReportPostModal`
+- **Hooks**: Full CRUD (`useCreatePost`, `useLikePost`, `useBookmarkPost`, `useSharePost`, `useDeletePost`, `useUpdatePost`) with real-time subscriptions
 
-### 1. Dark Section Background
-- Replace default light `py-10` section with dark gradient background: `bg-gradient-to-b from-[#030712] via-[#060e1f] to-[#030712]`
-- Add a subtle horizontal divider glow line at top/bottom
+However, the main `/feed` page uses `StructuredUpdateComposer` and `ProfessionalSignalCard` instead of the social posting system. The LinkedIn-like components exist but are not wired into the primary feed experience.
 
-### 2. Institution Logos via Clearbit/Logo.dev
-Use freely available logo APIs to show real university logos. Each institution entry becomes an object with name, domain, and short abbreviation:
+## What We Will Build
 
-```typescript
-const institutions = [
-  { name: "MIT", domain: "mit.edu" },
-  { name: "Stanford", domain: "stanford.edu" },
-  { name: "Oxford", domain: "ox.ac.uk" },
-  { name: "ETH Zurich", domain: "ethz.ch" },
-  { name: "University of Tokyo", domain: "u-tokyo.ac.jp" },
-  { name: "Tsinghua University", domain: "tsinghua.edu.cn" },
-  { name: "Cambridge", domain: "cam.ac.uk" },
-  { name: "Harvard", domain: "harvard.edu" },
-  { name: "NUS", domain: "nus.edu.sg" },
-  { name: "Imperial College", domain: "imperial.ac.uk" },
-  { name: "University of Melbourne", domain: "unimelb.edu.au" },
-  { name: "Sorbonne", domain: "sorbonne-universite.fr" },
-];
-```
+### 1. Add "Posts" Tab to Main Feed
+Add a fourth tab to the FeedPage alongside Updates, Activity, and Work. This tab will display user-created social posts using the existing `FeedPostCard` component and allow creating posts via `PostComposer`.
 
-Logos will be fetched from `https://logo.clearbit.com/{domain}` (free, no API key). A fallback to the existing `GraduationCap` icon + initials will be shown if the logo fails to load.
+### 2. LinkedIn-Style Reactions (Beyond Simple Likes)
+Replace the single "Like" button with a reaction picker offering multiple reaction types:
+- Like, Celebrate, Support, Insightful, Curious
+- Hover/long-press to reveal reaction options (similar to LinkedIn)
+- Display reaction summary below posts
 
-### 3. Glassmorphism Card Styling
-Replace current light cards with dark glass pills:
-- `bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] hover:border-white/15`
-- Logo image: 20x20px rounded with a subtle white ring
-- Text: `text-white/60` with `font-medium`
-- Slightly larger padding for a more premium feel
+### 3. Rich Post Composer Enhancements
+Upgrade `PostComposer` with:
+- Image/media preview placeholders (UI-ready for future storage)
+- Hashtag auto-detection and clickable tags
+- Mention users with @ syntax
+- Character count indicator
+- "Write Article" option for long-form content
 
-### 4. Header Text Update
-- Change color from `text-muted-foreground` to `text-white/40`
-- Keep the uppercase tracking-widest style
-- Add the subtle "Verified Data" dot indicator (green dot) before the text for consistency
+### 4. Repost/Share with Commentary
+Enhance the share flow:
+- "Repost" button that shares to your feed with optional commentary
+- Quoted post display inside the repost card
+- Share count attribution
 
-### 5. Edge Fade Mask
-- Keep the existing `[mask-image:linear-gradient(...)]` horizontal fade but adjust opacity for dark backgrounds
+### 5. Post Detail Enhancements
+- Threaded comment improvements with nested reply indicators
+- "Most relevant" vs "Most recent" comment sorting
+- Reaction breakdown on post detail page
 
-## Technical Details
+## Technical Plan
 
-### File Modified
-- `src/components/home/TrustedByMarquee.tsx` -- full rewrite
+### Files to Create
+- `src/components/feed/ReactionPicker.tsx` -- Hover reaction bar (Like, Celebrate, Support, Insightful, Curious)
+- `src/components/feed/RepostCard.tsx` -- Quoted repost display component
+- `src/components/feed/ArticleComposer.tsx` -- Long-form article editor modal
+- `src/components/feed/HashtagLink.tsx` -- Clickable hashtag component
+- `src/components/feed/PostContent.tsx` -- Rich content renderer (hashtags, mentions, links)
 
-### No Other Changes Needed
-- Marquee CSS animations in `src/index.css` remain unchanged
-- No new dependencies required
+### Files to Modify
+- `src/pages/FeedPage.tsx` -- Add "Posts" tab with PostComposer + FeedPostCard integration using `useFeed` hook
+- `src/components/feed/PostComposer.tsx` -- Add hashtag detection, mention UI, character count, article option
+- `src/components/feed/FeedPostCard.tsx` -- Replace Like button with ReactionPicker, add Repost display, use PostContent renderer
+- `src/hooks/useFeed.ts` -- Add reaction type support to like mutations, add repost detection logic
+- `src/components/feed/index.ts` -- Export new components
 
-### Logo Fallback Strategy
-Each logo `<img>` gets an `onError` handler that hides the image and shows the `GraduationCap` icon instead, ensuring graceful degradation if Clearbit is unavailable or a domain doesn't have a logo.
+### Database Migration
+- Create `post_reactions` table (post_id, user_id, reaction_type) to replace binary likes with typed reactions
+- Add `repost_of` column to `posts` table for quoted reposts
+- RLS policies matching existing post security patterns
 
-### Card Layout (per pill)
-```text
-+------------------------------------+
-| [Logo 20px]  Institution Name      |
-+------------------------------------+
-```
-Dark glass background, white/8 border, subtle hover glow.
+### No Breaking Changes
+- Existing professional signals, reality feed, and outcome feed tabs remain untouched
+- The new "Posts" tab is additive
+- Current like system gracefully migrates to reactions (Like = default reaction)
 
