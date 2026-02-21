@@ -1,105 +1,34 @@
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from "framer-motion";
+import { useState, useRef, useMemo } from "react";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { 
-  Heart, 
-  MessageCircle, 
-  Share2, 
-  Bookmark, 
-  Music2, 
-  Play, 
-  Pause,
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import {
+  Heart,
+  MessageCircle,
+  Share2,
+  Bookmark,
+  Music2,
+  Play,
   Volume2,
   VolumeX,
-  MoreHorizontal
+  Plus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReels, useCreateReel, useLikeReel, useBookmarkReel, type Reel } from "@/hooks/useReels";
 
-interface Reel {
-  id: string;
-  userId: string;
-  userName: string;
-  userTitle: string;
-  content: string;
-  backgroundColor: string;
-  audioTrack?: string;
-  likes: number;
-  comments: number;
-  shares: number;
-  isLiked: boolean;
-  isBookmarked: boolean;
-}
-
-const mockReels: Reel[] = [
-  {
-    id: "1",
-    userId: "u1",
-    userName: "Dr. Sarah Chen",
-    userTitle: "AI Research Lead",
-    content: "3 things I learned from my PhD journey that nobody talks about...",
-    backgroundColor: "from-purple-600 via-pink-500 to-orange-400",
-    audioTrack: "Original Audio - Dr. Sarah Chen",
-    likes: 12500,
-    comments: 342,
-    shares: 89,
-    isLiked: false,
-    isBookmarked: false,
-  },
-  {
-    id: "2",
-    userId: "u2",
-    userName: "Prof. James Wilson",
-    userTitle: "Quantum Physics",
-    content: "This experiment changed everything we know about quantum entanglement! 🔬",
-    backgroundColor: "from-blue-600 via-cyan-500 to-teal-400",
-    audioTrack: "Trending Sound - Science Vibes",
-    likes: 45200,
-    comments: 1205,
-    shares: 567,
-    isLiked: true,
-    isBookmarked: false,
-  },
-  {
-    id: "3",
-    userId: "u3",
-    userName: "Dr. Emily Park",
-    userTitle: "Neuroscience",
-    content: "The brain does something incredible when you learn a new skill...",
-    backgroundColor: "from-green-600 via-emerald-500 to-cyan-400",
-    audioTrack: "Original Audio - Dr. Emily Park",
-    likes: 8900,
-    comments: 234,
-    shares: 123,
-    isLiked: false,
-    isBookmarked: true,
-  },
-  {
-    id: "4",
-    userId: "u4",
-    userName: "Prof. Ahmed Hassan",
-    userTitle: "Climate Science",
-    content: "Breaking: New data on climate patterns that will surprise you 🌍",
-    backgroundColor: "from-orange-600 via-red-500 to-pink-400",
-    audioTrack: "Trending Sound - Discovery",
-    likes: 67800,
-    comments: 2341,
-    shares: 1205,
-    isLiked: false,
-    isBookmarked: false,
-  },
+const gradients = [
+  "from-purple-600 via-pink-500 to-orange-400",
+  "from-blue-600 via-cyan-500 to-teal-400",
+  "from-green-600 via-emerald-500 to-cyan-400",
+  "from-orange-600 via-red-500 to-pink-400",
+  "from-indigo-600 via-violet-500 to-purple-400",
+  "from-rose-600 via-pink-500 to-fuchsia-400",
 ];
 
-interface ReelCardProps {
-  reel: Reel;
-  isActive: boolean;
-  onLike: () => void;
-  onDoubleTap: () => void;
-}
-
-function ReelCard({ reel, isActive, onLike, onDoubleTap }: ReelCardProps) {
+function ReelCard({ reel, onLike, onBookmark }: { reel: Reel; onLike: () => void; onBookmark: () => void }) {
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(false);
   const [showHeart, setShowHeart] = useState(false);
   const [localLiked, setLocalLiked] = useState(reel.isLiked);
   const [localBookmarked, setLocalBookmarked] = useState(reel.isBookmarked);
@@ -108,51 +37,50 @@ function ReelCard({ reel, isActive, onLike, onDoubleTap }: ReelCardProps) {
   const handleTap = () => {
     const now = Date.now();
     if (now - lastTapTime.current < 300) {
-      // Double tap
-      handleDoubleTap();
+      if (!localLiked) {
+        setLocalLiked(true);
+        onLike();
+      }
+      setShowHeart(true);
+      setTimeout(() => setShowHeart(false), 1000);
     } else {
-      // Single tap - toggle play/pause
       setIsPlaying(prev => !prev);
     }
     lastTapTime.current = now;
   };
 
-  const handleDoubleTap = () => {
-    if (!localLiked) {
-      setLocalLiked(true);
-      onDoubleTap();
-    }
-    setShowHeart(true);
-    setTimeout(() => setShowHeart(false), 1000);
+  const toggleLike = () => {
+    setLocalLiked(!localLiked);
+    onLike();
   };
 
-  const formatNumber = (num: number) => {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
-    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-    return num.toString();
+  const toggleBookmark = () => {
+    setLocalBookmarked(!localBookmarked);
+    onBookmark();
   };
+
+  const fmt = (n: number) => {
+    if (n >= 1000000) return (n / 1000000).toFixed(1) + "M";
+    if (n >= 1000) return (n / 1000).toFixed(1) + "K";
+    return n.toString();
+  };
+
+  const initials = (reel.author?.full_name || "U").split(" ").map(n => n[0]).join("").slice(0, 2);
 
   return (
     <div className="relative w-full h-full">
-      {/* Background Content */}
-      <div 
-        className={cn(
-          "absolute inset-0 bg-gradient-to-br flex items-center justify-center",
-          reel.backgroundColor
-        )}
+      <div
+        className={cn("absolute inset-0 bg-gradient-to-br flex items-center justify-center", reel.background_color)}
         onClick={handleTap}
       >
-        <div className="text-white text-center px-12">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-2xl font-bold leading-tight"
-          >
-            {reel.content}
-          </motion.p>
-        </div>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-white text-2xl font-bold text-center px-12 leading-tight"
+        >
+          {reel.content}
+        </motion.p>
 
-        {/* Play/Pause Indicator */}
         <AnimatePresence>
           {!isPlaying && (
             <motion.div
@@ -168,7 +96,6 @@ function ReelCard({ reel, isActive, onLike, onDoubleTap }: ReelCardProps) {
           )}
         </AnimatePresence>
 
-        {/* Double Tap Heart Animation */}
         <AnimatePresence>
           {showHeart && (
             <motion.div
@@ -183,69 +110,38 @@ function ReelCard({ reel, isActive, onLike, onDoubleTap }: ReelCardProps) {
         </AnimatePresence>
       </div>
 
-      {/* Right Side Actions */}
+      {/* Right Actions */}
       <div className="absolute right-3 bottom-24 flex flex-col items-center gap-5">
-        {/* Profile */}
         <motion.div whileTap={{ scale: 0.9 }} className="relative">
           <Avatar className="h-12 w-12 border-2 border-white">
-            <AvatarFallback className="bg-primary text-primary-foreground">
-              {reel.userName.split(" ").map(n => n[0]).join("")}
-            </AvatarFallback>
+            <AvatarFallback className="bg-primary text-primary-foreground">{initials}</AvatarFallback>
           </Avatar>
           <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
             <span className="text-white text-xs">+</span>
           </div>
         </motion.div>
 
-        {/* Like */}
-        <motion.button
-          whileTap={{ scale: 0.9 }}
-          onClick={() => setLocalLiked(!localLiked)}
-          className="flex flex-col items-center"
-        >
-          <motion.div
-            animate={localLiked ? { scale: [1, 1.3, 1] } : {}}
-            transition={{ duration: 0.3 }}
-          >
-            <Heart className={cn(
-              "h-8 w-8",
-              localLiked ? "text-red-500 fill-red-500" : "text-white"
-            )} />
+        <motion.button whileTap={{ scale: 0.9 }} onClick={toggleLike} className="flex flex-col items-center">
+          <motion.div animate={localLiked ? { scale: [1, 1.3, 1] } : {}} transition={{ duration: 0.3 }}>
+            <Heart className={cn("h-8 w-8", localLiked ? "text-red-500 fill-red-500" : "text-white")} />
           </motion.div>
-          <span className="text-white text-xs mt-1">{formatNumber(reel.likes + (localLiked && !reel.isLiked ? 1 : 0))}</span>
+          <span className="text-white text-xs mt-1">{fmt(reel.likes_count + (localLiked && !reel.isLiked ? 1 : 0))}</span>
         </motion.button>
 
-        {/* Comment */}
-        <motion.button
-          whileTap={{ scale: 0.9 }}
-          className="flex flex-col items-center"
-        >
+        <motion.button whileTap={{ scale: 0.9 }} className="flex flex-col items-center">
           <MessageCircle className="h-8 w-8 text-white" />
-          <span className="text-white text-xs mt-1">{formatNumber(reel.comments)}</span>
+          <span className="text-white text-xs mt-1">{fmt(reel.comments_count)}</span>
         </motion.button>
 
-        {/* Share */}
-        <motion.button
-          whileTap={{ scale: 0.9 }}
-          className="flex flex-col items-center"
-        >
+        <motion.button whileTap={{ scale: 0.9 }} className="flex flex-col items-center">
           <Share2 className="h-8 w-8 text-white" />
-          <span className="text-white text-xs mt-1">{formatNumber(reel.shares)}</span>
+          <span className="text-white text-xs mt-1">{fmt(reel.shares_count)}</span>
         </motion.button>
 
-        {/* Bookmark */}
-        <motion.button
-          whileTap={{ scale: 0.9 }}
-          onClick={() => setLocalBookmarked(!localBookmarked)}
-          className="flex flex-col items-center"
-        >
-          <Bookmark className={cn(
-            "h-8 w-8",
-            localBookmarked ? "text-yellow-400 fill-yellow-400" : "text-white"
-          )} />
+        <motion.button whileTap={{ scale: 0.9 }} onClick={toggleBookmark} className="flex flex-col items-center">
+          <Bookmark className={cn("h-8 w-8", localBookmarked ? "text-yellow-400 fill-yellow-400" : "text-white")} />
         </motion.button>
 
-        {/* Music Disc */}
         <motion.div
           animate={{ rotate: isPlaying ? 360 : 0 }}
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
@@ -258,61 +154,116 @@ function ReelCard({ reel, isActive, onLike, onDoubleTap }: ReelCardProps) {
       {/* Bottom Info */}
       <div className="absolute bottom-4 left-3 right-16 text-white">
         <div className="flex items-center gap-2 mb-2">
-          <span className="font-bold">@{reel.userName.replace(" ", "").toLowerCase()}</span>
+          <span className="font-bold text-sm">@{(reel.author?.full_name || "user").replace(/\s+/g, "").toLowerCase()}</span>
           <Button size="sm" variant="outline" className="h-6 text-xs border-white/50 text-white hover:bg-white/10">
             Follow
           </Button>
         </div>
-        <p className="text-sm text-white/90 mb-2">{reel.userTitle}</p>
-        
-        {reel.audioTrack && (
+        <p className="text-sm text-white/90 mb-2">{reel.author?.role || reel.author?.university || ""}</p>
+        {reel.audio_track && (
           <div className="flex items-center gap-2">
             <Music2 className="h-4 w-4" />
-            <div className="flex-1 overflow-hidden">
-              <motion.p
-                animate={{ x: [0, -100, 0] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                className="text-sm whitespace-nowrap"
-              >
-                {reel.audioTrack}
-              </motion.p>
-            </div>
+            <motion.p
+              animate={{ x: [0, -100, 0] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              className="text-sm whitespace-nowrap"
+            >
+              {reel.audio_track}
+            </motion.p>
           </div>
         )}
       </div>
-
-      {/* Volume Control */}
-      <Button
-        size="icon"
-        variant="ghost"
-        onClick={() => setIsMuted(!isMuted)}
-        className="absolute top-4 right-3 text-white hover:bg-white/10"
-      >
-        {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-      </Button>
     </div>
   );
 }
 
 export function ReelsViewer() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const y = useMotionValue(0);
+  const { data, isLoading, fetchNextPage, hasNextPage } = useReels();
+  const likeReel = useLikeReel();
+  const bookmarkReel = useBookmarkReel();
+  const createReel = useCreateReel();
 
-  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 100;
-    if (info.offset.y < -threshold && currentIndex < mockReels.length - 1) {
-      setCurrentIndex(prev => prev + 1);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showCreate, setShowCreate] = useState(false);
+  const [newContent, setNewContent] = useState("");
+  const [selectedGradient, setSelectedGradient] = useState(gradients[0]);
+
+  const reels = useMemo(() => data?.pages.flat() || [], [data]);
+
+  const handleDragEnd = (_: any, info: PanInfo) => {
+    const threshold = 80;
+    if (info.offset.y < -threshold && currentIndex < reels.length - 1) {
+      const next = currentIndex + 1;
+      setCurrentIndex(next);
+      if (next >= reels.length - 2 && hasNextPage) fetchNextPage();
     } else if (info.offset.y > threshold && currentIndex > 0) {
       setCurrentIndex(prev => prev - 1);
     }
   };
 
+  const handleCreate = () => {
+    if (!newContent.trim()) return;
+    createReel.mutate(
+      { content: newContent, background_color: selectedGradient },
+      { onSuccess: () => { setNewContent(""); setShowCreate(false); } }
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-[600px] bg-muted rounded-xl flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (reels.length === 0) {
+    return (
+      <div className="w-full h-[600px] bg-black rounded-xl flex flex-col items-center justify-center text-white gap-4">
+        <Play className="h-16 w-16 text-white/50" />
+        <h3 className="text-xl font-bold">No Reels Yet</h3>
+        <p className="text-white/70 text-sm">Be the first to create a reel!</p>
+        <Button onClick={() => setShowCreate(true)} className="gap-2">
+          <Plus className="h-4 w-4" /> Create Reel
+        </Button>
+
+        <Dialog open={showCreate} onOpenChange={setShowCreate}>
+          <DialogContent className="max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Create Reel</h3>
+            <div className={cn("w-full h-48 rounded-lg bg-gradient-to-br flex items-center justify-center mb-4", selectedGradient)}>
+              <p className="text-white text-xl font-bold text-center px-6">{newContent || "Your reel content..."}</p>
+            </div>
+            <div className="flex gap-2 mb-4">
+              {gradients.map(g => (
+                <button
+                  key={g}
+                  onClick={() => setSelectedGradient(g)}
+                  className={cn("w-8 h-8 rounded-full bg-gradient-to-br shrink-0", g, selectedGradient === g && "ring-2 ring-primary ring-offset-2")}
+                />
+              ))}
+            </div>
+            <Input value={newContent} onChange={e => setNewContent(e.target.value)} placeholder="What's on your mind?" maxLength={300} />
+            <p className="text-xs text-muted-foreground text-right">{newContent.length}/300</p>
+            <Button onClick={handleCreate} disabled={!newContent.trim() || createReel.isPending} className="w-full">
+              {createReel.isPending ? "Posting..." : "Share Reel"}
+            </Button>
+          </DialogContent>
+        </Dialog>
+      </div>
+    );
+  }
+
   return (
-    <div 
-      ref={containerRef}
-      className="relative w-full h-[600px] bg-black overflow-hidden rounded-xl"
-    >
+    <div className="relative w-full h-[600px] bg-black overflow-hidden rounded-xl">
+      {/* Create button */}
+      <Button
+        size="icon"
+        onClick={() => setShowCreate(true)}
+        className="absolute top-4 left-4 z-30 rounded-full bg-white/10 hover:bg-white/20 text-white"
+      >
+        <Plus className="h-5 w-5" />
+      </Button>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
@@ -325,42 +276,59 @@ export function ReelsViewer() {
           className="absolute inset-0"
         >
           <ReelCard
-            reel={mockReels[currentIndex]}
-            isActive={true}
-            onLike={() => {}}
-            onDoubleTap={() => {}}
+            reel={reels[currentIndex]}
+            onLike={() => likeReel.mutate({ reelId: reels[currentIndex].id, isLiked: !!reels[currentIndex].isLiked })}
+            onBookmark={() => bookmarkReel.mutate({ reelId: reels[currentIndex].id, isBookmarked: !!reels[currentIndex].isBookmarked })}
           />
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Dots */}
+      {/* Navigation dots */}
       <div className="absolute right-1 top-1/2 -translate-y-1/2 flex flex-col gap-1">
-        {mockReels.map((_, index) => (
+        {reels.slice(0, 10).map((_, index) => (
           <div
             key={index}
-            className={cn(
-              "w-1 rounded-full transition-all",
-              index === currentIndex ? "h-4 bg-white" : "h-1 bg-white/40"
-            )}
+            className={cn("w-1 rounded-full transition-all", index === currentIndex ? "h-4 bg-white" : "h-1 bg-white/40")}
           />
         ))}
       </div>
 
-      {/* Swipe Hint */}
-      <motion.div
-        initial={{ opacity: 1 }}
-        animate={{ opacity: 0 }}
-        transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-20 left-1/2 -translate-x-1/2 text-white/70 text-sm flex flex-col items-center"
-      >
+      {/* Swipe hint */}
+      {currentIndex === 0 && (
         <motion.div
-          animate={{ y: [0, -5, 0] }}
-          transition={{ repeat: 3, duration: 0.5 }}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 0 }}
+          transition={{ delay: 2, duration: 1 }}
+          className="absolute bottom-20 left-1/2 -translate-x-1/2 text-white/70 text-sm flex flex-col items-center"
         >
-          ↑
+          <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: 3, duration: 0.5 }}>↑</motion.div>
+          Swipe up for next
         </motion.div>
-        Swipe up for next
-      </motion.div>
+      )}
+
+      {/* Create dialog */}
+      <Dialog open={showCreate} onOpenChange={setShowCreate}>
+        <DialogContent className="max-w-md">
+          <h3 className="text-lg font-semibold mb-4">Create Reel</h3>
+          <div className={cn("w-full h-48 rounded-lg bg-gradient-to-br flex items-center justify-center mb-4", selectedGradient)}>
+            <p className="text-white text-xl font-bold text-center px-6">{newContent || "Your reel content..."}</p>
+          </div>
+          <div className="flex gap-2 mb-4">
+            {gradients.map(g => (
+              <button
+                key={g}
+                onClick={() => setSelectedGradient(g)}
+                className={cn("w-8 h-8 rounded-full bg-gradient-to-br shrink-0", g, selectedGradient === g && "ring-2 ring-primary ring-offset-2")}
+              />
+            ))}
+          </div>
+          <Input value={newContent} onChange={e => setNewContent(e.target.value)} placeholder="What's your insight?" maxLength={300} />
+          <p className="text-xs text-muted-foreground text-right">{newContent.length}/300</p>
+          <Button onClick={handleCreate} disabled={!newContent.trim() || createReel.isPending} className="w-full">
+            {createReel.isPending ? "Posting..." : "Share Reel"}
+          </Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

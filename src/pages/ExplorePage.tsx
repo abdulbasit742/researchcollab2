@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, TrendingUp, Users, Grid3X3, Play } from "lucide-react";
+import { Search, TrendingUp, Users, Grid3X3, Play, Film } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -67,6 +67,10 @@ export default function ExplorePage() {
             <TabsTrigger value="trending" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-full px-4">
               Trending
             </TabsTrigger>
+            <TabsTrigger value="reels" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-full px-4">
+              <Film className="h-3.5 w-3.5 mr-1" />
+              Reels
+            </TabsTrigger>
             <TabsTrigger value="accounts" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-full px-4">
               Accounts
             </TabsTrigger>
@@ -127,6 +131,18 @@ export default function ExplorePage() {
                 </motion.div>
               ))
             )}
+          </div>
+        )}
+
+        {/* Reels Tab */}
+        {activeTab === "reels" && (
+          <div className="text-center py-8">
+            <Film className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+            <h3 className="font-semibold mb-1">Discover Reels</h3>
+            <p className="text-sm text-muted-foreground mb-4">Short-form insights from researchers and academics</p>
+            <Button asChild>
+              <Link to="/reels">Watch Reels</Link>
+            </Button>
           </div>
         )}
 

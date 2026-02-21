@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Rss, Compass, Target, User } from "lucide-react";
+import { Home, Rss, Compass, Film, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useDemoWalkthrough } from "@/contexts/DemoWalkthroughContext";
@@ -21,7 +21,7 @@ export function MobileBottomNav() {
     { icon: Home, label: "Home", route: "/home" },
     { icon: Rss, label: "Feed", route: "/feed" },
     { icon: Compass, label: "Explore", route: "/explore" },
-    { icon: Target, label: "Offers", route: "/offers" },
+    { icon: Film, label: "Reels", route: "/reels" },
     { icon: User, label: "Profile", route: "/profile" },
   ];
 
