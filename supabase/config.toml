@@ -71,3 +71,6 @@ verify_jwt = false
 
 [functions.compute-impact-metrics]
 verify_jwt = false
+
+[functions.compute-intelligence]
+verify_jwt = false
