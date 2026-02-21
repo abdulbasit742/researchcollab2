@@ -214,6 +214,30 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
           <CardContent className="pb-3">
             <PostContent content={post.content} />
 
+            {/* Media Gallery */}
+            {post.media_urls && post.media_urls.length > 0 && (
+              <div className={cn(
+                "grid gap-1 mt-3 rounded-lg overflow-hidden",
+                post.media_urls.length === 1 ? "grid-cols-1" :
+                post.media_urls.length === 2 ? "grid-cols-2" :
+                post.media_urls.length === 3 ? "grid-cols-3" : "grid-cols-2"
+              )}>
+                {post.media_urls.map((url, i) => (
+                  <img
+                    key={i}
+                    src={url}
+                    alt=""
+                    loading="lazy"
+                    className={cn(
+                      "w-full object-cover cursor-pointer hover:opacity-95 transition-opacity",
+                      post.media_urls.length === 1 ? "max-h-[500px]" : "h-48"
+                    )}
+                    onClick={() => window.open(url, "_blank")}
+                  />
+                ))}
+              </div>
+            )}
+
             {/* Reposted content */}
             {(post as any).repost_of && (post as any).original_post && (
               <RepostCard originalPost={(post as any).original_post} />
