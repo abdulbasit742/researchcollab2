@@ -12,6 +12,9 @@ import {
   ChevronRight,
   CheckCircle,
 } from "lucide-react";
+import { PremiumBadge } from "@/components/badges/PremiumBadge";
+import { useAuth } from "@/contexts/AuthContext";
+import { useIsPremium } from "@/hooks/usePremiumUsers";
 
 interface IdentityCardProps {
   profile: {
@@ -35,6 +38,9 @@ export function IdentityCard({
   trustTier = "bronze",
   isVerified = false,
 }: IdentityCardProps) {
+  const { user } = useAuth();
+  const premiumTier = useIsPremium(user?.id);
+
   const getRoleIcon = () => {
     switch (role?.toLowerCase()) {
       case "researcher":
@@ -76,6 +82,9 @@ export function IdentityCard({
               </h2>
               {isVerified && (
                 <CheckCircle className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+              )}
+              {premiumTier && (
+                <PremiumBadge tier={premiumTier} size="sm" />
               )}
             </div>
 

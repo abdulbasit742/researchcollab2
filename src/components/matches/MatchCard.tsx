@@ -8,6 +8,8 @@ import { MapPin, GraduationCap, Briefcase, Star, CheckCircle2, MessageSquare, Se
 import { UserProfile } from "@/data/users";
 import { QuickOfferModal } from "@/components/offers/QuickOfferModal";
 import { useAuth } from "@/contexts/AuthContext";
+import { PremiumBadge } from "@/components/badges/PremiumBadge";
+import { useIsPremium } from "@/hooks/usePremiumUsers";
 
 interface MatchCardProps {
   user: UserProfile;
@@ -28,6 +30,7 @@ export function MatchCard({
 }: MatchCardProps) {
   const [showOfferModal, setShowOfferModal] = useState(false);
   const { user: authUser } = useAuth();
+  const premiumTier = useIsPremium(user.id);
   const isStudent = user.type === "student";
   const tags = isStudent 
     ? user.skills.slice(0, 3) 
@@ -71,6 +74,7 @@ export function MatchCard({
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <h3 className="font-semibold text-lg truncate">{user.name}</h3>
+                  {premiumTier && <PremiumBadge tier={premiumTier} size="sm" />}
                   <p className="text-sm text-muted-foreground flex items-center gap-1">
                     {isStudent ? (
                       <>
