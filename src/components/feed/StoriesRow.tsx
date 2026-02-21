@@ -4,10 +4,12 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Plus, X, Eye, Heart, Send } from "lucide-react";
+import { Plus, X, Eye, Heart, Send, Image as ImageIcon, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStories, useCreateStory, useViewStory, useLikeStory, type StoryGroup } from "@/hooks/useStories";
 import { useAuth } from "@/contexts/AuthContext";
+import { uploadMedia, validateImageFile } from "@/lib/uploadMedia";
+import { toast } from "@/hooks/use-toast";
 
 const gradients = [
   "from-purple-500 to-pink-500",
@@ -30,11 +32,14 @@ export function StoriesRow() {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [newStoryContent, setNewStoryContent] = useState("");
   const [selectedGradient, setSelectedGradient] = useState(gradients[0]);
+  const [storyImage, setStoryImage] = useState<File | null>(null);
+  const [storyImagePreview, setStoryImagePreview] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const openStory = (group: StoryGroup) => {
     setSelectedGroup(group);
     setCurrentItemIndex(0);
-    // Mark as viewed
     if (group.stories[0]) {
       viewStory.mutate(group.stories[0].id);
     }
@@ -77,17 +82,56 @@ export function StoriesRow() {
     }
   };
 
-  const handleCreateStory = () => {
-    if (!newStoryContent.trim()) return;
-    createStory.mutate(
-      { content: newStoryContent, background_color: selectedGradient },
-      {
-        onSuccess: () => {
-          setNewStoryContent("");
-          setShowCreateDialog(false);
-        },
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const err = validateImageFile(file);
+    if (err) {
+      toast({ title: "Invalid file", description: err, variant: "destructive" });
+      return;
+    }
+    setStoryImage(file);
+    setStoryImagePreview(URL.createObjectURL(file));
+    if (e.target) e.target.value = "";
+  };
+
+  const removeImage = () => {
+    if (storyImagePreview) URL.revokeObjectURL(storyImagePreview);
+    setStoryImage(null);
+    setStoryImagePreview(null);
+  };
+
+  const handleCreateStory = async () => {
+    if (!newStoryContent.trim() && !storyImage) return;
+    if (!user) return;
+
+    setIsUploading(true);
+    try {
+      let imageUrl: string | undefined;
+      if (storyImage) {
+        imageUrl = await uploadMedia(storyImage, "story-media", user.id);
       }
-    );
+
+      createStory.mutate(
+        {
+          content: newStoryContent || (imageUrl ? "📷" : ""),
+          background_color: storyImage ? "from-black to-gray-900" : selectedGradient,
+          story_type: storyImage ? "image" : "text",
+          image_url: imageUrl,
+        },
+        {
+          onSuccess: () => {
+            setNewStoryContent("");
+            removeImage();
+            setShowCreateDialog(false);
+          },
+        }
+      );
+    } catch (err: any) {
+      toast({ title: "Upload failed", description: err.message, variant: "destructive" });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   // Auto-progress timer (5 seconds per story)
@@ -98,7 +142,7 @@ export function StoriesRow() {
   useEffect(() => {
     if (!selectedGroup) return;
     setStoryProgress(0);
-    
+
     const startTime = Date.now();
     progressRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -178,33 +222,90 @@ export function StoriesRow() {
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
         <DialogContent className="max-w-md">
           <h3 className="text-lg font-semibold mb-4">Create Story</h3>
-          <div className={cn("w-full h-48 rounded-lg bg-gradient-to-br flex items-center justify-center mb-4", selectedGradient)}>
-            <p className="text-white text-xl font-bold text-center px-6">
-              {newStoryContent || "Your story text..."}
-            </p>
-          </div>
-          <div className="flex gap-2 mb-4">
-            {gradients.map((g) => (
-              <button
-                key={g}
-                onClick={() => setSelectedGradient(g)}
-                className={cn(
-                  "w-8 h-8 rounded-full bg-gradient-to-br shrink-0",
-                  g,
-                  selectedGradient === g && "ring-2 ring-primary ring-offset-2"
+
+          {/* Preview */}
+          <div className={cn(
+            "w-full h-56 rounded-lg flex items-center justify-center mb-4 overflow-hidden relative",
+            storyImagePreview ? "bg-black" : `bg-gradient-to-br ${selectedGradient}`
+          )}>
+            {storyImagePreview ? (
+              <>
+                <img src={storyImagePreview} alt="" className="w-full h-full object-cover" />
+                <button
+                  onClick={removeImage}
+                  className="absolute top-2 right-2 p-1 rounded-full bg-black/60 text-white"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+                {newStoryContent && (
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <p className="text-white text-lg font-bold text-center drop-shadow-lg">
+                      {newStoryContent}
+                    </p>
+                  </div>
                 )}
-              />
-            ))}
+              </>
+            ) : (
+              <p className="text-white text-xl font-bold text-center px-6">
+                {newStoryContent || "Your story..."}
+              </p>
+            )}
           </div>
+
+          {/* Gradient picker (only for text stories) */}
+          {!storyImagePreview && (
+            <div className="flex gap-2 mb-4">
+              {gradients.map((g) => (
+                <button
+                  key={g}
+                  onClick={() => setSelectedGradient(g)}
+                  className={cn(
+                    "w-8 h-8 rounded-full bg-gradient-to-br shrink-0",
+                    g,
+                    selectedGradient === g && "ring-2 ring-primary ring-offset-2"
+                  )}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Photo upload button */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            onChange={handleImageSelect}
+          />
+
+          <div className="flex gap-2 mb-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={!!storyImagePreview}
+            >
+              <ImageIcon className="h-4 w-4" />
+              {storyImagePreview ? "Photo added" : "Add Photo"}
+            </Button>
+          </div>
+
           <Input
             value={newStoryContent}
             onChange={(e) => setNewStoryContent(e.target.value)}
-            placeholder="What's on your mind?"
+            placeholder={storyImagePreview ? "Add a caption..." : "What's on your mind?"}
             maxLength={200}
           />
           <p className="text-xs text-muted-foreground text-right">{newStoryContent.length}/200</p>
-          <Button onClick={handleCreateStory} disabled={!newStoryContent.trim() || createStory.isPending} className="w-full">
-            {createStory.isPending ? "Posting..." : "Share Story"}
+          <Button
+            onClick={handleCreateStory}
+            disabled={(!newStoryContent.trim() && !storyImage) || createStory.isPending || isUploading}
+            className="w-full"
+          >
+            {(createStory.isPending || isUploading) ? (
+              <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Uploading...</>
+            ) : "Share Story"}
           </Button>
         </DialogContent>
       </Dialog>
@@ -253,13 +354,30 @@ export function StoriesRow() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   className={cn(
-                    "absolute inset-0 flex items-center justify-center bg-gradient-to-br",
-                    currentStory.background_color
+                    "absolute inset-0 flex items-center justify-center",
+                    (currentStory as any).image_url ? "bg-black" : `bg-gradient-to-br ${currentStory.background_color}`
                   )}
                 >
-                  <p className="text-white text-2xl font-bold text-center px-8">
-                    {currentStory.content}
-                  </p>
+                  {(currentStory as any).image_url ? (
+                    <>
+                      <img
+                        src={(currentStory as any).image_url}
+                        alt=""
+                        className="w-full h-full object-contain"
+                      />
+                      {currentStory.content && currentStory.content !== "📷" && (
+                        <div className="absolute bottom-20 left-4 right-4">
+                          <p className="text-white text-xl font-bold text-center drop-shadow-lg">
+                            {currentStory.content}
+                          </p>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-white text-2xl font-bold text-center px-8">
+                      {currentStory.content}
+                    </p>
+                  )}
                 </motion.div>
               </AnimatePresence>
 

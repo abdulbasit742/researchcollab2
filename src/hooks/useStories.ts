@@ -112,7 +112,7 @@ export function useCreateStory() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { content: string; background_color: string; story_type?: string }) => {
+    mutationFn: async (data: { content: string; background_color: string; story_type?: string; image_url?: string }) => {
       if (!user) throw new Error("Not authenticated");
 
       const { data: story, error } = await supabase
@@ -122,7 +122,8 @@ export function useCreateStory() {
           content: data.content,
           background_color: data.background_color,
           story_type: data.story_type || "text",
-        })
+          image_url: data.image_url || null,
+        } as any)
         .select()
         .single();
 
