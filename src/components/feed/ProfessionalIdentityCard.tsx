@@ -16,6 +16,8 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { formatPKR } from "@/lib/currency";
+import { PremiumBadge } from "@/components/badges/PremiumBadge";
+import { useIsPremium } from "@/hooks/usePremiumUsers";
 
 interface ProfessionalIdentityCardProps {
   compact?: boolean;
@@ -24,6 +26,7 @@ interface ProfessionalIdentityCardProps {
 export function ProfessionalIdentityCard({ compact = false }: ProfessionalIdentityCardProps) {
   const { user, profile } = useAuth();
   const { trustProfile, badges } = useMyTrustProfile();
+  const premiumTier = useIsPremium(user?.id);
 
   if (!user || !profile) {
     return (
@@ -77,7 +80,10 @@ export function ProfessionalIdentityCard({ compact = false }: ProfessionalIdenti
       <CardContent className="pt-10 pb-4 px-4">
         {/* Name & Role */}
         <div className="mb-3">
-          <h3 className="font-semibold text-base truncate">{profile.full_name || "Anonymous"}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="font-semibold text-base truncate">{profile.full_name || "Anonymous"}</h3>
+            {premiumTier && <PremiumBadge tier={premiumTier} size="sm" />}
+          </div>
           <p className="text-sm text-muted-foreground flex items-center gap-1">
             {profile.role === "researcher" ? (
               <>

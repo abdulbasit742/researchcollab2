@@ -42,6 +42,8 @@ import { PostContent } from "./PostContent";
 import { RepostCard } from "./RepostCard";
 import { useReactToPost, usePostReactions } from "@/hooks/useReactions";
 import { DoubleTapLike } from "@/components/social/DoubleTapLike";
+import { PremiumBadge } from "@/components/badges/PremiumBadge";
+import { useIsPremium } from "@/hooks/usePremiumUsers";
 
 const postTypeConfig: Record<string, { icon: React.ElementType; label: string; color: string }> = {
   text: { icon: FileText, label: "Post", color: "bg-muted" },
@@ -71,6 +73,7 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
   const deletePost = useDeletePost();
   const reactToPost = useReactToPost();
   const { data: reactions } = usePostReactions(post.id);
+  const authorTier = useIsPremium(post.author_id);
 
   const [showCommentsPanel, setShowCommentsPanel] = useState(showComments);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -135,6 +138,9 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
                     >
                       {post.author?.full_name || "Unknown User"}
                     </Link>
+                    {authorTier && (
+                      <PremiumBadge tier={authorTier} size="sm" />
+                    )}
                     {post.post_type !== "text" && (
                       <Badge variant="secondary" className={cn("text-xs", postConfig.color)}>
                         <PostTypeIcon className="h-3 w-3 mr-1" />
