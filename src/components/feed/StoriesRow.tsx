@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -89,6 +89,31 @@ export function StoriesRow() {
       }
     );
   };
+
+  // Auto-progress timer (5 seconds per story)
+  const STORY_DURATION = 5000;
+  const [storyProgress, setStoryProgress] = useState(0);
+  const progressRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (!selectedGroup) return;
+    setStoryProgress(0);
+    
+    const startTime = Date.now();
+    progressRef.current = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min((elapsed / STORY_DURATION) * 100, 100);
+      setStoryProgress(pct);
+      if (pct >= 100) {
+        clearInterval(progressRef.current!);
+        nextItem();
+      }
+    }, 50);
+
+    return () => {
+      if (progressRef.current) clearInterval(progressRef.current);
+    };
+  }, [selectedGroup, currentItemIndex]);
 
   const currentStory = selectedGroup?.stories[currentItemIndex];
 
@@ -194,8 +219,10 @@ export function StoriesRow() {
                 {selectedGroup.stories.map((_, index) => (
                   <div key={index} className="flex-1 h-0.5 bg-white/30 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-white transition-all"
-                      style={{ width: index < currentItemIndex ? "100%" : index === currentItemIndex ? "50%" : "0%" }}
+                      className="h-full bg-white transition-all duration-100"
+                      style={{
+                        width: index < currentItemIndex ? "100%" : index === currentItemIndex ? `${storyProgress}%` : "0%"
+                      }}
                     />
                   </div>
                 ))}

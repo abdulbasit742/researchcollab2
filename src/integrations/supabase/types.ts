@@ -29341,6 +29341,112 @@ export type Database = {
           },
         ]
       }
+      reel_bookmarks: {
+        Row: {
+          created_at: string
+          id: string
+          reel_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reel_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reel_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reel_bookmarks_reel_id_fkey"
+            columns: ["reel_id"]
+            isOneToOne: false
+            referencedRelation: "reels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reel_likes: {
+        Row: {
+          created_at: string
+          id: string
+          reel_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reel_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reel_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reel_likes_reel_id_fkey"
+            columns: ["reel_id"]
+            isOneToOne: false
+            referencedRelation: "reels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reels: {
+        Row: {
+          audio_track: string | null
+          background_color: string
+          comments_count: number
+          content: string
+          created_at: string
+          id: string
+          is_hidden: boolean
+          likes_count: number
+          reel_type: string
+          shares_count: number
+          updated_at: string
+          user_id: string
+          views_count: number
+        }
+        Insert: {
+          audio_track?: string | null
+          background_color?: string
+          comments_count?: number
+          content: string
+          created_at?: string
+          id?: string
+          is_hidden?: boolean
+          likes_count?: number
+          reel_type?: string
+          shares_count?: number
+          updated_at?: string
+          user_id: string
+          views_count?: number
+        }
+        Update: {
+          audio_track?: string | null
+          background_color?: string
+          comments_count?: number
+          content?: string
+          created_at?: string
+          id?: string
+          is_hidden?: boolean
+          likes_count?: number
+          reel_type?: string
+          shares_count?: number
+          updated_at?: string
+          user_id?: string
+          views_count?: number
+        }
+        Relationships: []
+      }
       refunding_recommendations: {
         Row: {
           created_at: string
