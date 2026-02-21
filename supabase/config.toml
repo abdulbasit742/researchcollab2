@@ -68,3 +68,6 @@ verify_jwt = false
 
 [functions.pilot-circuit-breaker]
 verify_jwt = false
+
+[functions.compute-impact-metrics]
+verify_jwt = false
