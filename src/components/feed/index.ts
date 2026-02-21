@@ -19,3 +19,4 @@ export { PostContent } from "./PostContent";
 export { HashtagLink } from "./HashtagLink";
 export { RepostCard } from "./RepostCard";
 export { ArticleComposer } from "./ArticleComposer";
+export { StoriesRow } from "./StoriesRow";

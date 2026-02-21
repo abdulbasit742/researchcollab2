@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { motion } from "framer-motion";
@@ -41,6 +41,7 @@ import { ReactionPicker, ReactionsSummaryBar, type ReactionType } from "./Reacti
 import { PostContent } from "./PostContent";
 import { RepostCard } from "./RepostCard";
 import { useReactToPost, usePostReactions } from "@/hooks/useReactions";
+import { DoubleTapLike } from "@/components/social/DoubleTapLike";
 
 const postTypeConfig: Record<string, { icon: React.ElementType; label: string; color: string }> = {
   text: { icon: FileText, label: "Post", color: "bg-muted" },
@@ -105,11 +106,15 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
+      <DoubleTapLike
+        onDoubleTap={() => handleReact("like")}
+        isLiked={!!currentReaction}
       >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
         <Card className="border-border/50 hover:border-border/80 transition-colors">
           <CardHeader className="pb-3">
             <div className="flex items-start justify-between gap-4">
@@ -291,6 +296,7 @@ export function FeedPostCard({ post, showComments = false }: FeedPostCardProps) 
           </CardFooter>
         </Card>
       </motion.div>
+      </DoubleTapLike>
 
       <ShareModal post={post} open={showShareModal} onOpenChange={setShowShareModal} />
       <ReportPostModal postId={post.id} open={showReportModal} onOpenChange={setShowReportModal} />

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Briefcase, Target, User, DollarSign } from "lucide-react";
+import { Home, Rss, Compass, Target, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useDemoWalkthrough } from "@/contexts/DemoWalkthroughContext";
@@ -18,10 +18,10 @@ export function MobileBottomNav() {
   const { isActive: isTourActive } = useDemoWalkthrough();
 
   const navItems: NavItem[] = [
-    { icon: Home, label: "Dashboard", route: "/home" },
-    { icon: Briefcase, label: "FYP", route: "/fyp" },
-    { icon: Target, label: "Opportunities", route: "/offers" },
-    { icon: DollarSign, label: "Deals", route: "/deals" },
+    { icon: Home, label: "Home", route: "/home" },
+    { icon: Rss, label: "Feed", route: "/feed" },
+    { icon: Compass, label: "Explore", route: "/explore" },
+    { icon: Target, label: "Offers", route: "/offers" },
     { icon: User, label: "Profile", route: "/profile" },
   ];
 

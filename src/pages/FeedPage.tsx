@@ -5,6 +5,7 @@ import { useOutcomeFeed } from "@/hooks/useOutcomeFeed";
 import { useProfessionalSignalFeed } from "@/hooks/useProfessionalSignals";
 import { useFeed } from "@/hooks/useFeed";
 import { useAuth } from "@/contexts/AuthContext";
+import { StoriesRow } from "@/components/feed/StoriesRow";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -151,6 +152,9 @@ export default function FeedPage() {
 
             {/* Center Column */}
             <main className="lg:col-span-6 space-y-4">
+              {/* Stories Row */}
+              <StoriesRow />
+
               {/* Composer switches based on tab */}
               {activeTab === "posts" ? <PostComposer /> : <StructuredUpdateComposer />}
 

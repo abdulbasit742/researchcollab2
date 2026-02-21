@@ -15,13 +15,17 @@ import {
   User,
   LogOut,
   DollarSign,
+  Rss,
+  Compass,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 // Pilot-focused navigation — 5 core modules only
 const navItems = [
   { label: "Dashboard", href: "/home", icon: Home },
+  { label: "Feed", href: "/feed", icon: Rss },
   { label: "FYP", href: "/fyp", icon: Briefcase },
+  { label: "Explore", href: "/explore", icon: Compass },
   { label: "Opportunities", href: "/offers", icon: Target },
   { label: "Deals", href: "/deals", icon: DollarSign },
 ];
