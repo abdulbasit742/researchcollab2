@@ -68,6 +68,11 @@ const NotificationsPage = lazy(() => import("./pages/NotificationsPage"));
 // Search
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 
+// Social — Feed, Explore, Reels
+const FeedPage = lazy(() => import("./pages/FeedPage"));
+const ExplorePage = lazy(() => import("./pages/ExplorePage"));
+const ReelsPage = lazy(() => import("./pages/ReelsPage"));
+
 // Faculty — Supervisor flow
 const SupervisorDashboardPage = lazy(() => import("./pages/SupervisorDashboardPage"));
 const SupervisorReviewQueuePage = lazy(() => import("./pages/SupervisorReviewQueuePage"));
@@ -167,6 +172,11 @@ const AppContent = () => {
           {/* ====== CORE ENGINE ====== */}
           <Route path="/home" element={<HomeDashboard />} />
 
+          {/* Social — Feed, Explore, Reels */}
+          <Route path="/feed" element={<FeedPage />} />
+          <Route path="/explore" element={<ExplorePage />} />
+          <Route path="/reels" element={<ReelsPage />} />
+
           {/* Profile */}
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/settings" element={<ProfileSettingsPage />} />
@@ -265,13 +275,12 @@ const AppContent = () => {
           <Route path="/career" element={<Navigate to="/profile" replace />} />
           <Route path="/career/*" element={<Navigate to="/profile" replace />} />
 
-          {/* Feed/social → home */}
-          <Route path="/feed" element={<Navigate to="/home" replace />} />
-          <Route path="/feed/*" element={<Navigate to="/home" replace />} />
+          {/* Feed/social consolidation */}
+          <Route path="/feed/*" element={<Navigate to="/feed" replace />} />
           <Route path="/reality" element={<Navigate to="/home" replace />} />
           <Route path="/posts/*" element={<Navigate to="/home" replace />} />
           <Route path="/network" element={<Navigate to="/home" replace />} />
-          <Route path="/social" element={<Navigate to="/home" replace />} />
+          <Route path="/social" element={<Navigate to="/feed" replace />} />
           <Route path="/leaderboard" element={<Navigate to="/home" replace />} />
           <Route path="/rankings/*" element={<Navigate to="/home" replace />} />
 

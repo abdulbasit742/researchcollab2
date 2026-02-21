@@ -24,6 +24,7 @@ import { ProfileViewsCard, ProofBanner } from "@/components/profile";
 import { MyPlanCard } from "@/components/profile/MyPlanCard";
 import { VisibilityScoreCard } from "@/components/profile/VisibilityScoreCard";
 import { useWorkConnections } from "@/hooks/useOutcomeFeed";
+import { ProfilePostGrid } from "@/components/profile/ProfilePostGrid";
 import {
   User,
   Briefcase,
@@ -42,6 +43,7 @@ import {
   ExternalLink,
   Activity,
   AlertTriangle,
+  Grid3X3,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
@@ -160,6 +162,10 @@ export default function ProfilePage() {
                           <XCircle className="h-4 w-4 mr-1 hidden sm:inline" />
                           Failures
                         </TabsTrigger>
+                        <TabsTrigger value="posts-grid" className="text-xs sm:text-sm whitespace-nowrap">
+                          <Grid3X3 className="h-4 w-4 mr-1 hidden sm:inline" />
+                          Posts
+                        </TabsTrigger>
                       </TabsList>
                     </div>
                   </CardHeader>
@@ -267,6 +273,11 @@ export default function ProfilePage() {
                           </p>
                         </div>
                       )}
+                    </TabsContent>
+
+                    {/* Posts Grid Tab */}
+                    <TabsContent value="posts-grid" className="mt-0">
+                      <ProfilePostGrid userId={user.id} />
                     </TabsContent>
                   </CardContent>
                 </Tabs>
