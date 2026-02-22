@@ -12,6 +12,8 @@ import { SwipeBackNavigator } from "@/components/mobile/SwipeBackNavigator";
 import { PWAInstallBanner } from "@/components/pwa/PWAInstallBanner";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { CommandPalette } from "@/components/navigation/CommandPalette";
+import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
+import { BackToTop } from "@/components/ui/back-to-top";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -33,6 +35,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       <ScrollProgress />
       <CommandPalette />
       <Navbar />
+      <Breadcrumbs />
       <main id="main-content" tabIndex={-1} className={`flex-1 outline-none ${isMobile ? 'pb-20' : ''}`}>
         <SwipeBackNavigator>{children}</SwipeBackNavigator>
       </main>
@@ -40,6 +43,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       <FloatingSupportChat />
       <GlobalAIChatButton />
       <MobileBottomNav />
+      <BackToTop />
       <PWAInstallBanner />
       {user && (unreadCount > 0 || highPriorityCount > 0) && (
         <FloatingNudgeIndicator 

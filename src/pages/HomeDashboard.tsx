@@ -16,6 +16,8 @@ import { Badge } from "@/components/ui/badge";
 import { Shield, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { FeatureDiscoveryGrid } from "@/components/home/FeatureDiscoveryGrid";
+import { RecentActivityWidget } from "@/components/home/RecentActivityWidget";
+import { QuickLinksBar } from "@/components/home/QuickLinksBar";
 
 export default function HomeDashboard() {
   const { user, profile, userRole, isLoading: authLoading } = useAuth();
@@ -84,6 +86,16 @@ export default function HomeDashboard() {
           </div>
         </motion.div>
 
+        {/* Quick Links */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.05 }}
+          className="mb-4"
+        >
+          <QuickLinksBar />
+        </motion.div>
+
         {/* Daily State Bar */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
@@ -136,6 +148,7 @@ export default function HomeDashboard() {
           {/* Sidebar */}
           <aside className="lg:col-span-4 space-y-4">
             <QuickActionsCard />
+            <RecentActivityWidget />
             <FeatureDiscoveryGrid />
             <TrustExplainer
               trustScore={trustScore}
