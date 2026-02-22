@@ -80,6 +80,9 @@ const SupervisorReviewQueuePage = lazy(() => import("./pages/SupervisorReviewQue
 // Documents — Contract enforcement
 const DocumentEditorPage = lazy(() => import("./pages/DocumentEditorPage"));
 
+// Games
+const GamesPage = lazy(() => import("./pages/GamesPage"));
+
 // Public / Marketing (minimal)
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
@@ -223,6 +226,9 @@ const AppContent = () => {
 
           {/* Documents — Contract enforcement */}
           <Route path="/documents/:id" element={<DocumentEditorPage />} />
+
+          {/* Games */}
+          <Route path="/games" element={<GamesPage />} />
 
           {/* ====== ADMIN ====== */}
           <Route path="/admin" element={<AdminPortalPage />} />
