@@ -11,6 +11,7 @@ import { FeaturedToolsCarousel } from "@/components/home/FeaturedToolsCarousel";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CompetitorComparisonSection } from "@/components/home/CompetitorComparisonSection";
 import { CTASection } from "@/components/home/CTASection";
+import { StatsCounter } from "@/components/home/StatsCounter";
 import { OnboardingPopup } from "@/components/onboarding/OnboardingPopup";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
@@ -45,6 +46,7 @@ const Index = forwardRef<HTMLDivElement>((_props, ref) => {
       <OnboardingPopup />
       <HeroSection />
       <TrustedByMarquee />
+      <StatsCounter />
       <CoreLoopTimeline />
       <FeaturesSection />
       <WhyChooseSection />

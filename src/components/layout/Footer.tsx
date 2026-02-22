@@ -13,10 +13,22 @@ const footerLinks = {
     { label: "How It Works", href: "/about" },
     { label: "Browse FYPs", href: "/fyp" },
     { label: "Pricing", href: "/pricing" },
+    { label: "Features", href: "/features" },
+    { label: "Careers", href: "/careers" },
+  ],
+  features: [
+    { label: "Earn Hub", href: "/earn" },
+    { label: "Learning", href: "/learning" },
+    { label: "Research", href: "/research-papers" },
+    { label: "Events", href: "/events" },
+    { label: "Grants", href: "/grants" },
   ],
   resources: [
     { label: "Help Center", href: "/help" },
     { label: "Contact", href: "/contact" },
+    { label: "Blog", href: "/blog" },
+    { label: "Press Kit", href: "/press" },
+    { label: "Install App", href: "/install" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -38,7 +50,7 @@ export const Footer = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <footer ref={ref} className="border-t bg-muted/30">
       <div className="container py-12 md:py-16 px-4">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-6">
           {/* Brand */}
           <div className="space-y-4 lg:col-span-2">
             <Link to="/home" className="flex items-center gap-2">
@@ -82,6 +94,20 @@ export const Footer = forwardRef<HTMLElement>((_props, ref) => {
             <h4 className="font-semibold mb-4 text-sm">Platform</h4>
             <ul className="space-y-2.5">
               {footerLinks.platform.map((link) => (
+                <li key={link.href}>
+                  <Link to={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Features */}
+          <div>
+            <h4 className="font-semibold mb-4 text-sm">Features</h4>
+            <ul className="space-y-2.5">
+              {footerLinks.features.map((link) => (
                 <li key={link.href}>
                   <Link to={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {link.label}
