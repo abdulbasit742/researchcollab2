@@ -83,6 +83,30 @@ const DocumentEditorPage = lazy(() => import("./pages/DocumentEditorPage"));
 // Games
 const GamesPage = lazy(() => import("./pages/GamesPage"));
 
+// Restored feature pages
+const EarnPage = lazy(() => import("./pages/EarnPage"));
+const LeaderboardPage = lazy(() => import("./pages/LeaderboardPage"));
+const NetworkPage = lazy(() => import("./pages/NetworkPage"));
+const CareerPage = lazy(() => import("./pages/CareerPage"));
+const PassportPage = lazy(() => import("./pages/PassportPage"));
+const ResearchPapersPage = lazy(() => import("./pages/ResearchPapersPage"));
+const GrantsPage = lazy(() => import("./pages/GrantsPage"));
+const ToolsPage = lazy(() => import("./pages/ToolsPage"));
+const LearningPage = lazy(() => import("./pages/LearningPage"));
+const EventsPage = lazy(() => import("./pages/EventsPage"));
+const HRPage = lazy(() => import("./pages/HRPage"));
+const AutomationPage = lazy(() => import("./pages/AutomationPage"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const GovernancePage = lazy(() => import("./pages/GovernancePage"));
+const SocialFeaturesPage = lazy(() => import("./pages/SocialFeaturesPage"));
+const ImpactPage = lazy(() => import("./pages/ImpactPage"));
+const EquityDashboardPage = lazy(() => import("./pages/EquityDashboardPage"));
+const SubscriptionsPage = lazy(() => import("./pages/SubscriptionsPage"));
+const InstallPage = lazy(() => import("./pages/InstallPage"));
+const FeaturesShowcasePage = lazy(() => import("./pages/FeaturesShowcasePage"));
+const CareersPage = lazy(() => import("./pages/CareersPage"));
+const PressKitPage = lazy(() => import("./pages/PressKitPage"));
+
 // Public / Marketing (minimal)
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
@@ -230,6 +254,30 @@ const AppContent = () => {
           {/* Games */}
           <Route path="/games" element={<GamesPage />} />
 
+          {/* ====== RESTORED FEATURE SECTIONS ====== */}
+          <Route path="/earn" element={<EarnPage />} />
+          <Route path="/leaderboard" element={<LeaderboardPage />} />
+          <Route path="/network" element={<NetworkPage />} />
+          <Route path="/career" element={<CareerPage />} />
+          <Route path="/passport" element={<PassportPage />} />
+          <Route path="/research-papers" element={<ResearchPapersPage />} />
+          <Route path="/grants" element={<GrantsPage />} />
+          <Route path="/tools" element={<ToolsPage />} />
+          <Route path="/learning" element={<LearningPage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/hr" element={<HRPage />} />
+          <Route path="/automation" element={<AutomationPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/governance" element={<GovernancePage />} />
+          <Route path="/social" element={<SocialFeaturesPage />} />
+          <Route path="/impact" element={<ImpactPage />} />
+          <Route path="/equity" element={<EquityDashboardPage />} />
+          <Route path="/subscriptions" element={<SubscriptionsPage />} />
+          <Route path="/install" element={<InstallPage />} />
+          <Route path="/features" element={<FeaturesShowcasePage />} />
+          <Route path="/careers" element={<CareersPage />} />
+          <Route path="/press" element={<PressKitPage />} />
+
           {/* ====== ADMIN ====== */}
           <Route path="/admin" element={<AdminPortalPage />} />
           <Route path="/admin/users" element={<AdminUsersPage />} />
@@ -281,21 +329,16 @@ const AppContent = () => {
           <Route path="/profile/researcher" element={<Navigate to="/profile" replace />} />
           <Route path="/profile/researcher/:id" element={<Navigate to="/profile" replace />} />
           <Route path="/researcher/:id" element={<Navigate to="/profile" replace />} />
-          <Route path="/passport" element={<Navigate to="/profile" replace />} />
           <Route path="/profile/performance" element={<Navigate to="/profile" replace />} />
           <Route path="/profile/employability" element={<Navigate to="/profile" replace />} />
           <Route path="/profile/reputation-export" element={<Navigate to="/profile" replace />} />
           <Route path="/identity/*" element={<Navigate to="/profile" replace />} />
-          <Route path="/career" element={<Navigate to="/profile" replace />} />
           <Route path="/career/*" element={<Navigate to="/profile" replace />} />
 
           {/* Feed/social consolidation */}
           <Route path="/feed/*" element={<Navigate to="/feed" replace />} />
           <Route path="/reality" element={<Navigate to="/home" replace />} />
           <Route path="/posts/*" element={<Navigate to="/home" replace />} />
-          <Route path="/network" element={<Navigate to="/home" replace />} />
-          <Route path="/social" element={<Navigate to="/feed" replace />} />
-          <Route path="/leaderboard" element={<Navigate to="/home" replace />} />
           <Route path="/rankings/*" element={<Navigate to="/home" replace />} />
 
           {/* FYP consolidation */}
@@ -324,11 +367,7 @@ const AppContent = () => {
           <Route path="/arbitration/*" element={<Navigate to="/deals" replace />} />
 
           {/* Finance → wallet */}
-          <Route path="/earn" element={<Navigate to="/wallet" replace />} />
           <Route path="/earn/*" element={<Navigate to="/wallet" replace />} />
-          <Route path="/subscriptions" element={<Navigate to="/wallet" replace />} />
-          <Route path="/grants" element={<Navigate to="/wallet" replace />} />
-          <Route path="/equity" element={<Navigate to="/wallet" replace />} />
           <Route path="/finance/*" element={<Navigate to="/wallet" replace />} />
           <Route path="/market-liquidity" element={<Navigate to="/wallet" replace />} />
           <Route path="/market/*" element={<Navigate to="/wallet" replace />} />
@@ -342,10 +381,9 @@ const AppContent = () => {
           {/* Settings consolidation */}
           <Route path="/settings/*" element={<Navigate to="/profile/settings" replace />} />
 
-          {/* Research → FYP */}
-          <Route path="/research-papers" element={<Navigate to="/fyp" replace />} />
-          <Route path="/research-papers/*" element={<Navigate to="/fyp" replace />} />
-          <Route path="/research/*" element={<Navigate to="/fyp" replace />} />
+          {/* Research sub-routes → research-papers */}
+          <Route path="/research-papers/*" element={<Navigate to="/research-papers" replace />} />
+          <Route path="/research/*" element={<Navigate to="/research-papers" replace />} />
 
           {/* Orgs → home */}
           <Route path="/org" element={<Navigate to="/home" replace />} />
@@ -354,7 +392,6 @@ const AppContent = () => {
           <Route path="/institutions/*" element={<Navigate to="/home" replace />} />
 
           {/* Tools/productivity → home */}
-          <Route path="/tools" element={<Navigate to="/home" replace />} />
           <Route path="/ai/*" element={<Navigate to="/home" replace />} />
           <Route path="/ambient" element={<Navigate to="/home" replace />} />
           <Route path="/briefings" element={<Navigate to="/home" replace />} />
@@ -365,13 +402,11 @@ const AppContent = () => {
           <Route path="/affiliate" element={<Navigate to="/home" replace />} />
           <Route path="/affiliate/*" element={<Navigate to="/home" replace />} />
 
-          {/* Blog → about */}
-          <Route path="/blog" element={<Navigate to="/about" replace />} />
-          <Route path="/blog/*" element={<Navigate to="/about" replace />} />
+          {/* Blog sub-routes */}
+          <Route path="/blog/*" element={<Navigate to="/blog" replace />} />
 
-          {/* Governance → home */}
-          <Route path="/governance" element={<Navigate to="/home" replace />} />
-          <Route path="/governance/*" element={<Navigate to="/home" replace />} />
+          {/* Governance sub-routes */}
+          <Route path="/governance/*" element={<Navigate to="/governance" replace />} />
 
           {/* All removed strategic/visionary/global pages → home */}
           <Route path="/strategy/*" element={<Navigate to="/home" replace />} />
@@ -403,18 +438,9 @@ const AppContent = () => {
           <Route path="/developer/*" element={<Navigate to="/home" replace />} />
           <Route path="/founder/*" element={<Navigate to="/home" replace />} />
 
-          {/* Removed marketing extras → about */}
-          <Route path="/careers" element={<Navigate to="/about" replace />} />
-          <Route path="/press" element={<Navigate to="/about" replace />} />
-          <Route path="/features" element={<Navigate to="/about" replace />} />
-          <Route path="/impact" element={<Navigate to="/about" replace />} />
-          <Route path="/install" element={<Navigate to="/about" replace />} />
+          {/* Removed marketing extras */}
           <Route path="/premium/*" element={<Navigate to="/onboarding" replace />} />
           <Route path="/docs" element={<Navigate to="/help" replace />} />
-          <Route path="/learning" element={<Navigate to="/home" replace />} />
-          <Route path="/events" element={<Navigate to="/home" replace />} />
-          <Route path="/hr" element={<Navigate to="/home" replace />} />
-          <Route path="/automation" element={<Navigate to="/home" replace />} />
 
           {/* Admin extras → admin portal */}
           <Route path="/admin/*" element={<Navigate to="/admin" replace />} />
