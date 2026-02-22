@@ -2,10 +2,14 @@ import { forwardRef } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { HeroSection } from "@/components/home/HeroSection";
+import { TrustedByMarquee } from "@/components/home/TrustedByMarquee";
 import { CoreLoopTimeline } from "@/components/home/CoreLoopTimeline";
-import { StatsSection } from "@/components/home/StatsSection";
-import { HowItWorksSection } from "@/components/home/HowItWorksSection";
+import { FeaturesSection } from "@/components/home/FeaturesSection";
+import { WhyChooseSection } from "@/components/home/WhyChooseSection";
+import { ResearchDiscoverySection } from "@/components/home/ResearchDiscoverySection";
+import { FeaturedToolsCarousel } from "@/components/home/FeaturedToolsCarousel";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import { CompetitorComparisonSection } from "@/components/home/CompetitorComparisonSection";
 import { CTASection } from "@/components/home/CTASection";
 import { OnboardingPopup } from "@/components/onboarding/OnboardingPopup";
 import { useAuth } from "@/contexts/AuthContext";
@@ -40,10 +44,14 @@ const Index = forwardRef<HTMLDivElement>((_props, ref) => {
       />
       <OnboardingPopup />
       <HeroSection />
+      <TrustedByMarquee />
       <CoreLoopTimeline />
-      <StatsSection />
-      <HowItWorksSection />
+      <FeaturesSection />
+      <WhyChooseSection />
+      <ResearchDiscoverySection />
+      <FeaturedToolsCarousel />
       <TestimonialsSection />
+      <CompetitorComparisonSection />
       <CTASection />
     </MainLayout>
   );
