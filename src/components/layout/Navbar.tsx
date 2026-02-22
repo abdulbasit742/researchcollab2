@@ -20,6 +20,7 @@ import {
   Film,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { MegaMenu } from "@/components/navigation/MegaMenu";
 
 // Pilot-focused navigation — core modules + social
 const navItems = [
@@ -77,9 +78,9 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Navigation - Core modules only */}
+        {/* Desktop Navigation - Core modules + Mega Menu */}
         <nav className="hidden lg:flex items-center gap-1">
-          {navItems.map((item) => (
+          {navItems.slice(0, 4).map((item) => (
             <Link
               key={item.href}
               to={item.href}
@@ -93,6 +94,7 @@ export function Navbar() {
               {item.label}
             </Link>
           ))}
+          <MegaMenu />
         </nav>
 
         {/* Desktop Actions */}

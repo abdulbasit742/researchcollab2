@@ -11,6 +11,7 @@ import { GlobalAIChatButton } from "@/components/ai/GlobalAIChatButton";
 import { SwipeBackNavigator } from "@/components/mobile/SwipeBackNavigator";
 import { PWAInstallBanner } from "@/components/pwa/PWAInstallBanner";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { CommandPalette } from "@/components/navigation/CommandPalette";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -30,6 +31,7 @@ export function MainLayout({ children }: MainLayoutProps) {
         Skip to main content
       </a>
       <ScrollProgress />
+      <CommandPalette />
       <Navbar />
       <main id="main-content" tabIndex={-1} className={`flex-1 outline-none ${isMobile ? 'pb-20' : ''}`}>
         <SwipeBackNavigator>{children}</SwipeBackNavigator>

@@ -15,6 +15,7 @@ import { PostSignupIntentSelector } from "@/components/onboarding/PostSignupInte
 import { Badge } from "@/components/ui/badge";
 import { Shield, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { FeatureDiscoveryGrid } from "@/components/home/FeatureDiscoveryGrid";
 
 export default function HomeDashboard() {
   const { user, profile, userRole, isLoading: authLoading } = useAuth();
@@ -135,6 +136,7 @@ export default function HomeDashboard() {
           {/* Sidebar */}
           <aside className="lg:col-span-4 space-y-4">
             <QuickActionsCard />
+            <FeatureDiscoveryGrid />
             <TrustExplainer
               trustScore={trustScore}
               trustTier={trustTier}
