@@ -21,6 +21,9 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { MegaMenu } from "@/components/navigation/MegaMenu";
+import { KeyboardShortcutsHelp } from "@/components/navigation/KeyboardShortcutsHelp";
+import { UserAvatarMenu } from "@/components/layout/UserAvatarMenu";
+import { AnnouncementBanner } from "@/components/layout/AnnouncementBanner";
 
 // Pilot-focused navigation — core modules + social
 const navItems = [
@@ -60,6 +63,8 @@ export function Navbar() {
   };
 
   return (
+    <>
+    <AnnouncementBanner />
     <header
       className={`sticky top-0 z-50 w-full border-b backdrop-blur-xl safe-area-top transition-all duration-200 ${
         isScrolled
@@ -103,20 +108,11 @@ export function Navbar() {
             onTranscript={handleVoiceSearch}
             className="h-9 w-9"
           />
+          <KeyboardShortcutsHelp />
           <ThemeToggle />
           <NotificationBell />
           {user ? (
-            <>
-              <Link to="/profile">
-                <Button variant="ghost" size="sm" className="gap-2">
-                  <User className="h-4 w-4" />
-                  Profile
-                </Button>
-              </Link>
-              <Button variant="ghost" size="sm" onClick={handleSignOut} className="gap-2" aria-label="Sign out">
-                <LogOut className="h-4 w-4" />
-              </Button>
-            </>
+            <UserAvatarMenu />
           ) : (
             <>
               <Link to="/auth">
@@ -200,5 +196,6 @@ export function Navbar() {
         )}
       </AnimatePresence>
     </header>
+    </>
   );
 }

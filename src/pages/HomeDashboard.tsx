@@ -18,6 +18,8 @@ import { motion } from "framer-motion";
 import { FeatureDiscoveryGrid } from "@/components/home/FeatureDiscoveryGrid";
 import { RecentActivityWidget } from "@/components/home/RecentActivityWidget";
 import { QuickLinksBar } from "@/components/home/QuickLinksBar";
+import { PlatformStatsBar } from "@/components/home/PlatformStatsBar";
+import { PageTransition } from "@/components/layout/PageTransition";
 
 export default function HomeDashboard() {
   const { user, profile, userRole, isLoading: authLoading } = useAuth();
@@ -50,6 +52,7 @@ export default function HomeDashboard() {
 
   return (
     <MainLayout>
+      <PageTransition>
       <FirstTimeUserOverlay />
       <PostSignupIntentSelector />
       
@@ -131,6 +134,16 @@ export default function HomeDashboard() {
           />
         </motion.div>
 
+        {/* Platform Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.25 }}
+          className="mb-6"
+        >
+          <PlatformStatsBar />
+        </motion.div>
+
         <div className="grid lg:grid-cols-12 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-4">
@@ -160,6 +173,7 @@ export default function HomeDashboard() {
           </aside>
         </div>
       </div>
+      </PageTransition>
     </MainLayout>
   );
 }
