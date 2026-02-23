@@ -14,6 +14,7 @@ import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { CommandPalette } from "@/components/navigation/CommandPalette";
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import { BackToTop } from "@/components/ui/back-to-top";
+import { SessionTimeoutWarning } from "@/components/session/SessionTimeoutWarning";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -45,6 +46,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       <MobileBottomNav />
       <BackToTop />
       <PWAInstallBanner />
+      <SessionTimeoutWarning />
       {user && (unreadCount > 0 || highPriorityCount > 0) && (
         <FloatingNudgeIndicator 
           count={unreadCount} 

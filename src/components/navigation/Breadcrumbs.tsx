@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { ChevronRight, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FavoriteButton } from "@/components/favorites/FavoriteButton";
 
 const routeLabels: Record<string, string> = {
   home: "Dashboard",
@@ -54,7 +55,7 @@ export function Breadcrumbs() {
   if (segments.length === 0 || location.pathname === "/") return null;
 
   return (
-    <nav aria-label="Breadcrumb" className="container px-4 py-2">
+    <nav aria-label="Breadcrumb" className="container px-4 py-2 flex items-center justify-between">
       <ol className="flex items-center gap-1 text-xs text-muted-foreground overflow-x-auto">
         <li>
           <Link to="/home" className="flex items-center hover:text-foreground transition-colors">
@@ -80,6 +81,7 @@ export function Breadcrumbs() {
           );
         })}
       </ol>
+      <FavoriteButton />
     </nav>
   );
 }
