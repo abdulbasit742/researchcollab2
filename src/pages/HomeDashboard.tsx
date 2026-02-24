@@ -20,6 +20,9 @@ import { RecentActivityWidget } from "@/components/home/RecentActivityWidget";
 import { QuickLinksBar } from "@/components/home/QuickLinksBar";
 import { PlatformStatsBar } from "@/components/home/PlatformStatsBar";
 import { PageTransition } from "@/components/layout/PageTransition";
+import { StreakCounter } from "@/components/home/StreakCounter";
+import { GreetingBanner } from "@/components/home/GreetingBanner";
+import { QuickNoteWidget } from "@/components/home/QuickNoteWidget";
 
 export default function HomeDashboard() {
   const { user, profile, userRole, isLoading: authLoading } = useAuth();
