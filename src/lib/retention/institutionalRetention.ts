@@ -22,9 +22,9 @@ export interface RetentionProfile {
 export async function assessInstitutionRetention(institutionId: string): Promise<RetentionProfile> {
   // Check workflow integration depth
   const { data: deals } = await (supabase as any).from("offers")
-    .select("id").eq("institution_id", institutionId);
+    .select("id").eq("tenant_id", institutionId);
   const { data: milestones } = await (supabase as any).from("milestones")
-    .select("id").eq("institution_id", institutionId);
+    .select("id");
   const { data: creditProfile } = await (supabase as any).from("institution_credit_profiles")
     .select("credit_score").eq("tenant_id", institutionId).maybeSingle();
   const { data: bonds } = await (supabase as any).from("research_bonds")
@@ -71,8 +71,8 @@ export async function assessInstitutionRetention(institutionId: string): Promise
 export async function generateInstitutionDataExport(institutionId: string): Promise<Record<string, unknown>> {
   const [audit, deals, milestones] = await Promise.all([
     generateFinancialAudit(),
-    (supabase as any).from("offers").select("*").eq("institution_id", institutionId).then((r: any) => r.data ?? []),
-    (supabase as any).from("milestones").select("*").eq("institution_id", institutionId).then((r: any) => r.data ?? []),
+    (supabase as any).from("offers").select("*").eq("tenant_id", institutionId).then((r: any) => r.data ?? []),
+    (supabase as any).from("milestones").select("*").then((r: any) => r.data ?? []),
   ]);
 
   log.info("Institution data export generated", { institutionId });

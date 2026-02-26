@@ -33,17 +33,17 @@ export async function generateFinancialAudit(): Promise<AuditSummary> {
 }
 
 async function getEscrowSummary() {
-  const { data: locked } = await (supabase as any).from("milestones").select("escrow_amount, status")
+  const { data: locked } = await (supabase as any).from("milestones").select("amount, status")
     .in("status", ["funded", "in_progress", "submitted"]);
-  const { data: released } = await (supabase as any).from("milestones").select("escrow_amount")
+  const { data: released } = await (supabase as any).from("milestones").select("amount")
     .eq("status", "completed");
-  const { data: refunded } = await (supabase as any).from("milestones").select("escrow_amount")
+  const { data: refunded } = await (supabase as any).from("milestones").select("amount")
     .eq("status", "refunded");
 
   return {
-    totalLocked: (locked ?? []).reduce((s: number, m: any) => s + (m.escrow_amount ?? 0), 0),
-    totalReleased: (released ?? []).reduce((s: number, m: any) => s + (m.escrow_amount ?? 0), 0),
-    totalRefunded: (refunded ?? []).reduce((s: number, m: any) => s + (m.escrow_amount ?? 0), 0),
+    totalLocked: (locked ?? []).reduce((s: number, m: any) => s + (m.amount ?? 0), 0),
+    totalReleased: (released ?? []).reduce((s: number, m: any) => s + (m.amount ?? 0), 0),
+    totalRefunded: (refunded ?? []).reduce((s: number, m: any) => s + (m.amount ?? 0), 0),
     activeCount: (locked ?? []).length,
   };
 }
