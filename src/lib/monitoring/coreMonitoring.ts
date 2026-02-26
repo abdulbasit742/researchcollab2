@@ -62,12 +62,12 @@ export async function runCoreMonitoring(): Promise<MonitoringReport> {
 
   // 4. Trust volatility — check for rapid trust changes
   const { data: trustEvents } = await (supabase as any).from("trust_events")
-    .select("user_id, score_change, created_at")
+    .select("user_id, trust_delta, created_at")
     .gte("created_at", new Date(Date.now() - 3600000).toISOString())
     .order("created_at", { ascending: false }).limit(100);
   const userChanges: Record<string, number> = {};
   for (const e of trustEvents ?? []) {
-    userChanges[e.user_id] = (userChanges[e.user_id] ?? 0) + Math.abs(e.score_change ?? 0);
+    userChanges[e.user_id] = (userChanges[e.user_id] ?? 0) + Math.abs(e.trust_delta ?? 0);
   }
   for (const [userId, totalChange] of Object.entries(userChanges)) {
     if (totalChange > 20) {

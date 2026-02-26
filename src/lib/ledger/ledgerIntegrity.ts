@@ -20,11 +20,10 @@ export interface LedgerIntegrityResult {
  * Compute a simple deterministic hash for a ledger entry.
  */
 function computeEntryHash(entry: {
-  id: string; wallet_id: string; entry_type: string;
+  id: string; account_id: string; entry_type: string;
   amount: number; created_at: string; previousHash?: string;
 }): string {
-  const payload = `${entry.id}|${entry.wallet_id}|${entry.entry_type}|${entry.amount}|${entry.created_at}|${entry.previousHash ?? "genesis"}`;
-  // Simple hash — in production use crypto.subtle.digest
+  const payload = `${entry.id}|${entry.account_id}|${entry.entry_type}|${entry.amount}|${entry.created_at}|${entry.previousHash ?? "genesis"}`;
   let hash = 0;
   for (let i = 0; i < payload.length; i++) {
     const chr = payload.charCodeAt(i);
@@ -39,11 +38,11 @@ function computeEntryHash(entry: {
  */
 export async function verifyLedgerChain(walletId?: string, limit = 200): Promise<LedgerIntegrityResult> {
   let query = (supabase as any).from("ledger_entries")
-    .select("id, wallet_id, entry_type, amount, created_at")
+    .select("id, account_id, entry_type, amount, created_at")
     .order("created_at", { ascending: true })
     .limit(limit);
 
-  if (walletId) query = query.eq("wallet_id", walletId);
+  if (walletId) query = query.eq("account_id", walletId);
 
   const { data: entries } = await query;
   if (!entries || entries.length === 0) {
@@ -100,9 +99,9 @@ export async function verifyDailyReconciliation(): Promise<{ reconciled: boolean
   let discrepancies = 0;
   for (const w of wallets.slice(0, 50)) {
     const { data: credits } = await (supabase as any).from("ledger_entries")
-      .select("amount").eq("wallet_id", w.id).eq("direction", "credit");
+      .select("amount").eq("account_id", w.id).eq("entry_type", "credit");
     const { data: debits } = await (supabase as any).from("ledger_entries")
-      .select("amount").eq("wallet_id", w.id).eq("direction", "debit");
+      .select("amount").eq("account_id", w.id).eq("entry_type", "debit");
 
     const totalCredit = (credits ?? []).reduce((s: number, e: any) => s + (e.amount ?? 0), 0);
     const totalDebit = (debits ?? []).reduce((s: number, e: any) => s + (e.amount ?? 0), 0);

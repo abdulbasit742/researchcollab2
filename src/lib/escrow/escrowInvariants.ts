@@ -59,11 +59,17 @@ async function checkEscrowReconciliation(): Promise<string | null> {
   const mismatches: string[] = [];
   for (const w of wallets.slice(0, 50)) { // Batch limit for performance
     if ((w.escrow_balance ?? 0) === 0) continue;
+    const { data: offers } = await (supabase as any).from("offers")
+      .select("id")
+      .eq("sender_id", w.user_id)
+      .in("status", ["accepted", "in_progress"]);
+    const offerIds = (offers ?? []).map((o: any) => o.id);
+    if (offerIds.length === 0) continue;
     const { data: milestones } = await (supabase as any).from("milestones")
-      .select("escrow_amount")
-      .eq("funded_by", w.user_id)
+      .select("amount")
+      .in("offer_id", offerIds)
       .in("status", ["funded", "in_progress", "submitted"]);
-    const milestoneTotal = (milestones ?? []).reduce((s: number, m: any) => s + (m.escrow_amount ?? 0), 0);
+    const milestoneTotal = (milestones ?? []).reduce((s: number, m: any) => s + (m.amount ?? 0), 0);
     if (Math.abs((w.escrow_balance ?? 0) - milestoneTotal) > 0.01) {
       mismatches.push(w.id);
     }
@@ -79,7 +85,7 @@ async function checkNoUntrackedEscrow(): Promise<string | null> {
 
   for (const w of wallets.slice(0, 20)) {
     const { data: entries } = await (supabase as any).from("ledger_entries")
-      .select("id").eq("wallet_id", w.id).limit(1);
+      .select("id").eq("account_id", w.id).limit(1);
     if (!entries || entries.length === 0) {
       return `Wallet ${w.id} has escrow balance but no ledger entries`;
     }
@@ -87,17 +93,17 @@ async function checkNoUntrackedEscrow(): Promise<string | null> {
   return null;
 }
 
-/** Transaction replay detection — check for duplicate idempotency keys */
+/** Transaction replay detection — check for duplicate transaction_ids */
 async function checkReplayDetection(): Promise<string | null> {
   const { data } = await (supabase as any).from("ledger_entries")
-    .select("idempotency_key")
-    .not("idempotency_key", "is", null)
+    .select("transaction_id")
+    .not("transaction_id", "is", null)
     .order("created_at", { ascending: false })
     .limit(500);
   if (data) {
-    const keys = data.map((e: any) => e.idempotency_key).filter(Boolean);
+    const keys = data.map((e: any) => e.transaction_id).filter(Boolean);
     const dupes = keys.filter((k: string, i: number) => keys.indexOf(k) !== i);
-    if (dupes.length > 0) return `${dupes.length} duplicate idempotency key(s) detected`;
+    if (dupes.length > 0) return `${dupes.length} duplicate transaction_id(s) detected — possible replay`;
   }
   return null;
 }
