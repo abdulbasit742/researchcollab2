@@ -1,0 +1,101 @@
+import { supabase } from "@/integrations/supabase/client";
+
+/**
+ * Message service layer — wraps messaging operations with optimistic updates.
+ * The hooks in useMessaging.ts already handle realtime subscriptions.
+ * This service provides standalone functions for use outside hooks.
+ */
+
+export async function getThreads(userId: string) {
+  const { data, error } = await supabase
+    .from("message_threads")
+    .select("*")
+    .or(`user_a.eq.${userId},user_b.eq.${userId}`)
+    .order("last_message_at", { ascending: false });
+
+  if (error) throw error;
+  return data || [];
+}
+
+export async function getMessages(threadId: string) {
+  const { data, error } = await supabase
+    .from("messages")
+    .select("*")
+    .eq("thread_id", threadId)
+    .order("created_at", { ascending: true });
+
+  if (error) throw error;
+  return data || [];
+}
+
+export async function sendMessage(
+  threadId: string,
+  senderId: string,
+  content: string
+) {
+  const { data: message, error } = await supabase
+    .from("messages")
+    .insert({
+      thread_id: threadId,
+      sender_id: senderId,
+      body: content.trim(),
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  // Update thread last_message
+  await supabase
+    .from("message_threads")
+    .update({
+      last_message_at: new Date().toISOString(),
+      last_message_text: content.trim().substring(0, 100),
+    })
+    .eq("id", threadId);
+
+  return message;
+}
+
+export async function markThreadAsRead(threadId: string, userId: string) {
+  const { error } = await supabase
+    .from("messages")
+    .update({ read_at: new Date().toISOString() })
+    .eq("thread_id", threadId)
+    .neq("sender_id", userId)
+    .is("read_at", null);
+
+  if (error) throw error;
+}
+
+/**
+ * Subscribe to read receipt updates in a thread.
+ * Returns cleanup function.
+ */
+export function subscribeToReadUpdates(
+  threadId: string,
+  callback: (messageId: string, readAt: string) => void
+): () => void {
+  const channel = supabase
+    .channel(`read-receipts-${threadId}`)
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "messages",
+        filter: `thread_id=eq.${threadId}`,
+      },
+      (payload) => {
+        const updated = payload.new as { id: string; read_at: string | null };
+        if (updated.read_at) {
+          callback(updated.id, updated.read_at);
+        }
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}

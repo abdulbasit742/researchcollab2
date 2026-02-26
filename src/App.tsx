@@ -9,6 +9,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { RealtimeProvider } from "@/context/RealtimeContext";
 import { ThemeProvider } from "next-themes";
 import { ScrollRestoration } from "@/components/ScrollRestoration";
 import { RouteProgress } from "@/components/layout/RouteProgress";
@@ -473,11 +474,13 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <AuthProvider>
-                <DemoWalkthroughProvider>
-                  <AppContent />
-                  <TourLaunchButton />
-                  <WalkthroughOverlay />
-                </DemoWalkthroughProvider>
+                <RealtimeProvider>
+                  <DemoWalkthroughProvider>
+                    <AppContent />
+                    <TourLaunchButton />
+                    <WalkthroughOverlay />
+                  </DemoWalkthroughProvider>
+                </RealtimeProvider>
               </AuthProvider>
             </BrowserRouter>
           </TooltipProvider>
