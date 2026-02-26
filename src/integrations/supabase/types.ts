@@ -19003,6 +19003,42 @@ export type Database = {
           },
         ]
       }
+      institution_adoption_tiers: {
+        Row: {
+          created_at: string
+          credit_maturity: number | null
+          governance_approved: boolean | null
+          id: string
+          institution_id: string
+          promoted_at: string
+          stability_score: number | null
+          tier_level: number
+          tier_name: string
+        }
+        Insert: {
+          created_at?: string
+          credit_maturity?: number | null
+          governance_approved?: boolean | null
+          id?: string
+          institution_id: string
+          promoted_at?: string
+          stability_score?: number | null
+          tier_level?: number
+          tier_name: string
+        }
+        Update: {
+          created_at?: string
+          credit_maturity?: number | null
+          governance_approved?: boolean | null
+          id?: string
+          institution_id?: string
+          promoted_at?: string
+          stability_score?: number | null
+          tier_level?: number
+          tier_name?: string
+        }
+        Relationships: []
+      }
       institution_applications: {
         Row: {
           contact_email: string
@@ -27746,6 +27782,51 @@ export type Database = {
           superseded_at?: string | null
           superseded_by_version?: number | null
           version_number?: number
+        }
+        Relationships: []
+      }
+      platform_phases: {
+        Row: {
+          activated_at: string | null
+          created_at: string
+          description: string | null
+          id: number
+          is_active: boolean
+          name: string
+          phase_order: number
+          prerequisites: Json | null
+          public_exposure_level: string
+          regulatory_risk_score: number | null
+          stability_score: number | null
+          updated_at: string
+        }
+        Insert: {
+          activated_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: number
+          is_active?: boolean
+          name: string
+          phase_order?: number
+          prerequisites?: Json | null
+          public_exposure_level?: string
+          regulatory_risk_score?: number | null
+          stability_score?: number | null
+          updated_at?: string
+        }
+        Update: {
+          activated_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: number
+          is_active?: boolean
+          name?: string
+          phase_order?: number
+          prerequisites?: Json | null
+          public_exposure_level?: string
+          regulatory_risk_score?: number | null
+          stability_score?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
