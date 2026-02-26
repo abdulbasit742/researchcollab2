@@ -6369,6 +6369,39 @@ export type Database = {
         }
         Relationships: []
       }
+      constitutional_lock_status: {
+        Row: {
+          description: string | null
+          id: string
+          is_locked: boolean
+          last_modified: string
+          lock_level: string
+          lock_name: string
+          modified_by: string | null
+          override_requirements: string
+        }
+        Insert: {
+          description?: string | null
+          id?: string
+          is_locked?: boolean
+          last_modified?: string
+          lock_level?: string
+          lock_name: string
+          modified_by?: string | null
+          override_requirements?: string
+        }
+        Update: {
+          description?: string | null
+          id?: string
+          is_locked?: boolean
+          last_modified?: string
+          lock_level?: string
+          lock_name?: string
+          modified_by?: string | null
+          override_requirements?: string
+        }
+        Relationships: []
+      }
       constitutional_principles: {
         Row: {
           category: string
@@ -36423,6 +36456,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sovereignty_profiles: {
+        Row: {
+          capital_contribution_score: number
+          compliance_score: number
+          created_at: string
+          governance_participation_score: number
+          id: string
+          last_evaluated_at: string
+          longevity_score: number
+          maturity_level: number
+          tenant_id: string
+          trust_score: number
+        }
+        Insert: {
+          capital_contribution_score?: number
+          compliance_score?: number
+          created_at?: string
+          governance_participation_score?: number
+          id?: string
+          last_evaluated_at?: string
+          longevity_score?: number
+          maturity_level?: number
+          tenant_id: string
+          trust_score?: number
+        }
+        Update: {
+          capital_contribution_score?: number
+          compliance_score?: number
+          created_at?: string
+          governance_participation_score?: number
+          id?: string
+          last_evaluated_at?: string
+          longevity_score?: number
+          maturity_level?: number
+          tenant_id?: string
+          trust_score?: number
+        }
+        Relationships: []
       }
       sponsor_engagement_events: {
         Row: {
