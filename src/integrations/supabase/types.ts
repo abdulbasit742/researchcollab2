@@ -4348,8 +4348,10 @@ export type Database = {
           pool_type: string
           risk_category: string | null
           start_date: string | null
+          tenant_id: string | null
           total_allocated: number
           total_committed: number
+          total_returned: number
           updated_at: string
         }
         Insert: {
@@ -4365,8 +4367,10 @@ export type Database = {
           pool_type: string
           risk_category?: string | null
           start_date?: string | null
+          tenant_id?: string | null
           total_allocated?: number
           total_committed?: number
+          total_returned?: number
           updated_at?: string
         }
         Update: {
@@ -4382,8 +4386,10 @@ export type Database = {
           pool_type?: string
           risk_category?: string | null
           start_date?: string | null
+          tenant_id?: string | null
           total_allocated?: number
           total_committed?: number
+          total_returned?: number
           updated_at?: string
         }
         Relationships: [
@@ -4392,6 +4398,13 @@ export type Database = {
             columns: ["country_id"]
             isOneToOne: false
             referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "capital_pools_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
         ]
@@ -9106,6 +9119,47 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      department_allocations: {
+        Row: {
+          allocated_amount: number
+          allocation_limit: number
+          created_at: string
+          department_id: string
+          department_name: string | null
+          id: string
+          pool_id: string
+          updated_at: string
+        }
+        Insert: {
+          allocated_amount?: number
+          allocation_limit?: number
+          created_at?: string
+          department_id: string
+          department_name?: string | null
+          id?: string
+          pool_id: string
+          updated_at?: string
+        }
+        Update: {
+          allocated_amount?: number
+          allocation_limit?: number
+          created_at?: string
+          department_id?: string
+          department_name?: string | null
+          id?: string
+          pool_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "department_allocations_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "capital_pools"
             referencedColumns: ["id"]
           },
         ]
@@ -26761,15 +26815,20 @@ export type Database = {
           actual_yield: number | null
           advance_id: string | null
           allocated_amount: number
+          allocated_at: string
+          amount: number
           approved_at: string | null
           approved_by: string | null
           capital_pool_id: string | null
           created_at: string | null
+          deal_id: string | null
           escrow_link_id: string | null
           expected_yield: number | null
           id: string
           maturity_date: string | null
           pool_id: string
+          released_at: string | null
+          return_amount: number | null
           risk_score: number | null
           sector: string | null
           status: string | null
@@ -26779,15 +26838,20 @@ export type Database = {
           actual_yield?: number | null
           advance_id?: string | null
           allocated_amount: number
+          allocated_at?: string
+          amount?: number
           approved_at?: string | null
           approved_by?: string | null
           capital_pool_id?: string | null
           created_at?: string | null
+          deal_id?: string | null
           escrow_link_id?: string | null
           expected_yield?: number | null
           id?: string
           maturity_date?: string | null
           pool_id: string
+          released_at?: string | null
+          return_amount?: number | null
           risk_score?: number | null
           sector?: string | null
           status?: string | null
@@ -26797,15 +26861,20 @@ export type Database = {
           actual_yield?: number | null
           advance_id?: string | null
           allocated_amount?: number
+          allocated_at?: string
+          amount?: number
           approved_at?: string | null
           approved_by?: string | null
           capital_pool_id?: string | null
           created_at?: string | null
+          deal_id?: string | null
           escrow_link_id?: string | null
           expected_yield?: number | null
           id?: string
           maturity_date?: string | null
           pool_id?: string
+          released_at?: string | null
+          return_amount?: number | null
           risk_score?: number | null
           sector?: string | null
           status?: string | null
@@ -26827,10 +26896,52 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "pool_allocations_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deal_rooms"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "pool_allocations_pool_id_fkey"
             columns: ["pool_id"]
             isOneToOne: false
             referencedRelation: "funding_pools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pool_contributions: {
+        Row: {
+          amount: number
+          committed_at: string
+          contributor_id: string
+          id: string
+          pool_id: string
+          status: string
+        }
+        Insert: {
+          amount: number
+          committed_at?: string
+          contributor_id: string
+          id?: string
+          pool_id: string
+          status?: string
+        }
+        Update: {
+          amount?: number
+          committed_at?: string
+          contributor_id?: string
+          id?: string
+          pool_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pool_contributions_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "capital_pools"
             referencedColumns: ["id"]
           },
         ]
@@ -26879,6 +26990,47 @@ export type Database = {
           },
         ]
       }
+      pool_metrics: {
+        Row: {
+          avg_deployment_time_hours: number | null
+          created_at: string
+          default_rate: number | null
+          id: string
+          pool_id: string
+          roi: number | null
+          total_deployed: number | null
+          total_returned: number | null
+        }
+        Insert: {
+          avg_deployment_time_hours?: number | null
+          created_at?: string
+          default_rate?: number | null
+          id?: string
+          pool_id: string
+          roi?: number | null
+          total_deployed?: number | null
+          total_returned?: number | null
+        }
+        Update: {
+          avg_deployment_time_hours?: number | null
+          created_at?: string
+          default_rate?: number | null
+          id?: string
+          pool_id?: string
+          roi?: number | null
+          total_deployed?: number | null
+          total_returned?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pool_metrics_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "capital_pools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pool_performance_metrics: {
         Row: {
           completion_rate: number | null
@@ -26916,6 +27068,41 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "pool_performance_metrics_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: true
+            referencedRelation: "capital_pools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pool_wallets: {
+        Row: {
+          balance: number
+          created_at: string
+          id: string
+          locked_balance: number
+          pool_id: string
+          updated_at: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          id?: string
+          locked_balance?: number
+          pool_id: string
+          updated_at?: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          id?: string
+          locked_balance?: number
+          pool_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pool_wallets_pool_id_fkey"
             columns: ["pool_id"]
             isOneToOne: true
             referencedRelation: "capital_pools"
