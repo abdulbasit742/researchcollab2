@@ -16438,6 +16438,72 @@ export type Database = {
         }
         Relationships: []
       }
+      governance_policies: {
+        Row: {
+          activated_at: string | null
+          created_at: string
+          created_by: string | null
+          current_value: Json
+          description: string | null
+          id: string
+          name: string
+          policy_type: string
+          proposed_value: Json | null
+          region_scope: string | null
+          simulation_report: Json | null
+          status: string
+          tenant_scope: string | null
+          updated_at: string
+        }
+        Insert: {
+          activated_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          current_value?: Json
+          description?: string | null
+          id?: string
+          name: string
+          policy_type: string
+          proposed_value?: Json | null
+          region_scope?: string | null
+          simulation_report?: Json | null
+          status?: string
+          tenant_scope?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activated_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          current_value?: Json
+          description?: string | null
+          id?: string
+          name?: string
+          policy_type?: string
+          proposed_value?: Json | null
+          region_scope?: string | null
+          simulation_report?: Json | null
+          status?: string
+          tenant_scope?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_policies_region_scope_fkey"
+            columns: ["region_scope"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "governance_policies_tenant_scope_fkey"
+            columns: ["tenant_scope"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       governance_proposals: {
         Row: {
           activated_at: string | null
@@ -16616,28 +16682,40 @@ export type Database = {
           cast_at: string
           governance_proposal_id: string
           id: string
+          proposal_id: string | null
+          rationale: string | null
           reasoning: string | null
           vote: string
           vote_weight: number | null
+          voter_node_id: string | null
           voter_scholar_passport_id: string
+          voter_tenant_id: string | null
         }
         Insert: {
           cast_at?: string
           governance_proposal_id: string
           id?: string
+          proposal_id?: string | null
+          rationale?: string | null
           reasoning?: string | null
           vote: string
           vote_weight?: number | null
+          voter_node_id?: string | null
           voter_scholar_passport_id: string
+          voter_tenant_id?: string | null
         }
         Update: {
           cast_at?: string
           governance_proposal_id?: string
           id?: string
+          proposal_id?: string | null
+          rationale?: string | null
           reasoning?: string | null
           vote?: string
           vote_weight?: number | null
+          voter_node_id?: string | null
           voter_scholar_passport_id?: string
+          voter_tenant_id?: string | null
         }
         Relationships: [
           {
@@ -16648,10 +16726,31 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "governance_votes_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "governance_policies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "governance_votes_voter_node_id_fkey"
+            columns: ["voter_node_id"]
+            isOneToOne: false
+            referencedRelation: "sovereign_nodes"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "governance_votes_voter_scholar_passport_id_fkey"
             columns: ["voter_scholar_passport_id"]
             isOneToOne: false
             referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "governance_votes_voter_tenant_id_fkey"
+            columns: ["voter_tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
         ]
@@ -25086,6 +25185,59 @@ export type Database = {
         }
         Relationships: []
       }
+      optimizer_recommendations: {
+        Row: {
+          confidence_score: number
+          created_at: string
+          current_value: Json | null
+          id: string
+          impact_summary: Json | null
+          rationale: string
+          recommendation_type: string
+          recommended_value: Json
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          target_policy_id: string | null
+        }
+        Insert: {
+          confidence_score?: number
+          created_at?: string
+          current_value?: Json | null
+          id?: string
+          impact_summary?: Json | null
+          rationale: string
+          recommendation_type: string
+          recommended_value: Json
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          target_policy_id?: string | null
+        }
+        Update: {
+          confidence_score?: number
+          created_at?: string
+          current_value?: Json | null
+          id?: string
+          impact_summary?: Json | null
+          rationale?: string
+          recommendation_type?: string
+          recommended_value?: Json
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          target_policy_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "optimizer_recommendations_target_policy_id_fkey"
+            columns: ["target_policy_id"]
+            isOneToOne: false
+            referencedRelation: "governance_policies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       org_bulk_licenses: {
         Row: {
           created_at: string | null
@@ -27459,6 +27611,44 @@ export type Database = {
             columns: ["impact_pathway_id"]
             isOneToOne: false
             referencedRelation: "impact_pathways"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      policy_versions: {
+        Row: {
+          changed_at: string
+          changed_by: string | null
+          id: string
+          new_value: Json
+          policy_id: string
+          previous_value: Json | null
+          version_number: number
+        }
+        Insert: {
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          new_value: Json
+          policy_id: string
+          previous_value?: Json | null
+          version_number?: number
+        }
+        Update: {
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          new_value?: Json
+          policy_id?: string
+          previous_value?: Json | null
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_versions_policy_id_fkey"
+            columns: ["policy_id"]
+            isOneToOne: false
+            referencedRelation: "governance_policies"
             referencedColumns: ["id"]
           },
         ]
