@@ -8153,6 +8153,60 @@ export type Database = {
           },
         ]
       }
+      cross_border_agreements: {
+        Row: {
+          active: boolean
+          allowed_capital_limit: number
+          allowed_purpose: string
+          capital_routed: number
+          compliance_requirements: Json | null
+          created_at: string
+          id: string
+          node_a: string
+          node_b: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          allowed_capital_limit?: number
+          allowed_purpose?: string
+          capital_routed?: number
+          compliance_requirements?: Json | null
+          created_at?: string
+          id?: string
+          node_a: string
+          node_b: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          allowed_capital_limit?: number
+          allowed_purpose?: string
+          capital_routed?: number
+          compliance_requirements?: Json | null
+          created_at?: string
+          id?: string
+          node_a?: string
+          node_b?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cross_border_agreements_node_a_fkey"
+            columns: ["node_a"]
+            isOneToOne: false
+            referencedRelation: "sovereign_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cross_border_agreements_node_b_fkey"
+            columns: ["node_b"]
+            isOneToOne: false
+            referencedRelation: "sovereign_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cross_border_simulations: {
         Row: {
           capital_amount: number | null
@@ -22301,6 +22355,63 @@ export type Database = {
         }
         Relationships: []
       }
+      liquidity_exchanges: {
+        Row: {
+          amount: number
+          borrower_node_id: string
+          created_at: string
+          expires_at: string | null
+          fixed_return_rate: number | null
+          id: string
+          lender_node_id: string
+          return_amount: number
+          return_model: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          borrower_node_id: string
+          created_at?: string
+          expires_at?: string | null
+          fixed_return_rate?: number | null
+          id?: string
+          lender_node_id: string
+          return_amount?: number
+          return_model?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          borrower_node_id?: string
+          created_at?: string
+          expires_at?: string | null
+          fixed_return_rate?: number | null
+          id?: string
+          lender_node_id?: string
+          return_amount?: number
+          return_model?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "liquidity_exchanges_borrower_node_id_fkey"
+            columns: ["borrower_node_id"]
+            isOneToOne: false
+            referencedRelation: "sovereign_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "liquidity_exchanges_lender_node_id_fkey"
+            columns: ["lender_node_id"]
+            isOneToOne: false
+            referencedRelation: "sovereign_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       macro_simulation_results: {
         Row: {
           capital_stress_ripple: Json | null
@@ -23546,6 +23657,174 @@ export type Database = {
           trust_impact_projection?: number | null
         }
         Relationships: []
+      }
+      network_audit_logs: {
+        Row: {
+          action: string
+          actor_node_id: string | null
+          created_at: string
+          details: Json | null
+          entity_id: string | null
+          entity_type: string
+          id: string
+          region_id: string | null
+          target_node_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_node_id?: string | null
+          created_at?: string
+          details?: Json | null
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          region_id?: string | null
+          target_node_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_node_id?: string | null
+          created_at?: string
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          region_id?: string | null
+          target_node_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "network_audit_logs_actor_node_id_fkey"
+            columns: ["actor_node_id"]
+            isOneToOne: false
+            referencedRelation: "sovereign_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "network_audit_logs_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "network_audit_logs_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "sovereign_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      network_capital_routes: {
+        Row: {
+          amount: number
+          compliance_cleared: boolean
+          created_at: string
+          cross_border_agreement_id: string | null
+          id: string
+          purpose: string
+          source_node_id: string
+          status: string
+          target_node_id: string
+        }
+        Insert: {
+          amount: number
+          compliance_cleared?: boolean
+          created_at?: string
+          cross_border_agreement_id?: string | null
+          id?: string
+          purpose: string
+          source_node_id: string
+          status?: string
+          target_node_id: string
+        }
+        Update: {
+          amount?: number
+          compliance_cleared?: boolean
+          created_at?: string
+          cross_border_agreement_id?: string | null
+          id?: string
+          purpose?: string
+          source_node_id?: string
+          status?: string
+          target_node_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "network_capital_routes_cross_border_agreement_id_fkey"
+            columns: ["cross_border_agreement_id"]
+            isOneToOne: false
+            referencedRelation: "cross_border_agreements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "network_capital_routes_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "sovereign_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "network_capital_routes_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "sovereign_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      network_council_members: {
+        Row: {
+          active: boolean
+          id: string
+          joined_at: string
+          node_id: string | null
+          region_id: string | null
+          tenant_id: string
+          voting_weight: number
+        }
+        Insert: {
+          active?: boolean
+          id?: string
+          joined_at?: string
+          node_id?: string | null
+          region_id?: string | null
+          tenant_id: string
+          voting_weight?: number
+        }
+        Update: {
+          active?: boolean
+          id?: string
+          joined_at?: string
+          node_id?: string | null
+          region_id?: string | null
+          tenant_id?: string
+          voting_weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "network_council_members_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "sovereign_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "network_council_members_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "network_council_members_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       network_suggestions: {
         Row: {
@@ -35424,6 +35703,84 @@ export type Database = {
           treaty_reference?: string | null
         }
         Relationships: []
+      }
+      sovereign_nodes: {
+        Row: {
+          autonomous_dispute_tolerance: number | null
+          autonomous_max_capital_per_deal: number | null
+          autonomous_min_trust_threshold: number | null
+          autonomous_policy_enabled: boolean
+          autonomous_preferred_sectors: string[] | null
+          autonomous_risk_tolerance: string | null
+          created_at: string
+          id: string
+          network_participation_status: string
+          network_risk_score: number
+          node_capital_limit: number
+          node_trust_score: number
+          region_id: string | null
+          sovereign_status: boolean
+          tenant_id: string
+          total_network_capital_contributed: number
+          total_network_capital_received: number
+          updated_at: string
+        }
+        Insert: {
+          autonomous_dispute_tolerance?: number | null
+          autonomous_max_capital_per_deal?: number | null
+          autonomous_min_trust_threshold?: number | null
+          autonomous_policy_enabled?: boolean
+          autonomous_preferred_sectors?: string[] | null
+          autonomous_risk_tolerance?: string | null
+          created_at?: string
+          id?: string
+          network_participation_status?: string
+          network_risk_score?: number
+          node_capital_limit?: number
+          node_trust_score?: number
+          region_id?: string | null
+          sovereign_status?: boolean
+          tenant_id: string
+          total_network_capital_contributed?: number
+          total_network_capital_received?: number
+          updated_at?: string
+        }
+        Update: {
+          autonomous_dispute_tolerance?: number | null
+          autonomous_max_capital_per_deal?: number | null
+          autonomous_min_trust_threshold?: number | null
+          autonomous_policy_enabled?: boolean
+          autonomous_preferred_sectors?: string[] | null
+          autonomous_risk_tolerance?: string | null
+          created_at?: string
+          id?: string
+          network_participation_status?: string
+          network_risk_score?: number
+          node_capital_limit?: number
+          node_trust_score?: number
+          region_id?: string | null
+          sovereign_status?: boolean
+          tenant_id?: string
+          total_network_capital_contributed?: number
+          total_network_capital_received?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sovereign_nodes_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sovereign_nodes_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: true
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sponsor_engagement_events: {
         Row: {
