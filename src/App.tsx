@@ -98,6 +98,8 @@ const EventsPage = lazy(() => import("./pages/EventsPage"));
 const HRPage = lazy(() => import("./pages/HRPage"));
 const AutomationPage = lazy(() => import("./pages/AutomationPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
+const BlogArticlePage = lazy(() => import("./pages/BlogArticlePage"));
+const BlogEditorPage = lazy(() => import("./pages/BlogEditorPage"));
 const GovernancePage = lazy(() => import("./pages/GovernancePage"));
 const SocialFeaturesPage = lazy(() => import("./pages/SocialFeaturesPage"));
 const ImpactPage = lazy(() => import("./pages/ImpactPage"));
@@ -107,6 +109,8 @@ const InstallPage = lazy(() => import("./pages/InstallPage"));
 const FeaturesShowcasePage = lazy(() => import("./pages/FeaturesShowcasePage"));
 const CareersPage = lazy(() => import("./pages/CareersPage"));
 const PressKitPage = lazy(() => import("./pages/PressKitPage"));
+const NotificationSettingsPage = lazy(() => import("./pages/NotificationSettingsPage"));
+const ProjectManagementPage = lazy(() => import("./pages/ProjectManagementPage"));
 
 // Public / Marketing (minimal)
 const AboutPage = lazy(() => import("./pages/AboutPage"));
