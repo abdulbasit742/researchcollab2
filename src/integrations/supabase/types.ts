@@ -4263,6 +4263,44 @@ export type Database = {
         }
         Relationships: []
       }
+      capital_index_snapshots: {
+        Row: {
+          capital_velocity_index: number
+          completion_index: number
+          created_at: string
+          id: string
+          innovation_index: number
+          region_id: string | null
+          risk_adjusted_return_index: number
+        }
+        Insert: {
+          capital_velocity_index?: number
+          completion_index?: number
+          created_at?: string
+          id?: string
+          innovation_index?: number
+          region_id?: string | null
+          risk_adjusted_return_index?: number
+        }
+        Update: {
+          capital_velocity_index?: number
+          completion_index?: number
+          created_at?: string
+          id?: string
+          innovation_index?: number
+          region_id?: string | null
+          risk_adjusted_return_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capital_index_snapshots_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       capital_influence_risk: {
         Row: {
           assessed_at: string | null
@@ -18358,6 +18396,47 @@ export type Database = {
         }
         Relationships: []
       }
+      infrastructure_nodes: {
+        Row: {
+          cloud_provider: string
+          created_at: string
+          failover_priority: number
+          health_status: string
+          id: string
+          last_checked_at: string
+          metadata: Json | null
+          region_id: string | null
+        }
+        Insert: {
+          cloud_provider?: string
+          created_at?: string
+          failover_priority?: number
+          health_status?: string
+          id?: string
+          last_checked_at?: string
+          metadata?: Json | null
+          region_id?: string | null
+        }
+        Update: {
+          cloud_provider?: string
+          created_at?: string
+          failover_priority?: number
+          health_status?: string
+          id?: string
+          last_checked_at?: string
+          metadata?: Json | null
+          region_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "infrastructure_nodes_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       infrastructure_registry: {
         Row: {
           capacity_metrics: Json | null
@@ -18804,6 +18883,54 @@ export type Database = {
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institution_identity_registry: {
+        Row: {
+          created_at: string
+          global_identity_hash: string
+          id: string
+          region_origin: string | null
+          reputation_score: number
+          tenant_id: string
+          trust_signature: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          global_identity_hash: string
+          id?: string
+          region_origin?: string | null
+          reputation_score?: number
+          tenant_id: string
+          trust_signature?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          global_identity_hash?: string
+          id?: string
+          region_origin?: string | null
+          reputation_score?: number
+          tenant_id?: string
+          trust_signature?: string | null
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_identity_registry_region_origin_fkey"
+            columns: ["region_origin"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "institution_identity_registry_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: true
+            referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
         ]
@@ -20533,6 +20660,57 @@ export type Database = {
           safeguard_type?: string
         }
         Relationships: []
+      }
+      intergovernmental_agreements: {
+        Row: {
+          active: boolean
+          capital_limit: number
+          compliance_alignment_score: number
+          created_at: string
+          id: string
+          region_a: string
+          region_b: string
+          risk_sharing_terms: Json | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          capital_limit?: number
+          compliance_alignment_score?: number
+          created_at?: string
+          id?: string
+          region_a: string
+          region_b: string
+          risk_sharing_terms?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          capital_limit?: number
+          compliance_alignment_score?: number
+          created_at?: string
+          id?: string
+          region_a?: string
+          region_b?: string
+          risk_sharing_terms?: Json | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intergovernmental_agreements_region_a_fkey"
+            columns: ["region_a"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "intergovernmental_agreements_region_b_fkey"
+            columns: ["region_b"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       internal_controls_log: {
         Row: {
@@ -38965,6 +39143,33 @@ export type Database = {
           penalty_type?: string
           recovery_months?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      trust_index_history: {
+        Row: {
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          score: number
+          trust_type: string
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          score?: number
+          trust_type: string
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          score?: number
+          trust_type?: string
         }
         Relationships: []
       }
