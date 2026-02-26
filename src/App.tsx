@@ -1,5 +1,6 @@
 // App entry point — Core Engine Mode
 import { lazy, Suspense } from "react";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { HelmetProvider } from "react-helmet-async";
 import { Toaster } from "@/components/ui/toaster";
@@ -206,16 +207,16 @@ const AppContent = () => {
           <Route path="/onboarding" element={<OnboardingPage />} />
 
           {/* ====== CORE ENGINE ====== */}
-          <Route path="/home" element={<HomeDashboard />} />
+          <Route path="/home" element={<ProtectedRoute><HomeDashboard /></ProtectedRoute>} />
 
           {/* Social — Feed, Explore, Reels */}
-          <Route path="/feed" element={<FeedPage />} />
-          <Route path="/explore" element={<ExplorePage />} />
-          <Route path="/reels" element={<ReelsPage />} />
+          <Route path="/feed" element={<ProtectedRoute><FeedPage /></ProtectedRoute>} />
+          <Route path="/explore" element={<ProtectedRoute><ExplorePage /></ProtectedRoute>} />
+          <Route path="/reels" element={<ProtectedRoute><ReelsPage /></ProtectedRoute>} />
 
           {/* Profile */}
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile/settings" element={<ProfileSettingsPage />} />
+          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="/profile/settings" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
           <Route path="/u/:id" element={<UserPublicProfilePage />} />
 
           {/* FYP — Create & Execute */}
@@ -231,20 +232,20 @@ const AppContent = () => {
           <Route path="/opportunities/:id" element={<OfferRedirectPage />} />
 
           {/* Deals — Escrow & Milestones */}
-          <Route path="/deals" element={<DealsPage />} />
-          <Route path="/deals/:dealId" element={<DealDetailPage />} />
-          <Route path="/workroom/:offerId" element={<WorkRoomPage />} />
+          <Route path="/deals" element={<ProtectedRoute><DealsPage /></ProtectedRoute>} />
+          <Route path="/deals/:dealId" element={<ProtectedRoute><DealDetailPage /></ProtectedRoute>} />
+          <Route path="/workroom/:offerId" element={<ProtectedRoute><WorkRoomPage /></ProtectedRoute>} />
 
           {/* Wallet — Payment */}
-          <Route path="/wallet" element={<WalletPage />} />
+          <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
 
           {/* Verification — Trust */}
           <Route path="/verification" element={<VerificationCenterPage />} />
 
           {/* Messages */}
-          <Route path="/messages" element={<MessagesPage />} />
-          <Route path="/messages/:threadId" element={<MessageThreadPage />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
+          <Route path="/messages/:threadId" element={<ProtectedRoute><MessageThreadPage /></ProtectedRoute>} />
+          <Route path="/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
 
           {/* Search */}
           <Route path="/search" element={<SearchPage />} />
@@ -262,7 +263,7 @@ const AppContent = () => {
           {/* ====== RESTORED FEATURE SECTIONS ====== */}
           <Route path="/earn" element={<EarnPage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
-          <Route path="/network" element={<NetworkPage />} />
+          <Route path="/network" element={<ProtectedRoute><NetworkPage /></ProtectedRoute>} />
           <Route path="/career" element={<CareerPage />} />
           <Route path="/passport" element={<PassportPage />} />
           <Route path="/research-papers" element={<ResearchPapersPage />} />
