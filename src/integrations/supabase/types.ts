@@ -4516,6 +4516,50 @@ export type Database = {
           },
         ]
       }
+      capital_source_profiles: {
+        Row: {
+          contributor_id: string
+          created_at: string
+          declared_source: string
+          id: string
+          pool_id: string | null
+          risk_level: string
+          source_verified: boolean
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          contributor_id: string
+          created_at?: string
+          declared_source: string
+          id?: string
+          pool_id?: string | null
+          risk_level?: string
+          source_verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          contributor_id?: string
+          created_at?: string
+          declared_source?: string
+          id?: string
+          pool_id?: string | null
+          risk_level?: string
+          source_verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capital_source_profiles_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "capital_pools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       capital_stress_results: {
         Row: {
           created_at: string | null
@@ -5660,6 +5704,133 @@ export type Database = {
           simplification_paths?: Json | null
           system_name?: string
           underused_flag?: boolean | null
+        }
+        Relationships: []
+      }
+      compliance_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          id: string
+          reason: string
+          region_id: string | null
+          resolution_notes: string | null
+          resolved: boolean
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          user_id: string
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string
+          id?: string
+          reason: string
+          region_id?: string | null
+          resolution_notes?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          user_id: string
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          id?: string
+          reason?: string
+          region_id?: string | null
+          resolution_notes?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compliance_alerts_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      compliance_audit_logs: {
+        Row: {
+          action: string
+          compliance_flag: boolean | null
+          created_at: string
+          details: Json | null
+          entity_id: string | null
+          entity_type: string
+          id: string
+          region_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          compliance_flag?: boolean | null
+          created_at?: string
+          details?: Json | null
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          region_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          compliance_flag?: boolean | null
+          created_at?: string
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          region_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compliance_audit_logs_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      compliance_risk_profiles: {
+        Row: {
+          aml_score: number
+          compliance_risk_score: number
+          created_at: string
+          flag_reason: string | null
+          flagged: boolean
+          id: string
+          last_assessed_at: string
+          user_id: string
+        }
+        Insert: {
+          aml_score?: number
+          compliance_risk_score?: number
+          created_at?: string
+          flag_reason?: string | null
+          flagged?: boolean
+          id?: string
+          last_assessed_at?: string
+          user_id: string
+        }
+        Update: {
+          aml_score?: number
+          compliance_risk_score?: number
+          created_at?: string
+          flag_reason?: string | null
+          flagged?: boolean
+          id?: string
+          last_assessed_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -21617,6 +21788,69 @@ export type Database = {
           },
         ]
       }
+      kyc_profiles: {
+        Row: {
+          created_at: string
+          document_hash: string
+          document_type: string
+          id: string
+          region_id: string | null
+          rejection_reason: string | null
+          risk_level: string
+          tenant_id: string | null
+          updated_at: string
+          user_id: string
+          verification_status: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_hash: string
+          document_type: string
+          id?: string
+          region_id?: string | null
+          rejection_reason?: string | null
+          risk_level?: string
+          tenant_id?: string | null
+          updated_at?: string
+          user_id: string
+          verification_status?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_hash?: string
+          document_type?: string
+          id?: string
+          region_id?: string | null
+          rejection_reason?: string | null
+          risk_level?: string
+          tenant_id?: string | null
+          updated_at?: string
+          user_id?: string
+          verification_status?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kyc_profiles_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kyc_profiles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       kyc_verifications: {
         Row: {
           admin_approved: boolean | null
@@ -36579,6 +36813,45 @@ export type Database = {
           startup_id?: string | null
           survival_probability?: number | null
           trust_trajectory_slope?: number | null
+        }
+        Relationships: []
+      }
+      suspicious_transactions: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string
+          resolution_notes: string | null
+          resolved: boolean
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          transaction_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reason: string
+          resolution_notes?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          transaction_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string
+          resolution_notes?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          transaction_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
