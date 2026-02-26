@@ -4598,6 +4598,47 @@ export type Database = {
           },
         ]
       }
+      capital_sovereignty_profiles: {
+        Row: {
+          capital_outflow_limit: number
+          compliance_restriction_level: string
+          created_at: string
+          cross_border_exposure: number
+          id: string
+          region_id: string | null
+          sovereign_override_active: boolean
+          version: number
+        }
+        Insert: {
+          capital_outflow_limit?: number
+          compliance_restriction_level?: string
+          created_at?: string
+          cross_border_exposure?: number
+          id?: string
+          region_id?: string | null
+          sovereign_override_active?: boolean
+          version?: number
+        }
+        Update: {
+          capital_outflow_limit?: number
+          compliance_restriction_level?: string
+          created_at?: string
+          cross_border_exposure?: number
+          id?: string
+          region_id?: string | null
+          sovereign_override_active?: boolean
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capital_sovereignty_profiles_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       capital_stress_results: {
         Row: {
           created_at: string | null
@@ -6044,6 +6085,48 @@ export type Database = {
           offline_mode_enabled?: boolean | null
           preferred_media_quality?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      consensus_sessions: {
+        Row: {
+          compliance_cleared: boolean
+          created_at: string
+          id: string
+          outcome: string | null
+          participating_regions: string[]
+          proposal_id: string | null
+          proposal_summary: string | null
+          quorum_met: boolean
+          resolved_at: string | null
+          risk_projection_score: number | null
+          trust_weighted_score: number
+        }
+        Insert: {
+          compliance_cleared?: boolean
+          created_at?: string
+          id?: string
+          outcome?: string | null
+          participating_regions?: string[]
+          proposal_id?: string | null
+          proposal_summary?: string | null
+          quorum_met?: boolean
+          resolved_at?: string | null
+          risk_projection_score?: number | null
+          trust_weighted_score?: number
+        }
+        Update: {
+          compliance_cleared?: boolean
+          created_at?: string
+          id?: string
+          outcome?: string | null
+          participating_regions?: string[]
+          proposal_id?: string | null
+          proposal_summary?: string | null
+          quorum_met?: boolean
+          resolved_at?: string | null
+          risk_projection_score?: number | null
+          trust_weighted_score?: number
         }
         Relationships: []
       }
@@ -16458,6 +16541,48 @@ export type Database = {
         }
         Relationships: []
       }
+      governance_era_profiles: {
+        Row: {
+          capital_efficiency: number
+          created_at: string
+          end_year: number | null
+          era_name: string
+          era_number: number
+          governance_model: string
+          id: string
+          innovation_growth: number
+          risk_profile: number
+          start_year: number
+          trust_shift: number
+        }
+        Insert: {
+          capital_efficiency?: number
+          created_at?: string
+          end_year?: number | null
+          era_name?: string
+          era_number: number
+          governance_model?: string
+          id?: string
+          innovation_growth?: number
+          risk_profile?: number
+          start_year: number
+          trust_shift?: number
+        }
+        Update: {
+          capital_efficiency?: number
+          created_at?: string
+          end_year?: number | null
+          era_name?: string
+          era_number?: number
+          governance_model?: string
+          id?: string
+          innovation_growth?: number
+          risk_profile?: number
+          start_year?: number
+          trust_shift?: number
+        }
+        Relationships: []
+      }
       governance_influence_registry: {
         Row: {
           created_at: string | null
@@ -26796,6 +26921,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      planetary_invariants: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          enforcement_level: string
+          id: string
+          invariant_definition: string
+          invariant_name: string
+          version: number
+        }
+        Insert: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          enforcement_level?: string
+          id?: string
+          invariant_definition: string
+          invariant_name: string
+          version?: number
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          enforcement_level?: string
+          id?: string
+          invariant_definition?: string
+          invariant_name?: string
+          version?: number
+        }
+        Relationships: []
       }
       planetary_node_registry: {
         Row: {
