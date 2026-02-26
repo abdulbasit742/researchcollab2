@@ -23,7 +23,7 @@ export interface Profile {
 export interface UserRole {
   id: string;
   user_id: string;
-  role: "student" | "researcher" | "admin";
+  role: "student" | "researcher" | "admin" | "government_admin" | "compliance_officer" | "sponsor_admin" | "tenant_admin";
   created_at: string;
 }
 

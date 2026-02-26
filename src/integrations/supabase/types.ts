@@ -4928,6 +4928,70 @@ export type Database = {
           },
         ]
       }
+      collaboration_agreements: {
+        Row: {
+          agreement_type: string
+          approved_by_a: boolean | null
+          approved_by_b: boolean | null
+          created_at: string
+          id: string
+          region_id: string | null
+          status: string
+          tenant_a: string
+          tenant_b: string
+          terms: Json | null
+          updated_at: string
+        }
+        Insert: {
+          agreement_type?: string
+          approved_by_a?: boolean | null
+          approved_by_b?: boolean | null
+          created_at?: string
+          id?: string
+          region_id?: string | null
+          status?: string
+          tenant_a: string
+          tenant_b: string
+          terms?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          agreement_type?: string
+          approved_by_a?: boolean | null
+          approved_by_b?: boolean | null
+          created_at?: string
+          id?: string
+          region_id?: string | null
+          status?: string
+          tenant_a?: string
+          tenant_b?: string
+          terms?: Json | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collaboration_agreements_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collaboration_agreements_tenant_a_fkey"
+            columns: ["tenant_a"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collaboration_agreements_tenant_b_fkey"
+            columns: ["tenant_b"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       collaboration_cooldowns: {
         Row: {
           collaboration_count: number
@@ -16089,6 +16153,47 @@ export type Database = {
           },
         ]
       }
+      governance_audit_logs: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          details: Json | null
+          entity_id: string | null
+          entity_type: string
+          id: string
+          region_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          details?: Json | null
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          region_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          region_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_audit_logs_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       governance_councils: {
         Row: {
           authority_scope: Json | null
@@ -16493,6 +16598,41 @@ export type Database = {
             columns: ["voter_scholar_passport_id"]
             isOneToOne: false
             referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      governing_bodies: {
+        Row: {
+          created_at: string
+          id: string
+          jurisdiction_scope: string | null
+          name: string
+          oversight_level: string
+          region_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          jurisdiction_scope?: string | null
+          name: string
+          oversight_level?: string
+          region_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          jurisdiction_scope?: string | null
+          name?: string
+          oversight_level?: string
+          region_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governing_bodies_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
             referencedColumns: ["id"]
           },
         ]
@@ -29322,6 +29462,60 @@ export type Database = {
           },
         ]
       }
+      public_grant_pools: {
+        Row: {
+          allocation_policy: string | null
+          created_at: string
+          governing_body_id: string
+          id: string
+          name: string
+          region_id: string | null
+          status: string
+          total_allocated: number
+          total_committed: number
+          updated_at: string
+        }
+        Insert: {
+          allocation_policy?: string | null
+          created_at?: string
+          governing_body_id: string
+          id?: string
+          name: string
+          region_id?: string | null
+          status?: string
+          total_allocated?: number
+          total_committed?: number
+          updated_at?: string
+        }
+        Update: {
+          allocation_policy?: string | null
+          created_at?: string
+          governing_body_id?: string
+          id?: string
+          name?: string
+          region_id?: string | null
+          status?: string
+          total_allocated?: number
+          total_committed?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_grant_pools_governing_body_id_fkey"
+            columns: ["governing_body_id"]
+            isOneToOne: false
+            referencedRelation: "governing_bodies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_grant_pools_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       publication_authors: {
         Row: {
           affiliation: string | null
@@ -41276,7 +41470,14 @@ export type Database = {
         | "suspended"
         | "revoked"
       affiliate_type: "standard" | "institutional" | "ambassador"
-      app_role: "student" | "researcher" | "admin"
+      app_role:
+        | "student"
+        | "researcher"
+        | "admin"
+        | "government_admin"
+        | "compliance_officer"
+        | "sponsor_admin"
+        | "tenant_admin"
       deployment_type: "saas" | "dedicated" | "sovereign"
       due_diligence_status: "pending" | "in_progress" | "completed" | "flagged"
       entity_lifecycle_state:
@@ -41497,7 +41698,15 @@ export const Constants = {
         "revoked",
       ],
       affiliate_type: ["standard", "institutional", "ambassador"],
-      app_role: ["student", "researcher", "admin"],
+      app_role: [
+        "student",
+        "researcher",
+        "admin",
+        "government_admin",
+        "compliance_officer",
+        "sponsor_admin",
+        "tenant_admin",
+      ],
       deployment_type: ["saas", "dedicated", "sovereign"],
       due_diligence_status: ["pending", "in_progress", "completed", "flagged"],
       entity_lifecycle_state: [
