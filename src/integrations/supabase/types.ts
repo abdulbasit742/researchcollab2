@@ -29113,6 +29113,27 @@ export type Database = {
           },
         ]
       }
+      rate_limit_entries: {
+        Row: {
+          action_type: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       rate_limit_events: {
         Row: {
           action_type: string
@@ -35574,6 +35595,39 @@ export type Database = {
           },
         ]
       }
+      stripe_events: {
+        Row: {
+          amount: number | null
+          created_at: string
+          deal_id: string | null
+          event_id: string
+          event_type: string
+          id: string
+          processed: boolean
+          processed_at: string | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string
+          deal_id?: string | null
+          event_id: string
+          event_type: string
+          id?: string
+          processed?: boolean
+          processed_at?: string | null
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string
+          deal_id?: string | null
+          event_id?: string
+          event_type?: string
+          id?: string
+          processed?: boolean
+          processed_at?: string | null
+        }
+        Relationships: []
+      }
       structural_friction_log: {
         Row: {
           details: Json | null
@@ -38422,6 +38476,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_flags: {
+        Row: {
+          created_at: string
+          details: Json | null
+          flag_type: string
+          id: string
+          resolved: boolean
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          flag_type: string
+          id?: string
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          flag_type?: string
+          id?: string
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_follows: {
         Row: {
           created_at: string
@@ -40173,6 +40263,7 @@ export type Database = {
         Returns: boolean
       }
       cleanup_expired_idempotency_keys: { Args: never; Returns: number }
+      cleanup_old_rate_limits: { Args: never; Returns: undefined }
       compute_consequence_ledger: {
         Args: { p_user_id: string }
         Returns: undefined
