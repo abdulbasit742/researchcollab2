@@ -273,6 +273,8 @@ const AppContent = () => {
           <Route path="/hr" element={<HRPage />} />
           <Route path="/automation" element={<AutomationPage />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/new" element={<BlogEditorPage />} />
+          <Route path="/blog/:slug" element={<BlogArticlePage />} />
           <Route path="/governance" element={<GovernancePage />} />
           <Route path="/social" element={<SocialFeaturesPage />} />
           <Route path="/impact" element={<ImpactPage />} />
@@ -282,6 +284,8 @@ const AppContent = () => {
           <Route path="/features" element={<FeaturesShowcasePage />} />
           <Route path="/careers" element={<CareersPage />} />
           <Route path="/press" element={<PressKitPage />} />
+          <Route path="/notification-settings" element={<NotificationSettingsPage />} />
+          <Route path="/project-management" element={<ProjectManagementPage />} />
 
           {/* ====== ADMIN ====== */}
           <Route path="/admin" element={<AdminPortalPage />} />
