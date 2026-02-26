@@ -29779,6 +29779,85 @@ export type Database = {
         }
         Relationships: []
       }
+      region_feature_flags: {
+        Row: {
+          config: Json | null
+          created_at: string
+          enabled: boolean
+          feature_key: string
+          id: string
+          region_id: string
+        }
+        Insert: {
+          config?: Json | null
+          created_at?: string
+          enabled?: boolean
+          feature_key: string
+          id?: string
+          region_id: string
+        }
+        Update: {
+          config?: Json | null
+          created_at?: string
+          enabled?: boolean
+          feature_key?: string
+          id?: string
+          region_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "region_feature_flags_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      region_health_snapshots: {
+        Row: {
+          anomaly_count: number | null
+          checked_at: string
+          db_healthy: boolean | null
+          escrow_integrity: boolean | null
+          id: string
+          pool_health_score: number | null
+          region_id: string
+          stripe_healthy: boolean | null
+          wallet_integrity: boolean | null
+        }
+        Insert: {
+          anomaly_count?: number | null
+          checked_at?: string
+          db_healthy?: boolean | null
+          escrow_integrity?: boolean | null
+          id?: string
+          pool_health_score?: number | null
+          region_id: string
+          stripe_healthy?: boolean | null
+          wallet_integrity?: boolean | null
+        }
+        Update: {
+          anomaly_count?: number | null
+          checked_at?: string
+          db_healthy?: boolean | null
+          escrow_integrity?: boolean | null
+          id?: string
+          pool_health_score?: number | null
+          region_id?: string
+          stripe_healthy?: boolean | null
+          wallet_integrity?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "region_health_snapshots_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       regional_domination_metrics: {
         Row: {
           capital_cycle_days: number | null
@@ -29918,6 +29997,45 @@ export type Database = {
           region?: string
           skill_name?: string
           supply_count?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      regions: {
+        Row: {
+          code: string
+          created_at: string
+          currency_default: string
+          data_residency_policy: string | null
+          id: string
+          name: string
+          status: string
+          stripe_account_id: string | null
+          stripe_webhook_secret: string | null
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          currency_default?: string
+          data_residency_policy?: string | null
+          id?: string
+          name: string
+          status?: string
+          stripe_account_id?: string | null
+          stripe_webhook_secret?: string | null
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          currency_default?: string
+          data_residency_policy?: string | null
+          id?: string
+          name?: string
+          status?: string
+          stripe_account_id?: string | null
+          stripe_webhook_secret?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -37127,6 +37245,7 @@ export type Database = {
           id: string
           metadata: Json | null
           name: string
+          region_id: string | null
           slug: string | null
           status: string
           type: string
@@ -37137,6 +37256,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           name: string
+          region_id?: string | null
           slug?: string | null
           status?: string
           type?: string
@@ -37147,12 +37267,21 @@ export type Database = {
           id?: string
           metadata?: Json | null
           name?: string
+          region_id?: string | null
           slug?: string | null
           status?: string
           type?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "tenants_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       thread_notes: {
         Row: {
