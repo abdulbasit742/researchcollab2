@@ -6286,6 +6286,39 @@ export type Database = {
         }
         Relationships: []
       }
+      constitutional_principles: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          immutable: boolean
+          invariant_definition: string
+          principle_name: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          id?: string
+          immutable?: boolean
+          invariant_definition: string
+          principle_name: string
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          immutable?: boolean
+          invariant_definition?: string
+          principle_name?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: []
+      }
       constitutional_violations: {
         Row: {
           created_at: string
@@ -16385,6 +16418,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      governance_epochs: {
+        Row: {
+          created_at: string
+          end_date: string | null
+          epoch_number: number
+          governance_model: string
+          id: string
+          major_policy_changes: Json | null
+          notes: string | null
+          start_date: string
+          systemic_risk_level: number
+          trust_shift_index: number
+        }
+        Insert: {
+          created_at?: string
+          end_date?: string | null
+          epoch_number: number
+          governance_model?: string
+          id?: string
+          major_policy_changes?: Json | null
+          notes?: string | null
+          start_date?: string
+          systemic_risk_level?: number
+          trust_shift_index?: number
+        }
+        Update: {
+          created_at?: string
+          end_date?: string | null
+          epoch_number?: number
+          governance_model?: string
+          id?: string
+          major_policy_changes?: Json | null
+          notes?: string | null
+          start_date?: string
+          systemic_risk_level?: number
+          trust_shift_index?: number
+        }
+        Relationships: []
       }
       governance_influence_registry: {
         Row: {
@@ -31197,6 +31269,50 @@ export type Database = {
           treaty_count?: number | null
         }
         Relationships: []
+      }
+      regulatory_profiles: {
+        Row: {
+          compliance_rules: Json
+          compliance_rules_hash: string | null
+          created_at: string
+          id: string
+          last_updated: string
+          region_id: string | null
+          regulatory_divergence_score: number
+          sanction_zones: string[] | null
+          version: number
+        }
+        Insert: {
+          compliance_rules?: Json
+          compliance_rules_hash?: string | null
+          created_at?: string
+          id?: string
+          last_updated?: string
+          region_id?: string | null
+          regulatory_divergence_score?: number
+          sanction_zones?: string[] | null
+          version?: number
+        }
+        Update: {
+          compliance_rules?: Json
+          compliance_rules_hash?: string | null
+          created_at?: string
+          id?: string
+          last_updated?: string
+          region_id?: string | null
+          regulatory_divergence_score?: number
+          sanction_zones?: string[] | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regulatory_profiles_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       relationship_entropy: {
         Row: {
