@@ -19057,6 +19057,63 @@ export type Database = {
         }
         Relationships: []
       }
+      institution_credit_profiles: {
+        Row: {
+          bond_issuance_limit: number
+          capital_access_limit: number
+          capital_return_consistency: number
+          completion_rate: number
+          compliance_health: number
+          created_at: string
+          credit_score: number
+          dispute_rate: number
+          governance_participation: number
+          id: string
+          liquidity_discipline: number
+          rating_band: string
+          tenant_id: string
+          trust_stability: number
+          updated_at: string
+          volatility_index: number
+        }
+        Insert: {
+          bond_issuance_limit?: number
+          capital_access_limit?: number
+          capital_return_consistency?: number
+          completion_rate?: number
+          compliance_health?: number
+          created_at?: string
+          credit_score?: number
+          dispute_rate?: number
+          governance_participation?: number
+          id?: string
+          liquidity_discipline?: number
+          rating_band?: string
+          tenant_id: string
+          trust_stability?: number
+          updated_at?: string
+          volatility_index?: number
+        }
+        Update: {
+          bond_issuance_limit?: number
+          capital_access_limit?: number
+          capital_return_consistency?: number
+          completion_rate?: number
+          compliance_health?: number
+          created_at?: string
+          credit_score?: number
+          dispute_rate?: number
+          governance_participation?: number
+          id?: string
+          liquidity_discipline?: number
+          rating_band?: string
+          tenant_id?: string
+          trust_stability?: number
+          updated_at?: string
+          volatility_index?: number
+        }
+        Relationships: []
+      }
       institution_dashboard_access: {
         Row: {
           access_level: string
@@ -32091,6 +32148,114 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      research_bonds: {
+        Row: {
+          backing_asset_ids: string[]
+          bond_name: string
+          compliance_approved: boolean
+          coupon_rate: number
+          created_at: string
+          default_probability: number
+          escrow_locked_amount: number
+          governance_approved: boolean
+          id: string
+          issuing_institution: string
+          maturity_date: string
+          region_scope: string[]
+          risk_score: number
+          status: string
+          total_principal: number
+          updated_at: string
+        }
+        Insert: {
+          backing_asset_ids?: string[]
+          bond_name: string
+          compliance_approved?: boolean
+          coupon_rate?: number
+          created_at?: string
+          default_probability?: number
+          escrow_locked_amount?: number
+          governance_approved?: boolean
+          id?: string
+          issuing_institution: string
+          maturity_date: string
+          region_scope?: string[]
+          risk_score?: number
+          status?: string
+          total_principal: number
+          updated_at?: string
+        }
+        Update: {
+          backing_asset_ids?: string[]
+          bond_name?: string
+          compliance_approved?: boolean
+          coupon_rate?: number
+          created_at?: string
+          default_probability?: number
+          escrow_locked_amount?: number
+          governance_approved?: boolean
+          id?: string
+          issuing_institution?: string
+          maturity_date?: string
+          region_scope?: string[]
+          risk_score?: number
+          status?: string
+          total_principal?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      research_capital_assets: {
+        Row: {
+          backing_type: string
+          compliance_status: string
+          created_at: string
+          escrow_backing_amount: number
+          expected_return: number
+          id: string
+          is_active: boolean
+          maturity_period: number
+          region_scope: string[]
+          risk_score: number
+          tenant_id: string | null
+          total_value: number
+          underlying_project_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          backing_type: string
+          compliance_status?: string
+          created_at?: string
+          escrow_backing_amount?: number
+          expected_return?: number
+          id?: string
+          is_active?: boolean
+          maturity_period?: number
+          region_scope?: string[]
+          risk_score?: number
+          tenant_id?: string | null
+          total_value?: number
+          underlying_project_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          backing_type?: string
+          compliance_status?: string
+          created_at?: string
+          escrow_backing_amount?: number
+          expected_return?: number
+          id?: string
+          is_active?: boolean
+          maturity_period?: number
+          region_scope?: string[]
+          risk_score?: number
+          tenant_id?: string | null
+          total_value?: number
+          underlying_project_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       research_collaborators: {
         Row: {
