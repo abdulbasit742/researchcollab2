@@ -12868,6 +12868,104 @@ export type Database = {
         }
         Relationships: []
       }
+      external_integration_logs: {
+        Row: {
+          action: string
+          block_reason: string | null
+          created_at: string
+          data_classification: string
+          id: string
+          interface_id: string | null
+          region_scope: string | null
+          request_metadata: Json | null
+          resource_type: string
+          response_summary: string | null
+          was_blocked: boolean
+        }
+        Insert: {
+          action: string
+          block_reason?: string | null
+          created_at?: string
+          data_classification?: string
+          id?: string
+          interface_id?: string | null
+          region_scope?: string | null
+          request_metadata?: Json | null
+          resource_type: string
+          response_summary?: string | null
+          was_blocked?: boolean
+        }
+        Update: {
+          action?: string
+          block_reason?: string | null
+          created_at?: string
+          data_classification?: string
+          id?: string
+          interface_id?: string | null
+          region_scope?: string | null
+          request_metadata?: Json | null
+          resource_type?: string
+          response_summary?: string | null
+          was_blocked?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_integration_logs_interface_id_fkey"
+            columns: ["interface_id"]
+            isOneToOne: false
+            referencedRelation: "external_interfaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      external_interfaces: {
+        Row: {
+          access_scope: string
+          api_key_hash: string | null
+          compliance_profile: string
+          created_at: string
+          id: string
+          institution_type: string
+          interface_name: string
+          is_active: boolean
+          last_accessed_at: string | null
+          rate_limit_per_hour: number
+          region_scope: string[]
+          trust_tier: string
+          updated_at: string
+        }
+        Insert: {
+          access_scope?: string
+          api_key_hash?: string | null
+          compliance_profile?: string
+          created_at?: string
+          id?: string
+          institution_type: string
+          interface_name: string
+          is_active?: boolean
+          last_accessed_at?: string | null
+          rate_limit_per_hour?: number
+          region_scope?: string[]
+          trust_tier?: string
+          updated_at?: string
+        }
+        Update: {
+          access_scope?: string
+          api_key_hash?: string | null
+          compliance_profile?: string
+          created_at?: string
+          id?: string
+          institution_type?: string
+          interface_name?: string
+          is_active?: boolean
+          last_accessed_at?: string | null
+          rate_limit_per_hour?: number
+          region_scope?: string[]
+          trust_tier?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       external_verification_logs: {
         Row: {
           access_timestamp: string
