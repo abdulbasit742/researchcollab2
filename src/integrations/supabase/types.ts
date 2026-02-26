@@ -33900,6 +33900,93 @@ export type Database = {
           },
         ]
       }
+      reserve_settlement_log: {
+        Row: {
+          compliance_validated: boolean
+          created_at: string
+          id: string
+          settled_at: string | null
+          settlement_value: number
+          source_region: string
+          sovereignty_cleared: boolean
+          status: string
+          target_region: string
+          unit_count: number
+        }
+        Insert: {
+          compliance_validated?: boolean
+          created_at?: string
+          id?: string
+          settled_at?: string | null
+          settlement_value: number
+          source_region: string
+          sovereignty_cleared?: boolean
+          status?: string
+          target_region: string
+          unit_count: number
+        }
+        Update: {
+          compliance_validated?: boolean
+          created_at?: string
+          id?: string
+          settled_at?: string | null
+          settlement_value?: number
+          source_region?: string
+          sovereignty_cleared?: boolean
+          status?: string
+          target_region?: string
+          unit_count?: number
+        }
+        Relationships: []
+      }
+      reserve_units: {
+        Row: {
+          backing_capital_amount: number
+          backing_pool_id: string | null
+          compliance_status: string
+          created_at: string
+          id: string
+          is_redeemed: boolean
+          issued_at: string
+          issuing_institution: string | null
+          redeemed_at: string | null
+          region_scope: string[]
+          risk_weight: number
+          trust_weight: number
+          unit_value: number
+        }
+        Insert: {
+          backing_capital_amount: number
+          backing_pool_id?: string | null
+          compliance_status?: string
+          created_at?: string
+          id?: string
+          is_redeemed?: boolean
+          issued_at?: string
+          issuing_institution?: string | null
+          redeemed_at?: string | null
+          region_scope?: string[]
+          risk_weight?: number
+          trust_weight?: number
+          unit_value?: number
+        }
+        Update: {
+          backing_capital_amount?: number
+          backing_pool_id?: string | null
+          compliance_status?: string
+          created_at?: string
+          id?: string
+          is_redeemed?: boolean
+          issued_at?: string
+          issuing_institution?: string | null
+          redeemed_at?: string | null
+          region_scope?: string[]
+          risk_weight?: number
+          trust_weight?: number
+          unit_value?: number
+        }
+        Relationships: []
+      }
       resource_productivity_metrics: {
         Row: {
           capital_sustainability_horizon_years: number | null
