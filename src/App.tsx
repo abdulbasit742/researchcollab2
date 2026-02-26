@@ -411,8 +411,8 @@ const AppContent = () => {
           <Route path="/affiliate" element={<Navigate to="/home" replace />} />
           <Route path="/affiliate/*" element={<Navigate to="/home" replace />} />
 
-          {/* Blog sub-routes */}
-          <Route path="/blog/*" element={<Navigate to="/blog" replace />} />
+          {/* Blog edit routes redirect */}
+          <Route path="/blog/edit/:id" element={<BlogEditorPage />} />
 
           {/* Governance sub-routes */}
           <Route path="/governance/*" element={<Navigate to="/governance" replace />} />
