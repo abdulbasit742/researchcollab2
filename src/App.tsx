@@ -376,7 +376,7 @@ const AppContent = () => {
           <Route path="/arbitration/*" element={<Navigate to="/deals" replace />} />
 
           {/* Finance → wallet */}
-          <Route path="/earn/*" element={<Navigate to="/wallet" replace />} />
+          <Route path="/earn/*" element={<Navigate to="/earn" replace />} />
           <Route path="/finance/*" element={<Navigate to="/wallet" replace />} />
           <Route path="/market-liquidity" element={<Navigate to="/wallet" replace />} />
           <Route path="/market/*" element={<Navigate to="/wallet" replace />} />
