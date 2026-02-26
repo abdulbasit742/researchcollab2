@@ -98,6 +98,8 @@ const EventsPage = lazy(() => import("./pages/EventsPage"));
 const HRPage = lazy(() => import("./pages/HRPage"));
 const AutomationPage = lazy(() => import("./pages/AutomationPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
+const BlogArticlePage = lazy(() => import("./pages/BlogArticlePage"));
+const BlogEditorPage = lazy(() => import("./pages/BlogEditorPage"));
 const GovernancePage = lazy(() => import("./pages/GovernancePage"));
 const SocialFeaturesPage = lazy(() => import("./pages/SocialFeaturesPage"));
 const ImpactPage = lazy(() => import("./pages/ImpactPage"));
@@ -107,6 +109,8 @@ const InstallPage = lazy(() => import("./pages/InstallPage"));
 const FeaturesShowcasePage = lazy(() => import("./pages/FeaturesShowcasePage"));
 const CareersPage = lazy(() => import("./pages/CareersPage"));
 const PressKitPage = lazy(() => import("./pages/PressKitPage"));
+const NotificationSettingsPage = lazy(() => import("./pages/NotificationSettingsPage"));
+const ProjectManagementPage = lazy(() => import("./pages/ProjectManagementPage"));
 
 // Public / Marketing (minimal)
 const AboutPage = lazy(() => import("./pages/AboutPage"));
@@ -269,6 +273,8 @@ const AppContent = () => {
           <Route path="/hr" element={<HRPage />} />
           <Route path="/automation" element={<AutomationPage />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/new" element={<BlogEditorPage />} />
+          <Route path="/blog/:slug" element={<BlogArticlePage />} />
           <Route path="/governance" element={<GovernancePage />} />
           <Route path="/social" element={<SocialFeaturesPage />} />
           <Route path="/impact" element={<ImpactPage />} />
@@ -278,6 +284,8 @@ const AppContent = () => {
           <Route path="/features" element={<FeaturesShowcasePage />} />
           <Route path="/careers" element={<CareersPage />} />
           <Route path="/press" element={<PressKitPage />} />
+          <Route path="/notification-settings" element={<NotificationSettingsPage />} />
+          <Route path="/project-management" element={<ProjectManagementPage />} />
 
           {/* ====== ADMIN ====== */}
           <Route path="/admin" element={<AdminPortalPage />} />
@@ -368,7 +376,7 @@ const AppContent = () => {
           <Route path="/arbitration/*" element={<Navigate to="/deals" replace />} />
 
           {/* Finance → wallet */}
-          <Route path="/earn/*" element={<Navigate to="/wallet" replace />} />
+          <Route path="/earn/*" element={<Navigate to="/earn" replace />} />
           <Route path="/finance/*" element={<Navigate to="/wallet" replace />} />
           <Route path="/market-liquidity" element={<Navigate to="/wallet" replace />} />
           <Route path="/market/*" element={<Navigate to="/wallet" replace />} />
@@ -403,8 +411,8 @@ const AppContent = () => {
           <Route path="/affiliate" element={<Navigate to="/home" replace />} />
           <Route path="/affiliate/*" element={<Navigate to="/home" replace />} />
 
-          {/* Blog sub-routes */}
-          <Route path="/blog/*" element={<Navigate to="/blog" replace />} />
+          {/* Blog edit routes redirect */}
+          <Route path="/blog/edit/:id" element={<BlogEditorPage />} />
 
           {/* Governance sub-routes */}
           <Route path="/governance/*" element={<Navigate to="/governance" replace />} />
