@@ -12304,6 +12304,51 @@ export type Database = {
         }
         Relationships: []
       }
+      escrows: {
+        Row: {
+          created_at: string
+          currency: string
+          deal_id: string
+          id: string
+          locked_amount: number
+          recipient_id: string
+          refunded_amount: number
+          released_amount: number
+          sponsor_id: string
+          status: string
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          deal_id: string
+          id?: string
+          locked_amount?: number
+          recipient_id: string
+          refunded_amount?: number
+          released_amount?: number
+          sponsor_id: string
+          status?: string
+          total_amount: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          deal_id?: string
+          id?: string
+          locked_amount?: number
+          recipient_id?: string
+          refunded_amount?: number
+          released_amount?: number
+          sponsor_id?: string
+          status?: string
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       ethics_board_members: {
         Row: {
           appointed_at: string
@@ -14104,6 +14149,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      financial_audit_logs: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          metadata: Json | null
+          new_state: Json | null
+          old_state: Json | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          metadata?: Json | null
+          new_state?: Json | null
+          old_state?: Json | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          metadata?: Json | null
+          new_state?: Json | null
+          old_state?: Json | null
+        }
+        Relationships: []
       }
       financial_compliance_logs: {
         Row: {
@@ -22940,8 +23021,10 @@ export type Database = {
           currency: string
           description: string | null
           entry_type: string
+          hash: string | null
           id: string
           is_immutable: boolean
+          previous_hash: string | null
           reference_id: string | null
           reference_type: string | null
           transaction_id: string
@@ -22954,8 +23037,10 @@ export type Database = {
           currency?: string
           description?: string | null
           entry_type: string
+          hash?: string | null
           id?: string
           is_immutable?: boolean
+          previous_hash?: string | null
           reference_id?: string | null
           reference_type?: string | null
           transaction_id: string
@@ -22968,8 +23053,10 @@ export type Database = {
           currency?: string
           description?: string | null
           entry_type?: string
+          hash?: string | null
           id?: string
           is_immutable?: boolean
+          previous_hash?: string | null
           reference_id?: string | null
           reference_type?: string | null
           transaction_id?: string
@@ -23479,7 +23566,10 @@ export type Database = {
           approved_by: string | null
           auto_release_at: string | null
           created_at: string
+          deal_id: string | null
+          deliverable_url: string | null
           description: string | null
+          escrow_id: string | null
           expected_delivery: string | null
           id: string
           offer_id: string
@@ -23501,7 +23591,10 @@ export type Database = {
           approved_by?: string | null
           auto_release_at?: string | null
           created_at?: string
+          deal_id?: string | null
+          deliverable_url?: string | null
           description?: string | null
+          escrow_id?: string | null
           expected_delivery?: string | null
           id?: string
           offer_id: string
@@ -23523,7 +23616,10 @@ export type Database = {
           approved_by?: string | null
           auto_release_at?: string | null
           created_at?: string
+          deal_id?: string | null
+          deliverable_url?: string | null
           description?: string | null
+          escrow_id?: string | null
           expected_delivery?: string | null
           id?: string
           offer_id?: string
@@ -23539,6 +23635,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "milestones_escrow_id_fkey"
+            columns: ["escrow_id"]
+            isOneToOne: false
+            referencedRelation: "escrows"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "milestones_offer_id_fkey"
             columns: ["offer_id"]
@@ -42969,6 +43072,10 @@ export type Database = {
         Args: { p_feature: string; p_user_id: string }
         Returns: boolean
       }
+      validate_escrow_integrity: {
+        Args: { p_escrow_id: string }
+        Returns: Json
+      }
       validate_state_transition: {
         Args: {
           p_entity_type: string
@@ -42977,6 +43084,10 @@ export type Database = {
           p_user_id?: string
         }
         Returns: boolean
+      }
+      validate_wallet_integrity: {
+        Args: { p_wallet_id: string }
+        Returns: Json
       }
       verify_deployment_isolation: {
         Args: {
@@ -42987,6 +43098,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      verify_ledger_chain: { Args: never; Returns: Json }
     }
     Enums: {
       affiliate_lifecycle_status:

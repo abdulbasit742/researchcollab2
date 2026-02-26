@@ -1,0 +1,1 @@
+DROP TRIGGER IF EXISTS prevent_ledger_mutation_trigger ON public.ledger_entries;
