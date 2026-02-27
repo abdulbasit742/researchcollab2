@@ -4245,6 +4245,103 @@ export type Database = {
           },
         ]
       }
+      asset_performance_tracking: {
+        Row: {
+          computed_at: string
+          dataset_citation_rate: number | null
+          deliverable_reuse_count: number | null
+          id: string
+          listing_id: string
+          long_term_satisfaction: number | null
+          patent_commercialization_success: number | null
+          revenue_compounding: number | null
+          service_repeat_rate: number | null
+          tool_adoption_rate: number | null
+        }
+        Insert: {
+          computed_at?: string
+          dataset_citation_rate?: number | null
+          deliverable_reuse_count?: number | null
+          id?: string
+          listing_id: string
+          long_term_satisfaction?: number | null
+          patent_commercialization_success?: number | null
+          revenue_compounding?: number | null
+          service_repeat_rate?: number | null
+          tool_adoption_rate?: number | null
+        }
+        Update: {
+          computed_at?: string
+          dataset_citation_rate?: number | null
+          deliverable_reuse_count?: number | null
+          id?: string
+          listing_id?: string
+          long_term_satisfaction?: number | null
+          patent_commercialization_success?: number | null
+          revenue_compounding?: number | null
+          service_repeat_rate?: number | null
+          tool_adoption_rate?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "asset_performance_tracking_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: true
+            referencedRelation: "marketplace_listings_paeme"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      asset_verifications: {
+        Row: {
+          compliance_clearance: boolean | null
+          created_at: string
+          id: string
+          institutional_endorsement: string | null
+          ip_registration_ref: string | null
+          listing_id: string
+          proof_data: Json | null
+          status: string | null
+          verification_type: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          compliance_clearance?: boolean | null
+          created_at?: string
+          id?: string
+          institutional_endorsement?: string | null
+          ip_registration_ref?: string | null
+          listing_id: string
+          proof_data?: Json | null
+          status?: string | null
+          verification_type: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          compliance_clearance?: boolean | null
+          created_at?: string
+          id?: string
+          institutional_endorsement?: string | null
+          ip_registration_ref?: string | null
+          listing_id?: string
+          proof_data?: Json | null
+          status?: string | null
+          verification_type?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "asset_verifications_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_listings_paeme"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       attack_surfaces: {
         Row: {
           authentication_required: boolean | null
@@ -28441,6 +28538,57 @@ export type Database = {
           },
         ]
       }
+      institutional_procurements: {
+        Row: {
+          category: string | null
+          closes_at: string | null
+          compliance_checks: string[] | null
+          created_at: string
+          description: string | null
+          domain: string | null
+          domain_authority_threshold: number | null
+          escrow_terms: Json | null
+          id: string
+          institution_id: string
+          rfp_requirements: Json | null
+          status: string | null
+          title: string
+          trust_density_filter: number | null
+        }
+        Insert: {
+          category?: string | null
+          closes_at?: string | null
+          compliance_checks?: string[] | null
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          domain_authority_threshold?: number | null
+          escrow_terms?: Json | null
+          id?: string
+          institution_id: string
+          rfp_requirements?: Json | null
+          status?: string | null
+          title: string
+          trust_density_filter?: number | null
+        }
+        Update: {
+          category?: string | null
+          closes_at?: string | null
+          compliance_checks?: string[] | null
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          domain_authority_threshold?: number | null
+          escrow_terms?: Json | null
+          id?: string
+          institution_id?: string
+          rfp_requirements?: Json | null
+          status?: string | null
+          title?: string
+          trust_density_filter?: number | null
+        }
+        Relationships: []
+      }
       institutional_risk_forecasts: {
         Row: {
           capital_dependency_risk: number | null
@@ -32235,6 +32383,59 @@ export type Database = {
         }
         Relationships: []
       }
+      listing_credibility: {
+        Row: {
+          composite_credibility: number | null
+          computed_at: string
+          dispute_history_score: number | null
+          domain_authority: number | null
+          execution_reliability: number | null
+          funding_compliance: number | null
+          id: string
+          institutional_verification: number | null
+          listing_id: string
+          long_term_stability: number | null
+          repeat_buyer_rate: number | null
+          seller_trust_index: number | null
+        }
+        Insert: {
+          composite_credibility?: number | null
+          computed_at?: string
+          dispute_history_score?: number | null
+          domain_authority?: number | null
+          execution_reliability?: number | null
+          funding_compliance?: number | null
+          id?: string
+          institutional_verification?: number | null
+          listing_id: string
+          long_term_stability?: number | null
+          repeat_buyer_rate?: number | null
+          seller_trust_index?: number | null
+        }
+        Update: {
+          composite_credibility?: number | null
+          computed_at?: string
+          dispute_history_score?: number | null
+          domain_authority?: number | null
+          execution_reliability?: number | null
+          funding_compliance?: number | null
+          id?: string
+          institutional_verification?: number | null
+          listing_id?: string
+          long_term_stability?: number | null
+          repeat_buyer_rate?: number | null
+          seller_trust_index?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_credibility_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: true
+            referencedRelation: "marketplace_listings_paeme"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       living_research_objects: {
         Row: {
           abstract: string | null
@@ -32690,6 +32891,48 @@ export type Database = {
         }
         Relationships: []
       }
+      market_liquidity_metrics: {
+        Row: {
+          buyer_geo_distribution: Json | null
+          category: string
+          computed_at: string
+          conversion_rate: number | null
+          demand_trend: number | null
+          domain: string | null
+          domain_growth_signal: number | null
+          funding_linked_demand: number | null
+          id: string
+          pricing_competitiveness: number | null
+          skill_saturation: number | null
+        }
+        Insert: {
+          buyer_geo_distribution?: Json | null
+          category: string
+          computed_at?: string
+          conversion_rate?: number | null
+          demand_trend?: number | null
+          domain?: string | null
+          domain_growth_signal?: number | null
+          funding_linked_demand?: number | null
+          id?: string
+          pricing_competitiveness?: number | null
+          skill_saturation?: number | null
+        }
+        Update: {
+          buyer_geo_distribution?: Json | null
+          category?: string
+          computed_at?: string
+          conversion_rate?: number | null
+          demand_trend?: number | null
+          domain?: string | null
+          domain_growth_signal?: number | null
+          funding_linked_demand?: number | null
+          id?: string
+          pricing_competitiveness?: number | null
+          skill_saturation?: number | null
+        }
+        Relationships: []
+      }
       marketplace_applications: {
         Row: {
           applicant_id: string
@@ -32736,6 +32979,260 @@ export type Database = {
             columns: ["listing_id"]
             isOneToOne: false
             referencedRelation: "execution_marketplace"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_cross_border: {
+        Row: {
+          checked_at: string
+          currency_compliance: boolean | null
+          data_transfer_compliant: boolean | null
+          export_control_clear: boolean | null
+          flags: string[] | null
+          funding_restriction_clear: boolean | null
+          id: string
+          ip_ownership_compatible: boolean | null
+          jurisdiction_compatibility: number | null
+          listing_id: string | null
+          overall_viability: number | null
+          transaction_id: string | null
+        }
+        Insert: {
+          checked_at?: string
+          currency_compliance?: boolean | null
+          data_transfer_compliant?: boolean | null
+          export_control_clear?: boolean | null
+          flags?: string[] | null
+          funding_restriction_clear?: boolean | null
+          id?: string
+          ip_ownership_compatible?: boolean | null
+          jurisdiction_compatibility?: number | null
+          listing_id?: string | null
+          overall_viability?: number | null
+          transaction_id?: string | null
+        }
+        Update: {
+          checked_at?: string
+          currency_compliance?: boolean | null
+          data_transfer_compliant?: boolean | null
+          export_control_clear?: boolean | null
+          flags?: string[] | null
+          funding_restriction_clear?: boolean | null
+          id?: string
+          ip_ownership_compatible?: boolean | null
+          jurisdiction_compatibility?: number | null
+          listing_id?: string | null
+          overall_viability?: number | null
+          transaction_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_cross_border_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_listings_paeme"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_cross_border_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_fraud_flags: {
+        Row: {
+          created_at: string
+          description: string | null
+          evidence: Json | null
+          flag_type: string
+          flagged_user_id: string | null
+          id: string
+          listing_id: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string | null
+          status: string | null
+          transaction_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          flag_type: string
+          flagged_user_id?: string | null
+          id?: string
+          listing_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          transaction_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          flag_type?: string
+          flagged_user_id?: string | null
+          id?: string
+          listing_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          transaction_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_fraud_flags_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_listings_paeme"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_fraud_flags_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_listings_paeme: {
+        Row: {
+          category: string
+          compliance_requirements: string[] | null
+          conversion_count: number | null
+          created_at: string
+          credibility_score: number | null
+          deliverables: string[] | null
+          description: string | null
+          domain: string | null
+          escrow_milestone_breakdown: Json | null
+          funding_linkage: string | null
+          id: string
+          ip_ownership_terms: string | null
+          pricing_amount: number | null
+          pricing_currency: string | null
+          privacy_level: string | null
+          seller_id: string
+          status: string | null
+          timeline_days: number | null
+          title: string
+          updated_at: string
+          verification_status: string | null
+          view_count: number | null
+        }
+        Insert: {
+          category: string
+          compliance_requirements?: string[] | null
+          conversion_count?: number | null
+          created_at?: string
+          credibility_score?: number | null
+          deliverables?: string[] | null
+          description?: string | null
+          domain?: string | null
+          escrow_milestone_breakdown?: Json | null
+          funding_linkage?: string | null
+          id?: string
+          ip_ownership_terms?: string | null
+          pricing_amount?: number | null
+          pricing_currency?: string | null
+          privacy_level?: string | null
+          seller_id: string
+          status?: string | null
+          timeline_days?: number | null
+          title: string
+          updated_at?: string
+          verification_status?: string | null
+          view_count?: number | null
+        }
+        Update: {
+          category?: string
+          compliance_requirements?: string[] | null
+          conversion_count?: number | null
+          created_at?: string
+          credibility_score?: number | null
+          deliverables?: string[] | null
+          description?: string | null
+          domain?: string | null
+          escrow_milestone_breakdown?: Json | null
+          funding_linkage?: string | null
+          id?: string
+          ip_ownership_terms?: string | null
+          pricing_amount?: number | null
+          pricing_currency?: string | null
+          privacy_level?: string | null
+          seller_id?: string
+          status?: string | null
+          timeline_days?: number | null
+          title?: string
+          updated_at?: string
+          verification_status?: string | null
+          view_count?: number | null
+        }
+        Relationships: []
+      }
+      marketplace_transactions: {
+        Row: {
+          amount: number
+          buyer_id: string
+          completed_at: string | null
+          compliance_reviewed: boolean | null
+          created_at: string
+          currency: string | null
+          deliverable_validation: Json | null
+          dispute_status: string | null
+          escrow_id: string | null
+          id: string
+          listing_id: string
+          milestones: Json | null
+          seller_id: string
+          status: string | null
+        }
+        Insert: {
+          amount: number
+          buyer_id: string
+          completed_at?: string | null
+          compliance_reviewed?: boolean | null
+          created_at?: string
+          currency?: string | null
+          deliverable_validation?: Json | null
+          dispute_status?: string | null
+          escrow_id?: string | null
+          id?: string
+          listing_id: string
+          milestones?: Json | null
+          seller_id: string
+          status?: string | null
+        }
+        Update: {
+          amount?: number
+          buyer_id?: string
+          completed_at?: string | null
+          compliance_reviewed?: boolean | null
+          created_at?: string
+          currency?: string | null
+          deliverable_validation?: Json | null
+          dispute_status?: string | null
+          escrow_id?: string | null
+          id?: string
+          listing_id?: string
+          milestones?: Json | null
+          seller_id?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_transactions_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_listings_paeme"
             referencedColumns: ["id"]
           },
         ]
