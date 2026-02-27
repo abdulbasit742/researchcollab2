@@ -12669,6 +12669,54 @@ export type Database = {
         }
         Relationships: []
       }
+      domain_lifecycle_phases: {
+        Row: {
+          citation_velocity: number | null
+          cross_discipline_convergence: number | null
+          detected_at: string
+          domain: string
+          evidence: Json | null
+          funding_velocity: number | null
+          id: string
+          patent_velocity: number | null
+          phase: string
+          phase_end_year: number | null
+          phase_start_year: number
+          policy_adoption_curve: number | null
+          startup_formation_rate: number | null
+        }
+        Insert: {
+          citation_velocity?: number | null
+          cross_discipline_convergence?: number | null
+          detected_at?: string
+          domain: string
+          evidence?: Json | null
+          funding_velocity?: number | null
+          id?: string
+          patent_velocity?: number | null
+          phase: string
+          phase_end_year?: number | null
+          phase_start_year: number
+          policy_adoption_curve?: number | null
+          startup_formation_rate?: number | null
+        }
+        Update: {
+          citation_velocity?: number | null
+          cross_discipline_convergence?: number | null
+          detected_at?: string
+          domain?: string
+          evidence?: Json | null
+          funding_velocity?: number | null
+          id?: string
+          patent_velocity?: number | null
+          phase?: string
+          phase_end_year?: number | null
+          phase_start_year?: number
+          policy_adoption_curve?: number | null
+          startup_formation_rate?: number | null
+        }
+        Relationships: []
+      }
       dominance_conditions: {
         Row: {
           category: string
@@ -19029,6 +19077,51 @@ export type Database = {
         }
         Relationships: []
       }
+      generational_influence_records: {
+        Row: {
+          citation_inheritance: number | null
+          domain: string | null
+          domain_leadership_transfer: boolean | null
+          end_year: number | null
+          grant_co_evolution_score: number | null
+          id: string
+          innovation_continuity: number | null
+          mentee_user_id: string
+          mentor_user_id: string
+          recorded_at: string
+          relationship_type: string
+          start_year: number | null
+        }
+        Insert: {
+          citation_inheritance?: number | null
+          domain?: string | null
+          domain_leadership_transfer?: boolean | null
+          end_year?: number | null
+          grant_co_evolution_score?: number | null
+          id?: string
+          innovation_continuity?: number | null
+          mentee_user_id: string
+          mentor_user_id: string
+          recorded_at?: string
+          relationship_type?: string
+          start_year?: number | null
+        }
+        Update: {
+          citation_inheritance?: number | null
+          domain?: string | null
+          domain_leadership_transfer?: boolean | null
+          end_year?: number | null
+          grant_co_evolution_score?: number | null
+          id?: string
+          innovation_continuity?: number | null
+          mentee_user_id?: string
+          mentor_user_id?: string
+          recorded_at?: string
+          relationship_type?: string
+          start_year?: number | null
+        }
+        Relationships: []
+      }
       global_equity_weights: {
         Row: {
           citation_normalization_factor: number | null
@@ -21399,6 +21492,51 @@ export type Database = {
         }
         Relationships: []
       }
+      historical_funding_regimes: {
+        Row: {
+          country_code: string
+          domains_affected: string[] | null
+          end_year: number | null
+          funding_change_pct: number | null
+          id: string
+          impact_on_innovation: number | null
+          policy_drivers: string[] | null
+          recorded_at: string
+          regime_name: string
+          regime_type: string
+          start_year: number
+          trigger_event: string | null
+        }
+        Insert: {
+          country_code: string
+          domains_affected?: string[] | null
+          end_year?: number | null
+          funding_change_pct?: number | null
+          id?: string
+          impact_on_innovation?: number | null
+          policy_drivers?: string[] | null
+          recorded_at?: string
+          regime_name: string
+          regime_type: string
+          start_year: number
+          trigger_event?: string | null
+        }
+        Update: {
+          country_code?: string
+          domains_affected?: string[] | null
+          end_year?: number | null
+          funding_change_pct?: number | null
+          id?: string
+          impact_on_innovation?: number | null
+          policy_drivers?: string[] | null
+          recorded_at?: string
+          regime_name?: string
+          regime_type?: string
+          start_year?: number
+          trigger_event?: string | null
+        }
+        Relationships: []
+      }
       idea_evolution: {
         Row: {
           contributors: string[] | null
@@ -22709,6 +22847,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      innovation_wave_events: {
+        Row: {
+          countries_affected: string[] | null
+          current_year: number | null
+          detected_at: string
+          domain: string
+          evidence: Json | null
+          funding_acceleration: number | null
+          id: string
+          patent_acceleration: number | null
+          peak_year: number | null
+          start_year: number
+          startup_surge: number | null
+          wave_name: string
+          wave_phase: string
+        }
+        Insert: {
+          countries_affected?: string[] | null
+          current_year?: number | null
+          detected_at?: string
+          domain: string
+          evidence?: Json | null
+          funding_acceleration?: number | null
+          id?: string
+          patent_acceleration?: number | null
+          peak_year?: number | null
+          start_year: number
+          startup_surge?: number | null
+          wave_name: string
+          wave_phase: string
+        }
+        Update: {
+          countries_affected?: string[] | null
+          current_year?: number | null
+          detected_at?: string
+          domain?: string
+          evidence?: Json | null
+          funding_acceleration?: number | null
+          id?: string
+          patent_acceleration?: number | null
+          peak_year?: number | null
+          start_year?: number
+          startup_surge?: number | null
+          wave_name?: string
+          wave_phase?: string
+        }
+        Relationships: []
       }
       institution_adoption_tiers: {
         Row: {
@@ -24498,6 +24684,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      institutional_trajectory_snapshots: {
+        Row: {
+          collaboration_network_size: number | null
+          commercialization_survival: number | null
+          compliance_stability: number | null
+          domain_specializations: string[] | null
+          funding_total: number | null
+          graduate_placement_rate: number | null
+          id: string
+          innovation_yield: number | null
+          institution_id: string
+          patent_conversion_rate: number | null
+          recorded_at: string
+          trajectory_direction: string | null
+          year: number
+        }
+        Insert: {
+          collaboration_network_size?: number | null
+          commercialization_survival?: number | null
+          compliance_stability?: number | null
+          domain_specializations?: string[] | null
+          funding_total?: number | null
+          graduate_placement_rate?: number | null
+          id?: string
+          innovation_yield?: number | null
+          institution_id: string
+          patent_conversion_rate?: number | null
+          recorded_at?: string
+          trajectory_direction?: string | null
+          year: number
+        }
+        Update: {
+          collaboration_network_size?: number | null
+          commercialization_survival?: number | null
+          compliance_stability?: number | null
+          domain_specializations?: string[] | null
+          funding_total?: number | null
+          graduate_placement_rate?: number | null
+          id?: string
+          innovation_yield?: number | null
+          institution_id?: string
+          patent_conversion_rate?: number | null
+          recorded_at?: string
+          trajectory_direction?: string | null
+          year?: number
+        }
+        Relationships: []
       }
       institutional_transparency: {
         Row: {
@@ -26766,6 +27000,54 @@ export type Database = {
           },
         ]
       }
+      knowledge_survival_index: {
+        Row: {
+          computed_at: string
+          domain: string | null
+          domain_persistence_index: number | null
+          entity_id: string
+          entity_type: string
+          id: string
+          overall_survival_score: number | null
+          patent_survival_15yr_pct: number | null
+          period: string | null
+          policy_impact_longevity: number | null
+          reproducibility_consistency: number | null
+          research_cited_after_10yr_pct: number | null
+          startup_survival_5yr_pct: number | null
+        }
+        Insert: {
+          computed_at?: string
+          domain?: string | null
+          domain_persistence_index?: number | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          overall_survival_score?: number | null
+          patent_survival_15yr_pct?: number | null
+          period?: string | null
+          policy_impact_longevity?: number | null
+          reproducibility_consistency?: number | null
+          research_cited_after_10yr_pct?: number | null
+          startup_survival_5yr_pct?: number | null
+        }
+        Update: {
+          computed_at?: string
+          domain?: string | null
+          domain_persistence_index?: number | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          overall_survival_score?: number | null
+          patent_survival_15yr_pct?: number | null
+          period?: string | null
+          policy_impact_longevity?: number | null
+          reproducibility_consistency?: number | null
+          research_cited_after_10yr_pct?: number | null
+          startup_survival_5yr_pct?: number | null
+        }
+        Relationships: []
+      }
       knowledge_usage_events: {
         Row: {
           context_id: string | null
@@ -27487,6 +27769,117 @@ export type Database = {
           status?: string
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      long_term_sustainability_scores: {
+        Row: {
+          collaboration_stability: number | null
+          compliance_consistency: number | null
+          computed_at: string
+          domain_reinvention: number | null
+          entity_id: string
+          entity_type: string
+          funding_continuity: number | null
+          id: string
+          institutional_resilience: number | null
+          overall_sustainability: number | null
+          patent_survival_score: number | null
+          period: string | null
+          startup_longevity_score: number | null
+        }
+        Insert: {
+          collaboration_stability?: number | null
+          compliance_consistency?: number | null
+          computed_at?: string
+          domain_reinvention?: number | null
+          entity_id: string
+          entity_type: string
+          funding_continuity?: number | null
+          id?: string
+          institutional_resilience?: number | null
+          overall_sustainability?: number | null
+          patent_survival_score?: number | null
+          period?: string | null
+          startup_longevity_score?: number | null
+        }
+        Update: {
+          collaboration_stability?: number | null
+          compliance_consistency?: number | null
+          computed_at?: string
+          domain_reinvention?: number | null
+          entity_id?: string
+          entity_type?: string
+          funding_continuity?: number | null
+          id?: string
+          institutional_resilience?: number | null
+          overall_sustainability?: number | null
+          patent_survival_score?: number | null
+          period?: string | null
+          startup_longevity_score?: number | null
+        }
+        Relationships: []
+      }
+      longitudinal_research_data: {
+        Row: {
+          collaboration_density: number | null
+          commercialization_revenue: number | null
+          compliance_score: number | null
+          country_code: string | null
+          domain: string | null
+          entity_id: string
+          entity_type: string
+          funding_amount: number | null
+          grants_count: number | null
+          id: string
+          institution_id: string | null
+          patents_count: number | null
+          policy_citations: number | null
+          publications_count: number | null
+          recorded_at: string
+          startups_formed: number | null
+          venture_capital: number | null
+          year: number
+        }
+        Insert: {
+          collaboration_density?: number | null
+          commercialization_revenue?: number | null
+          compliance_score?: number | null
+          country_code?: string | null
+          domain?: string | null
+          entity_id: string
+          entity_type: string
+          funding_amount?: number | null
+          grants_count?: number | null
+          id?: string
+          institution_id?: string | null
+          patents_count?: number | null
+          policy_citations?: number | null
+          publications_count?: number | null
+          recorded_at?: string
+          startups_formed?: number | null
+          venture_capital?: number | null
+          year: number
+        }
+        Update: {
+          collaboration_density?: number | null
+          commercialization_revenue?: number | null
+          compliance_score?: number | null
+          country_code?: string | null
+          domain?: string | null
+          entity_id?: string
+          entity_type?: string
+          funding_amount?: number | null
+          grants_count?: number | null
+          id?: string
+          institution_id?: string | null
+          patents_count?: number | null
+          policy_citations?: number | null
+          publications_count?: number | null
+          recorded_at?: string
+          startups_formed?: number | null
+          venture_capital?: number | null
+          year?: number
         }
         Relationships: []
       }
@@ -31196,6 +31589,51 @@ export type Database = {
           starts_at?: string
           status?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      paradigm_shift_events: {
+        Row: {
+          affected_domains: string[] | null
+          affected_institutions: string[] | null
+          country_code: string | null
+          description: string
+          detected_at: string
+          domain: string | null
+          evidence: Json | null
+          explanation: string | null
+          id: string
+          severity: string | null
+          shift_type: string
+          shift_year: number
+        }
+        Insert: {
+          affected_domains?: string[] | null
+          affected_institutions?: string[] | null
+          country_code?: string | null
+          description: string
+          detected_at?: string
+          domain?: string | null
+          evidence?: Json | null
+          explanation?: string | null
+          id?: string
+          severity?: string | null
+          shift_type: string
+          shift_year: number
+        }
+        Update: {
+          affected_domains?: string[] | null
+          affected_institutions?: string[] | null
+          country_code?: string | null
+          description?: string
+          detected_at?: string
+          domain?: string | null
+          evidence?: Json | null
+          explanation?: string | null
+          id?: string
+          severity?: string | null
+          shift_type?: string
+          shift_year?: number
         }
         Relationships: []
       }
