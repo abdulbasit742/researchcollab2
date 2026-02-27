@@ -28,3 +28,12 @@ export type { PowerConcentrationReport } from "./powerIndex";
 
 export { calculateDependencyScore } from "./dependencyScore";
 export type { DependencyReport } from "./dependencyScore";
+
+export { createCoolingRequest, isCoolingComplete, runValidationMatrix, approveDecision, getRemainingCoolingHours } from "./decisionCooling";
+export type { CoolingRequest, CoolingDecisionType, ValidationResult } from "./decisionCooling";
+
+export { detectGrowthPhase, evaluateGrowthDiscipline, tenYearTest } from "./growthDiscipline";
+export type { GrowthMetrics, GrowthDisciplineReport, GrowthPhase } from "./growthDiscipline";
+
+export { FOUNDER_RISK_PATTERNS, evaluateFounderPerformance } from "./psychologicalRisks";
+export type { PsychologicalRisk, FounderPerformanceMetrics } from "./psychologicalRisks";
