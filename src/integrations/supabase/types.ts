@@ -6730,6 +6730,116 @@ export type Database = {
         }
         Relationships: []
       }
+      claim_citations: {
+        Row: {
+          citation_type: string
+          cited_claim_id: string
+          cited_workspace_id: string | null
+          citing_claim_id: string
+          citing_workspace_id: string | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          citation_type?: string
+          cited_claim_id: string
+          cited_workspace_id?: string | null
+          citing_claim_id: string
+          citing_workspace_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          workspace_id?: string | null
+        }
+        Update: {
+          citation_type?: string
+          cited_claim_id?: string
+          cited_workspace_id?: string | null
+          citing_claim_id?: string
+          citing_workspace_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          workspace_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claim_citations_cited_claim_id_fkey"
+            columns: ["cited_claim_id"]
+            isOneToOne: false
+            referencedRelation: "research_claims"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "claim_citations_citing_claim_id_fkey"
+            columns: ["citing_claim_id"]
+            isOneToOne: false
+            referencedRelation: "research_claims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      claim_influence_metrics: {
+        Row: {
+          citation_count: number | null
+          claim_id: string
+          claim_influence_score: number | null
+          computed_at: string | null
+          contradiction_count: number | null
+          cross_border_citations: number | null
+          extension_count: number | null
+          funding_conversion_count: number | null
+          id: string
+          institution_diversity: number | null
+          peer_review_validation_count: number | null
+          policy_adoption_count: number | null
+          project_implementation_count: number | null
+          support_count: number | null
+        }
+        Insert: {
+          citation_count?: number | null
+          claim_id: string
+          claim_influence_score?: number | null
+          computed_at?: string | null
+          contradiction_count?: number | null
+          cross_border_citations?: number | null
+          extension_count?: number | null
+          funding_conversion_count?: number | null
+          id?: string
+          institution_diversity?: number | null
+          peer_review_validation_count?: number | null
+          policy_adoption_count?: number | null
+          project_implementation_count?: number | null
+          support_count?: number | null
+        }
+        Update: {
+          citation_count?: number | null
+          claim_id?: string
+          claim_influence_score?: number | null
+          computed_at?: string | null
+          contradiction_count?: number | null
+          cross_border_citations?: number | null
+          extension_count?: number | null
+          funding_conversion_count?: number | null
+          id?: string
+          institution_diversity?: number | null
+          peer_review_validation_count?: number | null
+          policy_adoption_count?: number | null
+          project_implementation_count?: number | null
+          support_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claim_influence_metrics_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: true
+            referencedRelation: "research_claims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       claim_mutation_log: {
         Row: {
           claim_id: string

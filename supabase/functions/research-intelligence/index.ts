@@ -1140,6 +1140,102 @@ Return ONLY valid JSON. Be thorough but fair.`
       return jsonResponse({ alerts });
     }
 
+    // ============================================================
+    // ACTION: compute_claim_influence
+    // ============================================================
+    if (action === "compute_claim_influence") {
+      const { claim_id } = body;
+      // Count citations by type
+      const { data: citations } = await supabase.from("claim_citations").select("citation_type").eq("cited_claim_id", claim_id);
+      const cits = citations || [];
+      const supportCount = cits.filter((c: any) => c.citation_type === "supports").length;
+      const contradictCount = cits.filter((c: any) => c.citation_type === "contradicts").length;
+      const extensionCount = cits.filter((c: any) => c.citation_type === "extends").length;
+      const totalCitations = cits.length;
+
+      // Compute CIS: weighted formula
+      const cis = (totalCitations * 1.0) + (supportCount * 0.5) + (extensionCount * 0.3) - (contradictCount * 0.2);
+
+      await supabase.from("claim_influence_metrics").upsert({
+        claim_id,
+        citation_count: totalCitations,
+        support_count: supportCount,
+        contradiction_count: contradictCount,
+        extension_count: extensionCount,
+        claim_influence_score: Math.max(0, cis),
+        computed_at: new Date().toISOString(),
+      }, { onConflict: "claim_id" });
+
+      // Also update the claim itself
+      await supabase.from("research_claims").update({
+        citation_count: totalCitations,
+        claim_influence_score: Math.max(0, cis),
+      }).eq("id", claim_id);
+
+      return jsonResponse({ success: true, claim_influence_score: cis, citation_count: totalCitations });
+    }
+
+    // ============================================================
+    // ACTION: detect_citation_manipulation
+    // ============================================================
+    if (action === "detect_citation_manipulation") {
+      const { workspace_id } = body;
+      const { data: citations } = await supabase.from("claim_citations").select("*").or(`citing_workspace_id.eq.${workspace_id},cited_workspace_id.eq.${workspace_id}`);
+      const cits = citations || [];
+
+      const flags: any[] = [];
+
+      // Detect self-citation loops (same user citing themselves)
+      const selfCites = cits.filter((c: any) => c.citing_workspace_id === c.cited_workspace_id);
+      if (selfCites.length > 5) {
+        flags.push({ flag_type: "self_citation_loop", severity: "medium", description: `${selfCites.length} self-citations detected within same workspace` });
+      }
+
+      // Detect mutual citation clusters
+      const pairMap = new Map<string, number>();
+      for (const c of cits) {
+        const key = [c.citing_workspace_id, c.cited_workspace_id].sort().join(":");
+        pairMap.set(key, (pairMap.get(key) || 0) + 1);
+      }
+      for (const [pair, count] of pairMap) {
+        if (count > 3) {
+          flags.push({ flag_type: "mutual_citation", severity: "medium", description: `Mutual citation cluster (${count} citations) between workspaces` });
+        }
+      }
+
+      // Save flags
+      for (const flag of flags) {
+        await supabase.from("citation_manipulation_flags").insert({ ...flag, evidence: { workspace_id, citation_count: cits.length } });
+      }
+
+      return jsonResponse({ flags, summary: `Scanned ${cits.length} citations. ${flags.length} patterns flagged.` });
+    }
+
+    // ============================================================
+    // ACTION: detect_emerging_topics
+    // ============================================================
+    if (action === "detect_emerging_topics") {
+      const { workspace_id } = body;
+      const { data: claims } = await supabase.from("research_claims").select("id, claim_text, claim_type, topic_tags, domain_category, created_at").eq("workspace_id", workspace_id);
+      if (!claims || claims.length < 3) return jsonResponse({ topics: [] });
+
+      const claimSummary = (claims as any[]).map((c: any) => `[${c.claim_type}] ${c.claim_text} (tags: ${(c.topic_tags || []).join(",")})`).join("\n");
+
+      const aiResult = await callAI([
+        { role: "system", content: `Analyze these research claims and detect emerging topics. Return JSON array: [{"topic": "...", "growth_rate": 0-100, "claim_count": N, "severity": "high|medium|low"}]. Return ONLY valid JSON.` },
+        { role: "user", content: claimSummary }
+      ]);
+      if (aiResult.error) return jsonResponse({ topics: [] });
+
+      try {
+        const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        const topics = JSON.parse(cleaned);
+        return jsonResponse({ topics: Array.isArray(topics) ? topics : [] });
+      } catch {
+        return jsonResponse({ topics: [] });
+      }
+    }
+
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

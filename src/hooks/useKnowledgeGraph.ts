@@ -1,5 +1,8 @@
 import { useState, useCallback } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 import type {
   GraphNode,
   GraphEdge,
@@ -11,8 +14,220 @@ import type {
 } from "@/types/knowledge-civilization";
 
 // ============================================
-// SYSTEM 38: KNOWLEDGE INTELLIGENCE GRAPH
-// Connecting knowledge, people, outcomes, institutions
+// TYPES FOR GKGE
+// ============================================
+
+export interface ClaimCitation {
+  id: string;
+  citing_claim_id: string;
+  cited_claim_id: string;
+  citation_type: "supports" | "extends" | "contradicts" | "references";
+  workspace_id: string | null;
+  citing_workspace_id: string | null;
+  cited_workspace_id: string | null;
+  created_by: string | null;
+  created_at: string;
+}
+
+export interface ClaimInfluenceMetrics {
+  id: string;
+  claim_id: string;
+  citation_count: number;
+  support_count: number;
+  contradiction_count: number;
+  extension_count: number;
+  institution_diversity: number;
+  cross_border_citations: number;
+  policy_adoption_count: number;
+  project_implementation_count: number;
+  funding_conversion_count: number;
+  peer_review_validation_count: number;
+  claim_influence_score: number;
+  computed_at: string;
+}
+
+export interface GlobalClaimSearchResult {
+  id: string;
+  global_claim_id: string;
+  claim_text: string;
+  claim_type: string;
+  confidence_score: number;
+  evidence_strength: number;
+  domain_category: string | null;
+  topic_tags: string[];
+  workspace_id: string;
+  institution_id: string | null;
+  citation_count: number;
+  claim_influence_score: number;
+}
+
+// ============================================
+// GKGE HOOKS — Global Claim Search, Citations, Influence
+// ============================================
+
+export function useGlobalClaimSearch(searchTerm: string, domain?: string) {
+  return useQuery({
+    queryKey: ["global-claims-search", searchTerm, domain],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("research_claims")
+        .select("*")
+        .ilike("claim_text", `%${searchTerm}%`)
+        .limit(50);
+      if (error) throw error;
+      return (data ?? []) as unknown as GlobalClaimSearchResult[];
+    },
+    enabled: searchTerm.length >= 3,
+  });
+}
+
+export function useClaimCitations(claimId?: string) {
+  return useQuery({
+    queryKey: ["claim-citations", claimId],
+    queryFn: async () => {
+      const [{ data: outgoing, error: e1 }, { data: incoming, error: e2 }] = await Promise.all([
+        supabase.from("claim_citations").select("*").eq("citing_claim_id", claimId!),
+        supabase.from("claim_citations").select("*").eq("cited_claim_id", claimId!),
+      ]);
+      if (e1) throw e1;
+      if (e2) throw e2;
+      return {
+        outgoing: (outgoing ?? []) as unknown as ClaimCitation[],
+        incoming: (incoming ?? []) as unknown as ClaimCitation[],
+        totalCitations: incoming?.length ?? 0,
+      };
+    },
+    enabled: !!claimId,
+  });
+}
+
+export function useCreateCitation() {
+  const qc = useQueryClient();
+  const { user } = useAuth();
+  return useMutation({
+    mutationFn: async (params: {
+      citingClaimId: string; citedClaimId: string;
+      citationType: ClaimCitation["citation_type"];
+      workspaceId?: string; citingWorkspaceId?: string; citedWorkspaceId?: string;
+    }) => {
+      const { data, error } = await supabase.from("claim_citations").insert({
+        citing_claim_id: params.citingClaimId,
+        cited_claim_id: params.citedClaimId,
+        citation_type: params.citationType,
+        workspace_id: params.workspaceId,
+        citing_workspace_id: params.citingWorkspaceId,
+        cited_workspace_id: params.citedWorkspaceId,
+        created_by: user?.id,
+      } as any).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (_d, p) => {
+      qc.invalidateQueries({ queryKey: ["claim-citations", p.citingClaimId] });
+      qc.invalidateQueries({ queryKey: ["claim-citations", p.citedClaimId] });
+      toast.success("Citation created");
+    },
+  });
+}
+
+export function useClaimInfluence(claimId?: string) {
+  return useQuery({
+    queryKey: ["claim-influence", claimId],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("claim_influence_metrics").select("*").eq("claim_id", claimId!).maybeSingle();
+      if (error) throw error;
+      return data as unknown as ClaimInfluenceMetrics | null;
+    },
+    enabled: !!claimId,
+  });
+}
+
+export function useComputeClaimInfluence() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (claimId: string) => {
+      const { data, error } = await supabase.functions.invoke("research-intelligence", {
+        body: { action: "compute_claim_influence", claim_id: claimId },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      return data;
+    },
+    onSuccess: (_d, claimId) => {
+      qc.invalidateQueries({ queryKey: ["claim-influence", claimId] });
+      toast.success("Influence score computed");
+    },
+  });
+}
+
+export function useWorkspaceKnowledgeStats(workspaceId?: string) {
+  return useQuery({
+    queryKey: ["workspace-knowledge-stats", workspaceId],
+    queryFn: async () => {
+      const { data: claims, error: e1 } = await supabase
+        .from("research_claims")
+        .select("*")
+        .eq("workspace_id", workspaceId!);
+      if (e1) throw e1;
+
+      const claimIds = (claims ?? []).map((c: any) => c.id);
+      let incomingCitations: any[] = [];
+      if (claimIds.length > 0) {
+        const { data: ic } = await supabase.from("claim_citations").select("*").in("cited_claim_id", claimIds.slice(0, 100));
+        incomingCitations = ic ?? [];
+      }
+
+      const supportCount = incomingCitations.filter(c => c.citation_type === "supports").length;
+      const contradictCount = incomingCitations.filter(c => c.citation_type === "contradicts").length;
+      const extendsCount = incomingCitations.filter(c => c.citation_type === "extends").length;
+      const refCount = incomingCitations.filter(c => c.citation_type === "references").length;
+      const uniqueCitingWorkspaces = new Set(incomingCitations.map(c => c.citing_workspace_id).filter(Boolean));
+
+      return {
+        claims: claims ?? [],
+        totalClaims: claims?.length ?? 0,
+        totalIncomingCitations: incomingCitations.length,
+        supportCount, contradictCount, extendsCount, refCount,
+        crossWorkspaceCitations: uniqueCitingWorkspaces.size,
+        topClaims: (claims ?? []).slice(0, 10),
+      };
+    },
+    enabled: !!workspaceId,
+  });
+}
+
+export function useDetectCitationManipulation() {
+  return useMutation({
+    mutationFn: async (workspaceId: string) => {
+      const { data, error } = await supabase.functions.invoke("research-intelligence", {
+        body: { action: "detect_citation_manipulation", workspace_id: workspaceId },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      return data as { flags: any[]; summary: string };
+    },
+    onSuccess: (data) => {
+      if (data.flags.length > 0) toast.warning(`${data.flags.length} manipulation pattern(s) detected`);
+      else toast.success("No manipulation patterns detected");
+    },
+  });
+}
+
+export function useDetectEmergingTopics() {
+  return useMutation({
+    mutationFn: async (params: { workspaceId?: string; domain?: string }) => {
+      const { data, error } = await supabase.functions.invoke("research-intelligence", {
+        body: { action: "detect_emerging_topics", workspace_id: params.workspaceId, domain: params.domain },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      return data as { topics: Array<{ topic: string; growth_rate: number; claim_count: number; severity: string }> };
+    },
+  });
+}
+
+// ============================================
+// ORIGINAL SYSTEM 38: KNOWLEDGE INTELLIGENCE GRAPH (in-memory)
 // ============================================
 
 export function useKnowledgeGraph() {
