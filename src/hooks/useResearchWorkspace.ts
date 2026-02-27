@@ -224,7 +224,7 @@ export function useWorkspaceQueries(workspaceId?: string) {
         .order("created_at", { ascending: false })
         .limit(50);
       if (error) throw error;
-      return (data ?? []) as (ResearchQuery & { research_responses: ResearchResponse[] })[];
+      return (data ?? []) as unknown as (ResearchQuery & { research_responses: ResearchResponse[] })[];
     },
     enabled: !!workspaceId,
   });

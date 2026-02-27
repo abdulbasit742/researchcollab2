@@ -6730,6 +6730,61 @@ export type Database = {
         }
         Relationships: []
       }
+      claim_relationships: {
+        Row: {
+          ai_reasoning: string | null
+          claim_id_a: string
+          claim_id_b: string
+          created_at: string
+          id: string
+          relationship_type: string
+          similarity_score: number | null
+          workspace_id: string
+        }
+        Insert: {
+          ai_reasoning?: string | null
+          claim_id_a: string
+          claim_id_b: string
+          created_at?: string
+          id?: string
+          relationship_type: string
+          similarity_score?: number | null
+          workspace_id: string
+        }
+        Update: {
+          ai_reasoning?: string | null
+          claim_id_a?: string
+          claim_id_b?: string
+          created_at?: string
+          id?: string
+          relationship_type?: string
+          similarity_score?: number | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claim_relationships_claim_id_a_fkey"
+            columns: ["claim_id_a"]
+            isOneToOne: false
+            referencedRelation: "research_claims"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "claim_relationships_claim_id_b_fkey"
+            columns: ["claim_id_b"]
+            isOneToOne: false
+            referencedRelation: "research_claims"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "claim_relationships_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cmeie_campaigns: {
         Row: {
           category: string
@@ -49281,6 +49336,57 @@ export type Database = {
         }
         Relationships: []
       }
+      research_claims: {
+        Row: {
+          chunk_id: string
+          claim_text: string
+          claim_type: string
+          confidence_score: number | null
+          created_at: string
+          document_id: string
+          evidence_strength: number | null
+          id: string
+          workspace_id: string
+        }
+        Insert: {
+          chunk_id: string
+          claim_text: string
+          claim_type?: string
+          confidence_score?: number | null
+          created_at?: string
+          document_id: string
+          evidence_strength?: number | null
+          id?: string
+          workspace_id: string
+        }
+        Update: {
+          chunk_id?: string
+          claim_text?: string
+          claim_type?: string
+          confidence_score?: number | null
+          created_at?: string
+          document_id?: string
+          evidence_strength?: number | null
+          id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_claims_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "research_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_claims_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_collaborators: {
         Row: {
           added_at: string
@@ -51325,6 +51431,56 @@ export type Database = {
             columns: ["original_patent_id"]
             isOneToOne: false
             referencedRelation: "patent_pipeline"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_synthesis_reports: {
+        Row: {
+          claim_ids: string[] | null
+          content: Json
+          created_at: string
+          generated_by: string
+          id: string
+          institutional_endorsement: boolean | null
+          is_locked: boolean | null
+          report_type: string
+          title: string
+          version_number: number
+          workspace_id: string
+        }
+        Insert: {
+          claim_ids?: string[] | null
+          content?: Json
+          created_at?: string
+          generated_by: string
+          id?: string
+          institutional_endorsement?: boolean | null
+          is_locked?: boolean | null
+          report_type?: string
+          title: string
+          version_number?: number
+          workspace_id: string
+        }
+        Update: {
+          claim_ids?: string[] | null
+          content?: Json
+          created_at?: string
+          generated_by?: string
+          id?: string
+          institutional_endorsement?: boolean | null
+          is_locked?: boolean | null
+          report_type?: string
+          title?: string
+          version_number?: number
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_synthesis_reports_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
             referencedColumns: ["id"]
           },
         ]
