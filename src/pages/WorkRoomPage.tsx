@@ -15,12 +15,15 @@ import {
   DollarSign,
   FileText,
   Calendar,
-  Shield
+  Shield,
+  AlertTriangle,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { MilestoneTracker, MilestoneData } from "@/components/wallet/MilestoneTracker";
 import { WalletCard, WalletCardData } from "@/components/wallet/WalletCard";
 import { useWallet, useMilestones } from "@/hooks/useWallet";
+import { useAuth } from "@/contexts/AuthContext";
+import { useFundEscrow, useOpenDispute } from "@/hooks/useEscrowActions";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -41,10 +44,14 @@ export default function WorkRoomPage() {
   const { offerId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
   const { wallet } = useWallet();
   const { milestones, updateMilestoneStatus } = useMilestones(offerId);
+  const fundEscrow = useFundEscrow();
+  const openDispute = useOpenDispute();
 
   const [offer, setOffer] = useState<Offer | null>(null);
+  const [escrow, setEscrow] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -58,20 +65,24 @@ export default function WorkRoomPage() {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("offers")
-        .select("*")
-        .eq("id", offerId)
-        .maybeSingle();
+      const [offerRes, escrowRes] = await Promise.all([
+        supabase.from("offers").select("*").eq("id", offerId).maybeSingle(),
+        supabase.from("escrows" as any).select("*").eq("deal_id", offerId).maybeSingle(),
+      ]);
 
-      if (error) throw error;
-      setOffer(data);
+      if (offerRes.error) throw offerRes.error;
+      setOffer(offerRes.data);
+      setEscrow(escrowRes.data);
     } catch (err) {
       console.error("Error fetching offer:", err);
     } finally {
       setLoading(false);
     }
   };
+
+  const isSponsor = user?.id === offer?.sender_id;
+  const isExecutor = user?.id === offer?.recipient_id;
+  const userRole = isSponsor ? "client" : "provider";
 
   const handleMilestoneUpdate = async (milestoneId: string, status: MilestoneData["status"]) => {
     const result = await updateMilestoneStatus(milestoneId, status);
@@ -235,7 +246,7 @@ export default function WorkRoomPage() {
               <MilestoneTracker
                 milestones={transformedMilestones}
                 totalBudget={offer.price}
-                userRole="provider"
+                userRole={userRole}
                 onMilestoneUpdate={handleMilestoneUpdate}
               />
             ) : (
@@ -246,6 +257,38 @@ export default function WorkRoomPage() {
                   <p className="text-sm text-muted-foreground">
                     This project doesn't have milestones configured yet.
                   </p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Dispute Section */}
+            {isExecutor && transformedMilestones.some(m => m.status === 'submitted' || m.status === 'approved') && (
+              <Card className="border-destructive/30">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3">
+                    <AlertTriangle className="h-5 w-5 text-destructive" />
+                    <div className="flex-1">
+                      <p className="font-medium text-sm">Issue with a milestone?</p>
+                      <p className="text-xs text-muted-foreground">Open a dispute to freeze escrow and request resolution</p>
+                    </div>
+                    <Button 
+                      variant="destructive" 
+                      size="sm"
+                      onClick={() => {
+                        const submittedMs = transformedMilestones.find(m => m.status === 'submitted');
+                        if (submittedMs && user) {
+                          openDispute.mutate({
+                            milestone_id: submittedMs.id,
+                            user_id: user.id,
+                            reason: 'Deliverable does not meet requirements',
+                          });
+                        }
+                      }}
+                      disabled={openDispute.isPending}
+                    >
+                      Open Dispute
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             )}
