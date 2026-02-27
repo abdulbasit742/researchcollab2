@@ -55301,6 +55301,623 @@ export type Database = {
         }
         Relationships: []
       }
+      stigl_access_keys: {
+        Row: {
+          access_level: string | null
+          access_type: string
+          created_at: string | null
+          ecs_threshold_met: boolean | null
+          expires_at: string | null
+          id: string
+          status: string | null
+          trust_threshold_met: boolean | null
+          unlocked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          access_level?: string | null
+          access_type: string
+          created_at?: string | null
+          ecs_threshold_met?: boolean | null
+          expires_at?: string | null
+          id?: string
+          status?: string | null
+          trust_threshold_met?: boolean | null
+          unlocked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          access_level?: string | null
+          access_type?: string
+          created_at?: string | null
+          ecs_threshold_met?: boolean | null
+          expires_at?: string | null
+          id?: string
+          status?: string | null
+          trust_threshold_met?: boolean | null
+          unlocked_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      stigl_ai_trust_analysis: {
+        Row: {
+          analysis_summary: string
+          analysis_type: string
+          anomaly_detected: boolean | null
+          concentration_risk: number | null
+          confidence: number | null
+          created_at: string | null
+          cross_border_compatibility_forecast: Json | null
+          diversification_suggestions: Json | null
+          id: string
+          reasoning: string | null
+          recovery_suggestions: Json | null
+          risk_zones: Json | null
+          trust_trajectory: Json | null
+          user_id: string
+        }
+        Insert: {
+          analysis_summary: string
+          analysis_type: string
+          anomaly_detected?: boolean | null
+          concentration_risk?: number | null
+          confidence?: number | null
+          created_at?: string | null
+          cross_border_compatibility_forecast?: Json | null
+          diversification_suggestions?: Json | null
+          id?: string
+          reasoning?: string | null
+          recovery_suggestions?: Json | null
+          risk_zones?: Json | null
+          trust_trajectory?: Json | null
+          user_id: string
+        }
+        Update: {
+          analysis_summary?: string
+          analysis_type?: string
+          anomaly_detected?: boolean | null
+          concentration_risk?: number | null
+          confidence?: number | null
+          created_at?: string | null
+          cross_border_compatibility_forecast?: Json | null
+          diversification_suggestions?: Json | null
+          id?: string
+          reasoning?: string | null
+          recovery_suggestions?: Json | null
+          risk_zones?: Json | null
+          trust_trajectory?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      stigl_cross_border_compatibility: {
+        Row: {
+          composite_compatibility: number | null
+          computed_at: string | null
+          currency_handling_compliance: number | null
+          dispute_cross_border_stability: number | null
+          export_control_alignment: number | null
+          id: string
+          international_collaboration_record: Json | null
+          jurisdiction_execution_history: Json | null
+          regulatory_compliance_history: Json | null
+          user_id: string
+        }
+        Insert: {
+          composite_compatibility?: number | null
+          computed_at?: string | null
+          currency_handling_compliance?: number | null
+          dispute_cross_border_stability?: number | null
+          export_control_alignment?: number | null
+          id?: string
+          international_collaboration_record?: Json | null
+          jurisdiction_execution_history?: Json | null
+          regulatory_compliance_history?: Json | null
+          user_id: string
+        }
+        Update: {
+          composite_compatibility?: number | null
+          computed_at?: string | null
+          currency_handling_compliance?: number | null
+          dispute_cross_border_stability?: number | null
+          export_control_alignment?: number | null
+          id?: string
+          international_collaboration_record?: Json | null
+          jurisdiction_execution_history?: Json | null
+          regulatory_compliance_history?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      stigl_ecs_v2: {
+        Row: {
+          composite_ecs: number | null
+          computed_at: string | null
+          cross_border_reliability: number | null
+          decomposition: Json | null
+          deliverable_quality: number | null
+          dispute_fairness: number | null
+          funding_compliance_rate: number | null
+          governance_participation_fairness: number | null
+          id: string
+          institutional_endorsement_strength: number | null
+          is_portable: boolean | null
+          knowledge_impact: number | null
+          milestone_punctuality: number | null
+          policy_alignment_integrity: number | null
+          startup_survival_contribution: number | null
+          user_id: string
+        }
+        Insert: {
+          composite_ecs?: number | null
+          computed_at?: string | null
+          cross_border_reliability?: number | null
+          decomposition?: Json | null
+          deliverable_quality?: number | null
+          dispute_fairness?: number | null
+          funding_compliance_rate?: number | null
+          governance_participation_fairness?: number | null
+          id?: string
+          institutional_endorsement_strength?: number | null
+          is_portable?: boolean | null
+          knowledge_impact?: number | null
+          milestone_punctuality?: number | null
+          policy_alignment_integrity?: number | null
+          startup_survival_contribution?: number | null
+          user_id: string
+        }
+        Update: {
+          composite_ecs?: number | null
+          computed_at?: string | null
+          cross_border_reliability?: number | null
+          decomposition?: Json | null
+          deliverable_quality?: number | null
+          dispute_fairness?: number | null
+          funding_compliance_rate?: number | null
+          governance_participation_fairness?: number | null
+          id?: string
+          institutional_endorsement_strength?: number | null
+          is_portable?: boolean | null
+          knowledge_impact?: number | null
+          milestone_punctuality?: number | null
+          policy_alignment_integrity?: number | null
+          startup_survival_contribution?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      stigl_external_integrations: {
+        Row: {
+          created_at: string | null
+          id: string
+          integration_type: string
+          linked_contract_id: string | null
+          performance_validation: Json | null
+          requester_id: string | null
+          requester_name: string | null
+          requester_type: string
+          status: string | null
+          target_user_id: string
+          verification_result: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          integration_type: string
+          linked_contract_id?: string | null
+          performance_validation?: Json | null
+          requester_id?: string | null
+          requester_name?: string | null
+          requester_type: string
+          status?: string | null
+          target_user_id: string
+          verification_result?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          integration_type?: string
+          linked_contract_id?: string | null
+          performance_validation?: Json | null
+          requester_id?: string | null
+          requester_name?: string | null
+          requester_type?: string
+          status?: string | null
+          target_user_id?: string
+          verification_result?: Json | null
+        }
+        Relationships: []
+      }
+      stigl_fraud_flags: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          evidence: Json | null
+          flag_type: string
+          id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string | null
+          status: string | null
+          target_user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          evidence?: Json | null
+          flag_type: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          target_user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          evidence?: Json | null
+          flag_type?: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          target_user_id?: string | null
+        }
+        Relationships: []
+      }
+      stigl_generational_continuity: {
+        Row: {
+          career_arc_years: number | null
+          computed_at: string | null
+          cross_border_evolution: Json | null
+          id: string
+          institutional_successions: Json | null
+          longitudinal_execution_memory: Json | null
+          policy_cycle_participation: Json | null
+          skill_reinvention_history: Json | null
+          startup_exit_history: Json | null
+          user_id: string
+        }
+        Insert: {
+          career_arc_years?: number | null
+          computed_at?: string | null
+          cross_border_evolution?: Json | null
+          id?: string
+          institutional_successions?: Json | null
+          longitudinal_execution_memory?: Json | null
+          policy_cycle_participation?: Json | null
+          skill_reinvention_history?: Json | null
+          startup_exit_history?: Json | null
+          user_id: string
+        }
+        Update: {
+          career_arc_years?: number | null
+          computed_at?: string | null
+          cross_border_evolution?: Json | null
+          id?: string
+          institutional_successions?: Json | null
+          longitudinal_execution_memory?: Json | null
+          policy_cycle_participation?: Json | null
+          skill_reinvention_history?: Json | null
+          startup_exit_history?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      stigl_identity_exports: {
+        Row: {
+          export_format: string
+          export_hash: string | null
+          export_scope: Json | null
+          exported_at: string | null
+          id: string
+          recipient_id: string | null
+          recipient_type: string | null
+          user_id: string
+        }
+        Insert: {
+          export_format: string
+          export_hash?: string | null
+          export_scope?: Json | null
+          exported_at?: string | null
+          id?: string
+          recipient_id?: string | null
+          recipient_type?: string | null
+          user_id: string
+        }
+        Update: {
+          export_format?: string
+          export_hash?: string | null
+          export_scope?: Json | null
+          exported_at?: string | null
+          id?: string
+          recipient_id?: string | null
+          recipient_type?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      stigl_institutional_verifications: {
+        Row: {
+          id: string
+          institution_id: string | null
+          signed_ledger_entry_id: string | null
+          trust_delta_applied: number | null
+          user_id: string
+          verification_details: Json | null
+          verification_type: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          id?: string
+          institution_id?: string | null
+          signed_ledger_entry_id?: string | null
+          trust_delta_applied?: number | null
+          user_id: string
+          verification_details?: Json | null
+          verification_type: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          id?: string
+          institution_id?: string | null
+          signed_ledger_entry_id?: string | null
+          trust_delta_applied?: number | null
+          user_id?: string
+          verification_details?: Json | null
+          verification_type?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stigl_institutional_verifications_signed_ledger_entry_id_fkey"
+            columns: ["signed_ledger_entry_id"]
+            isOneToOne: false
+            referencedRelation: "stigl_trust_ledger"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stigl_privacy_settings: {
+        Row: {
+          anonymous_participation_enabled: boolean | null
+          default_visibility: string | null
+          enterprise_access_granted: Json | null
+          funding_disclosure_level: string | null
+          id: string
+          institutional_access_granted: Json | null
+          redacted_summary_enabled: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          anonymous_participation_enabled?: boolean | null
+          default_visibility?: string | null
+          enterprise_access_granted?: Json | null
+          funding_disclosure_level?: string | null
+          id?: string
+          institutional_access_granted?: Json | null
+          redacted_summary_enabled?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          anonymous_participation_enabled?: boolean | null
+          default_visibility?: string | null
+          enterprise_access_granted?: Json | null
+          funding_disclosure_level?: string | null
+          id?: string
+          institutional_access_granted?: Json | null
+          redacted_summary_enabled?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      stigl_sovereign_ids: {
+        Row: {
+          created_at: string | null
+          cross_border_collaboration_index: number | null
+          dispute_resolution_history: Json | null
+          escrow_compliance_history: Json | null
+          funding_participation: Json | null
+          governance_participation: Json | null
+          id: string
+          institutional_endorsements: Json | null
+          knowledge_publications: Json | null
+          milestone_completion_log: Json | null
+          patent_participation: Json | null
+          project_history: Json | null
+          seid_hash: string
+          skill_registry: Json | null
+          startup_involvement: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          cross_border_collaboration_index?: number | null
+          dispute_resolution_history?: Json | null
+          escrow_compliance_history?: Json | null
+          funding_participation?: Json | null
+          governance_participation?: Json | null
+          id?: string
+          institutional_endorsements?: Json | null
+          knowledge_publications?: Json | null
+          milestone_completion_log?: Json | null
+          patent_participation?: Json | null
+          project_history?: Json | null
+          seid_hash: string
+          skill_registry?: Json | null
+          startup_involvement?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          cross_border_collaboration_index?: number | null
+          dispute_resolution_history?: Json | null
+          escrow_compliance_history?: Json | null
+          funding_participation?: Json | null
+          governance_participation?: Json | null
+          id?: string
+          institutional_endorsements?: Json | null
+          knowledge_publications?: Json | null
+          milestone_completion_log?: Json | null
+          patent_participation?: Json | null
+          project_history?: Json | null
+          seid_hash?: string
+          skill_registry?: Json | null
+          startup_involvement?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      stigl_trust_graph: {
+        Row: {
+          collaboration_density: number | null
+          computed_at: string | null
+          corridor_tag: string | null
+          dispute_count: number | null
+          edge_type: string
+          funding_flow_impact: number | null
+          id: string
+          region: string | null
+          source_user_id: string
+          target_user_id: string
+          trust_weight: number | null
+        }
+        Insert: {
+          collaboration_density?: number | null
+          computed_at?: string | null
+          corridor_tag?: string | null
+          dispute_count?: number | null
+          edge_type: string
+          funding_flow_impact?: number | null
+          id?: string
+          region?: string | null
+          source_user_id: string
+          target_user_id: string
+          trust_weight?: number | null
+        }
+        Update: {
+          collaboration_density?: number | null
+          computed_at?: string | null
+          corridor_tag?: string | null
+          dispute_count?: number | null
+          edge_type?: string
+          funding_flow_impact?: number | null
+          id?: string
+          region?: string | null
+          source_user_id?: string
+          target_user_id?: string
+          trust_weight?: number | null
+        }
+        Relationships: []
+      }
+      stigl_trust_ledger: {
+        Row: {
+          appeal_record: Json | null
+          created_at: string | null
+          entry_type: string
+          evidence_reference: Json | null
+          id: string
+          is_immutable: boolean | null
+          jurisdiction_tag: string | null
+          linked_entity_id: string | null
+          linked_entity_type: string | null
+          trust_impact_delta: number | null
+          user_id: string
+          verification_authority: string | null
+        }
+        Insert: {
+          appeal_record?: Json | null
+          created_at?: string | null
+          entry_type: string
+          evidence_reference?: Json | null
+          id?: string
+          is_immutable?: boolean | null
+          jurisdiction_tag?: string | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          trust_impact_delta?: number | null
+          user_id: string
+          verification_authority?: string | null
+        }
+        Update: {
+          appeal_record?: Json | null
+          created_at?: string | null
+          entry_type?: string
+          evidence_reference?: Json | null
+          id?: string
+          is_immutable?: boolean | null
+          jurisdiction_tag?: string | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          trust_impact_delta?: number | null
+          user_id?: string
+          verification_authority?: string | null
+        }
+        Relationships: []
+      }
+      stigl_trust_recovery: {
+        Row: {
+          appeal_outcome: string | null
+          appeal_submitted: boolean | null
+          consistency_dampening: number | null
+          correction_factor: number | null
+          created_at: string | null
+          id: string
+          institutional_mediation: boolean | null
+          recovery_plan: Json | null
+          recovery_progress: number | null
+          status: string | null
+          trigger_event: string
+          trust_decrease: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          appeal_outcome?: string | null
+          appeal_submitted?: boolean | null
+          consistency_dampening?: number | null
+          correction_factor?: number | null
+          created_at?: string | null
+          id?: string
+          institutional_mediation?: boolean | null
+          recovery_plan?: Json | null
+          recovery_progress?: number | null
+          status?: string | null
+          trigger_event: string
+          trust_decrease?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          appeal_outcome?: string | null
+          appeal_submitted?: boolean | null
+          consistency_dampening?: number | null
+          correction_factor?: number | null
+          created_at?: string | null
+          id?: string
+          institutional_mediation?: boolean | null
+          recovery_plan?: Json | null
+          recovery_progress?: number | null
+          status?: string | null
+          trigger_event?: string
+          trust_decrease?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       stories: {
         Row: {
           background_color: string
