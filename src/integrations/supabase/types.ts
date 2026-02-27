@@ -13888,6 +13888,39 @@ export type Database = {
         }
         Relationships: []
       }
+      domain_trust_index: {
+        Row: {
+          collaboration_stability: number | null
+          computed_at: string
+          domain: string
+          domain_trust: number | null
+          execution_reliability: number | null
+          funding_integrity: number | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          collaboration_stability?: number | null
+          computed_at?: string
+          domain: string
+          domain_trust?: number | null
+          execution_reliability?: number | null
+          funding_integrity?: number | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          collaboration_stability?: number | null
+          computed_at?: string
+          domain?: string
+          domain_trust?: number | null
+          execution_reliability?: number | null
+          funding_integrity?: number | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       dominance_conditions: {
         Row: {
           category: string
@@ -21102,6 +21135,39 @@ export type Database = {
           region?: string
           total_volume?: number
           updated_at?: string
+        }
+        Relationships: []
+      }
+      global_trust_index: {
+        Row: {
+          collaboration_stability: number | null
+          computed_at: string
+          execution_reliability: number | null
+          funding_integrity: number | null
+          global_trust: number | null
+          id: string
+          trust_breakdown: Json | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_stability?: number | null
+          computed_at?: string
+          execution_reliability?: number | null
+          funding_integrity?: number | null
+          global_trust?: number | null
+          id?: string
+          trust_breakdown?: Json | null
+          user_id: string
+        }
+        Update: {
+          collaboration_stability?: number | null
+          computed_at?: string
+          execution_reliability?: number | null
+          funding_integrity?: number | null
+          global_trust?: number | null
+          id?: string
+          trust_breakdown?: Json | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -49814,6 +49880,51 @@ export type Database = {
           },
         ]
       }
+      team_trust_index: {
+        Row: {
+          cohesion_score: number | null
+          composite_team_trust: number | null
+          computed_at: string
+          conflict_frequency: number | null
+          historical_success: number | null
+          id: string
+          innovation_consistency: number | null
+          member_ids: string[] | null
+          milestone_punctuality: number | null
+          project_id: string | null
+          repeat_funding_rate: number | null
+          team_name: string | null
+        }
+        Insert: {
+          cohesion_score?: number | null
+          composite_team_trust?: number | null
+          computed_at?: string
+          conflict_frequency?: number | null
+          historical_success?: number | null
+          id?: string
+          innovation_consistency?: number | null
+          member_ids?: string[] | null
+          milestone_punctuality?: number | null
+          project_id?: string | null
+          repeat_funding_rate?: number | null
+          team_name?: string | null
+        }
+        Update: {
+          cohesion_score?: number | null
+          composite_team_trust?: number | null
+          computed_at?: string
+          conflict_frequency?: number | null
+          historical_success?: number | null
+          id?: string
+          innovation_consistency?: number | null
+          member_ids?: string[] | null
+          milestone_punctuality?: number | null
+          project_id?: string | null
+          repeat_funding_rate?: number | null
+          team_name?: string | null
+        }
+        Relationships: []
+      }
       tenant_memberships: {
         Row: {
           id: string
@@ -50436,6 +50547,42 @@ export type Database = {
         }
         Relationships: []
       }
+      trust_compatibility_checks: {
+        Row: {
+          collaboration_probability: number | null
+          computed_at: string
+          domain_overlap_pct: number | null
+          funding_risk_compat: number | null
+          id: string
+          reliability_alignment_pct: number | null
+          trust_compat_pct: number | null
+          user_a_id: string
+          user_b_id: string
+        }
+        Insert: {
+          collaboration_probability?: number | null
+          computed_at?: string
+          domain_overlap_pct?: number | null
+          funding_risk_compat?: number | null
+          id?: string
+          reliability_alignment_pct?: number | null
+          trust_compat_pct?: number | null
+          user_a_id: string
+          user_b_id: string
+        }
+        Update: {
+          collaboration_probability?: number | null
+          computed_at?: string
+          domain_overlap_pct?: number | null
+          funding_risk_compat?: number | null
+          id?: string
+          reliability_alignment_pct?: number | null
+          trust_compat_pct?: number | null
+          user_a_id?: string
+          user_b_id?: string
+        }
+        Relationships: []
+      }
       trust_contexts: {
         Row: {
           computed_at: string
@@ -50509,53 +50656,95 @@ export type Database = {
       }
       trust_edges: {
         Row: {
+          budget_compliance: number | null
           communication_quality_score: number | null
+          compliance_alignment: number | null
           created_at: string | null
+          cross_border_stability: number | null
+          deliverable_acceptance: number | null
           dispute_count: number | null
+          dispute_resolution: number | null
+          domain: string | null
+          edge_weight: number | null
           escrow_volume: number | null
           first_interaction_at: string | null
+          grant_collab_history: number | null
           id: string
+          industry_deployment: number | null
+          joint_projects: number | null
           last_interaction_at: string | null
           linked_project_id: string | null
+          milestone_punctuality: number | null
+          peer_validation_overlap: number | null
           relationship_type: string
           repeat_collaboration_count: number | null
           source_id: string
+          source_user_id: string | null
           successful_completions: number | null
           target_id: string
+          target_user_id: string | null
           trust_edge_score: number | null
           updated_at: string | null
         }
         Insert: {
+          budget_compliance?: number | null
           communication_quality_score?: number | null
+          compliance_alignment?: number | null
           created_at?: string | null
+          cross_border_stability?: number | null
+          deliverable_acceptance?: number | null
           dispute_count?: number | null
+          dispute_resolution?: number | null
+          domain?: string | null
+          edge_weight?: number | null
           escrow_volume?: number | null
           first_interaction_at?: string | null
+          grant_collab_history?: number | null
           id?: string
+          industry_deployment?: number | null
+          joint_projects?: number | null
           last_interaction_at?: string | null
           linked_project_id?: string | null
+          milestone_punctuality?: number | null
+          peer_validation_overlap?: number | null
           relationship_type: string
           repeat_collaboration_count?: number | null
           source_id: string
+          source_user_id?: string | null
           successful_completions?: number | null
           target_id: string
+          target_user_id?: string | null
           trust_edge_score?: number | null
           updated_at?: string | null
         }
         Update: {
+          budget_compliance?: number | null
           communication_quality_score?: number | null
+          compliance_alignment?: number | null
           created_at?: string | null
+          cross_border_stability?: number | null
+          deliverable_acceptance?: number | null
           dispute_count?: number | null
+          dispute_resolution?: number | null
+          domain?: string | null
+          edge_weight?: number | null
           escrow_volume?: number | null
           first_interaction_at?: string | null
+          grant_collab_history?: number | null
           id?: string
+          industry_deployment?: number | null
+          joint_projects?: number | null
           last_interaction_at?: string | null
           linked_project_id?: string | null
+          milestone_punctuality?: number | null
+          peer_validation_overlap?: number | null
           relationship_type?: string
           repeat_collaboration_count?: number | null
           source_id?: string
+          source_user_id?: string | null
           successful_completions?: number | null
           target_id?: string
+          target_user_id?: string | null
           trust_edge_score?: number | null
           updated_at?: string | null
         }
@@ -50614,6 +50803,45 @@ export type Database = {
           trust_after?: number
           trust_before?: number
           trust_delta?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      trust_evolution_events: {
+        Row: {
+          created_at: string
+          delta: number
+          direction: string
+          domain: string | null
+          event_type: string
+          id: string
+          reason: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          delta: number
+          direction: string
+          domain?: string | null
+          event_type: string
+          id?: string
+          reason: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          delta?: number
+          direction?: string
+          domain?: string | null
+          event_type?: string
+          id?: string
+          reason?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
           user_id?: string
         }
         Relationships: []
@@ -50747,6 +50975,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      trust_manipulation_flags: {
+        Row: {
+          description: string | null
+          detected_at: string
+          evidence: Json | null
+          flag_type: string
+          id: string
+          resolved: boolean | null
+          severity: string | null
+          user_id: string
+        }
+        Insert: {
+          description?: string | null
+          detected_at?: string
+          evidence?: Json | null
+          flag_type: string
+          id?: string
+          resolved?: boolean | null
+          severity?: string | null
+          user_id: string
+        }
+        Update: {
+          description?: string | null
+          detected_at?: string
+          evidence?: Json | null
+          flag_type?: string
+          id?: string
+          resolved?: boolean | null
+          severity?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       trust_profiles: {
         Row: {
