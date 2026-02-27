@@ -2116,6 +2116,48 @@ export type Database = {
           },
         ]
       }
+      ai_content_recommendations: {
+        Row: {
+          created_at: string
+          domain_match: boolean | null
+          emerging_innovator: boolean | null
+          id: string
+          recommendation_reason: string | null
+          recommended_entity_id: string
+          recommended_entity_type: string
+          relevance_score: number
+          suppressed_viral_bias: boolean | null
+          user_id: string
+          was_interacted: boolean | null
+        }
+        Insert: {
+          created_at?: string
+          domain_match?: boolean | null
+          emerging_innovator?: boolean | null
+          id?: string
+          recommendation_reason?: string | null
+          recommended_entity_id: string
+          recommended_entity_type: string
+          relevance_score?: number
+          suppressed_viral_bias?: boolean | null
+          user_id: string
+          was_interacted?: boolean | null
+        }
+        Update: {
+          created_at?: string
+          domain_match?: boolean | null
+          emerging_innovator?: boolean | null
+          id?: string
+          recommendation_reason?: string | null
+          recommended_entity_id?: string
+          recommended_entity_type?: string
+          relevance_score?: number
+          suppressed_viral_bias?: boolean | null
+          user_id?: string
+          was_interacted?: boolean | null
+        }
+        Relationships: []
+      }
       ai_context_snapshots: {
         Row: {
           context_id: string
@@ -15457,6 +15499,63 @@ export type Database = {
         }
         Relationships: []
       }
+      execution_learning_modules: {
+        Row: {
+          author_id: string
+          completion_count: number | null
+          content_blocks: Json | null
+          created_at: string
+          description: string | null
+          difficulty_level: string | null
+          estimated_minutes: number | null
+          id: string
+          is_published: boolean | null
+          module_type: string
+          rating_avg: number | null
+          skill_tags: string[] | null
+          source_portfolio_id: string | null
+          source_project_id: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          completion_count?: number | null
+          content_blocks?: Json | null
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          is_published?: boolean | null
+          module_type: string
+          rating_avg?: number | null
+          skill_tags?: string[] | null
+          source_portfolio_id?: string | null
+          source_project_id?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          completion_count?: number | null
+          content_blocks?: Json | null
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          is_published?: boolean | null
+          module_type?: string
+          rating_avg?: number | null
+          skill_tags?: string[] | null
+          source_portfolio_id?: string | null
+          source_project_id?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       execution_marketplace: {
         Row: {
           applications_count: number | null
@@ -23484,6 +23583,57 @@ export type Database = {
           region?: string | null
           skill_evolution_trends?: Json | null
           snapshot_period?: string
+        }
+        Relationships: []
+      }
+      innovation_map_points: {
+        Row: {
+          active_projects: number | null
+          collaboration_density: number | null
+          country_code: string | null
+          id: string
+          institution_id: string | null
+          intensity: number | null
+          is_active: boolean | null
+          label: string
+          latitude: number
+          longitude: number
+          metadata: Json | null
+          point_type: string
+          total_funding: number | null
+          updated_at: string
+        }
+        Insert: {
+          active_projects?: number | null
+          collaboration_density?: number | null
+          country_code?: string | null
+          id?: string
+          institution_id?: string | null
+          intensity?: number | null
+          is_active?: boolean | null
+          label: string
+          latitude: number
+          longitude: number
+          metadata?: Json | null
+          point_type: string
+          total_funding?: number | null
+          updated_at?: string
+        }
+        Update: {
+          active_projects?: number | null
+          collaboration_density?: number | null
+          country_code?: string | null
+          id?: string
+          institution_id?: string | null
+          intensity?: number | null
+          is_active?: boolean | null
+          label?: string
+          latitude?: number
+          longitude?: number
+          metadata?: Json | null
+          point_type?: string
+          total_funding?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -50321,6 +50471,90 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      visual_collaboration_requests: {
+        Row: {
+          created_at: string
+          description: string | null
+          funding_offer: number | null
+          id: string
+          portfolio_item_id: string | null
+          request_type: string
+          requester_id: string
+          responded_at: string | null
+          skill_requirements: string[] | null
+          status: string
+          target_institution_id: string | null
+          target_user_id: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          funding_offer?: number | null
+          id?: string
+          portfolio_item_id?: string | null
+          request_type: string
+          requester_id: string
+          responded_at?: string | null
+          skill_requirements?: string[] | null
+          status?: string
+          target_institution_id?: string | null
+          target_user_id?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          funding_offer?: number | null
+          id?: string
+          portfolio_item_id?: string | null
+          request_type?: string
+          requester_id?: string
+          responded_at?: string | null
+          skill_requirements?: string[] | null
+          status?: string
+          target_institution_id?: string | null
+          target_user_id?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      visual_discovery_categories: {
+        Row: {
+          category_name: string
+          category_type: string
+          created_at: string
+          description: string | null
+          display_order: number | null
+          icon_name: string | null
+          id: string
+          is_active: boolean | null
+          post_count: number | null
+        }
+        Insert: {
+          category_name: string
+          category_type: string
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          post_count?: number | null
+        }
+        Update: {
+          category_name?: string
+          category_type?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          post_count?: number | null
+        }
+        Relationships: []
       }
       visual_discussions: {
         Row: {
