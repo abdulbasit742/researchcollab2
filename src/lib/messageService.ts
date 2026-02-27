@@ -30,31 +30,19 @@ export async function getMessages(threadId: string) {
 
 export async function sendMessage(
   threadId: string,
-  senderId: string,
+  _senderId: string,
   content: string
 ) {
-  const { data: message, error } = await supabase
-    .from("messages")
-    .insert({
-      thread_id: threadId,
-      sender_id: senderId,
-      body: content.trim(),
-    })
-    .select()
-    .single();
+  // Route through server-validated RPC — no direct DB insert
+  const { data, error } = await supabase.rpc("send_message_secure" as any, {
+    p_thread_id: threadId,
+    p_body: content.trim(),
+    p_type: "text",
+    p_metadata: {},
+  });
 
   if (error) throw error;
-
-  // Update thread last_message
-  await supabase
-    .from("message_threads")
-    .update({
-      last_message_at: new Date().toISOString(),
-      last_message_text: content.trim().substring(0, 100),
-    })
-    .eq("id", threadId);
-
-  return message;
+  return data;
 }
 
 export async function markThreadAsRead(threadId: string, userId: string) {
