@@ -3157,6 +3157,57 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_team_formation_suggestions: {
+        Row: {
+          commercialization_potential: number | null
+          created_at: string
+          domain_diversity: number | null
+          funding_alignment: number | null
+          geographic_diversity: number | null
+          id: string
+          ideal_team_size: number | null
+          institutional_composition: Json | null
+          project_description: string | null
+          reasoning: Json | null
+          requested_by: string
+          required_skills: string[] | null
+          suggested_members: Json | null
+          trust_threshold: number | null
+        }
+        Insert: {
+          commercialization_potential?: number | null
+          created_at?: string
+          domain_diversity?: number | null
+          funding_alignment?: number | null
+          geographic_diversity?: number | null
+          id?: string
+          ideal_team_size?: number | null
+          institutional_composition?: Json | null
+          project_description?: string | null
+          reasoning?: Json | null
+          requested_by: string
+          required_skills?: string[] | null
+          suggested_members?: Json | null
+          trust_threshold?: number | null
+        }
+        Update: {
+          commercialization_potential?: number | null
+          created_at?: string
+          domain_diversity?: number | null
+          funding_alignment?: number | null
+          geographic_diversity?: number | null
+          id?: string
+          ideal_team_size?: number | null
+          institutional_composition?: Json | null
+          project_description?: string | null
+          reasoning?: Json | null
+          requested_by?: string
+          required_skills?: string[] | null
+          suggested_members?: Json | null
+          trust_threshold?: number | null
+        }
+        Relationships: []
+      }
       ai_usage_logs: {
         Row: {
           cost_estimate: number | null
@@ -10841,6 +10892,51 @@ export type Database = {
           },
         ]
       }
+      cross_border_team_intel: {
+        Row: {
+          composite_cross_border: number | null
+          computed_at: string
+          cultural_stability: number | null
+          currency_exposure_risk: number | null
+          historical_success_rate: number | null
+          id: string
+          ip_ownership_implications: string | null
+          jurisdiction_compatibility: number | null
+          regulatory_conflicts: string[] | null
+          summary: Json | null
+          team_id: string | null
+          timezone_friction: number | null
+        }
+        Insert: {
+          composite_cross_border?: number | null
+          computed_at?: string
+          cultural_stability?: number | null
+          currency_exposure_risk?: number | null
+          historical_success_rate?: number | null
+          id?: string
+          ip_ownership_implications?: string | null
+          jurisdiction_compatibility?: number | null
+          regulatory_conflicts?: string[] | null
+          summary?: Json | null
+          team_id?: string | null
+          timezone_friction?: number | null
+        }
+        Update: {
+          composite_cross_border?: number | null
+          computed_at?: string
+          cultural_stability?: number | null
+          currency_exposure_risk?: number | null
+          historical_success_rate?: number | null
+          id?: string
+          ip_ownership_implications?: string | null
+          jurisdiction_compatibility?: number | null
+          regulatory_conflicts?: string[] | null
+          summary?: Json | null
+          team_id?: string | null
+          timezone_friction?: number | null
+        }
+        Relationships: []
+      }
       cross_institution_agreements: {
         Row: {
           agreement_type: string | null
@@ -16750,6 +16846,57 @@ export type Database = {
         }
         Relationships: []
       }
+      execution_success_predictions: {
+        Row: {
+          budget_compliance_prob: number | null
+          collaboration_longevity_prob: number | null
+          composite_success_prob: number | null
+          computed_at: string
+          dispute_risk: number | null
+          grant_renewal_prob: number | null
+          id: string
+          industry_adoption_prob: number | null
+          milestone_completion_prob: number | null
+          patent_filing_prob: number | null
+          project_id: string | null
+          risk_breakdown: Json | null
+          startup_formation_prob: number | null
+          team_id: string | null
+        }
+        Insert: {
+          budget_compliance_prob?: number | null
+          collaboration_longevity_prob?: number | null
+          composite_success_prob?: number | null
+          computed_at?: string
+          dispute_risk?: number | null
+          grant_renewal_prob?: number | null
+          id?: string
+          industry_adoption_prob?: number | null
+          milestone_completion_prob?: number | null
+          patent_filing_prob?: number | null
+          project_id?: string | null
+          risk_breakdown?: Json | null
+          startup_formation_prob?: number | null
+          team_id?: string | null
+        }
+        Update: {
+          budget_compliance_prob?: number | null
+          collaboration_longevity_prob?: number | null
+          composite_success_prob?: number | null
+          computed_at?: string
+          dispute_risk?: number | null
+          grant_renewal_prob?: number | null
+          id?: string
+          industry_adoption_prob?: number | null
+          milestone_completion_prob?: number | null
+          patent_filing_prob?: number | null
+          project_id?: string | null
+          risk_breakdown?: Json | null
+          startup_formation_prob?: number | null
+          team_id?: string | null
+        }
+        Relationships: []
+      }
       execution_visual_portfolio: {
         Row: {
           complexity_score: number | null
@@ -19368,6 +19515,54 @@ export type Database = {
           id?: string
           legal_compliance_acknowledged?: boolean
           sponsor_id?: string
+        }
+        Relationships: []
+      }
+      funding_eligibility_analysis: {
+        Row: {
+          alerts: string[] | null
+          analysis_details: Json | null
+          budget_category_compat: number | null
+          compliance_requirements_met: boolean | null
+          computed_at: string
+          cross_border_restrictions: string[] | null
+          funding_history_credibility: number | null
+          grant_eligible: boolean | null
+          grant_id: string | null
+          id: string
+          institutional_rules_met: boolean | null
+          sponsor_trust_threshold_met: boolean | null
+          team_id: string | null
+        }
+        Insert: {
+          alerts?: string[] | null
+          analysis_details?: Json | null
+          budget_category_compat?: number | null
+          compliance_requirements_met?: boolean | null
+          computed_at?: string
+          cross_border_restrictions?: string[] | null
+          funding_history_credibility?: number | null
+          grant_eligible?: boolean | null
+          grant_id?: string | null
+          id?: string
+          institutional_rules_met?: boolean | null
+          sponsor_trust_threshold_met?: boolean | null
+          team_id?: string | null
+        }
+        Update: {
+          alerts?: string[] | null
+          analysis_details?: Json | null
+          budget_category_compat?: number | null
+          compliance_requirements_met?: boolean | null
+          computed_at?: string
+          cross_border_restrictions?: string[] | null
+          funding_history_credibility?: number | null
+          grant_eligible?: boolean | null
+          grant_id?: string | null
+          id?: string
+          institutional_rules_met?: boolean | null
+          sponsor_trust_threshold_met?: boolean | null
+          team_id?: string | null
         }
         Relationships: []
       }
@@ -23604,6 +23799,57 @@ export type Database = {
         }
         Relationships: []
       }
+      historical_team_performance: {
+        Row: {
+          budget_variance: number | null
+          completion_time_days: number | null
+          cross_border_stable: boolean | null
+          dispute_count: number | null
+          domain_diversity_score: number | null
+          execution_success: boolean | null
+          grant_renewed: boolean | null
+          id: string
+          member_ids: string[] | null
+          patent_converted: boolean | null
+          project_id: string | null
+          recorded_at: string
+          skill_composition: Json | null
+          team_id: string | null
+        }
+        Insert: {
+          budget_variance?: number | null
+          completion_time_days?: number | null
+          cross_border_stable?: boolean | null
+          dispute_count?: number | null
+          domain_diversity_score?: number | null
+          execution_success?: boolean | null
+          grant_renewed?: boolean | null
+          id?: string
+          member_ids?: string[] | null
+          patent_converted?: boolean | null
+          project_id?: string | null
+          recorded_at?: string
+          skill_composition?: Json | null
+          team_id?: string | null
+        }
+        Update: {
+          budget_variance?: number | null
+          completion_time_days?: number | null
+          cross_border_stable?: boolean | null
+          dispute_count?: number | null
+          domain_diversity_score?: number | null
+          execution_success?: boolean | null
+          grant_renewed?: boolean | null
+          id?: string
+          member_ids?: string[] | null
+          patent_converted?: boolean | null
+          project_id?: string | null
+          recorded_at?: string
+          skill_composition?: Json | null
+          team_id?: string | null
+        }
+        Relationships: []
+      }
       idea_evolution: {
         Row: {
           contributors: string[] | null
@@ -25136,6 +25382,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      innovation_synergy_analysis: {
+        Row: {
+          computed_at: string
+          cross_domain_overlap: number | null
+          details: Json | null
+          emerging_convergence: number | null
+          historical_breakthroughs: number | null
+          id: string
+          industry_cross_pollination: number | null
+          innovation_multiplier: number | null
+          patent_synergy: number | null
+          startup_formation_prob: number | null
+          team_id: string | null
+        }
+        Insert: {
+          computed_at?: string
+          cross_domain_overlap?: number | null
+          details?: Json | null
+          emerging_convergence?: number | null
+          historical_breakthroughs?: number | null
+          id?: string
+          industry_cross_pollination?: number | null
+          innovation_multiplier?: number | null
+          patent_synergy?: number | null
+          startup_formation_prob?: number | null
+          team_id?: string | null
+        }
+        Update: {
+          computed_at?: string
+          cross_domain_overlap?: number | null
+          details?: Json | null
+          emerging_convergence?: number | null
+          historical_breakthroughs?: number | null
+          id?: string
+          industry_cross_pollination?: number | null
+          innovation_multiplier?: number | null
+          patent_synergy?: number | null
+          startup_formation_prob?: number | null
+          team_id?: string | null
+        }
+        Relationships: []
       }
       innovation_wave_events: {
         Row: {
@@ -47087,6 +47375,54 @@ export type Database = {
         }
         Relationships: []
       }
+      skill_complementarity_analysis: {
+        Row: {
+          compliance_expertise: number | null
+          computed_at: string
+          cross_domain_synergy: number | null
+          grant_writing_experience: number | null
+          id: string
+          industry_deployment_expertise: number | null
+          missing_skills: string[] | null
+          patent_capability: number | null
+          project_id: string | null
+          recommended_additions: Json | null
+          redundant_skills: string[] | null
+          team_id: string | null
+          underrepresented_domains: string[] | null
+        }
+        Insert: {
+          compliance_expertise?: number | null
+          computed_at?: string
+          cross_domain_synergy?: number | null
+          grant_writing_experience?: number | null
+          id?: string
+          industry_deployment_expertise?: number | null
+          missing_skills?: string[] | null
+          patent_capability?: number | null
+          project_id?: string | null
+          recommended_additions?: Json | null
+          redundant_skills?: string[] | null
+          team_id?: string | null
+          underrepresented_domains?: string[] | null
+        }
+        Update: {
+          compliance_expertise?: number | null
+          computed_at?: string
+          cross_domain_synergy?: number | null
+          grant_writing_experience?: number | null
+          id?: string
+          industry_deployment_expertise?: number | null
+          missing_skills?: string[] | null
+          patent_capability?: number | null
+          project_id?: string | null
+          recommended_additions?: Json | null
+          redundant_skills?: string[] | null
+          team_id?: string | null
+          underrepresented_domains?: string[] | null
+        }
+        Relationships: []
+      }
       skill_demand_signals: {
         Row: {
           demand_intensity: number | null
@@ -50275,6 +50611,186 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      team_compatibility_matrix: {
+        Row: {
+          collaboration_history: number | null
+          communication_stability: number | null
+          composite_compatibility: number | null
+          computed_at: string
+          domain_complementarity: number | null
+          execution_reliability_alignment: number | null
+          explanation: Json | null
+          funding_experience_alignment: number | null
+          geographic_compatibility: number | null
+          id: string
+          institutional_diversity: number | null
+          member_ids: string[] | null
+          project_id: string | null
+          risk_tolerance_alignment: number | null
+          skill_coverage: number | null
+          skill_overlap_efficiency: number | null
+          team_id: string | null
+          time_availability_overlap: number | null
+          trust_edge_strength: number | null
+        }
+        Insert: {
+          collaboration_history?: number | null
+          communication_stability?: number | null
+          composite_compatibility?: number | null
+          computed_at?: string
+          domain_complementarity?: number | null
+          execution_reliability_alignment?: number | null
+          explanation?: Json | null
+          funding_experience_alignment?: number | null
+          geographic_compatibility?: number | null
+          id?: string
+          institutional_diversity?: number | null
+          member_ids?: string[] | null
+          project_id?: string | null
+          risk_tolerance_alignment?: number | null
+          skill_coverage?: number | null
+          skill_overlap_efficiency?: number | null
+          team_id?: string | null
+          time_availability_overlap?: number | null
+          trust_edge_strength?: number | null
+        }
+        Update: {
+          collaboration_history?: number | null
+          communication_stability?: number | null
+          composite_compatibility?: number | null
+          computed_at?: string
+          domain_complementarity?: number | null
+          execution_reliability_alignment?: number | null
+          explanation?: Json | null
+          funding_experience_alignment?: number | null
+          geographic_compatibility?: number | null
+          id?: string
+          institutional_diversity?: number | null
+          member_ids?: string[] | null
+          project_id?: string | null
+          risk_tolerance_alignment?: number | null
+          skill_coverage?: number | null
+          skill_overlap_efficiency?: number | null
+          team_id?: string | null
+          time_availability_overlap?: number | null
+          trust_edge_strength?: number | null
+        }
+        Relationships: []
+      }
+      team_evolution_events: {
+        Row: {
+          description: string | null
+          event_type: string
+          id: string
+          intervention_details: string | null
+          intervention_recommended: boolean | null
+          metrics: Json | null
+          recorded_at: string
+          severity: string | null
+          team_id: string
+        }
+        Insert: {
+          description?: string | null
+          event_type: string
+          id?: string
+          intervention_details?: string | null
+          intervention_recommended?: boolean | null
+          metrics?: Json | null
+          recorded_at?: string
+          severity?: string | null
+          team_id: string
+        }
+        Update: {
+          description?: string | null
+          event_type?: string
+          id?: string
+          intervention_details?: string | null
+          intervention_recommended?: boolean | null
+          metrics?: Json | null
+          recorded_at?: string
+          severity?: string | null
+          team_id?: string
+        }
+        Relationships: []
+      }
+      team_risk_analysis: {
+        Row: {
+          collaboration_fragility: number | null
+          compliance_risk: number | null
+          composite_risk: number | null
+          computed_at: string
+          execution_risk: number | null
+          funding_volatility: number | null
+          id: string
+          institutional_dependency: number | null
+          reputation_instability: number | null
+          single_member_reliance: number | null
+          team_id: string | null
+          vulnerabilities: Json | null
+        }
+        Insert: {
+          collaboration_fragility?: number | null
+          compliance_risk?: number | null
+          composite_risk?: number | null
+          computed_at?: string
+          execution_risk?: number | null
+          funding_volatility?: number | null
+          id?: string
+          institutional_dependency?: number | null
+          reputation_instability?: number | null
+          single_member_reliance?: number | null
+          team_id?: string | null
+          vulnerabilities?: Json | null
+        }
+        Update: {
+          collaboration_fragility?: number | null
+          compliance_risk?: number | null
+          composite_risk?: number | null
+          computed_at?: string
+          execution_risk?: number | null
+          funding_volatility?: number | null
+          id?: string
+          institutional_dependency?: number | null
+          reputation_instability?: number | null
+          single_member_reliance?: number | null
+          team_id?: string | null
+          vulnerabilities?: Json | null
+        }
+        Relationships: []
+      }
+      team_role_assignments: {
+        Row: {
+          alternative_roles: string[] | null
+          assigned_role: string
+          created_at: string
+          id: string
+          role_fit_score: number | null
+          strengths: Json | null
+          team_id: string
+          user_id: string
+        }
+        Insert: {
+          alternative_roles?: string[] | null
+          assigned_role: string
+          created_at?: string
+          id?: string
+          role_fit_score?: number | null
+          strengths?: Json | null
+          team_id: string
+          user_id: string
+        }
+        Update: {
+          alternative_roles?: string[] | null
+          assigned_role?: string
+          created_at?: string
+          id?: string
+          role_fit_score?: number | null
+          strengths?: Json | null
+          team_id?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       team_trust_index: {
         Row: {
