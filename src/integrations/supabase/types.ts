@@ -4736,6 +4736,39 @@ export type Database = {
         }
         Relationships: []
       }
+      brand_vs_capability: {
+        Row: {
+          brand_driven_growth_pct: number | null
+          brand_visibility_score: number | null
+          capability_driven_growth_pct: number | null
+          capability_score: number | null
+          computed_at: string
+          id: string
+          recommendation: string | null
+          user_id: string
+        }
+        Insert: {
+          brand_driven_growth_pct?: number | null
+          brand_visibility_score?: number | null
+          capability_driven_growth_pct?: number | null
+          capability_score?: number | null
+          computed_at?: string
+          id?: string
+          recommendation?: string | null
+          user_id: string
+        }
+        Update: {
+          brand_driven_growth_pct?: number | null
+          brand_visibility_score?: number | null
+          capability_driven_growth_pct?: number | null
+          capability_score?: number | null
+          computed_at?: string
+          id?: string
+          recommendation?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       bridge_roles: {
         Row: {
           created_at: string
@@ -5870,6 +5903,42 @@ export type Database = {
         }
         Relationships: []
       }
+      career_growth_projections: {
+        Row: {
+          composite_growth: number | null
+          computed_at: string
+          domain_mastery_projection: number | null
+          funding_progression_curve: number | null
+          id: string
+          leverage_growth_projection: number | null
+          projection_years: number
+          trust_accumulation_curve: number | null
+          user_id: string
+        }
+        Insert: {
+          composite_growth?: number | null
+          computed_at?: string
+          domain_mastery_projection?: number | null
+          funding_progression_curve?: number | null
+          id?: string
+          leverage_growth_projection?: number | null
+          projection_years?: number
+          trust_accumulation_curve?: number | null
+          user_id: string
+        }
+        Update: {
+          composite_growth?: number | null
+          computed_at?: string
+          domain_mastery_projection?: number | null
+          funding_progression_curve?: number | null
+          id?: string
+          leverage_growth_projection?: number | null
+          projection_years?: number
+          trust_accumulation_curve?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       career_milestones: {
         Row: {
           achieved_at: string
@@ -6086,6 +6155,174 @@ export type Database = {
           overall_risk_level?: string | null
           publication_stagnation?: number | null
           reputation_volatility?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      career_risk_signals: {
+        Row: {
+          description: string | null
+          detected_at: string
+          id: string
+          metrics: Json | null
+          mitigation_suggestion: string | null
+          resolved: boolean | null
+          risk_type: string
+          severity: string | null
+          user_id: string
+        }
+        Insert: {
+          description?: string | null
+          detected_at?: string
+          id?: string
+          metrics?: Json | null
+          mitigation_suggestion?: string | null
+          resolved?: boolean | null
+          risk_type: string
+          severity?: string | null
+          user_id: string
+        }
+        Update: {
+          description?: string | null
+          detected_at?: string
+          id?: string
+          metrics?: Json | null
+          mitigation_suggestion?: string | null
+          resolved?: boolean | null
+          risk_type?: string
+          severity?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      career_simulations: {
+        Row: {
+          explanation: string | null
+          funding_prob_change: number | null
+          id: string
+          leverage_change: number | null
+          opportunity_growth: number | null
+          parameters: Json | null
+          risk_impact: number | null
+          scenario: string
+          simulated_at: string
+          trust_impact: number | null
+          user_id: string
+        }
+        Insert: {
+          explanation?: string | null
+          funding_prob_change?: number | null
+          id?: string
+          leverage_change?: number | null
+          opportunity_growth?: number | null
+          parameters?: Json | null
+          risk_impact?: number | null
+          scenario: string
+          simulated_at?: string
+          trust_impact?: number | null
+          user_id: string
+        }
+        Update: {
+          explanation?: string | null
+          funding_prob_change?: number | null
+          id?: string
+          leverage_change?: number | null
+          opportunity_growth?: number | null
+          parameters?: Json | null
+          risk_impact?: number | null
+          scenario?: string
+          simulated_at?: string
+          trust_impact?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      career_stability_index: {
+        Row: {
+          collaboration_continuity: number | null
+          composite_stability: number | null
+          computed_at: string
+          domain_coherence: number | null
+          funding_volatility: number | null
+          id: string
+          integrity_stability: number | null
+          project_completion_consistency: number | null
+          reputation_volatility: number | null
+          skill_focus_stability: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_continuity?: number | null
+          composite_stability?: number | null
+          computed_at?: string
+          domain_coherence?: number | null
+          funding_volatility?: number | null
+          id?: string
+          integrity_stability?: number | null
+          project_completion_consistency?: number | null
+          reputation_volatility?: number | null
+          skill_focus_stability?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_continuity?: number | null
+          composite_stability?: number | null
+          computed_at?: string
+          domain_coherence?: number | null
+          funding_volatility?: number | null
+          id?: string
+          integrity_stability?: number | null
+          project_completion_consistency?: number | null
+          reputation_volatility?: number | null
+          skill_focus_stability?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      career_trajectory_map: {
+        Row: {
+          collaboration_expansion: Json | null
+          compliance_stability_history: Json | null
+          domain_specialization_shifts: Json | null
+          funding_progression: Json | null
+          id: string
+          industry_deployment_timeline: Json | null
+          innovation_intensity_trend: Json | null
+          institutional_mobility: Json | null
+          patent_startup_milestones: Json | null
+          skill_evolution: Json | null
+          trust_score_evolution: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          collaboration_expansion?: Json | null
+          compliance_stability_history?: Json | null
+          domain_specialization_shifts?: Json | null
+          funding_progression?: Json | null
+          id?: string
+          industry_deployment_timeline?: Json | null
+          innovation_intensity_trend?: Json | null
+          institutional_mobility?: Json | null
+          patent_startup_milestones?: Json | null
+          skill_evolution?: Json | null
+          trust_score_evolution?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          collaboration_expansion?: Json | null
+          compliance_stability_history?: Json | null
+          domain_specialization_shifts?: Json | null
+          funding_progression?: Json | null
+          id?: string
+          industry_deployment_timeline?: Json | null
+          innovation_intensity_trend?: Json | null
+          institutional_mobility?: Json | null
+          patent_startup_milestones?: Json | null
+          skill_evolution?: Json | null
+          trust_score_evolution?: Json | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -19605,6 +19842,51 @@ export type Database = {
         }
         Relationships: []
       }
+      funding_ladder_records: {
+        Row: {
+          ai_next_step_suggestion: string | null
+          amount: number | null
+          completed_at: string | null
+          cross_border: boolean | null
+          funding_stage: string
+          grant_id: string | null
+          id: string
+          institution_id: string | null
+          role: string | null
+          started_at: string
+          success: boolean | null
+          user_id: string
+        }
+        Insert: {
+          ai_next_step_suggestion?: string | null
+          amount?: number | null
+          completed_at?: string | null
+          cross_border?: boolean | null
+          funding_stage: string
+          grant_id?: string | null
+          id?: string
+          institution_id?: string | null
+          role?: string | null
+          started_at?: string
+          success?: boolean | null
+          user_id: string
+        }
+        Update: {
+          ai_next_step_suggestion?: string | null
+          amount?: number | null
+          completed_at?: string | null
+          cross_border?: boolean | null
+          funding_stage?: string
+          grant_id?: string | null
+          id?: string
+          institution_id?: string | null
+          role?: string | null
+          started_at?: string
+          success?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       funding_milestones: {
         Row: {
           created_at: string
@@ -21330,6 +21612,45 @@ export type Database = {
           region?: string
           total_volume?: number
           updated_at?: string
+        }
+        Relationships: []
+      }
+      global_mobility_intelligence: {
+        Row: {
+          composite_mobility: number | null
+          computed_at: string
+          cross_border_compat: number | null
+          cultural_adaptability: number | null
+          domain_demand_by_region: Json | null
+          global_funding_eligibility: number | null
+          id: string
+          institutional_transfer_prob: number | null
+          international_collab_readiness: number | null
+          user_id: string
+        }
+        Insert: {
+          composite_mobility?: number | null
+          computed_at?: string
+          cross_border_compat?: number | null
+          cultural_adaptability?: number | null
+          domain_demand_by_region?: Json | null
+          global_funding_eligibility?: number | null
+          id?: string
+          institutional_transfer_prob?: number | null
+          international_collab_readiness?: number | null
+          user_id: string
+        }
+        Update: {
+          composite_mobility?: number | null
+          computed_at?: string
+          cross_border_compat?: number | null
+          cultural_adaptability?: number | null
+          domain_demand_by_region?: Json | null
+          global_funding_eligibility?: number | null
+          id?: string
+          institutional_transfer_prob?: number | null
+          international_collab_readiness?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -39146,6 +39467,54 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_leverage_index: {
+        Row: {
+          collaboration_network_strength: number | null
+          compliance_reliability: number | null
+          composite_leverage: number | null
+          computed_at: string
+          domain_authority: number | null
+          funding_independence: number | null
+          id: string
+          industry_deployment: number | null
+          institutional_recognition: number | null
+          patent_commercialization: number | null
+          skill_uniqueness: number | null
+          startup_equity: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_network_strength?: number | null
+          compliance_reliability?: number | null
+          composite_leverage?: number | null
+          computed_at?: string
+          domain_authority?: number | null
+          funding_independence?: number | null
+          id?: string
+          industry_deployment?: number | null
+          institutional_recognition?: number | null
+          patent_commercialization?: number | null
+          skill_uniqueness?: number | null
+          startup_equity?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_network_strength?: number | null
+          compliance_reliability?: number | null
+          composite_leverage?: number | null
+          computed_at?: string
+          domain_authority?: number | null
+          funding_independence?: number | null
+          id?: string
+          industry_deployment?: number | null
+          institutional_recognition?: number | null
+          patent_commercialization?: number | null
+          skill_uniqueness?: number | null
+          startup_equity?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       professional_lifecycle_events: {
         Row: {
           completed_at: string | null
@@ -47675,6 +48044,57 @@ export type Database = {
           total_active_projects?: number | null
           trust_weighted_success_rate?: number | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      skill_mastery_records: {
+        Row: {
+          complexity_score: number | null
+          composite_mastery: number | null
+          cross_domain_integration: number | null
+          grant_utilization_count: number | null
+          id: string
+          industry_validation_count: number | null
+          mastery_level: string | null
+          peer_evaluation_avg: number | null
+          project_application_count: number | null
+          reproducibility_evidence: number | null
+          retention_score: number | null
+          skill_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          complexity_score?: number | null
+          composite_mastery?: number | null
+          cross_domain_integration?: number | null
+          grant_utilization_count?: number | null
+          id?: string
+          industry_validation_count?: number | null
+          mastery_level?: string | null
+          peer_evaluation_avg?: number | null
+          project_application_count?: number | null
+          reproducibility_evidence?: number | null
+          retention_score?: number | null
+          skill_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          complexity_score?: number | null
+          composite_mastery?: number | null
+          cross_domain_integration?: number | null
+          grant_utilization_count?: number | null
+          id?: string
+          industry_validation_count?: number | null
+          mastery_level?: string | null
+          peer_evaluation_avg?: number | null
+          project_application_count?: number | null
+          reproducibility_evidence?: number | null
+          retention_score?: number | null
+          skill_name?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
