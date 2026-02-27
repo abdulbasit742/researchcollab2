@@ -11,3 +11,9 @@ export type { EconomicNode, EconomicEdge, EconomicGraphData, EconomicCluster } f
 
 export { scoreFeedItem, rankFeed } from "./executionFeedAlgorithm";
 export type { FeedItem, ScoredFeedItem, FeedItemType } from "./executionFeedAlgorithm";
+
+export { searchTalent, searchInstitutions, suggestMatches, SEARCH_TRANSPARENCY } from "./executionSearch";
+export type { IndividualSearchIndex, InstitutionSearchIndex, SponsorSearchIndex, TalentSearchFilters, InstitutionSearchFilters, SponsorSearchFilters, SearchContext, MatchSuggestion } from "./executionSearch";
+
+export { compareCandidates } from "./recruiterIntelligence";
+export type { CandidateComparison, ComparisonReport } from "./recruiterIntelligence";
