@@ -35,3 +35,6 @@ export type { EconomicHealthIndex, SponsorCapitalIntelligence, FinancialRiskSign
 
 export { calculateInstitutionalTrustScore, buildGovernanceDashboard, generateAccreditationReport, getGovernmentInnovationSnapshot, getGrantFundingRecords, getCrossInstitutionAgreements, generateComplianceAuditPackage, INSTITUTIONAL_GOVERNANCE_TRANSPARENCY } from "./institutionalGovernance";
 export type { InstitutionalTrustScore, InstitutionalGovernanceDashboard } from "./institutionalGovernance";
+
+export { getPrivacySettings, updatePrivacySettings, getAlgorithmTransparency, detectIntegrityViolations, getSecurityTransparencyReports, logAntiScrapingEvent, logAccessControlEvent, ZERO_TRUST_TRANSPARENCY } from "./zeroTrustSecurity";
+export type { ProfessionalPrivacySettings, AlgorithmTransparencyEntry, IntegritySignal, IntegritySignalType, AntiScrapingEvent, SecurityTransparencyReport } from "./zeroTrustSecurity";

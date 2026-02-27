@@ -396,6 +396,45 @@ export type Database = {
         }
         Relationships: []
       }
+      access_control_audit: {
+        Row: {
+          action: string
+          actor_id: string
+          created_at: string | null
+          denial_reason: string | null
+          id: string
+          metadata: Json | null
+          privilege_level: string
+          resource_id: string | null
+          resource_type: string
+          was_authorized: boolean | null
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          created_at?: string | null
+          denial_reason?: string | null
+          id?: string
+          metadata?: Json | null
+          privilege_level: string
+          resource_id?: string | null
+          resource_type: string
+          was_authorized?: boolean | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          created_at?: string | null
+          denial_reason?: string | null
+          id?: string
+          metadata?: Json | null
+          privilege_level?: string
+          resource_id?: string | null
+          resource_type?: string
+          was_authorized?: boolean | null
+        }
+        Relationships: []
+      }
       accessibility_preferences: {
         Row: {
           audio_descriptions_enabled: boolean | null
@@ -2891,6 +2930,42 @@ export type Database = {
           },
         ]
       }
+      algorithm_transparency_registry: {
+        Row: {
+          algorithm_category: string
+          algorithm_name: string
+          formula_description: string
+          id: string
+          influencing_factors: Json | null
+          is_public: boolean | null
+          last_updated: string | null
+          non_influencing_factors: Json | null
+          version: string | null
+        }
+        Insert: {
+          algorithm_category: string
+          algorithm_name: string
+          formula_description: string
+          id?: string
+          influencing_factors?: Json | null
+          is_public?: boolean | null
+          last_updated?: string | null
+          non_influencing_factors?: Json | null
+          version?: string | null
+        }
+        Update: {
+          algorithm_category?: string
+          algorithm_name?: string
+          formula_description?: string
+          id?: string
+          influencing_factors?: Json | null
+          is_public?: boolean | null
+          last_updated?: string | null
+          non_influencing_factors?: Json | null
+          version?: string | null
+        }
+        Relationships: []
+      }
       alliance_performance_metrics: {
         Row: {
           alliance_id: string
@@ -3262,6 +3337,42 @@ export type Database = {
           review_status?: string | null
           severity?: string
           threshold_breached?: number | null
+        }
+        Relationships: []
+      }
+      anti_scraping_events: {
+        Row: {
+          blocked: boolean | null
+          created_at: string | null
+          endpoint: string | null
+          event_type: string
+          fingerprint_hash: string | null
+          id: string
+          request_count: number | null
+          source_ip: string | null
+          user_id: string | null
+        }
+        Insert: {
+          blocked?: boolean | null
+          created_at?: string | null
+          endpoint?: string | null
+          event_type: string
+          fingerprint_hash?: string | null
+          id?: string
+          request_count?: number | null
+          source_ip?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          blocked?: boolean | null
+          created_at?: string | null
+          endpoint?: string | null
+          event_type?: string
+          fingerprint_hash?: string | null
+          id?: string
+          request_count?: number | null
+          source_ip?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -21576,6 +21687,54 @@ export type Database = {
           },
         ]
       }
+      integrity_monitoring_signals: {
+        Row: {
+          affected_entity_id: string | null
+          affected_entity_type: string | null
+          affected_user_id: string | null
+          created_at: string | null
+          description: string | null
+          detection_method: string | null
+          evidence: Json | null
+          id: string
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string | null
+          signal_type: string
+        }
+        Insert: {
+          affected_entity_id?: string | null
+          affected_entity_type?: string | null
+          affected_user_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          detection_method?: string | null
+          evidence?: Json | null
+          id?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          signal_type: string
+        }
+        Update: {
+          affected_entity_id?: string | null
+          affected_entity_type?: string | null
+          affected_user_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          detection_method?: string | null
+          evidence?: Json | null
+          id?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          signal_type?: string
+        }
+        Relationships: []
+      }
       intelligence_access_levels: {
         Row: {
           access_level: string
@@ -31081,6 +31240,48 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_privacy_settings: {
+        Row: {
+          allow_profile_indexing: boolean | null
+          anonymized_project_mode: boolean | null
+          approve_institutional_reporting: boolean | null
+          hide_deliverable_artifacts: boolean | null
+          hide_escrow_amounts: boolean | null
+          hide_institutional_relationships: boolean | null
+          hide_sponsor_names: boolean | null
+          id: string
+          restrict_recruiter_access: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          allow_profile_indexing?: boolean | null
+          anonymized_project_mode?: boolean | null
+          approve_institutional_reporting?: boolean | null
+          hide_deliverable_artifacts?: boolean | null
+          hide_escrow_amounts?: boolean | null
+          hide_institutional_relationships?: boolean | null
+          hide_sponsor_names?: boolean | null
+          id?: string
+          restrict_recruiter_access?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          allow_profile_indexing?: boolean | null
+          anonymized_project_mode?: boolean | null
+          approve_institutional_reporting?: boolean | null
+          hide_deliverable_artifacts?: boolean | null
+          hide_escrow_amounts?: boolean | null
+          hide_institutional_relationships?: boolean | null
+          hide_sponsor_names?: boolean | null
+          id?: string
+          restrict_recruiter_access?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       professional_stability: {
         Row: {
           collaboration_continuity: number | null
@@ -37434,6 +37635,48 @@ export type Database = {
           suite_type?: string
           test_cases?: Json
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      security_transparency_reports: {
+        Row: {
+          created_at: string | null
+          data_access_violation_attempts: number | null
+          dispute_resolution_stats: Json | null
+          escrow_invariant_breach_count: number | null
+          id: string
+          ledger_reconciliation_success_rate: number | null
+          pen_test_summary: string | null
+          published_at: string | null
+          report_period: string
+          report_year: number
+          security_incident_count: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          data_access_violation_attempts?: number | null
+          dispute_resolution_stats?: Json | null
+          escrow_invariant_breach_count?: number | null
+          id?: string
+          ledger_reconciliation_success_rate?: number | null
+          pen_test_summary?: string | null
+          published_at?: string | null
+          report_period: string
+          report_year: number
+          security_incident_count?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          data_access_violation_attempts?: number | null
+          dispute_resolution_stats?: Json | null
+          escrow_invariant_breach_count?: number | null
+          id?: string
+          ledger_reconciliation_success_rate?: number | null
+          pen_test_summary?: string | null
+          published_at?: string | null
+          report_period?: string
+          report_year?: number
+          security_incident_count?: number | null
         }
         Relationships: []
       }
