@@ -36674,6 +36674,195 @@ export type Database = {
         }
         Relationships: []
       }
+      pcna_archival_records: {
+        Row: {
+          archived_at: string
+          entity_id: string | null
+          entity_type: string | null
+          export_format: string | null
+          id: string
+          record_type: string
+          retention_years: number | null
+          snapshot_data: Json | null
+        }
+        Insert: {
+          archived_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          export_format?: string | null
+          id?: string
+          record_type: string
+          retention_years?: number | null
+          snapshot_data?: Json | null
+        }
+        Update: {
+          archived_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          export_format?: string | null
+          id?: string
+          record_type?: string
+          retention_years?: number | null
+          snapshot_data?: Json | null
+        }
+        Relationships: []
+      }
+      pcna_integrity_signals: {
+        Row: {
+          created_at: string
+          description: string | null
+          evidence: Json | null
+          id: string
+          resolution: string | null
+          reviewable: boolean | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string | null
+          signal_type: string
+          target_entity_id: string | null
+          target_user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          id?: string
+          resolution?: string | null
+          reviewable?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          signal_type: string
+          target_entity_id?: string | null
+          target_user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          id?: string
+          resolution?: string | null
+          reviewable?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          signal_type?: string
+          target_entity_id?: string | null
+          target_user_id?: string | null
+        }
+        Relationships: []
+      }
+      pcna_platform_metrics: {
+        Row: {
+          career_compounding: number | null
+          composite_civilization_score: number | null
+          computed_at: string
+          cross_border_collaboration: number | null
+          economic_impact: number | null
+          execution_reliability: number | null
+          funding_efficiency: number | null
+          id: string
+          innovation_output: number | null
+          institutional_stability: number | null
+          metric_period: string
+          trust_density: number | null
+        }
+        Insert: {
+          career_compounding?: number | null
+          composite_civilization_score?: number | null
+          computed_at?: string
+          cross_border_collaboration?: number | null
+          economic_impact?: number | null
+          execution_reliability?: number | null
+          funding_efficiency?: number | null
+          id?: string
+          innovation_output?: number | null
+          institutional_stability?: number | null
+          metric_period: string
+          trust_density?: number | null
+        }
+        Update: {
+          career_compounding?: number | null
+          composite_civilization_score?: number | null
+          computed_at?: string
+          cross_border_collaboration?: number | null
+          economic_impact?: number | null
+          execution_reliability?: number | null
+          funding_efficiency?: number | null
+          id?: string
+          innovation_output?: number | null
+          institutional_stability?: number | null
+          metric_period?: string
+          trust_density?: number | null
+        }
+        Relationships: []
+      }
+      pcna_session_wellness: {
+        Row: {
+          computed_at: string
+          deep_interactions: number | null
+          focus_mode_minutes: number | null
+          id: string
+          intentional_sessions: number | null
+          reflection_prompted: boolean | null
+          session_date: string
+          total_session_minutes: number | null
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string
+          deep_interactions?: number | null
+          focus_mode_minutes?: number | null
+          id?: string
+          intentional_sessions?: number | null
+          reflection_prompted?: boolean | null
+          session_date?: string
+          total_session_minutes?: number | null
+          user_id: string
+        }
+        Update: {
+          computed_at?: string
+          deep_interactions?: number | null
+          focus_mode_minutes?: number | null
+          id?: string
+          intentional_sessions?: number | null
+          reflection_prompted?: boolean | null
+          session_date?: string
+          total_session_minutes?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pcna_system_pillars: {
+        Row: {
+          health_score: number | null
+          id: string
+          integration_density: number | null
+          last_assessed_at: string
+          pillar_category: string
+          pillar_name: string
+          subsystem_count: number | null
+        }
+        Insert: {
+          health_score?: number | null
+          id?: string
+          integration_density?: number | null
+          last_assessed_at?: string
+          pillar_category: string
+          pillar_name: string
+          subsystem_count?: number | null
+        }
+        Update: {
+          health_score?: number | null
+          id?: string
+          integration_density?: number | null
+          last_assessed_at?: string
+          pillar_category?: string
+          pillar_name?: string
+          subsystem_count?: number | null
+        }
+        Relationships: []
+      }
       peer_review_ai_assists: {
         Row: {
           ai_feedback_summary: string | null
@@ -39976,6 +40165,81 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_dimension_scores: {
+        Row: {
+          appealable: boolean | null
+          breakdown: Json | null
+          computed_at: string
+          decay_applied: boolean | null
+          dimension: string
+          domain_context: string | null
+          id: string
+          score: number | null
+          user_id: string
+        }
+        Insert: {
+          appealable?: boolean | null
+          breakdown?: Json | null
+          computed_at?: string
+          decay_applied?: boolean | null
+          dimension: string
+          domain_context?: string | null
+          id?: string
+          score?: number | null
+          user_id: string
+        }
+        Update: {
+          appealable?: boolean | null
+          breakdown?: Json | null
+          computed_at?: string
+          decay_applied?: boolean | null
+          dimension?: string
+          domain_context?: string | null
+          id?: string
+          score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      professional_discovery_index: {
+        Row: {
+          capability_score: number | null
+          computed_at: string
+          cross_domain_synergy: number | null
+          depth_score: number | null
+          discovery_explanation: Json | null
+          emerging_excellence: number | null
+          id: string
+          innovation_cluster_membership: Json | null
+          trust_weighted_exposure: number | null
+          user_id: string
+        }
+        Insert: {
+          capability_score?: number | null
+          computed_at?: string
+          cross_domain_synergy?: number | null
+          depth_score?: number | null
+          discovery_explanation?: Json | null
+          emerging_excellence?: number | null
+          id?: string
+          innovation_cluster_membership?: Json | null
+          trust_weighted_exposure?: number | null
+          user_id: string
+        }
+        Update: {
+          capability_score?: number | null
+          computed_at?: string
+          cross_domain_synergy?: number | null
+          depth_score?: number | null
+          discovery_explanation?: Json | null
+          emerging_excellence?: number | null
+          id?: string
+          innovation_cluster_membership?: Json | null
+          trust_weighted_exposure?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       professional_global_footprint: {
         Row: {
           country_code: string
@@ -40012,6 +40276,78 @@ export type Database = {
           is_active?: boolean | null
           started_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      professional_graph_edges: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json | null
+          relationship: string
+          source_id: string
+          source_type: string
+          target_id: string
+          target_type: string
+          updated_at: string
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          relationship: string
+          source_id: string
+          source_type: string
+          target_id: string
+          target_type: string
+          updated_at?: string
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          relationship?: string
+          source_id?: string
+          source_type?: string
+          target_id?: string
+          target_type?: string
+          updated_at?: string
+          weight?: number | null
+        }
+        Relationships: []
+      }
+      professional_graph_nodes: {
+        Row: {
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          label: string | null
+          metadata: Json | null
+          updated_at: string
+          version: number | null
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          label?: string | null
+          metadata?: Json | null
+          updated_at?: string
+          version?: number | null
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          label?: string | null
+          metadata?: Json | null
+          updated_at?: string
+          version?: number | null
         }
         Relationships: []
       }
