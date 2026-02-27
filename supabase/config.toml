@@ -74,3 +74,6 @@ verify_jwt = false
 
 [functions.compute-intelligence]
 verify_jwt = false
+
+[functions.research-intelligence]
+verify_jwt = false

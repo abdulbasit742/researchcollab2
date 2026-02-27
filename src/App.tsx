@@ -93,6 +93,8 @@ const NetworkPage = lazy(() => import("./pages/NetworkPage"));
 const CareerPage = lazy(() => import("./pages/CareerPage"));
 const PassportPage = lazy(() => import("./pages/PassportPage"));
 const ResearchPapersPage = lazy(() => import("./pages/ResearchPapersPage"));
+const ResearchDashboardPage = lazy(() => import("./pages/ResearchDashboardPage"));
+const ResearchWorkspacePage = lazy(() => import("./pages/ResearchWorkspacePage"));
 const GrantsPage = lazy(() => import("./pages/GrantsPage"));
 const ToolsPage = lazy(() => import("./pages/ToolsPage"));
 const LearningPage = lazy(() => import("./pages/LearningPage"));
@@ -392,9 +394,10 @@ const AppContent = () => {
           {/* Settings consolidation */}
           <Route path="/settings/*" element={<Navigate to="/profile/settings" replace />} />
 
-          {/* Research sub-routes → research-papers */}
+          {/* Research sub-routes */}
           <Route path="/research-papers/*" element={<Navigate to="/research-papers" replace />} />
-          <Route path="/research/*" element={<Navigate to="/research-papers" replace />} />
+          <Route path="/research" element={<ProtectedRoute><ResearchDashboardPage /></ProtectedRoute>} />
+          <Route path="/research/:workspaceId" element={<ProtectedRoute><ResearchWorkspacePage /></ProtectedRoute>} />
 
           {/* Orgs → home */}
           <Route path="/org" element={<Navigate to="/home" replace />} />

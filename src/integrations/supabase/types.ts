@@ -49060,6 +49060,44 @@ export type Database = {
           },
         ]
       }
+      research_audit_log: {
+        Row: {
+          action_type: string
+          created_at: string
+          entity_id: string | null
+          id: string
+          metadata: Json | null
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          entity_id?: string | null
+          id?: string
+          metadata?: Json | null
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          entity_id?: string | null
+          id?: string
+          metadata?: Json | null
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_audit_log_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_bonds: {
         Row: {
           backing_asset_ids: string[]
@@ -49771,6 +49809,68 @@ export type Database = {
           title?: string
         }
         Relationships: []
+      }
+      research_documents: {
+        Row: {
+          chunk_count: number | null
+          document_chunks: Json | null
+          extracted_text: string | null
+          file_id: string | null
+          file_name: string
+          file_size: number | null
+          id: string
+          is_latest_version: boolean
+          mime_type: string | null
+          parsed_structure: Json | null
+          processing_status: string
+          uploaded_at: string
+          uploader_id: string
+          version_number: number
+          workspace_id: string
+        }
+        Insert: {
+          chunk_count?: number | null
+          document_chunks?: Json | null
+          extracted_text?: string | null
+          file_id?: string | null
+          file_name: string
+          file_size?: number | null
+          id?: string
+          is_latest_version?: boolean
+          mime_type?: string | null
+          parsed_structure?: Json | null
+          processing_status?: string
+          uploaded_at?: string
+          uploader_id: string
+          version_number?: number
+          workspace_id: string
+        }
+        Update: {
+          chunk_count?: number | null
+          document_chunks?: Json | null
+          extracted_text?: string | null
+          file_id?: string | null
+          file_name?: string
+          file_size?: number | null
+          id?: string
+          is_latest_version?: boolean
+          mime_type?: string | null
+          parsed_structure?: Json | null
+          processing_status?: string
+          uploaded_at?: string
+          uploader_id?: string
+          version_number?: number
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_documents_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       research_domain_registry: {
         Row: {
@@ -51023,6 +51123,82 @@ export type Database = {
         }
         Relationships: []
       }
+      research_queries: {
+        Row: {
+          created_at: string
+          id: string
+          query_text: string
+          status: string
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          query_text: string
+          status?: string
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          query_text?: string
+          status?: string
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_queries_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_responses: {
+        Row: {
+          ai_response: string
+          citation_map: Json
+          confidence_score: number | null
+          created_at: string
+          id: string
+          model_used: string | null
+          query_id: string
+          token_count: number | null
+        }
+        Insert: {
+          ai_response: string
+          citation_map?: Json
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          model_used?: string | null
+          query_id: string
+          token_count?: number | null
+        }
+        Update: {
+          ai_response?: string
+          citation_map?: Json
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          model_used?: string | null
+          query_id?: string
+          token_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_responses_query_id_fkey"
+            columns: ["query_id"]
+            isOneToOne: false
+            referencedRelation: "research_queries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_revenue_streams: {
         Row: {
           created_at: string | null
@@ -51441,6 +51617,71 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      research_workspace_members: {
+        Row: {
+          id: string
+          joined_at: string
+          role: string
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_workspace_members_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_workspaces: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          institution_id: string | null
+          owner_id: string
+          title: string
+          updated_at: string
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          owner_id: string
+          title: string
+          updated_at?: string
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          owner_id?: string
+          title?: string
+          updated_at?: string
+          visibility?: string
+        }
+        Relationships: []
       }
       researcher_protection_events: {
         Row: {
