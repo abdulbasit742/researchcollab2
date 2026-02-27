@@ -4902,6 +4902,96 @@ export type Database = {
           },
         ]
       }
+      capability_growth_feed: {
+        Row: {
+          created_at: string
+          description: string | null
+          domain: string | null
+          feed_type: string
+          id: string
+          is_read: boolean | null
+          metadata: Json | null
+          relevance_score: number | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          feed_type: string
+          id?: string
+          is_read?: boolean | null
+          metadata?: Json | null
+          relevance_score?: number | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          feed_type?: string
+          id?: string
+          is_read?: boolean | null
+          metadata?: Json | null
+          relevance_score?: number | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      capability_search_index: {
+        Row: {
+          collaboration_strength: number | null
+          compliance_reliability: number | null
+          composite_capability: number | null
+          domains: string[] | null
+          execution_depth: number | null
+          funding_experience: number | null
+          geographic_presence: string[] | null
+          id: string
+          institutional_affiliation: string | null
+          patent_involvement: number | null
+          skills: string[] | null
+          startup_experience: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          collaboration_strength?: number | null
+          compliance_reliability?: number | null
+          composite_capability?: number | null
+          domains?: string[] | null
+          execution_depth?: number | null
+          funding_experience?: number | null
+          geographic_presence?: string[] | null
+          id?: string
+          institutional_affiliation?: string | null
+          patent_involvement?: number | null
+          skills?: string[] | null
+          startup_experience?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          collaboration_strength?: number | null
+          compliance_reliability?: number | null
+          composite_capability?: number | null
+          domains?: string[] | null
+          execution_depth?: number | null
+          funding_experience?: number | null
+          geographic_presence?: string[] | null
+          id?: string
+          institutional_affiliation?: string | null
+          patent_involvement?: number | null
+          skills?: string[] | null
+          startup_experience?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       capital_advances: {
         Row: {
           approved_amount: number | null
@@ -12758,6 +12848,147 @@ export type Database = {
           },
         ]
       }
+      discovery_explanations: {
+        Row: {
+          collaboration_probability_pct: number | null
+          created_at: string
+          discovery_session_id: string | null
+          domain_overlap_pct: number | null
+          explanation_summary: string | null
+          funding_relevance_pct: number | null
+          geographic_proximity_pct: number | null
+          id: string
+          innovation_signal_pct: number | null
+          skill_alignment_pct: number | null
+          surfaced_user_id: string | null
+          viewer_user_id: string
+        }
+        Insert: {
+          collaboration_probability_pct?: number | null
+          created_at?: string
+          discovery_session_id?: string | null
+          domain_overlap_pct?: number | null
+          explanation_summary?: string | null
+          funding_relevance_pct?: number | null
+          geographic_proximity_pct?: number | null
+          id?: string
+          innovation_signal_pct?: number | null
+          skill_alignment_pct?: number | null
+          surfaced_user_id?: string | null
+          viewer_user_id: string
+        }
+        Update: {
+          collaboration_probability_pct?: number | null
+          created_at?: string
+          discovery_session_id?: string | null
+          domain_overlap_pct?: number | null
+          explanation_summary?: string | null
+          funding_relevance_pct?: number | null
+          geographic_proximity_pct?: number | null
+          id?: string
+          innovation_signal_pct?: number | null
+          skill_alignment_pct?: number | null
+          surfaced_user_id?: string | null
+          viewer_user_id?: string
+        }
+        Relationships: []
+      }
+      discovery_fairness_config: {
+        Row: {
+          description: string | null
+          id: string
+          is_active: boolean | null
+          rule_key: string
+          rule_name: string
+          rule_value: number
+          updated_at: string
+        }
+        Insert: {
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          rule_key: string
+          rule_name: string
+          rule_value: number
+          updated_at?: string
+        }
+        Update: {
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          rule_key?: string
+          rule_name?: string
+          rule_value?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      discovery_integrity_flags: {
+        Row: {
+          description: string | null
+          detected_at: string
+          evidence: Json | null
+          flag_type: string
+          id: string
+          resolved: boolean | null
+          severity: string | null
+          user_id: string
+        }
+        Insert: {
+          description?: string | null
+          detected_at?: string
+          evidence?: Json | null
+          flag_type: string
+          id?: string
+          resolved?: boolean | null
+          severity?: string | null
+          user_id: string
+        }
+        Update: {
+          description?: string | null
+          detected_at?: string
+          evidence?: Json | null
+          flag_type?: string
+          id?: string
+          resolved?: boolean | null
+          severity?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      discovery_sessions: {
+        Row: {
+          created_at: string
+          discovery_mode: string
+          id: string
+          intent_declaration: string | null
+          reflection_response: string | null
+          results_surfaced: number | null
+          session_duration_sec: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          discovery_mode: string
+          id?: string
+          intent_declaration?: string | null
+          reflection_response?: string | null
+          results_surfaced?: number | null
+          session_duration_sec?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          discovery_mode?: string
+          id?: string
+          intent_declaration?: string | null
+          reflection_response?: string | null
+          results_surfaced?: number | null
+          session_duration_sec?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       discovery_signals: {
         Row: {
           computed_at: string
@@ -14663,6 +14894,51 @@ export type Database = {
           patent_surge_rate?: number | null
           regional_acceleration?: Json | null
           signal_type?: string
+        }
+        Relationships: []
+      }
+      emerging_talent_signals: {
+        Row: {
+          capability_score: number | null
+          composite_emerging: number | null
+          computed_at: string
+          domain_emergence: number | null
+          execution_reliability: number | null
+          follower_count: number | null
+          id: string
+          innovation_depth: number | null
+          integrity_stability: number | null
+          project_quality: number | null
+          skill_improvement_rate: number | null
+          user_id: string
+        }
+        Insert: {
+          capability_score?: number | null
+          composite_emerging?: number | null
+          computed_at?: string
+          domain_emergence?: number | null
+          execution_reliability?: number | null
+          follower_count?: number | null
+          id?: string
+          innovation_depth?: number | null
+          integrity_stability?: number | null
+          project_quality?: number | null
+          skill_improvement_rate?: number | null
+          user_id: string
+        }
+        Update: {
+          capability_score?: number | null
+          composite_emerging?: number | null
+          computed_at?: string
+          domain_emergence?: number | null
+          execution_reliability?: number | null
+          follower_count?: number | null
+          id?: string
+          innovation_depth?: number | null
+          integrity_stability?: number | null
+          project_quality?: number | null
+          skill_improvement_rate?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -24345,6 +24621,54 @@ export type Database = {
           total_licensing_revenue?: number | null
           total_patents?: number | null
           total_startups?: number | null
+        }
+        Relationships: []
+      }
+      innovation_clusters: {
+        Row: {
+          cluster_name: string
+          collaboration_density: number | null
+          composite_intensity: number | null
+          detected_at: string
+          domain: string
+          grant_acceleration: number | null
+          id: string
+          industry_adoption: number | null
+          member_count: number | null
+          patent_activity: number | null
+          region: string | null
+          research_to_market: number | null
+          startup_formation: number | null
+        }
+        Insert: {
+          cluster_name: string
+          collaboration_density?: number | null
+          composite_intensity?: number | null
+          detected_at?: string
+          domain: string
+          grant_acceleration?: number | null
+          id?: string
+          industry_adoption?: number | null
+          member_count?: number | null
+          patent_activity?: number | null
+          region?: string | null
+          research_to_market?: number | null
+          startup_formation?: number | null
+        }
+        Update: {
+          cluster_name?: string
+          collaboration_density?: number | null
+          composite_intensity?: number | null
+          detected_at?: string
+          domain?: string
+          grant_acceleration?: number | null
+          id?: string
+          industry_adoption?: number | null
+          member_count?: number | null
+          patent_activity?: number | null
+          region?: string | null
+          research_to_market?: number | null
+          startup_formation?: number | null
         }
         Relationships: []
       }
