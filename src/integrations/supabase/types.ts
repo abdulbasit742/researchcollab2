@@ -22967,6 +22967,96 @@ export type Database = {
           },
         ]
       }
+      launch_config: {
+        Row: {
+          config_key: string
+          config_value: Json
+          description: string | null
+          id: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          config_key: string
+          config_value?: Json
+          description?: string | null
+          id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          config_key?: string
+          config_value?: Json
+          description?: string | null
+          id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      launch_health_snapshots: {
+        Row: {
+          active_deals: number | null
+          active_escrow_volume: number | null
+          avg_approval_time_hours: number | null
+          avg_transaction_latency_ms: number | null
+          created_at: string
+          daily_active_users: number | null
+          dispute_count: number | null
+          error_rate: number | null
+          failed_transactions: number | null
+          funding_events: number | null
+          id: string
+          login_failures: number | null
+          milestone_releases: number | null
+          milestones_pending: number | null
+          rate_limit_triggers: number | null
+          security_alerts_24h: number | null
+          snapshot_date: string
+          support_tickets_open: number | null
+        }
+        Insert: {
+          active_deals?: number | null
+          active_escrow_volume?: number | null
+          avg_approval_time_hours?: number | null
+          avg_transaction_latency_ms?: number | null
+          created_at?: string
+          daily_active_users?: number | null
+          dispute_count?: number | null
+          error_rate?: number | null
+          failed_transactions?: number | null
+          funding_events?: number | null
+          id?: string
+          login_failures?: number | null
+          milestone_releases?: number | null
+          milestones_pending?: number | null
+          rate_limit_triggers?: number | null
+          security_alerts_24h?: number | null
+          snapshot_date?: string
+          support_tickets_open?: number | null
+        }
+        Update: {
+          active_deals?: number | null
+          active_escrow_volume?: number | null
+          avg_approval_time_hours?: number | null
+          avg_transaction_latency_ms?: number | null
+          created_at?: string
+          daily_active_users?: number | null
+          dispute_count?: number | null
+          error_rate?: number | null
+          failed_transactions?: number | null
+          funding_events?: number | null
+          id?: string
+          login_failures?: number | null
+          milestone_releases?: number | null
+          milestones_pending?: number | null
+          rate_limit_triggers?: number | null
+          security_alerts_24h?: number | null
+          snapshot_date?: string
+          support_tickets_open?: number | null
+        }
+        Relationships: []
+      }
       leakage_detection: {
         Row: {
           created_at: string
@@ -34997,6 +35087,45 @@ export type Database = {
           },
         ]
       }
+      scale_gates: {
+        Row: {
+          created_at: string
+          criteria: Json
+          evaluated_at: string | null
+          evaluated_by: string | null
+          gate_name: string
+          gate_number: number
+          id: string
+          notes: string | null
+          passed_at: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          criteria?: Json
+          evaluated_at?: string | null
+          evaluated_by?: string | null
+          gate_name: string
+          gate_number: number
+          id?: string
+          notes?: string | null
+          passed_at?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          criteria?: Json
+          evaluated_at?: string | null
+          evaluated_by?: string | null
+          gate_name?: string
+          gate_number?: number
+          id?: string
+          notes?: string | null
+          passed_at?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       scenario_simulations: {
         Row: {
           confidence_band: string | null
@@ -42316,6 +42445,39 @@ export type Database = {
           },
         ]
       }
+      whitelisted_domains: {
+        Row: {
+          added_at: string
+          added_by: string | null
+          domain: string
+          id: string
+          institution_name: string | null
+          is_active: boolean | null
+          max_projects: number | null
+          max_sponsors: number | null
+        }
+        Insert: {
+          added_at?: string
+          added_by?: string | null
+          domain: string
+          id?: string
+          institution_name?: string | null
+          is_active?: boolean | null
+          max_projects?: number | null
+          max_sponsors?: number | null
+        }
+        Update: {
+          added_at?: string
+          added_by?: string | null
+          domain?: string
+          id?: string
+          institution_name?: string | null
+          is_active?: boolean | null
+          max_projects?: number | null
+          max_sponsors?: number | null
+        }
+        Relationships: []
+      }
       work_connections: {
         Row: {
           connected_user_id: string
@@ -42831,6 +42993,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      capture_launch_health_snapshot: { Args: never; Returns: Json }
       check_affiliate_eligibility: {
         Args: { p_user_id: string }
         Returns: Json
@@ -42854,6 +43017,7 @@ export type Database = {
         Returns: boolean
       }
       check_pilot_transaction_cap: { Args: { p_amount: number }; Returns: Json }
+      check_platform_escrow_cap: { Args: { p_amount: number }; Returns: Json }
       check_rate_limit: {
         Args: { p_action_type: string; p_user_id: string }
         Returns: boolean
@@ -42883,6 +43047,7 @@ export type Database = {
       detect_orphaned_states: { Args: never; Returns: Json }
       detect_suspicious_activity: { Args: never; Returns: Json }
       detect_trust_gaming_patterns: { Args: never; Returns: Json }
+      evaluate_scale_gate: { Args: { p_gate_number: number }; Returns: Json }
       execute_escrow_lock: {
         Args: { p_buyer_id: string; p_offer_id: string; p_total_amount: number }
         Returns: Json
