@@ -23808,6 +23808,53 @@ export type Database = {
         }
         Relationships: []
       }
+      group_intelligence_metrics: {
+        Row: {
+          active_members: number | null
+          collaboration_success_rate: number | null
+          computed_at: string
+          execution_threads: number | null
+          funding_conversion: number | null
+          group_id: string
+          id: string
+          knowledge_retention_depth: number | null
+          skill_exchange_frequency: number | null
+          topic_growth_signals: Json | null
+        }
+        Insert: {
+          active_members?: number | null
+          collaboration_success_rate?: number | null
+          computed_at?: string
+          execution_threads?: number | null
+          funding_conversion?: number | null
+          group_id: string
+          id?: string
+          knowledge_retention_depth?: number | null
+          skill_exchange_frequency?: number | null
+          topic_growth_signals?: Json | null
+        }
+        Update: {
+          active_members?: number | null
+          collaboration_success_rate?: number | null
+          computed_at?: string
+          execution_threads?: number | null
+          funding_conversion?: number | null
+          group_id?: string
+          id?: string
+          knowledge_retention_depth?: number | null
+          skill_exchange_frequency?: number | null
+          topic_growth_signals?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_intelligence_metrics_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: true
+            referencedRelation: "professional_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       group_invitations: {
         Row: {
           created_at: string | null
@@ -23898,6 +23945,79 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      group_memory: {
+        Row: {
+          event_type: string
+          group_id: string
+          id: string
+          metadata: Json | null
+          recorded_at: string
+          summary: string | null
+          title: string | null
+        }
+        Insert: {
+          event_type: string
+          group_id: string
+          id?: string
+          metadata?: Json | null
+          recorded_at?: string
+          summary?: string | null
+          title?: string | null
+        }
+        Update: {
+          event_type?: string
+          group_id?: string
+          id?: string
+          metadata?: Json | null
+          recorded_at?: string
+          summary?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_memory_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "professional_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      group_outcomes: {
+        Row: {
+          achieved_at: string
+          description: string | null
+          group_id: string
+          id: string
+          linked_entity_id: string | null
+          outcome_type: string
+        }
+        Insert: {
+          achieved_at?: string
+          description?: string | null
+          group_id: string
+          id?: string
+          linked_entity_id?: string | null
+          outcome_type: string
+        }
+        Update: {
+          achieved_at?: string
+          description?: string | null
+          group_id?: string
+          id?: string
+          linked_entity_id?: string | null
+          outcome_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_outcomes_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "professional_groups"
             referencedColumns: ["id"]
           },
         ]
@@ -24004,6 +24124,147 @@ export type Database = {
             columns: ["group_id"]
             isOneToOne: false
             referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      group_thread_replies: {
+        Row: {
+          author_id: string
+          authority_weight: number | null
+          content: string
+          created_at: string
+          id: string
+          is_solution: boolean | null
+          parent_reply_id: string | null
+          peer_validations: number | null
+          post_id: string
+        }
+        Insert: {
+          author_id: string
+          authority_weight?: number | null
+          content: string
+          created_at?: string
+          id?: string
+          is_solution?: boolean | null
+          parent_reply_id?: string | null
+          peer_validations?: number | null
+          post_id: string
+        }
+        Update: {
+          author_id?: string
+          authority_weight?: number | null
+          content?: string
+          created_at?: string
+          id?: string
+          is_solution?: boolean | null
+          parent_reply_id?: string | null
+          peer_validations?: number | null
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_thread_replies_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "group_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      group_toxicity_flags: {
+        Row: {
+          created_at: string
+          description: string | null
+          evidence: Json | null
+          flag_type: string
+          flagged_user_id: string | null
+          group_id: string
+          id: string
+          post_id: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          flag_type: string
+          flagged_user_id?: string | null
+          group_id: string
+          id?: string
+          post_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          flag_type?: string
+          flagged_user_id?: string | null
+          group_id?: string
+          id?: string
+          post_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_toxicity_flags_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "professional_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      group_trust_density: {
+        Row: {
+          avg_member_trust: number | null
+          collaboration_stability_density: number | null
+          composite_credibility: number | null
+          computed_at: string
+          execution_reliability_density: number | null
+          funding_success_density: number | null
+          group_id: string
+          id: string
+          integrity_confidence_density: number | null
+        }
+        Insert: {
+          avg_member_trust?: number | null
+          collaboration_stability_density?: number | null
+          composite_credibility?: number | null
+          computed_at?: string
+          execution_reliability_density?: number | null
+          funding_success_density?: number | null
+          group_id: string
+          id?: string
+          integrity_confidence_density?: number | null
+        }
+        Update: {
+          avg_member_trust?: number | null
+          collaboration_stability_density?: number | null
+          composite_credibility?: number | null
+          computed_at?: string
+          execution_reliability_density?: number | null
+          funding_success_density?: number | null
+          group_id?: string
+          id?: string
+          integrity_confidence_density?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_trust_density_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: true
+            referencedRelation: "professional_groups"
             referencedColumns: ["id"]
           },
         ]
@@ -40348,6 +40609,75 @@ export type Database = {
           metadata?: Json | null
           updated_at?: string
           version?: number | null
+        }
+        Relationships: []
+      }
+      professional_groups: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          escrow_protected: boolean | null
+          execution_focus: string | null
+          expected_outcomes: string[] | null
+          governance_model: string | null
+          group_type: string
+          id: string
+          institution_id: string | null
+          member_count: number | null
+          membership_criteria: Json | null
+          moderation_structure: Json | null
+          name: string
+          nda_protected: boolean | null
+          posting_rules: string[] | null
+          privacy_level: string | null
+          purpose: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          escrow_protected?: boolean | null
+          execution_focus?: string | null
+          expected_outcomes?: string[] | null
+          governance_model?: string | null
+          group_type: string
+          id?: string
+          institution_id?: string | null
+          member_count?: number | null
+          membership_criteria?: Json | null
+          moderation_structure?: Json | null
+          name: string
+          nda_protected?: boolean | null
+          posting_rules?: string[] | null
+          privacy_level?: string | null
+          purpose?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          escrow_protected?: boolean | null
+          execution_focus?: string | null
+          expected_outcomes?: string[] | null
+          governance_model?: string | null
+          group_type?: string
+          id?: string
+          institution_id?: string | null
+          member_count?: number | null
+          membership_criteria?: Json | null
+          moderation_structure?: Json | null
+          name?: string
+          nda_protected?: boolean | null
+          posting_rules?: string[] | null
+          privacy_level?: string | null
+          purpose?: string | null
+          status?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
