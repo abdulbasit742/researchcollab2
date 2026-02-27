@@ -224,22 +224,32 @@ export function useMilestones(offerId?: string) {
 
   const updateMilestoneStatus = async (milestoneId: string, status: string) => {
     try {
-      const updates: Record<string, any> = { status };
-      
+      // Use atomic server functions for submit/approve — no client-side balance mutation
       if (status === "submitted") {
-        updates.submitted_at = new Date().toISOString();
+        const { data: userData } = await supabase.auth.getUser();
+        if (!userData.user) throw new Error("Not authenticated");
+        const { error } = await supabase.rpc('submit_milestone_atomic' as any, {
+          p_milestone_id: milestoneId,
+          p_executor_id: userData.user.id,
+        });
+        if (error) throw error;
       } else if (status === "approved") {
-        updates.approved_at = new Date().toISOString();
-      } else if (status === "released") {
-        updates.released_at = new Date().toISOString();
+        const { data: userData } = await supabase.auth.getUser();
+        if (!userData.user) throw new Error("Not authenticated");
+        const { error } = await supabase.rpc('approve_milestone_atomic' as any, {
+          p_milestone_id: milestoneId,
+          p_sponsor_id: userData.user.id,
+        });
+        if (error) throw error;
+      } else {
+        // Fallback for other status changes
+        const { error } = await supabase
+          .from("milestones")
+          .update({ status, updated_at: new Date().toISOString() })
+          .eq("id", milestoneId);
+        if (error) throw error;
       }
 
-      const { error } = await supabase
-        .from("milestones")
-        .update(updates)
-        .eq("id", milestoneId);
-
-      if (error) throw error;
       await fetchMilestones();
       return { success: true };
     } catch (err: any) {

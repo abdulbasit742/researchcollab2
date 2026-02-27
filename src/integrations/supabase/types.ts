@@ -64775,6 +64775,14 @@ export type Database = {
         }
         Returns: string
       }
+      approve_milestone_atomic: {
+        Args: {
+          p_idempotency_key?: string
+          p_milestone_id: string
+          p_sponsor_id: string
+        }
+        Returns: Json
+      }
       are_connected: {
         Args: { user_a: string; user_b: string }
         Returns: boolean
@@ -64886,8 +64894,8 @@ export type Database = {
       }
       fund_escrow_atomic: {
         Args: {
-          p_deal_id: string
-          p_idempotency_key: string
+          p_escrow_id: string
+          p_idempotency_key?: string
           p_sponsor_id: string
         }
         Returns: Json
@@ -65038,6 +65046,15 @@ export type Database = {
         }
         Returns: undefined
       }
+      open_dispute_atomic: {
+        Args: {
+          p_evidence_files?: Json
+          p_milestone_id: string
+          p_reason: string
+          p_user_id: string
+        }
+        Returns: Json
+      }
       partial_release_milestone: {
         Args: { p_amount: number; p_milestone_id: string; p_reason: string }
         Returns: boolean
@@ -65097,7 +65114,25 @@ export type Database = {
         }
         Returns: Json
       }
+      resolve_dispute_atomic: {
+        Args: {
+          p_dispute_id: string
+          p_resolution_notes?: string
+          p_resolution_type: string
+          p_resolver_id: string
+        }
+        Returns: Json
+      }
       run_nightly_reconciliation: { Args: never; Returns: Json }
+      submit_milestone_atomic: {
+        Args: {
+          p_deliverable_url?: string
+          p_executor_id: string
+          p_milestone_id: string
+          p_submission_notes?: string
+        }
+        Returns: Json
+      }
       submit_review: {
         Args: {
           p_comment?: string
