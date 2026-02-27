@@ -45062,6 +45062,575 @@ export type Database = {
         }
         Relationships: []
       }
+      reie_action_items: {
+        Row: {
+          action_type: string
+          assigned_to: string | null
+          compliance_note: string | null
+          created_at: string | null
+          created_by: string | null
+          deadline: string | null
+          description: string | null
+          id: string
+          linked_project_id: string | null
+          milestone_tag: string | null
+          priority: string | null
+          resolved_at: string | null
+          session_id: string
+          status: string | null
+          title: string
+        }
+        Insert: {
+          action_type?: string
+          assigned_to?: string | null
+          compliance_note?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          linked_project_id?: string | null
+          milestone_tag?: string | null
+          priority?: string | null
+          resolved_at?: string | null
+          session_id: string
+          status?: string | null
+          title: string
+        }
+        Update: {
+          action_type?: string
+          assigned_to?: string | null
+          compliance_note?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          linked_project_id?: string | null
+          milestone_tag?: string | null
+          priority?: string | null
+          resolved_at?: string | null
+          session_id?: string
+          status?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reie_action_items_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "reie_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reie_ai_summaries: {
+        Row: {
+          action_items: Json | null
+          compliance_notes: Json | null
+          decision_log: Json | null
+          executive_summary: string | null
+          funding_implications: Json | null
+          generated_at: string | null
+          id: string
+          next_steps: Json | null
+          participant_contributions: Json | null
+          risk_log: Json | null
+          session_id: string
+          suggested_followup: string | null
+          timeline_impact: string | null
+        }
+        Insert: {
+          action_items?: Json | null
+          compliance_notes?: Json | null
+          decision_log?: Json | null
+          executive_summary?: string | null
+          funding_implications?: Json | null
+          generated_at?: string | null
+          id?: string
+          next_steps?: Json | null
+          participant_contributions?: Json | null
+          risk_log?: Json | null
+          session_id: string
+          suggested_followup?: string | null
+          timeline_impact?: string | null
+        }
+        Update: {
+          action_items?: Json | null
+          compliance_notes?: Json | null
+          decision_log?: Json | null
+          executive_summary?: string | null
+          funding_implications?: Json | null
+          generated_at?: string | null
+          id?: string
+          next_steps?: Json | null
+          participant_contributions?: Json | null
+          risk_log?: Json | null
+          session_id?: string
+          suggested_followup?: string | null
+          timeline_impact?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reie_ai_summaries_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "reie_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reie_archives: {
+        Row: {
+          archived_at: string | null
+          funding_references: Json | null
+          id: string
+          linked_documents: Json | null
+          search_keywords: string[] | null
+          session_id: string
+          transcript: string | null
+          versioned_edits: Json | null
+          video_recording_url: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          funding_references?: Json | null
+          id?: string
+          linked_documents?: Json | null
+          search_keywords?: string[] | null
+          session_id: string
+          transcript?: string | null
+          versioned_edits?: Json | null
+          video_recording_url?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          funding_references?: Json | null
+          id?: string
+          linked_documents?: Json | null
+          search_keywords?: string[] | null
+          session_id?: string
+          transcript?: string | null
+          versioned_edits?: Json | null
+          video_recording_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reie_archives_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "reie_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reie_cross_border: {
+        Row: {
+          created_at: string | null
+          cultural_guidance: string | null
+          currency_references: Json | null
+          id: string
+          ip_disclosure_warnings: string | null
+          jurisdictional_notes: string | null
+          regulatory_reminders: Json | null
+          session_id: string
+          time_zones: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          cultural_guidance?: string | null
+          currency_references?: Json | null
+          id?: string
+          ip_disclosure_warnings?: string | null
+          jurisdictional_notes?: string | null
+          regulatory_reminders?: Json | null
+          session_id: string
+          time_zones?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          cultural_guidance?: string | null
+          currency_references?: Json | null
+          id?: string
+          ip_disclosure_warnings?: string | null
+          jurisdictional_notes?: string | null
+          regulatory_reminders?: Json | null
+          session_id?: string
+          time_zones?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reie_cross_border_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "reie_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reie_decisions: {
+        Row: {
+          compliance_notes: string | null
+          created_at: string | null
+          decided_by: string | null
+          decision_type: string
+          funding_implications: Json | null
+          id: string
+          rationale: string | null
+          risk_flags: Json | null
+          session_id: string
+          summary: string
+        }
+        Insert: {
+          compliance_notes?: string | null
+          created_at?: string | null
+          decided_by?: string | null
+          decision_type?: string
+          funding_implications?: Json | null
+          id?: string
+          rationale?: string | null
+          risk_flags?: Json | null
+          session_id: string
+          summary: string
+        }
+        Update: {
+          compliance_notes?: string | null
+          created_at?: string | null
+          decided_by?: string | null
+          decision_type?: string
+          funding_implications?: Json | null
+          id?: string
+          rationale?: string | null
+          risk_flags?: Json | null
+          session_id?: string
+          summary?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reie_decisions_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "reie_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reie_escrow_panel: {
+        Row: {
+          budget_allocation: Json | null
+          compliance_checklist: Json | null
+          escrow_balance: number | null
+          funding_release_conditions: Json | null
+          id: string
+          milestone_status: Json | null
+          session_id: string
+          sponsor_oversight: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          budget_allocation?: Json | null
+          compliance_checklist?: Json | null
+          escrow_balance?: number | null
+          funding_release_conditions?: Json | null
+          id?: string
+          milestone_status?: Json | null
+          session_id: string
+          sponsor_oversight?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          budget_allocation?: Json | null
+          compliance_checklist?: Json | null
+          escrow_balance?: number | null
+          funding_release_conditions?: Json | null
+          id?: string
+          milestone_status?: Json | null
+          session_id?: string
+          sponsor_oversight?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reie_escrow_panel_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "reie_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reie_impact_index: {
+        Row: {
+          composite_impact_score: number | null
+          computed_at: string | null
+          cross_border_established: boolean | null
+          deliverables_defined: number | null
+          funding_alignment_improved: boolean | null
+          id: string
+          institutional_commitments: number | null
+          milestones_clarified: number | null
+          new_collaborators_added: number | null
+          risk_factors_resolved: number | null
+          session_id: string
+          tasks_created: number | null
+        }
+        Insert: {
+          composite_impact_score?: number | null
+          computed_at?: string | null
+          cross_border_established?: boolean | null
+          deliverables_defined?: number | null
+          funding_alignment_improved?: boolean | null
+          id?: string
+          institutional_commitments?: number | null
+          milestones_clarified?: number | null
+          new_collaborators_added?: number | null
+          risk_factors_resolved?: number | null
+          session_id: string
+          tasks_created?: number | null
+        }
+        Update: {
+          composite_impact_score?: number | null
+          computed_at?: string | null
+          cross_border_established?: boolean | null
+          deliverables_defined?: number | null
+          funding_alignment_improved?: boolean | null
+          id?: string
+          institutional_commitments?: number | null
+          milestones_clarified?: number | null
+          new_collaborators_added?: number | null
+          risk_factors_resolved?: number | null
+          session_id?: string
+          tasks_created?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reie_impact_index_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "reie_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reie_live_documents: {
+        Row: {
+          citations: Json | null
+          content: string | null
+          contributors: Json | null
+          created_at: string | null
+          created_by: string | null
+          document_type: string
+          id: string
+          role_assignments: Json | null
+          session_id: string
+          title: string
+          updated_at: string | null
+          version: number | null
+        }
+        Insert: {
+          citations?: Json | null
+          content?: string | null
+          contributors?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          document_type?: string
+          id?: string
+          role_assignments?: Json | null
+          session_id: string
+          title: string
+          updated_at?: string | null
+          version?: number | null
+        }
+        Update: {
+          citations?: Json | null
+          content?: string | null
+          contributors?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          document_type?: string
+          id?: string
+          role_assignments?: Json | null
+          session_id?: string
+          title?: string
+          updated_at?: string | null
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reie_live_documents_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "reie_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reie_participants: {
+        Row: {
+          contribution_summary: string | null
+          id: string
+          is_domain_authority: boolean | null
+          is_moderator: boolean | null
+          joined_at: string | null
+          left_at: string | null
+          role: string
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          contribution_summary?: string | null
+          id?: string
+          is_domain_authority?: boolean | null
+          is_moderator?: boolean | null
+          joined_at?: string | null
+          left_at?: string | null
+          role?: string
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          contribution_summary?: string | null
+          id?: string
+          is_domain_authority?: boolean | null
+          is_moderator?: boolean | null
+          joined_at?: string | null
+          left_at?: string | null
+          role?: string
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reie_participants_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "reie_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reie_risk_flags: {
+        Row: {
+          created_at: string | null
+          description: string
+          flagged_by: string | null
+          id: string
+          resolved: boolean | null
+          resolved_at: string | null
+          risk_type: string
+          session_id: string
+          severity: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          flagged_by?: string | null
+          id?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          risk_type: string
+          session_id: string
+          severity?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          flagged_by?: string | null
+          id?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          risk_type?: string
+          session_id?: string
+          severity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reie_risk_flags_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "reie_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reie_sessions: {
+        Row: {
+          compliance_context: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          domain_classification: string | null
+          ended_at: string | null
+          expected_deliverables: Json | null
+          funding_type: string | null
+          id: string
+          institutional_host_id: string | null
+          is_public: boolean | null
+          linked_entity_id: string | null
+          linked_entity_type: string | null
+          outcome_metrics: Json | null
+          purpose: string | null
+          recording_policy: string | null
+          region: string | null
+          scheduled_at: string | null
+          session_type: string
+          started_at: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          compliance_context?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          domain_classification?: string | null
+          ended_at?: string | null
+          expected_deliverables?: Json | null
+          funding_type?: string | null
+          id?: string
+          institutional_host_id?: string | null
+          is_public?: boolean | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          outcome_metrics?: Json | null
+          purpose?: string | null
+          recording_policy?: string | null
+          region?: string | null
+          scheduled_at?: string | null
+          session_type?: string
+          started_at?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          compliance_context?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          domain_classification?: string | null
+          ended_at?: string | null
+          expected_deliverables?: Json | null
+          funding_type?: string | null
+          id?: string
+          institutional_host_id?: string | null
+          is_public?: boolean | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          outcome_metrics?: Json | null
+          purpose?: string | null
+          recording_policy?: string | null
+          region?: string | null
+          scheduled_at?: string | null
+          session_type?: string
+          started_at?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       relationship_entropy: {
         Row: {
           calculated_at: string
