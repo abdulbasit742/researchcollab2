@@ -27441,6 +27441,173 @@ export type Database = {
         }
         Relationships: []
       }
+      igita_economic_impact_tracking: {
+        Row: {
+          baseline_value: number | null
+          current_value: number | null
+          evidence: Json | null
+          id: string
+          impact_metric_id: string
+          improvement_percentage: number | null
+          measured_at: string
+          measurement_method: string | null
+          region: string | null
+        }
+        Insert: {
+          baseline_value?: number | null
+          current_value?: number | null
+          evidence?: Json | null
+          id?: string
+          impact_metric_id: string
+          improvement_percentage?: number | null
+          measured_at?: string
+          measurement_method?: string | null
+          region?: string | null
+        }
+        Update: {
+          baseline_value?: number | null
+          current_value?: number | null
+          evidence?: Json | null
+          id?: string
+          impact_metric_id?: string
+          improvement_percentage?: number | null
+          measured_at?: string
+          measurement_method?: string | null
+          region?: string | null
+        }
+        Relationships: []
+      }
+      igita_investor_pipeline: {
+        Row: {
+          contact_name: string | null
+          created_at: string
+          created_by: string | null
+          estimated_ticket_size: number | null
+          id: string
+          interest_areas: string[] | null
+          investor_name: string
+          investor_type: string
+          last_interaction_at: string | null
+          notes: string | null
+          stage: string
+          thesis_alignment_score: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          contact_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          estimated_ticket_size?: number | null
+          id?: string
+          interest_areas?: string[] | null
+          investor_name: string
+          investor_type?: string
+          last_interaction_at?: string | null
+          notes?: string | null
+          stage?: string
+          thesis_alignment_score?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          contact_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          estimated_ticket_size?: number | null
+          id?: string
+          interest_areas?: string[] | null
+          investor_name?: string
+          investor_type?: string
+          last_interaction_at?: string | null
+          notes?: string | null
+          stage?: string
+          thesis_alignment_score?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      igita_pitch_events: {
+        Row: {
+          event_type: string
+          feedback: string | null
+          follow_up_required: boolean | null
+          id: string
+          investor_id: string | null
+          occurred_at: string
+          outcome: string | null
+          recorded_by: string | null
+          slide_focus: string | null
+        }
+        Insert: {
+          event_type: string
+          feedback?: string | null
+          follow_up_required?: boolean | null
+          id?: string
+          investor_id?: string | null
+          occurred_at?: string
+          outcome?: string | null
+          recorded_by?: string | null
+          slide_focus?: string | null
+        }
+        Update: {
+          event_type?: string
+          feedback?: string | null
+          follow_up_required?: boolean | null
+          id?: string
+          investor_id?: string | null
+          occurred_at?: string
+          outcome?: string | null
+          recorded_by?: string | null
+          slide_focus?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "igita_pitch_events_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "igita_investor_pipeline"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      igita_thesis_metrics: {
+        Row: {
+          category: string
+          current_value: number | null
+          id: string
+          measured_at: string
+          metric_id: string
+          metric_name: string
+          notes: string | null
+          period: string
+          target_value: number | null
+          unit: string
+        }
+        Insert: {
+          category: string
+          current_value?: number | null
+          id?: string
+          measured_at?: string
+          metric_id: string
+          metric_name: string
+          notes?: string | null
+          period: string
+          target_value?: number | null
+          unit: string
+        }
+        Update: {
+          category?: string
+          current_value?: number | null
+          id?: string
+          measured_at?: string
+          metric_id?: string
+          metric_name?: string
+          notes?: string | null
+          period?: string
+          target_value?: number | null
+          unit?: string
+        }
+        Relationships: []
+      }
       impact_adoptions: {
         Row: {
           adopting_entity_id: string | null

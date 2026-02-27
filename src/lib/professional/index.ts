@@ -179,3 +179,6 @@ export type { PillarKey, TrustAnomalyDetection, TrustAnomalyType, EscrowSecurity
 
 export { DOMINATION_PHASES, NETWORK_EFFECT_LOOPS, LOCK_IN_MECHANISMS, COMPETITOR_DEFENSE, CAPITAL_INCENTIVE_TIERS, ENTERPRISE_SALES_PROPOSITIONS, GOVERNMENT_PITCH, THREE_YEAR_ROADMAP, BRAND_FRAMEWORK, getCapitalIncentiveTier, computeAdoptionReadiness, computeSwitchingCostIndex, computeNetworkEffectStrength, GADEB_VERSION, GADEB_EFFECTIVE_DATE } from "./globalAdoptionEngine";
 export type { AdoptionPhase, PhaseDefinition, PhaseMetric, NetworkEffectLoop, LockInMechanism, CompetitorDefense, CapitalIncentiveTier, EnterpriseSalesProposition, GovernmentPitchProposition, RoadmapYear, ClusterHealthSnapshot } from "./globalAdoptionEngine";
+
+export { MACRO_PROBLEMS, INFRASTRUCTURE_COMPONENTS, TIMING_FACTORS, ECONOMIC_IMPACT_MODEL, REVENUE_STREAMS, DEFENSIBILITY_LAYERS, RISK_MITIGATIONS, VALUATION_METRICS, SCALE_PATH, INEVITABILITY_FACTORS, EXIT_SCENARIOS, PITCH_NARRATIVE, INVESTOR_DECK, IGITA_VERSION, IGITA_EFFECTIVE_DATE } from "./investorThesisEngine";
+export type { MacroProblem, InfrastructureComponent, TimingFactor, EconomicImpactMetric, RevenueStream, DefensibilityLayer, RiskMitigation, ValuationMetric, ScalePhase, InevitabilityFactor, ExitScenario, InvestorSlide } from "./investorThesisEngine";
