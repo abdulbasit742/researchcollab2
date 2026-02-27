@@ -22556,6 +22556,54 @@ export type Database = {
         }
         Relationships: []
       }
+      identity_timeline_events: {
+        Row: {
+          created_at: string
+          event_date: string
+          event_description: string | null
+          event_title: string
+          event_type: string
+          id: string
+          institution_id: string | null
+          is_verified: boolean | null
+          linked_entity_id: string | null
+          linked_entity_type: string | null
+          metadata: Json | null
+          user_id: string
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_date: string
+          event_description?: string | null
+          event_title: string
+          event_type: string
+          id?: string
+          institution_id?: string | null
+          is_verified?: boolean | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          metadata?: Json | null
+          user_id: string
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_date?: string
+          event_description?: string | null
+          event_title?: string
+          event_type?: string
+          id?: string
+          institution_id?: string | null
+          is_verified?: boolean | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          metadata?: Json | null
+          user_id?: string
+          verified_by?: string | null
+        }
+        Relationships: []
+      }
       impact_adoptions: {
         Row: {
           adopting_entity_id: string | null
@@ -25146,6 +25194,45 @@ export type Database = {
           risk_cluster_alerts?: Json | null
           sponsor_diversification_index?: number | null
           total_active_grants?: number | null
+        }
+        Relationships: []
+      }
+      institutional_identity_verifications: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          institution_id: string
+          status: string
+          user_id: string
+          verification_details: string | null
+          verification_type: string
+          verified_at: string | null
+          verified_by_user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          institution_id: string
+          status?: string
+          user_id: string
+          verification_details?: string | null
+          verification_type: string
+          verified_at?: string | null
+          verified_by_user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          institution_id?: string
+          status?: string
+          user_id?: string
+          verification_details?: string | null
+          verification_type?: string
+          verified_at?: string | null
+          verified_by_user_id?: string | null
         }
         Relationships: []
       }
@@ -36647,6 +36734,45 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_global_footprint: {
+        Row: {
+          country_code: string
+          created_at: string
+          description: string | null
+          ended_at: string | null
+          engagement_type: string
+          id: string
+          institution_name: string | null
+          is_active: boolean | null
+          started_at: string | null
+          user_id: string
+        }
+        Insert: {
+          country_code: string
+          created_at?: string
+          description?: string | null
+          ended_at?: string | null
+          engagement_type: string
+          id?: string
+          institution_name?: string | null
+          is_active?: boolean | null
+          started_at?: string | null
+          user_id: string
+        }
+        Update: {
+          country_code?: string
+          created_at?: string
+          description?: string | null
+          ended_at?: string | null
+          engagement_type?: string
+          id?: string
+          institution_name?: string | null
+          is_active?: boolean | null
+          started_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       professional_lifecycle_events: {
         Row: {
           completed_at: string | null
@@ -36766,6 +36892,42 @@ export type Database = {
           snapshot_at?: string | null
           sponsor_churn_rate?: number | null
           trust_edge_growth?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      professional_stability_index: {
+        Row: {
+          collaboration_longevity: number | null
+          compliance_stability: number | null
+          composite_stability: number | null
+          computed_at: string
+          funding_continuity: number | null
+          id: string
+          innovation_durability: number | null
+          output_consistency: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_longevity?: number | null
+          compliance_stability?: number | null
+          composite_stability?: number | null
+          computed_at?: string
+          funding_continuity?: number | null
+          id?: string
+          innovation_durability?: number | null
+          output_consistency?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_longevity?: number | null
+          compliance_stability?: number | null
+          composite_stability?: number | null
+          computed_at?: string
+          funding_continuity?: number | null
+          id?: string
+          innovation_durability?: number | null
+          output_consistency?: number | null
           user_id?: string
         }
         Relationships: []
@@ -39444,6 +39606,54 @@ export type Database = {
           trust_score_snapshot?: number
           user_id?: string
           visibility_score_snapshot?: number
+        }
+        Relationships: []
+      }
+      reputation_stack_profiles: {
+        Row: {
+          breakdown: Json | null
+          collaboration_score: number | null
+          composite_reputation: number | null
+          computed_at: string
+          execution_score: number | null
+          funding_impact_score: number | null
+          id: string
+          innovation_score: number | null
+          integrity_score: number | null
+          longitudinal_stability_score: number | null
+          open_contribution_score: number | null
+          skill_diversity_score: number | null
+          user_id: string
+        }
+        Insert: {
+          breakdown?: Json | null
+          collaboration_score?: number | null
+          composite_reputation?: number | null
+          computed_at?: string
+          execution_score?: number | null
+          funding_impact_score?: number | null
+          id?: string
+          innovation_score?: number | null
+          integrity_score?: number | null
+          longitudinal_stability_score?: number | null
+          open_contribution_score?: number | null
+          skill_diversity_score?: number | null
+          user_id: string
+        }
+        Update: {
+          breakdown?: Json | null
+          collaboration_score?: number | null
+          composite_reputation?: number | null
+          computed_at?: string
+          execution_score?: number | null
+          funding_impact_score?: number | null
+          id?: string
+          innovation_score?: number | null
+          integrity_score?: number | null
+          longitudinal_stability_score?: number | null
+          open_contribution_score?: number | null
+          skill_diversity_score?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -44933,6 +45143,51 @@ export type Database = {
         }
         Relationships: []
       }
+      skill_matrix_entries: {
+        Row: {
+          application_count: number | null
+          cross_domain_integration: boolean | null
+          depth_score: number | null
+          grant_linked: boolean | null
+          id: string
+          industry_validated: boolean | null
+          peer_endorsement_weight: number | null
+          project_linkages: string[] | null
+          skill_category: string
+          skill_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          application_count?: number | null
+          cross_domain_integration?: boolean | null
+          depth_score?: number | null
+          grant_linked?: boolean | null
+          id?: string
+          industry_validated?: boolean | null
+          peer_endorsement_weight?: number | null
+          project_linkages?: string[] | null
+          skill_category: string
+          skill_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          application_count?: number | null
+          cross_domain_integration?: boolean | null
+          depth_score?: number | null
+          grant_linked?: boolean | null
+          id?: string
+          industry_validated?: boolean | null
+          peer_endorsement_weight?: number | null
+          project_linkages?: string[] | null
+          skill_category?: string
+          skill_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       smart_match_results: {
         Row: {
           budget_alignment: number | null
@@ -50240,6 +50495,42 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_type?: string
+        }
+        Relationships: []
+      }
+      verified_identity_badges: {
+        Row: {
+          badge_name: string
+          badge_type: string
+          earned_at: string
+          earned_reason: string | null
+          evidence_entity_id: string | null
+          evidence_entity_type: string | null
+          id: string
+          is_active: boolean | null
+          user_id: string
+        }
+        Insert: {
+          badge_name: string
+          badge_type: string
+          earned_at?: string
+          earned_reason?: string | null
+          evidence_entity_id?: string | null
+          evidence_entity_type?: string | null
+          id?: string
+          is_active?: boolean | null
+          user_id: string
+        }
+        Update: {
+          badge_name?: string
+          badge_type?: string
+          earned_at?: string
+          earned_reason?: string | null
+          evidence_entity_id?: string | null
+          evidence_entity_type?: string | null
+          id?: string
+          is_active?: boolean | null
+          user_id?: string
         }
         Relationships: []
       }
