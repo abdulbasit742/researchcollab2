@@ -13192,6 +13192,45 @@ export type Database = {
           },
         ]
       }
+      faculty_talent_assessments: {
+        Row: {
+          assessment_type: string
+          created_at: string | null
+          execution_depth_rating: number | null
+          faculty_id: string
+          flags: string[] | null
+          id: string
+          notes: string | null
+          recommendation_level: string | null
+          skill_accuracy_rating: number | null
+          student_id: string
+        }
+        Insert: {
+          assessment_type: string
+          created_at?: string | null
+          execution_depth_rating?: number | null
+          faculty_id: string
+          flags?: string[] | null
+          id?: string
+          notes?: string | null
+          recommendation_level?: string | null
+          skill_accuracy_rating?: number | null
+          student_id: string
+        }
+        Update: {
+          assessment_type?: string
+          created_at?: string | null
+          execution_depth_rating?: number | null
+          faculty_id?: string
+          flags?: string[] | null
+          id?: string
+          notes?: string | null
+          recommendation_level?: string | null
+          skill_accuracy_rating?: number | null
+          student_id?: string
+        }
+        Relationships: []
+      }
       failure_records: {
         Row: {
           created_at: string
@@ -37287,6 +37326,48 @@ export type Database = {
           },
         ]
       }
+      skill_evidence_blocks: {
+        Row: {
+          accountability_record_id: string | null
+          confidence_level: string | null
+          created_at: string | null
+          deliverable_url: string | null
+          evidence_description: string | null
+          faculty_confirmed: boolean | null
+          id: string
+          project_id: string | null
+          skill_name: string
+          sponsor_confirmed: boolean | null
+          user_id: string
+        }
+        Insert: {
+          accountability_record_id?: string | null
+          confidence_level?: string | null
+          created_at?: string | null
+          deliverable_url?: string | null
+          evidence_description?: string | null
+          faculty_confirmed?: boolean | null
+          id?: string
+          project_id?: string | null
+          skill_name: string
+          sponsor_confirmed?: boolean | null
+          user_id: string
+        }
+        Update: {
+          accountability_record_id?: string | null
+          confidence_level?: string | null
+          created_at?: string | null
+          deliverable_url?: string | null
+          evidence_description?: string | null
+          faculty_confirmed?: boolean | null
+          id?: string
+          project_id?: string | null
+          skill_name?: string
+          sponsor_confirmed?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       skill_forecasts: {
         Row: {
           ai_model_version: string | null
@@ -37655,6 +37736,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sponsor_performance_feedback: {
+        Row: {
+          comments: string | null
+          communication_clarity: number | null
+          created_at: string | null
+          deliverable_quality: number | null
+          executor_id: string
+          id: string
+          overall_score: number | null
+          problem_solving: number | null
+          professionalism: number | null
+          project_id: string | null
+          sponsor_id: string
+          timeliness: number | null
+        }
+        Insert: {
+          comments?: string | null
+          communication_clarity?: number | null
+          created_at?: string | null
+          deliverable_quality?: number | null
+          executor_id: string
+          id?: string
+          overall_score?: number | null
+          problem_solving?: number | null
+          professionalism?: number | null
+          project_id?: string | null
+          sponsor_id: string
+          timeliness?: number | null
+        }
+        Update: {
+          comments?: string | null
+          communication_clarity?: number | null
+          created_at?: string | null
+          deliverable_quality?: number | null
+          executor_id?: string
+          id?: string
+          overall_score?: number | null
+          problem_solving?: number | null
+          professionalism?: number | null
+          project_id?: string | null
+          sponsor_id?: string
+          timeliness?: number | null
+        }
+        Relationships: []
       }
       sponsor_pipeline: {
         Row: {
@@ -39777,6 +39903,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      talent_readiness_snapshots: {
+        Row: {
+          complexity_diversity_score: number | null
+          cross_domain_score: number | null
+          dispute_free_score: number | null
+          escrow_volume_score: number | null
+          id: string
+          institutional_validation_score: number | null
+          punctuality_score: number | null
+          snapshot_at: string | null
+          sponsor_repeat_score: number | null
+          talent_readiness_score: number | null
+          tier: string | null
+          user_id: string
+        }
+        Insert: {
+          complexity_diversity_score?: number | null
+          cross_domain_score?: number | null
+          dispute_free_score?: number | null
+          escrow_volume_score?: number | null
+          id?: string
+          institutional_validation_score?: number | null
+          punctuality_score?: number | null
+          snapshot_at?: string | null
+          sponsor_repeat_score?: number | null
+          talent_readiness_score?: number | null
+          tier?: string | null
+          user_id: string
+        }
+        Update: {
+          complexity_diversity_score?: number | null
+          cross_domain_score?: number | null
+          dispute_free_score?: number | null
+          escrow_volume_score?: number | null
+          id?: string
+          institutional_validation_score?: number | null
+          punctuality_score?: number | null
+          snapshot_at?: string | null
+          sponsor_repeat_score?: number | null
+          talent_readiness_score?: number | null
+          tier?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       teaching_research_outputs: {
         Row: {
