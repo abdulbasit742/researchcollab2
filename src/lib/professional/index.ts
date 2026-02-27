@@ -59,3 +59,12 @@ export type { GrantLifecycleStage, GrantLifecycleEvent, GrantPerformanceMetrics,
 
 export { createCollaborationNode, getCollaborationNodes, computeEdgeStrength, saveCollaborationEdge, getCollaborationEdges, computeCTS, saveCTS, getCTS, computeCSI, saveCSI, computeCDI as computeCollabCDI, saveCDI as saveCollabCDI, getCDI as getCollabCDI, recordEvolutionEvent, getCollaborationTimeline, detectCollaborationRisks, saveDomainCluster, getDomainClusters, suggestCollaborations, NODE_TYPES, EVOLUTION_EVENT_TYPES, GACIG_TRANSPARENCY, CTS_WEIGHTS, EDGE_STRENGTH_WEIGHTS } from "./collaborationIntelligenceGraph";
 export type { CollaborationNodeType, CollaborationNode, CollaborationEdgeInput, CollaborationTrustScoreInput, CollaborationDiversityInput, CollaborationStabilityInput, CollaborationRiskSignal, DomainCluster, EvolutionEventType } from "./collaborationIntelligenceGraph";
+
+export { createPatent, getPatentsByGrant, getPatentsByInstitution, computePQI, computeRCCI, saveCommercializationMetrics, createStartup, getStartupsByInstitution, computeIYR, computeIIS, saveIIS, recordInnovationFailure, getInnovationClusters, forecastCommercialization, GRCIE_TRANSPARENCY, PQI_WEIGHTS, IIS_WEIGHTS, TRL_LEVELS } from "./researchCommercialization";
+export type { PatentInput, CommercializationInput, StartupInput, InnovationFailureInput } from "./researchCommercialization";
+
+export { searchResearchDiscovery, computeCompositeRankScore, indexForDiscovery, predictTrajectory, saveTrajectoryPrediction, getEmergingDomainSignals, saveEmergingSignal, addKnowledgeGraphConnection, getKnowledgeGraphNeighbors, getFundingGaps, saveFundingGap, compareEntities, SEARCH_MODES, IRDPKE_TRANSPARENCY, DEFAULT_RANK_WEIGHTS } from "./researchDiscoveryEngine";
+export type { SearchMode, DiscoverySearchParams, DiscoveryResult, TrajectoryPrediction, EmergingDomainSignal, FundingGap } from "./researchDiscoveryEngine";
+
+export { computeInstitutionalRank, saveInstitutionalRanking, getInstitutionalRankings, getInstitutionRankingHistory, applyFieldNormalization as applyRankingFieldNorm, detectRankingManipulation, saveManipulationFlags, getGovernmentRankingExport, GIEIRE_TRANSPARENCY, RANKING_WEIGHTS, MANIPULATION_TYPES } from "./institutionalRanking";
+export type { InstitutionalRankingInput, RankingResult, ManipulationFlag } from "./institutionalRanking";

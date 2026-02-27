@@ -6303,6 +6303,74 @@ export type Database = {
           },
         ]
       }
+      commercialization_metrics: {
+        Row: {
+          adoption_scale: string | null
+          commercial_survival_rate: number | null
+          computed_at: string
+          id: string
+          industry_pilot_success_rate: number | null
+          institution_id: string | null
+          licensing_revenue: number | null
+          patent_id: string | null
+          product_deployment_days: number | null
+          rcci: number | null
+          research_project_id: string | null
+          researcher_id: string | null
+          revenue_per_research_dollar: number | null
+          startup_formation_rate: number | null
+          time_patent_to_licensing_days: number | null
+          time_publication_to_patent_days: number | null
+          venture_capital_attracted: number | null
+        }
+        Insert: {
+          adoption_scale?: string | null
+          commercial_survival_rate?: number | null
+          computed_at?: string
+          id?: string
+          industry_pilot_success_rate?: number | null
+          institution_id?: string | null
+          licensing_revenue?: number | null
+          patent_id?: string | null
+          product_deployment_days?: number | null
+          rcci?: number | null
+          research_project_id?: string | null
+          researcher_id?: string | null
+          revenue_per_research_dollar?: number | null
+          startup_formation_rate?: number | null
+          time_patent_to_licensing_days?: number | null
+          time_publication_to_patent_days?: number | null
+          venture_capital_attracted?: number | null
+        }
+        Update: {
+          adoption_scale?: string | null
+          commercial_survival_rate?: number | null
+          computed_at?: string
+          id?: string
+          industry_pilot_success_rate?: number | null
+          institution_id?: string | null
+          licensing_revenue?: number | null
+          patent_id?: string | null
+          product_deployment_days?: number | null
+          rcci?: number | null
+          research_project_id?: string | null
+          researcher_id?: string | null
+          revenue_per_research_dollar?: number | null
+          startup_formation_rate?: number | null
+          time_patent_to_licensing_days?: number | null
+          time_publication_to_patent_days?: number | null
+          venture_capital_attracted?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commercialization_metrics_patent_id_fkey"
+            columns: ["patent_id"]
+            isOneToOne: false
+            referencedRelation: "patent_pipeline"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       commercialization_requests: {
         Row: {
           business_plan_summary: string | null
@@ -12960,6 +13028,45 @@ export type Database = {
         }
         Relationships: []
       }
+      emerging_domain_signals: {
+        Row: {
+          collaboration_cluster_formation: number | null
+          confidence: number | null
+          cross_discipline_convergence: number | null
+          detected_at: string
+          domain: string
+          funding_concentration_shift: number | null
+          id: string
+          patent_surge_rate: number | null
+          regional_acceleration: Json | null
+          signal_type: string
+        }
+        Insert: {
+          collaboration_cluster_formation?: number | null
+          confidence?: number | null
+          cross_discipline_convergence?: number | null
+          detected_at?: string
+          domain: string
+          funding_concentration_shift?: number | null
+          id?: string
+          patent_surge_rate?: number | null
+          regional_acceleration?: Json | null
+          signal_type: string
+        }
+        Update: {
+          collaboration_cluster_formation?: number | null
+          confidence?: number | null
+          cross_discipline_convergence?: number | null
+          detected_at?: string
+          domain?: string
+          funding_concentration_shift?: number | null
+          id?: string
+          patent_surge_rate?: number | null
+          regional_acceleration?: Json | null
+          signal_type?: string
+        }
+        Relationships: []
+      }
       employability_reports: {
         Row: {
           completed_projects: number | null
@@ -16744,6 +16851,45 @@ export type Database = {
           id?: string
           legal_compliance_acknowledged?: boolean
           sponsor_id?: string
+        }
+        Relationships: []
+      }
+      funding_gap_intelligence: {
+        Row: {
+          citation_density: number | null
+          computed_at: string
+          domain: string
+          funding_density: number | null
+          gap_type: string
+          id: string
+          output_density: number | null
+          recommendation: string | null
+          region: string | null
+          severity: number | null
+        }
+        Insert: {
+          citation_density?: number | null
+          computed_at?: string
+          domain: string
+          funding_density?: number | null
+          gap_type: string
+          id?: string
+          output_density?: number | null
+          recommendation?: string | null
+          region?: string | null
+          severity?: number | null
+        }
+        Update: {
+          citation_density?: number | null
+          computed_at?: string
+          domain?: string
+          funding_density?: number | null
+          gap_type?: string
+          id?: string
+          output_density?: number | null
+          recommendation?: string | null
+          region?: string | null
+          severity?: number | null
         }
         Relationships: []
       }
@@ -21051,6 +21197,45 @@ export type Database = {
         }
         Relationships: []
       }
+      industry_influence_scores: {
+        Row: {
+          advisory_participation: number | null
+          computed_at: string
+          corporate_rd_collaboration: number | null
+          id: string
+          industry_funding_diversity: number | null
+          joint_patent_ownership: number | null
+          licensing_revenue_contribution: number | null
+          overall_iis: number | null
+          technology_adoption_scale: number | null
+          user_id: string
+        }
+        Insert: {
+          advisory_participation?: number | null
+          computed_at?: string
+          corporate_rd_collaboration?: number | null
+          id?: string
+          industry_funding_diversity?: number | null
+          joint_patent_ownership?: number | null
+          licensing_revenue_contribution?: number | null
+          overall_iis?: number | null
+          technology_adoption_scale?: number | null
+          user_id: string
+        }
+        Update: {
+          advisory_participation?: number | null
+          computed_at?: string
+          corporate_rd_collaboration?: number | null
+          id?: string
+          industry_funding_diversity?: number | null
+          joint_patent_ownership?: number | null
+          licensing_revenue_contribution?: number | null
+          overall_iis?: number | null
+          technology_adoption_scale?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       industry_research_partnerships: {
         Row: {
           company_name: string
@@ -21367,6 +21552,117 @@ export type Database = {
             columns: ["infrastructure_id"]
             isOneToOne: false
             referencedRelation: "infrastructure_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      innovation_cluster_map: {
+        Row: {
+          cluster_name: string
+          commercialization_density: number | null
+          computed_at: string
+          country: string | null
+          cross_border_flow_score: number | null
+          domains: string[] | null
+          growth_rate: number | null
+          id: string
+          institution_ids: string[] | null
+          is_emerging: boolean | null
+          region: string
+          total_licensing_revenue: number | null
+          total_patents: number | null
+          total_startups: number | null
+        }
+        Insert: {
+          cluster_name: string
+          commercialization_density?: number | null
+          computed_at?: string
+          country?: string | null
+          cross_border_flow_score?: number | null
+          domains?: string[] | null
+          growth_rate?: number | null
+          id?: string
+          institution_ids?: string[] | null
+          is_emerging?: boolean | null
+          region: string
+          total_licensing_revenue?: number | null
+          total_patents?: number | null
+          total_startups?: number | null
+        }
+        Update: {
+          cluster_name?: string
+          commercialization_density?: number | null
+          computed_at?: string
+          country?: string | null
+          cross_border_flow_score?: number | null
+          domains?: string[] | null
+          growth_rate?: number | null
+          id?: string
+          institution_ids?: string[] | null
+          is_emerging?: boolean | null
+          region?: string
+          total_licensing_revenue?: number | null
+          total_patents?: number | null
+          total_startups?: number | null
+        }
+        Relationships: []
+      }
+      innovation_failure_records: {
+        Row: {
+          created_at: string
+          failure_date: string | null
+          failure_type: string
+          funding_exhausted: boolean | null
+          id: string
+          lessons_learned: string | null
+          market_adoption_failure: boolean | null
+          metadata: Json | null
+          patent_id: string | null
+          regulatory_rejection: boolean | null
+          root_cause: string | null
+          startup_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          failure_date?: string | null
+          failure_type: string
+          funding_exhausted?: boolean | null
+          id?: string
+          lessons_learned?: string | null
+          market_adoption_failure?: boolean | null
+          metadata?: Json | null
+          patent_id?: string | null
+          regulatory_rejection?: boolean | null
+          root_cause?: string | null
+          startup_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          failure_date?: string | null
+          failure_type?: string
+          funding_exhausted?: boolean | null
+          id?: string
+          lessons_learned?: string | null
+          market_adoption_failure?: boolean | null
+          metadata?: Json | null
+          patent_id?: string | null
+          regulatory_rejection?: boolean | null
+          root_cause?: string | null
+          startup_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "innovation_failure_records_patent_id_fkey"
+            columns: ["patent_id"]
+            isOneToOne: false
+            referencedRelation: "patent_pipeline"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "innovation_failure_records_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "research_startups"
             referencedColumns: ["id"]
           },
         ]
@@ -22703,6 +22999,84 @@ export type Database = {
           overall_iei?: number | null
           patent_output?: number | null
           research_milestone_punctuality?: number | null
+        }
+        Relationships: []
+      }
+      institutional_execution_ranking: {
+        Row: {
+          collaboration_strength_index: number | null
+          commercialization_impact_score: number | null
+          compliance_audit_integrity: number | null
+          computed_at: string
+          cross_discipline_integration: number | null
+          escrow_integrity_score: number | null
+          field_normalization_applied: boolean | null
+          funding_efficiency_score: number | null
+          global_collaboration_diversity: number | null
+          graduate_industry_placement: number | null
+          grant_execution_score: number | null
+          id: string
+          innovation_yield_ratio: number | null
+          institution_id: string
+          institution_name: string
+          institutional_reliability_index: number | null
+          longitudinal_stability: number | null
+          overall_rank: number | null
+          policy_societal_influence: number | null
+          ranking_period: string | null
+          research_impact_score: number | null
+          research_to_market_velocity: number | null
+          weight_breakdown: Json | null
+        }
+        Insert: {
+          collaboration_strength_index?: number | null
+          commercialization_impact_score?: number | null
+          compliance_audit_integrity?: number | null
+          computed_at?: string
+          cross_discipline_integration?: number | null
+          escrow_integrity_score?: number | null
+          field_normalization_applied?: boolean | null
+          funding_efficiency_score?: number | null
+          global_collaboration_diversity?: number | null
+          graduate_industry_placement?: number | null
+          grant_execution_score?: number | null
+          id?: string
+          innovation_yield_ratio?: number | null
+          institution_id: string
+          institution_name: string
+          institutional_reliability_index?: number | null
+          longitudinal_stability?: number | null
+          overall_rank?: number | null
+          policy_societal_influence?: number | null
+          ranking_period?: string | null
+          research_impact_score?: number | null
+          research_to_market_velocity?: number | null
+          weight_breakdown?: Json | null
+        }
+        Update: {
+          collaboration_strength_index?: number | null
+          commercialization_impact_score?: number | null
+          compliance_audit_integrity?: number | null
+          computed_at?: string
+          cross_discipline_integration?: number | null
+          escrow_integrity_score?: number | null
+          field_normalization_applied?: boolean | null
+          funding_efficiency_score?: number | null
+          global_collaboration_diversity?: number | null
+          graduate_industry_placement?: number | null
+          grant_execution_score?: number | null
+          id?: string
+          innovation_yield_ratio?: number | null
+          institution_id?: string
+          institution_name?: string
+          institutional_reliability_index?: number | null
+          longitudinal_stability?: number | null
+          overall_rank?: number | null
+          policy_societal_influence?: number | null
+          ranking_period?: string | null
+          research_impact_score?: number | null
+          research_to_market_velocity?: number | null
+          weight_breakdown?: Json | null
         }
         Relationships: []
       }
@@ -25157,6 +25531,42 @@ export type Database = {
           members?: Json | null
           name?: string
           quorum_rules?: Json
+        }
+        Relationships: []
+      }
+      knowledge_graph_connections: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json | null
+          relationship_type: string
+          source_id: string
+          source_type: string
+          target_id: string
+          target_type: string
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          relationship_type: string
+          source_id: string
+          source_type: string
+          target_id: string
+          target_type: string
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          relationship_type?: string
+          source_id?: string
+          source_type?: string
+          target_id?: string
+          target_type?: string
+          weight?: number | null
         }
         Relationships: []
       }
@@ -29916,6 +30326,87 @@ export type Database = {
           },
         ]
       }
+      patent_pipeline: {
+        Row: {
+          classification_codes: string[] | null
+          co_inventors: string[] | null
+          commercial_adoption_score: number | null
+          created_at: string
+          filing_date: string | null
+          forward_citation_count: number | null
+          grant_date: string | null
+          grant_id: string | null
+          id: string
+          industry_citation_count: number | null
+          institution_id: string | null
+          international_filings: Json | null
+          licensing_status: string | null
+          litigation_defense_success: number | null
+          market_penetration: number | null
+          ownership_type: string | null
+          patent_family_ids: string[] | null
+          patent_number: string | null
+          patent_quality_index: number | null
+          research_project_id: string | null
+          technology_longevity_years: number | null
+          technology_readiness_level: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          classification_codes?: string[] | null
+          co_inventors?: string[] | null
+          commercial_adoption_score?: number | null
+          created_at?: string
+          filing_date?: string | null
+          forward_citation_count?: number | null
+          grant_date?: string | null
+          grant_id?: string | null
+          id?: string
+          industry_citation_count?: number | null
+          institution_id?: string | null
+          international_filings?: Json | null
+          licensing_status?: string | null
+          litigation_defense_success?: number | null
+          market_penetration?: number | null
+          ownership_type?: string | null
+          patent_family_ids?: string[] | null
+          patent_number?: string | null
+          patent_quality_index?: number | null
+          research_project_id?: string | null
+          technology_longevity_years?: number | null
+          technology_readiness_level?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          classification_codes?: string[] | null
+          co_inventors?: string[] | null
+          commercial_adoption_score?: number | null
+          created_at?: string
+          filing_date?: string | null
+          forward_citation_count?: number | null
+          grant_date?: string | null
+          grant_id?: string | null
+          id?: string
+          industry_citation_count?: number | null
+          institution_id?: string | null
+          international_filings?: Json | null
+          licensing_status?: string | null
+          litigation_defense_success?: number | null
+          market_penetration?: number | null
+          ownership_type?: string | null
+          patent_family_ids?: string[] | null
+          patent_number?: string | null
+          patent_quality_index?: number | null
+          research_project_id?: string | null
+          technology_longevity_years?: number | null
+          technology_readiness_level?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       peer_review_ai_assists: {
         Row: {
           ai_feedback_summary: string | null
@@ -34553,6 +35044,45 @@ export type Database = {
           },
         ]
       }
+      ranking_manipulation_flags: {
+        Row: {
+          ai_confidence: number | null
+          created_at: string
+          evidence: Json | null
+          human_reviewed: boolean | null
+          id: string
+          institution_id: string
+          manipulation_type: string
+          resolution: string | null
+          reviewed_by: string | null
+          severity: string | null
+        }
+        Insert: {
+          ai_confidence?: number | null
+          created_at?: string
+          evidence?: Json | null
+          human_reviewed?: boolean | null
+          id?: string
+          institution_id: string
+          manipulation_type: string
+          resolution?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+        }
+        Update: {
+          ai_confidence?: number | null
+          created_at?: string
+          evidence?: Json | null
+          human_reviewed?: boolean | null
+          id?: string
+          institution_id?: string
+          manipulation_type?: string
+          resolution?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+        }
+        Relationships: []
+      }
       rate_limit_entries: {
         Row: {
           action_type: string
@@ -36386,6 +36916,81 @@ export type Database = {
           },
         ]
       }
+      research_discovery_index: {
+        Row: {
+          abstract: string | null
+          citation_quality_score: number | null
+          collaboration_trust_score: number | null
+          commercialization_score: number | null
+          composite_rank_score: number | null
+          cross_discipline_influence: number | null
+          domains: string[] | null
+          entity_id: string
+          entity_type: string
+          funding_impact_score: number | null
+          grant_reliability_score: number | null
+          id: string
+          indexed_at: string
+          innovation_yield: number | null
+          institutional_execution_score: number | null
+          keywords: string[] | null
+          longitudinal_consistency: number | null
+          milestone_efficiency: number | null
+          patent_quality_score: number | null
+          policy_influence_score: number | null
+          rank_explanation: Json | null
+          title: string
+        }
+        Insert: {
+          abstract?: string | null
+          citation_quality_score?: number | null
+          collaboration_trust_score?: number | null
+          commercialization_score?: number | null
+          composite_rank_score?: number | null
+          cross_discipline_influence?: number | null
+          domains?: string[] | null
+          entity_id: string
+          entity_type: string
+          funding_impact_score?: number | null
+          grant_reliability_score?: number | null
+          id?: string
+          indexed_at?: string
+          innovation_yield?: number | null
+          institutional_execution_score?: number | null
+          keywords?: string[] | null
+          longitudinal_consistency?: number | null
+          milestone_efficiency?: number | null
+          patent_quality_score?: number | null
+          policy_influence_score?: number | null
+          rank_explanation?: Json | null
+          title: string
+        }
+        Update: {
+          abstract?: string | null
+          citation_quality_score?: number | null
+          collaboration_trust_score?: number | null
+          commercialization_score?: number | null
+          composite_rank_score?: number | null
+          cross_discipline_influence?: number | null
+          domains?: string[] | null
+          entity_id?: string
+          entity_type?: string
+          funding_impact_score?: number | null
+          grant_reliability_score?: number | null
+          id?: string
+          indexed_at?: string
+          innovation_yield?: number | null
+          institutional_execution_score?: number | null
+          keywords?: string[] | null
+          longitudinal_consistency?: number | null
+          milestone_efficiency?: number | null
+          patent_quality_score?: number | null
+          policy_influence_score?: number | null
+          rank_explanation?: Json | null
+          title?: string
+        }
+        Relationships: []
+      }
       research_domain_registry: {
         Row: {
           created_at: string | null
@@ -37600,6 +38205,74 @@ export type Database = {
           },
         ]
       }
+      research_startups: {
+        Row: {
+          created_at: string
+          exit_date: string | null
+          exit_type: string | null
+          founding_date: string | null
+          founding_team_ids: string[] | null
+          id: string
+          industry_adoption_footprint: Json | null
+          institution_id: string | null
+          name: string
+          original_grant_id: string | null
+          original_patent_id: string | null
+          region: string | null
+          revenue_growth: Json | null
+          sector: string | null
+          survival_status: string | null
+          valuation_milestones: Json | null
+          venture_capital_raised: number | null
+        }
+        Insert: {
+          created_at?: string
+          exit_date?: string | null
+          exit_type?: string | null
+          founding_date?: string | null
+          founding_team_ids?: string[] | null
+          id?: string
+          industry_adoption_footprint?: Json | null
+          institution_id?: string | null
+          name: string
+          original_grant_id?: string | null
+          original_patent_id?: string | null
+          region?: string | null
+          revenue_growth?: Json | null
+          sector?: string | null
+          survival_status?: string | null
+          valuation_milestones?: Json | null
+          venture_capital_raised?: number | null
+        }
+        Update: {
+          created_at?: string
+          exit_date?: string | null
+          exit_type?: string | null
+          founding_date?: string | null
+          founding_team_ids?: string[] | null
+          id?: string
+          industry_adoption_footprint?: Json | null
+          institution_id?: string | null
+          name?: string
+          original_grant_id?: string | null
+          original_patent_id?: string | null
+          region?: string | null
+          revenue_growth?: Json | null
+          sector?: string | null
+          survival_status?: string | null
+          valuation_milestones?: Json | null
+          venture_capital_raised?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_startups_original_patent_id_fkey"
+            columns: ["original_patent_id"]
+            isOneToOne: false
+            referencedRelation: "patent_pipeline"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_templates: {
         Row: {
           created_at: string
@@ -37682,6 +38355,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      research_trajectory_predictions: {
+        Row: {
+          citation_growth_forecast: Json | null
+          commercialization_probability: number | null
+          computed_at: string
+          cross_border_collaboration_likelihood: number | null
+          domain_expansion_potential: number | null
+          entity_id: string
+          entity_type: string
+          explanation: Json | null
+          funding_gap_risk: number | null
+          grant_renewal_likelihood: number | null
+          id: string
+          model_version: string | null
+          policy_adoption_probability: number | null
+        }
+        Insert: {
+          citation_growth_forecast?: Json | null
+          commercialization_probability?: number | null
+          computed_at?: string
+          cross_border_collaboration_likelihood?: number | null
+          domain_expansion_potential?: number | null
+          entity_id: string
+          entity_type: string
+          explanation?: Json | null
+          funding_gap_risk?: number | null
+          grant_renewal_likelihood?: number | null
+          id?: string
+          model_version?: string | null
+          policy_adoption_probability?: number | null
+        }
+        Update: {
+          citation_growth_forecast?: Json | null
+          commercialization_probability?: number | null
+          computed_at?: string
+          cross_border_collaboration_likelihood?: number | null
+          domain_expansion_potential?: number | null
+          entity_id?: string
+          entity_type?: string
+          explanation?: Json | null
+          funding_gap_risk?: number | null
+          grant_renewal_likelihood?: number | null
+          id?: string
+          model_version?: string | null
+          policy_adoption_probability?: number | null
+        }
+        Relationships: []
       }
       research_trend_alerts: {
         Row: {
