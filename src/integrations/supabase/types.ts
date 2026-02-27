@@ -4266,6 +4266,51 @@ export type Database = {
           },
         ]
       }
+      capital_flow_events: {
+        Row: {
+          amount: number
+          created_at: string | null
+          destination_id: string | null
+          destination_type: string | null
+          event_type: string
+          id: string
+          institution_id: string | null
+          metadata: Json | null
+          milestone_id: string | null
+          project_id: string | null
+          source_id: string | null
+          source_type: string | null
+        }
+        Insert: {
+          amount?: number
+          created_at?: string | null
+          destination_id?: string | null
+          destination_type?: string | null
+          event_type: string
+          id?: string
+          institution_id?: string | null
+          metadata?: Json | null
+          milestone_id?: string | null
+          project_id?: string | null
+          source_id?: string | null
+          source_type?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          destination_id?: string | null
+          destination_type?: string | null
+          event_type?: string
+          id?: string
+          institution_id?: string | null
+          metadata?: Json | null
+          milestone_id?: string | null
+          project_id?: string | null
+          source_id?: string | null
+          source_type?: string | null
+        }
+        Relationships: []
+      }
       capital_flow_snapshots: {
         Row: {
           active_sponsors: number | null
@@ -11576,6 +11621,60 @@ export type Database = {
         }
         Relationships: []
       }
+      economic_health_index: {
+        Row: {
+          completion_rate_pct: number | null
+          dispute_frequency_pct: number | null
+          escrow_reliability_pct: number | null
+          id: string
+          institutional_retention_pct: number | null
+          ledger_integrity_status: string | null
+          overall_ehi: number | null
+          reconciliation_consistency_pct: number | null
+          scope_id: string | null
+          scope_type: string
+          snapshot_at: string | null
+          sponsor_repeat_pct: number | null
+          total_escrow_volume: number | null
+          total_milestone_releases: number | null
+          total_refunds: number | null
+        }
+        Insert: {
+          completion_rate_pct?: number | null
+          dispute_frequency_pct?: number | null
+          escrow_reliability_pct?: number | null
+          id?: string
+          institutional_retention_pct?: number | null
+          ledger_integrity_status?: string | null
+          overall_ehi?: number | null
+          reconciliation_consistency_pct?: number | null
+          scope_id?: string | null
+          scope_type?: string
+          snapshot_at?: string | null
+          sponsor_repeat_pct?: number | null
+          total_escrow_volume?: number | null
+          total_milestone_releases?: number | null
+          total_refunds?: number | null
+        }
+        Update: {
+          completion_rate_pct?: number | null
+          dispute_frequency_pct?: number | null
+          escrow_reliability_pct?: number | null
+          id?: string
+          institutional_retention_pct?: number | null
+          ledger_integrity_status?: string | null
+          overall_ehi?: number | null
+          reconciliation_consistency_pct?: number | null
+          scope_id?: string | null
+          scope_type?: string
+          snapshot_at?: string | null
+          sponsor_repeat_pct?: number | null
+          total_escrow_volume?: number | null
+          total_milestone_releases?: number | null
+          total_refunds?: number | null
+        }
+        Relationships: []
+      }
       economic_impact_logs: {
         Row: {
           actor_id: string | null
@@ -14780,6 +14879,45 @@ export type Database = {
           runway_months?: number | null
           start_date?: string
           status?: string | null
+        }
+        Relationships: []
+      }
+      financial_risk_signals: {
+        Row: {
+          description: string
+          detected_at: string | null
+          entity_id: string | null
+          entity_type: string
+          id: string
+          is_resolved: boolean | null
+          metrics: Json | null
+          resolved_at: string | null
+          risk_type: string
+          severity: string | null
+        }
+        Insert: {
+          description: string
+          detected_at?: string | null
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          is_resolved?: boolean | null
+          metrics?: Json | null
+          resolved_at?: string | null
+          risk_type: string
+          severity?: string | null
+        }
+        Update: {
+          description?: string
+          detected_at?: string | null
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          is_resolved?: boolean | null
+          metrics?: Json | null
+          resolved_at?: string | null
+          risk_type?: string
+          severity?: string | null
         }
         Relationships: []
       }
@@ -38072,6 +38210,57 @@ export type Database = {
           maturity_level?: number
           tenant_id?: string
           trust_score?: number
+        }
+        Relationships: []
+      }
+      sponsor_capital_intelligence: {
+        Row: {
+          avg_roi_score: number | null
+          cross_project_efficiency: number | null
+          dispute_risk_score: number | null
+          funding_velocity_trend: string | null
+          id: string
+          institutional_reliability_rank: number | null
+          milestone_adherence_pct: number | null
+          project_count: number | null
+          repeat_funding_count: number | null
+          sponsor_id: string
+          total_disputed: number | null
+          total_funded: number | null
+          total_released: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avg_roi_score?: number | null
+          cross_project_efficiency?: number | null
+          dispute_risk_score?: number | null
+          funding_velocity_trend?: string | null
+          id?: string
+          institutional_reliability_rank?: number | null
+          milestone_adherence_pct?: number | null
+          project_count?: number | null
+          repeat_funding_count?: number | null
+          sponsor_id: string
+          total_disputed?: number | null
+          total_funded?: number | null
+          total_released?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          avg_roi_score?: number | null
+          cross_project_efficiency?: number | null
+          dispute_risk_score?: number | null
+          funding_velocity_trend?: string | null
+          id?: string
+          institutional_reliability_rank?: number | null
+          milestone_adherence_pct?: number | null
+          project_count?: number | null
+          repeat_funding_count?: number | null
+          sponsor_id?: string
+          total_disputed?: number | null
+          total_funded?: number | null
+          total_released?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }
