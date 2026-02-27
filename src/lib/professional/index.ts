@@ -17,3 +17,6 @@ export type { IndividualSearchIndex, InstitutionSearchIndex, SponsorSearchIndex,
 
 export { compareCandidates } from "./recruiterIntelligence";
 export type { CandidateComparison, ComparisonReport } from "./recruiterIntelligence";
+
+export { createContextualThread, calculateCommunicationAnalytics, detectDisputeSignals, createNegotiationRecord, validateMessageContext, updateThreadPriority, COMMUNICATION_BADGES } from "./executionCommunication";
+export type { ThreadContextType, ThreadPriority, IntroductionReason, ContextualThreadRequest, CommunicationAnalytics, CommunicationBadge, DisputePreventionSignal, NegotiationProposal } from "./executionCommunication";
