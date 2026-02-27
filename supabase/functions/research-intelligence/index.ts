@@ -914,6 +914,232 @@ Return ONLY valid JSON.`
       return jsonResponse({ success: true, simulation });
     }
 
+    // ============================================================
+    // ACTION: ai_methodology_review — AI-assisted methodology analysis
+    // ============================================================
+    if (action === "ai_methodology_review") {
+      const { workspace_id, review_cycle_id, claim_ids } = body;
+
+      // Fetch specified claims or all workspace claims
+      let claimsQuery = supabase.from("research_claims")
+        .select("id, document_id, chunk_id, claim_text, claim_type, confidence_score, evidence_strength")
+        .eq("workspace_id", workspace_id);
+      if (claim_ids?.length) claimsQuery = claimsQuery.in("id", claim_ids);
+      const { data: claims } = await claimsQuery;
+
+      if (!claims || claims.length === 0) {
+        return jsonResponse({ error: "No claims found to review" }, 400);
+      }
+
+      const claimSummary = claims.map(c =>
+        `[Claim ${c.id}] (${c.claim_type}, confidence: ${c.confidence_score}, evidence: ${c.evidence_strength || 'N/A'}): ${c.claim_text}`
+      ).join("\n");
+
+      const aiResult = await callAI([
+        {
+          role: "system",
+          content: `You are a rigorous academic methodology reviewer. Analyze each claim and provide structured review feedback.
+Return JSON:
+{
+  "reviews": [
+    {
+      "claim_id": "uuid",
+      "methodology_score": 0.0-1.0,
+      "issues": [
+        {"type": "methodology|evidence|logic|clarity|compliance|bias", "severity": "low|medium|high|critical", "description": "..."}
+      ],
+      "strengths": ["..."],
+      "reproducibility_assessment": "high|medium|low|unknown",
+      "bias_indicators": ["..."],
+      "missing_controls": ["..."],
+      "statistical_validity": "strong|adequate|weak|not_applicable",
+      "recommendation": "accept|minor_revision|major_revision|reject"
+    }
+  ],
+  "overall_assessment": {
+    "methodology_quality": 0.0-1.0,
+    "evidence_density": 0.0-1.0,
+    "logical_coherence": 0.0-1.0,
+    "bias_risk": 0.0-1.0,
+    "summary": "..."
+  }
+}
+Return ONLY valid JSON. Be thorough but fair.`
+        },
+        { role: "user", content: `CLAIMS TO REVIEW:\n\n${claimSummary}` }
+      ]);
+
+      if (aiResult.error) return jsonResponse({ error: aiResult.error }, aiResult.status || 500);
+
+      let analysis: any;
+      try {
+        const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        analysis = JSON.parse(cleaned);
+      } catch {
+        return jsonResponse({ error: "AI returned unparseable review" }, 500);
+      }
+
+      // If review_cycle_id provided, insert AI comments
+      if (review_cycle_id && analysis.reviews) {
+        const aiComments = [];
+        for (const rev of analysis.reviews) {
+          for (const issue of (rev.issues || [])) {
+            aiComments.push({
+              review_cycle_id,
+              reviewer_id: user.id,
+              claim_id: rev.claim_id,
+              comment_text: issue.description,
+              comment_type: issue.type || 'methodology',
+              severity_level: issue.severity || 'medium',
+              ai_analysis: { methodology_score: rev.methodology_score, recommendation: rev.recommendation },
+            });
+          }
+        }
+        if (aiComments.length > 0) {
+          for (let i = 0; i < aiComments.length; i += 50) {
+            await supabase.from("review_comments").insert(aiComments.slice(i, i + 50));
+          }
+        }
+      }
+
+      await supabase.from("research_audit_log").insert({
+        workspace_id,
+        user_id: user.id,
+        action_type: "ai_methodology_review",
+        metadata: { claim_count: claims.length, review_cycle_id },
+      });
+
+      return jsonResponse({ success: true, analysis });
+    }
+
+    // ============================================================
+    // ACTION: generate_review_outcome — Weighted review decision
+    // ============================================================
+    if (action === "generate_review_outcome") {
+      const { review_cycle_id } = body;
+
+      // Fetch cycle, reviewers, and comments
+      const [cycleRes, reviewersRes, commentsRes] = await Promise.all([
+        supabase.from("peer_review_cycles").select("*").eq("id", review_cycle_id).single(),
+        supabase.from("peer_review_reviewers").select("*").eq("review_cycle_id", review_cycle_id),
+        supabase.from("review_comments").select("*").eq("review_cycle_id", review_cycle_id),
+      ]);
+
+      if (cycleRes.error || !cycleRes.data) return jsonResponse({ error: "Review cycle not found" }, 404);
+
+      const reviewers = reviewersRes.data || [];
+      const comments = commentsRes.data || [];
+
+      if (comments.length === 0) return jsonResponse({ error: "No review comments submitted yet" }, 400);
+
+      // Calculate weighted scores
+      const reviewerWeightMap: Record<string, number> = {};
+      for (const r of reviewers) reviewerWeightMap[r.reviewer_id] = r.review_weight;
+
+      const severityScores: Record<string, number> = { low: 0.1, medium: 0.3, high: 0.6, critical: 1.0 };
+      let totalWeightedSeverity = 0;
+      let totalWeight = 0;
+      const criticalCount = comments.filter(c => c.severity_level === 'critical').length;
+      const highCount = comments.filter(c => c.severity_level === 'high').length;
+
+      for (const c of comments) {
+        const w = reviewerWeightMap[c.reviewer_id] || 1.0;
+        totalWeightedSeverity += (severityScores[c.severity_level] || 0.3) * w;
+        totalWeight += w;
+      }
+
+      const avgSeverity = totalWeight > 0 ? totalWeightedSeverity / totalWeight : 0;
+
+      let decision: string;
+      if (criticalCount > 0 || avgSeverity > 0.7) decision = 'reject';
+      else if (highCount > 2 || avgSeverity > 0.4) decision = 'major_revision';
+      else if (avgSeverity > 0.2) decision = 'minor_revision';
+      else decision = 'approve';
+
+      // AI summary
+      const commentsSummary = comments.map(c => `[${c.comment_type}/${c.severity_level}]: ${c.comment_text}`).join("\n");
+      const aiResult = await callAI([
+        { role: "system", content: "Summarize peer review findings in 2-3 sentences. Be objective. Mention key strengths and weaknesses." },
+        { role: "user", content: `Decision: ${decision}\nComments:\n${commentsSummary}` }
+      ]);
+
+      const summary = aiResult.error ? `Decision: ${decision}. ${comments.length} review comments analyzed.` : aiResult.text;
+
+      const { data: outcome, error: outErr } = await supabase
+        .from("review_outcomes")
+        .insert({
+          review_cycle_id,
+          decision,
+          summary,
+          weighted_score: 1 - avgSeverity,
+          reviewer_scores: reviewers.map(r => ({ reviewer_id: r.reviewer_id, weight: r.review_weight })),
+          institutional_seal: cycleRes.data.review_type === 'institutional',
+        })
+        .select().single();
+
+      if (outErr) throw outErr;
+
+      // Update cycle status
+      const statusMap: Record<string, string> = { approve: 'approved', reject: 'rejected', minor_revision: 'revision_requested', major_revision: 'revision_requested' };
+      await supabase.from("peer_review_cycles").update({
+        status: statusMap[decision] || 'in_review',
+        closed_at: decision === 'approve' || decision === 'reject' ? new Date().toISOString() : null,
+      }).eq("id", review_cycle_id);
+
+      await supabase.from("research_audit_log").insert({
+        workspace_id: cycleRes.data.workspace_id,
+        user_id: user.id,
+        action_type: "review_outcome",
+        entity_id: outcome.id,
+        metadata: { decision, weighted_score: 1 - avgSeverity, comment_count: comments.length },
+      });
+
+      return jsonResponse({ success: true, outcome, decision, weighted_score: 1 - avgSeverity });
+    }
+
+    // ============================================================
+    // ACTION: detect_review_bias — Bias & collusion detection
+    // ============================================================
+    if (action === "detect_review_bias") {
+      const { workspace_id } = body;
+
+      const { data: cycles } = await supabase
+        .from("peer_review_cycles")
+        .select("id, initiated_by")
+        .eq("workspace_id", workspace_id);
+
+      if (!cycles || cycles.length === 0) return jsonResponse({ alerts: [] });
+
+      const cycleIds = cycles.map(c => c.id);
+      const { data: comments } = await supabase
+        .from("review_comments")
+        .select("reviewer_id, severity_level, review_cycle_id")
+        .in("review_cycle_id", cycleIds);
+
+      const alerts: any[] = [];
+
+      // Check for reviewer patterns
+      const reviewerPatterns: Record<string, { low: number; total: number }> = {};
+      for (const c of (comments || [])) {
+        if (!reviewerPatterns[c.reviewer_id]) reviewerPatterns[c.reviewer_id] = { low: 0, total: 0 };
+        reviewerPatterns[c.reviewer_id].total++;
+        if (c.severity_level === 'low') reviewerPatterns[c.reviewer_id].low++;
+      }
+
+      for (const [rid, p] of Object.entries(reviewerPatterns)) {
+        if (p.total >= 5 && p.low / p.total > 0.8) {
+          alerts.push({
+            type: "lenient_reviewer",
+            reviewer_id: rid,
+            severity: "medium",
+            message: `Reviewer shows consistently lenient pattern (${((p.low / p.total) * 100).toFixed(0)}% low-severity ratings)`,
+          });
+        }
+      }
+
+      return jsonResponse({ alerts });
+    }
+
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

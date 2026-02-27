@@ -17,6 +17,7 @@ import { Progress } from "@/components/ui/progress";
 import { ClaimGraphPanel } from "@/components/research/ClaimGraphPanel";
 import { ResearchTimelinePanel } from "@/components/research/ResearchTimelinePanel";
 import { FundingPlanPanel } from "@/components/research/FundingPlanPanel";
+import { PeerReviewPanel } from "@/components/research/PeerReviewPanel";
 import {
   BookOpen, Upload, Search, FileText, MessageSquare,
   Loader2, CheckCircle, AlertCircle, ChevronRight,
@@ -406,6 +407,17 @@ export default function ResearchWorkspacePage() {
             Cross-Document Synthesis Engine
           </h2>
           <ClaimGraphPanel workspaceId={workspaceId} />
+        </div>
+      )}
+
+      {/* Peer Review & Structured Debate */}
+      {workspaceId && (
+        <div className="mt-6">
+          <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-primary" />
+            Peer Review & Structured Debate
+          </h2>
+          <PeerReviewPanel workspaceId={workspaceId} />
         </div>
       )}
 
