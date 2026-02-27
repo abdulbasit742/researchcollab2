@@ -26,6 +26,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useFundEscrow, useOpenDispute } from "@/hooks/useEscrowActions";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SecureFileUploader } from "@/components/files/SecureFileUploader";
 
 interface Offer {
   id: string;
@@ -293,29 +294,16 @@ export default function WorkRoomPage() {
               </Card>
             )}
 
-            {/* File Upload Placeholder */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Upload className="h-5 w-5 text-primary" />
-                  Files & Deliverables
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
-                  <Upload className="h-10 w-10 mx-auto text-muted-foreground mb-3" />
-                  <p className="text-muted-foreground mb-2">
-                    Drag & drop files here or click to browse
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Support for documents, images, and archives
-                  </p>
-                  <Button variant="outline" className="mt-4">
-                    Upload Files
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Secure File Upload */}
+            {offerId && (
+              <SecureFileUploader
+                entityType="project"
+                entityId={offerId}
+                projectId={offerId}
+                title="Files & Deliverables"
+                allowDelete={true}
+              />
+            )}
           </div>
 
           {/* Sidebar */}

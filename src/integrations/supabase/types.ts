@@ -20829,6 +20829,154 @@ export type Database = {
           },
         ]
       }
+      file_access_log: {
+        Row: {
+          access_type: string
+          created_at: string
+          file_id: string
+          id: string
+          ip_address: string | null
+          user_id: string
+        }
+        Insert: {
+          access_type: string
+          created_at?: string
+          file_id: string
+          id?: string
+          ip_address?: string | null
+          user_id: string
+        }
+        Update: {
+          access_type?: string
+          created_at?: string
+          file_id?: string
+          id?: string
+          ip_address?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "file_access_log_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: false
+            referencedRelation: "files"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      file_security_events: {
+        Row: {
+          created_at: string
+          details: Json | null
+          event_type: string
+          file_id: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          event_type: string
+          file_id?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          event_type?: string
+          file_id?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "file_security_events_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: false
+            referencedRelation: "files"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      files: {
+        Row: {
+          bucket_id: string
+          deleted_at: string | null
+          dispute_id: string | null
+          entity_id: string
+          entity_type: string
+          file_name: string
+          file_size: number
+          id: string
+          institution_id: string | null
+          is_latest_version: boolean
+          metadata: Json | null
+          milestone_id: string | null
+          mime_type: string
+          project_id: string | null
+          storage_path: string
+          uploaded_at: string
+          uploader_id: string
+          version_number: number
+        }
+        Insert: {
+          bucket_id: string
+          deleted_at?: string | null
+          dispute_id?: string | null
+          entity_id: string
+          entity_type: string
+          file_name: string
+          file_size: number
+          id?: string
+          institution_id?: string | null
+          is_latest_version?: boolean
+          metadata?: Json | null
+          milestone_id?: string | null
+          mime_type: string
+          project_id?: string | null
+          storage_path: string
+          uploaded_at?: string
+          uploader_id: string
+          version_number?: number
+        }
+        Update: {
+          bucket_id?: string
+          deleted_at?: string | null
+          dispute_id?: string | null
+          entity_id?: string
+          entity_type?: string
+          file_name?: string
+          file_size?: number
+          id?: string
+          institution_id?: string | null
+          is_latest_version?: boolean
+          metadata?: Json | null
+          milestone_id?: string | null
+          mime_type?: string
+          project_id?: string | null
+          storage_path?: string
+          uploaded_at?: string
+          uploader_id?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "files_dispute_id_fkey"
+            columns: ["dispute_id"]
+            isOneToOne: false
+            referencedRelation: "disputes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "files_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       financial_audit_logs: {
         Row: {
           action: string
@@ -65093,6 +65241,22 @@ export type Database = {
           p_escrow_id: string
           p_idempotency_key: string
           p_sponsor_id: string
+        }
+        Returns: Json
+      }
+      register_file_upload: {
+        Args: {
+          p_bucket_id: string
+          p_dispute_id?: string
+          p_entity_id: string
+          p_entity_type: string
+          p_file_name: string
+          p_file_size: number
+          p_institution_id?: string
+          p_milestone_id?: string
+          p_mime_type: string
+          p_project_id?: string
+          p_storage_path: string
         }
         Returns: Json
       }
