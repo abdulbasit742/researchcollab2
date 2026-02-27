@@ -23450,6 +23450,241 @@ export type Database = {
           },
         ]
       }
+      gasims_anticorruption_events: {
+        Row: {
+          action_taken: string | null
+          description: string
+          detected_at: string
+          detection_mechanism: string
+          event_type: string
+          id: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          severity: string
+        }
+        Insert: {
+          action_taken?: string | null
+          description: string
+          detected_at?: string
+          detection_mechanism: string
+          event_type: string
+          id?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string
+        }
+        Update: {
+          action_taken?: string | null
+          description?: string
+          detected_at?: string
+          detection_mechanism?: string
+          event_type?: string
+          id?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string
+        }
+        Relationships: []
+      }
+      gasims_corridor_tracking: {
+        Row: {
+          active_projects: number | null
+          capital_routed: number | null
+          compliance_status: string | null
+          corridor_name: string
+          country_a: string
+          country_b: string
+          created_at: string
+          established_at: string | null
+          id: string
+          regulatory_compatibility_score: number | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          active_projects?: number | null
+          capital_routed?: number | null
+          compliance_status?: string | null
+          corridor_name: string
+          country_a: string
+          country_b: string
+          created_at?: string
+          established_at?: string | null
+          id?: string
+          regulatory_compatibility_score?: number | null
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          active_projects?: number | null
+          capital_routed?: number | null
+          compliance_status?: string | null
+          corridor_name?: string
+          country_a?: string
+          country_b?: string
+          created_at?: string
+          established_at?: string | null
+          id?: string
+          regulatory_compatibility_score?: number | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      gasims_gov_partnerships: {
+        Row: {
+          contact_name: string | null
+          country_code: string
+          created_at: string
+          created_by: string | null
+          entity_name: string
+          entity_type: string
+          entry_vector: string
+          id: string
+          notes: string | null
+          pilot_duration: string | null
+          pilot_scope: string | null
+          stage: string
+          success_metrics: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          contact_name?: string | null
+          country_code: string
+          created_at?: string
+          created_by?: string | null
+          entity_name: string
+          entity_type?: string
+          entry_vector: string
+          id?: string
+          notes?: string | null
+          pilot_duration?: string | null
+          pilot_scope?: string | null
+          stage?: string
+          success_metrics?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          contact_name?: string | null
+          country_code?: string
+          created_at?: string
+          created_by?: string | null
+          entity_name?: string
+          entity_type?: string
+          entry_vector?: string
+          id?: string
+          notes?: string | null
+          pilot_duration?: string | null
+          pilot_scope?: string | null
+          stage?: string
+          success_metrics?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      gasims_pilot_metrics: {
+        Row: {
+          baseline_value: number | null
+          current_value: number | null
+          id: string
+          measured_at: string
+          metric_key: string
+          metric_label: string
+          partnership_id: string | null
+          target_value: number
+          unit: string
+        }
+        Insert: {
+          baseline_value?: number | null
+          current_value?: number | null
+          id?: string
+          measured_at?: string
+          metric_key: string
+          metric_label: string
+          partnership_id?: string | null
+          target_value: number
+          unit: string
+        }
+        Update: {
+          baseline_value?: number | null
+          current_value?: number | null
+          id?: string
+          measured_at?: string
+          metric_key?: string
+          metric_label?: string
+          partnership_id?: string | null
+          target_value?: number
+          unit?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gasims_pilot_metrics_partnership_id_fkey"
+            columns: ["partnership_id"]
+            isOneToOne: false
+            referencedRelation: "gasims_gov_partnerships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gasims_transparency_reports: {
+        Row: {
+          approved_projects: number | null
+          created_at: string
+          dispute_rate: number | null
+          funding_released: number | null
+          id: string
+          is_public: boolean | null
+          milestone_completion_rate: number | null
+          partnership_id: string | null
+          published_at: string | null
+          regional_distribution: Json | null
+          report_period_end: string
+          report_period_start: string
+        }
+        Insert: {
+          approved_projects?: number | null
+          created_at?: string
+          dispute_rate?: number | null
+          funding_released?: number | null
+          id?: string
+          is_public?: boolean | null
+          milestone_completion_rate?: number | null
+          partnership_id?: string | null
+          published_at?: string | null
+          regional_distribution?: Json | null
+          report_period_end: string
+          report_period_start: string
+        }
+        Update: {
+          approved_projects?: number | null
+          created_at?: string
+          dispute_rate?: number | null
+          funding_released?: number | null
+          id?: string
+          is_public?: boolean | null
+          milestone_completion_rate?: number | null
+          partnership_id?: string | null
+          published_at?: string | null
+          regional_distribution?: Json | null
+          report_period_end?: string
+          report_period_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gasims_transparency_reports_partnership_id_fkey"
+            columns: ["partnership_id"]
+            isOneToOne: false
+            referencedRelation: "gasims_gov_partnerships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       gdpr_requests: {
         Row: {
           completion_deadline: string
