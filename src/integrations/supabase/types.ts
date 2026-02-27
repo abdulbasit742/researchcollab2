@@ -10595,6 +10595,57 @@ export type Database = {
         }
         Relationships: []
       }
+      cross_border_contracts: {
+        Row: {
+          contract_template: string | null
+          contractor_id: string | null
+          created_at: string
+          currency_from: string
+          currency_to: string
+          escrow_id: string | null
+          id: string
+          initiator_id: string
+          ip_ownership_clarity: boolean | null
+          jurisdiction_compliant: boolean | null
+          source_country: string
+          status: string | null
+          target_country: string
+          tax_guidance_notes: string | null
+        }
+        Insert: {
+          contract_template?: string | null
+          contractor_id?: string | null
+          created_at?: string
+          currency_from: string
+          currency_to: string
+          escrow_id?: string | null
+          id?: string
+          initiator_id: string
+          ip_ownership_clarity?: boolean | null
+          jurisdiction_compliant?: boolean | null
+          source_country: string
+          status?: string | null
+          target_country: string
+          tax_guidance_notes?: string | null
+        }
+        Update: {
+          contract_template?: string | null
+          contractor_id?: string | null
+          created_at?: string
+          currency_from?: string
+          currency_to?: string
+          escrow_id?: string | null
+          id?: string
+          initiator_id?: string
+          ip_ownership_clarity?: boolean | null
+          jurisdiction_compliant?: boolean | null
+          source_country?: string
+          status?: string | null
+          target_country?: string
+          tax_guidance_notes?: string | null
+        }
+        Relationships: []
+      }
       cross_border_data_transfers: {
         Row: {
           approval_status: string
@@ -16248,6 +16299,51 @@ export type Database = {
           on_time_milestone_pct?: number | null
           reporting_punctuality?: number | null
           sponsor_satisfaction?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      execution_resume: {
+        Row: {
+          collaboration_trust_score: number | null
+          completed_milestones: number | null
+          compliance_record_score: number | null
+          delivered_projects: number | null
+          funding_managed: number | null
+          id: string
+          industry_deployments: number | null
+          patents_filed: number | null
+          resume_hash: string | null
+          startups_launched: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          collaboration_trust_score?: number | null
+          completed_milestones?: number | null
+          compliance_record_score?: number | null
+          delivered_projects?: number | null
+          funding_managed?: number | null
+          id?: string
+          industry_deployments?: number | null
+          patents_filed?: number | null
+          resume_hash?: string | null
+          startups_launched?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          collaboration_trust_score?: number | null
+          completed_milestones?: number | null
+          compliance_record_score?: number | null
+          delivered_projects?: number | null
+          funding_managed?: number | null
+          id?: string
+          industry_deployments?: number | null
+          patents_filed?: number | null
+          resume_hash?: string | null
+          startups_launched?: number | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -29896,6 +29992,45 @@ export type Database = {
           },
         ]
       }
+      liquidity_stability_monitor: {
+        Row: {
+          collaboration_overexposure: number | null
+          computed_at: string
+          domain_concentration_risk: number | null
+          execution_overload_risk: number | null
+          funding_instability: number | null
+          id: string
+          income_volatility: number | null
+          sponsor_dependency: number | null
+          stability_score: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_overexposure?: number | null
+          computed_at?: string
+          domain_concentration_risk?: number | null
+          execution_overload_risk?: number | null
+          funding_instability?: number | null
+          id?: string
+          income_volatility?: number | null
+          sponsor_dependency?: number | null
+          stability_score?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_overexposure?: number | null
+          computed_at?: string
+          domain_concentration_risk?: number | null
+          execution_overload_risk?: number | null
+          funding_instability?: number | null
+          id?: string
+          income_volatility?: number | null
+          sponsor_dependency?: number | null
+          stability_score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       living_research_objects: {
         Row: {
           abstract: string | null
@@ -30807,6 +30942,63 @@ export type Database = {
           thumbnail_url?: string | null
           title?: string
           video_url?: string | null
+        }
+        Relationships: []
+      }
+      micro_talent_tasks: {
+        Row: {
+          assigned_to: string | null
+          budget: number | null
+          completed_at: string | null
+          created_at: string
+          currency: string | null
+          description: string | null
+          domain: string | null
+          escrow_required: boolean | null
+          estimated_hours: number | null
+          id: string
+          parent_opportunity_id: string | null
+          posted_by: string
+          skill_tags: string[] | null
+          status: string | null
+          task_type: string
+          title: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          budget?: number | null
+          completed_at?: string | null
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          domain?: string | null
+          escrow_required?: boolean | null
+          estimated_hours?: number | null
+          id?: string
+          parent_opportunity_id?: string | null
+          posted_by: string
+          skill_tags?: string[] | null
+          status?: string | null
+          task_type: string
+          title: string
+        }
+        Update: {
+          assigned_to?: string | null
+          budget?: number | null
+          completed_at?: string | null
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          domain?: string | null
+          escrow_required?: boolean | null
+          estimated_hours?: number | null
+          id?: string
+          parent_opportunity_id?: string | null
+          posted_by?: string
+          skill_tags?: string[] | null
+          status?: string | null
+          task_type?: string
+          title?: string
         }
         Relationships: []
       }
@@ -33184,6 +33376,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      opportunity_fraud_flags: {
+        Row: {
+          description: string | null
+          evidence: Json | null
+          flag_type: string
+          flagged_at: string
+          flagged_by: string | null
+          id: string
+          opportunity_id: string | null
+          resolved: boolean | null
+          severity: string | null
+        }
+        Insert: {
+          description?: string | null
+          evidence?: Json | null
+          flag_type: string
+          flagged_at?: string
+          flagged_by?: string | null
+          id?: string
+          opportunity_id?: string | null
+          resolved?: boolean | null
+          severity?: string | null
+        }
+        Update: {
+          description?: string | null
+          evidence?: Json | null
+          flag_type?: string
+          flagged_at?: string
+          flagged_by?: string | null
+          id?: string
+          opportunity_id?: string | null
+          resolved?: boolean | null
+          severity?: string | null
+        }
+        Relationships: []
       }
       opportunity_graph: {
         Row: {
@@ -46073,6 +46301,42 @@ export type Database = {
         }
         Relationships: []
       }
+      skill_demand_signals: {
+        Row: {
+          demand_intensity: number | null
+          detected_at: string
+          domain: string | null
+          id: string
+          metadata: Json | null
+          region: string | null
+          signal_source: string
+          signal_type: string
+          skill_name: string
+        }
+        Insert: {
+          demand_intensity?: number | null
+          detected_at?: string
+          domain?: string | null
+          id?: string
+          metadata?: Json | null
+          region?: string | null
+          signal_source: string
+          signal_type: string
+          skill_name: string
+        }
+        Update: {
+          demand_intensity?: number | null
+          detected_at?: string
+          domain?: string | null
+          id?: string
+          metadata?: Json | null
+          region?: string | null
+          signal_source?: string
+          signal_type?: string
+          skill_name?: string
+        }
+        Relationships: []
+      }
       skill_endorsements: {
         Row: {
           created_at: string
@@ -46334,6 +46598,45 @@ export type Database = {
           skill_name?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      skill_supply_demand: {
+        Row: {
+          computed_at: string
+          demand_count: number | null
+          domain: string | null
+          funding_alignment: number | null
+          id: string
+          region: string | null
+          skill_name: string
+          supply_count: number | null
+          supply_demand_ratio: number | null
+          trend_direction: string | null
+        }
+        Insert: {
+          computed_at?: string
+          demand_count?: number | null
+          domain?: string | null
+          funding_alignment?: number | null
+          id?: string
+          region?: string | null
+          skill_name: string
+          supply_count?: number | null
+          supply_demand_ratio?: number | null
+          trend_direction?: string | null
+        }
+        Update: {
+          computed_at?: string
+          demand_count?: number | null
+          domain?: string | null
+          funding_alignment?: number | null
+          id?: string
+          region?: string | null
+          skill_name?: string
+          supply_count?: number | null
+          supply_demand_ratio?: number | null
+          trend_direction?: string | null
         }
         Relationships: []
       }
@@ -48973,6 +49276,123 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      talent_liquidity_scores: {
+        Row: {
+          collaboration_trust: number | null
+          compliance_integrity: number | null
+          composite_tls: number | null
+          computed_at: string
+          cross_domain_adaptability: number | null
+          execution_reliability: number | null
+          funding_experience: number | null
+          id: string
+          industry_integration: number | null
+          response_reliability: number | null
+          skill_strength: number | null
+          time_to_deliver_efficiency: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_trust?: number | null
+          compliance_integrity?: number | null
+          composite_tls?: number | null
+          computed_at?: string
+          cross_domain_adaptability?: number | null
+          execution_reliability?: number | null
+          funding_experience?: number | null
+          id?: string
+          industry_integration?: number | null
+          response_reliability?: number | null
+          skill_strength?: number | null
+          time_to_deliver_efficiency?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_trust?: number | null
+          compliance_integrity?: number | null
+          composite_tls?: number | null
+          computed_at?: string
+          cross_domain_adaptability?: number | null
+          execution_reliability?: number | null
+          funding_experience?: number | null
+          id?: string
+          industry_integration?: number | null
+          response_reliability?: number | null
+          skill_strength?: number | null
+          time_to_deliver_efficiency?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      talent_opportunity_matches: {
+        Row: {
+          collab_compat: number | null
+          composite_match: number | null
+          created_at: string
+          domain_match: number | null
+          execution_threshold: number | null
+          expected_earnings: number | null
+          funding_eligibility: number | null
+          geographic_compat: number | null
+          historical_similarity: number | null
+          id: string
+          industry_alignment: number | null
+          match_explanation: string | null
+          opportunity_id: string | null
+          opportunity_type: string
+          risk_alignment: number | null
+          selection_probability: number | null
+          skill_overlap_pct: number | null
+          status: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          collab_compat?: number | null
+          composite_match?: number | null
+          created_at?: string
+          domain_match?: number | null
+          execution_threshold?: number | null
+          expected_earnings?: number | null
+          funding_eligibility?: number | null
+          geographic_compat?: number | null
+          historical_similarity?: number | null
+          id?: string
+          industry_alignment?: number | null
+          match_explanation?: string | null
+          opportunity_id?: string | null
+          opportunity_type: string
+          risk_alignment?: number | null
+          selection_probability?: number | null
+          skill_overlap_pct?: number | null
+          status?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          collab_compat?: number | null
+          composite_match?: number | null
+          created_at?: string
+          domain_match?: number | null
+          execution_threshold?: number | null
+          expected_earnings?: number | null
+          funding_eligibility?: number | null
+          geographic_compat?: number | null
+          historical_similarity?: number | null
+          id?: string
+          industry_alignment?: number | null
+          match_explanation?: string | null
+          opportunity_id?: string | null
+          opportunity_type?: string
+          risk_alignment?: number | null
+          selection_probability?: number | null
+          skill_overlap_pct?: number | null
+          status?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       talent_readiness_snapshots: {
         Row: {
