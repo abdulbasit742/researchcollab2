@@ -3266,6 +3266,42 @@ export type Database = {
           },
         ]
       }
+      algorithm_manipulation_flags: {
+        Row: {
+          dampening_applied: number | null
+          detected_at: string
+          evidence: Json | null
+          flag_type: string
+          id: string
+          resolved: boolean | null
+          severity: string
+          target_id: string
+          target_type: string
+        }
+        Insert: {
+          dampening_applied?: number | null
+          detected_at?: string
+          evidence?: Json | null
+          flag_type: string
+          id?: string
+          resolved?: boolean | null
+          severity?: string
+          target_id: string
+          target_type?: string
+        }
+        Update: {
+          dampening_applied?: number | null
+          detected_at?: string
+          evidence?: Json | null
+          flag_type?: string
+          id?: string
+          resolved?: boolean | null
+          severity?: string
+          target_id?: string
+          target_type?: string
+        }
+        Relationships: []
+      }
       algorithm_transparency_registry: {
         Row: {
           algorithm_category: string
@@ -6632,6 +6668,45 @@ export type Database = {
         }
         Relationships: []
       }
+      collaboration_probability_scores: {
+        Row: {
+          collab_formation_prob: number | null
+          composite_outcome_prob: number | null
+          computed_at: string
+          funding_application_prob: number | null
+          id: string
+          industry_partnership_prob: number | null
+          innovation_extension_prob: number | null
+          post_id: string
+          project_iteration_prob: number | null
+          skill_development_prob: number | null
+        }
+        Insert: {
+          collab_formation_prob?: number | null
+          composite_outcome_prob?: number | null
+          computed_at?: string
+          funding_application_prob?: number | null
+          id?: string
+          industry_partnership_prob?: number | null
+          innovation_extension_prob?: number | null
+          post_id: string
+          project_iteration_prob?: number | null
+          skill_development_prob?: number | null
+        }
+        Update: {
+          collab_formation_prob?: number | null
+          composite_outcome_prob?: number | null
+          computed_at?: string
+          funding_application_prob?: number | null
+          id?: string
+          industry_partnership_prob?: number | null
+          innovation_extension_prob?: number | null
+          post_id?: string
+          project_iteration_prob?: number | null
+          skill_development_prob?: number | null
+        }
+        Relationships: []
+      }
       collaboration_revenue_splits: {
         Row: {
           contribution_weight: number
@@ -8370,6 +8445,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      content_value_feedback: {
+        Row: {
+          collaboration_potential: number | null
+          created_at: string
+          id: string
+          learning_impact: number | null
+          post_id: string
+          practical_relevance: number | null
+          skill_depth_rating: number | null
+          usefulness_rating: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_potential?: number | null
+          created_at?: string
+          id?: string
+          learning_impact?: number | null
+          post_id: string
+          practical_relevance?: number | null
+          skill_depth_rating?: number | null
+          usefulness_rating?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_potential?: number | null
+          created_at?: string
+          id?: string
+          learning_impact?: number | null
+          post_id?: string
+          practical_relevance?: number | null
+          skill_depth_rating?: number | null
+          usefulness_rating?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       contextual_permissions: {
         Row: {
@@ -17339,6 +17450,102 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      feed_explainability: {
+        Row: {
+          collaboration_potential_pct: number | null
+          created_at: string
+          domain_match_pct: number | null
+          explanation_summary: string | null
+          funding_overlap_pct: number | null
+          id: string
+          innovation_relevance_pct: number | null
+          long_term_utility: number | null
+          post_id: string
+          skill_alignment_pct: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_potential_pct?: number | null
+          created_at?: string
+          domain_match_pct?: number | null
+          explanation_summary?: string | null
+          funding_overlap_pct?: number | null
+          id?: string
+          innovation_relevance_pct?: number | null
+          long_term_utility?: number | null
+          post_id: string
+          skill_alignment_pct?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_potential_pct?: number | null
+          created_at?: string
+          domain_match_pct?: number | null
+          explanation_summary?: string | null
+          funding_overlap_pct?: number | null
+          id?: string
+          innovation_relevance_pct?: number | null
+          long_term_utility?: number | null
+          post_id?: string
+          skill_alignment_pct?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      feed_value_rankings: {
+        Row: {
+          collaboration_opportunity: number | null
+          composite_value: number | null
+          computed_at: string
+          domain_relevance: number | null
+          engagement_score: number | null
+          execution_depth: number | null
+          funding_relevance: number | null
+          id: string
+          innovation_impact: number | null
+          institutional_credibility: number | null
+          integrity_confidence: number | null
+          learning_value: number | null
+          long_term_usefulness: number | null
+          post_id: string
+          skill_demonstration: number | null
+        }
+        Insert: {
+          collaboration_opportunity?: number | null
+          composite_value?: number | null
+          computed_at?: string
+          domain_relevance?: number | null
+          engagement_score?: number | null
+          execution_depth?: number | null
+          funding_relevance?: number | null
+          id?: string
+          innovation_impact?: number | null
+          institutional_credibility?: number | null
+          integrity_confidence?: number | null
+          learning_value?: number | null
+          long_term_usefulness?: number | null
+          post_id: string
+          skill_demonstration?: number | null
+        }
+        Update: {
+          collaboration_opportunity?: number | null
+          composite_value?: number | null
+          computed_at?: string
+          domain_relevance?: number | null
+          engagement_score?: number | null
+          execution_depth?: number | null
+          funding_relevance?: number | null
+          id?: string
+          innovation_impact?: number | null
+          institutional_credibility?: number | null
+          integrity_confidence?: number | null
+          learning_value?: number | null
+          long_term_usefulness?: number | null
+          post_id?: string
+          skill_demonstration?: number | null
+        }
+        Relationships: []
       }
       feedback_triage: {
         Row: {
@@ -29371,6 +29578,45 @@ export type Database = {
           patent_survival_score?: number | null
           period?: string | null
           startup_longevity_score?: number | null
+        }
+        Relationships: []
+      }
+      long_term_value_tracking: {
+        Row: {
+          collaboration_conversion: number | null
+          composite_ltv: number | null
+          day_30_retention: number | null
+          day_90_revisit_freq: number | null
+          grant_reference_usage: number | null
+          id: string
+          measured_at: string
+          post_id: string
+          replication_influence: number | null
+          skill_reuse_rate: number | null
+        }
+        Insert: {
+          collaboration_conversion?: number | null
+          composite_ltv?: number | null
+          day_30_retention?: number | null
+          day_90_revisit_freq?: number | null
+          grant_reference_usage?: number | null
+          id?: string
+          measured_at?: string
+          post_id: string
+          replication_influence?: number | null
+          skill_reuse_rate?: number | null
+        }
+        Update: {
+          collaboration_conversion?: number | null
+          composite_ltv?: number | null
+          day_30_retention?: number | null
+          day_90_revisit_freq?: number | null
+          grant_reference_usage?: number | null
+          id?: string
+          measured_at?: string
+          post_id?: string
+          replication_influence?: number | null
+          skill_reuse_rate?: number | null
         }
         Relationships: []
       }
@@ -49773,6 +50019,36 @@ export type Database = {
         }
         Relationships: []
       }
+      user_algorithm_modes: {
+        Row: {
+          active_mode: string
+          custom_weights: Json | null
+          entertainment_cap: number | null
+          id: string
+          min_depth_threshold: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_mode?: string
+          custom_weights?: Json | null
+          entertainment_cap?: number | null
+          id?: string
+          min_depth_threshold?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_mode?: string
+          custom_weights?: Json | null
+          entertainment_cap?: number | null
+          id?: string
+          min_depth_threshold?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_availability: {
         Row: {
           available_hours_per_week: number | null
@@ -50908,6 +51184,42 @@ export type Database = {
           total_shares?: number
           vesting_duration?: number
           vesting_interval?: string | null
+        }
+        Relationships: []
+      }
+      virality_cap_records: {
+        Row: {
+          applied_at: string
+          dampening_factor: number | null
+          diversity_boost: number | null
+          early_creator_boost: boolean | null
+          engagement_velocity: number | null
+          exposure_fairness_adj: number | null
+          id: string
+          post_id: string
+          saturation_limited: boolean | null
+        }
+        Insert: {
+          applied_at?: string
+          dampening_factor?: number | null
+          diversity_boost?: number | null
+          early_creator_boost?: boolean | null
+          engagement_velocity?: number | null
+          exposure_fairness_adj?: number | null
+          id?: string
+          post_id: string
+          saturation_limited?: boolean | null
+        }
+        Update: {
+          applied_at?: string
+          dampening_factor?: number | null
+          diversity_boost?: number | null
+          early_creator_boost?: boolean | null
+          engagement_velocity?: number | null
+          exposure_fairness_adj?: number | null
+          id?: string
+          post_id?: string
+          saturation_limited?: boolean | null
         }
         Relationships: []
       }
