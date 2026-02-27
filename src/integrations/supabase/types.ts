@@ -23018,6 +23018,384 @@ export type Database = {
           },
         ]
       }
+      gadeb_adoption_events: {
+        Row: {
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string
+          event_type: string
+          id: string
+          impact_description: string | null
+          metadata: Json | null
+          occurred_at: string
+          phase: string
+          region: string | null
+        }
+        Insert: {
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type: string
+          event_type: string
+          id?: string
+          impact_description?: string | null
+          metadata?: Json | null
+          occurred_at?: string
+          phase: string
+          region?: string | null
+        }
+        Update: {
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string
+          event_type?: string
+          id?: string
+          impact_description?: string | null
+          metadata?: Json | null
+          occurred_at?: string
+          phase?: string
+          region?: string | null
+        }
+        Relationships: []
+      }
+      gadeb_capital_magnet: {
+        Row: {
+          capital_matching_priority: string | null
+          computed_at: string
+          ecs_score: number
+          escrow_fee_discount: number | null
+          id: string
+          institutional_bonus_rate: number | null
+          release_speed_multiplier: number | null
+          tier_name: string
+          user_id: string
+        }
+        Insert: {
+          capital_matching_priority?: string | null
+          computed_at?: string
+          ecs_score: number
+          escrow_fee_discount?: number | null
+          id?: string
+          institutional_bonus_rate?: number | null
+          release_speed_multiplier?: number | null
+          tier_name: string
+          user_id: string
+        }
+        Update: {
+          capital_matching_priority?: string | null
+          computed_at?: string
+          ecs_score?: number
+          escrow_fee_discount?: number | null
+          id?: string
+          institutional_bonus_rate?: number | null
+          release_speed_multiplier?: number | null
+          tier_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      gadeb_cluster_health: {
+        Row: {
+          capital_routed: number | null
+          cluster_id: string
+          id: string
+          institutions_active: number | null
+          milestone_completion_rate: number | null
+          network_effect_strength: number | null
+          phase: string
+          region: string
+          snapshot_at: string
+          switching_cost_index: number | null
+          trust_density: number | null
+          users_active: number | null
+        }
+        Insert: {
+          capital_routed?: number | null
+          cluster_id: string
+          id?: string
+          institutions_active?: number | null
+          milestone_completion_rate?: number | null
+          network_effect_strength?: number | null
+          phase?: string
+          region: string
+          snapshot_at?: string
+          switching_cost_index?: number | null
+          trust_density?: number | null
+          users_active?: number | null
+        }
+        Update: {
+          capital_routed?: number | null
+          cluster_id?: string
+          id?: string
+          institutions_active?: number | null
+          milestone_completion_rate?: number | null
+          network_effect_strength?: number | null
+          phase?: string
+          region?: string
+          snapshot_at?: string
+          switching_cost_index?: number | null
+          trust_density?: number | null
+          users_active?: number | null
+        }
+        Relationships: []
+      }
+      gadeb_competitor_intelligence: {
+        Row: {
+          action_required: string | null
+          competitor: string
+          id: string
+          intelligence_type: string
+          our_advantage: string | null
+          recorded_at: string
+          recorded_by: string | null
+          summary: string
+        }
+        Insert: {
+          action_required?: string | null
+          competitor: string
+          id?: string
+          intelligence_type: string
+          our_advantage?: string | null
+          recorded_at?: string
+          recorded_by?: string | null
+          summary: string
+        }
+        Update: {
+          action_required?: string | null
+          competitor?: string
+          id?: string
+          intelligence_type?: string
+          our_advantage?: string | null
+          recorded_at?: string
+          recorded_by?: string | null
+          summary?: string
+        }
+        Relationships: []
+      }
+      gadeb_enterprise_pipeline: {
+        Row: {
+          capability_interest: string[] | null
+          contact_name: string | null
+          created_at: string
+          created_by: string | null
+          enterprise_name: string
+          estimated_value: number | null
+          id: string
+          notes: string | null
+          stage: string
+          updated_at: string | null
+        }
+        Insert: {
+          capability_interest?: string[] | null
+          contact_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          enterprise_name: string
+          estimated_value?: number | null
+          id?: string
+          notes?: string | null
+          stage?: string
+          updated_at?: string | null
+        }
+        Update: {
+          capability_interest?: string[] | null
+          contact_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          enterprise_name?: string
+          estimated_value?: number | null
+          id?: string
+          notes?: string | null
+          stage?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      gadeb_government_pipeline: {
+        Row: {
+          capability_interest: string[] | null
+          country_code: string
+          created_at: string
+          created_by: string | null
+          entity_name: string
+          entity_type: string
+          id: string
+          notes: string | null
+          pilot_scope: string | null
+          stage: string
+          updated_at: string | null
+        }
+        Insert: {
+          capability_interest?: string[] | null
+          country_code: string
+          created_at?: string
+          created_by?: string | null
+          entity_name: string
+          entity_type?: string
+          id?: string
+          notes?: string | null
+          pilot_scope?: string | null
+          stage?: string
+          updated_at?: string | null
+        }
+        Update: {
+          capability_interest?: string[] | null
+          country_code?: string
+          created_at?: string
+          created_by?: string | null
+          entity_name?: string
+          entity_type?: string
+          id?: string
+          notes?: string | null
+          pilot_scope?: string | null
+          stage?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      gadeb_lock_in_metrics: {
+        Row: {
+          active_escrow_contracts: number | null
+          computed_at: string
+          cross_border_compliance: number | null
+          id: string
+          institutional_verifications: number | null
+          knowledge_publications: number | null
+          switching_cost_index: number | null
+          switching_cost_level: string | null
+          trust_ledger_entries: number | null
+          user_id: string
+          years_on_platform: number | null
+        }
+        Insert: {
+          active_escrow_contracts?: number | null
+          computed_at?: string
+          cross_border_compliance?: number | null
+          id?: string
+          institutional_verifications?: number | null
+          knowledge_publications?: number | null
+          switching_cost_index?: number | null
+          switching_cost_level?: string | null
+          trust_ledger_entries?: number | null
+          user_id: string
+          years_on_platform?: number | null
+        }
+        Update: {
+          active_escrow_contracts?: number | null
+          computed_at?: string
+          cross_border_compliance?: number | null
+          id?: string
+          institutional_verifications?: number | null
+          knowledge_publications?: number | null
+          switching_cost_index?: number | null
+          switching_cost_level?: string | null
+          trust_ledger_entries?: number | null
+          user_id?: string
+          years_on_platform?: number | null
+        }
+        Relationships: []
+      }
+      gadeb_network_effect_tracking: {
+        Row: {
+          current_strength: number | null
+          cycle_count: number | null
+          growth_rate: number | null
+          id: string
+          loop_id: string
+          loop_name: string
+          measured_at: string
+        }
+        Insert: {
+          current_strength?: number | null
+          cycle_count?: number | null
+          growth_rate?: number | null
+          id?: string
+          loop_id: string
+          loop_name: string
+          measured_at?: string
+        }
+        Update: {
+          current_strength?: number | null
+          cycle_count?: number | null
+          growth_rate?: number | null
+          id?: string
+          loop_id?: string
+          loop_name?: string
+          measured_at?: string
+        }
+        Relationships: []
+      }
+      gadeb_phase_progress: {
+        Row: {
+          current_value: number | null
+          id: string
+          last_updated_at: string | null
+          metric_key: string
+          phase: string
+          target_value: number
+          unit: string
+          updated_by: string | null
+        }
+        Insert: {
+          current_value?: number | null
+          id?: string
+          last_updated_at?: string | null
+          metric_key: string
+          phase: string
+          target_value: number
+          unit: string
+          updated_by?: string | null
+        }
+        Update: {
+          current_value?: number | null
+          id?: string
+          last_updated_at?: string | null
+          metric_key?: string
+          phase?: string
+          target_value?: number
+          unit?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      gadeb_roadmap_milestones: {
+        Row: {
+          category: string
+          completed_at: string | null
+          created_at: string
+          evidence: Json | null
+          id: string
+          milestone: string
+          notes: string | null
+          status: string
+          target_date: string | null
+          year: number
+        }
+        Insert: {
+          category: string
+          completed_at?: string | null
+          created_at?: string
+          evidence?: Json | null
+          id?: string
+          milestone: string
+          notes?: string | null
+          status?: string
+          target_date?: string | null
+          year: number
+        }
+        Update: {
+          category?: string
+          completed_at?: string | null
+          created_at?: string
+          evidence?: Json | null
+          id?: string
+          milestone?: string
+          notes?: string | null
+          status?: string
+          target_date?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
       gaming_detection_events: {
         Row: {
           detected_at: string
