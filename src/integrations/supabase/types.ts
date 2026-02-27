@@ -10180,6 +10180,44 @@ export type Database = {
           },
         ]
       }
+      conversation_participants: {
+        Row: {
+          id: string
+          is_muted: boolean | null
+          joined_at: string
+          left_at: string | null
+          role_in_context: string
+          thread_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          is_muted?: boolean | null
+          joined_at?: string
+          left_at?: string | null
+          role_in_context?: string
+          thread_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          is_muted?: boolean | null
+          joined_at?: string
+          left_at?: string | null
+          role_in_context?: string
+          thread_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_participants_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       corporate_accounts: {
         Row: {
           account_manager: string | null
@@ -36796,6 +36834,47 @@ export type Database = {
             columns: ["mentor_scholar_passport_id"]
             isOneToOne: false
             referencedRelation: "scholar_passports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      message_audit_log: {
+        Row: {
+          action_type: string
+          actor_id: string
+          created_at: string
+          id: string
+          message_id: string
+          metadata: Json | null
+          new_content: string | null
+          previous_content: string | null
+        }
+        Insert: {
+          action_type: string
+          actor_id: string
+          created_at?: string
+          id?: string
+          message_id: string
+          metadata?: Json | null
+          new_content?: string | null
+          previous_content?: string | null
+        }
+        Update: {
+          action_type?: string
+          actor_id?: string
+          created_at?: string
+          id?: string
+          message_id?: string
+          metadata?: Json | null
+          new_content?: string | null
+          previous_content?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_audit_log_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
             referencedColumns: ["id"]
           },
         ]
@@ -65288,6 +65367,19 @@ export type Database = {
         Returns: Json
       }
       run_nightly_reconciliation: { Args: never; Returns: Json }
+      send_message_secure: {
+        Args: {
+          p_body: string
+          p_metadata?: Json
+          p_thread_id: string
+          p_type?: string
+        }
+        Returns: Json
+      }
+      send_system_message: {
+        Args: { p_body: string; p_metadata?: Json; p_thread_id: string }
+        Returns: string
+      }
       submit_milestone_atomic: {
         Args: {
           p_deliverable_url?: string
