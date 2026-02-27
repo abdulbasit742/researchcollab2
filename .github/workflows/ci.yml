@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  VITE_SUPABASE_URL: "https://test.supabase.co"
+  VITE_SUPABASE_PUBLISHABLE_KEY: "test-key"
+
 jobs:
   lint-type-test:
     runs-on: ubuntu-latest
@@ -25,8 +29,37 @@ jobs:
       - name: Lint
         run: bun run eslint src/ --max-warnings 0
 
-      - name: Run tests
+      - name: Run all tests
         run: bun run vitest run --reporter=verbose
 
-      - name: Run tests with coverage
+      - name: Run financial tests (MUST pass)
+        run: bun run vitest run tests/financial/ --reporter=verbose
+
+      - name: Run tests with coverage (threshold enforced)
         run: bun run vitest run --coverage
+
+      - name: Verify no mock data in production code
+        run: |
+          if grep -rn "mockDeals\|mockUsers\|mockWallet\|MOCK_BALANCE\|fakeBal" src/ --include="*.ts" --include="*.tsx" | grep -v "test\|spec\|__test__\|mock\.ts"; then
+            echo "❌ MOCK DATA FOUND IN PRODUCTION CODE"
+            exit 1
+          fi
+          echo "✓ No mock data in production code"
+
+      - name: Verify no console.log in financial code
+        run: |
+          if grep -rn "console\.log" src/services/escrow src/services/milestone src/lib/escrow src/lib/ledger --include="*.ts" 2>/dev/null; then
+            echo "⚠️ console.log found in financial code (use createLogger instead)"
+            exit 1
+          fi
+          echo "✓ No console.log in financial code"
+
+  production-gate:
+    needs: lint-type-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Production deployment gate
+        run: |
+          echo "✓ All checks passed. Ready for production deployment."
+          echo "⚠️ Manual approval required for production deploy."

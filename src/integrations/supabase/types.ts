@@ -43119,6 +43119,7 @@ export type Database = {
         }
         Returns: Json
       }
+      run_nightly_reconciliation: { Args: never; Returns: Json }
       submit_review: {
         Args: {
           p_comment?: string
@@ -43142,6 +43143,7 @@ export type Database = {
         Args: { p_feature: string; p_user_id: string }
         Returns: boolean
       }
+      validate_all_escrow_invariants: { Args: never; Returns: Json }
       validate_escrow_integrity: {
         Args: { p_escrow_id: string }
         Returns: Json
