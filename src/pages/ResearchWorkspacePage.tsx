@@ -23,6 +23,7 @@ import { CARCResponsePanel } from "@/components/research/CARCResponsePanel";
 import { PolicySimulationPanel } from "@/components/research/PolicySimulationPanel";
 import { KnowledgeMonitorPanel } from "@/components/research/KnowledgeMonitorPanel";
 import { ResearchPortfolioPanel } from "@/components/research/ResearchPortfolioPanel";
+import { ResearchMarketplacePanel } from "@/components/research/ResearchMarketplacePanel";
 import {
   BookOpen, Upload, Search, FileText, MessageSquare,
   Loader2, CheckCircle, AlertCircle, ChevronRight,
@@ -499,6 +500,15 @@ export default function ResearchWorkspacePage() {
           Research Portfolio Optimization
         </h2>
         <ResearchPortfolioPanel />
+      </div>
+
+      {/* Global Research Marketplace */}
+      <div className="mt-6">
+        <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-primary" />
+          Global Research Marketplace
+        </h2>
+        <ResearchMarketplacePanel />
       </div>
     </div>
   );
