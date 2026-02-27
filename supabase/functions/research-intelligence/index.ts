@@ -663,6 +663,257 @@ Use markdown formatting. Cite claims using their IDs. Every statement must be tr
       return jsonResponse({ shifts, alerts });
     }
 
+    // ============================================================
+    // ACTION: generate_funding_plan — Research-to-Capital conversion
+    // ============================================================
+    if (action === "generate_funding_plan") {
+      const { workspace_id, plan_type = "grant", title, duration_months = 12 } = body;
+
+      // Fetch claims and synthesis data
+      const [claimsRes, relsRes] = await Promise.all([
+        supabase.from("research_claims")
+          .select("id, document_id, claim_text, claim_type, confidence_score, evidence_strength")
+          .eq("workspace_id", workspace_id),
+        supabase.from("claim_relationships")
+          .select("claim_id_a, claim_id_b, relationship_type, similarity_score")
+          .eq("workspace_id", workspace_id),
+      ]);
+
+      const claims = claimsRes.data || [];
+      const rels = relsRes.data || [];
+
+      if (claims.length === 0) {
+        return jsonResponse({ error: "No claims extracted. Run claim extraction first." }, 400);
+      }
+
+      // Get doc names
+      const docIds = [...new Set(claims.map(c => c.document_id))];
+      const { data: docs } = await supabase
+        .from("research_documents").select("id, file_name").in("id", docIds);
+      const docMap = Object.fromEntries((docs || []).map(d => [d.id, d.file_name]));
+
+      const claimSummary = claims.map(c =>
+        `[Claim ${c.id}] (${c.claim_type}, evidence: ${c.evidence_strength || 0.5}, doc: "${docMap[c.document_id] || 'unknown'}"): ${c.claim_text}`
+      ).join("\n");
+
+      const planTypePrompts: Record<string, string> = {
+        grant: "academic research grant proposal with institutional compliance",
+        startup: "startup funding blueprint with investor-ready milestones",
+        enterprise_rnd: "enterprise R&D budget with departmental allocations",
+        policy: "public policy implementation funding plan with accountability measures",
+      };
+
+      const aiResult = await callAI([
+        {
+          role: "system",
+          content: `You are a research-to-capital structuring engine. Generate a structured funding plan based on the research claims provided.
+Output a JSON object with this structure:
+{
+  "problem_statement": "...(cite claim IDs)",
+  "proposed_solution": "...(cite claim IDs)",
+  "milestones": [
+    {
+      "title": "...",
+      "description": "...",
+      "linked_claim_ids": ["uuid",...],
+      "budget_amount": number,
+      "duration_days": number,
+      "risk_level": "low|medium|high|critical",
+      "deliverable": "...",
+      "evidence_requirement": "...",
+      "performance_metric": "..."
+    }
+  ],
+  "budget_breakdown": [
+    {"category": "personnel|equipment|software|research|compliance|contingency|travel|other", "amount": number, "justification": "..."}
+  ],
+  "total_budget": number,
+  "risk_assessment": "...",
+  "expected_outcomes": ["..."],
+  "feasibility_notes": "..."
+}
+Plan type: ${planTypePrompts[plan_type] || planTypePrompts.grant}.
+Duration: ${duration_months} months. Currency: PKR.
+All budget amounts must sum to total_budget. Every milestone must cite research claim IDs. No fabricated costs — label assumptions clearly.
+Return ONLY valid JSON.`
+        },
+        { role: "user", content: `RESEARCH CLAIMS (${claims.length} total):\n\n${claimSummary}` }
+      ]);
+
+      if (aiResult.error) {
+        return jsonResponse({ error: aiResult.error }, aiResult.status || 500);
+      }
+
+      let plan: any;
+      try {
+        const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        plan = JSON.parse(cleaned);
+      } catch {
+        return jsonResponse({ error: "AI returned unparseable funding plan" }, 500);
+      }
+
+      // Insert funding plan
+      const { data: fundingPlan, error: fpErr } = await supabase
+        .from("funding_plans")
+        .insert({
+          workspace_id,
+          owner_id: user.id,
+          title: title || `${plan_type} Funding Plan — ${new Date().toLocaleDateString()}`,
+          plan_type,
+          total_budget: plan.total_budget || 0,
+          duration_months,
+          problem_statement: plan.problem_statement,
+          proposed_solution: plan.proposed_solution,
+          risk_score: 0.5,
+          source_claim_ids: claims.map(c => c.id),
+          ai_generation_metadata: {
+            claim_count: claims.length,
+            relationship_count: rels.length,
+            risk_assessment: plan.risk_assessment,
+            expected_outcomes: plan.expected_outcomes,
+            feasibility_notes: plan.feasibility_notes,
+            generated_at: new Date().toISOString(),
+          },
+        })
+        .select().single();
+
+      if (fpErr) throw fpErr;
+
+      // Insert milestones
+      const milestones = (plan.milestones || []).map((m: any, i: number) => ({
+        funding_plan_id: fundingPlan.id,
+        milestone_title: m.title,
+        milestone_description: m.description,
+        linked_research_claim_ids: m.linked_claim_ids || [],
+        budget_amount: m.budget_amount || 0,
+        expected_duration_days: m.duration_days || 30,
+        risk_level: m.risk_level || 'medium',
+        deliverable_description: m.deliverable,
+        evidence_requirement: m.evidence_requirement,
+        performance_metric: m.performance_metric,
+        sort_order: i,
+      }));
+
+      if (milestones.length > 0) {
+        await supabase.from("funding_plan_milestones").insert(milestones);
+      }
+
+      // Insert budget breakdown
+      const budgetItems = (plan.budget_breakdown || []).map((b: any) => ({
+        funding_plan_id: fundingPlan.id,
+        category: b.category || 'other',
+        amount: b.amount || 0,
+        justification_text: b.justification,
+      }));
+
+      if (budgetItems.length > 0) {
+        await supabase.from("funding_plan_budget_breakdown").insert(budgetItems);
+      }
+
+      // Create initial version snapshot
+      await supabase.from("funding_plan_versions").insert({
+        funding_plan_id: fundingPlan.id,
+        version_number: 1,
+        snapshot: { plan, milestones, budget_breakdown: budgetItems },
+        change_summary: "Initial AI-generated plan",
+        created_by: user.id,
+      });
+
+      await supabase.from("research_audit_log").insert({
+        workspace_id,
+        user_id: user.id,
+        action_type: "funding_plan_generated",
+        entity_id: fundingPlan.id,
+        metadata: { plan_type, total_budget: plan.total_budget, milestone_count: milestones.length },
+      });
+
+      return jsonResponse({
+        success: true,
+        funding_plan: fundingPlan,
+        milestones_count: milestones.length,
+        budget_items_count: budgetItems.length,
+      });
+    }
+
+    // ============================================================
+    // ACTION: simulate_feasibility — Capital feasibility simulation
+    // ============================================================
+    if (action === "simulate_feasibility") {
+      const { funding_plan_id } = body;
+
+      const [planRes, msRes, budgetRes] = await Promise.all([
+        supabase.from("funding_plans").select("*").eq("id", funding_plan_id).single(),
+        supabase.from("funding_plan_milestones").select("*").eq("funding_plan_id", funding_plan_id).order("sort_order"),
+        supabase.from("funding_plan_budget_breakdown").select("*").eq("funding_plan_id", funding_plan_id),
+      ]);
+
+      if (planRes.error || !planRes.data) return jsonResponse({ error: "Plan not found" }, 404);
+
+      const plan = planRes.data;
+      const milestones = msRes.data || [];
+      const budget = budgetRes.data || [];
+
+      const msSummary = milestones.map((m: any) =>
+        `- ${m.milestone_title}: PKR ${m.budget_amount}, ${m.expected_duration_days} days, risk: ${m.risk_level}`
+      ).join("\n");
+
+      const budgetSummary = budget.map((b: any) =>
+        `- ${b.category}: PKR ${b.amount} — ${b.justification_text || 'N/A'}`
+      ).join("\n");
+
+      const aiResult = await callAI([
+        {
+          role: "system",
+          content: `You are a capital feasibility simulator. Analyze the funding plan and provide a structured feasibility assessment.
+Return JSON:
+{
+  "feasibility_index": 0.0-1.0,
+  "budget_adequacy": "adequate|tight|insufficient|generous",
+  "timeline_realism": "realistic|optimistic|aggressive|conservative",
+  "capital_burn_rate_monthly": number,
+  "resource_gaps": ["..."],
+  "risk_probability": 0.0-1.0,
+  "scenarios": {
+    "optimistic": {"completion_probability": 0.0-1.0, "budget_variance_pct": number, "timeline_variance_days": number},
+    "neutral": {"completion_probability": 0.0-1.0, "budget_variance_pct": number, "timeline_variance_days": number},
+    "conservative": {"completion_probability": 0.0-1.0, "budget_variance_pct": number, "timeline_variance_days": number}
+  },
+  "recommendations": ["..."],
+  "capital_efficiency_projection": 0.0-1.0
+}
+Return ONLY valid JSON.`
+        },
+        {
+          role: "user",
+          content: `FUNDING PLAN: ${plan.title}\nType: ${plan.plan_type}\nTotal: PKR ${plan.total_budget}\nDuration: ${plan.duration_months} months\n\nMILESTONES:\n${msSummary}\n\nBUDGET:\n${budgetSummary}`
+        }
+      ]);
+
+      if (aiResult.error) return jsonResponse({ error: aiResult.error }, aiResult.status || 500);
+
+      let simulation: any;
+      try {
+        const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        simulation = JSON.parse(cleaned);
+      } catch {
+        return jsonResponse({ error: "AI returned unparseable simulation" }, 500);
+      }
+
+      // Update plan with scores
+      await supabase.from("funding_plans").update({
+        feasibility_index: simulation.feasibility_index || 0.5,
+        risk_score: simulation.risk_probability || 0.5,
+        ai_generation_metadata: {
+          ...((plan.ai_generation_metadata as any) || {}),
+          feasibility_simulation: simulation,
+          simulated_at: new Date().toISOString(),
+        },
+        updated_at: new Date().toISOString(),
+      }).eq("id", funding_plan_id);
+
+      return jsonResponse({ success: true, simulation });
+    }
+
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
