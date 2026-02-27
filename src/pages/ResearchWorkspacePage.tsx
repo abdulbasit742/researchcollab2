@@ -18,6 +18,7 @@ import { ClaimGraphPanel } from "@/components/research/ClaimGraphPanel";
 import { ResearchTimelinePanel } from "@/components/research/ResearchTimelinePanel";
 import { FundingPlanPanel } from "@/components/research/FundingPlanPanel";
 import { PeerReviewPanel } from "@/components/research/PeerReviewPanel";
+import { KnowledgeGraphPanel } from "@/components/research/KnowledgeGraphPanel";
 import {
   BookOpen, Upload, Search, FileText, MessageSquare,
   Loader2, CheckCircle, AlertCircle, ChevronRight,
@@ -429,6 +430,17 @@ export default function ResearchWorkspacePage() {
             Research → Capital Structuring
           </h2>
           <FundingPlanPanel workspaceId={workspaceId} />
+        </div>
+      )}
+
+      {/* Global Knowledge Graph */}
+      {workspaceId && (
+        <div className="mt-6">
+          <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-primary" />
+            Global Knowledge Graph & Citation Intelligence
+          </h2>
+          <KnowledgeGraphPanel workspaceId={workspaceId} />
         </div>
       )}
 
