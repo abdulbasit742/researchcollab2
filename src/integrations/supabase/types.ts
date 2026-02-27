@@ -5347,6 +5347,118 @@ export type Database = {
           },
         ]
       }
+      citation_manipulation_flags: {
+        Row: {
+          description: string | null
+          detected_at: string | null
+          evidence: Json | null
+          flag_type: string
+          id: string
+          pattern_data: Json | null
+          resolved_at: string | null
+          reviewed_by: string | null
+          severity: string | null
+          status: string | null
+          target_paper_id: string | null
+          target_user_id: string | null
+        }
+        Insert: {
+          description?: string | null
+          detected_at?: string | null
+          evidence?: Json | null
+          flag_type: string
+          id?: string
+          pattern_data?: Json | null
+          resolved_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          target_paper_id?: string | null
+          target_user_id?: string | null
+        }
+        Update: {
+          description?: string | null
+          detected_at?: string | null
+          evidence?: Json | null
+          flag_type?: string
+          id?: string
+          pattern_data?: Json | null
+          resolved_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          target_paper_id?: string | null
+          target_user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "citation_manipulation_flags_target_paper_id_fkey"
+            columns: ["target_paper_id"]
+            isOneToOne: false
+            referencedRelation: "research_paper_index"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      citation_quality_details: {
+        Row: {
+          citation_concentration_penalty: number | null
+          citation_velocity_decay: number | null
+          computed_cqi: number | null
+          cross_discipline_weight: number | null
+          id: string
+          industry_citation_weight: number | null
+          international_diversity_weight: number | null
+          journal_quality_weight: number | null
+          last_computed_at: string | null
+          paper_id: string | null
+          patent_citation_weight: number | null
+          policy_citation_weight: number | null
+          self_citation_penalty: number | null
+          user_id: string
+        }
+        Insert: {
+          citation_concentration_penalty?: number | null
+          citation_velocity_decay?: number | null
+          computed_cqi?: number | null
+          cross_discipline_weight?: number | null
+          id?: string
+          industry_citation_weight?: number | null
+          international_diversity_weight?: number | null
+          journal_quality_weight?: number | null
+          last_computed_at?: string | null
+          paper_id?: string | null
+          patent_citation_weight?: number | null
+          policy_citation_weight?: number | null
+          self_citation_penalty?: number | null
+          user_id: string
+        }
+        Update: {
+          citation_concentration_penalty?: number | null
+          citation_velocity_decay?: number | null
+          computed_cqi?: number | null
+          cross_discipline_weight?: number | null
+          id?: string
+          industry_citation_weight?: number | null
+          international_diversity_weight?: number | null
+          journal_quality_weight?: number | null
+          last_computed_at?: string | null
+          paper_id?: string | null
+          patent_citation_weight?: number | null
+          policy_citation_weight?: number | null
+          self_citation_penalty?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "citation_quality_details_paper_id_fkey"
+            columns: ["paper_id"]
+            isOneToOne: false
+            referencedRelation: "research_paper_index"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       civilizational_principles: {
         Row: {
           change_requirements: Json
@@ -15366,6 +15478,42 @@ export type Database = {
           },
         ]
       }
+      field_normalization_baselines: {
+        Row: {
+          avg_citation_density: number | null
+          avg_funding_norm: number | null
+          avg_grant_size: number | null
+          commercialization_likelihood: number | null
+          field_name: string
+          id: string
+          typical_funding_volume: number | null
+          typical_h_index_senior: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avg_citation_density?: number | null
+          avg_funding_norm?: number | null
+          avg_grant_size?: number | null
+          commercialization_likelihood?: number | null
+          field_name: string
+          id?: string
+          typical_funding_volume?: number | null
+          typical_h_index_senior?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          avg_citation_density?: number | null
+          avg_funding_norm?: number | null
+          avg_grant_size?: number | null
+          commercialization_likelihood?: number | null
+          field_name?: string
+          id?: string
+          typical_funding_volume?: number | null
+          typical_h_index_senior?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       field_translation_records: {
         Row: {
           created_at: string
@@ -17782,6 +17930,45 @@ export type Database = {
         }
         Relationships: []
       }
+      global_equity_weights: {
+        Row: {
+          citation_normalization_factor: number | null
+          country_code: string | null
+          emerging_market_boost: number | null
+          funding_normalization_factor: number | null
+          id: string
+          institution_tier: string | null
+          is_active: boolean | null
+          region: string
+          underrepresented_domain_boost: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          citation_normalization_factor?: number | null
+          country_code?: string | null
+          emerging_market_boost?: number | null
+          funding_normalization_factor?: number | null
+          id?: string
+          institution_tier?: string | null
+          is_active?: boolean | null
+          region: string
+          underrepresented_domain_boost?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          citation_normalization_factor?: number | null
+          country_code?: string | null
+          emerging_market_boost?: number | null
+          funding_normalization_factor?: number | null
+          id?: string
+          institution_tier?: string | null
+          is_active?: boolean | null
+          region?: string
+          underrepresented_domain_boost?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       global_innovation_map: {
         Row: {
           active_grants: number | null
@@ -19988,6 +20175,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      impact_evolution_snapshots: {
+        Row: {
+          citation_quality_index: number | null
+          commercialization_impact: number | null
+          created_at: string | null
+          domain_at_snapshot: string | null
+          execution_impact_score: number | null
+          funding_impact_score: number | null
+          id: string
+          overall_maie: number | null
+          policy_impact: number | null
+          snapshot_date: string
+          user_id: string
+        }
+        Insert: {
+          citation_quality_index?: number | null
+          commercialization_impact?: number | null
+          created_at?: string | null
+          domain_at_snapshot?: string | null
+          execution_impact_score?: number | null
+          funding_impact_score?: number | null
+          id?: string
+          overall_maie?: number | null
+          policy_impact?: number | null
+          snapshot_date?: string
+          user_id: string
+        }
+        Update: {
+          citation_quality_index?: number | null
+          commercialization_impact?: number | null
+          created_at?: string | null
+          domain_at_snapshot?: string | null
+          execution_impact_score?: number | null
+          funding_impact_score?: number | null
+          id?: string
+          overall_maie?: number | null
+          policy_impact?: number | null
+          snapshot_date?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       impact_pathways: {
         Row: {
@@ -25367,6 +25596,69 @@ export type Database = {
         }
         Relationships: []
       }
+      maie_impact_scores: {
+        Row: {
+          citation_quality_index: number | null
+          commercialization_impact_index: number | null
+          created_at: string | null
+          cross_discipline_impact_index: number | null
+          educational_impact_score: number | null
+          execution_impact_score: number | null
+          field_normalized: boolean | null
+          funding_impact_score: number | null
+          global_equity_weight: number | null
+          id: string
+          institutional_contribution_score: number | null
+          last_computed_at: string | null
+          longitudinal_consistency_index: number | null
+          normalization_field: string | null
+          open_science_contribution: number | null
+          overall_maie: number | null
+          policy_impact_index: number | null
+          user_id: string
+        }
+        Insert: {
+          citation_quality_index?: number | null
+          commercialization_impact_index?: number | null
+          created_at?: string | null
+          cross_discipline_impact_index?: number | null
+          educational_impact_score?: number | null
+          execution_impact_score?: number | null
+          field_normalized?: boolean | null
+          funding_impact_score?: number | null
+          global_equity_weight?: number | null
+          id?: string
+          institutional_contribution_score?: number | null
+          last_computed_at?: string | null
+          longitudinal_consistency_index?: number | null
+          normalization_field?: string | null
+          open_science_contribution?: number | null
+          overall_maie?: number | null
+          policy_impact_index?: number | null
+          user_id: string
+        }
+        Update: {
+          citation_quality_index?: number | null
+          commercialization_impact_index?: number | null
+          created_at?: string | null
+          cross_discipline_impact_index?: number | null
+          educational_impact_score?: number | null
+          execution_impact_score?: number | null
+          field_normalized?: boolean | null
+          funding_impact_score?: number | null
+          global_equity_weight?: number | null
+          id?: string
+          institutional_contribution_score?: number | null
+          last_computed_at?: string | null
+          longitudinal_consistency_index?: number | null
+          normalization_field?: string | null
+          open_science_contribution?: number | null
+          overall_maie?: number | null
+          policy_impact_index?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       market_adjustments_log: {
         Row: {
           action_taken: string
@@ -30636,6 +30928,59 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      policy_impact_records: {
+        Row: {
+          citation_date: string | null
+          country_code: string | null
+          created_at: string | null
+          evidence_url: string | null
+          id: string
+          impact_level: string | null
+          impact_type: string
+          issuing_body: string | null
+          paper_id: string | null
+          policy_document_title: string | null
+          user_id: string
+          verification_status: string | null
+        }
+        Insert: {
+          citation_date?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          evidence_url?: string | null
+          id?: string
+          impact_level?: string | null
+          impact_type: string
+          issuing_body?: string | null
+          paper_id?: string | null
+          policy_document_title?: string | null
+          user_id: string
+          verification_status?: string | null
+        }
+        Update: {
+          citation_date?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          evidence_url?: string | null
+          id?: string
+          impact_level?: string | null
+          impact_type?: string
+          issuing_body?: string | null
+          paper_id?: string | null
+          policy_document_title?: string | null
+          user_id?: string
+          verification_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_impact_records_paper_id_fkey"
+            columns: ["paper_id"]
+            isOneToOne: false
+            referencedRelation: "research_paper_index"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       policy_insight_flags: {
         Row: {

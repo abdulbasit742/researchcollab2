@@ -50,3 +50,6 @@ export type { UnifiedExecutionIdentity, ListingType, MarketplaceListingInput, Di
 
 export { computeMDII, getMDII, calculateCitationQualityIndex, indexPaper, searchPapers, createGrant, getUserGrants, addLifecycleEvent, getResearchTimeline, getInstitutionalExecutionIndex, trackCommercialization, getUserCommercializations, getGlobalInnovationMap, getIntegrityFlags, computeResearcherReliability, GAEI_CATEGORY, MDII_EXPLANATION, RESEARCH_LIFECYCLE_STAGES } from "./academicExecutionIndex";
 export type { MDII, PaperInput, GrantInput, ResearcherReliabilityMetrics, ResearchLifecycleStage } from "./academicExecutionIndex";
+
+export { computeMAIE, getMAIEScores, computeCQI, computeFIS, computeEIS, computeCDII, computeLCI, detectCitationManipulation, getImpactEvolution, getPolicyImpactRecords, addPolicyImpactRecord, getManipulationFlags, applyFieldNormalization, getFieldBaseline, getGlobalEquityWeight, MAIE_TRANSPARENCY } from "./multiLayerImpactEngine";
+export type { MAIEScores, CQIInput, ManipulationSignal } from "./multiLayerImpactEngine";
