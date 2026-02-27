@@ -29401,6 +29401,44 @@ export type Database = {
           },
         ]
       }
+      impact_entities: {
+        Row: {
+          created_at: string | null
+          entity_id: string
+          entity_name: string
+          entity_type: string
+          id: string
+          metadata: Json | null
+          parent_entity_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          entity_id: string
+          entity_name: string
+          entity_type: string
+          id?: string
+          metadata?: Json | null
+          parent_entity_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          entity_id?: string
+          entity_name?: string
+          entity_type?: string
+          id?: string
+          metadata?: Json | null
+          parent_entity_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impact_entities_parent_entity_id_fkey"
+            columns: ["parent_entity_id"]
+            isOneToOne: false
+            referencedRelation: "impact_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       impact_evaluations: {
         Row: {
           data_sources: string[] | null
@@ -29492,6 +29530,144 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      impact_gaming_flags: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          evidence: Json | null
+          flag_type: string
+          id: string
+          impact_entity_id: string
+          resolved: boolean | null
+          severity: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          evidence?: Json | null
+          flag_type: string
+          id?: string
+          impact_entity_id: string
+          resolved?: boolean | null
+          severity?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          evidence?: Json | null
+          flag_type?: string
+          id?: string
+          impact_entity_id?: string
+          resolved?: boolean | null
+          severity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impact_gaming_flags_impact_entity_id_fkey"
+            columns: ["impact_entity_id"]
+            isOneToOne: false
+            referencedRelation: "impact_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      impact_history: {
+        Row: {
+          composite_score_at_snapshot: number | null
+          created_at: string | null
+          id: string
+          impact_entity_id: string
+          snapshot_data: Json
+        }
+        Insert: {
+          composite_score_at_snapshot?: number | null
+          created_at?: string | null
+          id?: string
+          impact_entity_id: string
+          snapshot_data: Json
+        }
+        Update: {
+          composite_score_at_snapshot?: number | null
+          created_at?: string | null
+          id?: string
+          impact_entity_id?: string
+          snapshot_data?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impact_history_impact_entity_id_fkey"
+            columns: ["impact_entity_id"]
+            isOneToOne: false
+            referencedRelation: "impact_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      impact_metrics: {
+        Row: {
+          anti_gaming_flags: Json | null
+          claim_influence_score: number | null
+          composite_index_score: number | null
+          computed_at: string | null
+          cross_border_diffusion_score: number | null
+          execution_reliability_score: number | null
+          formula_explanation: string | null
+          funding_efficiency_score: number | null
+          id: string
+          impact_entity_id: string
+          innovation_velocity_score: number | null
+          knowledge_output_score: number | null
+          knowledge_stability_score: number | null
+          policy_adoption_score: number | null
+          trust_density_score: number | null
+          weights_used: Json | null
+        }
+        Insert: {
+          anti_gaming_flags?: Json | null
+          claim_influence_score?: number | null
+          composite_index_score?: number | null
+          computed_at?: string | null
+          cross_border_diffusion_score?: number | null
+          execution_reliability_score?: number | null
+          formula_explanation?: string | null
+          funding_efficiency_score?: number | null
+          id?: string
+          impact_entity_id: string
+          innovation_velocity_score?: number | null
+          knowledge_output_score?: number | null
+          knowledge_stability_score?: number | null
+          policy_adoption_score?: number | null
+          trust_density_score?: number | null
+          weights_used?: Json | null
+        }
+        Update: {
+          anti_gaming_flags?: Json | null
+          claim_influence_score?: number | null
+          composite_index_score?: number | null
+          computed_at?: string | null
+          cross_border_diffusion_score?: number | null
+          execution_reliability_score?: number | null
+          formula_explanation?: string | null
+          funding_efficiency_score?: number | null
+          id?: string
+          impact_entity_id?: string
+          innovation_velocity_score?: number | null
+          knowledge_output_score?: number | null
+          knowledge_stability_score?: number | null
+          policy_adoption_score?: number | null
+          trust_density_score?: number | null
+          weights_used?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impact_metrics_impact_entity_id_fkey"
+            columns: ["impact_entity_id"]
+            isOneToOne: true
+            referencedRelation: "impact_entities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       impact_pathways: {
         Row: {
