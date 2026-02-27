@@ -44,3 +44,6 @@ export type { ExecutionRiskPrediction, CapitalRecommendation, TalentDevelopmentI
 
 export { createPortfolioItem, getUserPortfolio, discoverPortfolio, getProjectStories, createProjectStoryEvent, getInstitutionalChannels, getShowcasePosts, getVisualDiscussions, addVisualDiscussion, getExecutionReels, getUserBadges, calculateVisualImpactScore, VISUAL_INTELLIGENCE_TRANSPARENCY } from "./visualIntelligence";
 export type { VisualType, ReelType, BadgeType, StoryEventType, PortfolioItemInput, VisualImpactScore } from "./visualIntelligence";
+
+export { computeUnifiedIdentity, getUnifiedIdentity, createMarketplaceListing, browseMarketplace, applyToListing, intelligentDiscovery, getGrowthAdvisorRecords, getLifecycleEvents, recordLifecycleEvent, CATEGORY_POSITIONING, LIFECYCLE_STAGES } from "./totalDominance";
+export type { UnifiedExecutionIdentity, ListingType, MarketplaceListingInput, DiscoveryFilters, LifecycleStage } from "./totalDominance";
