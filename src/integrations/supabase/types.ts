@@ -5116,6 +5116,51 @@ export type Database = {
           },
         ]
       }
+      collaboration_clusters: {
+        Row: {
+          avg_trust_edge_score: number | null
+          cluster_name: string
+          detected_at: string | null
+          dispute_free_rate: number | null
+          domain_category: string | null
+          id: string
+          institution_ids: string[] | null
+          member_ids: string[] | null
+          project_count: number | null
+          sponsor_ids: string[] | null
+          total_escrow_volume: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avg_trust_edge_score?: number | null
+          cluster_name: string
+          detected_at?: string | null
+          dispute_free_rate?: number | null
+          domain_category?: string | null
+          id?: string
+          institution_ids?: string[] | null
+          member_ids?: string[] | null
+          project_count?: number | null
+          sponsor_ids?: string[] | null
+          total_escrow_volume?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          avg_trust_edge_score?: number | null
+          cluster_name?: string
+          detected_at?: string | null
+          dispute_free_rate?: number | null
+          domain_category?: string | null
+          id?: string
+          institution_ids?: string[] | null
+          member_ids?: string[] | null
+          project_count?: number | null
+          sponsor_ids?: string[] | null
+          total_escrow_volume?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       collaboration_cooldowns: {
         Row: {
           collaboration_count: number
@@ -30616,6 +30661,51 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_stability: {
+        Row: {
+          collaboration_continuity: number | null
+          cross_domain_expansion: number | null
+          economic_centrality: number | null
+          id: string
+          institutional_loyalty_score: number | null
+          period: string
+          relationship_retention_rate: number | null
+          repeat_deal_density: number | null
+          snapshot_at: string | null
+          sponsor_churn_rate: number | null
+          trust_edge_growth: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_continuity?: number | null
+          cross_domain_expansion?: number | null
+          economic_centrality?: number | null
+          id?: string
+          institutional_loyalty_score?: number | null
+          period: string
+          relationship_retention_rate?: number | null
+          repeat_deal_density?: number | null
+          snapshot_at?: string | null
+          sponsor_churn_rate?: number | null
+          trust_edge_growth?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_continuity?: number | null
+          cross_domain_expansion?: number | null
+          economic_centrality?: number | null
+          id?: string
+          institutional_loyalty_score?: number | null
+          period?: string
+          relationship_retention_rate?: number | null
+          repeat_deal_density?: number | null
+          snapshot_at?: string | null
+          sponsor_churn_rate?: number | null
+          trust_edge_growth?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       professional_value_scores: {
         Row: {
           capital_handled: number | null
@@ -32965,6 +33055,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      reputation_index: {
+        Row: {
+          collaboration_recurrence_rate: number | null
+          communication_stability: number | null
+          cross_institution_reach: number | null
+          dispute_risk: number | null
+          economic_influence_score: number | null
+          economic_trust: number | null
+          execution_reliability: number | null
+          id: string
+          institutional_validation: number | null
+          network_depth_score: number | null
+          network_diversity_score: number | null
+          network_stability_score: number | null
+          overall_reputation: number | null
+          snapshot_at: string | null
+          sponsor_confidence: number | null
+          tier: string | null
+          total_escrow_influenced: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_recurrence_rate?: number | null
+          communication_stability?: number | null
+          cross_institution_reach?: number | null
+          dispute_risk?: number | null
+          economic_influence_score?: number | null
+          economic_trust?: number | null
+          execution_reliability?: number | null
+          id?: string
+          institutional_validation?: number | null
+          network_depth_score?: number | null
+          network_diversity_score?: number | null
+          network_stability_score?: number | null
+          overall_reputation?: number | null
+          snapshot_at?: string | null
+          sponsor_confidence?: number | null
+          tier?: string | null
+          total_escrow_influenced?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_recurrence_rate?: number | null
+          communication_stability?: number | null
+          cross_institution_reach?: number | null
+          dispute_risk?: number | null
+          economic_influence_score?: number | null
+          economic_trust?: number | null
+          execution_reliability?: number | null
+          id?: string
+          institutional_validation?: number | null
+          network_depth_score?: number | null
+          network_diversity_score?: number | null
+          network_stability_score?: number | null
+          overall_reputation?: number | null
+          snapshot_at?: string | null
+          sponsor_confidence?: number | null
+          tier?: string | null
+          total_escrow_influenced?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       reputation_passports: {
         Row: {
@@ -40947,6 +41100,60 @@ export type Database = {
           new_score?: number
           previous_score?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      trust_edges: {
+        Row: {
+          communication_quality_score: number | null
+          created_at: string | null
+          dispute_count: number | null
+          escrow_volume: number | null
+          first_interaction_at: string | null
+          id: string
+          last_interaction_at: string | null
+          linked_project_id: string | null
+          relationship_type: string
+          repeat_collaboration_count: number | null
+          source_id: string
+          successful_completions: number | null
+          target_id: string
+          trust_edge_score: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          communication_quality_score?: number | null
+          created_at?: string | null
+          dispute_count?: number | null
+          escrow_volume?: number | null
+          first_interaction_at?: string | null
+          id?: string
+          last_interaction_at?: string | null
+          linked_project_id?: string | null
+          relationship_type: string
+          repeat_collaboration_count?: number | null
+          source_id: string
+          successful_completions?: number | null
+          target_id: string
+          trust_edge_score?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          communication_quality_score?: number | null
+          created_at?: string | null
+          dispute_count?: number | null
+          escrow_volume?: number | null
+          first_interaction_at?: string | null
+          id?: string
+          last_interaction_at?: string | null
+          linked_project_id?: string | null
+          relationship_type?: string
+          repeat_collaboration_count?: number | null
+          source_id?: string
+          successful_completions?: number | null
+          target_id?: string
+          trust_edge_score?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }
