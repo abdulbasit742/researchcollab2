@@ -6854,6 +6854,51 @@ export type Database = {
           },
         ]
       }
+      compliance_anomaly_flags: {
+        Row: {
+          ai_confidence: number | null
+          anomaly_type: string
+          created_at: string
+          entity_id: string
+          entity_type: string
+          evidence: Json | null
+          human_reviewed: boolean | null
+          id: string
+          resolution: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string
+        }
+        Insert: {
+          ai_confidence?: number | null
+          anomaly_type: string
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          evidence?: Json | null
+          human_reviewed?: boolean | null
+          id?: string
+          resolution?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string
+        }
+        Update: {
+          ai_confidence?: number | null
+          anomaly_type?: string
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          evidence?: Json | null
+          human_reviewed?: boolean | null
+          id?: string
+          resolution?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string
+        }
+        Relationships: []
+      }
       compliance_audit_logs: {
         Row: {
           action: string
@@ -6897,6 +6942,105 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      compliance_forecasts: {
+        Row: {
+          audit_failure_risk: number | null
+          budget_overrun_risk: number | null
+          compliance_failure_risk: number | null
+          computed_at: string
+          entity_id: string
+          entity_type: string
+          ethics_review_delay_risk: number | null
+          explanation: Json | null
+          id: string
+          model_version: string | null
+          regulatory_breach_risk: number | null
+          reporting_delay_risk: number | null
+        }
+        Insert: {
+          audit_failure_risk?: number | null
+          budget_overrun_risk?: number | null
+          compliance_failure_risk?: number | null
+          computed_at?: string
+          entity_id: string
+          entity_type: string
+          ethics_review_delay_risk?: number | null
+          explanation?: Json | null
+          id?: string
+          model_version?: string | null
+          regulatory_breach_risk?: number | null
+          reporting_delay_risk?: number | null
+        }
+        Update: {
+          audit_failure_risk?: number | null
+          budget_overrun_risk?: number | null
+          compliance_failure_risk?: number | null
+          computed_at?: string
+          entity_id?: string
+          entity_type?: string
+          ethics_review_delay_risk?: number | null
+          explanation?: Json | null
+          id?: string
+          model_version?: string | null
+          regulatory_breach_risk?: number | null
+          reporting_delay_risk?: number | null
+        }
+        Relationships: []
+      }
+      compliance_integrity_scores: {
+        Row: {
+          audit_pass_rate: number | null
+          budget_variance: number | null
+          computed_at: string
+          cross_border_stability: number | null
+          dispute_frequency: number | null
+          documentation_completeness: number | null
+          entity_id: string
+          entity_type: string
+          escrow_adherence: number | null
+          ethical_breach_flags: number | null
+          id: string
+          on_time_reporting: number | null
+          overall_cis: number | null
+          regulatory_violations: number | null
+          renewal_trust_factor: number | null
+        }
+        Insert: {
+          audit_pass_rate?: number | null
+          budget_variance?: number | null
+          computed_at?: string
+          cross_border_stability?: number | null
+          dispute_frequency?: number | null
+          documentation_completeness?: number | null
+          entity_id: string
+          entity_type: string
+          escrow_adherence?: number | null
+          ethical_breach_flags?: number | null
+          id?: string
+          on_time_reporting?: number | null
+          overall_cis?: number | null
+          regulatory_violations?: number | null
+          renewal_trust_factor?: number | null
+        }
+        Update: {
+          audit_pass_rate?: number | null
+          budget_variance?: number | null
+          computed_at?: string
+          cross_border_stability?: number | null
+          dispute_frequency?: number | null
+          documentation_completeness?: number | null
+          entity_id?: string
+          entity_type?: string
+          escrow_adherence?: number | null
+          ethical_breach_flags?: number | null
+          id?: string
+          on_time_reporting?: number | null
+          overall_cis?: number | null
+          regulatory_violations?: number | null
+          renewal_trust_factor?: number | null
+        }
+        Relationships: []
       }
       compliance_risk_profiles: {
         Row: {
@@ -9388,6 +9532,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      cross_border_compliance_matrix: {
+        Row: {
+          assessed_at: string
+          country_a: string
+          country_b: string
+          export_control_conflicts: boolean | null
+          funding_body_compatible: boolean | null
+          grant_id: string | null
+          id: string
+          ip_ownership_clarity: string | null
+          overall_risk_level: string | null
+          regulatory_conflicts: Json | null
+          reporting_mismatches: Json | null
+          sanction_risk_detected: boolean | null
+        }
+        Insert: {
+          assessed_at?: string
+          country_a: string
+          country_b: string
+          export_control_conflicts?: boolean | null
+          funding_body_compatible?: boolean | null
+          grant_id?: string | null
+          id?: string
+          ip_ownership_clarity?: string | null
+          overall_risk_level?: string | null
+          regulatory_conflicts?: Json | null
+          reporting_mismatches?: Json | null
+          sanction_risk_detected?: boolean | null
+        }
+        Update: {
+          assessed_at?: string
+          country_a?: string
+          country_b?: string
+          export_control_conflicts?: boolean | null
+          funding_body_compatible?: boolean | null
+          grant_id?: string | null
+          id?: string
+          ip_ownership_clarity?: string | null
+          overall_risk_level?: string | null
+          regulatory_conflicts?: Json | null
+          reporting_mismatches?: Json | null
+          sanction_risk_detected?: boolean | null
+        }
+        Relationships: []
       }
       cross_border_simulations: {
         Row: {
@@ -19545,6 +19734,48 @@ export type Database = {
         }
         Relationships: []
       }
+      government_oversight_snapshots: {
+        Row: {
+          audit_pass_fail_trends: Json | null
+          compliance_ranking: Json | null
+          computed_at: string
+          country: string
+          cross_border_compliance: Json | null
+          domain_risk_clusters: Json | null
+          emerging_ethics_risks: Json | null
+          escrow_integrity_metrics: Json | null
+          funding_distribution: Json | null
+          id: string
+          period: string
+        }
+        Insert: {
+          audit_pass_fail_trends?: Json | null
+          compliance_ranking?: Json | null
+          computed_at?: string
+          country: string
+          cross_border_compliance?: Json | null
+          domain_risk_clusters?: Json | null
+          emerging_ethics_risks?: Json | null
+          escrow_integrity_metrics?: Json | null
+          funding_distribution?: Json | null
+          id?: string
+          period: string
+        }
+        Update: {
+          audit_pass_fail_trends?: Json | null
+          compliance_ranking?: Json | null
+          computed_at?: string
+          country?: string
+          cross_border_compliance?: Json | null
+          domain_risk_clusters?: Json | null
+          emerging_ethics_risks?: Json | null
+          escrow_integrity_metrics?: Json | null
+          funding_distribution?: Json | null
+          id?: string
+          period?: string
+        }
+        Relationships: []
+      }
       government_partners: {
         Row: {
           anti_capture_acknowledged: boolean | null
@@ -19882,6 +20113,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      grant_compliance_checkpoints: {
+        Row: {
+          checkpoint_type: string
+          created_at: string
+          description: string | null
+          evidence: Json | null
+          grant_id: string
+          id: string
+          institution_id: string | null
+          ledger_entry_id: string | null
+          responsible_user_id: string | null
+          status: string
+          title: string
+          verified_at: string | null
+          verified_by: string | null
+          version_snapshot: Json | null
+        }
+        Insert: {
+          checkpoint_type: string
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          grant_id: string
+          id?: string
+          institution_id?: string | null
+          ledger_entry_id?: string | null
+          responsible_user_id?: string | null
+          status?: string
+          title: string
+          verified_at?: string | null
+          verified_by?: string | null
+          version_snapshot?: Json | null
+        }
+        Update: {
+          checkpoint_type?: string
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          grant_id?: string
+          id?: string
+          institution_id?: string | null
+          ledger_entry_id?: string | null
+          responsible_user_id?: string | null
+          status?: string
+          title?: string
+          verified_at?: string | null
+          verified_by?: string | null
+          version_snapshot?: Json | null
+        }
+        Relationships: []
       }
       grant_discipline_norms: {
         Row: {
@@ -35886,6 +36168,48 @@ export type Database = {
           },
         ]
       }
+      regulatory_templates: {
+        Row: {
+          category: string
+          created_at: string
+          data_localization_required: boolean | null
+          export_control_applicable: boolean | null
+          id: string
+          is_active: boolean | null
+          jurisdiction: string
+          regulation_name: string
+          reporting_frequency: string | null
+          requirements: Json | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          data_localization_required?: boolean | null
+          export_control_applicable?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          jurisdiction: string
+          regulation_name: string
+          reporting_frequency?: string | null
+          requirements?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          data_localization_required?: boolean | null
+          export_control_applicable?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          jurisdiction?: string
+          regulation_name?: string
+          reporting_frequency?: string | null
+          requirements?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       relationship_entropy: {
         Row: {
           calculated_at: string
@@ -36781,6 +37105,54 @@ export type Database = {
           },
         ]
       }
+      research_data_governance: {
+        Row: {
+          access_control_validated: boolean | null
+          access_violations: number | null
+          assessed_at: string
+          cross_border_transfer_flagged: boolean | null
+          data_sharing_approved: boolean | null
+          data_storage_compliant: boolean | null
+          encryption_verified: boolean | null
+          grant_id: string | null
+          id: string
+          institution_id: string | null
+          project_id: string | null
+          retention_period_compliant: boolean | null
+          sensitive_classification: string | null
+        }
+        Insert: {
+          access_control_validated?: boolean | null
+          access_violations?: number | null
+          assessed_at?: string
+          cross_border_transfer_flagged?: boolean | null
+          data_sharing_approved?: boolean | null
+          data_storage_compliant?: boolean | null
+          encryption_verified?: boolean | null
+          grant_id?: string | null
+          id?: string
+          institution_id?: string | null
+          project_id?: string | null
+          retention_period_compliant?: boolean | null
+          sensitive_classification?: string | null
+        }
+        Update: {
+          access_control_validated?: boolean | null
+          access_violations?: number | null
+          assessed_at?: string
+          cross_border_transfer_flagged?: boolean | null
+          data_sharing_approved?: boolean | null
+          data_storage_compliant?: boolean | null
+          encryption_verified?: boolean | null
+          grant_id?: string | null
+          id?: string
+          institution_id?: string | null
+          project_id?: string | null
+          retention_period_compliant?: boolean | null
+          sensitive_classification?: string | null
+        }
+        Relationships: []
+      }
       research_data_sensitivity: {
         Row: {
           access_restrictions: string | null
@@ -37271,6 +37643,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      research_ethics_records: {
+        Row: {
+          approval_reference: string | null
+          created_at: string
+          expiry_date: string | null
+          flag_reason: string | null
+          flagged: boolean | null
+          grant_id: string | null
+          id: string
+          institution_id: string | null
+          notes: string | null
+          project_id: string | null
+          record_type: string
+          researcher_id: string | null
+          review_body: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          approval_reference?: string | null
+          created_at?: string
+          expiry_date?: string | null
+          flag_reason?: string | null
+          flagged?: boolean | null
+          grant_id?: string | null
+          id?: string
+          institution_id?: string | null
+          notes?: string | null
+          project_id?: string | null
+          record_type: string
+          researcher_id?: string | null
+          review_body?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          approval_reference?: string | null
+          created_at?: string
+          expiry_date?: string | null
+          flag_reason?: string | null
+          flagged?: boolean | null
+          grant_id?: string | null
+          id?: string
+          institution_id?: string | null
+          notes?: string | null
+          project_id?: string | null
+          record_type?: string
+          researcher_id?: string | null
+          review_body?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       research_execution_tracks: {
         Row: {

@@ -68,3 +68,6 @@ export type { SearchMode, DiscoverySearchParams, DiscoveryResult, TrajectoryPred
 
 export { computeInstitutionalRank, saveInstitutionalRanking, getInstitutionalRankings, getInstitutionRankingHistory, applyFieldNormalization as applyRankingFieldNorm, detectRankingManipulation, saveManipulationFlags, getGovernmentRankingExport, GIEIRE_TRANSPARENCY, RANKING_WEIGHTS, MANIPULATION_TYPES } from "./institutionalRanking";
 export type { InstitutionalRankingInput, RankingResult, ManipulationFlag } from "./institutionalRanking";
+
+export { createComplianceCheckpoint, getGrantComplianceCheckpoints, verifyCheckpoint, computeCIS, saveCIS, getCIS, createEthicsRecord, getEthicsRecords, flagEthicsRecord, assessCrossBorderCompliance, getCrossBorderAssessments, detectComplianceAnomalies, saveComplianceAnomalies, forecastCompliance, saveComplianceForecast, saveDataGovernanceAssessment, getDataGovernance, getRegulatoryTemplates, getGovernmentOversight, COMPLIANCE_CHECKPOINT_TYPES, ETHICS_RECORD_TYPES, GRGCS_TRANSPARENCY, CIS_WEIGHTS } from "./researchGovernanceCompliance";
+export type { ComplianceCheckpointType, EthicsRecordType, ComplianceCheckpoint, ComplianceIntegrityInput, EthicsRecord, CrossBorderAssessment, ComplianceForecast, DataGovernanceAssessment } from "./researchGovernanceCompliance";
