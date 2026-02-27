@@ -23123,6 +23123,636 @@ export type Database = {
         }
         Relationships: []
       }
+      geel_ai_orchestrator: {
+        Row: {
+          affected_domain: string | null
+          affected_region: string | null
+          confidence: number | null
+          created_at: string | null
+          id: string
+          insight_summary: string
+          insight_type: string
+          reasoning: string | null
+          recommended_action: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
+        }
+        Insert: {
+          affected_domain?: string | null
+          affected_region?: string | null
+          confidence?: number | null
+          created_at?: string | null
+          id?: string
+          insight_summary: string
+          insight_type: string
+          reasoning?: string | null
+          recommended_action?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+        }
+        Update: {
+          affected_domain?: string | null
+          affected_region?: string | null
+          confidence?: number | null
+          created_at?: string | null
+          id?: string
+          insight_summary?: string
+          insight_type?: string
+          reasoning?: string | null
+          recommended_action?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
+      geel_api_registry: {
+        Row: {
+          api_name: string
+          api_type: string
+          created_at: string | null
+          documentation_url: string | null
+          endpoint_pattern: string | null
+          id: string
+          is_active: boolean | null
+          rate_limit: number | null
+          requires_auth: boolean | null
+          tier: string | null
+          version: string | null
+        }
+        Insert: {
+          api_name: string
+          api_type: string
+          created_at?: string | null
+          documentation_url?: string | null
+          endpoint_pattern?: string | null
+          id?: string
+          is_active?: boolean | null
+          rate_limit?: number | null
+          requires_auth?: boolean | null
+          tier?: string | null
+          version?: string | null
+        }
+        Update: {
+          api_name?: string
+          api_type?: string
+          created_at?: string | null
+          documentation_url?: string | null
+          endpoint_pattern?: string | null
+          id?: string
+          is_active?: boolean | null
+          rate_limit?: number | null
+          requires_auth?: boolean | null
+          tier?: string | null
+          version?: string | null
+        }
+        Relationships: []
+      }
+      geel_capital_formation: {
+        Row: {
+          computed_at: string | null
+          cross_border_projects: number | null
+          execution_capital_score: number | null
+          id: string
+          institutional_partnerships: number | null
+          knowledge_published: number | null
+          lifetime_funding_secured: number | null
+          milestones_delivered: number | null
+          patents_filed: number | null
+          policy_contributions: number | null
+          regional_economic_impact: number | null
+          startups_formed: number | null
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string | null
+          cross_border_projects?: number | null
+          execution_capital_score?: number | null
+          id?: string
+          institutional_partnerships?: number | null
+          knowledge_published?: number | null
+          lifetime_funding_secured?: number | null
+          milestones_delivered?: number | null
+          patents_filed?: number | null
+          policy_contributions?: number | null
+          regional_economic_impact?: number | null
+          startups_formed?: number | null
+          user_id: string
+        }
+        Update: {
+          computed_at?: string | null
+          cross_border_projects?: number | null
+          execution_capital_score?: number | null
+          id?: string
+          institutional_partnerships?: number | null
+          knowledge_published?: number | null
+          lifetime_funding_secured?: number | null
+          milestones_delivered?: number | null
+          patents_filed?: number | null
+          policy_contributions?: number | null
+          regional_economic_impact?: number | null
+          startups_formed?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      geel_execution_corridors: {
+        Row: {
+          corridor_name: string
+          created_at: string | null
+          cultural_integration_index: number | null
+          execution_success_history: Json | null
+          funding_eligibility: Json | null
+          id: string
+          ip_alignment: Json | null
+          regulatory_compatibility: Json | null
+          source_region: string | null
+          source_type: string
+          status: string | null
+          target_region: string | null
+          target_type: string
+          trust_compatibility_score: number | null
+        }
+        Insert: {
+          corridor_name: string
+          created_at?: string | null
+          cultural_integration_index?: number | null
+          execution_success_history?: Json | null
+          funding_eligibility?: Json | null
+          id?: string
+          ip_alignment?: Json | null
+          regulatory_compatibility?: Json | null
+          source_region?: string | null
+          source_type: string
+          status?: string | null
+          target_region?: string | null
+          target_type: string
+          trust_compatibility_score?: number | null
+        }
+        Update: {
+          corridor_name?: string
+          created_at?: string | null
+          cultural_integration_index?: number | null
+          execution_success_history?: Json | null
+          funding_eligibility?: Json | null
+          id?: string
+          ip_alignment?: Json | null
+          regulatory_compatibility?: Json | null
+          source_region?: string | null
+          source_type?: string
+          status?: string | null
+          target_region?: string | null
+          target_type?: string
+          trust_compatibility_score?: number | null
+        }
+        Relationships: []
+      }
+      geel_execution_credit_scores: {
+        Row: {
+          composite_ecs: number | null
+          computed_at: string | null
+          cross_border_reliability: number | null
+          dispute_resolution_efficiency: number | null
+          escrow_compliance: number | null
+          funding_transparency: number | null
+          id: string
+          institutional_endorsement: number | null
+          knowledge_contribution_impact: number | null
+          long_term_consistency: number | null
+          milestone_punctuality: number | null
+          policy_alignment: number | null
+          startup_survival_contribution: number | null
+          user_id: string
+        }
+        Insert: {
+          composite_ecs?: number | null
+          computed_at?: string | null
+          cross_border_reliability?: number | null
+          dispute_resolution_efficiency?: number | null
+          escrow_compliance?: number | null
+          funding_transparency?: number | null
+          id?: string
+          institutional_endorsement?: number | null
+          knowledge_contribution_impact?: number | null
+          long_term_consistency?: number | null
+          milestone_punctuality?: number | null
+          policy_alignment?: number | null
+          startup_survival_contribution?: number | null
+          user_id: string
+        }
+        Update: {
+          composite_ecs?: number | null
+          computed_at?: string | null
+          cross_border_reliability?: number | null
+          dispute_resolution_efficiency?: number | null
+          escrow_compliance?: number | null
+          funding_transparency?: number | null
+          id?: string
+          institutional_endorsement?: number | null
+          knowledge_contribution_impact?: number | null
+          long_term_consistency?: number | null
+          milestone_punctuality?: number | null
+          policy_alignment?: number | null
+          startup_survival_contribution?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      geel_governance_monitor: {
+        Row: {
+          alerts: Json | null
+          computed_at: string | null
+          cross_border_exclusion_pct: number | null
+          dispute_bias_score: number | null
+          funding_monopolization_risk: number | null
+          id: string
+          institutional_dominance_score: number | null
+          metric_type: string
+          metric_value: number | null
+          opportunity_fairness_index: number | null
+          regional_imbalance_index: number | null
+          trust_concentration_gini: number | null
+        }
+        Insert: {
+          alerts?: Json | null
+          computed_at?: string | null
+          cross_border_exclusion_pct?: number | null
+          dispute_bias_score?: number | null
+          funding_monopolization_risk?: number | null
+          id?: string
+          institutional_dominance_score?: number | null
+          metric_type: string
+          metric_value?: number | null
+          opportunity_fairness_index?: number | null
+          regional_imbalance_index?: number | null
+          trust_concentration_gini?: number | null
+        }
+        Update: {
+          alerts?: Json | null
+          computed_at?: string | null
+          cross_border_exclusion_pct?: number | null
+          dispute_bias_score?: number | null
+          funding_monopolization_risk?: number | null
+          id?: string
+          institutional_dominance_score?: number | null
+          metric_type?: string
+          metric_value?: number | null
+          opportunity_fairness_index?: number | null
+          regional_imbalance_index?: number | null
+          trust_concentration_gini?: number | null
+        }
+        Relationships: []
+      }
+      geel_institutional_integrations: {
+        Row: {
+          activated_at: string | null
+          api_endpoint: string | null
+          created_at: string | null
+          id: string
+          institution_id: string | null
+          institution_type: string
+          integration_config: Json | null
+          integration_type: string
+          status: string | null
+        }
+        Insert: {
+          activated_at?: string | null
+          api_endpoint?: string | null
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          institution_type: string
+          integration_config?: Json | null
+          integration_type: string
+          status?: string | null
+        }
+        Update: {
+          activated_at?: string | null
+          api_endpoint?: string | null
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          institution_type?: string
+          integration_config?: Json | null
+          integration_type?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
+      geel_intergenerational_memory: {
+        Row: {
+          created_at: string | null
+          data_snapshot: Json | null
+          description: string | null
+          id: string
+          linked_entities: Json | null
+          memory_type: string
+          period_end: string | null
+          period_start: string | null
+          significance_score: number | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          data_snapshot?: Json | null
+          description?: string | null
+          id?: string
+          linked_entities?: Json | null
+          memory_type: string
+          period_end?: string | null
+          period_start?: string | null
+          significance_score?: number | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          data_snapshot?: Json | null
+          description?: string | null
+          id?: string
+          linked_entities?: Json | null
+          memory_type?: string
+          period_end?: string | null
+          period_start?: string | null
+          significance_score?: number | null
+          title?: string
+        }
+        Relationships: []
+      }
+      geel_macro_intelligence: {
+        Row: {
+          computed_at: string | null
+          cross_border_density: number | null
+          economic_output_multiplier: number | null
+          funding_flow_data: Json | null
+          id: string
+          innovation_pipeline_velocity: number | null
+          policy_adoption_rate: number | null
+          region: string | null
+          skill_migration_flows: Json | null
+          startup_formation_density: number | null
+          trust_concentration: number | null
+        }
+        Insert: {
+          computed_at?: string | null
+          cross_border_density?: number | null
+          economic_output_multiplier?: number | null
+          funding_flow_data?: Json | null
+          id?: string
+          innovation_pipeline_velocity?: number | null
+          policy_adoption_rate?: number | null
+          region?: string | null
+          skill_migration_flows?: Json | null
+          startup_formation_density?: number | null
+          trust_concentration?: number | null
+        }
+        Update: {
+          computed_at?: string | null
+          cross_border_density?: number | null
+          economic_output_multiplier?: number | null
+          funding_flow_data?: Json | null
+          id?: string
+          innovation_pipeline_velocity?: number | null
+          policy_adoption_rate?: number | null
+          region?: string | null
+          skill_migration_flows?: Json | null
+          startup_formation_density?: number | null
+          trust_concentration?: number | null
+        }
+        Relationships: []
+      }
+      geel_programmable_funding: {
+        Row: {
+          ai_oversight_enabled: boolean | null
+          compliance_triggers: Json | null
+          created_at: string | null
+          created_by: string | null
+          cross_border_filters: Json | null
+          escrow_structure: Json | null
+          frozen_amount: number | null
+          funding_type: string | null
+          id: string
+          institutional_reporting: Json | null
+          milestone_conditions: Json | null
+          performance_unlock_rules: Json | null
+          released_amount: number | null
+          risk_tier: string | null
+          status: string | null
+          title: string
+          total_amount: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          ai_oversight_enabled?: boolean | null
+          compliance_triggers?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          cross_border_filters?: Json | null
+          escrow_structure?: Json | null
+          frozen_amount?: number | null
+          funding_type?: string | null
+          id?: string
+          institutional_reporting?: Json | null
+          milestone_conditions?: Json | null
+          performance_unlock_rules?: Json | null
+          released_amount?: number | null
+          risk_tier?: string | null
+          status?: string | null
+          title: string
+          total_amount?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          ai_oversight_enabled?: boolean | null
+          compliance_triggers?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          cross_border_filters?: Json | null
+          escrow_structure?: Json | null
+          frozen_amount?: number | null
+          funding_type?: string | null
+          id?: string
+          institutional_reporting?: Json | null
+          milestone_conditions?: Json | null
+          performance_unlock_rules?: Json | null
+          released_amount?: number | null
+          risk_tier?: string | null
+          status?: string | null
+          title?: string
+          total_amount?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      geel_resilience_safeguards: {
+        Row: {
+          created_at: string | null
+          detection_rules: Json | null
+          id: string
+          is_active: boolean | null
+          last_triggered_at: string | null
+          mitigation_actions: Json | null
+          severity: string | null
+          threat_type: string
+          trigger_count: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          detection_rules?: Json | null
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          mitigation_actions?: Json | null
+          severity?: string | null
+          threat_type: string
+          trigger_count?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          detection_rules?: Json | null
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          mitigation_actions?: Json | null
+          severity?: string | null
+          threat_type?: string
+          trigger_count?: number | null
+        }
+        Relationships: []
+      }
+      geel_revenue_streams: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          currency: string | null
+          description: string | null
+          id: string
+          period: string | null
+          source_entity_id: string | null
+          source_entity_type: string | null
+          stream_type: string
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          id?: string
+          period?: string | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          stream_type: string
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          id?: string
+          period?: string | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          stream_type?: string
+        }
+        Relationships: []
+      }
+      geel_skill_economy: {
+        Row: {
+          cross_border_readiness: number | null
+          dispute_recovery_strength: number | null
+          domain: string
+          escrow_history_summary: Json | null
+          execution_level: string | null
+          funding_handling_capacity: number | null
+          id: string
+          institutional_reliability: number | null
+          linked_outcomes: Json | null
+          milestone_consistency: number | null
+          patent_involvement: number | null
+          startup_contributions: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          cross_border_readiness?: number | null
+          dispute_recovery_strength?: number | null
+          domain: string
+          escrow_history_summary?: Json | null
+          execution_level?: string | null
+          funding_handling_capacity?: number | null
+          id?: string
+          institutional_reliability?: number | null
+          linked_outcomes?: Json | null
+          milestone_consistency?: number | null
+          patent_involvement?: number | null
+          startup_contributions?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          cross_border_readiness?: number | null
+          dispute_recovery_strength?: number | null
+          domain?: string
+          escrow_history_summary?: Json | null
+          execution_level?: string | null
+          funding_handling_capacity?: number | null
+          id?: string
+          institutional_reliability?: number | null
+          linked_outcomes?: Json | null
+          milestone_consistency?: number | null
+          patent_involvement?: number | null
+          startup_contributions?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      geel_trust_network: {
+        Row: {
+          computed_at: string | null
+          enterprise_contract_impact: number | null
+          funding_eligibility_impact: number | null
+          id: string
+          institutional_partnership_impact: number | null
+          is_transferable: boolean | null
+          opportunity_visibility_impact: number | null
+          policy_advisory_impact: number | null
+          startup_equity_impact: number | null
+          trust_source: string
+          trust_value: number | null
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string | null
+          enterprise_contract_impact?: number | null
+          funding_eligibility_impact?: number | null
+          id?: string
+          institutional_partnership_impact?: number | null
+          is_transferable?: boolean | null
+          opportunity_visibility_impact?: number | null
+          policy_advisory_impact?: number | null
+          startup_equity_impact?: number | null
+          trust_source: string
+          trust_value?: number | null
+          user_id: string
+        }
+        Update: {
+          computed_at?: string | null
+          enterprise_contract_impact?: number | null
+          funding_eligibility_impact?: number | null
+          id?: string
+          institutional_partnership_impact?: number | null
+          is_transferable?: boolean | null
+          opportunity_visibility_impact?: number | null
+          policy_advisory_impact?: number | null
+          startup_equity_impact?: number | null
+          trust_source?: string
+          trust_value?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       generational_influence_records: {
         Row: {
           citation_inheritance: number | null
