@@ -50730,6 +50730,532 @@ export type Database = {
           },
         ]
       }
+      sdde_ai_summaries: {
+        Row: {
+          actionable_conclusions: Json | null
+          consensus_areas: Json | null
+          disagreement_zones: Json | null
+          generated_at: string | null
+          id: string
+          key_claims: Json | null
+          linked_projects: Json | null
+          risk_highlights: Json | null
+          strongest_evidence: Json | null
+          suggested_next_steps: Json | null
+          thread_id: string
+          unresolved_questions: Json | null
+        }
+        Insert: {
+          actionable_conclusions?: Json | null
+          consensus_areas?: Json | null
+          disagreement_zones?: Json | null
+          generated_at?: string | null
+          id?: string
+          key_claims?: Json | null
+          linked_projects?: Json | null
+          risk_highlights?: Json | null
+          strongest_evidence?: Json | null
+          suggested_next_steps?: Json | null
+          thread_id: string
+          unresolved_questions?: Json | null
+        }
+        Update: {
+          actionable_conclusions?: Json | null
+          consensus_areas?: Json | null
+          disagreement_zones?: Json | null
+          generated_at?: string | null
+          id?: string
+          key_claims?: Json | null
+          linked_projects?: Json | null
+          risk_highlights?: Json | null
+          strongest_evidence?: Json | null
+          suggested_next_steps?: Json | null
+          thread_id?: string
+          unresolved_questions?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sdde_ai_summaries_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "sdde_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sdde_archives: {
+        Row: {
+          archived_at: string | null
+          argument_tree: Json | null
+          citation_growth: number | null
+          evidence_links: Json | null
+          id: string
+          moderator_notes: string | null
+          related_projects: Json | null
+          resolution_outcome: string | null
+          thread_id: string
+          versioned_summaries: Json | null
+        }
+        Insert: {
+          archived_at?: string | null
+          argument_tree?: Json | null
+          citation_growth?: number | null
+          evidence_links?: Json | null
+          id?: string
+          moderator_notes?: string | null
+          related_projects?: Json | null
+          resolution_outcome?: string | null
+          thread_id: string
+          versioned_summaries?: Json | null
+        }
+        Update: {
+          archived_at?: string | null
+          argument_tree?: Json | null
+          citation_growth?: number | null
+          evidence_links?: Json | null
+          id?: string
+          moderator_notes?: string | null
+          related_projects?: Json | null
+          resolution_outcome?: string | null
+          thread_id?: string
+          versioned_summaries?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sdde_archives_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "sdde_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sdde_contributions: {
+        Row: {
+          author_id: string
+          citations: Json | null
+          content: string
+          contribution_type: string
+          created_at: string | null
+          data_references: Json | null
+          domain_authority_score: number | null
+          evidence_backed: boolean | null
+          flag_reason: string | null
+          id: string
+          is_flagged: boolean | null
+          parent_id: string | null
+          project_references: Json | null
+          thread_id: string
+          trust_index: number | null
+          updated_at: string | null
+          visibility_weight: number | null
+        }
+        Insert: {
+          author_id: string
+          citations?: Json | null
+          content: string
+          contribution_type?: string
+          created_at?: string | null
+          data_references?: Json | null
+          domain_authority_score?: number | null
+          evidence_backed?: boolean | null
+          flag_reason?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          parent_id?: string | null
+          project_references?: Json | null
+          thread_id: string
+          trust_index?: number | null
+          updated_at?: string | null
+          visibility_weight?: number | null
+        }
+        Update: {
+          author_id?: string
+          citations?: Json | null
+          content?: string
+          contribution_type?: string
+          created_at?: string | null
+          data_references?: Json | null
+          domain_authority_score?: number | null
+          evidence_backed?: boolean | null
+          flag_reason?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          parent_id?: string | null
+          project_references?: Json | null
+          thread_id?: string
+          trust_index?: number | null
+          updated_at?: string | null
+          visibility_weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sdde_contributions_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "sdde_contributions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sdde_contributions_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "sdde_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sdde_disputes: {
+        Row: {
+          consensus_vote: Json | null
+          created_at: string | null
+          dispute_summary: string
+          evidence_comparison: Json | null
+          id: string
+          initiated_by: string
+          moderator_id: string | null
+          outcome_label: string | null
+          rebuttal_format: Json | null
+          resolution_summary: string | null
+          resolved_at: string | null
+          thread_id: string
+        }
+        Insert: {
+          consensus_vote?: Json | null
+          created_at?: string | null
+          dispute_summary: string
+          evidence_comparison?: Json | null
+          id?: string
+          initiated_by: string
+          moderator_id?: string | null
+          outcome_label?: string | null
+          rebuttal_format?: Json | null
+          resolution_summary?: string | null
+          resolved_at?: string | null
+          thread_id: string
+        }
+        Update: {
+          consensus_vote?: Json | null
+          created_at?: string | null
+          dispute_summary?: string
+          evidence_comparison?: Json | null
+          id?: string
+          initiated_by?: string
+          moderator_id?: string | null
+          outcome_label?: string | null
+          rebuttal_format?: Json | null
+          resolution_summary?: string | null
+          resolved_at?: string | null
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sdde_disputes_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "sdde_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sdde_evidence: {
+        Row: {
+          contribution_id: string
+          created_at: string | null
+          description: string | null
+          evidence_type: string
+          id: string
+          source_credibility: number | null
+          title: string
+          url: string | null
+          verified: boolean | null
+          verified_by: string | null
+        }
+        Insert: {
+          contribution_id: string
+          created_at?: string | null
+          description?: string | null
+          evidence_type?: string
+          id?: string
+          source_credibility?: number | null
+          title: string
+          url?: string | null
+          verified?: boolean | null
+          verified_by?: string | null
+        }
+        Update: {
+          contribution_id?: string
+          created_at?: string | null
+          description?: string | null
+          evidence_type?: string
+          id?: string
+          source_credibility?: number | null
+          title?: string
+          url?: string | null
+          verified?: boolean | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sdde_evidence_contribution_id_fkey"
+            columns: ["contribution_id"]
+            isOneToOne: false
+            referencedRelation: "sdde_contributions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sdde_impact_index: {
+        Row: {
+          action_items_generated: number | null
+          authority_participation: number | null
+          citation_growth: number | null
+          composite_impact: number | null
+          computed_at: string | null
+          evidence_density: number | null
+          id: string
+          implementation_influence: number | null
+          institutional_integration: boolean | null
+          long_term_reference_rate: number | null
+          outcome_clarity: number | null
+          thread_id: string
+        }
+        Insert: {
+          action_items_generated?: number | null
+          authority_participation?: number | null
+          citation_growth?: number | null
+          composite_impact?: number | null
+          computed_at?: string | null
+          evidence_density?: number | null
+          id?: string
+          implementation_influence?: number | null
+          institutional_integration?: boolean | null
+          long_term_reference_rate?: number | null
+          outcome_clarity?: number | null
+          thread_id: string
+        }
+        Update: {
+          action_items_generated?: number | null
+          authority_participation?: number | null
+          citation_growth?: number | null
+          composite_impact?: number | null
+          computed_at?: string | null
+          evidence_density?: number | null
+          id?: string
+          implementation_influence?: number | null
+          institutional_integration?: boolean | null
+          long_term_reference_rate?: number | null
+          outcome_clarity?: number | null
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sdde_impact_index_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "sdde_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sdde_knowledge_extracts: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          extract_type: string
+          extracted_by: string | null
+          id: string
+          linked_grant_id: string | null
+          linked_institution_id: string | null
+          linked_project_id: string | null
+          thread_id: string
+          title: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          extract_type?: string
+          extracted_by?: string | null
+          id?: string
+          linked_grant_id?: string | null
+          linked_institution_id?: string | null
+          linked_project_id?: string | null
+          thread_id: string
+          title: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          extract_type?: string
+          extracted_by?: string | null
+          id?: string
+          linked_grant_id?: string | null
+          linked_institution_id?: string | null
+          linked_project_id?: string | null
+          thread_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sdde_knowledge_extracts_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "sdde_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sdde_threads: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          discussion_type: string
+          domain: string | null
+          evidence_requirement: string | null
+          expected_outcome: string | null
+          id: string
+          institution_id: string | null
+          is_institutional: boolean | null
+          linked_entity_id: string | null
+          linked_entity_type: string | null
+          moderator_id: string | null
+          region_tags: string[] | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          discussion_type?: string
+          domain?: string | null
+          evidence_requirement?: string | null
+          expected_outcome?: string | null
+          id?: string
+          institution_id?: string | null
+          is_institutional?: boolean | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          moderator_id?: string | null
+          region_tags?: string[] | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          discussion_type?: string
+          domain?: string | null
+          evidence_requirement?: string | null
+          expected_outcome?: string | null
+          id?: string
+          institution_id?: string | null
+          is_institutional?: boolean | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          moderator_id?: string | null
+          region_tags?: string[] | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      sdde_tone_assists: {
+        Row: {
+          accepted: boolean | null
+          created_at: string | null
+          id: string
+          original_text: string
+          suggested_text: string | null
+          suggestion_type: string
+          thread_id: string | null
+          user_id: string
+        }
+        Insert: {
+          accepted?: boolean | null
+          created_at?: string | null
+          id?: string
+          original_text: string
+          suggested_text?: string | null
+          suggestion_type: string
+          thread_id?: string | null
+          user_id: string
+        }
+        Update: {
+          accepted?: boolean | null
+          created_at?: string | null
+          id?: string
+          original_text?: string
+          suggested_text?: string | null
+          suggestion_type?: string
+          thread_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sdde_tone_assists_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "sdde_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sdde_toxicity_flags: {
+        Row: {
+          action_taken: string | null
+          contribution_id: string
+          created_at: string | null
+          description: string | null
+          flag_type: string
+          flagged_by: string | null
+          id: string
+          reviewed: boolean | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string | null
+        }
+        Insert: {
+          action_taken?: string | null
+          contribution_id: string
+          created_at?: string | null
+          description?: string | null
+          flag_type: string
+          flagged_by?: string | null
+          id?: string
+          reviewed?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+        }
+        Update: {
+          action_taken?: string | null
+          contribution_id?: string
+          created_at?: string | null
+          description?: string | null
+          flag_type?: string
+          flagged_by?: string | null
+          id?: string
+          reviewed?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sdde_toxicity_flags_contribution_id_fkey"
+            columns: ["contribution_id"]
+            isOneToOne: false
+            referencedRelation: "sdde_contributions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       search_events: {
         Row: {
           created_at: string
