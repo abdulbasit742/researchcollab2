@@ -40133,6 +40133,534 @@ export type Database = {
           },
         ]
       }
+      plms_anniversaries: {
+        Row: {
+          anniversary_type: string
+          celebrated: boolean | null
+          created_at: string
+          description: string | null
+          id: string
+          linked_entity_id: string | null
+          linked_entity_type: string | null
+          original_date: string
+          resurfaced_at: string | null
+          title: string
+          user_id: string
+          years_milestone: number | null
+        }
+        Insert: {
+          anniversary_type: string
+          celebrated?: boolean | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          original_date: string
+          resurfaced_at?: string | null
+          title: string
+          user_id: string
+          years_milestone?: number | null
+        }
+        Update: {
+          anniversary_type?: string
+          celebrated?: boolean | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          original_date?: string
+          resurfaced_at?: string | null
+          title?: string
+          user_id?: string
+          years_milestone?: number | null
+        }
+        Relationships: []
+      }
+      plms_career_snapshots: {
+        Row: {
+          collaboration_count: number | null
+          created_at: string
+          domain_count: number | null
+          execution_stability: number | null
+          funding_total: number | null
+          id: string
+          industry_deployments: number | null
+          institutional_affiliations: number | null
+          patent_filings: number | null
+          skill_count: number | null
+          snapshot_year: number
+          startup_equity_changes: Json | null
+          summary: string | null
+          trust_index: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_count?: number | null
+          created_at?: string
+          domain_count?: number | null
+          execution_stability?: number | null
+          funding_total?: number | null
+          id?: string
+          industry_deployments?: number | null
+          institutional_affiliations?: number | null
+          patent_filings?: number | null
+          skill_count?: number | null
+          snapshot_year: number
+          startup_equity_changes?: Json | null
+          summary?: string | null
+          trust_index?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_count?: number | null
+          created_at?: string
+          domain_count?: number | null
+          execution_stability?: number | null
+          funding_total?: number | null
+          id?: string
+          industry_deployments?: number | null
+          institutional_affiliations?: number | null
+          patent_filings?: number | null
+          skill_count?: number | null
+          snapshot_year?: number
+          startup_equity_changes?: Json | null
+          summary?: string | null
+          trust_index?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      plms_collaboration_evolution: {
+        Row: {
+          collaboration_count: number | null
+          collaborator_id: string
+          domains: string[] | null
+          first_collaboration_at: string | null
+          id: string
+          is_cross_domain: boolean | null
+          is_institutional_bridge: boolean | null
+          last_collaboration_at: string | null
+          trust_level: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          collaboration_count?: number | null
+          collaborator_id: string
+          domains?: string[] | null
+          first_collaboration_at?: string | null
+          id?: string
+          is_cross_domain?: boolean | null
+          is_institutional_bridge?: boolean | null
+          last_collaboration_at?: string | null
+          trust_level?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          collaboration_count?: number | null
+          collaborator_id?: string
+          domains?: string[] | null
+          first_collaboration_at?: string | null
+          id?: string
+          is_cross_domain?: boolean | null
+          is_institutional_bridge?: boolean | null
+          last_collaboration_at?: string | null
+          trust_level?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      plms_data_exports: {
+        Row: {
+          export_data: Json | null
+          export_format: string | null
+          export_scope: string[] | null
+          exported_at: string
+          id: string
+          is_legacy_preservation: boolean | null
+          successor_account_id: string | null
+          user_id: string
+          verification_hash: string | null
+        }
+        Insert: {
+          export_data?: Json | null
+          export_format?: string | null
+          export_scope?: string[] | null
+          exported_at?: string
+          id?: string
+          is_legacy_preservation?: boolean | null
+          successor_account_id?: string | null
+          user_id: string
+          verification_hash?: string | null
+        }
+        Update: {
+          export_data?: Json | null
+          export_format?: string | null
+          export_scope?: string[] | null
+          exported_at?: string
+          id?: string
+          is_legacy_preservation?: boolean | null
+          successor_account_id?: string | null
+          user_id?: string
+          verification_hash?: string | null
+        }
+        Relationships: []
+      }
+      plms_dispute_recovery: {
+        Row: {
+          dispute_id: string | null
+          dispute_type: string | null
+          id: string
+          lessons_applied: string | null
+          occurred_at: string
+          recovery_duration_days: number | null
+          resolution_outcome: string | null
+          resolved_at: string | null
+          trust_after: number | null
+          trust_before: number | null
+          user_id: string
+        }
+        Insert: {
+          dispute_id?: string | null
+          dispute_type?: string | null
+          id?: string
+          lessons_applied?: string | null
+          occurred_at?: string
+          recovery_duration_days?: number | null
+          resolution_outcome?: string | null
+          resolved_at?: string | null
+          trust_after?: number | null
+          trust_before?: number | null
+          user_id: string
+        }
+        Update: {
+          dispute_id?: string | null
+          dispute_type?: string | null
+          id?: string
+          lessons_applied?: string | null
+          occurred_at?: string
+          recovery_duration_days?: number | null
+          resolution_outcome?: string | null
+          resolved_at?: string | null
+          trust_after?: number | null
+          trust_before?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      plms_funding_progression: {
+        Row: {
+          achieved_at: string
+          amount: number | null
+          cross_border: boolean | null
+          currency: string | null
+          id: string
+          institution_id: string | null
+          metadata: Json | null
+          milestone_type: string
+          role: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          achieved_at?: string
+          amount?: number | null
+          cross_border?: boolean | null
+          currency?: string | null
+          id?: string
+          institution_id?: string | null
+          metadata?: Json | null
+          milestone_type: string
+          role?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          achieved_at?: string
+          amount?: number | null
+          cross_border?: boolean | null
+          currency?: string | null
+          id?: string
+          institution_id?: string | null
+          metadata?: Json | null
+          milestone_type?: string
+          role?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      plms_global_mobility: {
+        Row: {
+          collaboration_type: string | null
+          country_code: string
+          cultural_depth_score: number | null
+          ended_at: string | null
+          id: string
+          institution_id: string | null
+          project_id: string | null
+          regulatory_exposure: string | null
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          collaboration_type?: string | null
+          country_code: string
+          cultural_depth_score?: number | null
+          ended_at?: string | null
+          id?: string
+          institution_id?: string | null
+          project_id?: string | null
+          regulatory_exposure?: string | null
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          collaboration_type?: string | null
+          country_code?: string
+          cultural_depth_score?: number | null
+          ended_at?: string | null
+          id?: string
+          institution_id?: string | null
+          project_id?: string | null
+          regulatory_exposure?: string | null
+          started_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      plms_initiative_archive: {
+        Row: {
+          archived_at: string
+          economic_impact: number | null
+          funding_progression: Json | null
+          id: string
+          initiative_id: string | null
+          innovation_adoption: Json | null
+          milestone_completion_rate: number | null
+          participant_evolution: Json | null
+          policy_alignment: Json | null
+          startup_pipeline: Json | null
+          title: string
+        }
+        Insert: {
+          archived_at?: string
+          economic_impact?: number | null
+          funding_progression?: Json | null
+          id?: string
+          initiative_id?: string | null
+          innovation_adoption?: Json | null
+          milestone_completion_rate?: number | null
+          participant_evolution?: Json | null
+          policy_alignment?: Json | null
+          startup_pipeline?: Json | null
+          title: string
+        }
+        Update: {
+          archived_at?: string
+          economic_impact?: number | null
+          funding_progression?: Json | null
+          id?: string
+          initiative_id?: string | null
+          innovation_adoption?: Json | null
+          milestone_completion_rate?: number | null
+          participant_evolution?: Json | null
+          policy_alignment?: Json | null
+          startup_pipeline?: Json | null
+          title?: string
+        }
+        Relationships: []
+      }
+      plms_institutional_memory: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          institution_id: string
+          memory_type: string
+          metrics: Json | null
+          outcomes: string[] | null
+          participants: Json | null
+          period_end: string | null
+          period_start: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_id: string
+          memory_type: string
+          metrics?: Json | null
+          outcomes?: string[] | null
+          participants?: Json | null
+          period_end?: string | null
+          period_start?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_id?: string
+          memory_type?: string
+          metrics?: Json | null
+          outcomes?: string[] | null
+          participants?: Json | null
+          period_end?: string | null
+          period_start?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      plms_project_memory: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          deliverables: string[] | null
+          disputes: Json | null
+          funding_structure: Json | null
+          id: string
+          industry_adoption: string | null
+          initial_proposal: string | null
+          long_term_impact: string | null
+          milestone_timeline: Json | null
+          outcomes: string[] | null
+          patent_filings: number | null
+          project_id: string | null
+          startup_conversion: boolean | null
+          team_composition: Json | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          deliverables?: string[] | null
+          disputes?: Json | null
+          funding_structure?: Json | null
+          id?: string
+          industry_adoption?: string | null
+          initial_proposal?: string | null
+          long_term_impact?: string | null
+          milestone_timeline?: Json | null
+          outcomes?: string[] | null
+          patent_filings?: number | null
+          project_id?: string | null
+          startup_conversion?: boolean | null
+          team_composition?: Json | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          deliverables?: string[] | null
+          disputes?: Json | null
+          funding_structure?: Json | null
+          id?: string
+          industry_adoption?: string | null
+          initial_proposal?: string | null
+          long_term_impact?: string | null
+          milestone_timeline?: Json | null
+          outcomes?: string[] | null
+          patent_filings?: number | null
+          project_id?: string | null
+          startup_conversion?: boolean | null
+          team_composition?: Json | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      plms_skill_compounding: {
+        Row: {
+          acquired_at: string
+          application_count: number | null
+          cross_domain_stacks: string[] | null
+          domain: string | null
+          id: string
+          last_applied_at: string | null
+          mastery_level: number | null
+          obsolescence_risk: number | null
+          skill_name: string
+          specialization_depth: number | null
+          user_id: string
+        }
+        Insert: {
+          acquired_at?: string
+          application_count?: number | null
+          cross_domain_stacks?: string[] | null
+          domain?: string | null
+          id?: string
+          last_applied_at?: string | null
+          mastery_level?: number | null
+          obsolescence_risk?: number | null
+          skill_name: string
+          specialization_depth?: number | null
+          user_id: string
+        }
+        Update: {
+          acquired_at?: string
+          application_count?: number | null
+          cross_domain_stacks?: string[] | null
+          domain?: string | null
+          id?: string
+          last_applied_at?: string | null
+          mastery_level?: number | null
+          obsolescence_risk?: number | null
+          skill_name?: string
+          specialization_depth?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      plms_trust_history: {
+        Row: {
+          conflict_resolutions: number | null
+          domain_trust: Json | null
+          high_trust_collaborations: number | null
+          id: string
+          institutional_trust_shifts: Json | null
+          recorded_at: string
+          stability_score: number | null
+          trust_declines: number | null
+          trust_index: number | null
+          trust_recoveries: number | null
+          user_id: string
+        }
+        Insert: {
+          conflict_resolutions?: number | null
+          domain_trust?: Json | null
+          high_trust_collaborations?: number | null
+          id?: string
+          institutional_trust_shifts?: Json | null
+          recorded_at?: string
+          stability_score?: number | null
+          trust_declines?: number | null
+          trust_index?: number | null
+          trust_recoveries?: number | null
+          user_id: string
+        }
+        Update: {
+          conflict_resolutions?: number | null
+          domain_trust?: Json | null
+          high_trust_collaborations?: number | null
+          id?: string
+          institutional_trust_shifts?: Json | null
+          recorded_at?: string
+          stability_score?: number | null
+          trust_declines?: number | null
+          trust_index?: number | null
+          trust_recoveries?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       pod_execution_metrics: {
         Row: {
           completion_time: number | null
