@@ -227,6 +227,60 @@ export type Database = {
           },
         ]
       }
+      academic_impact_index: {
+        Row: {
+          citation_impact_score: number | null
+          created_at: string | null
+          cross_discipline_influence_score: number | null
+          execution_completion_score: number | null
+          funding_impact_score: number | null
+          grant_reliability_score: number | null
+          id: string
+          industry_adoption_score: number | null
+          institutional_collaboration_score: number | null
+          last_computed_at: string | null
+          longitudinal_contribution_score: number | null
+          milestone_efficiency_score: number | null
+          overall_mdii: number | null
+          research_commercialization_score: number | null
+          user_id: string
+        }
+        Insert: {
+          citation_impact_score?: number | null
+          created_at?: string | null
+          cross_discipline_influence_score?: number | null
+          execution_completion_score?: number | null
+          funding_impact_score?: number | null
+          grant_reliability_score?: number | null
+          id?: string
+          industry_adoption_score?: number | null
+          institutional_collaboration_score?: number | null
+          last_computed_at?: string | null
+          longitudinal_contribution_score?: number | null
+          milestone_efficiency_score?: number | null
+          overall_mdii?: number | null
+          research_commercialization_score?: number | null
+          user_id: string
+        }
+        Update: {
+          citation_impact_score?: number | null
+          created_at?: string | null
+          cross_discipline_influence_score?: number | null
+          execution_completion_score?: number | null
+          funding_impact_score?: number | null
+          grant_reliability_score?: number | null
+          id?: string
+          industry_adoption_score?: number | null
+          institutional_collaboration_score?: number | null
+          last_computed_at?: string | null
+          longitudinal_contribution_score?: number | null
+          milestone_efficiency_score?: number | null
+          overall_mdii?: number | null
+          research_commercialization_score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       academic_output_metrics: {
         Row: {
           active_fyps: number | null
@@ -17728,6 +17782,54 @@ export type Database = {
         }
         Relationships: []
       }
+      global_innovation_map: {
+        Row: {
+          active_grants: number | null
+          collaboration_density: number | null
+          country_code: string
+          domain: string
+          funding_density: number | null
+          grant_reliability_avg: number | null
+          id: string
+          innovation_cluster_score: number | null
+          institution_count: number | null
+          patent_output: number | null
+          period: string
+          region: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          active_grants?: number | null
+          collaboration_density?: number | null
+          country_code: string
+          domain: string
+          funding_density?: number | null
+          grant_reliability_avg?: number | null
+          id?: string
+          innovation_cluster_score?: number | null
+          institution_count?: number | null
+          patent_output?: number | null
+          period: string
+          region?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          active_grants?: number | null
+          collaboration_density?: number | null
+          country_code?: string
+          domain?: string
+          funding_density?: number | null
+          grant_reliability_avg?: number | null
+          id?: string
+          innovation_cluster_score?: number | null
+          institution_count?: number | null
+          patent_output?: number | null
+          period?: string
+          region?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       global_intelligence_warehouse: {
         Row: {
           capital_efficiency_avg: number | null
@@ -19111,6 +19213,75 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      grant_execution_tracking: {
+        Row: {
+          approval_date: string | null
+          commercial_prototypes: number | null
+          completion_reliability: number | null
+          created_at: string | null
+          end_date: string | null
+          escrow_locked_amount: number | null
+          funding_amount: number | null
+          funding_source: string | null
+          grant_status: string | null
+          grant_title: string
+          id: string
+          industry_licenses: number | null
+          institution_id: string | null
+          milestone_releases: number | null
+          paper_outputs: number | null
+          patent_filings: number | null
+          principal_investigator_id: string
+          start_date: string | null
+          total_milestones: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          approval_date?: string | null
+          commercial_prototypes?: number | null
+          completion_reliability?: number | null
+          created_at?: string | null
+          end_date?: string | null
+          escrow_locked_amount?: number | null
+          funding_amount?: number | null
+          funding_source?: string | null
+          grant_status?: string | null
+          grant_title: string
+          id?: string
+          industry_licenses?: number | null
+          institution_id?: string | null
+          milestone_releases?: number | null
+          paper_outputs?: number | null
+          patent_filings?: number | null
+          principal_investigator_id: string
+          start_date?: string | null
+          total_milestones?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          approval_date?: string | null
+          commercial_prototypes?: number | null
+          completion_reliability?: number | null
+          created_at?: string | null
+          end_date?: string | null
+          escrow_locked_amount?: number | null
+          funding_amount?: number | null
+          funding_source?: string | null
+          grant_status?: string | null
+          grant_title?: string
+          id?: string
+          industry_licenses?: number | null
+          institution_id?: string | null
+          milestone_releases?: number | null
+          paper_outputs?: number | null
+          patent_filings?: number | null
+          principal_investigator_id?: string
+          start_date?: string | null
+          total_milestones?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       grant_funding_records: {
         Row: {
@@ -21705,6 +21876,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      institutional_execution_index: {
+        Row: {
+          commercial_spinoffs: number | null
+          completion_reliability: number | null
+          created_at: string | null
+          cross_institution_collab_index: number | null
+          funding_diversity_score: number | null
+          graduate_industry_placement_pct: number | null
+          grant_success_rate: number | null
+          id: string
+          industry_conversion_pct: number | null
+          institution_id: string
+          last_computed_at: string | null
+          overall_iei: number | null
+          patent_output: number | null
+          research_milestone_punctuality: number | null
+        }
+        Insert: {
+          commercial_spinoffs?: number | null
+          completion_reliability?: number | null
+          created_at?: string | null
+          cross_institution_collab_index?: number | null
+          funding_diversity_score?: number | null
+          graduate_industry_placement_pct?: number | null
+          grant_success_rate?: number | null
+          id?: string
+          industry_conversion_pct?: number | null
+          institution_id: string
+          last_computed_at?: string | null
+          overall_iei?: number | null
+          patent_output?: number | null
+          research_milestone_punctuality?: number | null
+        }
+        Update: {
+          commercial_spinoffs?: number | null
+          completion_reliability?: number | null
+          created_at?: string | null
+          cross_institution_collab_index?: number | null
+          funding_diversity_score?: number | null
+          graduate_industry_placement_pct?: number | null
+          grant_success_rate?: number | null
+          id?: string
+          industry_conversion_pct?: number | null
+          institution_id?: string
+          last_computed_at?: string | null
+          overall_iei?: number | null
+          patent_output?: number | null
+          research_milestone_punctuality?: number | null
+        }
+        Relationships: []
       }
       institutional_interventions: {
         Row: {
@@ -35865,6 +36087,62 @@ export type Database = {
         }
         Relationships: []
       }
+      research_integrity_flags: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          detected_by: string | null
+          evidence: Json | null
+          flag_type: string
+          id: string
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string | null
+          status: string | null
+          target_institution_id: string | null
+          target_paper_id: string | null
+          target_user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          detected_by?: string | null
+          evidence?: Json | null
+          flag_type: string
+          id?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          status?: string | null
+          target_institution_id?: string | null
+          target_paper_id?: string | null
+          target_user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          detected_by?: string | null
+          evidence?: Json | null
+          flag_type?: string
+          id?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          status?: string | null
+          target_institution_id?: string | null
+          target_paper_id?: string | null
+          target_user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_integrity_flags_target_paper_id_fkey"
+            columns: ["target_paper_id"]
+            isOneToOne: false
+            referencedRelation: "research_paper_index"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_intelligence_reports: {
         Row: {
           access_tier: string | null
@@ -35906,6 +36184,63 @@ export type Database = {
           sector?: string | null
         }
         Relationships: []
+      }
+      research_lifecycle_events: {
+        Row: {
+          created_at: string | null
+          event_data: Json | null
+          event_description: string | null
+          event_title: string
+          event_type: string
+          grant_id: string | null
+          id: string
+          is_immutable: boolean | null
+          occurred_at: string | null
+          paper_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_description?: string | null
+          event_title: string
+          event_type: string
+          grant_id?: string | null
+          id?: string
+          is_immutable?: boolean | null
+          occurred_at?: string | null
+          paper_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_description?: string | null
+          event_title?: string
+          event_type?: string
+          grant_id?: string | null
+          id?: string
+          is_immutable?: boolean | null
+          occurred_at?: string | null
+          paper_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_lifecycle_events_grant_id_fkey"
+            columns: ["grant_id"]
+            isOneToOne: false
+            referencedRelation: "grant_execution_tracking"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_lifecycle_events_paper_id_fkey"
+            columns: ["paper_id"]
+            isOneToOne: false
+            referencedRelation: "research_paper_index"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       research_lifecycle_stages: {
         Row: {
@@ -36137,6 +36472,87 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      research_paper_index: {
+        Row: {
+          abstract: string | null
+          associated_grant_ids: string[] | null
+          authors: string[] | null
+          citation_count: number | null
+          citation_quality_index: number | null
+          created_at: string | null
+          deliverables_validated: number | null
+          doi: string | null
+          domain: string | null
+          escrow_managed: boolean | null
+          funding_amount: number | null
+          funding_duration_months: number | null
+          grant_compliance_status: string | null
+          id: string
+          institutional_oversight: boolean | null
+          is_public: boolean | null
+          journal: string | null
+          keywords: string[] | null
+          milestone_count: number | null
+          publication_date: string | null
+          sponsor_category: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          abstract?: string | null
+          associated_grant_ids?: string[] | null
+          authors?: string[] | null
+          citation_count?: number | null
+          citation_quality_index?: number | null
+          created_at?: string | null
+          deliverables_validated?: number | null
+          doi?: string | null
+          domain?: string | null
+          escrow_managed?: boolean | null
+          funding_amount?: number | null
+          funding_duration_months?: number | null
+          grant_compliance_status?: string | null
+          id?: string
+          institutional_oversight?: boolean | null
+          is_public?: boolean | null
+          journal?: string | null
+          keywords?: string[] | null
+          milestone_count?: number | null
+          publication_date?: string | null
+          sponsor_category?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          abstract?: string | null
+          associated_grant_ids?: string[] | null
+          authors?: string[] | null
+          citation_count?: number | null
+          citation_quality_index?: number | null
+          created_at?: string | null
+          deliverables_validated?: number | null
+          doi?: string | null
+          domain?: string | null
+          escrow_managed?: boolean | null
+          funding_amount?: number | null
+          funding_duration_months?: number | null
+          grant_compliance_status?: string | null
+          id?: string
+          institutional_oversight?: boolean | null
+          is_public?: boolean | null
+          journal?: string | null
+          keywords?: string[] | null
+          milestone_count?: number | null
+          publication_date?: string | null
+          sponsor_category?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       research_quality_scores: {
         Row: {
