@@ -27,6 +27,7 @@ import { ResearchMarketplacePanel } from "@/components/research/ResearchMarketpl
 import { FederatedKnowledgePanel } from "@/components/research/FederatedKnowledgePanel";
 import { ResearchEconomyIndexPanel } from "@/components/research/ResearchEconomyIndexPanel";
 import { ResearchGovernancePanel } from "@/components/research/ResearchGovernancePanel";
+import { CivilizationEnginePanel } from "@/components/research/CivilizationEnginePanel";
 import {
   BookOpen, Upload, Search, FileText, MessageSquare,
   Loader2, CheckCircle, AlertCircle, ChevronRight,
@@ -539,6 +540,15 @@ export default function ResearchWorkspacePage() {
           Autonomous Research Governance
         </h2>
         <ResearchGovernancePanel />
+      </div>
+
+      {/* Autonomous Research Civilization Engine */}
+      <div className="mt-6">
+        <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-primary" />
+          Research Civilization Engine
+        </h2>
+        <CivilizationEnginePanel />
       </div>
     </div>
   );

@@ -6775,6 +6775,178 @@ export type Database = {
           },
         ]
       }
+      civilization_cycles: {
+        Row: {
+          capital_efficiency_index: number | null
+          composite_civilization_score: number | null
+          computed_by: string | null
+          created_at: string | null
+          cycle_metadata: Json | null
+          cycle_version: number
+          end_timestamp: string | null
+          feedback_loops: Json | null
+          governance_stability_index: number | null
+          id: string
+          knowledge_growth_index: number | null
+          optimization_suggestions: Json | null
+          policy_impact_index: number | null
+          shock_resilience_score: number | null
+          start_timestamp: string
+          trust_growth_index: number | null
+        }
+        Insert: {
+          capital_efficiency_index?: number | null
+          composite_civilization_score?: number | null
+          computed_by?: string | null
+          created_at?: string | null
+          cycle_metadata?: Json | null
+          cycle_version?: number
+          end_timestamp?: string | null
+          feedback_loops?: Json | null
+          governance_stability_index?: number | null
+          id?: string
+          knowledge_growth_index?: number | null
+          optimization_suggestions?: Json | null
+          policy_impact_index?: number | null
+          shock_resilience_score?: number | null
+          start_timestamp?: string
+          trust_growth_index?: number | null
+        }
+        Update: {
+          capital_efficiency_index?: number | null
+          composite_civilization_score?: number | null
+          computed_by?: string | null
+          created_at?: string | null
+          cycle_metadata?: Json | null
+          cycle_version?: number
+          end_timestamp?: string | null
+          feedback_loops?: Json | null
+          governance_stability_index?: number | null
+          id?: string
+          knowledge_growth_index?: number | null
+          optimization_suggestions?: Json | null
+          policy_impact_index?: number | null
+          shock_resilience_score?: number | null
+          start_timestamp?: string
+          trust_growth_index?: number | null
+        }
+        Relationships: []
+      }
+      civilization_loop_events: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string | null
+          cycle_id: string | null
+          description: string | null
+          evidence: Json | null
+          id: string
+          impact_delta: number | null
+          is_automated: boolean | null
+          loop_type: string
+          requires_approval: boolean | null
+          source_entity_id: string | null
+          source_entity_type: string | null
+          target_entity_id: string | null
+          target_entity_type: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          cycle_id?: string | null
+          description?: string | null
+          evidence?: Json | null
+          id?: string
+          impact_delta?: number | null
+          is_automated?: boolean | null
+          loop_type: string
+          requires_approval?: boolean | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          cycle_id?: string | null
+          description?: string | null
+          evidence?: Json | null
+          id?: string
+          impact_delta?: number | null
+          is_automated?: boolean | null
+          loop_type?: string
+          requires_approval?: boolean | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "civilization_loop_events_cycle_id_fkey"
+            columns: ["cycle_id"]
+            isOneToOne: false
+            referencedRelation: "civilization_cycles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      civilization_shock_simulations: {
+        Row: {
+          capital_loss_projection: number | null
+          corrective_measures: Json | null
+          created_at: string | null
+          cycle_id: string | null
+          id: string
+          impact_loss_projection: number | null
+          post_shock_score: number | null
+          pre_shock_score: number | null
+          recovery_timeline_days: number | null
+          resilience_index: number | null
+          shock_magnitude: number | null
+          shock_type: string
+        }
+        Insert: {
+          capital_loss_projection?: number | null
+          corrective_measures?: Json | null
+          created_at?: string | null
+          cycle_id?: string | null
+          id?: string
+          impact_loss_projection?: number | null
+          post_shock_score?: number | null
+          pre_shock_score?: number | null
+          recovery_timeline_days?: number | null
+          resilience_index?: number | null
+          shock_magnitude?: number | null
+          shock_type: string
+        }
+        Update: {
+          capital_loss_projection?: number | null
+          corrective_measures?: Json | null
+          created_at?: string | null
+          cycle_id?: string | null
+          id?: string
+          impact_loss_projection?: number | null
+          post_shock_score?: number | null
+          pre_shock_score?: number | null
+          recovery_timeline_days?: number | null
+          resilience_index?: number | null
+          shock_magnitude?: number | null
+          shock_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "civilization_shock_simulations_cycle_id_fkey"
+            columns: ["cycle_id"]
+            isOneToOne: false
+            referencedRelation: "civilization_cycles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       civilizational_principles: {
         Row: {
           change_requirements: Json
