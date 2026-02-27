@@ -6632,6 +6632,42 @@ export type Database = {
         }
         Relationships: []
       }
+      collaboration_revenue_splits: {
+        Row: {
+          contribution_weight: number
+          created_at: string
+          dispute_id: string | null
+          id: string
+          is_finalized: boolean | null
+          milestone_id: string | null
+          project_id: string
+          split_amount: number | null
+          user_id: string
+        }
+        Insert: {
+          contribution_weight: number
+          created_at?: string
+          dispute_id?: string | null
+          id?: string
+          is_finalized?: boolean | null
+          milestone_id?: string | null
+          project_id: string
+          split_amount?: number | null
+          user_id: string
+        }
+        Update: {
+          contribution_weight?: number
+          created_at?: string
+          dispute_id?: string | null
+          id?: string
+          is_finalized?: boolean | null
+          milestone_id?: string | null
+          project_id?: string
+          split_amount?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       collaboration_stability_index: {
         Row: {
           avg_years_active: number | null
@@ -13467,6 +13503,45 @@ export type Database = {
           },
         ]
       }
+      earning_channels: {
+        Row: {
+          channel_name: string
+          channel_type: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          skill_tags: string[] | null
+          total_earned: number | null
+          trust_requirement: number | null
+          user_id: string
+        }
+        Insert: {
+          channel_name: string
+          channel_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          skill_tags?: string[] | null
+          total_earned?: number | null
+          trust_requirement?: number | null
+          user_id: string
+        }
+        Update: {
+          channel_name?: string
+          channel_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          skill_tags?: string[] | null
+          total_earned?: number | null
+          trust_requirement?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       earning_project_attachments: {
         Row: {
           created_at: string
@@ -15631,6 +15706,66 @@ export type Database = {
         }
         Relationships: []
       }
+      execution_marketplace_listings: {
+        Row: {
+          applicant_count: number | null
+          budget: number | null
+          created_at: string
+          creator_id: string
+          currency: string | null
+          deliverables: Json | null
+          description: string | null
+          escrow_protected: boolean | null
+          id: string
+          institution_id: string | null
+          listing_type: string
+          skill_requirements: string[] | null
+          status: string
+          timeline_days: number | null
+          title: string
+          trust_requirement: number | null
+          updated_at: string
+        }
+        Insert: {
+          applicant_count?: number | null
+          budget?: number | null
+          created_at?: string
+          creator_id: string
+          currency?: string | null
+          deliverables?: Json | null
+          description?: string | null
+          escrow_protected?: boolean | null
+          id?: string
+          institution_id?: string | null
+          listing_type: string
+          skill_requirements?: string[] | null
+          status?: string
+          timeline_days?: number | null
+          title: string
+          trust_requirement?: number | null
+          updated_at?: string
+        }
+        Update: {
+          applicant_count?: number | null
+          budget?: number | null
+          created_at?: string
+          creator_id?: string
+          currency?: string | null
+          deliverables?: Json | null
+          description?: string | null
+          escrow_protected?: boolean | null
+          id?: string
+          institution_id?: string | null
+          listing_type?: string
+          skill_requirements?: string[] | null
+          status?: string
+          timeline_days?: number | null
+          title?: string
+          trust_requirement?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       execution_reels: {
         Row: {
           created_at: string | null
@@ -15723,6 +15858,42 @@ export type Database = {
           on_time_milestone_pct?: number | null
           reporting_punctuality?: number | null
           sponsor_satisfaction?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      execution_revenue_shares: {
+        Row: {
+          computed_at: string
+          consistency_bonus: number | null
+          earned_amount: number | null
+          id: string
+          innovation_bonus: number | null
+          period: string | null
+          project_id: string | null
+          share_percentage: number
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string
+          consistency_bonus?: number | null
+          earned_amount?: number | null
+          id?: string
+          innovation_bonus?: number | null
+          period?: string | null
+          project_id?: string | null
+          share_percentage: number
+          user_id: string
+        }
+        Update: {
+          computed_at?: string
+          consistency_bonus?: number | null
+          earned_amount?: number | null
+          id?: string
+          innovation_bonus?: number | null
+          period?: string | null
+          project_id?: string | null
+          share_percentage?: number
           user_id?: string
         }
         Relationships: []
@@ -22992,6 +23163,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      income_stability_metrics: {
+        Row: {
+          computed_at: string
+          funding_source_diversity: number | null
+          growth_trend: number | null
+          id: string
+          income_volatility_index: number | null
+          risk_exposure: number | null
+          skill_monetization_distribution: Json | null
+          sponsor_retention_rate: number | null
+          total_earnings: number | null
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string
+          funding_source_diversity?: number | null
+          growth_trend?: number | null
+          id?: string
+          income_volatility_index?: number | null
+          risk_exposure?: number | null
+          skill_monetization_distribution?: Json | null
+          sponsor_retention_rate?: number | null
+          total_earnings?: number | null
+          user_id: string
+        }
+        Update: {
+          computed_at?: string
+          funding_source_diversity?: number | null
+          growth_trend?: number | null
+          id?: string
+          income_volatility_index?: number | null
+          risk_exposure?: number | null
+          skill_monetization_distribution?: Json | null
+          sponsor_retention_rate?: number | null
+          total_earnings?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       index_calculation_logs: {
         Row: {
@@ -36932,6 +37142,45 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_subscriptions: {
+        Row: {
+          created_at: string
+          creator_id: string
+          currency: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          price: number
+          started_at: string
+          subscriber_id: string
+          subscription_type: string
+        }
+        Insert: {
+          created_at?: string
+          creator_id: string
+          currency?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          price: number
+          started_at?: string
+          subscriber_id: string
+          subscription_type: string
+        }
+        Update: {
+          created_at?: string
+          creator_id?: string
+          currency?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          price?: number
+          started_at?: string
+          subscriber_id?: string
+          subscription_type?: string
+        }
+        Relationships: []
+      }
       professional_value_scores: {
         Row: {
           capital_handled: number | null
@@ -45086,6 +45335,45 @@ export type Database = {
           predicted_supply_change?: number | null
           signal?: string | null
           skill_name?: string
+        }
+        Relationships: []
+      }
+      skill_liquidity_map: {
+        Row: {
+          avg_earning_rate: number | null
+          cross_border_potential: number | null
+          demand_score: number | null
+          emerging_demand: boolean | null
+          funding_hotspot: boolean | null
+          id: string
+          recorded_at: string
+          region_code: string | null
+          skill_name: string
+          supply_score: number | null
+        }
+        Insert: {
+          avg_earning_rate?: number | null
+          cross_border_potential?: number | null
+          demand_score?: number | null
+          emerging_demand?: boolean | null
+          funding_hotspot?: boolean | null
+          id?: string
+          recorded_at?: string
+          region_code?: string | null
+          skill_name: string
+          supply_score?: number | null
+        }
+        Update: {
+          avg_earning_rate?: number | null
+          cross_border_potential?: number | null
+          demand_score?: number | null
+          emerging_demand?: boolean | null
+          funding_hotspot?: boolean | null
+          id?: string
+          recorded_at?: string
+          region_code?: string | null
+          skill_name?: string
+          supply_score?: number | null
         }
         Relationships: []
       }
