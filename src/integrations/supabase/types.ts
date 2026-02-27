@@ -13669,6 +13669,57 @@ export type Database = {
         }
         Relationships: []
       }
+      execution_reels: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          duration_seconds: number | null
+          id: string
+          is_public: boolean | null
+          linked_portfolio_item_id: string | null
+          linked_project_id: string | null
+          reel_type: string
+          skills_shown: string[] | null
+          thumbnail_url: string | null
+          title: string
+          user_id: string
+          video_url: string | null
+          visual_impact_score: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          duration_seconds?: number | null
+          id?: string
+          is_public?: boolean | null
+          linked_portfolio_item_id?: string | null
+          linked_project_id?: string | null
+          reel_type?: string
+          skills_shown?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          user_id: string
+          video_url?: string | null
+          visual_impact_score?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          duration_seconds?: number | null
+          id?: string
+          is_public?: boolean | null
+          linked_portfolio_item_id?: string | null
+          linked_project_id?: string | null
+          reel_type?: string
+          skills_shown?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          user_id?: string
+          video_url?: string | null
+          visual_impact_score?: number | null
+        }
+        Relationships: []
+      }
       execution_risk_predictions: {
         Row: {
           budget_overrun_risk: number | null
@@ -13723,6 +13774,87 @@ export type Database = {
           sponsor_dissatisfaction_probability?: number | null
           suggested_actions?: Json | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      execution_visual_portfolio: {
+        Row: {
+          complexity_score: number | null
+          created_at: string | null
+          description: string | null
+          escrow_amount: number | null
+          escrow_amount_visible: boolean | null
+          escrow_linked: boolean | null
+          faculty_endorsed: boolean | null
+          id: string
+          institution_id: string | null
+          institutional_validation: boolean | null
+          is_public: boolean | null
+          media_urls: string[] | null
+          performance_outcome: string | null
+          project_id: string | null
+          role_played: string | null
+          skills_demonstrated: string[] | null
+          sponsor_id: string | null
+          sponsor_validated: boolean | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+          visual_impact_score: number | null
+          visual_type: string
+        }
+        Insert: {
+          complexity_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          escrow_amount?: number | null
+          escrow_amount_visible?: boolean | null
+          escrow_linked?: boolean | null
+          faculty_endorsed?: boolean | null
+          id?: string
+          institution_id?: string | null
+          institutional_validation?: boolean | null
+          is_public?: boolean | null
+          media_urls?: string[] | null
+          performance_outcome?: string | null
+          project_id?: string | null
+          role_played?: string | null
+          skills_demonstrated?: string[] | null
+          sponsor_id?: string | null
+          sponsor_validated?: boolean | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+          visual_impact_score?: number | null
+          visual_type?: string
+        }
+        Update: {
+          complexity_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          escrow_amount?: number | null
+          escrow_amount_visible?: boolean | null
+          escrow_linked?: boolean | null
+          faculty_endorsed?: boolean | null
+          id?: string
+          institution_id?: string | null
+          institutional_validation?: boolean | null
+          is_public?: boolean | null
+          media_urls?: string[] | null
+          performance_outcome?: string | null
+          project_id?: string | null
+          role_played?: string | null
+          skills_demonstrated?: string[] | null
+          sponsor_id?: string | null
+          sponsor_validated?: boolean | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+          visual_impact_score?: number | null
+          visual_type?: string
         }
         Relationships: []
       }
@@ -21680,6 +21812,95 @@ export type Database = {
           trust_drift?: number | null
         }
         Relationships: []
+      }
+      institutional_showcase_channels: {
+        Row: {
+          channel_name: string
+          channel_type: string | null
+          created_at: string | null
+          description: string | null
+          follower_count: number | null
+          id: string
+          institution_id: string
+          is_active: boolean | null
+        }
+        Insert: {
+          channel_name: string
+          channel_type?: string | null
+          created_at?: string | null
+          description?: string | null
+          follower_count?: number | null
+          id?: string
+          institution_id: string
+          is_active?: boolean | null
+        }
+        Update: {
+          channel_name?: string
+          channel_type?: string | null
+          created_at?: string | null
+          description?: string | null
+          follower_count?: number | null
+          id?: string
+          institution_id?: string
+          is_active?: boolean | null
+        }
+        Relationships: []
+      }
+      institutional_showcase_posts: {
+        Row: {
+          channel_id: string | null
+          content: string | null
+          created_at: string | null
+          escrow_impact: number | null
+          id: string
+          institution_id: string
+          is_published: boolean | null
+          linked_project_id: string | null
+          media_urls: string[] | null
+          post_type: string | null
+          posted_by: string
+          sponsor_validated: boolean | null
+          title: string
+        }
+        Insert: {
+          channel_id?: string | null
+          content?: string | null
+          created_at?: string | null
+          escrow_impact?: number | null
+          id?: string
+          institution_id: string
+          is_published?: boolean | null
+          linked_project_id?: string | null
+          media_urls?: string[] | null
+          post_type?: string | null
+          posted_by: string
+          sponsor_validated?: boolean | null
+          title: string
+        }
+        Update: {
+          channel_id?: string | null
+          content?: string | null
+          created_at?: string | null
+          escrow_impact?: number | null
+          id?: string
+          institution_id?: string
+          is_published?: boolean | null
+          linked_project_id?: string | null
+          media_urls?: string[] | null
+          post_type?: string | null
+          posted_by?: string
+          sponsor_validated?: boolean | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institutional_showcase_posts_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "institutional_showcase_channels"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       institutional_skill_gaps: {
         Row: {
@@ -32241,6 +32462,51 @@ export type Database = {
           project_id?: string
           updated_at?: string
           views?: number
+        }
+        Relationships: []
+      }
+      project_lifecycle_stories: {
+        Row: {
+          created_at: string | null
+          escrow_stage: string | null
+          event_at: string | null
+          event_description: string | null
+          event_title: string
+          event_type: string
+          id: string
+          is_public: boolean | null
+          media_url: string | null
+          milestone_number: number | null
+          project_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          escrow_stage?: string | null
+          event_at?: string | null
+          event_description?: string | null
+          event_title: string
+          event_type: string
+          id?: string
+          is_public?: boolean | null
+          media_url?: string | null
+          milestone_number?: number | null
+          project_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          escrow_stage?: string | null
+          event_at?: string | null
+          event_description?: string | null
+          event_title?: string
+          event_type?: string
+          id?: string
+          is_public?: boolean | null
+          media_url?: string | null
+          milestone_number?: number | null
+          project_id?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -44361,6 +44627,125 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      visual_discussions: {
+        Row: {
+          author_id: string
+          content: string
+          created_at: string | null
+          discussion_type: string | null
+          id: string
+          is_faculty_review: boolean | null
+          is_sponsor_comment: boolean | null
+          parent_id: string | null
+          portfolio_item_id: string | null
+        }
+        Insert: {
+          author_id: string
+          content: string
+          created_at?: string | null
+          discussion_type?: string | null
+          id?: string
+          is_faculty_review?: boolean | null
+          is_sponsor_comment?: boolean | null
+          parent_id?: string | null
+          portfolio_item_id?: string | null
+        }
+        Update: {
+          author_id?: string
+          content?: string
+          created_at?: string | null
+          discussion_type?: string | null
+          id?: string
+          is_faculty_review?: boolean | null
+          is_sponsor_comment?: boolean | null
+          parent_id?: string | null
+          portfolio_item_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visual_discussions_portfolio_item_id_fkey"
+            columns: ["portfolio_item_id"]
+            isOneToOne: false
+            referencedRelation: "execution_visual_portfolio"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      visual_impact_scores: {
+        Row: {
+          adoption_rate: number | null
+          complexity_score: number | null
+          economic_impact: number | null
+          id: string
+          industry_recognition: number | null
+          institutional_credibility: number | null
+          overall_vis: number | null
+          snapshot_at: string | null
+          sponsor_repeat_score: number | null
+          tier: string | null
+          user_id: string
+        }
+        Insert: {
+          adoption_rate?: number | null
+          complexity_score?: number | null
+          economic_impact?: number | null
+          id?: string
+          industry_recognition?: number | null
+          institutional_credibility?: number | null
+          overall_vis?: number | null
+          snapshot_at?: string | null
+          sponsor_repeat_score?: number | null
+          tier?: string | null
+          user_id: string
+        }
+        Update: {
+          adoption_rate?: number | null
+          complexity_score?: number | null
+          economic_impact?: number | null
+          id?: string
+          industry_recognition?: number | null
+          institutional_credibility?: number | null
+          overall_vis?: number | null
+          snapshot_at?: string | null
+          sponsor_repeat_score?: number | null
+          tier?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      visual_trust_badges: {
+        Row: {
+          badge_label: string
+          badge_type: string
+          earned_at: string | null
+          earned_via_entity_id: string | null
+          earned_via_entity_type: string | null
+          id: string
+          is_active: boolean | null
+          user_id: string
+        }
+        Insert: {
+          badge_label: string
+          badge_type: string
+          earned_at?: string | null
+          earned_via_entity_id?: string | null
+          earned_via_entity_type?: string | null
+          id?: string
+          is_active?: boolean | null
+          user_id: string
+        }
+        Update: {
+          badge_label?: string
+          badge_type?: string
+          earned_at?: string | null
+          earned_via_entity_id?: string | null
+          earned_via_entity_type?: string | null
+          id?: string
+          is_active?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
       }
       voice_notes: {
         Row: {
