@@ -18034,6 +18034,48 @@ export type Database = {
         }
         Relationships: []
       }
+      focus_mode_sessions: {
+        Row: {
+          active_deliverables: string[] | null
+          collaboration_commitments: Json | null
+          daily_goals: Json | null
+          ended_at: string | null
+          funding_deadlines: Json | null
+          hide_social_feed: boolean | null
+          id: string
+          is_active: boolean | null
+          silence_non_critical: boolean | null
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          active_deliverables?: string[] | null
+          collaboration_commitments?: Json | null
+          daily_goals?: Json | null
+          ended_at?: string | null
+          funding_deadlines?: Json | null
+          hide_social_feed?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          silence_non_critical?: boolean | null
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          active_deliverables?: string[] | null
+          collaboration_commitments?: Json | null
+          daily_goals?: Json | null
+          ended_at?: string | null
+          funding_deadlines?: Json | null
+          hide_social_feed?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          silence_non_critical?: boolean | null
+          started_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       foresight_scenarios: {
         Row: {
           assumptions: Json
@@ -22704,6 +22746,45 @@ export type Database = {
           explanation?: Json | null
           id?: string
           system_checked?: string
+        }
+        Relationships: []
+      }
+      healthy_engagement_scores: {
+        Row: {
+          collaboration_initiation_count: number | null
+          composite_health_score: number | null
+          computed_at: string
+          deep_reading_count: number | null
+          funding_application_count: number | null
+          id: string
+          period: string
+          skill_development_count: number | null
+          structured_feedback_count: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_initiation_count?: number | null
+          composite_health_score?: number | null
+          computed_at?: string
+          deep_reading_count?: number | null
+          funding_application_count?: number | null
+          id?: string
+          period: string
+          skill_development_count?: number | null
+          structured_feedback_count?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_initiation_count?: number | null
+          composite_health_score?: number | null
+          computed_at?: string
+          deep_reading_count?: number | null
+          funding_application_count?: number | null
+          id?: string
+          period?: string
+          skill_development_count?: number | null
+          structured_feedback_count?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -29533,6 +29614,42 @@ export type Database = {
         }
         Relationships: []
       }
+      long_term_growth_snapshots: {
+        Row: {
+          collaboration_network_size: number | null
+          created_at: string
+          funding_trajectory: number | null
+          id: string
+          innovation_impact_cumulative: number | null
+          reliability_score: number | null
+          skill_mastery_score: number | null
+          snapshot_date: string
+          user_id: string
+        }
+        Insert: {
+          collaboration_network_size?: number | null
+          created_at?: string
+          funding_trajectory?: number | null
+          id?: string
+          innovation_impact_cumulative?: number | null
+          reliability_score?: number | null
+          skill_mastery_score?: number | null
+          snapshot_date: string
+          user_id: string
+        }
+        Update: {
+          collaboration_network_size?: number | null
+          created_at?: string
+          funding_trajectory?: number | null
+          id?: string
+          innovation_impact_cumulative?: number | null
+          reliability_score?: number | null
+          skill_mastery_score?: number | null
+          snapshot_date?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       long_term_sustainability_scores: {
         Row: {
           collaboration_stability: number | null
@@ -30183,6 +30300,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      metric_visibility_preferences: {
+        Row: {
+          emphasize_qualitative: boolean | null
+          hide_follower_count: boolean | null
+          hide_like_counts: boolean | null
+          hide_view_counts: boolean | null
+          id: string
+          show_engagement_on_expand: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          emphasize_qualitative?: boolean | null
+          hide_follower_count?: boolean | null
+          hide_like_counts?: boolean | null
+          hide_view_counts?: boolean | null
+          id?: string
+          show_engagement_on_expand?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          emphasize_qualitative?: boolean | null
+          hide_follower_count?: boolean | null
+          hide_like_counts?: boolean | null
+          hide_view_counts?: boolean | null
+          id?: string
+          show_engagement_on_expand?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       micro_academic_tasks: {
         Row: {
@@ -31991,6 +32141,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      notification_tier_preferences: {
+        Row: {
+          batch_delivery_time: string | null
+          id: string
+          schedule_times: string[] | null
+          scheduled_delivery: boolean | null
+          tier1_enabled: boolean | null
+          tier2_enabled: boolean | null
+          tier3_batched: boolean | null
+          tier3_enabled: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          batch_delivery_time?: string | null
+          id?: string
+          schedule_times?: string[] | null
+          scheduled_delivery?: boolean | null
+          tier1_enabled?: boolean | null
+          tier2_enabled?: boolean | null
+          tier3_batched?: boolean | null
+          tier3_enabled?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          batch_delivery_time?: string | null
+          id?: string
+          schedule_times?: string[] | null
+          scheduled_delivery?: boolean | null
+          tier1_enabled?: boolean | null
+          tier2_enabled?: boolean | null
+          tier3_batched?: boolean | null
+          tier3_enabled?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       notification_types: {
         Row: {
@@ -48644,6 +48833,45 @@ export type Database = {
           },
         ]
       }
+      time_awareness_metrics: {
+        Row: {
+          browsing_time_seconds: number | null
+          collaboration_time_seconds: number | null
+          computed_at: string
+          deep_engagement_ratio: number | null
+          id: string
+          learning_time_seconds: number | null
+          period: string
+          professional_value_score: number | null
+          total_time_seconds: number | null
+          user_id: string
+        }
+        Insert: {
+          browsing_time_seconds?: number | null
+          collaboration_time_seconds?: number | null
+          computed_at?: string
+          deep_engagement_ratio?: number | null
+          id?: string
+          learning_time_seconds?: number | null
+          period: string
+          professional_value_score?: number | null
+          total_time_seconds?: number | null
+          user_id: string
+        }
+        Update: {
+          browsing_time_seconds?: number | null
+          collaboration_time_seconds?: number | null
+          computed_at?: string
+          deep_engagement_ratio?: number | null
+          id?: string
+          learning_time_seconds?: number | null
+          period?: string
+          professional_value_score?: number | null
+          total_time_seconds?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       tool_orders: {
         Row: {
           amount: number
@@ -50343,6 +50571,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_feed_sessions: {
+        Row: {
+          deep_engagement_count: number | null
+          duration_seconds: number | null
+          ended_at: string | null
+          id: string
+          items_loaded: number | null
+          passive_scroll_count: number | null
+          reflection_completed: boolean | null
+          session_intent: string | null
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          deep_engagement_count?: number | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          id?: string
+          items_loaded?: number | null
+          passive_scroll_count?: number | null
+          reflection_completed?: boolean | null
+          session_intent?: string | null
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          deep_engagement_count?: number | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          id?: string
+          items_loaded?: number | null
+          passive_scroll_count?: number | null
+          reflection_completed?: boolean | null
+          session_intent?: string | null
+          started_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_flags: {
         Row: {
           created_at: string
@@ -51914,6 +52181,51 @@ export type Database = {
           secret_hash?: string | null
           subscriber_id?: string
           subscriber_type?: string
+        }
+        Relationships: []
+      }
+      weekly_reflection_reports: {
+        Row: {
+          collaborations_initiated: number | null
+          created_at: string
+          funding_explored: number | null
+          id: string
+          passive_browsing_pct: number | null
+          projects_progressed: number | null
+          reflection_notes: string | null
+          skills_improved: number | null
+          time_spent_seconds: number | null
+          user_id: string
+          value_generated: number | null
+          week_start: string
+        }
+        Insert: {
+          collaborations_initiated?: number | null
+          created_at?: string
+          funding_explored?: number | null
+          id?: string
+          passive_browsing_pct?: number | null
+          projects_progressed?: number | null
+          reflection_notes?: string | null
+          skills_improved?: number | null
+          time_spent_seconds?: number | null
+          user_id: string
+          value_generated?: number | null
+          week_start: string
+        }
+        Update: {
+          collaborations_initiated?: number | null
+          created_at?: string
+          funding_explored?: number | null
+          id?: string
+          passive_browsing_pct?: number | null
+          projects_progressed?: number | null
+          reflection_notes?: string | null
+          skills_improved?: number | null
+          time_spent_seconds?: number | null
+          user_id?: string
+          value_generated?: number | null
+          week_start?: string
         }
         Relationships: []
       }
