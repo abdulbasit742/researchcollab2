@@ -1800,6 +1800,162 @@ Return ONLY valid JSON:
       return jsonResponse({ success: true, ...parsed });
     }
 
+    // ============================================================
+    // ACTION: match_opportunity — Trust-weighted matching for applicants
+    // ============================================================
+    if (action === "match_opportunity") {
+      const { opportunity_id } = body;
+
+      const { data: opp } = await supabase.from("execution_opportunities").select("*").eq("id", opportunity_id).single();
+      if (!opp) return jsonResponse({ error: "Opportunity not found" }, 404);
+
+      const { data: apps } = await supabase.from("opportunity_applications").select("*").eq("opportunity_id", opportunity_id).eq("status", "pending");
+      if (!apps || apps.length === 0) return jsonResponse({ error: "No pending applications" }, 400);
+
+      // Fetch applicant profiles for trust/expertise
+      const applicantIds = apps.map((a: any) => a.applicant_id);
+      const { data: profiles } = await supabase.from("profiles").select("id, full_name, trust_score").in("id", applicantIds);
+      const { data: trustProfiles } = await supabase.from("user_trust_profiles").select("user_id, trust_score, execution_score, dispute_rate").in("user_id", applicantIds);
+
+      const profileMap: Record<string, any> = {};
+      (profiles || []).forEach((p: any) => { profileMap[p.id] = p; });
+      const trustMap: Record<string, any> = {};
+      (trustProfiles || []).forEach((t: any) => { trustMap[t.user_id] = t; });
+
+      const appSummary = apps.map((a: any) => {
+        const p = profileMap[a.applicant_id] || {};
+        const t = trustMap[a.applicant_id] || {};
+        return `[${a.id}] name:"${p.full_name||'Unknown'}" trust:${t.trust_score||0} exec:${t.execution_score||0} disputes:${t.dispute_rate||0} text:"${(a.application_text||'').substring(0,200)}"`;
+      }).join("\n");
+
+      const aiResult = await callAI([
+        {
+          role: "system",
+          content: `You are a trust-weighted research matching engine. Score each applicant for an opportunity.
+
+Return ONLY valid JSON:
+{
+  "rankings": [
+    {
+      "application_id": "uuid",
+      "matching_score": 0-100,
+      "expertise_match": 0-100,
+      "trust_match": 0-100,
+      "claim_match": 0-100,
+      "cross_border_compatible": true/false,
+      "conflict_of_interest_risk": 0-100,
+      "explanation": {
+        "why_matched": "...",
+        "trust_impact": "...",
+        "expertise_reasoning": "...",
+        "risk_factors": ["..."],
+        "confidence": 0.0-1.0
+      }
+    }
+  ]
+}
+Rank by matching_score descending. No engagement-based metrics. Only trust, expertise, and execution history.`
+        },
+        {
+          role: "user",
+          content: `OPPORTUNITY: "${opp.title}" type:${opp.opportunity_type} skills:${(opp.required_skills||[]).join(",")} trust_threshold:${opp.trust_threshold} region:${opp.region_scope||'global'} cross_border:${opp.cross_border_allowed}\n\nAPPLICANTS (${apps.length}):\n${appSummary}`
+        }
+      ]);
+
+      if (aiResult.error) return jsonResponse({ error: aiResult.error }, 500);
+
+      let parsed: any = { rankings: [] };
+      try {
+        const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        parsed = JSON.parse(cleaned);
+      } catch { /* defaults */ }
+
+      // Update applications with scores
+      for (const r of (parsed.rankings || [])) {
+        if (r.application_id) {
+          await supabase.from("opportunity_applications").update({
+            matching_score: r.matching_score || 0,
+            expertise_match: r.expertise_match || 0,
+            trust_match: r.trust_match || 0,
+            claim_match: r.claim_match || 0,
+            cross_border_compatible: r.cross_border_compatible ?? true,
+            conflict_of_interest_risk: r.conflict_of_interest_risk || 0,
+            match_explanation: r.explanation || {},
+          }).eq("id", r.application_id);
+        }
+      }
+
+      return jsonResponse({ success: true, rankings: parsed.rankings || [] });
+    }
+
+    // ============================================================
+    // ACTION: team_formation — AI-optimized team composition
+    // ============================================================
+    if (action === "team_formation") {
+      const { opportunity_id } = body;
+
+      const { data: opp } = await supabase.from("execution_opportunities").select("*").eq("id", opportunity_id).single();
+      if (!opp) return jsonResponse({ error: "Opportunity not found" }, 404);
+
+      const { data: apps } = await supabase.from("opportunity_applications").select("*").eq("opportunity_id", opportunity_id).order("matching_score", { ascending: false });
+
+      const applicantIds = (apps || []).map((a: any) => a.applicant_id);
+      const { data: profiles } = await supabase.from("profiles").select("id, full_name, trust_score").in("id", applicantIds.length > 0 ? applicantIds : ["00000000-0000-0000-0000-000000000000"]);
+      const profileMap: Record<string, any> = {};
+      (profiles || []).forEach((p: any) => { profileMap[p.id] = p; });
+
+      const appSummary = (apps || []).map((a: any) => {
+        const p = profileMap[a.applicant_id] || {};
+        return `[${a.applicant_id}] "${p.full_name||'Unknown'}" match:${a.matching_score} expertise:${a.expertise_match} trust:${a.trust_match} coi:${a.conflict_of_interest_risk}`;
+      }).join("\n");
+
+      const aiResult = await callAI([
+        {
+          role: "system",
+          content: `You are a team formation optimizer. Suggest optimal team from applicants.
+
+Return ONLY valid JSON:
+{
+  "suggested_team": [{"user_id": "uuid", "role_in_team": "...", "selection_reasoning": "..."}],
+  "complementarity_score": 0-100,
+  "diversity_index": 0-100,
+  "trust_balance": 0-100,
+  "cross_border_synergy": 0-100,
+  "risk_diversification": 0-100,
+  "overall_score": 0-100,
+  "reasoning": {"strategy": "...", "trade_offs": ["..."], "alternatives_considered": ["..."]}
+}`
+        },
+        {
+          role: "user",
+          content: `OPPORTUNITY: "${opp.title}" skills:${(opp.required_skills||[]).join(",")}\n\nCANDIDATES:\n${appSummary}`
+        }
+      ]);
+
+      if (aiResult.error) return jsonResponse({ error: aiResult.error }, 500);
+
+      let parsed: any = { suggested_team: [], complementarity_score: 0, diversity_index: 0, trust_balance: 0, cross_border_synergy: 0, risk_diversification: 0, overall_score: 0, reasoning: {} };
+      try {
+        const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        parsed = JSON.parse(cleaned);
+      } catch { /* defaults */ }
+
+      // Save suggestion
+      await supabase.from("team_formation_suggestions").insert({
+        opportunity_id,
+        suggested_team: parsed.suggested_team,
+        complementarity_score: parsed.complementarity_score,
+        diversity_index: parsed.diversity_index,
+        trust_balance: parsed.trust_balance,
+        cross_border_synergy: parsed.cross_border_synergy,
+        risk_diversification: parsed.risk_diversification,
+        overall_score: parsed.overall_score,
+        reasoning: parsed.reasoning,
+      });
+
+      return jsonResponse({ success: true, ...parsed });
+    }
+
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

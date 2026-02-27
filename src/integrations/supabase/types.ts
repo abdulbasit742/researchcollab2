@@ -19084,6 +19084,78 @@ export type Database = {
         }
         Relationships: []
       }
+      execution_opportunities: {
+        Row: {
+          budget_range_max: number | null
+          budget_range_min: number | null
+          closes_at: string | null
+          compliance_tags: string[] | null
+          created_at: string
+          created_by: string
+          cross_border_allowed: boolean | null
+          description: string | null
+          id: string
+          institutional_endorsement_required: boolean | null
+          is_public: boolean | null
+          linked_funding_plan_id: string | null
+          linked_policy_model_id: string | null
+          opportunity_type: string
+          region_scope: string | null
+          required_claim_ids: string[] | null
+          required_skills: string[] | null
+          status: string | null
+          team_formation_enabled: boolean | null
+          title: string
+          trust_threshold: number | null
+        }
+        Insert: {
+          budget_range_max?: number | null
+          budget_range_min?: number | null
+          closes_at?: string | null
+          compliance_tags?: string[] | null
+          created_at?: string
+          created_by: string
+          cross_border_allowed?: boolean | null
+          description?: string | null
+          id?: string
+          institutional_endorsement_required?: boolean | null
+          is_public?: boolean | null
+          linked_funding_plan_id?: string | null
+          linked_policy_model_id?: string | null
+          opportunity_type?: string
+          region_scope?: string | null
+          required_claim_ids?: string[] | null
+          required_skills?: string[] | null
+          status?: string | null
+          team_formation_enabled?: boolean | null
+          title: string
+          trust_threshold?: number | null
+        }
+        Update: {
+          budget_range_max?: number | null
+          budget_range_min?: number | null
+          closes_at?: string | null
+          compliance_tags?: string[] | null
+          created_at?: string
+          created_by?: string
+          cross_border_allowed?: boolean | null
+          description?: string | null
+          id?: string
+          institutional_endorsement_required?: boolean | null
+          is_public?: boolean | null
+          linked_funding_plan_id?: string | null
+          linked_policy_model_id?: string | null
+          opportunity_type?: string
+          region_scope?: string | null
+          required_claim_ids?: string[] | null
+          required_skills?: string[] | null
+          status?: string | null
+          team_formation_enabled?: boolean | null
+          title?: string
+          trust_threshold?: number | null
+        }
+        Relationships: []
+      }
       execution_reels: {
         Row: {
           created_at: string | null
@@ -40439,6 +40511,62 @@ export type Database = {
           },
         ]
       }
+      opportunity_applications: {
+        Row: {
+          applicant_id: string
+          application_text: string | null
+          claim_match: number | null
+          conflict_of_interest_risk: number | null
+          created_at: string
+          cross_border_compatible: boolean | null
+          expertise_match: number | null
+          id: string
+          match_explanation: Json | null
+          matching_score: number | null
+          opportunity_id: string
+          status: string | null
+          trust_match: number | null
+        }
+        Insert: {
+          applicant_id: string
+          application_text?: string | null
+          claim_match?: number | null
+          conflict_of_interest_risk?: number | null
+          created_at?: string
+          cross_border_compatible?: boolean | null
+          expertise_match?: number | null
+          id?: string
+          match_explanation?: Json | null
+          matching_score?: number | null
+          opportunity_id: string
+          status?: string | null
+          trust_match?: number | null
+        }
+        Update: {
+          applicant_id?: string
+          application_text?: string | null
+          claim_match?: number | null
+          conflict_of_interest_risk?: number | null
+          created_at?: string
+          cross_border_compatible?: boolean | null
+          expertise_match?: number | null
+          id?: string
+          match_explanation?: Json | null
+          matching_score?: number | null
+          opportunity_id?: string
+          status?: string | null
+          trust_match?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_applications_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "execution_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunity_edges: {
         Row: {
           created_at: string
@@ -61073,6 +61201,56 @@ export type Database = {
           team_id?: string
         }
         Relationships: []
+      }
+      team_formation_suggestions: {
+        Row: {
+          complementarity_score: number | null
+          created_at: string
+          cross_border_synergy: number | null
+          diversity_index: number | null
+          id: string
+          opportunity_id: string
+          overall_score: number | null
+          reasoning: Json | null
+          risk_diversification: number | null
+          suggested_team: Json | null
+          trust_balance: number | null
+        }
+        Insert: {
+          complementarity_score?: number | null
+          created_at?: string
+          cross_border_synergy?: number | null
+          diversity_index?: number | null
+          id?: string
+          opportunity_id: string
+          overall_score?: number | null
+          reasoning?: Json | null
+          risk_diversification?: number | null
+          suggested_team?: Json | null
+          trust_balance?: number | null
+        }
+        Update: {
+          complementarity_score?: number | null
+          created_at?: string
+          cross_border_synergy?: number | null
+          diversity_index?: number | null
+          id?: string
+          opportunity_id?: string
+          overall_score?: number | null
+          reasoning?: Json | null
+          risk_diversification?: number | null
+          suggested_team?: Json | null
+          trust_balance?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_formation_suggestions_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "execution_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       team_risk_analysis: {
         Row: {
