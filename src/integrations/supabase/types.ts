@@ -3557,6 +3557,51 @@ export type Database = {
         }
         Relationships: []
       }
+      author_credibility_scores: {
+        Row: {
+          avg_substance_rank: number | null
+          content_count: number | null
+          deliverable_relevance_factor: number | null
+          escrow_depth_factor: number | null
+          id: string
+          institutional_validation_factor: number | null
+          knowledge_credibility_score: number | null
+          peer_endorsement_factor: number | null
+          sponsor_acknowledgment_factor: number | null
+          tier: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          avg_substance_rank?: number | null
+          content_count?: number | null
+          deliverable_relevance_factor?: number | null
+          escrow_depth_factor?: number | null
+          id?: string
+          institutional_validation_factor?: number | null
+          knowledge_credibility_score?: number | null
+          peer_endorsement_factor?: number | null
+          sponsor_acknowledgment_factor?: number | null
+          tier?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          avg_substance_rank?: number | null
+          content_count?: number | null
+          deliverable_relevance_factor?: number | null
+          escrow_depth_factor?: number | null
+          id?: string
+          institutional_validation_factor?: number | null
+          knowledge_credibility_score?: number | null
+          peer_endorsement_factor?: number | null
+          sponsor_acknowledgment_factor?: number | null
+          tier?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       background_job_runs: {
         Row: {
           completed_at: string | null
@@ -6578,6 +6623,47 @@ export type Database = {
         }
         Relationships: []
       }
+      content_read_analytics: {
+        Row: {
+          completion_pct: number | null
+          content_id: string
+          created_at: string | null
+          cross_references_clicked: number | null
+          deliverable_clicked: boolean | null
+          id: string
+          read_duration_seconds: number | null
+          reader_id: string
+        }
+        Insert: {
+          completion_pct?: number | null
+          content_id: string
+          created_at?: string | null
+          cross_references_clicked?: number | null
+          deliverable_clicked?: boolean | null
+          id?: string
+          read_duration_seconds?: number | null
+          reader_id: string
+        }
+        Update: {
+          completion_pct?: number | null
+          content_id?: string
+          created_at?: string | null
+          cross_references_clicked?: number | null
+          deliverable_clicked?: boolean | null
+          id?: string
+          read_duration_seconds?: number | null
+          reader_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_read_analytics_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "execution_content"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contextual_permissions: {
         Row: {
           action_key: string
@@ -9534,6 +9620,50 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      debate_responses: {
+        Row: {
+          author_id: string
+          created_at: string | null
+          debate_id: string
+          escrow_reference_id: string | null
+          evidence_url: string | null
+          faculty_endorsed: boolean | null
+          id: string
+          project_reference_id: string | null
+          response_text: string
+        }
+        Insert: {
+          author_id: string
+          created_at?: string | null
+          debate_id: string
+          escrow_reference_id?: string | null
+          evidence_url?: string | null
+          faculty_endorsed?: boolean | null
+          id?: string
+          project_reference_id?: string | null
+          response_text: string
+        }
+        Update: {
+          author_id?: string
+          created_at?: string | null
+          debate_id?: string
+          escrow_reference_id?: string | null
+          evidence_url?: string | null
+          faculty_endorsed?: boolean | null
+          id?: string
+          project_reference_id?: string | null
+          response_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "debate_responses_debate_id_fkey"
+            columns: ["debate_id"]
+            isOneToOne: false
+            referencedRelation: "structured_debates"
             referencedColumns: ["id"]
           },
         ]
@@ -12959,6 +13089,96 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      execution_content: {
+        Row: {
+          author_id: string
+          avg_read_time_seconds: number | null
+          body: string
+          case_study_data: Json | null
+          completion_depth_pct: number | null
+          content_type: string
+          created_at: string | null
+          cross_reference_count: number | null
+          deliverable_click_count: number | null
+          domain_category: string | null
+          excerpt: string | null
+          id: string
+          institution_id: string | null
+          is_faculty_endorsed: boolean | null
+          is_peer_reviewed: boolean | null
+          is_sponsor_validated: boolean | null
+          knowledge_credibility_score: number | null
+          linked_escrow_amount: number | null
+          linked_milestone_id: string | null
+          linked_project_id: string | null
+          published_at: string | null
+          sponsor_id: string | null
+          status: string | null
+          substance_rank_score: number | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          author_id: string
+          avg_read_time_seconds?: number | null
+          body: string
+          case_study_data?: Json | null
+          completion_depth_pct?: number | null
+          content_type?: string
+          created_at?: string | null
+          cross_reference_count?: number | null
+          deliverable_click_count?: number | null
+          domain_category?: string | null
+          excerpt?: string | null
+          id?: string
+          institution_id?: string | null
+          is_faculty_endorsed?: boolean | null
+          is_peer_reviewed?: boolean | null
+          is_sponsor_validated?: boolean | null
+          knowledge_credibility_score?: number | null
+          linked_escrow_amount?: number | null
+          linked_milestone_id?: string | null
+          linked_project_id?: string | null
+          published_at?: string | null
+          sponsor_id?: string | null
+          status?: string | null
+          substance_rank_score?: number | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          author_id?: string
+          avg_read_time_seconds?: number | null
+          body?: string
+          case_study_data?: Json | null
+          completion_depth_pct?: number | null
+          content_type?: string
+          created_at?: string | null
+          cross_reference_count?: number | null
+          deliverable_click_count?: number | null
+          domain_category?: string | null
+          excerpt?: string | null
+          id?: string
+          institution_id?: string | null
+          is_faculty_endorsed?: boolean | null
+          is_peer_reviewed?: boolean | null
+          is_sponsor_validated?: boolean | null
+          knowledge_credibility_score?: number | null
+          linked_escrow_amount?: number | null
+          linked_milestone_id?: string | null
+          linked_project_id?: string | null
+          published_at?: string | null
+          sponsor_id?: string | null
+          status?: string | null
+          substance_rank_score?: number | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       execution_health_snapshots: {
         Row: {
@@ -22283,6 +22503,44 @@ export type Database = {
           rule_type?: string | null
         }
         Relationships: []
+      }
+      knowledge_badges: {
+        Row: {
+          awarded_by: string | null
+          badge_type: string
+          content_id: string
+          created_at: string | null
+          evidence_reference: string | null
+          id: string
+          institution_id: string | null
+        }
+        Insert: {
+          awarded_by?: string | null
+          badge_type: string
+          content_id: string
+          created_at?: string | null
+          evidence_reference?: string | null
+          id?: string
+          institution_id?: string | null
+        }
+        Update: {
+          awarded_by?: string | null
+          badge_type?: string
+          content_id?: string
+          created_at?: string | null
+          evidence_reference?: string | null
+          id?: string
+          institution_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_badges_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "execution_content"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       knowledge_context_layers: {
         Row: {
@@ -38738,6 +38996,44 @@ export type Database = {
           systemic_risk?: string | null
         }
         Relationships: []
+      }
+      structured_debates: {
+        Row: {
+          content_id: string | null
+          created_at: string | null
+          id: string
+          is_faculty_moderated: boolean | null
+          moderator_id: string | null
+          status: string | null
+          topic: string
+        }
+        Insert: {
+          content_id?: string | null
+          created_at?: string | null
+          id?: string
+          is_faculty_moderated?: boolean | null
+          moderator_id?: string | null
+          status?: string | null
+          topic: string
+        }
+        Update: {
+          content_id?: string | null
+          created_at?: string | null
+          id?: string
+          is_faculty_moderated?: boolean | null
+          moderator_id?: string | null
+          status?: string | null
+          topic?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "structured_debates_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "execution_content"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       student_cohorts: {
         Row: {
