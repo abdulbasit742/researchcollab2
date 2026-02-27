@@ -22322,6 +22322,219 @@ export type Database = {
         }
         Relationships: []
       }
+      funding_plan_budget_breakdown: {
+        Row: {
+          amount: number
+          category: string
+          created_at: string
+          funding_plan_id: string
+          id: string
+          justification_text: string | null
+          linked_milestone_id: string | null
+        }
+        Insert: {
+          amount?: number
+          category: string
+          created_at?: string
+          funding_plan_id: string
+          id?: string
+          justification_text?: string | null
+          linked_milestone_id?: string | null
+        }
+        Update: {
+          amount?: number
+          category?: string
+          created_at?: string
+          funding_plan_id?: string
+          id?: string
+          justification_text?: string | null
+          linked_milestone_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_plan_budget_breakdown_funding_plan_id_fkey"
+            columns: ["funding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "funding_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funding_plan_budget_breakdown_linked_milestone_id_fkey"
+            columns: ["linked_milestone_id"]
+            isOneToOne: false
+            referencedRelation: "funding_plan_milestones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funding_plan_milestones: {
+        Row: {
+          budget_amount: number
+          created_at: string
+          deliverable_description: string | null
+          evidence_requirement: string | null
+          expected_duration_days: number
+          funding_plan_id: string
+          id: string
+          linked_research_claim_ids: string[] | null
+          milestone_description: string | null
+          milestone_title: string
+          performance_metric: string | null
+          risk_level: string | null
+          sort_order: number
+        }
+        Insert: {
+          budget_amount?: number
+          created_at?: string
+          deliverable_description?: string | null
+          evidence_requirement?: string | null
+          expected_duration_days?: number
+          funding_plan_id: string
+          id?: string
+          linked_research_claim_ids?: string[] | null
+          milestone_description?: string | null
+          milestone_title: string
+          performance_metric?: string | null
+          risk_level?: string | null
+          sort_order?: number
+        }
+        Update: {
+          budget_amount?: number
+          created_at?: string
+          deliverable_description?: string | null
+          evidence_requirement?: string | null
+          expected_duration_days?: number
+          funding_plan_id?: string
+          id?: string
+          linked_research_claim_ids?: string[] | null
+          milestone_description?: string | null
+          milestone_title?: string
+          performance_metric?: string | null
+          risk_level?: string | null
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_plan_milestones_funding_plan_id_fkey"
+            columns: ["funding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "funding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funding_plan_versions: {
+        Row: {
+          change_summary: string | null
+          created_at: string
+          created_by: string
+          funding_plan_id: string
+          id: string
+          snapshot: Json
+          version_number: number
+        }
+        Insert: {
+          change_summary?: string | null
+          created_at?: string
+          created_by: string
+          funding_plan_id: string
+          id?: string
+          snapshot?: Json
+          version_number: number
+        }
+        Update: {
+          change_summary?: string | null
+          created_at?: string
+          created_by?: string
+          funding_plan_id?: string
+          id?: string
+          snapshot?: Json
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_plan_versions_funding_plan_id_fkey"
+            columns: ["funding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "funding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funding_plans: {
+        Row: {
+          ai_generation_metadata: Json | null
+          created_at: string
+          currency: string
+          duration_months: number
+          feasibility_index: number | null
+          id: string
+          owner_id: string
+          plan_type: string
+          problem_statement: string | null
+          proposed_solution: string | null
+          risk_score: number | null
+          source_claim_ids: string[] | null
+          status: string
+          title: string
+          total_budget: number
+          trust_weighted_score: number | null
+          updated_at: string
+          version_number: number
+          workspace_id: string
+        }
+        Insert: {
+          ai_generation_metadata?: Json | null
+          created_at?: string
+          currency?: string
+          duration_months?: number
+          feasibility_index?: number | null
+          id?: string
+          owner_id: string
+          plan_type?: string
+          problem_statement?: string | null
+          proposed_solution?: string | null
+          risk_score?: number | null
+          source_claim_ids?: string[] | null
+          status?: string
+          title: string
+          total_budget?: number
+          trust_weighted_score?: number | null
+          updated_at?: string
+          version_number?: number
+          workspace_id: string
+        }
+        Update: {
+          ai_generation_metadata?: Json | null
+          created_at?: string
+          currency?: string
+          duration_months?: number
+          feasibility_index?: number | null
+          id?: string
+          owner_id?: string
+          plan_type?: string
+          problem_statement?: string | null
+          proposed_solution?: string | null
+          risk_score?: number | null
+          source_claim_ids?: string[] | null
+          status?: string
+          title?: string
+          total_budget?: number
+          trust_weighted_score?: number | null
+          updated_at?: string
+          version_number?: number
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_plans_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       funding_pools: {
         Row: {
           available_capital: number | null
