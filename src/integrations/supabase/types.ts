@@ -89,6 +89,63 @@ export type Database = {
         }
         Relationships: []
       }
+      academic_career_profiles: {
+        Row: {
+          career_stage: string | null
+          career_start_date: string | null
+          created_at: string
+          current_institution_id: string | null
+          governance_contributions: Json | null
+          graduate_supervisions_completed: number | null
+          grant_committee_participations: number | null
+          historical_affiliations: Json | null
+          id: string
+          industry_engagements: Json | null
+          institutional_leadership_roles: Json | null
+          mentorship_completions: number | null
+          policy_advisory_roles: Json | null
+          updated_at: string
+          user_id: string
+          verified_identity: boolean | null
+        }
+        Insert: {
+          career_stage?: string | null
+          career_start_date?: string | null
+          created_at?: string
+          current_institution_id?: string | null
+          governance_contributions?: Json | null
+          graduate_supervisions_completed?: number | null
+          grant_committee_participations?: number | null
+          historical_affiliations?: Json | null
+          id?: string
+          industry_engagements?: Json | null
+          institutional_leadership_roles?: Json | null
+          mentorship_completions?: number | null
+          policy_advisory_roles?: Json | null
+          updated_at?: string
+          user_id: string
+          verified_identity?: boolean | null
+        }
+        Update: {
+          career_stage?: string | null
+          career_start_date?: string | null
+          created_at?: string
+          current_institution_id?: string | null
+          governance_contributions?: Json | null
+          graduate_supervisions_completed?: number | null
+          grant_committee_participations?: number | null
+          historical_affiliations?: Json | null
+          id?: string
+          industry_engagements?: Json | null
+          institutional_leadership_roles?: Json | null
+          mentorship_completions?: number | null
+          policy_advisory_roles?: Json | null
+          updated_at?: string
+          user_id?: string
+          verified_identity?: boolean | null
+        }
+        Relationships: []
+      }
       academic_courses: {
         Row: {
           course_code: string
@@ -226,6 +283,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      academic_identity_exports: {
+        Row: {
+          export_data: Json | null
+          export_format: string
+          exported_at: string
+          id: string
+          includes_collaboration: boolean | null
+          includes_compliance: boolean | null
+          includes_grants: boolean | null
+          includes_innovation: boolean | null
+          includes_reputation: boolean | null
+          user_id: string
+          verification_hash: string | null
+        }
+        Insert: {
+          export_data?: Json | null
+          export_format?: string
+          exported_at?: string
+          id?: string
+          includes_collaboration?: boolean | null
+          includes_compliance?: boolean | null
+          includes_grants?: boolean | null
+          includes_innovation?: boolean | null
+          includes_reputation?: boolean | null
+          user_id: string
+          verification_hash?: string | null
+        }
+        Update: {
+          export_data?: Json | null
+          export_format?: string
+          exported_at?: string
+          id?: string
+          includes_collaboration?: boolean | null
+          includes_compliance?: boolean | null
+          includes_grants?: boolean | null
+          includes_innovation?: boolean | null
+          includes_reputation?: boolean | null
+          user_id?: string
+          verification_hash?: string | null
+        }
+        Relationships: []
       }
       academic_impact_index: {
         Row: {
@@ -754,6 +853,48 @@ export type Database = {
           created_at?: string
           expires_at?: string
           id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      adaptability_index: {
+        Row: {
+          collaboration_diversity: number | null
+          computed_at: string
+          cross_domain_participation: number | null
+          funding_body_diversity: number | null
+          geographic_spread: number | null
+          id: string
+          innovation_pivot_frequency: number | null
+          interdisciplinary_grants: number | null
+          overall_adaptability: number | null
+          skill_evolution_rate: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_diversity?: number | null
+          computed_at?: string
+          cross_domain_participation?: number | null
+          funding_body_diversity?: number | null
+          geographic_spread?: number | null
+          id?: string
+          innovation_pivot_frequency?: number | null
+          interdisciplinary_grants?: number | null
+          overall_adaptability?: number | null
+          skill_evolution_rate?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_diversity?: number | null
+          computed_at?: string
+          cross_domain_participation?: number | null
+          funding_body_diversity?: number | null
+          geographic_spread?: number | null
+          id?: string
+          innovation_pivot_frequency?: number | null
+          interdisciplinary_grants?: number | null
+          overall_adaptability?: number | null
+          skill_evolution_rate?: number | null
           user_id?: string
         }
         Relationships: []
@@ -5296,6 +5437,105 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      career_risk_indicators: {
+        Row: {
+          collaboration_concentration_risk: number | null
+          compliance_instability: number | null
+          computed_at: string
+          domain_obsolescence: number | null
+          early_warnings: Json | null
+          funding_dependency_risk: number | null
+          high_grant_failure_cluster: number | null
+          id: string
+          innovation_decline: number | null
+          overall_risk_level: string | null
+          publication_stagnation: number | null
+          reputation_volatility: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_concentration_risk?: number | null
+          compliance_instability?: number | null
+          computed_at?: string
+          domain_obsolescence?: number | null
+          early_warnings?: Json | null
+          funding_dependency_risk?: number | null
+          high_grant_failure_cluster?: number | null
+          id?: string
+          innovation_decline?: number | null
+          overall_risk_level?: string | null
+          publication_stagnation?: number | null
+          reputation_volatility?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_concentration_risk?: number | null
+          compliance_instability?: number | null
+          computed_at?: string
+          domain_obsolescence?: number | null
+          early_warnings?: Json | null
+          funding_dependency_risk?: number | null
+          high_grant_failure_cluster?: number | null
+          id?: string
+          innovation_decline?: number | null
+          overall_risk_level?: string | null
+          publication_stagnation?: number | null
+          reputation_volatility?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      career_trajectory_snapshots: {
+        Row: {
+          active_grants: number | null
+          collaboration_count: number | null
+          compliance_score: number | null
+          created_at: string
+          domains: string[] | null
+          funding_total: number | null
+          id: string
+          industry_engagements: number | null
+          overall_mdrs: number | null
+          patents_count: number | null
+          publications_count: number | null
+          snapshot_date: string
+          startups_count: number | null
+          user_id: string
+        }
+        Insert: {
+          active_grants?: number | null
+          collaboration_count?: number | null
+          compliance_score?: number | null
+          created_at?: string
+          domains?: string[] | null
+          funding_total?: number | null
+          id?: string
+          industry_engagements?: number | null
+          overall_mdrs?: number | null
+          patents_count?: number | null
+          publications_count?: number | null
+          snapshot_date: string
+          startups_count?: number | null
+          user_id: string
+        }
+        Update: {
+          active_grants?: number | null
+          collaboration_count?: number | null
+          compliance_score?: number | null
+          created_at?: string
+          domains?: string[] | null
+          funding_total?: number | null
+          id?: string
+          industry_engagements?: number | null
+          overall_mdrs?: number | null
+          patents_count?: number | null
+          publications_count?: number | null
+          snapshot_date?: string
+          startups_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       change_freeze_policy: {
         Row: {
@@ -14745,6 +14985,51 @@ export type Database = {
           user_id?: string
           video_url?: string | null
           visual_impact_score?: number | null
+        }
+        Relationships: []
+      }
+      execution_reliability_profiles: {
+        Row: {
+          audit_pass_rate: number | null
+          budget_variance_pct: number | null
+          computed_at: string
+          deliverable_acceptance_pct: number | null
+          dispute_count: number | null
+          escrow_integrity_compliance: number | null
+          grant_renewal_rate: number | null
+          id: string
+          on_time_milestone_pct: number | null
+          reporting_punctuality: number | null
+          sponsor_satisfaction: number | null
+          user_id: string
+        }
+        Insert: {
+          audit_pass_rate?: number | null
+          budget_variance_pct?: number | null
+          computed_at?: string
+          deliverable_acceptance_pct?: number | null
+          dispute_count?: number | null
+          escrow_integrity_compliance?: number | null
+          grant_renewal_rate?: number | null
+          id?: string
+          on_time_milestone_pct?: number | null
+          reporting_punctuality?: number | null
+          sponsor_satisfaction?: number | null
+          user_id: string
+        }
+        Update: {
+          audit_pass_rate?: number | null
+          budget_variance_pct?: number | null
+          computed_at?: string
+          deliverable_acceptance_pct?: number | null
+          dispute_count?: number | null
+          escrow_integrity_compliance?: number | null
+          grant_renewal_rate?: number | null
+          id?: string
+          on_time_milestone_pct?: number | null
+          reporting_punctuality?: number | null
+          sponsor_satisfaction?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -27957,6 +28242,66 @@ export type Database = {
           retraining_due?: string | null
           survival_prediction_variance?: number | null
           total_predictions?: number | null
+        }
+        Relationships: []
+      }
+      multi_dimensional_reputation_scores: {
+        Row: {
+          citation_quality_index: number | null
+          collaboration_trust_score: number | null
+          commercialization_impact_score: number | null
+          compliance_integrity_score: number | null
+          computed_at: string
+          cross_discipline_influence_score: number | null
+          funding_efficiency_score: number | null
+          grant_reliability_score: number | null
+          id: string
+          institutional_contribution_score: number | null
+          longitudinal_stability_score: number | null
+          open_science_contribution_score: number | null
+          overall_mdrs: number | null
+          policy_influence_score: number | null
+          reproducibility_reliability_index: number | null
+          user_id: string
+          weight_breakdown: Json | null
+        }
+        Insert: {
+          citation_quality_index?: number | null
+          collaboration_trust_score?: number | null
+          commercialization_impact_score?: number | null
+          compliance_integrity_score?: number | null
+          computed_at?: string
+          cross_discipline_influence_score?: number | null
+          funding_efficiency_score?: number | null
+          grant_reliability_score?: number | null
+          id?: string
+          institutional_contribution_score?: number | null
+          longitudinal_stability_score?: number | null
+          open_science_contribution_score?: number | null
+          overall_mdrs?: number | null
+          policy_influence_score?: number | null
+          reproducibility_reliability_index?: number | null
+          user_id: string
+          weight_breakdown?: Json | null
+        }
+        Update: {
+          citation_quality_index?: number | null
+          collaboration_trust_score?: number | null
+          commercialization_impact_score?: number | null
+          compliance_integrity_score?: number | null
+          computed_at?: string
+          cross_discipline_influence_score?: number | null
+          funding_efficiency_score?: number | null
+          grant_reliability_score?: number | null
+          id?: string
+          institutional_contribution_score?: number | null
+          longitudinal_stability_score?: number | null
+          open_science_contribution_score?: number | null
+          overall_mdrs?: number | null
+          policy_influence_score?: number | null
+          reproducibility_reliability_index?: number | null
+          user_id?: string
+          weight_breakdown?: Json | null
         }
         Relationships: []
       }
