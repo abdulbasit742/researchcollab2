@@ -5608,6 +5608,75 @@ export type Database = {
         }
         Relationships: []
       }
+      communication_analytics: {
+        Row: {
+          approval_delay_minutes: number | null
+          avg_response_time_minutes: number | null
+          communication_consistency_score: number | null
+          id: string
+          milestone_feedback_latency_minutes: number | null
+          period: string
+          responsiveness_tier: string | null
+          total_messages_sent: number | null
+          total_threads_active: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          approval_delay_minutes?: number | null
+          avg_response_time_minutes?: number | null
+          communication_consistency_score?: number | null
+          id?: string
+          milestone_feedback_latency_minutes?: number | null
+          period: string
+          responsiveness_tier?: string | null
+          total_messages_sent?: number | null
+          total_threads_active?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          approval_delay_minutes?: number | null
+          avg_response_time_minutes?: number | null
+          communication_consistency_score?: number | null
+          id?: string
+          milestone_feedback_latency_minutes?: number | null
+          period?: string
+          responsiveness_tier?: string | null
+          total_messages_sent?: number | null
+          total_threads_active?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      communication_badges: {
+        Row: {
+          awarded_at: string | null
+          badge_type: string
+          evidence: Json | null
+          id: string
+          is_active: boolean | null
+          user_id: string
+        }
+        Insert: {
+          awarded_at?: string | null
+          badge_type: string
+          evidence?: Json | null
+          id?: string
+          is_active?: boolean | null
+          user_id: string
+        }
+        Update: {
+          awarded_at?: string | null
+          badge_type?: string
+          evidence?: Json | null
+          id?: string
+          is_active?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       community_challenges: {
         Row: {
           appeal_available: boolean | null
@@ -10572,6 +10641,47 @@ export type Database = {
           sponsor_dispute_probability?: number | null
         }
         Relationships: []
+      }
+      dispute_prevention_signals: {
+        Row: {
+          detected_at: string | null
+          id: string
+          metadata: Json | null
+          resolved: boolean | null
+          resolved_at: string | null
+          severity: string | null
+          signal_type: string
+          thread_id: string | null
+        }
+        Insert: {
+          detected_at?: string | null
+          id?: string
+          metadata?: Json | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          signal_type: string
+          thread_id?: string | null
+        }
+        Update: {
+          detected_at?: string | null
+          id?: string
+          metadata?: Json | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          signal_type?: string
+          thread_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dispute_prevention_signals_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dispute_risk_model: {
         Row: {
@@ -23591,13 +23701,25 @@ export type Database = {
         Row: {
           archived_by_user_a: boolean | null
           archived_by_user_b: boolean | null
+          context_entity_id: string | null
+          context_entity_type: string | null
+          context_type:
+            | Database["public"]["Enums"]["thread_context_type"]
+            | null
           created_at: string
+          escrow_amount: number | null
           id: string
+          introduction_reason:
+            | Database["public"]["Enums"]["introduction_reason"]
+            | null
+          is_auditable: boolean | null
           last_message_at: string
           last_message_text: string | null
+          milestone_count: number | null
           muted_by_user_a_until: string | null
           muted_by_user_b_until: string | null
           pair_key: string | null
+          priority: Database["public"]["Enums"]["thread_priority"] | null
           starred_by_user_a: boolean | null
           starred_by_user_b: boolean | null
           user_a: string
@@ -23606,13 +23728,25 @@ export type Database = {
         Insert: {
           archived_by_user_a?: boolean | null
           archived_by_user_b?: boolean | null
+          context_entity_id?: string | null
+          context_entity_type?: string | null
+          context_type?:
+            | Database["public"]["Enums"]["thread_context_type"]
+            | null
           created_at?: string
+          escrow_amount?: number | null
           id?: string
+          introduction_reason?:
+            | Database["public"]["Enums"]["introduction_reason"]
+            | null
+          is_auditable?: boolean | null
           last_message_at?: string
           last_message_text?: string | null
+          milestone_count?: number | null
           muted_by_user_a_until?: string | null
           muted_by_user_b_until?: string | null
           pair_key?: string | null
+          priority?: Database["public"]["Enums"]["thread_priority"] | null
           starred_by_user_a?: boolean | null
           starred_by_user_b?: boolean | null
           user_a: string
@@ -23621,13 +23755,25 @@ export type Database = {
         Update: {
           archived_by_user_a?: boolean | null
           archived_by_user_b?: boolean | null
+          context_entity_id?: string | null
+          context_entity_type?: string | null
+          context_type?:
+            | Database["public"]["Enums"]["thread_context_type"]
+            | null
           created_at?: string
+          escrow_amount?: number | null
           id?: string
+          introduction_reason?:
+            | Database["public"]["Enums"]["introduction_reason"]
+            | null
+          is_auditable?: boolean | null
           last_message_at?: string
           last_message_text?: string | null
+          milestone_count?: number | null
           muted_by_user_a_until?: string | null
           muted_by_user_b_until?: string | null
           pair_key?: string | null
+          priority?: Database["public"]["Enums"]["thread_priority"] | null
           starred_by_user_a?: boolean | null
           starred_by_user_b?: boolean | null
           user_a?: string
@@ -24596,6 +24742,68 @@ export type Database = {
           why_it_failed?: string
         }
         Relationships: []
+      }
+      negotiation_records: {
+        Row: {
+          budget_proposed: number | null
+          budget_revised: number | null
+          created_at: string | null
+          finalized_at: string | null
+          id: string
+          initiator_id: string
+          respondent_id: string
+          revision_count: number | null
+          risk_disclosures: Json | null
+          scope_summary: string | null
+          status: string | null
+          thread_id: string | null
+          timeline_proposed: string | null
+          timeline_revised: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          budget_proposed?: number | null
+          budget_revised?: number | null
+          created_at?: string | null
+          finalized_at?: string | null
+          id?: string
+          initiator_id: string
+          respondent_id: string
+          revision_count?: number | null
+          risk_disclosures?: Json | null
+          scope_summary?: string | null
+          status?: string | null
+          thread_id?: string | null
+          timeline_proposed?: string | null
+          timeline_revised?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          budget_proposed?: number | null
+          budget_revised?: number | null
+          created_at?: string | null
+          finalized_at?: string | null
+          id?: string
+          initiator_id?: string
+          respondent_id?: string
+          revision_count?: number | null
+          risk_disclosures?: Json | null
+          scope_summary?: string | null
+          status?: string | null
+          thread_id?: string | null
+          timeline_proposed?: string | null
+          timeline_revised?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "negotiation_records_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       negotiation_sessions: {
         Row: {
@@ -43566,6 +43774,11 @@ export type Database = {
         | "review_received"
         | "profile_updated"
       governance_mode: "platform" | "delegated" | "autonomous"
+      introduction_reason:
+        | "collaboration_interest"
+        | "hiring_inquiry"
+        | "institutional_inquiry"
+        | "funding_discussion"
       isolation_level: "shared" | "logical" | "physical"
       knowledge_status:
         | "draft"
@@ -43622,6 +43835,18 @@ export type Database = {
         | "other"
       signal_severity: "info" | "low" | "medium" | "high" | "critical"
       swarm_decision_status: "open" | "voting" | "closed" | "executed"
+      thread_context_type:
+        | "deal"
+        | "opportunity"
+        | "institutional"
+        | "verified_introduction"
+        | "general"
+      thread_priority:
+        | "financial_action"
+        | "milestone_pending"
+        | "document_review"
+        | "institutional_escalation"
+        | "informational"
       trust_tier: "bronze" | "silver" | "gold" | "platinum"
       violation_severity: "warning" | "minor" | "major" | "critical"
     }
@@ -43797,6 +44022,12 @@ export const Constants = {
         "profile_updated",
       ],
       governance_mode: ["platform", "delegated", "autonomous"],
+      introduction_reason: [
+        "collaboration_interest",
+        "hiring_inquiry",
+        "institutional_inquiry",
+        "funding_discussion",
+      ],
       isolation_level: ["shared", "logical", "physical"],
       knowledge_status: [
         "draft",
@@ -43860,6 +44091,20 @@ export const Constants = {
       ],
       signal_severity: ["info", "low", "medium", "high", "critical"],
       swarm_decision_status: ["open", "voting", "closed", "executed"],
+      thread_context_type: [
+        "deal",
+        "opportunity",
+        "institutional",
+        "verified_introduction",
+        "general",
+      ],
+      thread_priority: [
+        "financial_action",
+        "milestone_pending",
+        "document_review",
+        "institutional_escalation",
+        "informational",
+      ],
       trust_tier: ["bronze", "silver", "gold", "platinum"],
       violation_severity: ["warning", "minor", "major", "critical"],
     },
