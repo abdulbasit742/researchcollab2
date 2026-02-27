@@ -15337,6 +15337,59 @@ export type Database = {
         }
         Relationships: []
       }
+      drift_events: {
+        Row: {
+          affected_funding_plan_ids: string[] | null
+          affected_policy_model_ids: string[] | null
+          confidence_score: number | null
+          detected_at: string
+          detection_trace: Json | null
+          drift_type: string
+          id: string
+          impact_score: number | null
+          related_claim_ids: string[] | null
+          severity: string | null
+          summary: string | null
+          workspace_id: string
+        }
+        Insert: {
+          affected_funding_plan_ids?: string[] | null
+          affected_policy_model_ids?: string[] | null
+          confidence_score?: number | null
+          detected_at?: string
+          detection_trace?: Json | null
+          drift_type: string
+          id?: string
+          impact_score?: number | null
+          related_claim_ids?: string[] | null
+          severity?: string | null
+          summary?: string | null
+          workspace_id: string
+        }
+        Update: {
+          affected_funding_plan_ids?: string[] | null
+          affected_policy_model_ids?: string[] | null
+          confidence_score?: number | null
+          detected_at?: string
+          detection_trace?: Json | null
+          drift_type?: string
+          id?: string
+          impact_score?: number | null
+          related_claim_ids?: string[] | null
+          severity?: string | null
+          summary?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "drift_events_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       due_diligence_contributions: {
         Row: {
           check_type: string
@@ -35480,6 +35533,50 @@ export type Database = {
           },
         ]
       }
+      knowledge_monitor_profiles: {
+        Row: {
+          created_at: string
+          drift_sensitivity_level: string
+          frequency: string
+          id: string
+          is_active: boolean | null
+          last_scan_at: string | null
+          monitoring_scope: string
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          drift_sensitivity_level?: string
+          frequency?: string
+          id?: string
+          is_active?: boolean | null
+          last_scan_at?: string | null
+          monitoring_scope?: string
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          drift_sensitivity_level?: string
+          frequency?: string
+          id?: string
+          is_active?: boolean | null
+          last_scan_at?: string | null
+          monitoring_scope?: string
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_monitor_profiles_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       knowledge_node_tags: {
         Row: {
           created_at: string
@@ -38221,6 +38318,44 @@ export type Database = {
           total_predictions?: number | null
         }
         Relationships: []
+      }
+      monitor_alerts: {
+        Row: {
+          alert_status: string
+          created_at: string
+          drift_event_id: string
+          id: string
+          priority_score: number | null
+          user_id: string
+          viewed_at: string | null
+        }
+        Insert: {
+          alert_status?: string
+          created_at?: string
+          drift_event_id: string
+          id?: string
+          priority_score?: number | null
+          user_id: string
+          viewed_at?: string | null
+        }
+        Update: {
+          alert_status?: string
+          created_at?: string
+          drift_event_id?: string
+          id?: string
+          priority_score?: number | null
+          user_id?: string
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "monitor_alerts_drift_event_id_fkey"
+            columns: ["drift_event_id"]
+            isOneToOne: false
+            referencedRelation: "drift_events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       mpbsb_deliverables: {
         Row: {
