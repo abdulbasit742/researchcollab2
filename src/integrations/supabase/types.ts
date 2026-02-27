@@ -58341,6 +58341,563 @@ export type Database = {
         }
         Relationships: []
       }
+      twode_ai_suggestions: {
+        Row: {
+          accepted: boolean | null
+          created_at: string | null
+          id: string
+          opportunity_id: string
+          reasoning: string | null
+          suggestion_text: string
+          suggestion_type: string
+        }
+        Insert: {
+          accepted?: boolean | null
+          created_at?: string | null
+          id?: string
+          opportunity_id: string
+          reasoning?: string | null
+          suggestion_text: string
+          suggestion_type: string
+        }
+        Update: {
+          accepted?: boolean | null
+          created_at?: string | null
+          id?: string
+          opportunity_id?: string
+          reasoning?: string | null
+          suggestion_text?: string
+          suggestion_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "twode_ai_suggestions_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "twode_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      twode_cross_border_checks: {
+        Row: {
+          checked_at: string | null
+          currency_constraints: string | null
+          data_sharing_restrictions: Json | null
+          export_control_clear: boolean | null
+          funding_eligible: boolean | null
+          id: string
+          ip_legal_considerations: string | null
+          jurisdiction_compatible: boolean | null
+          opportunity_id: string
+          target_region: string
+        }
+        Insert: {
+          checked_at?: string | null
+          currency_constraints?: string | null
+          data_sharing_restrictions?: Json | null
+          export_control_clear?: boolean | null
+          funding_eligible?: boolean | null
+          id?: string
+          ip_legal_considerations?: string | null
+          jurisdiction_compatible?: boolean | null
+          opportunity_id: string
+          target_region: string
+        }
+        Update: {
+          checked_at?: string | null
+          currency_constraints?: string | null
+          data_sharing_restrictions?: Json | null
+          export_control_clear?: boolean | null
+          funding_eligible?: boolean | null
+          id?: string
+          ip_legal_considerations?: string | null
+          jurisdiction_compatible?: boolean | null
+          opportunity_id?: string
+          target_region?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "twode_cross_border_checks_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "twode_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      twode_distribution_matches: {
+        Row: {
+          collaboration_history_strength: number | null
+          composite_rank: number | null
+          created_at: string | null
+          cross_border_eligibility: number | null
+          domain_expertise_overlap: number | null
+          execution_reliability: number | null
+          funding_experience_match: number | null
+          id: string
+          institutional_affiliation_fit: number | null
+          opportunity_id: string
+          past_outcome_performance: number | null
+          risk_compatibility: number | null
+          skill_alignment_pct: number | null
+          trust_density_compatibility: number | null
+          user_id: string
+          was_applied: boolean | null
+          was_shown: boolean | null
+        }
+        Insert: {
+          collaboration_history_strength?: number | null
+          composite_rank?: number | null
+          created_at?: string | null
+          cross_border_eligibility?: number | null
+          domain_expertise_overlap?: number | null
+          execution_reliability?: number | null
+          funding_experience_match?: number | null
+          id?: string
+          institutional_affiliation_fit?: number | null
+          opportunity_id: string
+          past_outcome_performance?: number | null
+          risk_compatibility?: number | null
+          skill_alignment_pct?: number | null
+          trust_density_compatibility?: number | null
+          user_id: string
+          was_applied?: boolean | null
+          was_shown?: boolean | null
+        }
+        Update: {
+          collaboration_history_strength?: number | null
+          composite_rank?: number | null
+          created_at?: string | null
+          cross_border_eligibility?: number | null
+          domain_expertise_overlap?: number | null
+          execution_reliability?: number | null
+          funding_experience_match?: number | null
+          id?: string
+          institutional_affiliation_fit?: number | null
+          opportunity_id?: string
+          past_outcome_performance?: number | null
+          risk_compatibility?: number | null
+          skill_alignment_pct?: number | null
+          trust_density_compatibility?: number | null
+          user_id?: string
+          was_applied?: boolean | null
+          was_shown?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "twode_distribution_matches_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "twode_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      twode_fair_distribution: {
+        Row: {
+          anti_elite_clustering: boolean | null
+          anti_monopoly_cap_applied: boolean | null
+          computed_at: string | null
+          domain_diversity: number | null
+          emerging_talent_exposure: number | null
+          id: string
+          institutional_balance: number | null
+          newcomer_access_pct: number | null
+          opportunity_id: string
+          regional_diversity_score: number | null
+        }
+        Insert: {
+          anti_elite_clustering?: boolean | null
+          anti_monopoly_cap_applied?: boolean | null
+          computed_at?: string | null
+          domain_diversity?: number | null
+          emerging_talent_exposure?: number | null
+          id?: string
+          institutional_balance?: number | null
+          newcomer_access_pct?: number | null
+          opportunity_id: string
+          regional_diversity_score?: number | null
+        }
+        Update: {
+          anti_elite_clustering?: boolean | null
+          anti_monopoly_cap_applied?: boolean | null
+          computed_at?: string | null
+          domain_diversity?: number | null
+          emerging_talent_exposure?: number | null
+          id?: string
+          institutional_balance?: number | null
+          newcomer_access_pct?: number | null
+          opportunity_id?: string
+          regional_diversity_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "twode_fair_distribution_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "twode_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      twode_global_map: {
+        Row: {
+          computed_at: string | null
+          cross_border_routes: Json | null
+          domain_clusters: Json | null
+          funding_corridor_strength: number | null
+          id: string
+          institutional_hiring_concentration: number | null
+          opportunity_density: number | null
+          region: string
+          startup_cofounder_hotspots: Json | null
+        }
+        Insert: {
+          computed_at?: string | null
+          cross_border_routes?: Json | null
+          domain_clusters?: Json | null
+          funding_corridor_strength?: number | null
+          id?: string
+          institutional_hiring_concentration?: number | null
+          opportunity_density?: number | null
+          region: string
+          startup_cofounder_hotspots?: Json | null
+        }
+        Update: {
+          computed_at?: string | null
+          cross_border_routes?: Json | null
+          domain_clusters?: Json | null
+          funding_corridor_strength?: number | null
+          id?: string
+          institutional_hiring_concentration?: number | null
+          opportunity_density?: number | null
+          region?: string
+          startup_cofounder_hotspots?: Json | null
+        }
+        Relationships: []
+      }
+      twode_impact_index: {
+        Row: {
+          composite_impact: number | null
+          computed_at: string | null
+          cross_border_collaboration: number | null
+          economic_multiplier: number | null
+          execution_success: number | null
+          funding_efficiency: number | null
+          id: string
+          innovation_output: number | null
+          institutional_integration: number | null
+          long_term_stability: number | null
+          opportunity_id: string
+          trust_growth_impact: number | null
+        }
+        Insert: {
+          composite_impact?: number | null
+          computed_at?: string | null
+          cross_border_collaboration?: number | null
+          economic_multiplier?: number | null
+          execution_success?: number | null
+          funding_efficiency?: number | null
+          id?: string
+          innovation_output?: number | null
+          institutional_integration?: number | null
+          long_term_stability?: number | null
+          opportunity_id: string
+          trust_growth_impact?: number | null
+        }
+        Update: {
+          composite_impact?: number | null
+          computed_at?: string | null
+          cross_border_collaboration?: number | null
+          economic_multiplier?: number | null
+          execution_success?: number | null
+          funding_efficiency?: number | null
+          id?: string
+          innovation_output?: number | null
+          institutional_integration?: number | null
+          long_term_stability?: number | null
+          opportunity_id?: string
+          trust_growth_impact?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "twode_impact_index_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "twode_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      twode_manipulation_flags: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          evidence: Json | null
+          flag_type: string
+          id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string | null
+          status: string | null
+          target_opportunity_id: string | null
+          target_user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          evidence?: Json | null
+          flag_type: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          target_opportunity_id?: string | null
+          target_user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          evidence?: Json | null
+          flag_type?: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          target_opportunity_id?: string | null
+          target_user_id?: string | null
+        }
+        Relationships: []
+      }
+      twode_match_explanations: {
+        Row: {
+          created_at: string | null
+          domain_alignment_detail: string | null
+          funding_compatibility_detail: string | null
+          geographic_relevance: string | null
+          id: string
+          institutional_fit_detail: string | null
+          match_id: string
+          reason_summary: string
+          risk_exposure_level: string | null
+          skill_match_detail: Json | null
+          trust_threshold_met: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          domain_alignment_detail?: string | null
+          funding_compatibility_detail?: string | null
+          geographic_relevance?: string | null
+          id?: string
+          institutional_fit_detail?: string | null
+          match_id: string
+          reason_summary: string
+          risk_exposure_level?: string | null
+          skill_match_detail?: Json | null
+          trust_threshold_met?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          domain_alignment_detail?: string | null
+          funding_compatibility_detail?: string | null
+          geographic_relevance?: string | null
+          id?: string
+          institutional_fit_detail?: string | null
+          match_id?: string
+          reason_summary?: string
+          risk_exposure_level?: string | null
+          skill_match_detail?: Json | null
+          trust_threshold_met?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "twode_match_explanations_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "twode_distribution_matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      twode_opportunities: {
+        Row: {
+          compliance_documents: Json | null
+          compliance_requirements: Json | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          domain: string | null
+          escrow_linked: boolean | null
+          evaluation_criteria: Json | null
+          expected_deliverables: Json | null
+          funding_structure: Json | null
+          geographic_scope: string[] | null
+          id: string
+          institutional_sponsor_id: string | null
+          is_institutional: boolean | null
+          opportunity_type: string
+          require_compliance_history: boolean | null
+          require_cross_border_clearance: boolean | null
+          require_domain_authority: boolean | null
+          require_funding_experience: boolean | null
+          require_institutional_verification: boolean | null
+          required_skills: string[] | null
+          status: string | null
+          timeline: Json | null
+          title: string
+          trust_threshold: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          compliance_documents?: Json | null
+          compliance_requirements?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          domain?: string | null
+          escrow_linked?: boolean | null
+          evaluation_criteria?: Json | null
+          expected_deliverables?: Json | null
+          funding_structure?: Json | null
+          geographic_scope?: string[] | null
+          id?: string
+          institutional_sponsor_id?: string | null
+          is_institutional?: boolean | null
+          opportunity_type?: string
+          require_compliance_history?: boolean | null
+          require_cross_border_clearance?: boolean | null
+          require_domain_authority?: boolean | null
+          require_funding_experience?: boolean | null
+          require_institutional_verification?: boolean | null
+          required_skills?: string[] | null
+          status?: string | null
+          timeline?: Json | null
+          title: string
+          trust_threshold?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          compliance_documents?: Json | null
+          compliance_requirements?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          domain?: string | null
+          escrow_linked?: boolean | null
+          evaluation_criteria?: Json | null
+          expected_deliverables?: Json | null
+          funding_structure?: Json | null
+          geographic_scope?: string[] | null
+          id?: string
+          institutional_sponsor_id?: string | null
+          is_institutional?: boolean | null
+          opportunity_type?: string
+          require_compliance_history?: boolean | null
+          require_cross_border_clearance?: boolean | null
+          require_domain_authority?: boolean | null
+          require_funding_experience?: boolean | null
+          require_institutional_verification?: boolean | null
+          required_skills?: string[] | null
+          status?: string | null
+          timeline?: Json | null
+          title?: string
+          trust_threshold?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      twode_performance: {
+        Row: {
+          application_quality_rate: number | null
+          collaboration_longevity: number | null
+          computed_at: string | null
+          cross_border_success: number | null
+          funding_completion: number | null
+          id: string
+          industry_deployment: number | null
+          milestone_success_rate: number | null
+          opportunity_id: string
+          patent_conversion: number | null
+          startup_formation: number | null
+          trust_growth_impact: number | null
+        }
+        Insert: {
+          application_quality_rate?: number | null
+          collaboration_longevity?: number | null
+          computed_at?: string | null
+          cross_border_success?: number | null
+          funding_completion?: number | null
+          id?: string
+          industry_deployment?: number | null
+          milestone_success_rate?: number | null
+          opportunity_id: string
+          patent_conversion?: number | null
+          startup_formation?: number | null
+          trust_growth_impact?: number | null
+        }
+        Update: {
+          application_quality_rate?: number | null
+          collaboration_longevity?: number | null
+          computed_at?: string | null
+          cross_border_success?: number | null
+          funding_completion?: number | null
+          id?: string
+          industry_deployment?: number | null
+          milestone_success_rate?: number | null
+          opportunity_id?: string
+          patent_conversion?: number | null
+          startup_formation?: number | null
+          trust_growth_impact?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "twode_performance_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "twode_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      twode_user_dashboard: {
+        Row: {
+          computed_at: string | null
+          cross_border_alerts: Json | null
+          funding_readiness_alerts: Json | null
+          id: string
+          institutional_compatibility: Json | null
+          risk_warnings: Json | null
+          skill_gap_suggestions: Json | null
+          trust_upgrade_suggestions: Json | null
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string | null
+          cross_border_alerts?: Json | null
+          funding_readiness_alerts?: Json | null
+          id?: string
+          institutional_compatibility?: Json | null
+          risk_warnings?: Json | null
+          skill_gap_suggestions?: Json | null
+          trust_upgrade_suggestions?: Json | null
+          user_id: string
+        }
+        Update: {
+          computed_at?: string | null
+          cross_border_alerts?: Json | null
+          funding_readiness_alerts?: Json | null
+          id?: string
+          institutional_compatibility?: Json | null
+          risk_warnings?: Json | null
+          skill_gap_suggestions?: Json | null
+          trust_upgrade_suggestions?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       unified_execution_identity: {
         Row: {
           career_trajectory_trend: string | null
