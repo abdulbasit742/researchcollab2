@@ -45097,6 +45097,89 @@ export type Database = {
           },
         ]
       }
+      portfolio_allocations: {
+        Row: {
+          allocated_budget: number | null
+          capital_efficiency_score: number | null
+          created_at: string
+          cross_border_index: number | null
+          diversification_score: number | null
+          expected_impact_score: number | null
+          id: string
+          impact_per_capital: number | null
+          innovation_novelty_index: number | null
+          institutional_capacity_load: number | null
+          is_underfunded_high_potential: boolean | null
+          knowledge_stability_score: number | null
+          policy_alignment_score: number | null
+          portfolio_id: string
+          project_reference_id: string | null
+          project_title: string
+          region: string | null
+          risk_score: number | null
+          sector: string | null
+          stage: string | null
+          trust_score: number | null
+          workspace_id: string | null
+        }
+        Insert: {
+          allocated_budget?: number | null
+          capital_efficiency_score?: number | null
+          created_at?: string
+          cross_border_index?: number | null
+          diversification_score?: number | null
+          expected_impact_score?: number | null
+          id?: string
+          impact_per_capital?: number | null
+          innovation_novelty_index?: number | null
+          institutional_capacity_load?: number | null
+          is_underfunded_high_potential?: boolean | null
+          knowledge_stability_score?: number | null
+          policy_alignment_score?: number | null
+          portfolio_id: string
+          project_reference_id?: string | null
+          project_title: string
+          region?: string | null
+          risk_score?: number | null
+          sector?: string | null
+          stage?: string | null
+          trust_score?: number | null
+          workspace_id?: string | null
+        }
+        Update: {
+          allocated_budget?: number | null
+          capital_efficiency_score?: number | null
+          created_at?: string
+          cross_border_index?: number | null
+          diversification_score?: number | null
+          expected_impact_score?: number | null
+          id?: string
+          impact_per_capital?: number | null
+          innovation_novelty_index?: number | null
+          institutional_capacity_load?: number | null
+          is_underfunded_high_potential?: boolean | null
+          knowledge_stability_score?: number | null
+          policy_alignment_score?: number | null
+          portfolio_id?: string
+          project_reference_id?: string | null
+          project_title?: string
+          region?: string | null
+          risk_score?: number | null
+          sector?: string | null
+          stage?: string | null
+          trust_score?: number | null
+          workspace_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_allocations_portfolio_id_fkey"
+            columns: ["portfolio_id"]
+            isOneToOne: false
+            referencedRelation: "research_portfolios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       portfolio_projects: {
         Row: {
           created_at: string
@@ -45137,6 +45220,50 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portfolio_snapshots: {
+        Row: {
+          alternatives_rejected: Json | null
+          confidence_score: number | null
+          created_at: string
+          id: string
+          optimization_inputs: Json | null
+          portfolio_id: string
+          snapshot_data: Json | null
+          snapshot_type: string | null
+          weights_used: Json | null
+        }
+        Insert: {
+          alternatives_rejected?: Json | null
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          optimization_inputs?: Json | null
+          portfolio_id: string
+          snapshot_data?: Json | null
+          snapshot_type?: string | null
+          weights_used?: Json | null
+        }
+        Update: {
+          alternatives_rejected?: Json | null
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          optimization_inputs?: Json | null
+          portfolio_id?: string
+          snapshot_data?: Json | null
+          snapshot_type?: string | null
+          weights_used?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_snapshots_portfolio_id_fkey"
+            columns: ["portfolio_id"]
+            isOneToOne: false
+            referencedRelation: "research_portfolios"
             referencedColumns: ["id"]
           },
         ]
@@ -52236,6 +52363,45 @@ export type Database = {
           title?: string
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      research_portfolios: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          owner_id: string
+          owner_type: string
+          status: string | null
+          strategy_profile: Json | null
+          title: string
+          total_budget: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          owner_id: string
+          owner_type?: string
+          status?: string | null
+          strategy_profile?: Json | null
+          title: string
+          total_budget?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          owner_id?: string
+          owner_type?: string
+          status?: string | null
+          strategy_profile?: Json | null
+          title?: string
+          total_budget?: number | null
+          updated_at?: string
         }
         Relationships: []
       }

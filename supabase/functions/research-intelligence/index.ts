@@ -1664,6 +1664,142 @@ Return ONLY valid JSON:
       });
     }
 
+    // ============================================================
+    // ACTION: portfolio_optimize — AI-driven portfolio optimization
+    // ============================================================
+    if (action === "portfolio_optimize") {
+      const { portfolio_id } = body;
+
+      const { data: portfolio } = await supabase.from("research_portfolios").select("*").eq("id", portfolio_id).single();
+      if (!portfolio) return jsonResponse({ error: "Portfolio not found" }, 404);
+
+      const { data: allocations } = await supabase.from("portfolio_allocations").select("*").eq("portfolio_id", portfolio_id);
+      if (!allocations || allocations.length === 0) return jsonResponse({ error: "No projects in portfolio" }, 400);
+
+      const strategy = portfolio.strategy_profile || {};
+      const projectSummary = allocations.map((a: any) =>
+        `[${a.id}] "${a.project_title}" budget:${a.allocated_budget} risk:${a.risk_score} impact:${a.expected_impact_score} trust:${a.trust_score} stability:${a.knowledge_stability_score} policy:${a.policy_alignment_score} region:${a.region||'unset'} sector:${a.sector||'unset'} stage:${a.stage}`
+      ).join("\n");
+
+      const aiResult = await callAI([
+        {
+          role: "system",
+          content: `You are a research portfolio optimization engine. Given projects and a strategy profile, suggest optimal budget reallocation.
+
+Return ONLY valid JSON:
+{
+  "reallocation_plan": [{"project_id": "uuid", "current_budget": N, "suggested_budget": N, "reasoning": "..."}],
+  "diversification_index": 0-100,
+  "concentration_risks": [{"type": "topic|institution|region|trust", "description": "...", "severity": "low|medium|high"}],
+  "underfunded_high_potential": [{"project_id": "uuid", "reasoning": "..."}],
+  "overall_portfolio_score": 0-100,
+  "impact_efficiency_ranking": [{"project_id": "uuid", "impact_per_dollar": N}],
+  "confidence_score": 0.0-1.0,
+  "trade_offs": ["..."],
+  "alternatives_rejected": ["..."]
+}`
+        },
+        {
+          role: "user",
+          content: `PORTFOLIO: "${portfolio.title}" (${portfolio.owner_type}) Budget: ${portfolio.total_budget}\nSTRATEGY: ${JSON.stringify(strategy)}\n\nPROJECTS (${allocations.length}):\n${projectSummary}`
+        }
+      ]);
+
+      if (aiResult.error) return jsonResponse({ error: aiResult.error }, 500);
+
+      let parsed: any = { reallocation_plan: [], diversification_index: 50, concentration_risks: [], underfunded_high_potential: [], overall_portfolio_score: 50, impact_efficiency_ranking: [], confidence_score: 0.5, trade_offs: [], alternatives_rejected: [] };
+      try {
+        const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        parsed = JSON.parse(cleaned);
+      } catch { /* defaults */ }
+
+      // Mark underfunded high-potential
+      for (const uhp of (parsed.underfunded_high_potential || [])) {
+        if (uhp.project_id) {
+          await supabase.from("portfolio_allocations").update({ is_underfunded_high_potential: true }).eq("id", uhp.project_id);
+        }
+      }
+
+      // Save snapshot
+      await supabase.from("portfolio_snapshots").insert({
+        portfolio_id,
+        snapshot_type: "optimization",
+        snapshot_data: parsed,
+        optimization_inputs: { strategy, project_count: allocations.length, total_budget: portfolio.total_budget },
+        weights_used: strategy,
+        alternatives_rejected: parsed.alternatives_rejected,
+        confidence_score: parsed.confidence_score || 0.5,
+      });
+
+      return jsonResponse({ success: true, ...parsed });
+    }
+
+    // ============================================================
+    // ACTION: portfolio_stress_test — Stress test portfolio scenarios
+    // ============================================================
+    if (action === "portfolio_stress_test") {
+      const { portfolio_id, stress_type } = body;
+
+      const { data: portfolio } = await supabase.from("research_portfolios").select("*").eq("id", portfolio_id).single();
+      if (!portfolio) return jsonResponse({ error: "Portfolio not found" }, 404);
+
+      const { data: allocations } = await supabase.from("portfolio_allocations").select("*").eq("portfolio_id", portfolio_id);
+
+      const projectSummary = (allocations || []).map((a: any) =>
+        `"${a.project_title}" budget:${a.allocated_budget} risk:${a.risk_score} impact:${a.expected_impact_score} trust:${a.trust_score} stability:${a.knowledge_stability_score} region:${a.region||'global'}`
+      ).join("\n");
+
+      const stressScenarios = stress_type || "budget_cut_20,knowledge_drift,policy_shift,trust_downgrade,cross_border_restriction";
+
+      const aiResult = await callAI([
+        {
+          role: "system",
+          content: `You are a portfolio stress testing engine. Simulate the impact of stress scenarios on a research portfolio.
+
+Return ONLY valid JSON:
+{
+  "scenarios": [
+    {
+      "scenario": "...",
+      "resilience_score": 0-100,
+      "capital_loss_pct": N,
+      "impact_loss_pct": N,
+      "recovery_months": N,
+      "most_affected_projects": ["title..."],
+      "mitigation_suggestions": ["..."]
+    }
+  ],
+  "overall_resilience": 0-100,
+  "weakest_link": "project title",
+  "strongest_anchor": "project title"
+}`
+        },
+        {
+          role: "user",
+          content: `PORTFOLIO: "${portfolio.title}" Budget: ${portfolio.total_budget}\nSTRESS SCENARIOS: ${stressScenarios}\n\nPROJECTS:\n${projectSummary}`
+        }
+      ]);
+
+      if (aiResult.error) return jsonResponse({ error: aiResult.error }, 500);
+
+      let parsed: any = { scenarios: [], overall_resilience: 50, weakest_link: "", strongest_anchor: "" };
+      try {
+        const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        parsed = JSON.parse(cleaned);
+      } catch { /* defaults */ }
+
+      // Save snapshot
+      await supabase.from("portfolio_snapshots").insert({
+        portfolio_id,
+        snapshot_type: "stress_test",
+        snapshot_data: parsed,
+        optimization_inputs: { stress_type: stressScenarios },
+        confidence_score: 0.6,
+      });
+
+      return jsonResponse({ success: true, ...parsed });
+    }
+
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
