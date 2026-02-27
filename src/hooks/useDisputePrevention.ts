@@ -1,4 +1,6 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 export interface DisputeRiskIndicator {
   id: string;
@@ -14,10 +16,10 @@ export interface DisputeRiskIndicator {
 export interface DealCommunicationAnalysis {
   dealId: string;
   totalMessages: number;
-  averageResponseTime: number; // hours
+  averageResponseTime: number;
   responseTimetrend: "improving" | "stable" | "declining";
-  sentimentScore: number; // -1 to 1
-  clarityScore: number; // 0 to 100
+  sentimentScore: number;
+  clarityScore: number;
   lastActivityAt: Date;
   redFlags: string[];
 }
@@ -25,7 +27,7 @@ export interface DealCommunicationAnalysis {
 export interface DisputeRiskAssessment {
   dealId: string;
   dealTitle: string;
-  overallRiskScore: number; // 0-100
+  overallRiskScore: number;
   riskLevel: "low" | "moderate" | "elevated" | "high" | "critical";
   indicators: DisputeRiskIndicator[];
   communicationAnalysis: DealCommunicationAnalysis;
@@ -40,129 +42,127 @@ export interface ProactiveRecommendation {
   title: string;
   description: string;
   actionLabel: string;
-  estimatedImpact: number; // risk reduction percentage
+  estimatedImpact: number;
 }
 
-const MOCK_ASSESSMENTS: DisputeRiskAssessment[] = [
-  {
-    dealId: "deal-1",
-    dealTitle: "AI Research Partnership",
-    overallRiskScore: 28,
-    riskLevel: "low",
-    indicators: [
-      {
-        id: "ind-1",
-        type: "communication_gap",
-        severity: "low",
-        description: "Last meaningful exchange was 5 days ago",
-        detectedAt: new Date(Date.now() - 86400000),
-        suggestedAction: "Send a brief progress update to maintain communication flow",
-        isResolved: false,
-      },
-    ],
-    communicationAnalysis: {
-      dealId: "deal-1",
-      totalMessages: 47,
-      averageResponseTime: 4.2,
-      responseTimetrend: "stable",
-      sentimentScore: 0.72,
-      clarityScore: 85,
-      lastActivityAt: new Date(Date.now() - 86400000 * 5),
-      redFlags: [],
-    },
-    recommendations: [
-      {
-        id: "rec-1",
-        priority: "when_possible",
-        category: "communication",
-        title: "Schedule Regular Check-ins",
-        description: "Consider setting up bi-weekly sync calls to maintain alignment",
-        actionLabel: "Schedule Call",
-        estimatedImpact: 15,
-      },
-    ],
-    lastAssessedAt: new Date(),
-  },
-  {
-    dealId: "deal-2",
-    dealTitle: "Data Analytics Consulting",
-    overallRiskScore: 62,
-    riskLevel: "elevated",
-    indicators: [
-      {
-        id: "ind-2",
-        type: "scope_creep",
-        severity: "medium",
-        description: "3 new requirements added without formal change request",
-        detectedAt: new Date(Date.now() - 86400000 * 2),
-        suggestedAction: "Document scope changes and discuss timeline/budget impact",
-        isResolved: false,
-      },
-      {
-        id: "ind-3",
-        type: "delayed_response",
-        severity: "medium",
-        description: "Average response time increased from 6 hours to 48 hours",
-        detectedAt: new Date(Date.now() - 86400000 * 3),
-        suggestedAction: "Address response delays directly with counterparty",
-        isResolved: false,
-      },
-      {
-        id: "ind-4",
-        type: "milestone_slip",
-        severity: "high",
-        description: "Milestone 2 is 5 days overdue with no update provided",
-        detectedAt: new Date(Date.now() - 86400000 * 5),
-        suggestedAction: "Request immediate status update and revised timeline",
-        isResolved: false,
-      },
-    ],
-    communicationAnalysis: {
-      dealId: "deal-2",
-      totalMessages: 23,
-      averageResponseTime: 48,
-      responseTimetrend: "declining",
-      sentimentScore: 0.31,
-      clarityScore: 58,
-      lastActivityAt: new Date(Date.now() - 86400000 * 2),
-      redFlags: ["Response time increasing", "Unclear deliverable definitions", "Missing acknowledgments"],
-    },
-    recommendations: [
-      {
-        id: "rec-2",
-        priority: "immediate",
-        category: "scope",
-        title: "Formalize Scope Changes",
-        description: "Create a change request document for the 3 new requirements with updated timeline and cost",
-        actionLabel: "Create Change Request",
-        estimatedImpact: 35,
-      },
-      {
-        id: "rec-3",
-        priority: "immediate",
-        category: "milestone",
-        title: "Address Milestone Delay",
-        description: "Request written explanation for delay and new completion date with consequences",
-        actionLabel: "Request Update",
-        estimatedImpact: 25,
-      },
-      {
-        id: "rec-4",
-        priority: "soon",
-        category: "communication",
-        title: "Establish Response SLA",
-        description: "Propose a 24-hour response time agreement for critical matters",
-        actionLabel: "Propose SLA",
-        estimatedImpact: 15,
-      },
-    ],
-    lastAssessedAt: new Date(),
-  },
-];
-
 export function useDisputePrevention(dealId?: string) {
-  const [assessments] = useState<DisputeRiskAssessment[]>(MOCK_ASSESSMENTS);
+  const { user } = useAuth();
+  const [assessments, setAssessments] = useState<DisputeRiskAssessment[]>([]);
   const [loading, setLoading] = useState(false);
+
+  // Fetch real deal data and compute risk assessments
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchDeals = async () => {
+      setLoading(true);
+      try {
+        const { data: deals } = await supabase
+          .from("deal_rooms")
+          .select("id, title, status, buyer_id, seller_id, updated_at, deadline, agreed_amount")
+          .or(`buyer_id.eq.${user.id},seller_id.eq.${user.id}`)
+          .not("status", "in", '("completed","cancelled")');
+
+        if (!deals || deals.length === 0) {
+          setAssessments([]);
+          return;
+        }
+
+        const computed: DisputeRiskAssessment[] = deals.map((d: any) => {
+          const indicators: DisputeRiskIndicator[] = [];
+          let riskScore = 0;
+
+          // Check deadline
+          if (d.deadline) {
+            const daysLeft = Math.ceil((new Date(d.deadline).getTime() - Date.now()) / 86400000);
+            if (daysLeft < 0) {
+              indicators.push({
+                id: `${d.id}-overdue`,
+                type: "milestone_slip",
+                severity: daysLeft < -7 ? "high" : "medium",
+                description: `Deal is ${Math.abs(daysLeft)} days past deadline`,
+                detectedAt: new Date(),
+                suggestedAction: "Request status update and revised timeline",
+                isResolved: false,
+              });
+              riskScore += Math.min(40, Math.abs(daysLeft) * 5);
+            }
+          }
+
+          // Check for disputed status
+          if (d.status === "disputed") {
+            indicators.push({
+              id: `${d.id}-disputed`,
+              type: "payment_concern",
+              severity: "high",
+              description: "Deal is in disputed state",
+              detectedAt: new Date(),
+              suggestedAction: "Engage in dispute resolution process",
+              isResolved: false,
+            });
+            riskScore += 40;
+          }
+
+          // Check last activity
+          const daysSinceUpdate = Math.ceil((Date.now() - new Date(d.updated_at).getTime()) / 86400000);
+          if (daysSinceUpdate > 7) {
+            indicators.push({
+              id: `${d.id}-stale`,
+              type: "communication_gap",
+              severity: daysSinceUpdate > 14 ? "high" : "medium",
+              description: `No activity for ${daysSinceUpdate} days`,
+              detectedAt: new Date(),
+              suggestedAction: "Send a progress check-in message",
+              isResolved: false,
+            });
+            riskScore += Math.min(30, daysSinceUpdate * 2);
+          }
+
+          riskScore = Math.min(100, riskScore);
+          const riskLevel = riskScore <= 20 ? "low" : riskScore <= 40 ? "moderate" : riskScore <= 60 ? "elevated" : riskScore <= 80 ? "high" : "critical";
+
+          const recommendations: ProactiveRecommendation[] = [];
+          if (daysSinceUpdate > 3) {
+            recommendations.push({
+              id: `${d.id}-comm`,
+              priority: daysSinceUpdate > 7 ? "immediate" : "soon",
+              category: "communication",
+              title: "Re-establish Communication",
+              description: "Send a progress update to maintain deal momentum",
+              actionLabel: "Send Message",
+              estimatedImpact: 20,
+            });
+          }
+
+          return {
+            dealId: d.id,
+            dealTitle: d.title || "Untitled Deal",
+            overallRiskScore: riskScore,
+            riskLevel,
+            indicators,
+            communicationAnalysis: {
+              dealId: d.id,
+              totalMessages: 0,
+              averageResponseTime: 0,
+              responseTimetrend: "stable" as const,
+              sentimentScore: 0.5,
+              clarityScore: 70,
+              lastActivityAt: new Date(d.updated_at),
+              redFlags: [],
+            },
+            recommendations,
+            lastAssessedAt: new Date(),
+          };
+        });
+
+        setAssessments(computed);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDeals();
+  }, [user]);
 
   const currentAssessment = useMemo(() => 
     dealId ? assessments.find(a => a.dealId === dealId) : null,

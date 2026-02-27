@@ -222,15 +222,15 @@ const AppContent = () => {
 
           {/* FYP — Create & Execute */}
           <Route path="/fyp" element={<FYPBrowsePage />} />
-          <Route path="/fyp/submit-problem" element={<FYPSubmitProblemPage />} />
-          <Route path="/student/fyp" element={<StudentFYPDashboardPage />} />
-          <Route path="/faculty/fyp" element={<FacultyFYPCommandPage />} />
-          <Route path="/industry/fyp" element={<SponsorFYPDashboardPage />} />
+          <Route path="/fyp/submit-problem" element={<ProtectedRoute><FYPSubmitProblemPage /></ProtectedRoute>} />
+          <Route path="/student/fyp" element={<ProtectedRoute><StudentFYPDashboardPage /></ProtectedRoute>} />
+          <Route path="/faculty/fyp" element={<ProtectedRoute><FacultyFYPCommandPage /></ProtectedRoute>} />
+          <Route path="/industry/fyp" element={<ProtectedRoute><SponsorFYPDashboardPage /></ProtectedRoute>} />
 
           {/* Opportunities — Match & Fund */}
           <Route path="/offers" element={<OpportunitiesPage />} />
-          <Route path="/offers/:id" element={<OfferRedirectPage />} />
-          <Route path="/opportunities/:id" element={<OfferRedirectPage />} />
+          <Route path="/offers/:id" element={<ProtectedRoute><OfferRedirectPage /></ProtectedRoute>} />
+          <Route path="/opportunities/:id" element={<ProtectedRoute><OfferRedirectPage /></ProtectedRoute>} />
 
           {/* Deals — Escrow & Milestones */}
           <Route path="/deals" element={<ProtectedRoute><DealsPage /></ProtectedRoute>} />
@@ -241,7 +241,7 @@ const AppContent = () => {
           <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
 
           {/* Verification — Trust */}
-          <Route path="/verification" element={<VerificationCenterPage />} />
+          <Route path="/verification" element={<ProtectedRoute><VerificationCenterPage /></ProtectedRoute>} />
 
           {/* Messages */}
           <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
@@ -252,80 +252,80 @@ const AppContent = () => {
           <Route path="/search" element={<SearchPage />} />
 
           {/* Faculty */}
-          <Route path="/faculty/supervisor-dashboard" element={<SupervisorDashboardPage />} />
-          <Route path="/faculty/review-queue" element={<SupervisorReviewQueuePage />} />
+          <Route path="/faculty/supervisor-dashboard" element={<ProtectedRoute><SupervisorDashboardPage /></ProtectedRoute>} />
+          <Route path="/faculty/review-queue" element={<ProtectedRoute><SupervisorReviewQueuePage /></ProtectedRoute>} />
 
           {/* Documents — Contract enforcement */}
-          <Route path="/documents/:id" element={<DocumentEditorPage />} />
+          <Route path="/documents/:id" element={<ProtectedRoute><DocumentEditorPage /></ProtectedRoute>} />
 
           {/* Games */}
-          <Route path="/games" element={<GamesPage />} />
+          <Route path="/games" element={<ProtectedRoute><GamesPage /></ProtectedRoute>} />
 
           {/* ====== RESTORED FEATURE SECTIONS ====== */}
-          <Route path="/earn" element={<EarnPage />} />
-          <Route path="/leaderboard" element={<LeaderboardPage />} />
+          <Route path="/earn" element={<ProtectedRoute><EarnPage /></ProtectedRoute>} />
+          <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
           <Route path="/network" element={<ProtectedRoute><NetworkPage /></ProtectedRoute>} />
-          <Route path="/career" element={<CareerPage />} />
-          <Route path="/passport" element={<PassportPage />} />
-          <Route path="/research-papers" element={<ResearchPapersPage />} />
-          <Route path="/grants" element={<GrantsPage />} />
-          <Route path="/tools" element={<ToolsPage />} />
-          <Route path="/learning" element={<LearningPage />} />
-          <Route path="/events" element={<EventsPage />} />
-          <Route path="/hr" element={<HRPage />} />
-          <Route path="/automation" element={<AutomationPage />} />
+          <Route path="/career" element={<ProtectedRoute><CareerPage /></ProtectedRoute>} />
+          <Route path="/passport" element={<ProtectedRoute><PassportPage /></ProtectedRoute>} />
+          <Route path="/research-papers" element={<ProtectedRoute><ResearchPapersPage /></ProtectedRoute>} />
+          <Route path="/grants" element={<ProtectedRoute><GrantsPage /></ProtectedRoute>} />
+          <Route path="/tools" element={<ProtectedRoute><ToolsPage /></ProtectedRoute>} />
+          <Route path="/learning" element={<ProtectedRoute><LearningPage /></ProtectedRoute>} />
+          <Route path="/events" element={<ProtectedRoute><EventsPage /></ProtectedRoute>} />
+          <Route path="/hr" element={<ProtectedRoute><HRPage /></ProtectedRoute>} />
+          <Route path="/automation" element={<ProtectedRoute><AutomationPage /></ProtectedRoute>} />
           <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/new" element={<BlogEditorPage />} />
+          <Route path="/blog/new" element={<ProtectedRoute><BlogEditorPage /></ProtectedRoute>} />
           <Route path="/blog/:slug" element={<BlogArticlePage />} />
-          <Route path="/governance" element={<GovernancePage />} />
-          <Route path="/social" element={<SocialFeaturesPage />} />
+          <Route path="/governance" element={<ProtectedRoute><GovernancePage /></ProtectedRoute>} />
+          <Route path="/social" element={<ProtectedRoute><SocialFeaturesPage /></ProtectedRoute>} />
           <Route path="/impact" element={<ImpactPage />} />
-          <Route path="/equity" element={<EquityDashboardPage />} />
-          <Route path="/subscriptions" element={<SubscriptionsPage />} />
+          <Route path="/equity" element={<ProtectedRoute><EquityDashboardPage /></ProtectedRoute>} />
+          <Route path="/subscriptions" element={<ProtectedRoute><SubscriptionsPage /></ProtectedRoute>} />
           <Route path="/install" element={<InstallPage />} />
           <Route path="/features" element={<FeaturesShowcasePage />} />
           <Route path="/careers" element={<CareersPage />} />
           <Route path="/press" element={<PressKitPage />} />
-          <Route path="/notification-settings" element={<NotificationSettingsPage />} />
-          <Route path="/project-management" element={<ProjectManagementPage />} />
+          <Route path="/notification-settings" element={<ProtectedRoute><NotificationSettingsPage /></ProtectedRoute>} />
+          <Route path="/project-management" element={<ProtectedRoute><ProjectManagementPage /></ProtectedRoute>} />
 
-          {/* ====== ADMIN ====== */}
-          <Route path="/admin" element={<AdminPortalPage />} />
-          <Route path="/admin/users" element={<AdminUsersPage />} />
-          <Route path="/admin/tools" element={<AdminToolsPage />} />
-          <Route path="/admin/projects" element={<AdminProjectsPage />} />
-          <Route path="/admin/settings" element={<AdminSettingsPage />} />
-          <Route path="/admin/finance" element={<AdminFinancePage />} />
-          <Route path="/admin/fulfillment" element={<AdminFulfillmentPage />} />
-          <Route path="/admin/subscriptions" element={<AdminSubscriptionsPage />} />
-          <Route path="/admin/affiliates" element={<AdminAffiliatePage />} />
-          <Route path="/admin/verifications" element={<AdminVerificationsPage />} />
-          <Route path="/admin/reports" element={<AdminReportsPage />} />
-          <Route path="/admin/support" element={<AdminSupportPage />} />
-          <Route path="/admin/audit-log" element={<AdminAuditLogPage />} />
-          <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
-          <Route path="/admin/feature-flags" element={<AdminFeatureFlagsPage />} />
-          <Route path="/admin/permissions" element={<AdminPermissionsPage />} />
-          <Route path="/admin/health" element={<AdminHealthPage />} />
-          <Route path="/admin/security" element={<AdminSecurityPage />} />
-          <Route path="/admin/operations" element={<AdminOperationsPage />} />
-          <Route path="/admin/feed" element={<AdminFeedModerationPage />} />
-          <Route path="/admin/governance" element={<AdminGovernancePage />} />
-          <Route path="/admin/compliance" element={<AdminComplianceDashboardPage />} />
-          <Route path="/admin/schema" element={<AdminSchemaPage />} />
-          <Route path="/admin/pilot" element={<PilotDashboardPage />} />
-          <Route path="/admin/sponsor-pipeline" element={<SponsorPipelinePage />} />
-          <Route path="/admin/sponsor-roi" element={<SponsorROIDashboardPage />} />
-          <Route path="/admin/capital-flow" element={<CapitalFlowDashboardPage />} />
-          <Route path="/admin/hiring-conversions" element={<HiringConversionPage />} />
-          <Route path="/admin/refunding-triggers" element={<RefundingTriggersPage />} />
-          <Route path="/admin/fyp-velocity" element={<FYPVelocityPage />} />
-          <Route path="/admin/sponsor-intelligence" element={<SponsorIntelligencePage />} />
-          <Route path="/admin/financial-intelligence" element={<FinancialIntelligencePage />} />
-          <Route path="/admin/university-impact" element={<UniversityImpactDashboardPage />} />
-          <Route path="/admin/sales-data-pack" element={<SalesDataPackPage />} />
-          <Route path="/admin/intelligence" element={<IntelligenceDashboardPage />} />
-          <Route path="/my-outcomes" element={<StudentOutcomePage />} />
+          {/* ====== ADMIN (all protected + AdminLayout handles role check) ====== */}
+          <Route path="/admin" element={<ProtectedRoute><AdminPortalPage /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute><AdminUsersPage /></ProtectedRoute>} />
+          <Route path="/admin/tools" element={<ProtectedRoute><AdminToolsPage /></ProtectedRoute>} />
+          <Route path="/admin/projects" element={<ProtectedRoute><AdminProjectsPage /></ProtectedRoute>} />
+          <Route path="/admin/settings" element={<ProtectedRoute><AdminSettingsPage /></ProtectedRoute>} />
+          <Route path="/admin/finance" element={<ProtectedRoute><AdminFinancePage /></ProtectedRoute>} />
+          <Route path="/admin/fulfillment" element={<ProtectedRoute><AdminFulfillmentPage /></ProtectedRoute>} />
+          <Route path="/admin/subscriptions" element={<ProtectedRoute><AdminSubscriptionsPage /></ProtectedRoute>} />
+          <Route path="/admin/affiliates" element={<ProtectedRoute><AdminAffiliatePage /></ProtectedRoute>} />
+          <Route path="/admin/verifications" element={<ProtectedRoute><AdminVerificationsPage /></ProtectedRoute>} />
+          <Route path="/admin/reports" element={<ProtectedRoute><AdminReportsPage /></ProtectedRoute>} />
+          <Route path="/admin/support" element={<ProtectedRoute><AdminSupportPage /></ProtectedRoute>} />
+          <Route path="/admin/audit-log" element={<ProtectedRoute><AdminAuditLogPage /></ProtectedRoute>} />
+          <Route path="/admin/analytics" element={<ProtectedRoute><AdminAnalyticsPage /></ProtectedRoute>} />
+          <Route path="/admin/feature-flags" element={<ProtectedRoute><AdminFeatureFlagsPage /></ProtectedRoute>} />
+          <Route path="/admin/permissions" element={<ProtectedRoute><AdminPermissionsPage /></ProtectedRoute>} />
+          <Route path="/admin/health" element={<ProtectedRoute><AdminHealthPage /></ProtectedRoute>} />
+          <Route path="/admin/security" element={<ProtectedRoute><AdminSecurityPage /></ProtectedRoute>} />
+          <Route path="/admin/operations" element={<ProtectedRoute><AdminOperationsPage /></ProtectedRoute>} />
+          <Route path="/admin/feed" element={<ProtectedRoute><AdminFeedModerationPage /></ProtectedRoute>} />
+          <Route path="/admin/governance" element={<ProtectedRoute><AdminGovernancePage /></ProtectedRoute>} />
+          <Route path="/admin/compliance" element={<ProtectedRoute><AdminComplianceDashboardPage /></ProtectedRoute>} />
+          <Route path="/admin/schema" element={<ProtectedRoute><AdminSchemaPage /></ProtectedRoute>} />
+          <Route path="/admin/pilot" element={<ProtectedRoute><PilotDashboardPage /></ProtectedRoute>} />
+          <Route path="/admin/sponsor-pipeline" element={<ProtectedRoute><SponsorPipelinePage /></ProtectedRoute>} />
+          <Route path="/admin/sponsor-roi" element={<ProtectedRoute><SponsorROIDashboardPage /></ProtectedRoute>} />
+          <Route path="/admin/capital-flow" element={<ProtectedRoute><CapitalFlowDashboardPage /></ProtectedRoute>} />
+          <Route path="/admin/hiring-conversions" element={<ProtectedRoute><HiringConversionPage /></ProtectedRoute>} />
+          <Route path="/admin/refunding-triggers" element={<ProtectedRoute><RefundingTriggersPage /></ProtectedRoute>} />
+          <Route path="/admin/fyp-velocity" element={<ProtectedRoute><FYPVelocityPage /></ProtectedRoute>} />
+          <Route path="/admin/sponsor-intelligence" element={<ProtectedRoute><SponsorIntelligencePage /></ProtectedRoute>} />
+          <Route path="/admin/financial-intelligence" element={<ProtectedRoute><FinancialIntelligencePage /></ProtectedRoute>} />
+          <Route path="/admin/university-impact" element={<ProtectedRoute><UniversityImpactDashboardPage /></ProtectedRoute>} />
+          <Route path="/admin/sales-data-pack" element={<ProtectedRoute><SalesDataPackPage /></ProtectedRoute>} />
+          <Route path="/admin/intelligence" element={<ProtectedRoute><IntelligenceDashboardPage /></ProtectedRoute>} />
+          <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}
           {/* Dashboard consolidation */}
