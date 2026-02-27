@@ -4265,6 +4265,57 @@ export type Database = {
         }
         Relationships: []
       }
+      capital_allocation_ai: {
+        Row: {
+          budget_efficiency_score: number | null
+          created_at: string | null
+          dispute_free_rate: number | null
+          domain_match_score: number | null
+          escrow_history_summary: Json | null
+          explanation_factors: Json | null
+          id: string
+          model_version: string | null
+          overall_recommendation_score: number | null
+          recommendation_reason: string | null
+          recommended_entity_id: string | null
+          recommended_entity_type: string
+          reliability_score: number | null
+          sponsor_id: string | null
+        }
+        Insert: {
+          budget_efficiency_score?: number | null
+          created_at?: string | null
+          dispute_free_rate?: number | null
+          domain_match_score?: number | null
+          escrow_history_summary?: Json | null
+          explanation_factors?: Json | null
+          id?: string
+          model_version?: string | null
+          overall_recommendation_score?: number | null
+          recommendation_reason?: string | null
+          recommended_entity_id?: string | null
+          recommended_entity_type: string
+          reliability_score?: number | null
+          sponsor_id?: string | null
+        }
+        Update: {
+          budget_efficiency_score?: number | null
+          created_at?: string | null
+          dispute_free_rate?: number | null
+          domain_match_score?: number | null
+          escrow_history_summary?: Json | null
+          explanation_factors?: Json | null
+          id?: string
+          model_version?: string | null
+          overall_recommendation_score?: number | null
+          recommendation_reason?: string | null
+          recommended_entity_id?: string | null
+          recommended_entity_type?: string
+          reliability_score?: number | null
+          sponsor_id?: string | null
+        }
+        Relationships: []
+      }
       capital_allocation_scores: {
         Row: {
           approved_at: string | null
@@ -12835,6 +12886,51 @@ export type Database = {
           },
         ]
       }
+      escrow_health_ai_alerts: {
+        Row: {
+          affected_escrow_id: string | null
+          alert_type: string
+          anomaly_details: Json | null
+          auto_resolved: boolean | null
+          created_at: string | null
+          description: string | null
+          id: string
+          model_version: string | null
+          recommended_action: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string | null
+        }
+        Insert: {
+          affected_escrow_id?: string | null
+          alert_type: string
+          anomaly_details?: Json | null
+          auto_resolved?: boolean | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          model_version?: string | null
+          recommended_action?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+        }
+        Update: {
+          affected_escrow_id?: string | null
+          alert_type?: string
+          anomaly_details?: Json | null
+          auto_resolved?: boolean | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          model_version?: string | null
+          recommended_action?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+        }
+        Relationships: []
+      }
       escrow_transactions: {
         Row: {
           amount: number
@@ -13570,6 +13666,63 @@ export type Database = {
           stuck_milestones?: number
           stuck_offers?: number
           wallet_mismatches?: number
+        }
+        Relationships: []
+      }
+      execution_risk_predictions: {
+        Row: {
+          budget_overrun_risk: number | null
+          communication_breakdown_risk: number | null
+          created_at: string | null
+          dispute_likelihood: number | null
+          id: string
+          inputs_summary: Json | null
+          institution_id: string | null
+          milestone_delay_probability: number | null
+          model_version: string | null
+          overall_risk_score: number | null
+          oversight_gap_score: number | null
+          project_id: string | null
+          risk_explanation: string | null
+          sponsor_dissatisfaction_probability: number | null
+          suggested_actions: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          budget_overrun_risk?: number | null
+          communication_breakdown_risk?: number | null
+          created_at?: string | null
+          dispute_likelihood?: number | null
+          id?: string
+          inputs_summary?: Json | null
+          institution_id?: string | null
+          milestone_delay_probability?: number | null
+          model_version?: string | null
+          overall_risk_score?: number | null
+          oversight_gap_score?: number | null
+          project_id?: string | null
+          risk_explanation?: string | null
+          sponsor_dissatisfaction_probability?: number | null
+          suggested_actions?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          budget_overrun_risk?: number | null
+          communication_breakdown_risk?: number | null
+          created_at?: string | null
+          dispute_likelihood?: number | null
+          id?: string
+          inputs_summary?: Json | null
+          institution_id?: string | null
+          milestone_delay_probability?: number | null
+          model_version?: string | null
+          overall_risk_score?: number | null
+          oversight_gap_score?: number | null
+          project_id?: string | null
+          risk_explanation?: string | null
+          sponsor_dissatisfaction_probability?: number | null
+          suggested_actions?: Json | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -15470,6 +15623,60 @@ export type Database = {
           is_breached?: boolean | null
           safeguard_type?: string
           threshold_value?: number | null
+        }
+        Relationships: []
+      }
+      fraud_collusion_signals: {
+        Row: {
+          action_taken: string | null
+          affected_entities: Json | null
+          affected_users: string[] | null
+          created_at: string | null
+          description: string | null
+          detection_method: string | null
+          evidence: Json | null
+          human_review_required: boolean | null
+          id: string
+          model_version: string | null
+          reviewed: boolean | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string | null
+          signal_type: string
+        }
+        Insert: {
+          action_taken?: string | null
+          affected_entities?: Json | null
+          affected_users?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          detection_method?: string | null
+          evidence?: Json | null
+          human_review_required?: boolean | null
+          id?: string
+          model_version?: string | null
+          reviewed?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          signal_type: string
+        }
+        Update: {
+          action_taken?: string | null
+          affected_entities?: Json | null
+          affected_users?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          detection_method?: string | null
+          evidence?: Json | null
+          human_review_required?: boolean | null
+          id?: string
+          model_version?: string | null
+          reviewed?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          signal_type?: string
         }
         Relationships: []
       }
@@ -19903,6 +20110,51 @@ export type Database = {
           },
         ]
       }
+      innovation_intelligence: {
+        Row: {
+          active_projects: number | null
+          created_at: string | null
+          cross_border_collaboration_count: number | null
+          domain: string
+          economic_volume: number | null
+          emerging_corridors: Json | null
+          funding_category_distribution: Json | null
+          id: string
+          innovation_density: number | null
+          region: string | null
+          skill_evolution_trends: Json | null
+          snapshot_period: string
+        }
+        Insert: {
+          active_projects?: number | null
+          created_at?: string | null
+          cross_border_collaboration_count?: number | null
+          domain: string
+          economic_volume?: number | null
+          emerging_corridors?: Json | null
+          funding_category_distribution?: Json | null
+          id?: string
+          innovation_density?: number | null
+          region?: string | null
+          skill_evolution_trends?: Json | null
+          snapshot_period: string
+        }
+        Update: {
+          active_projects?: number | null
+          created_at?: string | null
+          cross_border_collaboration_count?: number | null
+          domain?: string
+          economic_volume?: number | null
+          emerging_corridors?: Json | null
+          funding_category_distribution?: Json | null
+          id?: string
+          innovation_density?: number | null
+          region?: string | null
+          skill_evolution_trends?: Json | null
+          snapshot_period?: string
+        }
+        Relationships: []
+      }
       innovation_node_protocols: {
         Row: {
           compliance_rules: Json | null
@@ -21298,6 +21550,51 @@ export type Database = {
           period_start?: string
           skill_distribution?: Json | null
           talent_count?: number | null
+        }
+        Relationships: []
+      }
+      institutional_performance_forecasts: {
+        Row: {
+          completion_rate_trend: string | null
+          departmental_reliability: Json | null
+          dispute_probability_trend: string | null
+          forecast_period_months: number | null
+          forward_stability_indicators: Json | null
+          funding_growth_trajectory: string | null
+          generated_at: string | null
+          id: string
+          innovation_growth_potential: number | null
+          institution_id: string
+          model_version: string | null
+          sponsor_retention_forecast: number | null
+        }
+        Insert: {
+          completion_rate_trend?: string | null
+          departmental_reliability?: Json | null
+          dispute_probability_trend?: string | null
+          forecast_period_months?: number | null
+          forward_stability_indicators?: Json | null
+          funding_growth_trajectory?: string | null
+          generated_at?: string | null
+          id?: string
+          innovation_growth_potential?: number | null
+          institution_id: string
+          model_version?: string | null
+          sponsor_retention_forecast?: number | null
+        }
+        Update: {
+          completion_rate_trend?: string | null
+          departmental_reliability?: Json | null
+          dispute_probability_trend?: string | null
+          forecast_period_months?: number | null
+          forward_stability_indicators?: Json | null
+          funding_growth_trajectory?: string | null
+          generated_at?: string | null
+          id?: string
+          innovation_growth_potential?: number | null
+          institution_id?: string
+          model_version?: string | null
+          sponsor_retention_forecast?: number | null
         }
         Relationships: []
       }
@@ -38583,6 +38880,63 @@ export type Database = {
         }
         Relationships: []
       }
+      smart_match_results: {
+        Row: {
+          budget_alignment: number | null
+          created_at: string | null
+          dispute_compatibility: number | null
+          domain_compatibility: number | null
+          entity_a_id: string
+          entity_a_type: string
+          entity_b_id: string
+          entity_b_type: string
+          execution_history_overlap: number | null
+          expires_at: string | null
+          explanation_factors: Json | null
+          id: string
+          match_type: string
+          model_version: string | null
+          overall_match_score: number | null
+          reliability_match: number | null
+        }
+        Insert: {
+          budget_alignment?: number | null
+          created_at?: string | null
+          dispute_compatibility?: number | null
+          domain_compatibility?: number | null
+          entity_a_id: string
+          entity_a_type: string
+          entity_b_id: string
+          entity_b_type: string
+          execution_history_overlap?: number | null
+          expires_at?: string | null
+          explanation_factors?: Json | null
+          id?: string
+          match_type: string
+          model_version?: string | null
+          overall_match_score?: number | null
+          reliability_match?: number | null
+        }
+        Update: {
+          budget_alignment?: number | null
+          created_at?: string | null
+          dispute_compatibility?: number | null
+          domain_compatibility?: number | null
+          entity_a_id?: string
+          entity_a_type?: string
+          entity_b_id?: string
+          entity_b_type?: string
+          execution_history_overlap?: number | null
+          expires_at?: string | null
+          explanation_factors?: Json | null
+          id?: string
+          match_type?: string
+          model_version?: string | null
+          overall_match_score?: number | null
+          reliability_match?: number | null
+        }
+        Relationships: []
+      }
       sovereign_data_controls: {
         Row: {
           created_at: string
@@ -41026,6 +41380,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      talent_development_insights: {
+        Row: {
+          career_maturity_score: number | null
+          career_trajectory_trend: string | null
+          communication_weaknesses: Json | null
+          domain_opportunities: Json | null
+          generated_at: string | null
+          growth_recommendations: Json | null
+          id: string
+          leadership_readiness: number | null
+          long_term_potential_indicators: Json | null
+          milestone_delay_patterns: Json | null
+          model_version: string | null
+          skill_gaps: Json | null
+          skill_roadmap: Json | null
+          suggested_project_types: string[] | null
+          user_id: string
+        }
+        Insert: {
+          career_maturity_score?: number | null
+          career_trajectory_trend?: string | null
+          communication_weaknesses?: Json | null
+          domain_opportunities?: Json | null
+          generated_at?: string | null
+          growth_recommendations?: Json | null
+          id?: string
+          leadership_readiness?: number | null
+          long_term_potential_indicators?: Json | null
+          milestone_delay_patterns?: Json | null
+          model_version?: string | null
+          skill_gaps?: Json | null
+          skill_roadmap?: Json | null
+          suggested_project_types?: string[] | null
+          user_id: string
+        }
+        Update: {
+          career_maturity_score?: number | null
+          career_trajectory_trend?: string | null
+          communication_weaknesses?: Json | null
+          domain_opportunities?: Json | null
+          generated_at?: string | null
+          growth_recommendations?: Json | null
+          id?: string
+          leadership_readiness?: number | null
+          long_term_potential_indicators?: Json | null
+          milestone_delay_patterns?: Json | null
+          model_version?: string | null
+          skill_gaps?: Json | null
+          skill_roadmap?: Json | null
+          suggested_project_types?: string[] | null
+          user_id?: string
+        }
+        Relationships: []
       }
       talent_forecasts: {
         Row: {

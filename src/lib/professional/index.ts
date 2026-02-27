@@ -38,3 +38,6 @@ export type { InstitutionalTrustScore, InstitutionalGovernanceDashboard } from "
 
 export { getPrivacySettings, updatePrivacySettings, getAlgorithmTransparency, detectIntegrityViolations, getSecurityTransparencyReports, logAntiScrapingEvent, logAccessControlEvent, ZERO_TRUST_TRANSPARENCY } from "./zeroTrustSecurity";
 export type { ProfessionalPrivacySettings, AlgorithmTransparencyEntry, IntegritySignal, IntegritySignalType, AntiScrapingEvent, SecurityTransparencyReport } from "./zeroTrustSecurity";
+
+export { predictExecutionRisk, getCapitalAllocationRecommendations, getTalentDevelopmentInsights, getInstitutionalForecast, detectFraudSignals, getSmartMatches, getEscrowHealthAlerts, getInnovationIntelligence, AI_INTELLIGENCE_TRANSPARENCY } from "./intelligenceEngine";
+export type { ExecutionRiskPrediction, CapitalRecommendation, TalentDevelopmentInsight, InstitutionalForecast, FraudSignal, FraudSignalType, SmartMatch, EscrowHealthAlert } from "./intelligenceEngine";
