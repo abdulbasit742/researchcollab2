@@ -91,55 +91,55 @@ export function useDealExecution(dealId: string) {
       if (!finalDeal) throw new Error("Deal not found");
       setDeal(finalDeal);
       
-      // Mock milestones (would come from actual milestones table)
-      const mockMilestones: DealMilestone[] = [
-        {
-          id: "m1",
-          title: "Project Kickoff",
-          description: "Initial setup and requirements gathering",
-          amount: 500,
-          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-          status: "pending",
-          deliverables: ["Requirements document", "Project plan"],
-          submittedEvidence: [],
-        },
-        {
-          id: "m2",
-          title: "First Deliverable",
-          description: "Core functionality implementation",
-          amount: 1000,
-          dueDate: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000),
-          status: "pending",
-          deliverables: ["Working prototype", "Documentation"],
-          submittedEvidence: [],
-        },
-      ];
-      
-      setMilestones(mockMilestones);
-      
-      // Mock participants
-      const mockParticipants: DealParticipant[] = [
-        {
-          id: "p1",
-          userId: (finalDeal as any).owner_id || (finalDeal as any).posted_by || (finalDeal as any).sender_id || user?.id || "",
+      // Fetch real milestones from DB
+      const { data: milestoneData } = await supabase
+        .from("milestones")
+        .select("*")
+        .or(`deal_id.eq.${dealId},offer_id.eq.${dealId}`)
+        .order("created_at", { ascending: true });
+
+      if (milestoneData && milestoneData.length > 0) {
+        const realMilestones: DealMilestone[] = milestoneData.map((m: any) => ({
+          id: m.id,
+          title: m.title || "Untitled Milestone",
+          description: m.description || "",
+          amount: m.amount || 0,
+          dueDate: m.due_date ? new Date(m.due_date) : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+          status: m.status || "pending",
+          deliverables: m.deliverables || [],
+          completedAt: m.completed_at ? new Date(m.completed_at) : undefined,
+          submittedEvidence: m.evidence || [],
+        }));
+        setMilestones(realMilestones);
+      } else {
+        setMilestones([]);
+      }
+
+      // Build participants from deal data
+      const realParticipants: DealParticipant[] = [];
+      const ownerId = (finalDeal as any).owner_id || (finalDeal as any).posted_by || (finalDeal as any).sender_id || (finalDeal as any).buyer_id;
+      if (ownerId) {
+        realParticipants.push({
+          id: `owner-${ownerId}`,
+          userId: ownerId,
           role: "owner",
           permissions: ["view", "edit", "approve", "dispute"],
           joinedAt: new Date((finalDeal as any).created_at),
-        },
-      ];
-      
-      const acceptedBy = (finalDeal as any).accepted_by || (finalDeal as any).recipient_id;
-      if (acceptedBy) {
-        mockParticipants.push({
-          id: "p2",
-          userId: acceptedBy,
+        });
+      }
+
+      const executorId = (finalDeal as any).accepted_by || (finalDeal as any).recipient_id || (finalDeal as any).seller_id;
+      if (executorId) {
+        realParticipants.push({
+          id: `executor-${executorId}`,
+          userId: executorId,
           role: "executor",
           permissions: ["view", "edit"],
           joinedAt: new Date((finalDeal as any).created_at),
         });
       }
-      
-      setParticipants(mockParticipants);
+
+      setParticipants(realParticipants);
       
       // Calculate deal health
       const completedMilestones = milestones.filter(m => m.status === "approved").length;
@@ -176,13 +176,19 @@ export function useDealExecution(dealId: string) {
     fetchDealData();
   }, [fetchDealData]);
 
-  // Submit milestone for approval
+  // Submit milestone for approval — persist to DB
   const submitMilestone = useCallback(async (
     milestoneId: string,
     evidence: string[]
   ): Promise<boolean> => {
     try {
-      // Update local state for now (would update DB in production)
+      const { error } = await supabase
+        .from("milestones")
+        .update({ status: "submitted", evidence, updated_at: new Date().toISOString() } as any)
+        .eq("id", milestoneId);
+
+      if (error) throw error;
+
       setMilestones(prev => prev.map(m => 
         m.id === milestoneId 
           ? { ...m, status: "submitted" as const, submittedEvidence: evidence }
@@ -195,9 +201,17 @@ export function useDealExecution(dealId: string) {
     }
   }, []);
 
-  // Approve milestone
+  // Approve milestone — persist to DB
   const approveMilestone = useCallback(async (milestoneId: string): Promise<boolean> => {
     try {
+      const now = new Date().toISOString();
+      const { error } = await supabase
+        .from("milestones")
+        .update({ status: "approved", completed_at: now, updated_at: now } as any)
+        .eq("id", milestoneId);
+
+      if (error) throw error;
+
       setMilestones(prev => prev.map(m => 
         m.id === milestoneId 
           ? { ...m, status: "approved" as const, completedAt: new Date() }
