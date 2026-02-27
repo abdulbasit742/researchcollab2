@@ -14715,6 +14715,454 @@ export type Database = {
         }
         Relationships: []
       }
+      ecce_action_items: {
+        Row: {
+          ai_extracted: boolean | null
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string
+          deadline: string | null
+          description: string | null
+          id: string
+          message_id: string | null
+          priority: string | null
+          room_id: string
+          status: string | null
+          title: string
+        }
+        Insert: {
+          ai_extracted?: boolean | null
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by: string
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          message_id?: string | null
+          priority?: string | null
+          room_id: string
+          status?: string | null
+          title: string
+        }
+        Update: {
+          ai_extracted?: boolean | null
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          message_id?: string | null
+          priority?: string | null
+          room_id?: string
+          status?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecce_action_items_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "ecce_chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecce_archive: {
+        Row: {
+          archive_type: string
+          archived_by: string
+          content: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          room_id: string
+          title: string
+        }
+        Insert: {
+          archive_type: string
+          archived_by: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          room_id: string
+          title: string
+        }
+        Update: {
+          archive_type?: string
+          archived_by?: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          room_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecce_archive_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "ecce_chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecce_chat_rooms: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          encryption_mode: string | null
+          id: string
+          institution_id: string | null
+          is_confidential: boolean | null
+          linked_entity_id: string | null
+          linked_entity_type: string | null
+          nda_required: boolean | null
+          privacy_level: string | null
+          room_type: string
+          status: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          encryption_mode?: string | null
+          id?: string
+          institution_id?: string | null
+          is_confidential?: boolean | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          nda_required?: boolean | null
+          privacy_level?: string | null
+          room_type: string
+          status?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          encryption_mode?: string | null
+          id?: string
+          institution_id?: string | null
+          is_confidential?: boolean | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          nda_required?: boolean | null
+          privacy_level?: string | null
+          room_type?: string
+          status?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ecce_decision_logs: {
+        Row: {
+          created_at: string
+          decision_type: string
+          id: string
+          linked_entity_id: string | null
+          logged_by: string
+          message_id: string | null
+          metadata: Json | null
+          room_id: string
+          summary: string
+        }
+        Insert: {
+          created_at?: string
+          decision_type: string
+          id?: string
+          linked_entity_id?: string | null
+          logged_by: string
+          message_id?: string | null
+          metadata?: Json | null
+          room_id: string
+          summary: string
+        }
+        Update: {
+          created_at?: string
+          decision_type?: string
+          id?: string
+          linked_entity_id?: string | null
+          logged_by?: string
+          message_id?: string | null
+          metadata?: Json | null
+          room_id?: string
+          summary?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecce_decision_logs_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "ecce_chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecce_dispute_threads: {
+        Row: {
+          created_at: string
+          description: string | null
+          dispute_type: string | null
+          escrow_frozen: boolean | null
+          evidence: Json | null
+          id: string
+          mediator_id: string | null
+          raised_by: string
+          resolution: string | null
+          resolved_at: string | null
+          room_id: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          dispute_type?: string | null
+          escrow_frozen?: boolean | null
+          evidence?: Json | null
+          id?: string
+          mediator_id?: string | null
+          raised_by: string
+          resolution?: string | null
+          resolved_at?: string | null
+          room_id: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          dispute_type?: string | null
+          escrow_frozen?: boolean | null
+          evidence?: Json | null
+          id?: string
+          mediator_id?: string | null
+          raised_by?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          room_id?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecce_dispute_threads_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "ecce_chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecce_escrow_context: {
+        Row: {
+          compliance_reminders: string[] | null
+          deal_id: string | null
+          escrow_id: string | null
+          id: string
+          last_synced_at: string
+          locked_amount: number | null
+          milestone_status: string | null
+          next_release_condition: string | null
+          payment_timeline: Json | null
+          room_id: string
+        }
+        Insert: {
+          compliance_reminders?: string[] | null
+          deal_id?: string | null
+          escrow_id?: string | null
+          id?: string
+          last_synced_at?: string
+          locked_amount?: number | null
+          milestone_status?: string | null
+          next_release_condition?: string | null
+          payment_timeline?: Json | null
+          room_id: string
+        }
+        Update: {
+          compliance_reminders?: string[] | null
+          deal_id?: string | null
+          escrow_id?: string | null
+          id?: string
+          last_synced_at?: string
+          locked_amount?: number | null
+          milestone_status?: string | null
+          next_release_condition?: string | null
+          payment_timeline?: Json | null
+          room_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecce_escrow_context_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: true
+            referencedRelation: "ecce_chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecce_health_analytics: {
+        Row: {
+          alert_level: string | null
+          communication_density: number | null
+          computed_at: string
+          conflict_frequency: number | null
+          execution_delay_risk: number | null
+          id: string
+          leadership_balance: number | null
+          response_time_avg_hours: number | null
+          room_id: string
+          topic_drift_score: number | null
+          unresolved_action_items: number | null
+        }
+        Insert: {
+          alert_level?: string | null
+          communication_density?: number | null
+          computed_at?: string
+          conflict_frequency?: number | null
+          execution_delay_risk?: number | null
+          id?: string
+          leadership_balance?: number | null
+          response_time_avg_hours?: number | null
+          room_id: string
+          topic_drift_score?: number | null
+          unresolved_action_items?: number | null
+        }
+        Update: {
+          alert_level?: string | null
+          communication_density?: number | null
+          computed_at?: string
+          conflict_frequency?: number | null
+          execution_delay_risk?: number | null
+          id?: string
+          leadership_balance?: number | null
+          response_time_avg_hours?: number | null
+          room_id?: string
+          topic_drift_score?: number | null
+          unresolved_action_items?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecce_health_analytics_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: true
+            referencedRelation: "ecce_chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecce_meetings: {
+        Row: {
+          action_items_extracted: Json | null
+          agenda: Json | null
+          ai_summary: string | null
+          compliance_notes: string[] | null
+          created_at: string
+          created_by: string
+          decisions_extracted: Json | null
+          duration_minutes: number | null
+          id: string
+          room_id: string
+          scheduled_at: string | null
+          status: string | null
+          title: string
+          transcription: string | null
+        }
+        Insert: {
+          action_items_extracted?: Json | null
+          agenda?: Json | null
+          ai_summary?: string | null
+          compliance_notes?: string[] | null
+          created_at?: string
+          created_by: string
+          decisions_extracted?: Json | null
+          duration_minutes?: number | null
+          id?: string
+          room_id: string
+          scheduled_at?: string | null
+          status?: string | null
+          title: string
+          transcription?: string | null
+        }
+        Update: {
+          action_items_extracted?: Json | null
+          agenda?: Json | null
+          ai_summary?: string | null
+          compliance_notes?: string[] | null
+          created_at?: string
+          created_by?: string
+          decisions_extracted?: Json | null
+          duration_minutes?: number | null
+          id?: string
+          room_id?: string
+          scheduled_at?: string | null
+          status?: string | null
+          title?: string
+          transcription?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecce_meetings_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "ecce_chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecce_room_members: {
+        Row: {
+          id: string
+          is_compliance_officer: boolean | null
+          is_domain_authority: boolean | null
+          joined_at: string
+          nda_acknowledged_at: string | null
+          role: string | null
+          room_id: string
+          trust_weight: number | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          is_compliance_officer?: boolean | null
+          is_domain_authority?: boolean | null
+          joined_at?: string
+          nda_acknowledged_at?: string | null
+          role?: string | null
+          room_id: string
+          trust_weight?: number | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          is_compliance_officer?: boolean | null
+          is_domain_authority?: boolean | null
+          joined_at?: string
+          nda_acknowledged_at?: string | null
+          role?: string | null
+          room_id?: string
+          trust_weight?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecce_room_members_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "ecce_chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       economic_fairness_reports: {
         Row: {
           created_at: string
