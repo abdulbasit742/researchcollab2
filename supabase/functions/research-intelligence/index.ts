@@ -353,11 +353,48 @@ Return ONLY valid JSON. No markdown, no explanation. Use the exact claim IDs pro
         }
       }
 
+      // Save consensus history for each cluster
+      const { data: latestVersion } = await supabase
+        .from("workspace_versions")
+        .select("version_number")
+        .eq("workspace_id", workspace_id)
+        .order("version_number", { ascending: false })
+        .limit(1)
+        .single();
+      const currentVersion = (latestVersion?.version_number || 0) + 1;
+
+      // Insert consensus history entries
+      for (const cluster of (synthesis.consensus_clusters || [])) {
+        await supabase.from("topic_consensus_history").insert({
+          workspace_id,
+          topic: cluster.topic,
+          version_number: currentVersion,
+          consensus_score: cluster.consensus_level === "high" ? 0.9 : cluster.consensus_level === "medium" ? 0.6 : cluster.consensus_level === "low" ? 0.3 : 0.1,
+          reinforcement_count: (synthesis.relationships || []).filter((r: any) => r.type === "reinforces" && cluster.claim_ids?.includes(r.claim_a)).length,
+          contradiction_count: (synthesis.contradictions || []).filter((c: any) => cluster.claim_ids?.includes(c.claim_a)).length,
+          evidence_density: (synthesis.evidence_scores || []).filter((e: any) => cluster.claim_ids?.includes(e.claim_id)).reduce((sum: number, e: any) => sum + (e.score || 0), 0) / Math.max(cluster.claim_ids?.length || 1, 1),
+          claim_count: cluster.claim_ids?.length || 0,
+        });
+      }
+
+      // Auto-create workspace version snapshot
+      await supabase.from("workspace_versions").insert({
+        workspace_id,
+        version_number: currentVersion,
+        summary_snapshot: `Cross-synthesis: ${rels.length} relationships, ${(synthesis.consensus_clusters || []).length} clusters, ${(synthesis.contradictions || []).length} contradictions`,
+        consensus_snapshot: synthesis.consensus_clusters || [],
+        claim_graph_snapshot: { relationships: rels.length, contradictions: (synthesis.contradictions || []).length, gaps: (synthesis.research_gaps || []).length },
+        document_count: docIds.length,
+        claim_count: claims.length,
+        created_by: user.id,
+      });
+
       await supabase.from("research_audit_log").insert({
         workspace_id,
         user_id: user.id,
         action_type: "cross_synthesis",
         metadata: {
+          version: currentVersion,
           relationships: rels.length,
           consensus_clusters: synthesis.consensus_clusters?.length || 0,
           contradictions: synthesis.contradictions?.length || 0,
@@ -367,6 +404,7 @@ Return ONLY valid JSON. No markdown, no explanation. Use the exact claim IDs pro
 
       return jsonResponse({
         success: true,
+        version_number: currentVersion,
         relationships_count: rels.length,
         consensus_clusters: synthesis.consensus_clusters || [],
         contradictions: synthesis.contradictions || [],
@@ -473,6 +511,156 @@ Use markdown formatting. Cite claims using their IDs. Every statement must be tr
       });
 
       return jsonResponse({ success: true, report });
+    }
+
+    // ============================================================
+    // ACTION: create_version_snapshot
+    // ============================================================
+    if (action === "create_version_snapshot") {
+      const { workspace_id, summary } = body;
+
+      const { data: latestVersion } = await supabase
+        .from("workspace_versions")
+        .select("version_number")
+        .eq("workspace_id", workspace_id)
+        .order("version_number", { ascending: false })
+        .limit(1)
+        .single();
+      const newVersion = (latestVersion?.version_number || 0) + 1;
+
+      // Snapshot current state
+      const [claimsRes, relsRes, docsRes] = await Promise.all([
+        supabase.from("research_claims").select("*").eq("workspace_id", workspace_id),
+        supabase.from("claim_relationships").select("*").eq("workspace_id", workspace_id),
+        supabase.from("research_documents").select("id").eq("workspace_id", workspace_id).eq("is_latest_version", true),
+      ]);
+
+      const claims = claimsRes.data || [];
+      const rels = relsRes.data || [];
+
+      const { data: consensusHistory } = await supabase
+        .from("topic_consensus_history")
+        .select("*")
+        .eq("workspace_id", workspace_id)
+        .order("created_at", { ascending: false })
+        .limit(20);
+
+      const { data: version, error: vErr } = await supabase
+        .from("workspace_versions")
+        .insert({
+          workspace_id,
+          version_number: newVersion,
+          summary_snapshot: summary || `Version ${newVersion} snapshot`,
+          consensus_snapshot: consensusHistory || [],
+          claim_graph_snapshot: {
+            total_claims: claims.length,
+            total_relationships: rels.length,
+            claim_types: claims.reduce((acc: any, c: any) => { acc[c.claim_type] = (acc[c.claim_type] || 0) + 1; return acc; }, {}),
+            relationship_types: rels.reduce((acc: any, r: any) => { acc[r.relationship_type] = (acc[r.relationship_type] || 0) + 1; return acc; }, {}),
+          },
+          document_count: docsRes.data?.length || 0,
+          claim_count: claims.length,
+          created_by: user.id,
+        })
+        .select().single();
+
+      if (vErr) throw vErr;
+
+      await supabase.from("research_audit_log").insert({
+        workspace_id,
+        user_id: user.id,
+        action_type: "version_snapshot",
+        entity_id: version.id,
+        metadata: { version_number: newVersion },
+      });
+
+      return jsonResponse({ success: true, version });
+    }
+
+    // ============================================================
+    // ACTION: lock_version
+    // ============================================================
+    if (action === "lock_version") {
+      const { version_id } = body;
+
+      const { error } = await supabase
+        .from("workspace_versions")
+        .update({ is_locked: true })
+        .eq("id", version_id);
+
+      if (error) throw error;
+      return jsonResponse({ success: true });
+    }
+
+    // ============================================================
+    // ACTION: archive_version
+    // ============================================================
+    if (action === "archive_version") {
+      const { version_id } = body;
+
+      const { error } = await supabase
+        .from("workspace_versions")
+        .update({ is_archived: true, is_locked: true })
+        .eq("id", version_id);
+
+      if (error) throw error;
+      return jsonResponse({ success: true });
+    }
+
+    // ============================================================
+    // ACTION: detect_consensus_shifts
+    // ============================================================
+    if (action === "detect_consensus_shifts") {
+      const { workspace_id } = body;
+
+      const { data: history } = await supabase
+        .from("topic_consensus_history")
+        .select("*")
+        .eq("workspace_id", workspace_id)
+        .order("version_number", { ascending: true });
+
+      if (!history || history.length < 2) {
+        return jsonResponse({ shifts: [], alerts: [] });
+      }
+
+      // Group by topic and detect shifts
+      const topicMap: Record<string, any[]> = {};
+      for (const h of history) {
+        if (!topicMap[h.topic]) topicMap[h.topic] = [];
+        topicMap[h.topic].push(h);
+      }
+
+      const shifts: any[] = [];
+      const alerts: any[] = [];
+
+      for (const [topic, entries] of Object.entries(topicMap)) {
+        if (entries.length < 2) continue;
+        const latest = entries[entries.length - 1];
+        const previous = entries[entries.length - 2];
+        const delta = latest.consensus_score - previous.consensus_score;
+
+        if (Math.abs(delta) > 0.2) {
+          shifts.push({
+            topic,
+            from_version: previous.version_number,
+            to_version: latest.version_number,
+            from_score: previous.consensus_score,
+            to_score: latest.consensus_score,
+            delta,
+            direction: delta > 0 ? "strengthening" : "weakening",
+          });
+
+          if (Math.abs(delta) > 0.4) {
+            alerts.push({
+              topic,
+              severity: "high",
+              message: `Rapid consensus ${delta > 0 ? "strengthening" : "collapse"} detected for "${topic}" (Δ${(delta * 100).toFixed(0)}%)`,
+            });
+          }
+        }
+      }
+
+      return jsonResponse({ shifts, alerts });
     }
 
     return new Response(JSON.stringify({ error: "Unknown action" }), {
