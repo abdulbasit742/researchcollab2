@@ -20452,6 +20452,279 @@ export type Database = {
           },
         ]
       }
+      fgtmw_capital_anchors: {
+        Row: {
+          anchor_name: string
+          anchor_type: string
+          capital_committed: number | null
+          capital_routed: number | null
+          contact_name: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          region_id: string | null
+          stage: string
+          updated_at: string | null
+        }
+        Insert: {
+          anchor_name: string
+          anchor_type: string
+          capital_committed?: number | null
+          capital_routed?: number | null
+          contact_name?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          region_id?: string | null
+          stage?: string
+          updated_at?: string | null
+        }
+        Update: {
+          anchor_name?: string
+          anchor_type?: string
+          capital_committed?: number | null
+          capital_routed?: number | null
+          contact_name?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          region_id?: string | null
+          stage?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fgtmw_capital_anchors_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "fgtmw_fortress_regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fgtmw_competitor_tracking: {
+        Row: {
+          competitor: string
+          containment_action: string | null
+          id: string
+          last_assessed_at: string
+          notes: string | null
+          our_advantage_demonstrated: string | null
+          region: string | null
+          threat_level: string
+        }
+        Insert: {
+          competitor: string
+          containment_action?: string | null
+          id?: string
+          last_assessed_at?: string
+          notes?: string | null
+          our_advantage_demonstrated?: string | null
+          region?: string | null
+          threat_level?: string
+        }
+        Update: {
+          competitor?: string
+          containment_action?: string | null
+          id?: string
+          last_assessed_at?: string
+          notes?: string | null
+          our_advantage_demonstrated?: string | null
+          region?: string | null
+          threat_level?: string
+        }
+        Relationships: []
+      }
+      fgtmw_enterprise_entries: {
+        Row: {
+          annual_value: number | null
+          created_at: string
+          enterprise_name: string
+          entry_vector: string
+          id: string
+          integration_depth: string | null
+          notes: string | null
+          region_id: string | null
+          stage: string
+          switching_cost_level: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          annual_value?: number | null
+          created_at?: string
+          enterprise_name: string
+          entry_vector: string
+          id?: string
+          integration_depth?: string | null
+          notes?: string | null
+          region_id?: string | null
+          stage?: string
+          switching_cost_level?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          annual_value?: number | null
+          created_at?: string
+          enterprise_name?: string
+          entry_vector?: string
+          id?: string
+          integration_depth?: string | null
+          notes?: string | null
+          region_id?: string | null
+          stage?: string
+          switching_cost_level?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fgtmw_enterprise_entries_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "fgtmw_fortress_regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fgtmw_failure_events: {
+        Row: {
+          description: string
+          detected_at: string
+          expansion_frozen: boolean | null
+          id: string
+          immediate_action_taken: string | null
+          recovery_status: string | null
+          region_id: string | null
+          resolved_at: string | null
+          severity: string
+          stabilization_status: string | null
+          trigger_type: string
+        }
+        Insert: {
+          description: string
+          detected_at?: string
+          expansion_frozen?: boolean | null
+          id?: string
+          immediate_action_taken?: string | null
+          recovery_status?: string | null
+          region_id?: string | null
+          resolved_at?: string | null
+          severity?: string
+          stabilization_status?: string | null
+          trigger_type: string
+        }
+        Update: {
+          description?: string
+          detected_at?: string
+          expansion_frozen?: boolean | null
+          id?: string
+          immediate_action_taken?: string | null
+          recovery_status?: string | null
+          region_id?: string | null
+          resolved_at?: string | null
+          severity?: string
+          stabilization_status?: string | null
+          trigger_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fgtmw_failure_events_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "fgtmw_fortress_regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fgtmw_fortress_regions: {
+        Row: {
+          active_seids: number | null
+          capital_efficiency_gain: number | null
+          country_code: string
+          created_at: string
+          density_ready: boolean | null
+          density_score: number | null
+          dispute_rate: number | null
+          enterprise_pilots: number | null
+          established_at: string | null
+          funded_projects: number | null
+          id: string
+          institutional_integrations: number | null
+          milestone_punctuality: number | null
+          public_funding_integrations: number | null
+          region_name: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          active_seids?: number | null
+          capital_efficiency_gain?: number | null
+          country_code: string
+          created_at?: string
+          density_ready?: boolean | null
+          density_score?: number | null
+          dispute_rate?: number | null
+          enterprise_pilots?: number | null
+          established_at?: string | null
+          funded_projects?: number | null
+          id?: string
+          institutional_integrations?: number | null
+          milestone_punctuality?: number | null
+          public_funding_integrations?: number | null
+          region_name: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          active_seids?: number | null
+          capital_efficiency_gain?: number | null
+          country_code?: string
+          created_at?: string
+          density_ready?: boolean | null
+          density_score?: number | null
+          dispute_rate?: number | null
+          enterprise_pilots?: number | null
+          established_at?: string | null
+          funded_projects?: number | null
+          id?: string
+          institutional_integrations?: number | null
+          milestone_punctuality?: number | null
+          public_funding_integrations?: number | null
+          region_name?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      fgtmw_win_condition_tracking: {
+        Row: {
+          condition_key: string
+          current_indicator_value: string | null
+          evidence: Json | null
+          id: string
+          last_assessed_at: string
+          met: boolean | null
+          target_indicator: string
+        }
+        Insert: {
+          condition_key: string
+          current_indicator_value?: string | null
+          evidence?: Json | null
+          id?: string
+          last_assessed_at?: string
+          met?: boolean | null
+          target_indicator: string
+        }
+        Update: {
+          condition_key?: string
+          current_indicator_value?: string | null
+          evidence?: Json | null
+          id?: string
+          last_assessed_at?: string
+          met?: boolean | null
+          target_indicator?: string
+        }
+        Relationships: []
+      }
       field_normalization_baselines: {
         Row: {
           avg_citation_density: number | null
