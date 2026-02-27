@@ -13950,6 +13950,57 @@ export type Database = {
           },
         ]
       }
+      deployment_nodes: {
+        Row: {
+          api_token_hash: string | null
+          compliance_profile: Json | null
+          created_at: string | null
+          encryption_key_id: string | null
+          federation_status: string
+          id: string
+          is_active: boolean | null
+          node_name: string
+          owner_id: string | null
+          owner_type: string
+          rate_limit_per_hour: number | null
+          region: string
+          trust_interoperability_level: string
+          updated_at: string | null
+        }
+        Insert: {
+          api_token_hash?: string | null
+          compliance_profile?: Json | null
+          created_at?: string | null
+          encryption_key_id?: string | null
+          federation_status?: string
+          id?: string
+          is_active?: boolean | null
+          node_name: string
+          owner_id?: string | null
+          owner_type?: string
+          rate_limit_per_hour?: number | null
+          region: string
+          trust_interoperability_level?: string
+          updated_at?: string | null
+        }
+        Update: {
+          api_token_hash?: string | null
+          compliance_profile?: Json | null
+          created_at?: string | null
+          encryption_key_id?: string | null
+          federation_status?: string
+          id?: string
+          is_active?: boolean | null
+          node_name?: string
+          owner_id?: string | null
+          owner_type?: string
+          rate_limit_per_hour?: number | null
+          region?: string
+          trust_interoperability_level?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       deployment_schema_versions: {
         Row: {
           applied_at: string | null
@@ -20227,6 +20278,135 @@ export type Database = {
         }
         Relationships: []
       }
+      federated_claim_registry: {
+        Row: {
+          citation_count: number | null
+          claim_type: string | null
+          created_at: string | null
+          cross_border_adoption_count: number | null
+          data_residency_tag: string
+          global_claim_id: string
+          id: string
+          influence_score: number | null
+          institution_origin: string | null
+          is_restricted: boolean | null
+          origin_node_id: string
+          restriction_reason: string | null
+          topic_tags: string[] | null
+          trust_weight: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          citation_count?: number | null
+          claim_type?: string | null
+          created_at?: string | null
+          cross_border_adoption_count?: number | null
+          data_residency_tag: string
+          global_claim_id: string
+          id?: string
+          influence_score?: number | null
+          institution_origin?: string | null
+          is_restricted?: boolean | null
+          origin_node_id: string
+          restriction_reason?: string | null
+          topic_tags?: string[] | null
+          trust_weight?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          citation_count?: number | null
+          claim_type?: string | null
+          created_at?: string | null
+          cross_border_adoption_count?: number | null
+          data_residency_tag?: string
+          global_claim_id?: string
+          id?: string
+          influence_score?: number | null
+          institution_origin?: string | null
+          is_restricted?: boolean | null
+          origin_node_id?: string
+          restriction_reason?: string | null
+          topic_tags?: string[] | null
+          trust_weight?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_claim_registry_origin_node_id_fkey"
+            columns: ["origin_node_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federated_collaboration_contracts: {
+        Row: {
+          agreement_id: string | null
+          completed_at: string | null
+          contract_title: string
+          created_at: string | null
+          created_by: string
+          data_exchange_scope: Json | null
+          dispute_resolution_jurisdiction: string | null
+          funding_flow_restrictions: Json | null
+          id: string
+          source_node_id: string
+          status: string
+          target_node_id: string
+        }
+        Insert: {
+          agreement_id?: string | null
+          completed_at?: string | null
+          contract_title: string
+          created_at?: string | null
+          created_by: string
+          data_exchange_scope?: Json | null
+          dispute_resolution_jurisdiction?: string | null
+          funding_flow_restrictions?: Json | null
+          id?: string
+          source_node_id: string
+          status?: string
+          target_node_id: string
+        }
+        Update: {
+          agreement_id?: string | null
+          completed_at?: string | null
+          contract_title?: string
+          created_at?: string | null
+          created_by?: string
+          data_exchange_scope?: Json | null
+          dispute_resolution_jurisdiction?: string | null
+          funding_flow_restrictions?: Json | null
+          id?: string
+          source_node_id?: string
+          status?: string
+          target_node_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_collaboration_contracts_agreement_id_fkey"
+            columns: ["agreement_id"]
+            isOneToOne: false
+            referencedRelation: "federation_agreements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "federated_collaboration_contracts_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "federated_collaboration_contracts_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       federated_collaboration_requests: {
         Row: {
           artifact_reference: string | null
@@ -20590,6 +20770,66 @@ export type Database = {
           },
         ]
       }
+      federation_agreements: {
+        Row: {
+          agreement_type: string
+          compliance_tags: string[] | null
+          created_at: string | null
+          data_exchange_scope: Json | null
+          dispute_resolution_jurisdiction: string | null
+          expires_at: string | null
+          id: string
+          jurisdiction_alignment: Json | null
+          source_node_id: string
+          status: string
+          target_node_id: string
+          trust_reciprocity_level: string | null
+        }
+        Insert: {
+          agreement_type?: string
+          compliance_tags?: string[] | null
+          created_at?: string | null
+          data_exchange_scope?: Json | null
+          dispute_resolution_jurisdiction?: string | null
+          expires_at?: string | null
+          id?: string
+          jurisdiction_alignment?: Json | null
+          source_node_id: string
+          status?: string
+          target_node_id: string
+          trust_reciprocity_level?: string | null
+        }
+        Update: {
+          agreement_type?: string
+          compliance_tags?: string[] | null
+          created_at?: string | null
+          data_exchange_scope?: Json | null
+          dispute_resolution_jurisdiction?: string | null
+          expires_at?: string | null
+          id?: string
+          jurisdiction_alignment?: Json | null
+          source_node_id?: string
+          status?: string
+          target_node_id?: string
+          trust_reciprocity_level?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federation_agreements_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "federation_agreements_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       federation_arbitration_registry: {
         Row: {
           ai_fault_probability: number | null
@@ -20643,6 +20883,60 @@ export type Database = {
             columns: ["disputing_node_b"]
             isOneToOne: false
             referencedRelation: "federated_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federation_audit_logs: {
+        Row: {
+          action_type: string
+          block_reason: string | null
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          resource_id: string | null
+          resource_type: string | null
+          source_node_id: string | null
+          target_node_id: string | null
+          was_blocked: boolean | null
+        }
+        Insert: {
+          action_type: string
+          block_reason?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          source_node_id?: string | null
+          target_node_id?: string | null
+          was_blocked?: boolean | null
+        }
+        Update: {
+          action_type?: string
+          block_reason?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          source_node_id?: string | null
+          target_node_id?: string | null
+          was_blocked?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federation_audit_logs_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "federation_audit_logs_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_nodes"
             referencedColumns: ["id"]
           },
         ]
@@ -62553,6 +62847,63 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trust_proxy_mappings: {
+        Row: {
+          computed_at: string | null
+          federated_trust_weight: number | null
+          funding_success_rate: number | null
+          id: string
+          institution_verification_level: string | null
+          local_proxy_score: number | null
+          origin_ecs: number | null
+          origin_node_id: string
+          peer_review_credibility: number | null
+          target_node_id: string
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string | null
+          federated_trust_weight?: number | null
+          funding_success_rate?: number | null
+          id?: string
+          institution_verification_level?: string | null
+          local_proxy_score?: number | null
+          origin_ecs?: number | null
+          origin_node_id: string
+          peer_review_credibility?: number | null
+          target_node_id: string
+          user_id: string
+        }
+        Update: {
+          computed_at?: string | null
+          federated_trust_weight?: number | null
+          funding_success_rate?: number | null
+          id?: string
+          institution_verification_level?: string | null
+          local_proxy_score?: number | null
+          origin_ecs?: number | null
+          origin_node_id?: string
+          peer_review_credibility?: number | null
+          target_node_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trust_proxy_mappings_origin_node_id_fkey"
+            columns: ["origin_node_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trust_proxy_mappings_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_nodes"
             referencedColumns: ["id"]
           },
         ]
