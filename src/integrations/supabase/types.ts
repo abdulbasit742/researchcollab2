@@ -10372,6 +10372,48 @@ export type Database = {
           },
         ]
       }
+      dispute_classifications: {
+        Row: {
+          case_owner: string | null
+          classification_reason: string
+          created_at: string
+          deal_id: string | null
+          escrow_frozen: boolean | null
+          evidence: Json | null
+          id: string
+          resolution: string | null
+          resolved_at: string | null
+          risk_level: string
+          sla_deadline: string | null
+        }
+        Insert: {
+          case_owner?: string | null
+          classification_reason: string
+          created_at?: string
+          deal_id?: string | null
+          escrow_frozen?: boolean | null
+          evidence?: Json | null
+          id?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          risk_level: string
+          sla_deadline?: string | null
+        }
+        Update: {
+          case_owner?: string | null
+          classification_reason?: string
+          created_at?: string
+          deal_id?: string | null
+          escrow_frozen?: boolean | null
+          evidence?: Json | null
+          id?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          risk_level?: string
+          sla_deadline?: string | null
+        }
+        Relationships: []
+      }
       dispute_evidence: {
         Row: {
           content: string
@@ -14718,6 +14760,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      fraud_signals: {
+        Row: {
+          created_at: string
+          description: string
+          evidence: Json | null
+          id: string
+          ip_address: string | null
+          resolution_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string
+          signal_type: string
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          evidence?: Json | null
+          id?: string
+          ip_address?: string | null
+          resolution_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string
+          signal_type: string
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          evidence?: Json | null
+          id?: string
+          ip_address?: string | null
+          resolution_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string
+          signal_type?: string
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       funding_allocations: {
         Row: {
@@ -25889,6 +25976,102 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ops_daily_metrics: {
+        Row: {
+          active_institutions: number | null
+          active_sponsors: number | null
+          api_error_rate: number | null
+          avg_resolution_hours: number | null
+          avg_transaction_latency_ms: number | null
+          concurrency_retries: number | null
+          created_at: string
+          dispute_rate_pct: number | null
+          escalated_cases: number | null
+          escrow_reliability_pct: number | null
+          failed_funding_attempts: number | null
+          funding_attempts: number | null
+          funding_concentration_hhi: number | null
+          id: string
+          institutional_retention_pct: number | null
+          ledger_integrity_pct: number | null
+          max_institution_exposure: number | null
+          max_sponsor_exposure: number | null
+          metric_date: string
+          open_tickets: number | null
+          project_completion_pct: number | null
+          rate_limit_triggers: number | null
+          security_alerts: number | null
+          sla_compliance_pct: number | null
+          sponsor_repeat_pct: number | null
+          total_escrow_locked: number | null
+          total_escrow_released: number | null
+          total_platform_exposure: number | null
+          trust_health_index: number | null
+        }
+        Insert: {
+          active_institutions?: number | null
+          active_sponsors?: number | null
+          api_error_rate?: number | null
+          avg_resolution_hours?: number | null
+          avg_transaction_latency_ms?: number | null
+          concurrency_retries?: number | null
+          created_at?: string
+          dispute_rate_pct?: number | null
+          escalated_cases?: number | null
+          escrow_reliability_pct?: number | null
+          failed_funding_attempts?: number | null
+          funding_attempts?: number | null
+          funding_concentration_hhi?: number | null
+          id?: string
+          institutional_retention_pct?: number | null
+          ledger_integrity_pct?: number | null
+          max_institution_exposure?: number | null
+          max_sponsor_exposure?: number | null
+          metric_date?: string
+          open_tickets?: number | null
+          project_completion_pct?: number | null
+          rate_limit_triggers?: number | null
+          security_alerts?: number | null
+          sla_compliance_pct?: number | null
+          sponsor_repeat_pct?: number | null
+          total_escrow_locked?: number | null
+          total_escrow_released?: number | null
+          total_platform_exposure?: number | null
+          trust_health_index?: number | null
+        }
+        Update: {
+          active_institutions?: number | null
+          active_sponsors?: number | null
+          api_error_rate?: number | null
+          avg_resolution_hours?: number | null
+          avg_transaction_latency_ms?: number | null
+          concurrency_retries?: number | null
+          created_at?: string
+          dispute_rate_pct?: number | null
+          escalated_cases?: number | null
+          escrow_reliability_pct?: number | null
+          failed_funding_attempts?: number | null
+          funding_attempts?: number | null
+          funding_concentration_hhi?: number | null
+          id?: string
+          institutional_retention_pct?: number | null
+          ledger_integrity_pct?: number | null
+          max_institution_exposure?: number | null
+          max_sponsor_exposure?: number | null
+          metric_date?: string
+          open_tickets?: number | null
+          project_completion_pct?: number | null
+          rate_limit_triggers?: number | null
+          security_alerts?: number | null
+          sla_compliance_pct?: number | null
+          sponsor_repeat_pct?: number | null
+          total_escrow_locked?: number | null
+          total_escrow_released?: number | null
+          total_platform_exposure?: number | null
+          trust_health_index?: number | null
+        }
+        Relationships: []
       }
       ops_metrics_snapshots: {
         Row: {
@@ -42994,6 +43177,7 @@ export type Database = {
         Returns: boolean
       }
       capture_launch_health_snapshot: { Args: never; Returns: Json }
+      capture_ops_daily_metrics: { Args: never; Returns: Json }
       check_affiliate_eligibility: {
         Args: { p_user_id: string }
         Returns: Json
@@ -43007,6 +43191,7 @@ export type Database = {
         Returns: boolean
       }
       check_fraud_patterns: { Args: { p_wallet_id: string }; Returns: number }
+      check_ops_readiness_gate: { Args: never; Returns: Json }
       check_permission: {
         Args: {
           _action_key: string
@@ -43044,6 +43229,7 @@ export type Database = {
         Args: { p_offer_id: string }
         Returns: string
       }
+      detect_fraud_signals: { Args: never; Returns: Json }
       detect_orphaned_states: { Args: never; Returns: Json }
       detect_suspicious_activity: { Args: never; Returns: Json }
       detect_trust_gaming_patterns: { Args: never; Returns: Json }
