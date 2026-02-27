@@ -1,13 +1,16 @@
 /**
  * Milestone Service — orchestrates milestone approval + release flow.
+ * Uses server-side atomic DB function for the release transaction.
  */
 
+import { supabase } from "@/integrations/supabase/client";
 import { milestoneRepo, type MilestoneRecord } from "@/repositories/milestoneRepo";
-import { escrowRepo } from "@/repositories/escrowRepo";
-import { escrowService } from "@/services/escrowService";
 import { financialMonitor } from "@/monitoring/financialMonitor";
 import { NotFoundError, ConflictError, FinancialInvariantError } from "@/lib/core/errors";
-import { validateUUID, validateMonetaryAmount } from "@/lib/core/productionHardening";
+import { validateUUID } from "@/lib/core/productionHardening";
+import { createLogger } from "@/lib/core/logger";
+
+const log = createLogger("milestoneService");
 
 export const milestoneService = {
   async getMilestonesByDeal(dealId: string): Promise<MilestoneRecord[]> {
@@ -16,8 +19,8 @@ export const milestoneService = {
   },
 
   /**
-   * Approve a milestone and release escrow funds.
-   * Full flow: validate → approve → release escrow → update milestone.
+   * Approve a milestone and release escrow funds — single atomic DB transaction.
+   * Handles: escrow update, wallet transfers, ledger entries, milestone status, audit log.
    */
   async approveAndRelease(
     milestoneId: string,
@@ -27,51 +30,36 @@ export const milestoneService = {
     validateUUID(milestoneId, "milestoneId");
     validateUUID(sponsorId, "sponsorId");
 
-    // 1. Validate milestone
-    const milestone = await milestoneRepo.findById(milestoneId);
-    if (!milestone) throw new NotFoundError("Milestone", milestoneId);
-    if (milestone.status === "released") throw new ConflictError("Milestone already released");
-    if (milestone.status !== "submitted") throw new ConflictError(`Cannot approve milestone in "${milestone.status}" status`);
+    log.info("Approving and releasing milestone", { milestoneId, sponsorId });
 
-    const amount = validateMonetaryAmount(milestone.amount, "milestone amount");
-
-    // 2. Find escrow
-    const escrow = milestone.escrow_id
-      ? await escrowRepo.findById(milestone.escrow_id)
-      : milestone.deal_id
-        ? await escrowRepo.findByDealId(milestone.deal_id)
-        : null;
-
-    if (!escrow) throw new NotFoundError("Escrow for milestone");
-    if (escrow.sponsor_id !== sponsorId) throw new ConflictError("Only the sponsor can approve releases");
-
-    // 3. Validate escrow has sufficient locked funds
-    if (amount > escrow.locked_amount) {
-      throw new FinancialInvariantError("Milestone amount exceeds escrow locked funds", {
-        milestoneAmount: amount,
-        escrowLocked: escrow.locked_amount,
-      });
-    }
-
-    // 4. Release from escrow (this handles ledger + wallet + invariants)
-    await escrowService.releaseMilestone(
-      escrow.id,
-      amount,
-      escrow.recipient_id,
-      sponsorId,
-      milestoneId,
-      idempotencyKey
-    );
-
-    // 5. Update milestone status
-    const updated = await milestoneRepo.updateStatus(milestoneId, "released", {
-      approved_at: new Date().toISOString(),
-      approved_by: sponsorId,
-      released_at: new Date().toISOString(),
+    const { data, error } = await supabase.rpc("release_milestone_atomic" as any, {
+      p_milestone_id: milestoneId,
+      p_sponsor_id: sponsorId,
+      p_idempotency_key: idempotencyKey,
     });
 
-    financialMonitor.emit("milestone.released", { milestoneId, escrowId: escrow.id, amount });
+    if (error) {
+      log.error("Milestone approve+release failed", error);
+      const msg = error.message || "";
+      if (msg.includes("already released")) throw new ConflictError(msg);
+      if (msg.includes("must be in submitted")) throw new ConflictError(msg);
+      if (msg.includes("exceeds")) throw new FinancialInvariantError(msg);
+      if (msg.includes("Only sponsor")) throw new ConflictError(msg);
+      if (msg.includes("not found")) throw new NotFoundError("Milestone", milestoneId);
+      throw new Error(msg);
+    }
 
-    return { milestone: updated, escrowId: escrow.id };
+    const result = data as any;
+    financialMonitor.emit("milestone.released", {
+      milestoneId,
+      escrowId: result.escrow_id,
+      amount: result.amount,
+    });
+
+    // Fetch updated milestone
+    const milestone = await milestoneRepo.findById(milestoneId);
+    if (!milestone) throw new NotFoundError("Milestone", milestoneId);
+
+    return { milestone, escrowId: result.escrow_id };
   },
 };
