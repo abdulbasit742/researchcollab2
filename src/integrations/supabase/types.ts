@@ -2351,6 +2351,57 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_decision_audit: {
+        Row: {
+          bias_check_result: Json | null
+          confidence_score: number | null
+          created_at: string
+          decision_type: string
+          entity_id: string | null
+          entity_type: string | null
+          explanation: string | null
+          human_reviewed: boolean | null
+          id: string
+          input_summary: Json | null
+          model_id: string | null
+          output_summary: Json | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+        }
+        Insert: {
+          bias_check_result?: Json | null
+          confidence_score?: number | null
+          created_at?: string
+          decision_type: string
+          entity_id?: string | null
+          entity_type?: string | null
+          explanation?: string | null
+          human_reviewed?: boolean | null
+          id?: string
+          input_summary?: Json | null
+          model_id?: string | null
+          output_summary?: Json | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+        }
+        Update: {
+          bias_check_result?: Json | null
+          confidence_score?: number | null
+          created_at?: string
+          decision_type?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          explanation?: string | null
+          human_reviewed?: boolean | null
+          id?: string
+          input_summary?: Json | null
+          model_id?: string | null
+          output_summary?: Json | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+        }
+        Relationships: []
+      }
       ai_decision_audit_logs: {
         Row: {
           alternative_scenarios: Json | null
@@ -3910,6 +3961,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      archival_governance: {
+        Row: {
+          continuity_guarantee: string | null
+          created_at: string
+          data_portability_enabled: boolean | null
+          description: string | null
+          export_format: string | null
+          id: string
+          is_active: boolean | null
+          last_reviewed_at: string | null
+          policy_name: string
+          policy_type: string
+          retention_years: number | null
+        }
+        Insert: {
+          continuity_guarantee?: string | null
+          created_at?: string
+          data_portability_enabled?: boolean | null
+          description?: string | null
+          export_format?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_reviewed_at?: string | null
+          policy_name: string
+          policy_type: string
+          retention_years?: number | null
+        }
+        Update: {
+          continuity_guarantee?: string | null
+          created_at?: string
+          data_portability_enabled?: boolean | null
+          description?: string | null
+          export_format?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_reviewed_at?: string | null
+          policy_name?: string
+          policy_type?: string
+          retention_years?: number | null
+        }
+        Relationships: []
       }
       archival_objects: {
         Row: {
@@ -19974,6 +20067,80 @@ export type Database = {
           },
         ]
       }
+      governance_board_members: {
+        Row: {
+          appointed_at: string
+          board_id: string | null
+          id: string
+          institution_id: string | null
+          is_active: boolean | null
+          role: string
+          term_expires_at: string | null
+          user_id: string
+        }
+        Insert: {
+          appointed_at?: string
+          board_id?: string | null
+          id?: string
+          institution_id?: string | null
+          is_active?: boolean | null
+          role?: string
+          term_expires_at?: string | null
+          user_id: string
+        }
+        Update: {
+          appointed_at?: string
+          board_id?: string | null
+          id?: string
+          institution_id?: string | null
+          is_active?: boolean | null
+          role?: string
+          term_expires_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_board_members_board_id_fkey"
+            columns: ["board_id"]
+            isOneToOne: false
+            referencedRelation: "governance_boards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      governance_boards: {
+        Row: {
+          board_name: string
+          board_type: string
+          charter: string | null
+          description: string | null
+          established_at: string
+          id: string
+          is_active: boolean | null
+          member_count: number | null
+        }
+        Insert: {
+          board_name: string
+          board_type: string
+          charter?: string | null
+          description?: string | null
+          established_at?: string
+          id?: string
+          is_active?: boolean | null
+          member_count?: number | null
+        }
+        Update: {
+          board_name?: string
+          board_type?: string
+          charter?: string | null
+          description?: string | null
+          established_at?: string
+          id?: string
+          is_active?: boolean | null
+          member_count?: number | null
+        }
+        Relationships: []
+      }
       governance_councils: {
         Row: {
           authority_scope: Json | null
@@ -21712,6 +21879,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      grcos_scoring_profiles: {
+        Row: {
+          citation_quality: number | null
+          collaboration_trust: number | null
+          commercialization_yield: number | null
+          compliance_integrity: number | null
+          composite_score: number | null
+          computed_at: string
+          entity_id: string
+          entity_type: string
+          execution_reliability: number | null
+          explanation: string | null
+          funding_impact: number | null
+          id: string
+          innovation_efficiency: number | null
+          institutional_stability: number | null
+          longitudinal_consistency: number | null
+          open_science_contribution: number | null
+          weight_profile: Json | null
+        }
+        Insert: {
+          citation_quality?: number | null
+          collaboration_trust?: number | null
+          commercialization_yield?: number | null
+          compliance_integrity?: number | null
+          composite_score?: number | null
+          computed_at?: string
+          entity_id: string
+          entity_type: string
+          execution_reliability?: number | null
+          explanation?: string | null
+          funding_impact?: number | null
+          id?: string
+          innovation_efficiency?: number | null
+          institutional_stability?: number | null
+          longitudinal_consistency?: number | null
+          open_science_contribution?: number | null
+          weight_profile?: Json | null
+        }
+        Update: {
+          citation_quality?: number | null
+          collaboration_trust?: number | null
+          commercialization_yield?: number | null
+          compliance_integrity?: number | null
+          composite_score?: number | null
+          computed_at?: string
+          entity_id?: string
+          entity_type?: string
+          execution_reliability?: number | null
+          explanation?: string | null
+          funding_impact?: number | null
+          id?: string
+          innovation_efficiency?: number | null
+          institutional_stability?: number | null
+          longitudinal_consistency?: number | null
+          open_science_contribution?: number | null
+          weight_profile?: Json | null
+        }
+        Relationships: []
       }
       group_invitations: {
         Row: {
@@ -27460,6 +27687,90 @@ export type Database = {
         }
         Relationships: []
       }
+      knowledge_graph_edges: {
+        Row: {
+          created_at: string
+          edge_type: string
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          source_node_id: string | null
+          target_node_id: string | null
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          edge_type: string
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          source_node_id?: string | null
+          target_node_id?: string | null
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          edge_type?: string
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          source_node_id?: string | null
+          target_node_id?: string | null
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_graph_edges_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_graph_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_graph_edges_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_graph_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_graph_nodes: {
+        Row: {
+          created_at: string
+          entity_id: string
+          id: string
+          is_active: boolean | null
+          label: string
+          metadata: Json | null
+          node_type: string
+          updated_at: string
+          version: number | null
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          id?: string
+          is_active?: boolean | null
+          label: string
+          metadata?: Json | null
+          node_type: string
+          updated_at?: string
+          version?: number | null
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          id?: string
+          is_active?: boolean | null
+          label?: string
+          metadata?: Json | null
+          node_type?: string
+          updated_at?: string
+          version?: number | null
+        }
+        Relationships: []
+      }
       knowledge_graph_snapshots: {
         Row: {
           discipline_id: string | null
@@ -29932,6 +30243,42 @@ export type Database = {
           updated_at?: string
           valid_from?: string | null
           valid_until?: string | null
+        }
+        Relationships: []
+      }
+      national_intelligence_queries: {
+        Row: {
+          country_id: string
+          id: string
+          insights: string[] | null
+          parameters: Json | null
+          queried_at: string
+          queried_by: string | null
+          query_type: string
+          result_summary: Json | null
+          simulation_mode: boolean | null
+        }
+        Insert: {
+          country_id: string
+          id?: string
+          insights?: string[] | null
+          parameters?: Json | null
+          queried_at?: string
+          queried_by?: string | null
+          query_type: string
+          result_summary?: Json | null
+          simulation_mode?: boolean | null
+        }
+        Update: {
+          country_id?: string
+          id?: string
+          insights?: string[] | null
+          parameters?: Json | null
+          queried_at?: string
+          queried_by?: string | null
+          query_type?: string
+          result_summary?: Json | null
+          simulation_mode?: boolean | null
         }
         Relationships: []
       }
@@ -34006,6 +34353,42 @@ export type Database = {
           platform_fee_amount?: number
           platform_fee_percentage?: number
           trust_tier?: string | null
+        }
+        Relationships: []
+      }
+      platform_health_metrics: {
+        Row: {
+          id: string
+          metadata: Json | null
+          metric_category: string
+          metric_name: string
+          period: string
+          recorded_at: string
+          target_value: number | null
+          unit: string | null
+          value: number
+        }
+        Insert: {
+          id?: string
+          metadata?: Json | null
+          metric_category: string
+          metric_name: string
+          period: string
+          recorded_at?: string
+          target_value?: number | null
+          unit?: string | null
+          value: number
+        }
+        Update: {
+          id?: string
+          metadata?: Json | null
+          metric_category?: string
+          metric_name?: string
+          period?: string
+          recorded_at?: string
+          target_value?: number | null
+          unit?: string | null
+          value?: number
         }
         Relationships: []
       }
