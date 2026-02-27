@@ -14,6 +14,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { ClaimGraphPanel } from "@/components/research/ClaimGraphPanel";
 import {
   BookOpen, Upload, Search, FileText, MessageSquare,
   Loader2, CheckCircle, AlertCircle, ChevronRight,
@@ -394,6 +395,17 @@ export default function ResearchWorkspacePage() {
           )}
         </div>
       </div>
+
+      {/* Cross-Document Synthesis Panel */}
+      {workspaceId && (
+        <div className="mt-6">
+          <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-primary" />
+            Cross-Document Synthesis Engine
+          </h2>
+          <ClaimGraphPanel workspaceId={workspaceId} />
+        </div>
+      )}
     </div>
   );
 }
