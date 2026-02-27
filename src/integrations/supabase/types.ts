@@ -44147,6 +44147,53 @@ export type Database = {
         }
         Relationships: []
       }
+      policy_assumptions: {
+        Row: {
+          assumption_text: string
+          assumption_type: string
+          confidence_score: number | null
+          created_at: string
+          editable: boolean | null
+          id: string
+          parameter_key: string | null
+          parameter_value: number | null
+          policy_model_id: string
+          source_claim_ids: string[] | null
+        }
+        Insert: {
+          assumption_text: string
+          assumption_type?: string
+          confidence_score?: number | null
+          created_at?: string
+          editable?: boolean | null
+          id?: string
+          parameter_key?: string | null
+          parameter_value?: number | null
+          policy_model_id: string
+          source_claim_ids?: string[] | null
+        }
+        Update: {
+          assumption_text?: string
+          assumption_type?: string
+          confidence_score?: number | null
+          created_at?: string
+          editable?: boolean | null
+          id?: string
+          parameter_key?: string | null
+          parameter_value?: number | null
+          policy_model_id?: string
+          source_claim_ids?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_assumptions_policy_model_id_fkey"
+            columns: ["policy_model_id"]
+            isOneToOne: false
+            referencedRelation: "policy_models"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       policy_impact_records: {
         Row: {
           citation_date: string | null
@@ -44271,6 +44318,135 @@ export type Database = {
           },
         ]
       }
+      policy_models: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          execution_feasibility_score: number | null
+          id: string
+          policy_type: string
+          region_scope: string | null
+          status: string
+          title: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          execution_feasibility_score?: number | null
+          id?: string
+          policy_type?: string
+          region_scope?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          execution_feasibility_score?: number | null
+          id?: string
+          policy_type?: string
+          region_scope?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_models_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      policy_scenarios: {
+        Row: {
+          created_at: string
+          id: string
+          parameter_set: Json | null
+          policy_model_id: string
+          scenario_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          parameter_set?: Json | null
+          policy_model_id: string
+          scenario_name?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          parameter_set?: Json | null
+          policy_model_id?: string
+          scenario_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_scenarios_policy_model_id_fkey"
+            columns: ["policy_model_id"]
+            isOneToOne: false
+            referencedRelation: "policy_models"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      policy_simulation_results: {
+        Row: {
+          created_at: string
+          feasibility_score: number | null
+          id: string
+          impact_dimensions: Json | null
+          projected_outcomes: Json | null
+          reasoning_trace: Json | null
+          scenario_id: string
+          sensitivity_analysis: Json | null
+          uncertainty_interval: Json | null
+          version: number | null
+        }
+        Insert: {
+          created_at?: string
+          feasibility_score?: number | null
+          id?: string
+          impact_dimensions?: Json | null
+          projected_outcomes?: Json | null
+          reasoning_trace?: Json | null
+          scenario_id: string
+          sensitivity_analysis?: Json | null
+          uncertainty_interval?: Json | null
+          version?: number | null
+        }
+        Update: {
+          created_at?: string
+          feasibility_score?: number | null
+          id?: string
+          impact_dimensions?: Json | null
+          projected_outcomes?: Json | null
+          reasoning_trace?: Json | null
+          scenario_id?: string
+          sensitivity_analysis?: Json | null
+          uncertainty_interval?: Json | null
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_simulation_results_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "policy_scenarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       policy_simulation_runs: {
         Row: {
           advisory_only: boolean | null
@@ -44312,6 +44488,50 @@ export type Database = {
           trust_stability_impact?: Json | null
         }
         Relationships: []
+      }
+      policy_trajectory: {
+        Row: {
+          adoption_status: string | null
+          created_at: string
+          deviation_from_projection: number | null
+          id: string
+          measurement_date: string
+          milestone_progress: number | null
+          notes: string | null
+          policy_model_id: string
+          trust_shift: number | null
+        }
+        Insert: {
+          adoption_status?: string | null
+          created_at?: string
+          deviation_from_projection?: number | null
+          id?: string
+          measurement_date?: string
+          milestone_progress?: number | null
+          notes?: string | null
+          policy_model_id: string
+          trust_shift?: number | null
+        }
+        Update: {
+          adoption_status?: string | null
+          created_at?: string
+          deviation_from_projection?: number | null
+          id?: string
+          measurement_date?: string
+          milestone_progress?: number | null
+          notes?: string | null
+          policy_model_id?: string
+          trust_shift?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_trajectory_policy_model_id_fkey"
+            columns: ["policy_model_id"]
+            isOneToOne: false
+            referencedRelation: "policy_models"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       policy_translation_records: {
         Row: {

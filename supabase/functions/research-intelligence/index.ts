@@ -1402,6 +1402,150 @@ Return ONLY valid JSON. Be thorough but fair.`
       }
     }
 
+    // ============================================================
+    // ACTION: simulate_policy — Run multi-scenario policy simulation
+    // ============================================================
+    if (action === "simulate_policy") {
+      const { policy_model_id } = body;
+
+      // Fetch model + assumptions
+      const { data: model } = await supabase.from("policy_models").select("*").eq("id", policy_model_id).single();
+      if (!model) return jsonResponse({ error: "Policy model not found" }, 404);
+
+      const { data: assumptions } = await supabase.from("policy_assumptions").select("*").eq("policy_model_id", policy_model_id);
+      const { data: scenarios } = await supabase.from("policy_scenarios").select("*").eq("policy_model_id", policy_model_id);
+
+      if (!scenarios || scenarios.length === 0) return jsonResponse({ error: "No scenarios defined" }, 400);
+
+      // Fetch workspace claims for grounding
+      const { data: claims } = await supabase.from("research_claims")
+        .select("claim_text, claim_type, confidence_score")
+        .eq("workspace_id", model.workspace_id).limit(50);
+
+      const claimContext = (claims || []).map((c: any) => `- [${c.claim_type}] ${c.claim_text} (conf: ${c.confidence_score})`).join("\n");
+      const assumptionContext = (assumptions || []).map((a: any) => `- [${a.assumption_type}] ${a.assumption_text} (conf: ${a.confidence_score}, param: ${a.parameter_key}=${a.parameter_value})`).join("\n");
+
+      const results = [];
+
+      for (const scenario of scenarios) {
+        const aiResult = await callAI([
+          {
+            role: "system",
+            content: `You are a policy impact simulation engine. Given a policy model, its assumptions, and a scenario, produce projected outcomes.
+Return ONLY valid JSON:
+{
+  "projected_outcomes": {
+    "economic_impact": {"cost": N, "roi": N, "productivity_change_pct": N},
+    "social_impact": {"education_level_change": N, "health_outcome_change": N, "inequality_change": N},
+    "institutional_strain": N,
+    "implementation_complexity": "low|medium|high",
+    "capital_requirement": N,
+    "regional_adoption_likelihood": N,
+    "time_to_impact_months": N
+  },
+  "uncertainty_interval": {"lower_bound_pct": N, "upper_bound_pct": N},
+  "feasibility_score": N,
+  "sensitivity_variables": [{"variable": "...", "impact_if_plus_10": N, "impact_if_minus_10": N, "fragility": "low|medium|high"}],
+  "risk_level": "low|moderate|high|exploratory",
+  "reasoning_trace": ["step1...", "step2..."]
+}
+All numbers should be realistic estimates. Label all assumptions. Express uncertainty.`
+          },
+          {
+            role: "user",
+            content: `POLICY: ${model.title} (${model.policy_type}, region: ${model.region_scope || 'global'})
+Description: ${model.description || 'N/A'}
+
+RESEARCH CLAIMS:
+${claimContext || 'No claims available'}
+
+ASSUMPTIONS:
+${assumptionContext || 'No assumptions defined'}
+
+SCENARIO: ${scenario.scenario_name}
+PARAMETERS: ${JSON.stringify(scenario.parameter_set)}`
+          }
+        ]);
+
+        let parsed: any = {
+          projected_outcomes: {}, uncertainty_interval: { lower_bound_pct: -20, upper_bound_pct: 20 },
+          feasibility_score: 50, sensitivity_variables: [], risk_level: "moderate", reasoning_trace: []
+        };
+
+        if (!aiResult.error) {
+          try {
+            const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+            parsed = JSON.parse(cleaned);
+          } catch { /* use defaults */ }
+        }
+
+        const { data: simResult } = await supabase.from("policy_simulation_results").insert({
+          scenario_id: scenario.id,
+          projected_outcomes: parsed.projected_outcomes,
+          uncertainty_interval: parsed.uncertainty_interval,
+          impact_dimensions: parsed.projected_outcomes,
+          feasibility_score: parsed.feasibility_score || 50,
+          sensitivity_analysis: parsed.sensitivity_variables,
+          reasoning_trace: parsed.reasoning_trace,
+        }).select().single();
+
+        results.push({ scenario_id: scenario.id, scenario_name: scenario.scenario_name, ...parsed, result_id: simResult?.id });
+      }
+
+      // Update model status
+      await supabase.from("policy_models").update({ status: "simulated", updated_at: new Date().toISOString() }).eq("id", policy_model_id);
+
+      return jsonResponse({ success: true, results });
+    }
+
+    // ============================================================
+    // ACTION: extract_policy_assumptions — AI extracts assumptions from claims
+    // ============================================================
+    if (action === "extract_policy_assumptions") {
+      const { policy_model_id, workspace_id } = body;
+
+      const { data: claims } = await supabase.from("research_claims")
+        .select("id, claim_text, claim_type, confidence_score")
+        .eq("workspace_id", workspace_id).limit(80);
+
+      if (!claims || claims.length === 0) return jsonResponse({ error: "No claims to extract from" }, 400);
+
+      const claimText = claims.map((c: any) => `[${c.id}] (${c.claim_type}) ${c.claim_text}`).join("\n");
+
+      const aiResult = await callAI([
+        {
+          role: "system",
+          content: `Extract policy-relevant assumptions from research claims. Return JSON array:
+[{"assumption_text": "...", "assumption_type": "economic|demographic|behavioral|regulatory|institutional|infrastructure", "source_claim_ids": ["uuid..."], "confidence_score": 0.0-1.0, "parameter_key": "short_key", "parameter_value": N}]
+Only return valid JSON array.`
+        },
+        { role: "user", content: `CLAIMS:\n${claimText}` }
+      ]);
+
+      if (aiResult.error) return jsonResponse({ error: aiResult.error }, 500);
+
+      let assumptions: any[] = [];
+      try {
+        const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        assumptions = JSON.parse(cleaned);
+      } catch { return jsonResponse({ error: "Failed to parse assumptions" }, 500); }
+
+      if (Array.isArray(assumptions) && assumptions.length > 0) {
+        const rows = assumptions.map((a: any) => ({
+          policy_model_id,
+          assumption_text: a.assumption_text,
+          assumption_type: a.assumption_type || "economic",
+          source_claim_ids: a.source_claim_ids || [],
+          confidence_score: a.confidence_score || 0.5,
+          parameter_key: a.parameter_key || null,
+          parameter_value: a.parameter_value || null,
+        }));
+        await supabase.from("policy_assumptions").insert(rows);
+      }
+
+      return jsonResponse({ success: true, count: assumptions.length });
+    }
+
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
