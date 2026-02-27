@@ -42870,6 +42870,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      fund_escrow_atomic: {
+        Args: {
+          p_deal_id: string
+          p_idempotency_key: string
+          p_sponsor_id: string
+        }
+        Returns: Json
+      }
       generate_credential_verification_code: { Args: never; Returns: string }
       generate_residency_proof: {
         Args: {
@@ -43039,6 +43047,14 @@ export type Database = {
         }
         Returns: string
       }
+      refund_escrow_atomic: {
+        Args: {
+          p_escrow_id: string
+          p_idempotency_key: string
+          p_sponsor_id: string
+        }
+        Returns: Json
+      }
       register_outcome: {
         Args: {
           p_description?: string
@@ -43049,6 +43065,14 @@ export type Database = {
         Returns: string
       }
       release_expired_embargoes: { Args: never; Returns: undefined }
+      release_milestone_atomic: {
+        Args: {
+          p_idempotency_key: string
+          p_milestone_id: string
+          p_sponsor_id: string
+        }
+        Returns: Json
+      }
       submit_review: {
         Args: {
           p_comment?: string
