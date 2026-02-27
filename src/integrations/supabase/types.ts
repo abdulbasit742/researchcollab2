@@ -6730,6 +6730,536 @@ export type Database = {
         }
         Relationships: []
       }
+      cmeie_campaigns: {
+        Row: {
+          category: string
+          compliance_requirements: string[] | null
+          created_at: string
+          currency: string | null
+          deliverables: string[] | null
+          domain: string | null
+          escrow_release_structure: Json | null
+          expected_outcomes: string[] | null
+          funding_goal: number
+          funds_escrowed: number | null
+          funds_pledged: number | null
+          funds_released: number | null
+          geographic_scope: string | null
+          governance_structure: Json | null
+          id: string
+          institutional_backing: string | null
+          milestone_breakdown: Json | null
+          organizer_id: string
+          privacy_level: string | null
+          problem_statement: string | null
+          risk_factors: string[] | null
+          status: string | null
+          timeline_end: string | null
+          timeline_start: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          compliance_requirements?: string[] | null
+          created_at?: string
+          currency?: string | null
+          deliverables?: string[] | null
+          domain?: string | null
+          escrow_release_structure?: Json | null
+          expected_outcomes?: string[] | null
+          funding_goal?: number
+          funds_escrowed?: number | null
+          funds_pledged?: number | null
+          funds_released?: number | null
+          geographic_scope?: string | null
+          governance_structure?: Json | null
+          id?: string
+          institutional_backing?: string | null
+          milestone_breakdown?: Json | null
+          organizer_id: string
+          privacy_level?: string | null
+          problem_statement?: string | null
+          risk_factors?: string[] | null
+          status?: string | null
+          timeline_end?: string | null
+          timeline_start?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          compliance_requirements?: string[] | null
+          created_at?: string
+          currency?: string | null
+          deliverables?: string[] | null
+          domain?: string | null
+          escrow_release_structure?: Json | null
+          expected_outcomes?: string[] | null
+          funding_goal?: number
+          funds_escrowed?: number | null
+          funds_pledged?: number | null
+          funds_released?: number | null
+          geographic_scope?: string | null
+          governance_structure?: Json | null
+          id?: string
+          institutional_backing?: string | null
+          milestone_breakdown?: Json | null
+          organizer_id?: string
+          privacy_level?: string | null
+          problem_statement?: string | null
+          risk_factors?: string[] | null
+          status?: string | null
+          timeline_end?: string | null
+          timeline_start?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cmeie_contributions: {
+        Row: {
+          amount: number
+          campaign_id: string
+          contribution_type: string | null
+          contributor_id: string
+          created_at: string
+          currency: string | null
+          escrow_locked: boolean | null
+          id: string
+          institutional_cofund: boolean | null
+          is_recurring: boolean | null
+          matching_pool_id: string | null
+          milestone_specific_id: string | null
+          recurrence_interval: string | null
+          status: string | null
+        }
+        Insert: {
+          amount: number
+          campaign_id: string
+          contribution_type?: string | null
+          contributor_id: string
+          created_at?: string
+          currency?: string | null
+          escrow_locked?: boolean | null
+          id?: string
+          institutional_cofund?: boolean | null
+          is_recurring?: boolean | null
+          matching_pool_id?: string | null
+          milestone_specific_id?: string | null
+          recurrence_interval?: string | null
+          status?: string | null
+        }
+        Update: {
+          amount?: number
+          campaign_id?: string
+          contribution_type?: string | null
+          contributor_id?: string
+          created_at?: string
+          currency?: string | null
+          escrow_locked?: boolean | null
+          id?: string
+          institutional_cofund?: boolean | null
+          is_recurring?: boolean | null
+          matching_pool_id?: string | null
+          milestone_specific_id?: string | null
+          recurrence_interval?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmeie_contributions_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "cmeie_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cmeie_cross_border: {
+        Row: {
+          campaign_id: string
+          checked_at: string
+          contributor_jurisdiction: string | null
+          currency_regulation_status: string | null
+          data_transfer_compliant: boolean | null
+          export_control_clear: boolean | null
+          flags: string[] | null
+          funding_restrictions: string[] | null
+          id: string
+          institutional_approval_required: boolean | null
+          overall_clearance: number | null
+          sanction_screening_clear: boolean | null
+        }
+        Insert: {
+          campaign_id: string
+          checked_at?: string
+          contributor_jurisdiction?: string | null
+          currency_regulation_status?: string | null
+          data_transfer_compliant?: boolean | null
+          export_control_clear?: boolean | null
+          flags?: string[] | null
+          funding_restrictions?: string[] | null
+          id?: string
+          institutional_approval_required?: boolean | null
+          overall_clearance?: number | null
+          sanction_screening_clear?: boolean | null
+        }
+        Update: {
+          campaign_id?: string
+          checked_at?: string
+          contributor_jurisdiction?: string | null
+          currency_regulation_status?: string | null
+          data_transfer_compliant?: boolean | null
+          export_control_clear?: boolean | null
+          flags?: string[] | null
+          funding_restrictions?: string[] | null
+          id?: string
+          institutional_approval_required?: boolean | null
+          overall_clearance?: number | null
+          sanction_screening_clear?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmeie_cross_border_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "cmeie_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cmeie_donor_intelligence: {
+        Row: {
+          campaign_id: string
+          compliance_status: string | null
+          composite_confidence: number | null
+          computed_at: string
+          cross_border_eligible: boolean | null
+          dispute_history_score: number | null
+          domain_authority: number | null
+          execution_reliability: number | null
+          id: string
+          institutional_backing_score: number | null
+          organizer_trust_index: number | null
+          past_completion_rate: number | null
+          risk_assessment: Json | null
+        }
+        Insert: {
+          campaign_id: string
+          compliance_status?: string | null
+          composite_confidence?: number | null
+          computed_at?: string
+          cross_border_eligible?: boolean | null
+          dispute_history_score?: number | null
+          domain_authority?: number | null
+          execution_reliability?: number | null
+          id?: string
+          institutional_backing_score?: number | null
+          organizer_trust_index?: number | null
+          past_completion_rate?: number | null
+          risk_assessment?: Json | null
+        }
+        Update: {
+          campaign_id?: string
+          compliance_status?: string | null
+          composite_confidence?: number | null
+          computed_at?: string
+          cross_border_eligible?: boolean | null
+          dispute_history_score?: number | null
+          domain_authority?: number | null
+          execution_reliability?: number | null
+          id?: string
+          institutional_backing_score?: number | null
+          organizer_trust_index?: number | null
+          past_completion_rate?: number | null
+          risk_assessment?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmeie_donor_intelligence_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: true
+            referencedRelation: "cmeie_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cmeie_fraud_flags: {
+        Row: {
+          campaign_id: string | null
+          contribution_id: string | null
+          created_at: string
+          description: string | null
+          evidence: Json | null
+          flag_type: string
+          flagged_user_id: string | null
+          id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string | null
+          status: string | null
+        }
+        Insert: {
+          campaign_id?: string | null
+          contribution_id?: string | null
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          flag_type: string
+          flagged_user_id?: string | null
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+        }
+        Update: {
+          campaign_id?: string | null
+          contribution_id?: string | null
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          flag_type?: string
+          flagged_user_id?: string | null
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmeie_fraud_flags_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "cmeie_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cmeie_fraud_flags_contribution_id_fkey"
+            columns: ["contribution_id"]
+            isOneToOne: false
+            referencedRelation: "cmeie_contributions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cmeie_impact_tracking: {
+        Row: {
+          campaign_id: string
+          cross_border_expansions: number | null
+          deliverables_completed: number | null
+          economic_impact_estimate: number | null
+          id: string
+          industry_deployments: number | null
+          innovation_output: number | null
+          patent_filings: number | null
+          policy_influence_score: number | null
+          startup_survival_rate: number | null
+          tracked_at: string
+        }
+        Insert: {
+          campaign_id: string
+          cross_border_expansions?: number | null
+          deliverables_completed?: number | null
+          economic_impact_estimate?: number | null
+          id?: string
+          industry_deployments?: number | null
+          innovation_output?: number | null
+          patent_filings?: number | null
+          policy_influence_score?: number | null
+          startup_survival_rate?: number | null
+          tracked_at?: string
+        }
+        Update: {
+          campaign_id?: string
+          cross_border_expansions?: number | null
+          deliverables_completed?: number | null
+          economic_impact_estimate?: number | null
+          id?: string
+          industry_deployments?: number | null
+          innovation_output?: number | null
+          patent_filings?: number | null
+          policy_influence_score?: number | null
+          startup_survival_rate?: number | null
+          tracked_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmeie_impact_tracking_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: true
+            referencedRelation: "cmeie_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cmeie_performance_index: {
+        Row: {
+          budget_adherence: number | null
+          campaign_id: string
+          composite_performance: number | null
+          computed_at: string
+          cross_border_stability: number | null
+          deliverable_validation_rate: number | null
+          donor_satisfaction: number | null
+          economic_multiplier: number | null
+          id: string
+          institutional_endorsement: number | null
+          long_term_impact: number | null
+          milestone_punctuality: number | null
+        }
+        Insert: {
+          budget_adherence?: number | null
+          campaign_id: string
+          composite_performance?: number | null
+          computed_at?: string
+          cross_border_stability?: number | null
+          deliverable_validation_rate?: number | null
+          donor_satisfaction?: number | null
+          economic_multiplier?: number | null
+          id?: string
+          institutional_endorsement?: number | null
+          long_term_impact?: number | null
+          milestone_punctuality?: number | null
+        }
+        Update: {
+          budget_adherence?: number | null
+          campaign_id?: string
+          composite_performance?: number | null
+          computed_at?: string
+          cross_border_stability?: number | null
+          deliverable_validation_rate?: number | null
+          donor_satisfaction?: number | null
+          economic_multiplier?: number | null
+          id?: string
+          institutional_endorsement?: number | null
+          long_term_impact?: number | null
+          milestone_punctuality?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmeie_performance_index_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: true
+            referencedRelation: "cmeie_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cmeie_risk_assessment: {
+        Row: {
+          campaign_id: string
+          compliance_risk: number | null
+          composite_risk: number | null
+          computed_at: string
+          cross_border_regulatory_risk: number | null
+          deliverable_feasibility: number | null
+          domain_maturity: number | null
+          execution_risk: number | null
+          funding_volatility_risk: number | null
+          id: string
+          institutional_stability_risk: number | null
+          milestone_punctuality: number | null
+          team_trust_density: number | null
+        }
+        Insert: {
+          campaign_id: string
+          compliance_risk?: number | null
+          composite_risk?: number | null
+          computed_at?: string
+          cross_border_regulatory_risk?: number | null
+          deliverable_feasibility?: number | null
+          domain_maturity?: number | null
+          execution_risk?: number | null
+          funding_volatility_risk?: number | null
+          id?: string
+          institutional_stability_risk?: number | null
+          milestone_punctuality?: number | null
+          team_trust_density?: number | null
+        }
+        Update: {
+          campaign_id?: string
+          compliance_risk?: number | null
+          composite_risk?: number | null
+          computed_at?: string
+          cross_border_regulatory_risk?: number | null
+          deliverable_feasibility?: number | null
+          domain_maturity?: number | null
+          execution_risk?: number | null
+          funding_volatility_risk?: number | null
+          id?: string
+          institutional_stability_risk?: number | null
+          milestone_punctuality?: number | null
+          team_trust_density?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmeie_risk_assessment_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: true
+            referencedRelation: "cmeie_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cmeie_startup_rounds: {
+        Row: {
+          campaign_id: string
+          convertible_structure: Json | null
+          created_at: string
+          equity_offered: number | null
+          escrow_staged: boolean | null
+          governance_rights: Json | null
+          id: string
+          investor_accreditation_required: boolean | null
+          performance_linked_release: boolean | null
+          raised_amount: number | null
+          round_type: string | null
+          status: string | null
+          target_raise: number | null
+        }
+        Insert: {
+          campaign_id: string
+          convertible_structure?: Json | null
+          created_at?: string
+          equity_offered?: number | null
+          escrow_staged?: boolean | null
+          governance_rights?: Json | null
+          id?: string
+          investor_accreditation_required?: boolean | null
+          performance_linked_release?: boolean | null
+          raised_amount?: number | null
+          round_type?: string | null
+          status?: string | null
+          target_raise?: number | null
+        }
+        Update: {
+          campaign_id?: string
+          convertible_structure?: Json | null
+          created_at?: string
+          equity_offered?: number | null
+          escrow_staged?: boolean | null
+          governance_rights?: Json | null
+          id?: string
+          investor_accreditation_required?: boolean | null
+          performance_linked_release?: boolean | null
+          raised_amount?: number | null
+          round_type?: string | null
+          status?: string | null
+          target_raise?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmeie_startup_rounds_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "cmeie_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       coauthor_inflation_flags: {
         Row: {
           avg_team_size: number | null
