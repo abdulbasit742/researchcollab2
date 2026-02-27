@@ -16651,6 +16651,640 @@ export type Database = {
         }
         Relationships: []
       }
+      eoee_collaboration_calls: {
+        Row: {
+          call_type: string | null
+          created_at: string | null
+          description: string | null
+          enterprise_id: string
+          escrow_milestones: Json | null
+          funding_terms: Json | null
+          id: string
+          invited_institutions: Json | null
+          invited_startups: Json | null
+          proposals_count: number | null
+          required_skills: string[] | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          call_type?: string | null
+          created_at?: string | null
+          description?: string | null
+          enterprise_id: string
+          escrow_milestones?: Json | null
+          funding_terms?: Json | null
+          id?: string
+          invited_institutions?: Json | null
+          invited_startups?: Json | null
+          proposals_count?: number | null
+          required_skills?: string[] | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          call_type?: string | null
+          created_at?: string | null
+          description?: string | null
+          enterprise_id?: string
+          escrow_milestones?: Json | null
+          funding_terms?: Json | null
+          id?: string
+          invited_institutions?: Json | null
+          invited_startups?: Json | null
+          proposals_count?: number | null
+          required_skills?: string[] | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eoee_collaboration_calls_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "eoee_enterprise_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eoee_compliance: {
+        Row: {
+          audit_history: Json | null
+          computed_at: string | null
+          data_governance_maturity: number | null
+          dispute_resolution_efficiency: number | null
+          enterprise_id: string
+          esg_metrics: Json | null
+          funding_compliance_rate: number | null
+          id: string
+          ip_protection_compliance: number | null
+          policy_alignment_score: number | null
+          regulatory_certifications: Json | null
+        }
+        Insert: {
+          audit_history?: Json | null
+          computed_at?: string | null
+          data_governance_maturity?: number | null
+          dispute_resolution_efficiency?: number | null
+          enterprise_id: string
+          esg_metrics?: Json | null
+          funding_compliance_rate?: number | null
+          id?: string
+          ip_protection_compliance?: number | null
+          policy_alignment_score?: number | null
+          regulatory_certifications?: Json | null
+        }
+        Update: {
+          audit_history?: Json | null
+          computed_at?: string | null
+          data_governance_maturity?: number | null
+          dispute_resolution_efficiency?: number | null
+          enterprise_id?: string
+          esg_metrics?: Json | null
+          funding_compliance_rate?: number | null
+          id?: string
+          ip_protection_compliance?: number | null
+          policy_alignment_score?: number | null
+          regulatory_certifications?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eoee_compliance_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "eoee_enterprise_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eoee_cross_border: {
+        Row: {
+          compliance_alignment: number | null
+          created_at: string | null
+          enterprise_id: string
+          funding_jurisdiction_compatibility: number | null
+          id: string
+          innovation_export_capacity: number | null
+          institutional_partnership_density: number | null
+          regulatory_exposure: Json | null
+          talent_mobility_readiness: number | null
+          target_region: string
+          trust_corridor_strength: number | null
+        }
+        Insert: {
+          compliance_alignment?: number | null
+          created_at?: string | null
+          enterprise_id: string
+          funding_jurisdiction_compatibility?: number | null
+          id?: string
+          innovation_export_capacity?: number | null
+          institutional_partnership_density?: number | null
+          regulatory_exposure?: Json | null
+          talent_mobility_readiness?: number | null
+          target_region: string
+          trust_corridor_strength?: number | null
+        }
+        Update: {
+          compliance_alignment?: number | null
+          created_at?: string | null
+          enterprise_id?: string
+          funding_jurisdiction_compatibility?: number | null
+          id?: string
+          innovation_export_capacity?: number | null
+          institutional_partnership_density?: number | null
+          regulatory_exposure?: Json | null
+          talent_mobility_readiness?: number | null
+          target_region?: string
+          trust_corridor_strength?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eoee_cross_border_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "eoee_enterprise_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eoee_enterprise_memory: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          enterprise_id: string
+          id: string
+          impact_data: Json | null
+          memory_type: string
+          period_end: string | null
+          period_start: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          enterprise_id: string
+          id?: string
+          impact_data?: Json | null
+          memory_type?: string
+          period_end?: string | null
+          period_start?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          enterprise_id?: string
+          id?: string
+          impact_data?: Json | null
+          memory_type?: string
+          period_end?: string | null
+          period_start?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eoee_enterprise_memory_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "eoee_enterprise_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eoee_enterprise_profiles: {
+        Row: {
+          active_innovation_projects: number | null
+          compliance_score: number | null
+          core_domains: string[] | null
+          created_at: string | null
+          created_by: string | null
+          cross_border_operations: number | null
+          economic_contribution: number | null
+          funding_participation: number | null
+          id: string
+          industry_pilots: number | null
+          institutional_collaborations: number | null
+          name: string
+          organization_id: string | null
+          patent_portfolio: number | null
+          rd_investment: number | null
+          startup_partnerships: number | null
+          status: string | null
+          trust_index: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          active_innovation_projects?: number | null
+          compliance_score?: number | null
+          core_domains?: string[] | null
+          created_at?: string | null
+          created_by?: string | null
+          cross_border_operations?: number | null
+          economic_contribution?: number | null
+          funding_participation?: number | null
+          id?: string
+          industry_pilots?: number | null
+          institutional_collaborations?: number | null
+          name: string
+          organization_id?: string | null
+          patent_portfolio?: number | null
+          rd_investment?: number | null
+          startup_partnerships?: number | null
+          status?: string | null
+          trust_index?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          active_innovation_projects?: number | null
+          compliance_score?: number | null
+          core_domains?: string[] | null
+          created_at?: string | null
+          created_by?: string | null
+          cross_border_operations?: number | null
+          economic_contribution?: number | null
+          funding_participation?: number | null
+          id?: string
+          industry_pilots?: number | null
+          institutional_collaborations?: number | null
+          name?: string
+          organization_id?: string | null
+          patent_portfolio?: number | null
+          rd_investment?: number | null
+          startup_partnerships?: number | null
+          status?: string | null
+          trust_index?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      eoee_impact_index: {
+        Row: {
+          compliance_stability: number | null
+          composite_impact: number | null
+          computed_at: string | null
+          cross_border_expansion: number | null
+          economic_multiplier: number | null
+          enterprise_id: string
+          funding_efficiency: number | null
+          id: string
+          innovation_output: number | null
+          institutional_collaboration_strength: number | null
+          startup_incubation_success: number | null
+          trust_density: number | null
+        }
+        Insert: {
+          compliance_stability?: number | null
+          composite_impact?: number | null
+          computed_at?: string | null
+          cross_border_expansion?: number | null
+          economic_multiplier?: number | null
+          enterprise_id: string
+          funding_efficiency?: number | null
+          id?: string
+          innovation_output?: number | null
+          institutional_collaboration_strength?: number | null
+          startup_incubation_success?: number | null
+          trust_density?: number | null
+        }
+        Update: {
+          compliance_stability?: number | null
+          composite_impact?: number | null
+          computed_at?: string | null
+          cross_border_expansion?: number | null
+          economic_multiplier?: number | null
+          enterprise_id?: string
+          funding_efficiency?: number | null
+          id?: string
+          innovation_output?: number | null
+          institutional_collaboration_strength?: number | null
+          startup_incubation_success?: number | null
+          trust_density?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eoee_impact_index_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "eoee_enterprise_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eoee_industry_clusters: {
+        Row: {
+          cluster_name: string
+          cluster_type: string | null
+          connected_enterprises: Json | null
+          created_at: string | null
+          enterprise_id: string
+          funding_corridors: Json | null
+          id: string
+          institutional_bridges: Json | null
+          patent_co_development: Json | null
+          startup_partnerships: Json | null
+        }
+        Insert: {
+          cluster_name: string
+          cluster_type?: string | null
+          connected_enterprises?: Json | null
+          created_at?: string | null
+          enterprise_id: string
+          funding_corridors?: Json | null
+          id?: string
+          institutional_bridges?: Json | null
+          patent_co_development?: Json | null
+          startup_partnerships?: Json | null
+        }
+        Update: {
+          cluster_name?: string
+          cluster_type?: string | null
+          connected_enterprises?: Json | null
+          created_at?: string | null
+          enterprise_id?: string
+          funding_corridors?: Json | null
+          id?: string
+          institutional_bridges?: Json | null
+          patent_co_development?: Json | null
+          startup_partnerships?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eoee_industry_clusters_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "eoee_enterprise_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eoee_innovation_pipeline: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          domain: string | null
+          enterprise_id: string
+          funding_allocated: number | null
+          id: string
+          linked_institution_id: string | null
+          linked_startup_id: string | null
+          market_expansion_target: string | null
+          patent_filed: boolean | null
+          stage: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          enterprise_id: string
+          funding_allocated?: number | null
+          id?: string
+          linked_institution_id?: string | null
+          linked_startup_id?: string | null
+          market_expansion_target?: string | null
+          patent_filed?: boolean | null
+          stage?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          enterprise_id?: string
+          funding_allocated?: number | null
+          id?: string
+          linked_institution_id?: string | null
+          linked_startup_id?: string | null
+          market_expansion_target?: string | null
+          patent_filed?: boolean | null
+          stage?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eoee_innovation_pipeline_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "eoee_enterprise_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eoee_procurement: {
+        Row: {
+          compliance_requirements: Json | null
+          created_at: string | null
+          description: string | null
+          enterprise_id: string
+          escrow_milestones: Json | null
+          id: string
+          institutional_linkage: string | null
+          rfp_title: string
+          status: string | null
+          updated_at: string | null
+          vendor_performance: Json | null
+          vendor_trust_threshold: number | null
+        }
+        Insert: {
+          compliance_requirements?: Json | null
+          created_at?: string | null
+          description?: string | null
+          enterprise_id: string
+          escrow_milestones?: Json | null
+          id?: string
+          institutional_linkage?: string | null
+          rfp_title: string
+          status?: string | null
+          updated_at?: string | null
+          vendor_performance?: Json | null
+          vendor_trust_threshold?: number | null
+        }
+        Update: {
+          compliance_requirements?: Json | null
+          created_at?: string | null
+          description?: string | null
+          enterprise_id?: string
+          escrow_milestones?: Json | null
+          id?: string
+          institutional_linkage?: string | null
+          rfp_title?: string
+          status?: string | null
+          updated_at?: string | null
+          vendor_performance?: Json | null
+          vendor_trust_threshold?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eoee_procurement_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "eoee_enterprise_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eoee_startup_partnerships: {
+        Row: {
+          created_at: string | null
+          enterprise_id: string
+          equity_terms: Json | null
+          founder_trust_score: number | null
+          id: string
+          joint_venture_proposal: Json | null
+          milestone_capital_released: number | null
+          partnership_type: string | null
+          pilot_funding: number | null
+          post_pilot_performance: Json | null
+          startup_name: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          enterprise_id: string
+          equity_terms?: Json | null
+          founder_trust_score?: number | null
+          id?: string
+          joint_venture_proposal?: Json | null
+          milestone_capital_released?: number | null
+          partnership_type?: string | null
+          pilot_funding?: number | null
+          post_pilot_performance?: Json | null
+          startup_name: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          enterprise_id?: string
+          equity_terms?: Json | null
+          founder_trust_score?: number | null
+          id?: string
+          joint_venture_proposal?: Json | null
+          milestone_capital_released?: number | null
+          partnership_type?: string | null
+          pilot_funding?: number | null
+          post_pilot_performance?: Json | null
+          startup_name?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eoee_startup_partnerships_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "eoee_enterprise_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eoee_talent_pipeline: {
+        Row: {
+          alumni_startup_collaborations: number | null
+          computed_at: string | null
+          cross_border_hiring: Json | null
+          enterprise_id: string
+          id: string
+          institutional_partnerships: Json | null
+          internship_pipeline: number | null
+          recruitment_success_rate: number | null
+          skill_demand_gaps: Json | null
+          skill_diversification: Json | null
+        }
+        Insert: {
+          alumni_startup_collaborations?: number | null
+          computed_at?: string | null
+          cross_border_hiring?: Json | null
+          enterprise_id: string
+          id?: string
+          institutional_partnerships?: Json | null
+          internship_pipeline?: number | null
+          recruitment_success_rate?: number | null
+          skill_demand_gaps?: Json | null
+          skill_diversification?: Json | null
+        }
+        Update: {
+          alumni_startup_collaborations?: number | null
+          computed_at?: string | null
+          cross_border_hiring?: Json | null
+          enterprise_id?: string
+          id?: string
+          institutional_partnerships?: Json | null
+          internship_pipeline?: number | null
+          recruitment_success_rate?: number | null
+          skill_demand_gaps?: Json | null
+          skill_diversification?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eoee_talent_pipeline_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "eoee_enterprise_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eoee_trust_index: {
+        Row: {
+          composite_trust: number | null
+          computed_at: string | null
+          contract_fulfillment_rate: number | null
+          cross_border_reliability: number | null
+          dispute_frequency: number | null
+          enterprise_id: string
+          funding_compliance: number | null
+          id: string
+          institutional_endorsements: number | null
+          longitudinal_stability: number | null
+          milestone_punctuality: number | null
+          startup_success_rate: number | null
+        }
+        Insert: {
+          composite_trust?: number | null
+          computed_at?: string | null
+          contract_fulfillment_rate?: number | null
+          cross_border_reliability?: number | null
+          dispute_frequency?: number | null
+          enterprise_id: string
+          funding_compliance?: number | null
+          id?: string
+          institutional_endorsements?: number | null
+          longitudinal_stability?: number | null
+          milestone_punctuality?: number | null
+          startup_success_rate?: number | null
+        }
+        Update: {
+          composite_trust?: number | null
+          computed_at?: string | null
+          contract_fulfillment_rate?: number | null
+          cross_border_reliability?: number | null
+          dispute_frequency?: number | null
+          enterprise_id?: string
+          funding_compliance?: number | null
+          id?: string
+          institutional_endorsements?: number | null
+          longitudinal_stability?: number | null
+          milestone_punctuality?: number | null
+          startup_success_rate?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eoee_trust_index_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "eoee_enterprise_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       equity_adjustment_rules: {
         Row: {
           adjustment_bounds: Json | null
