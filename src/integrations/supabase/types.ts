@@ -62485,6 +62485,492 @@ export type Database = {
           },
         ]
       }
+      wdihp_coherence_audits: {
+        Row: {
+          audit_type: string
+          audited_at: string
+          audited_by: string | null
+          failed: number
+          id: string
+          orphan_features: string[] | null
+          passed: number
+          report: Json
+          total_features: number
+        }
+        Insert: {
+          audit_type?: string
+          audited_at?: string
+          audited_by?: string | null
+          failed: number
+          id?: string
+          orphan_features?: string[] | null
+          passed: number
+          report: Json
+          total_features: number
+        }
+        Update: {
+          audit_type?: string
+          audited_at?: string
+          audited_by?: string | null
+          failed?: number
+          id?: string
+          orphan_features?: string[] | null
+          passed?: number
+          report?: Json
+          total_features?: number
+        }
+        Relationships: []
+      }
+      wdihp_enterprise_configs: {
+        Row: {
+          audit_export_enabled: boolean | null
+          bulk_seid_verification: boolean | null
+          compliance_mode: string
+          created_at: string
+          custom_branding: boolean | null
+          data_localization: string | null
+          grant_integration_enabled: boolean | null
+          id: string
+          organization_id: string
+          policy_tracking_enabled: boolean | null
+          procurement_api_enabled: boolean | null
+          sso_enabled: boolean | null
+          sso_provider: string | null
+          tier: string
+          updated_at: string | null
+        }
+        Insert: {
+          audit_export_enabled?: boolean | null
+          bulk_seid_verification?: boolean | null
+          compliance_mode?: string
+          created_at?: string
+          custom_branding?: boolean | null
+          data_localization?: string | null
+          grant_integration_enabled?: boolean | null
+          id?: string
+          organization_id: string
+          policy_tracking_enabled?: boolean | null
+          procurement_api_enabled?: boolean | null
+          sso_enabled?: boolean | null
+          sso_provider?: string | null
+          tier?: string
+          updated_at?: string | null
+        }
+        Update: {
+          audit_export_enabled?: boolean | null
+          bulk_seid_verification?: boolean | null
+          compliance_mode?: string
+          created_at?: string
+          custom_branding?: boolean | null
+          data_localization?: string | null
+          grant_integration_enabled?: boolean | null
+          id?: string
+          organization_id?: string
+          policy_tracking_enabled?: boolean | null
+          procurement_api_enabled?: boolean | null
+          sso_enabled?: boolean | null
+          sso_provider?: string | null
+          tier?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      wdihp_escrow_freeze_events: {
+        Row: {
+          auto_detected: boolean | null
+          escrow_id: string
+          estimated_resolution_hours: number | null
+          evidence: Json | null
+          frozen_at: string
+          frozen_by: string
+          id: string
+          reason: string
+          requires_governance_review: boolean | null
+          resolution_notes: string | null
+          unfrozen_at: string | null
+          unfrozen_by: string | null
+        }
+        Insert: {
+          auto_detected?: boolean | null
+          escrow_id: string
+          estimated_resolution_hours?: number | null
+          evidence?: Json | null
+          frozen_at?: string
+          frozen_by: string
+          id?: string
+          reason: string
+          requires_governance_review?: boolean | null
+          resolution_notes?: string | null
+          unfrozen_at?: string | null
+          unfrozen_by?: string | null
+        }
+        Update: {
+          auto_detected?: boolean | null
+          escrow_id?: string
+          estimated_resolution_hours?: number | null
+          evidence?: Json | null
+          frozen_at?: string
+          frozen_by?: string
+          id?: string
+          reason?: string
+          requires_governance_review?: boolean | null
+          resolution_notes?: string | null
+          unfrozen_at?: string | null
+          unfrozen_by?: string | null
+        }
+        Relationships: []
+      }
+      wdihp_escrow_security_log: {
+        Row: {
+          action: string
+          actor_id: string
+          blockers: string[] | null
+          created_at: string
+          escrow_id: string
+          id: string
+          risk_level: string
+          validation_result: Json
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          blockers?: string[] | null
+          created_at?: string
+          escrow_id: string
+          id?: string
+          risk_level: string
+          validation_result: Json
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          blockers?: string[] | null
+          created_at?: string
+          escrow_id?: string
+          id?: string
+          risk_level?: string
+          validation_result?: Json
+        }
+        Relationships: []
+      }
+      wdihp_execution_signals: {
+        Row: {
+          actor_id: string
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          metadata: Json | null
+          signal_type: string
+          signal_weight: number
+        }
+        Insert: {
+          actor_id: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metadata?: Json | null
+          signal_type: string
+          signal_weight?: number
+        }
+        Update: {
+          actor_id?: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metadata?: Json | null
+          signal_type?: string
+          signal_weight?: number
+        }
+        Relationships: []
+      }
+      wdihp_government_configs: {
+        Row: {
+          created_at: string
+          data_residency_enforced: boolean | null
+          encryption_standard: string | null
+          id: string
+          jurisdiction_code: string
+          organization_id: string
+          policy_advisory_tracking: boolean | null
+          procurement_check_integration: boolean | null
+          public_funding_audit_required: boolean | null
+          regulatory_framework: string
+          retention_policy_years: number | null
+          transparency_report_frequency: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          data_residency_enforced?: boolean | null
+          encryption_standard?: string | null
+          id?: string
+          jurisdiction_code: string
+          organization_id: string
+          policy_advisory_tracking?: boolean | null
+          procurement_check_integration?: boolean | null
+          public_funding_audit_required?: boolean | null
+          regulatory_framework: string
+          retention_policy_years?: number | null
+          transparency_report_frequency?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          data_residency_enforced?: boolean | null
+          encryption_standard?: string | null
+          id?: string
+          jurisdiction_code?: string
+          organization_id?: string
+          policy_advisory_tracking?: boolean | null
+          procurement_check_integration?: boolean | null
+          public_funding_audit_required?: boolean | null
+          regulatory_framework?: string
+          retention_policy_years?: number | null
+          transparency_report_frequency?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      wdihp_hardening_status: {
+        Row: {
+          compliance_score: number | null
+          component: string
+          hardening_level: string
+          id: string
+          last_audit_at: string | null
+          notes: string | null
+          pillar: string
+          updated_at: string | null
+        }
+        Insert: {
+          compliance_score?: number | null
+          component: string
+          hardening_level?: string
+          id?: string
+          last_audit_at?: string | null
+          notes?: string | null
+          pillar: string
+          updated_at?: string | null
+        }
+        Update: {
+          compliance_score?: number | null
+          component?: string
+          hardening_level?: string
+          id?: string
+          last_audit_at?: string | null
+          notes?: string | null
+          pillar?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      wdihp_risk_simulations: {
+        Row: {
+          affected_pillars: string[]
+          cascade_risk: number | null
+          estimated_capital_at_risk: number | null
+          estimated_users_affected: number | null
+          id: string
+          impact_severity: string
+          mitigation_steps: string[] | null
+          platform_metrics_snapshot: Json | null
+          recovery_time_days: number | null
+          scenario: string
+          simulated_at: string
+          simulated_by: string | null
+        }
+        Insert: {
+          affected_pillars: string[]
+          cascade_risk?: number | null
+          estimated_capital_at_risk?: number | null
+          estimated_users_affected?: number | null
+          id?: string
+          impact_severity: string
+          mitigation_steps?: string[] | null
+          platform_metrics_snapshot?: Json | null
+          recovery_time_days?: number | null
+          scenario: string
+          simulated_at?: string
+          simulated_by?: string | null
+        }
+        Update: {
+          affected_pillars?: string[]
+          cascade_risk?: number | null
+          estimated_capital_at_risk?: number | null
+          estimated_users_affected?: number | null
+          id?: string
+          impact_severity?: string
+          mitigation_steps?: string[] | null
+          platform_metrics_snapshot?: Json | null
+          recovery_time_days?: number | null
+          scenario?: string
+          simulated_at?: string
+          simulated_by?: string | null
+        }
+        Relationships: []
+      }
+      wdihp_trust_anomalies: {
+        Row: {
+          anomaly_type: string
+          auto_mitigation_applied: boolean | null
+          detected_at: string
+          evidence: Json | null
+          id: string
+          mitigation_action: string | null
+          resolution_notes: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string
+          user_id: string
+        }
+        Insert: {
+          anomaly_type: string
+          auto_mitigation_applied?: boolean | null
+          detected_at?: string
+          evidence?: Json | null
+          id?: string
+          mitigation_action?: string | null
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity: string
+          user_id: string
+        }
+        Update: {
+          anomaly_type?: string
+          auto_mitigation_applied?: boolean | null
+          detected_at?: string
+          evidence?: Json | null
+          id?: string
+          mitigation_action?: string | null
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wdihp_trust_concentration: {
+        Row: {
+          computed_at: string
+          concentration_risk: string
+          gini_coefficient: number
+          id: string
+          source_count: number
+          top_source_percentage: number
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string
+          concentration_risk: string
+          gini_coefficient: number
+          id?: string
+          source_count: number
+          top_source_percentage: number
+          user_id: string
+        }
+        Update: {
+          computed_at?: string
+          concentration_risk?: string
+          gini_coefficient?: number
+          id?: string
+          source_count?: number
+          top_source_percentage?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wdihp_trust_dampening: {
+        Row: {
+          age_factor: number
+          applied_at: string
+          dampened_delta: number
+          explanation: string
+          id: string
+          raw_delta: number
+          user_id: string
+          volatility_factor: number
+        }
+        Insert: {
+          age_factor: number
+          applied_at?: string
+          dampened_delta: number
+          explanation: string
+          id?: string
+          raw_delta: number
+          user_id: string
+          volatility_factor: number
+        }
+        Update: {
+          age_factor?: number
+          applied_at?: string
+          dampened_delta?: number
+          explanation?: string
+          id?: string
+          raw_delta?: number
+          user_id?: string
+          volatility_factor?: number
+        }
+        Relationships: []
+      }
+      wdihp_trust_recovery: {
+        Row: {
+          consistent_positive_actions: number | null
+          current_recovered_score: number | null
+          days_since_dispute: number | null
+          dispute_id: string | null
+          id: string
+          institutional_mediation: boolean | null
+          last_updated_at: string | null
+          post_dispute_score: number
+          pre_dispute_score: number
+          projected_full_recovery_days: number | null
+          recovery_percentage: number | null
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          consistent_positive_actions?: number | null
+          current_recovered_score?: number | null
+          days_since_dispute?: number | null
+          dispute_id?: string | null
+          id?: string
+          institutional_mediation?: boolean | null
+          last_updated_at?: string | null
+          post_dispute_score: number
+          pre_dispute_score: number
+          projected_full_recovery_days?: number | null
+          recovery_percentage?: number | null
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          consistent_positive_actions?: number | null
+          current_recovered_score?: number | null
+          days_since_dispute?: number | null
+          dispute_id?: string | null
+          id?: string
+          institutional_mediation?: boolean | null
+          last_updated_at?: string | null
+          post_dispute_score?: number
+          pre_dispute_score?: number
+          projected_full_recovery_days?: number | null
+          recovery_percentage?: number | null
+          started_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       webhook_subscriptions: {
         Row: {
           callback_url: string
