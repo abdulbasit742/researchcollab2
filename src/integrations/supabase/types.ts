@@ -35768,6 +35768,39 @@ export type Database = {
         }
         Relationships: []
       }
+      security_events: {
+        Row: {
+          created_at: string
+          description: string | null
+          event_type: string
+          id: string
+          ip_address: string | null
+          request_metadata: Json | null
+          severity: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          event_type: string
+          id?: string
+          ip_address?: string | null
+          request_metadata?: Json | null
+          severity?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          request_metadata?: Json | null
+          severity?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       security_incidents: {
         Row: {
           affected_components: string[] | null
@@ -42101,6 +42134,7 @@ export type Database = {
           transaction_velocity_24h: number | null
           updated_at: string
           user_id: string
+          version: number
         }
         Insert: {
           available_balance?: number
@@ -42124,6 +42158,7 @@ export type Database = {
           transaction_velocity_24h?: number | null
           updated_at?: string
           user_id: string
+          version?: number
         }
         Update: {
           available_balance?: number
@@ -42147,6 +42182,7 @@ export type Database = {
           transaction_velocity_24h?: number | null
           updated_at?: string
           user_id?: string
+          version?: number
         }
         Relationships: [
           {
@@ -43013,6 +43049,16 @@ export type Database = {
           _user_id?: string
         }
         Returns: string
+      }
+      log_security_event: {
+        Args: {
+          p_description?: string
+          p_event_type: string
+          p_metadata?: Json
+          p_severity?: string
+          p_user_id: string
+        }
+        Returns: undefined
       }
       partial_release_milestone: {
         Args: { p_amount: number; p_milestone_id: string; p_reason: string }
