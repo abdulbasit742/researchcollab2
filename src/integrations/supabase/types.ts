@@ -49078,6 +49078,611 @@ export type Database = {
         }
         Relationships: []
       }
+      rpie_collaboration_matches: {
+        Row: {
+          accepted_at: string | null
+          compatibility_score: number | null
+          entity_a_id: string
+          entity_a_type: string
+          entity_b_id: string
+          entity_b_type: string
+          hub_id: string
+          id: string
+          match_type: string
+          skill_complementarity: Json | null
+          status: string | null
+          suggested_at: string | null
+          trust_alignment: number | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          compatibility_score?: number | null
+          entity_a_id: string
+          entity_a_type: string
+          entity_b_id: string
+          entity_b_type: string
+          hub_id: string
+          id?: string
+          match_type: string
+          skill_complementarity?: Json | null
+          status?: string | null
+          suggested_at?: string | null
+          trust_alignment?: number | null
+        }
+        Update: {
+          accepted_at?: string | null
+          compatibility_score?: number | null
+          entity_a_id?: string
+          entity_a_type?: string
+          entity_b_id?: string
+          entity_b_type?: string
+          hub_id?: string
+          id?: string
+          match_type?: string
+          skill_complementarity?: Json | null
+          status?: string | null
+          suggested_at?: string | null
+          trust_alignment?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rpie_collaboration_matches_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rpie_cross_border_corridors: {
+        Row: {
+          collaboration_strength: number | null
+          computed_at: string | null
+          funding_exchange_volume: number | null
+          id: string
+          institutional_bridges: number | null
+          metadata: Json | null
+          policy_alignment_score: number | null
+          skill_mobility_flow: number | null
+          source_hub_id: string
+          startup_scaling_pathways: number | null
+          target_hub_id: string
+          trust_weighted_strength: number | null
+        }
+        Insert: {
+          collaboration_strength?: number | null
+          computed_at?: string | null
+          funding_exchange_volume?: number | null
+          id?: string
+          institutional_bridges?: number | null
+          metadata?: Json | null
+          policy_alignment_score?: number | null
+          skill_mobility_flow?: number | null
+          source_hub_id: string
+          startup_scaling_pathways?: number | null
+          target_hub_id: string
+          trust_weighted_strength?: number | null
+        }
+        Update: {
+          collaboration_strength?: number | null
+          computed_at?: string | null
+          funding_exchange_volume?: number | null
+          id?: string
+          institutional_bridges?: number | null
+          metadata?: Json | null
+          policy_alignment_score?: number | null
+          skill_mobility_flow?: number | null
+          source_hub_id?: string
+          startup_scaling_pathways?: number | null
+          target_hub_id?: string
+          trust_weighted_strength?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rpie_cross_border_corridors_source_hub_id_fkey"
+            columns: ["source_hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rpie_cross_border_corridors_target_hub_id_fkey"
+            columns: ["target_hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rpie_funding_clusters: {
+        Row: {
+          computed_at: string | null
+          cross_border_capital_flow: number | null
+          domain_specific_acceleration: Json | null
+          grant_volume: number | null
+          hub_id: string
+          id: string
+          industry_rd_spending: number | null
+          institutional_funding_performance: number | null
+          period: string
+          public_funding_concentration: number | null
+          trend_data: Json | null
+          venture_funding_density: number | null
+        }
+        Insert: {
+          computed_at?: string | null
+          cross_border_capital_flow?: number | null
+          domain_specific_acceleration?: Json | null
+          grant_volume?: number | null
+          hub_id: string
+          id?: string
+          industry_rd_spending?: number | null
+          institutional_funding_performance?: number | null
+          period: string
+          public_funding_concentration?: number | null
+          trend_data?: Json | null
+          venture_funding_density?: number | null
+        }
+        Update: {
+          computed_at?: string | null
+          cross_border_capital_flow?: number | null
+          domain_specific_acceleration?: Json | null
+          grant_volume?: number | null
+          hub_id?: string
+          id?: string
+          industry_rd_spending?: number | null
+          institutional_funding_performance?: number | null
+          period?: string
+          public_funding_concentration?: number | null
+          trend_data?: Json | null
+          venture_funding_density?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rpie_funding_clusters_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rpie_industry_integration: {
+        Row: {
+          computed_at: string | null
+          corporate_rd_presence: Json | null
+          hub_id: string
+          id: string
+          industry_academia_collaboration: number | null
+          industry_funding_inflow: number | null
+          innovation_adoption_velocity: number | null
+          patent_commercialization_rate: number | null
+          period: string
+          pilot_deployment_activity: number | null
+        }
+        Insert: {
+          computed_at?: string | null
+          corporate_rd_presence?: Json | null
+          hub_id: string
+          id?: string
+          industry_academia_collaboration?: number | null
+          industry_funding_inflow?: number | null
+          innovation_adoption_velocity?: number | null
+          patent_commercialization_rate?: number | null
+          period: string
+          pilot_deployment_activity?: number | null
+        }
+        Update: {
+          computed_at?: string | null
+          corporate_rd_presence?: Json | null
+          hub_id?: string
+          id?: string
+          industry_academia_collaboration?: number | null
+          industry_funding_inflow?: number | null
+          innovation_adoption_velocity?: number | null
+          patent_commercialization_rate?: number | null
+          period?: string
+          pilot_deployment_activity?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rpie_industry_integration_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rpie_performance_index: {
+        Row: {
+          composite_score: number | null
+          computed_at: string | null
+          cross_border_connectivity_score: number | null
+          economic_impact_multiplier: number | null
+          funding_efficiency_score: number | null
+          hub_id: string
+          id: string
+          innovation_output_score: number | null
+          institutional_collaboration_strength: number | null
+          period: string
+          rank: number | null
+          skill_specialization_depth: number | null
+          startup_survival_score: number | null
+          trust_density_score: number | null
+        }
+        Insert: {
+          composite_score?: number | null
+          computed_at?: string | null
+          cross_border_connectivity_score?: number | null
+          economic_impact_multiplier?: number | null
+          funding_efficiency_score?: number | null
+          hub_id: string
+          id?: string
+          innovation_output_score?: number | null
+          institutional_collaboration_strength?: number | null
+          period: string
+          rank?: number | null
+          skill_specialization_depth?: number | null
+          startup_survival_score?: number | null
+          trust_density_score?: number | null
+        }
+        Update: {
+          composite_score?: number | null
+          computed_at?: string | null
+          cross_border_connectivity_score?: number | null
+          economic_impact_multiplier?: number | null
+          funding_efficiency_score?: number | null
+          hub_id?: string
+          id?: string
+          innovation_output_score?: number | null
+          institutional_collaboration_strength?: number | null
+          period?: string
+          rank?: number | null
+          skill_specialization_depth?: number | null
+          startup_survival_score?: number | null
+          trust_density_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rpie_performance_index_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rpie_regional_hubs: {
+        Row: {
+          city: string | null
+          country_code: string | null
+          created_at: string | null
+          domain_specializations: Json | null
+          economic_output: number | null
+          economic_zone: string | null
+          funding_inflow: number | null
+          hub_name: string
+          hub_type: string
+          id: string
+          industry_integration_score: number | null
+          institutional_presence: Json | null
+          managed_by_institution_id: string | null
+          parent_hub_id: string | null
+          patent_activity: number | null
+          skill_density_map: Json | null
+          startup_formation_rate: number | null
+          state_province: string | null
+          status: string | null
+          trust_density: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          city?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          domain_specializations?: Json | null
+          economic_output?: number | null
+          economic_zone?: string | null
+          funding_inflow?: number | null
+          hub_name: string
+          hub_type?: string
+          id?: string
+          industry_integration_score?: number | null
+          institutional_presence?: Json | null
+          managed_by_institution_id?: string | null
+          parent_hub_id?: string | null
+          patent_activity?: number | null
+          skill_density_map?: Json | null
+          startup_formation_rate?: number | null
+          state_province?: string | null
+          status?: string | null
+          trust_density?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          city?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          domain_specializations?: Json | null
+          economic_output?: number | null
+          economic_zone?: string | null
+          funding_inflow?: number | null
+          hub_name?: string
+          hub_type?: string
+          id?: string
+          industry_integration_score?: number | null
+          institutional_presence?: Json | null
+          managed_by_institution_id?: string | null
+          parent_hub_id?: string | null
+          patent_activity?: number | null
+          skill_density_map?: Json | null
+          startup_formation_rate?: number | null
+          state_province?: string | null
+          status?: string | null
+          trust_density?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rpie_regional_hubs_parent_hub_id_fkey"
+            columns: ["parent_hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rpie_regional_memory: {
+        Row: {
+          archived_by: string | null
+          created_at: string | null
+          description: string | null
+          event_date: string | null
+          hub_id: string
+          id: string
+          impact_data: Json | null
+          memory_type: string
+          related_entities: Json | null
+          title: string
+        }
+        Insert: {
+          archived_by?: string | null
+          created_at?: string | null
+          description?: string | null
+          event_date?: string | null
+          hub_id: string
+          id?: string
+          impact_data?: Json | null
+          memory_type: string
+          related_entities?: Json | null
+          title: string
+        }
+        Update: {
+          archived_by?: string | null
+          created_at?: string | null
+          description?: string | null
+          event_date?: string | null
+          hub_id?: string
+          id?: string
+          impact_data?: Json | null
+          memory_type?: string
+          related_entities?: Json | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rpie_regional_memory_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rpie_skill_mapping: {
+        Row: {
+          computed_at: string | null
+          concentration_score: number | null
+          cross_domain_integration: Json | null
+          gap_severity: string | null
+          growth_rate: number | null
+          hub_id: string
+          id: string
+          institutional_specialization: Json | null
+          saturation_index: number | null
+          skill_name: string
+          talent_export_ratio: number | null
+          talent_import_ratio: number | null
+        }
+        Insert: {
+          computed_at?: string | null
+          concentration_score?: number | null
+          cross_domain_integration?: Json | null
+          gap_severity?: string | null
+          growth_rate?: number | null
+          hub_id: string
+          id?: string
+          institutional_specialization?: Json | null
+          saturation_index?: number | null
+          skill_name: string
+          talent_export_ratio?: number | null
+          talent_import_ratio?: number | null
+        }
+        Update: {
+          computed_at?: string | null
+          concentration_score?: number | null
+          cross_domain_integration?: Json | null
+          gap_severity?: string | null
+          growth_rate?: number | null
+          hub_id?: string
+          id?: string
+          institutional_specialization?: Json | null
+          saturation_index?: number | null
+          skill_name?: string
+          talent_export_ratio?: number | null
+          talent_import_ratio?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rpie_skill_mapping_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rpie_startup_analytics: {
+        Row: {
+          computed_at: string | null
+          cross_border_scaling_rate: number | null
+          exit_events: number | null
+          formation_rate: number | null
+          founder_trust_density: number | null
+          funding_stage_progression: Json | null
+          hub_id: string
+          id: string
+          industry_pilot_success: number | null
+          patent_to_product_conversion: number | null
+          period: string
+          survival_rate: number | null
+        }
+        Insert: {
+          computed_at?: string | null
+          cross_border_scaling_rate?: number | null
+          exit_events?: number | null
+          formation_rate?: number | null
+          founder_trust_density?: number | null
+          funding_stage_progression?: Json | null
+          hub_id: string
+          id?: string
+          industry_pilot_success?: number | null
+          patent_to_product_conversion?: number | null
+          period: string
+          survival_rate?: number | null
+        }
+        Update: {
+          computed_at?: string | null
+          cross_border_scaling_rate?: number | null
+          exit_events?: number | null
+          formation_rate?: number | null
+          founder_trust_density?: number | null
+          funding_stage_progression?: Json | null
+          hub_id?: string
+          id?: string
+          industry_pilot_success?: number | null
+          patent_to_product_conversion?: number | null
+          period?: string
+          survival_rate?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rpie_startup_analytics_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rpie_talent_mobility: {
+        Row: {
+          brain_drain_risk: string | null
+          computed_at: string | null
+          cross_border_migration: number | null
+          domain_specialization_migration: Json | null
+          funding_relocation_volume: number | null
+          hub_id: string
+          id: string
+          institutional_transfers: number | null
+          period: string
+          talent_inflow: number | null
+          talent_outflow: number | null
+        }
+        Insert: {
+          brain_drain_risk?: string | null
+          computed_at?: string | null
+          cross_border_migration?: number | null
+          domain_specialization_migration?: Json | null
+          funding_relocation_volume?: number | null
+          hub_id: string
+          id?: string
+          institutional_transfers?: number | null
+          period: string
+          talent_inflow?: number | null
+          talent_outflow?: number | null
+        }
+        Update: {
+          brain_drain_risk?: string | null
+          computed_at?: string | null
+          cross_border_migration?: number | null
+          domain_specialization_migration?: Json | null
+          funding_relocation_volume?: number | null
+          hub_id?: string
+          id?: string
+          institutional_transfers?: number | null
+          period?: string
+          talent_inflow?: number | null
+          talent_outflow?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rpie_talent_mobility_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rpie_trust_density: {
+        Row: {
+          avg_trust_index: number | null
+          collaboration_longevity: number | null
+          computed_at: string | null
+          dispute_frequency: number | null
+          execution_reliability_rate: number | null
+          funding_compliance_stability: number | null
+          hub_id: string
+          id: string
+          institutional_integrity_score: number | null
+          period: string
+        }
+        Insert: {
+          avg_trust_index?: number | null
+          collaboration_longevity?: number | null
+          computed_at?: string | null
+          dispute_frequency?: number | null
+          execution_reliability_rate?: number | null
+          funding_compliance_stability?: number | null
+          hub_id: string
+          id?: string
+          institutional_integrity_score?: number | null
+          period: string
+        }
+        Update: {
+          avg_trust_index?: number | null
+          collaboration_longevity?: number | null
+          computed_at?: string | null
+          dispute_frequency?: number | null
+          execution_reliability_rate?: number | null
+          funding_compliance_stability?: number | null
+          hub_id?: string
+          id?: string
+          institutional_integrity_score?: number | null
+          period?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rpie_trust_density_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       saved_jobs: {
         Row: {
           created_at: string | null
