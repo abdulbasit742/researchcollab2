@@ -25275,6 +25275,51 @@ export type Database = {
         }
         Relationships: []
       }
+      institution_compatibility_checks: {
+        Row: {
+          collab_history_score: number | null
+          compliance_compat_pct: number | null
+          composite_compat: number | null
+          computed_at: string
+          domain_overlap_pct: number | null
+          funding_alignment_pct: number | null
+          id: string
+          innovation_complementarity: number | null
+          institution_a_id: string
+          institution_b_id: string
+          patent_co_ownership_compat: number | null
+          startup_synergy: number | null
+        }
+        Insert: {
+          collab_history_score?: number | null
+          compliance_compat_pct?: number | null
+          composite_compat?: number | null
+          computed_at?: string
+          domain_overlap_pct?: number | null
+          funding_alignment_pct?: number | null
+          id?: string
+          innovation_complementarity?: number | null
+          institution_a_id: string
+          institution_b_id: string
+          patent_co_ownership_compat?: number | null
+          startup_synergy?: number | null
+        }
+        Update: {
+          collab_history_score?: number | null
+          compliance_compat_pct?: number | null
+          composite_compat?: number | null
+          computed_at?: string
+          domain_overlap_pct?: number | null
+          funding_alignment_pct?: number | null
+          id?: string
+          innovation_complementarity?: number | null
+          institution_a_id?: string
+          institution_b_id?: string
+          patent_co_ownership_compat?: number | null
+          startup_synergy?: number | null
+        }
+        Relationships: []
+      }
       institution_credit_profiles: {
         Row: {
           bond_issuance_limit: number
@@ -26499,6 +26544,96 @@ export type Database = {
         }
         Relationships: []
       }
+      institutional_impact_index: {
+        Row: {
+          compliance_integrity: number | null
+          composite_iii: number | null
+          computed_at: string
+          cross_domain_innovation: number | null
+          execution_reliability: number | null
+          funding_efficiency: number | null
+          id: string
+          industry_adoption: number | null
+          institution_id: string
+          international_collaboration: number | null
+          patent_to_product: number | null
+          research_reproducibility: number | null
+          startup_survival_rate: number | null
+          talent_retention: number | null
+        }
+        Insert: {
+          compliance_integrity?: number | null
+          composite_iii?: number | null
+          computed_at?: string
+          cross_domain_innovation?: number | null
+          execution_reliability?: number | null
+          funding_efficiency?: number | null
+          id?: string
+          industry_adoption?: number | null
+          institution_id: string
+          international_collaboration?: number | null
+          patent_to_product?: number | null
+          research_reproducibility?: number | null
+          startup_survival_rate?: number | null
+          talent_retention?: number | null
+        }
+        Update: {
+          compliance_integrity?: number | null
+          composite_iii?: number | null
+          computed_at?: string
+          cross_domain_innovation?: number | null
+          execution_reliability?: number | null
+          funding_efficiency?: number | null
+          id?: string
+          industry_adoption?: number | null
+          institution_id?: string
+          international_collaboration?: number | null
+          patent_to_product?: number | null
+          research_reproducibility?: number | null
+          startup_survival_rate?: number | null
+          talent_retention?: number | null
+        }
+        Relationships: []
+      }
+      institutional_industry_integration: {
+        Row: {
+          co_developed_patents: number | null
+          computed_at: string
+          corporate_funding_dependence: number | null
+          corporate_partnerships: number | null
+          id: string
+          institution_id: string
+          joint_rd_labs: number | null
+          licensing_revenue: number | null
+          long_term_collaborations: number | null
+          pilot_deployments: number | null
+        }
+        Insert: {
+          co_developed_patents?: number | null
+          computed_at?: string
+          corporate_funding_dependence?: number | null
+          corporate_partnerships?: number | null
+          id?: string
+          institution_id: string
+          joint_rd_labs?: number | null
+          licensing_revenue?: number | null
+          long_term_collaborations?: number | null
+          pilot_deployments?: number | null
+        }
+        Update: {
+          co_developed_patents?: number | null
+          computed_at?: string
+          corporate_funding_dependence?: number | null
+          corporate_partnerships?: number | null
+          id?: string
+          institution_id?: string
+          joint_rd_labs?: number | null
+          licensing_revenue?: number | null
+          long_term_collaborations?: number | null
+          pilot_deployments?: number | null
+        }
+        Relationships: []
+      }
       institutional_integrity_risk: {
         Row: {
           citation_ring_score: number | null
@@ -26625,6 +26760,48 @@ export type Database = {
         }
         Relationships: []
       }
+      institutional_media_posts: {
+        Row: {
+          content: string | null
+          id: string
+          institution_id: string
+          linked_grant_id: string | null
+          linked_project_id: string | null
+          media_url: string | null
+          operational_data_ref: Json | null
+          post_type: string
+          published_at: string
+          sub_channel_id: string | null
+          title: string
+        }
+        Insert: {
+          content?: string | null
+          id?: string
+          institution_id: string
+          linked_grant_id?: string | null
+          linked_project_id?: string | null
+          media_url?: string | null
+          operational_data_ref?: Json | null
+          post_type: string
+          published_at?: string
+          sub_channel_id?: string | null
+          title: string
+        }
+        Update: {
+          content?: string | null
+          id?: string
+          institution_id?: string
+          linked_grant_id?: string | null
+          linked_project_id?: string | null
+          media_url?: string | null
+          operational_data_ref?: Json | null
+          post_type?: string
+          published_at?: string
+          sub_channel_id?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       institutional_memory: {
         Row: {
           category: string
@@ -26703,6 +26880,60 @@ export type Database = {
           period_start?: string
           skill_distribution?: Json | null
           talent_count?: number | null
+        }
+        Relationships: []
+      }
+      institutional_operating_profiles: {
+        Row: {
+          active_grants: number | null
+          compliance_record: number | null
+          cross_border_collab_density: number | null
+          execution_reliability_index: number | null
+          funding_diversity_index: number | null
+          grant_success_rate: number | null
+          id: string
+          industry_partnerships: number | null
+          innovation_velocity_index: number | null
+          institution_id: string
+          institutional_trust_score: number | null
+          patent_output: number | null
+          research_domains: string[] | null
+          startup_spinoffs: number | null
+          updated_at: string
+        }
+        Insert: {
+          active_grants?: number | null
+          compliance_record?: number | null
+          cross_border_collab_density?: number | null
+          execution_reliability_index?: number | null
+          funding_diversity_index?: number | null
+          grant_success_rate?: number | null
+          id?: string
+          industry_partnerships?: number | null
+          innovation_velocity_index?: number | null
+          institution_id: string
+          institutional_trust_score?: number | null
+          patent_output?: number | null
+          research_domains?: string[] | null
+          startup_spinoffs?: number | null
+          updated_at?: string
+        }
+        Update: {
+          active_grants?: number | null
+          compliance_record?: number | null
+          cross_border_collab_density?: number | null
+          execution_reliability_index?: number | null
+          funding_diversity_index?: number | null
+          grant_success_rate?: number | null
+          id?: string
+          industry_partnerships?: number | null
+          innovation_velocity_index?: number | null
+          institution_id?: string
+          institutional_trust_score?: number | null
+          patent_output?: number | null
+          research_domains?: string[] | null
+          startup_spinoffs?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -26961,6 +27192,132 @@ export type Database = {
           },
         ]
       }
+      institutional_stability_scores: {
+        Row: {
+          compliance_consistency: number | null
+          composite_stability: number | null
+          computed_at: string
+          domain_shift_stability: number | null
+          funding_volatility: number | null
+          id: string
+          innovation_durability: number | null
+          institution_id: string
+          leadership_change_impact: number | null
+          reputation_volatility: number | null
+          startup_survival_rate: number | null
+        }
+        Insert: {
+          compliance_consistency?: number | null
+          composite_stability?: number | null
+          computed_at?: string
+          domain_shift_stability?: number | null
+          funding_volatility?: number | null
+          id?: string
+          innovation_durability?: number | null
+          institution_id: string
+          leadership_change_impact?: number | null
+          reputation_volatility?: number | null
+          startup_survival_rate?: number | null
+        }
+        Update: {
+          compliance_consistency?: number | null
+          composite_stability?: number | null
+          computed_at?: string
+          domain_shift_stability?: number | null
+          funding_volatility?: number | null
+          id?: string
+          innovation_durability?: number | null
+          institution_id?: string
+          leadership_change_impact?: number | null
+          reputation_volatility?: number | null
+          startup_survival_rate?: number | null
+        }
+        Relationships: []
+      }
+      institutional_sub_channels: {
+        Row: {
+          active_projects: number | null
+          channel_name: string
+          channel_type: string
+          collaboration_network_size: number | null
+          created_at: string
+          domain_focus: string[] | null
+          funding_calls: number | null
+          grant_portfolio_size: number | null
+          id: string
+          institution_id: string
+          milestone_completion_rate: number | null
+          talent_needs: string[] | null
+        }
+        Insert: {
+          active_projects?: number | null
+          channel_name: string
+          channel_type: string
+          collaboration_network_size?: number | null
+          created_at?: string
+          domain_focus?: string[] | null
+          funding_calls?: number | null
+          grant_portfolio_size?: number | null
+          id?: string
+          institution_id: string
+          milestone_completion_rate?: number | null
+          talent_needs?: string[] | null
+        }
+        Update: {
+          active_projects?: number | null
+          channel_name?: string
+          channel_type?: string
+          collaboration_network_size?: number | null
+          created_at?: string
+          domain_focus?: string[] | null
+          funding_calls?: number | null
+          grant_portfolio_size?: number | null
+          id?: string
+          institution_id?: string
+          milestone_completion_rate?: number | null
+          talent_needs?: string[] | null
+        }
+        Relationships: []
+      }
+      institutional_talent_flow: {
+        Row: {
+          alumni_grant_success: number | null
+          alumni_industry_placement: number | null
+          alumni_startup_formation: number | null
+          computed_at: string
+          cross_institution_mobility: number | null
+          domain_specialization_concentration: number | null
+          id: string
+          incoming_diversity: number | null
+          institution_id: string
+          outgoing_brain_drain: number | null
+        }
+        Insert: {
+          alumni_grant_success?: number | null
+          alumni_industry_placement?: number | null
+          alumni_startup_formation?: number | null
+          computed_at?: string
+          cross_institution_mobility?: number | null
+          domain_specialization_concentration?: number | null
+          id?: string
+          incoming_diversity?: number | null
+          institution_id: string
+          outgoing_brain_drain?: number | null
+        }
+        Update: {
+          alumni_grant_success?: number | null
+          alumni_industry_placement?: number | null
+          alumni_startup_formation?: number | null
+          computed_at?: string
+          cross_institution_mobility?: number | null
+          domain_specialization_concentration?: number | null
+          id?: string
+          incoming_diversity?: number | null
+          institution_id?: string
+          outgoing_brain_drain?: number | null
+        }
+        Relationships: []
+      }
       institutional_talent_snapshots: {
         Row: {
           avg_deal_health: number
@@ -27060,6 +27417,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      institutional_timeline_events: {
+        Row: {
+          created_at: string
+          description: string | null
+          event_date: string
+          event_type: string
+          evidence_url: string | null
+          id: string
+          institution_id: string
+          metadata: Json | null
+          title: string
+          verified: boolean | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          event_date?: string
+          event_type: string
+          evidence_url?: string | null
+          id?: string
+          institution_id: string
+          metadata?: Json | null
+          title: string
+          verified?: boolean | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          event_date?: string
+          event_type?: string
+          evidence_url?: string | null
+          id?: string
+          institution_id?: string
+          metadata?: Json | null
+          title?: string
+          verified?: boolean | null
+        }
+        Relationships: []
       }
       institutional_trajectory_snapshots: {
         Row: {
