@@ -4332,6 +4332,147 @@ export type Database = {
         }
         Relationships: []
       }
+      authority_decay_records: {
+        Row: {
+          applied_at: string
+          decay_amount: number
+          decay_reason: string
+          domain: string | null
+          id: string
+          new_score: number | null
+          previous_score: number | null
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string
+          decay_amount: number
+          decay_reason: string
+          domain?: string | null
+          id?: string
+          new_score?: number | null
+          previous_score?: number | null
+          user_id: string
+        }
+        Update: {
+          applied_at?: string
+          decay_amount?: number
+          decay_reason?: string
+          domain?: string | null
+          id?: string
+          new_score?: number | null
+          previous_score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      authority_impact_badges: {
+        Row: {
+          badge_name: string
+          badge_type: string
+          data_backing: Json | null
+          earned_at: string
+          evidence_summary: string | null
+          id: string
+          is_active: boolean | null
+          user_id: string
+        }
+        Insert: {
+          badge_name: string
+          badge_type: string
+          data_backing?: Json | null
+          earned_at?: string
+          evidence_summary?: string | null
+          id?: string
+          is_active?: boolean | null
+          user_id: string
+        }
+        Update: {
+          badge_name?: string
+          badge_type?: string
+          data_backing?: Json | null
+          earned_at?: string
+          evidence_summary?: string | null
+          id?: string
+          is_active?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      authority_manipulation_flags: {
+        Row: {
+          description: string | null
+          detected_at: string
+          evidence: Json | null
+          flag_type: string
+          id: string
+          resolved: boolean | null
+          severity: string | null
+          user_id: string
+        }
+        Insert: {
+          description?: string | null
+          detected_at?: string
+          evidence?: Json | null
+          flag_type: string
+          id?: string
+          resolved?: boolean | null
+          severity?: string | null
+          user_id: string
+        }
+        Update: {
+          description?: string | null
+          detected_at?: string
+          evidence?: Json | null
+          flag_type?: string
+          id?: string
+          resolved?: boolean | null
+          severity?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      authority_peer_validations: {
+        Row: {
+          collaboration_depth: number | null
+          created_at: string
+          domain: string
+          domain_alignment: number | null
+          endorser_authority_weight: number | null
+          endorser_user_id: string
+          id: string
+          institutional_backing: boolean | null
+          subject_user_id: string
+          verified_project_overlap: boolean | null
+          weighted_endorsement: number | null
+        }
+        Insert: {
+          collaboration_depth?: number | null
+          created_at?: string
+          domain: string
+          domain_alignment?: number | null
+          endorser_authority_weight?: number | null
+          endorser_user_id: string
+          id?: string
+          institutional_backing?: boolean | null
+          subject_user_id: string
+          verified_project_overlap?: boolean | null
+          weighted_endorsement?: number | null
+        }
+        Update: {
+          collaboration_depth?: number | null
+          created_at?: string
+          domain?: string
+          domain_alignment?: number | null
+          endorser_authority_weight?: number | null
+          endorser_user_id?: string
+          id?: string
+          institutional_backing?: boolean | null
+          subject_user_id?: string
+          verified_project_overlap?: boolean | null
+          weighted_endorsement?: number | null
+        }
+        Relationships: []
+      }
       background_job_runs: {
         Row: {
           completed_at: string | null
@@ -6779,6 +6920,48 @@ export type Database = {
           punctuality_improvement?: number | null
           user_a_id?: string
           user_b_id?: string
+        }
+        Relationships: []
+      }
+      collaboration_trust_authority: {
+        Row: {
+          co_execution_success: number | null
+          composite_cta: number | null
+          computed_at: string
+          cross_institution_partnerships: number | null
+          dispute_free_collaborations: number | null
+          id: string
+          industry_integration: number | null
+          multi_grant_continuity: number | null
+          network_resilience: number | null
+          team_leadership_credibility: number | null
+          user_id: string
+        }
+        Insert: {
+          co_execution_success?: number | null
+          composite_cta?: number | null
+          computed_at?: string
+          cross_institution_partnerships?: number | null
+          dispute_free_collaborations?: number | null
+          id?: string
+          industry_integration?: number | null
+          multi_grant_continuity?: number | null
+          network_resilience?: number | null
+          team_leadership_credibility?: number | null
+          user_id: string
+        }
+        Update: {
+          co_execution_success?: number | null
+          composite_cta?: number | null
+          computed_at?: string
+          cross_institution_partnerships?: number | null
+          dispute_free_collaborations?: number | null
+          id?: string
+          industry_integration?: number | null
+          multi_grant_continuity?: number | null
+          network_resilience?: number | null
+          team_leadership_credibility?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -13234,6 +13417,60 @@ export type Database = {
         }
         Relationships: []
       }
+      domain_authority_index: {
+        Row: {
+          collaboration_trust: number | null
+          compliance_integrity: number | null
+          composite_authority: number | null
+          computed_at: string
+          domain: string
+          grant_participation: number | null
+          id: string
+          innovation_yield: number | null
+          longitudinal_consistency: number | null
+          patent_contribution: number | null
+          peer_validation: number | null
+          skill_depth: number | null
+          startup_involvement: number | null
+          user_id: string
+          verified_projects: number | null
+        }
+        Insert: {
+          collaboration_trust?: number | null
+          compliance_integrity?: number | null
+          composite_authority?: number | null
+          computed_at?: string
+          domain: string
+          grant_participation?: number | null
+          id?: string
+          innovation_yield?: number | null
+          longitudinal_consistency?: number | null
+          patent_contribution?: number | null
+          peer_validation?: number | null
+          skill_depth?: number | null
+          startup_involvement?: number | null
+          user_id: string
+          verified_projects?: number | null
+        }
+        Update: {
+          collaboration_trust?: number | null
+          compliance_integrity?: number | null
+          composite_authority?: number | null
+          computed_at?: string
+          domain?: string
+          grant_participation?: number | null
+          id?: string
+          innovation_yield?: number | null
+          longitudinal_consistency?: number | null
+          patent_contribution?: number | null
+          peer_validation?: number | null
+          skill_depth?: number | null
+          startup_involvement?: number | null
+          user_id?: string
+          verified_projects?: number | null
+        }
+        Relationships: []
+      }
       domain_cluster_intelligence: {
         Row: {
           avg_performance: number | null
@@ -15498,6 +15735,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      execution_authority_scores: {
+        Row: {
+          budget_compliance: number | null
+          composite_eas: number | null
+          computed_at: string
+          deliverable_acceptance_rate: number | null
+          dispute_frequency: number | null
+          escrow_integrity: number | null
+          id: string
+          on_time_milestone_pct: number | null
+          repeat_collaboration: number | null
+          sponsor_retention: number | null
+          user_id: string
+        }
+        Insert: {
+          budget_compliance?: number | null
+          composite_eas?: number | null
+          computed_at?: string
+          deliverable_acceptance_rate?: number | null
+          dispute_frequency?: number | null
+          escrow_integrity?: number | null
+          id?: string
+          on_time_milestone_pct?: number | null
+          repeat_collaboration?: number | null
+          sponsor_retention?: number | null
+          user_id: string
+        }
+        Update: {
+          budget_compliance?: number | null
+          composite_eas?: number | null
+          computed_at?: string
+          deliverable_acceptance_rate?: number | null
+          dispute_frequency?: number | null
+          escrow_integrity?: number | null
+          id?: string
+          on_time_milestone_pct?: number | null
+          repeat_collaboration?: number | null
+          sponsor_retention?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       execution_content: {
         Row: {
@@ -28127,6 +28406,48 @@ export type Database = {
           last_updated?: string | null
           rule_definition?: Json
           rule_type?: string | null
+        }
+        Relationships: []
+      }
+      knowledge_authority_scores: {
+        Row: {
+          code_dataset_reuse: number | null
+          composite_kca: number | null
+          computed_at: string
+          domain_insight_recognition: number | null
+          educational_content_value: number | null
+          id: string
+          long_term_usefulness: number | null
+          open_science_contribution: number | null
+          peer_validation_quality: number | null
+          replication_success_rate: number | null
+          user_id: string
+        }
+        Insert: {
+          code_dataset_reuse?: number | null
+          composite_kca?: number | null
+          computed_at?: string
+          domain_insight_recognition?: number | null
+          educational_content_value?: number | null
+          id?: string
+          long_term_usefulness?: number | null
+          open_science_contribution?: number | null
+          peer_validation_quality?: number | null
+          replication_success_rate?: number | null
+          user_id: string
+        }
+        Update: {
+          code_dataset_reuse?: number | null
+          composite_kca?: number | null
+          computed_at?: string
+          domain_insight_recognition?: number | null
+          educational_content_value?: number | null
+          id?: string
+          long_term_usefulness?: number | null
+          open_science_contribution?: number | null
+          peer_validation_quality?: number | null
+          replication_success_rate?: number | null
+          user_id?: string
         }
         Relationships: []
       }
