@@ -1546,6 +1546,124 @@ Only return valid JSON array.`
       return jsonResponse({ success: true, count: assumptions.length });
     }
 
+    // ============================================================
+    // ACTION: knowledge_drift_scan — Detect consensus drift & emerging topics
+    // ============================================================
+    if (action === "knowledge_drift_scan") {
+      const { workspace_id } = body;
+
+      // Fetch claims with synthesis data
+      const { data: claims } = await supabase.from("research_claims")
+        .select("id, claim_text, claim_type, confidence_score, status, global_claim_id")
+        .eq("workspace_id", workspace_id);
+
+      if (!claims || claims.length < 3) return jsonResponse({ error: "Need at least 3 claims for drift analysis" }, 400);
+
+      // Fetch existing synthesis relationships
+      const { data: syntheses } = await supabase.from("cross_document_syntheses")
+        .select("id, relationship_type, claim_a_id, claim_b_id, evidence_strength")
+        .eq("workspace_id", workspace_id);
+
+      // Fetch citations
+      const { data: citations } = await supabase.from("claim_citations")
+        .select("id, citing_claim_id, cited_claim_id, citation_type")
+        .or(`citing_claim_id.in.(${claims.map((c: any) => c.id).join(",")}),cited_claim_id.in.(${claims.map((c: any) => c.id).join(",")})`);
+
+      // Fetch linked policy models
+      const { data: policyModels } = await supabase.from("policy_models")
+        .select("id, title, status").eq("workspace_id", workspace_id);
+
+      const claimSummary = claims.map((c: any) => `[${c.id}] (${c.claim_type}, conf:${c.confidence_score}) ${c.claim_text}`).join("\n");
+      const synthSummary = (syntheses || []).map((s: any) => `${s.claim_a_id} --${s.relationship_type}--> ${s.claim_b_id} (strength:${s.evidence_strength})`).join("\n");
+
+      const aiResult = await callAI([
+        {
+          role: "system",
+          content: `You are a knowledge drift detection engine. Analyze claims and their relationships to detect:
+1. Consensus shifts (claims losing support or gaining contradictions)
+2. Emerging topics (new claim clusters with rapid growth)
+3. Claim deprecation (low confidence, heavily contradicted)
+4. Citation spikes (unusual citation patterns)
+5. Policy assumption risks (claims linked to policy becoming unstable)
+
+Return ONLY valid JSON:
+{
+  "drift_events": [
+    {
+      "drift_type": "consensus_shift|contradiction_spike|citation_spike|emerging_topic|claim_deprecation",
+      "related_claim_ids": ["uuid..."],
+      "impact_score": 0-100,
+      "confidence_score": 0.0-1.0,
+      "severity": "low|medium|high|critical",
+      "summary": "...",
+      "detection_trace": {"reasoning": "...", "evidence": ["..."]}
+    }
+  ],
+  "topic_velocity": [
+    {"topic": "...", "velocity_index": 0-100, "claim_count": N, "trend": "accelerating|stable|decelerating"}
+  ],
+  "deprecated_claims": ["claim_id..."],
+  "at_risk_policy_ids": ["policy_id..."]
+}`
+        },
+        {
+          role: "user",
+          content: `CLAIMS (${claims.length}):\n${claimSummary}\n\nRELATIONSHIPS (${(syntheses||[]).length}):\n${synthSummary || "None"}\n\nCITATIONS: ${(citations||[]).length} total\n\nPOLICY MODELS: ${(policyModels||[]).map((p: any) => `${p.id}: ${p.title}`).join(", ") || "None"}`
+        }
+      ]);
+
+      if (aiResult.error) return jsonResponse({ error: aiResult.error }, 500);
+
+      let parsed: any = { drift_events: [], topic_velocity: [], deprecated_claims: [], at_risk_policy_ids: [] };
+      try {
+        const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        parsed = JSON.parse(cleaned);
+      } catch { /* use defaults */ }
+
+      // Store drift events
+      const insertedEvents: any[] = [];
+      for (const evt of (parsed.drift_events || [])) {
+        const { data: inserted } = await supabase.from("drift_events").insert({
+          workspace_id,
+          drift_type: evt.drift_type || "consensus_shift",
+          related_claim_ids: evt.related_claim_ids || [],
+          affected_policy_model_ids: parsed.at_risk_policy_ids || [],
+          impact_score: evt.impact_score || 0,
+          confidence_score: evt.confidence_score || 0.5,
+          summary: evt.summary || "",
+          detection_trace: evt.detection_trace || {},
+          severity: evt.severity || "medium",
+        }).select().single();
+        if (inserted) insertedEvents.push(inserted);
+      }
+
+      // Create alerts for workspace owner
+      if (insertedEvents.length > 0) {
+        const { data: ws } = await supabase.from("research_workspaces").select("owner_id").eq("id", workspace_id).single();
+        if (ws) {
+          const alertRows = insertedEvents.map((e: any) => ({
+            drift_event_id: e.id,
+            user_id: ws.owner_id,
+            priority_score: e.impact_score || 0,
+          }));
+          await supabase.from("monitor_alerts").insert(alertRows);
+        }
+      }
+
+      // Update monitor profile last_scan_at
+      await supabase.from("knowledge_monitor_profiles")
+        .update({ last_scan_at: new Date().toISOString() })
+        .eq("workspace_id", workspace_id);
+
+      return jsonResponse({
+        success: true,
+        drift_events: insertedEvents.length,
+        topic_velocity: parsed.topic_velocity || [],
+        deprecated_claims: parsed.deprecated_claims || [],
+        at_risk_policies: parsed.at_risk_policy_ids || [],
+      });
+    }
+
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
