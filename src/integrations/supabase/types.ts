@@ -5587,6 +5587,63 @@ export type Database = {
           },
         ]
       }
+      citation_integrity_flags: {
+        Row: {
+          appeal_status: string | null
+          citation_integrity_adjustment: number | null
+          detected_at: string
+          evidence: Json | null
+          explanation: string | null
+          flag_type: string
+          id: string
+          reciprocal_inflation_score: number | null
+          researcher_id: string
+          reviewed: boolean | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          ring_cluster_size: number | null
+          self_citation_ratio: number | null
+          severity: string
+          suspicious_citation_count: number | null
+        }
+        Insert: {
+          appeal_status?: string | null
+          citation_integrity_adjustment?: number | null
+          detected_at?: string
+          evidence?: Json | null
+          explanation?: string | null
+          flag_type: string
+          id?: string
+          reciprocal_inflation_score?: number | null
+          researcher_id: string
+          reviewed?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          ring_cluster_size?: number | null
+          self_citation_ratio?: number | null
+          severity?: string
+          suspicious_citation_count?: number | null
+        }
+        Update: {
+          appeal_status?: string | null
+          citation_integrity_adjustment?: number | null
+          detected_at?: string
+          evidence?: Json | null
+          explanation?: string | null
+          flag_type?: string
+          id?: string
+          reciprocal_inflation_score?: number | null
+          researcher_id?: string
+          reviewed?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          ring_cluster_size?: number | null
+          self_citation_ratio?: number | null
+          severity?: string
+          suspicious_citation_count?: number | null
+        }
+        Relationships: []
+      }
       citation_manipulation_flags: {
         Row: {
           description: string | null
@@ -5732,6 +5789,48 @@ export type Database = {
           ratified_at?: string | null
           ratified_by?: Json | null
           scope?: string
+        }
+        Relationships: []
+      }
+      coauthor_inflation_flags: {
+        Row: {
+          avg_team_size: number | null
+          contribution_balance_score: number | null
+          detected_at: string
+          evidence: Json | null
+          explanation: string | null
+          flag_type: string
+          honorary_authorship_signals: number | null
+          id: string
+          researcher_id: string
+          reviewed: boolean | null
+          severity: string
+        }
+        Insert: {
+          avg_team_size?: number | null
+          contribution_balance_score?: number | null
+          detected_at?: string
+          evidence?: Json | null
+          explanation?: string | null
+          flag_type: string
+          honorary_authorship_signals?: number | null
+          id?: string
+          researcher_id: string
+          reviewed?: boolean | null
+          severity?: string
+        }
+        Update: {
+          avg_team_size?: number | null
+          contribution_balance_score?: number | null
+          detected_at?: string
+          evidence?: Json | null
+          explanation?: string | null
+          flag_type?: string
+          honorary_authorship_signals?: number | null
+          id?: string
+          researcher_id?: string
+          reviewed?: boolean | null
+          severity?: string
         }
         Relationships: []
       }
@@ -20974,6 +21073,60 @@ export type Database = {
         }
         Relationships: []
       }
+      grant_misuse_flags: {
+        Row: {
+          budget_variance_pct: number | null
+          deliverable_overlap_count: number | null
+          detected_at: string
+          escrow_irregularity_count: number | null
+          evidence: Json | null
+          explanation: string | null
+          flag_type: string
+          grant_id: string
+          id: string
+          institution_id: string | null
+          researcher_id: string | null
+          reviewed: boolean | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string
+        }
+        Insert: {
+          budget_variance_pct?: number | null
+          deliverable_overlap_count?: number | null
+          detected_at?: string
+          escrow_irregularity_count?: number | null
+          evidence?: Json | null
+          explanation?: string | null
+          flag_type: string
+          grant_id: string
+          id?: string
+          institution_id?: string | null
+          researcher_id?: string | null
+          reviewed?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string
+        }
+        Update: {
+          budget_variance_pct?: number | null
+          deliverable_overlap_count?: number | null
+          detected_at?: string
+          escrow_irregularity_count?: number | null
+          evidence?: Json | null
+          explanation?: string | null
+          flag_type?: string
+          grant_id?: string
+          id?: string
+          institution_id?: string | null
+          researcher_id?: string | null
+          reviewed?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string
+        }
+        Relationships: []
+      }
       grant_performance_metrics: {
         Row: {
           budget_efficiency_ratio: number | null
@@ -24171,6 +24324,54 @@ export type Database = {
         }
         Relationships: []
       }
+      institutional_integrity_risk: {
+        Row: {
+          citation_ring_score: number | null
+          compliance_concealment_score: number | null
+          computed_at: string
+          domain_concentration_risk: number | null
+          escrow_breach_frequency: number | null
+          funding_concentration_risk: number | null
+          grant_inflation_score: number | null
+          id: string
+          institution_id: string
+          overall_iiri: number | null
+          period: string | null
+          ranking_gaming_score: number | null
+          reputation_inflation_score: number | null
+        }
+        Insert: {
+          citation_ring_score?: number | null
+          compliance_concealment_score?: number | null
+          computed_at?: string
+          domain_concentration_risk?: number | null
+          escrow_breach_frequency?: number | null
+          funding_concentration_risk?: number | null
+          grant_inflation_score?: number | null
+          id?: string
+          institution_id: string
+          overall_iiri?: number | null
+          period?: string | null
+          ranking_gaming_score?: number | null
+          reputation_inflation_score?: number | null
+        }
+        Update: {
+          citation_ring_score?: number | null
+          compliance_concealment_score?: number | null
+          computed_at?: string
+          domain_concentration_risk?: number | null
+          escrow_breach_frequency?: number | null
+          funding_concentration_risk?: number | null
+          grant_inflation_score?: number | null
+          id?: string
+          institution_id?: string
+          overall_iiri?: number | null
+          period?: string | null
+          ranking_gaming_score?: number | null
+          reputation_inflation_score?: number | null
+        }
+        Relationships: []
+      }
       institutional_interventions: {
         Row: {
           ai_nudge_sent: boolean | null
@@ -24841,6 +25042,105 @@ export type Database = {
           last_synced_at?: string | null
           mapping_metadata?: Json | null
           verified?: boolean | null
+        }
+        Relationships: []
+      }
+      integrity_appeals: {
+        Row: {
+          appeal_reason: string
+          appellant_id: string
+          appellant_type: string
+          assigned_reviewer: string | null
+          decided_at: string | null
+          decision: string | null
+          decision_reason: string | null
+          evidence_submitted: Json | null
+          flag_id: string
+          flag_table: string
+          id: string
+          review_committee: Json | null
+          status: string
+          submitted_at: string
+          transparency_record: Json | null
+        }
+        Insert: {
+          appeal_reason: string
+          appellant_id: string
+          appellant_type: string
+          assigned_reviewer?: string | null
+          decided_at?: string | null
+          decision?: string | null
+          decision_reason?: string | null
+          evidence_submitted?: Json | null
+          flag_id: string
+          flag_table: string
+          id?: string
+          review_committee?: Json | null
+          status?: string
+          submitted_at?: string
+          transparency_record?: Json | null
+        }
+        Update: {
+          appeal_reason?: string
+          appellant_id?: string
+          appellant_type?: string
+          assigned_reviewer?: string | null
+          decided_at?: string | null
+          decision?: string | null
+          decision_reason?: string | null
+          evidence_submitted?: Json | null
+          flag_id?: string
+          flag_table?: string
+          id?: string
+          review_committee?: Json | null
+          status?: string
+          submitted_at?: string
+          transparency_record?: Json | null
+        }
+        Relationships: []
+      }
+      integrity_confidence_scores: {
+        Row: {
+          breakdown: Json | null
+          citation_integrity: number | null
+          collaboration_transparency: number | null
+          commercialization_authenticity: number | null
+          compliance_reliability: number | null
+          computed_at: string
+          entity_id: string
+          entity_type: string
+          funding_integrity: number | null
+          id: string
+          open_science_credibility: number | null
+          overall_ics: number | null
+        }
+        Insert: {
+          breakdown?: Json | null
+          citation_integrity?: number | null
+          collaboration_transparency?: number | null
+          commercialization_authenticity?: number | null
+          compliance_reliability?: number | null
+          computed_at?: string
+          entity_id: string
+          entity_type: string
+          funding_integrity?: number | null
+          id?: string
+          open_science_credibility?: number | null
+          overall_ics?: number | null
+        }
+        Update: {
+          breakdown?: Json | null
+          citation_integrity?: number | null
+          collaboration_transparency?: number | null
+          commercialization_authenticity?: number | null
+          compliance_reliability?: number | null
+          computed_at?: string
+          entity_id?: string
+          entity_type?: string
+          funding_integrity?: number | null
+          id?: string
+          open_science_credibility?: number | null
+          overall_ics?: number | null
         }
         Relationships: []
       }
@@ -26311,6 +26611,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      journal_risk_profiles: {
+        Row: {
+          author_concentration: number | null
+          citation_cartel_density: number | null
+          computed_at: string
+          conflict_of_interest_score: number | null
+          id: string
+          issn: string | null
+          journal_name: string
+          overall_risk_score: number | null
+          peer_review_anomaly_score: number | null
+          rapid_acceptance_ratio: number | null
+          retraction_frequency: number | null
+          risk_tier: string | null
+          self_citation_ratio: number | null
+        }
+        Insert: {
+          author_concentration?: number | null
+          citation_cartel_density?: number | null
+          computed_at?: string
+          conflict_of_interest_score?: number | null
+          id?: string
+          issn?: string | null
+          journal_name: string
+          overall_risk_score?: number | null
+          peer_review_anomaly_score?: number | null
+          rapid_acceptance_ratio?: number | null
+          retraction_frequency?: number | null
+          risk_tier?: string | null
+          self_citation_ratio?: number | null
+        }
+        Update: {
+          author_concentration?: number | null
+          citation_cartel_density?: number | null
+          computed_at?: string
+          conflict_of_interest_score?: number | null
+          id?: string
+          issn?: string | null
+          journal_name?: string
+          overall_risk_score?: number | null
+          peer_review_anomaly_score?: number | null
+          rapid_acceptance_ratio?: number | null
+          retraction_frequency?: number | null
+          risk_tier?: string | null
+          self_citation_ratio?: number | null
+        }
+        Relationships: []
       }
       jurisdiction_rules: {
         Row: {
@@ -29573,6 +29921,42 @@ export type Database = {
           },
         ]
       }
+      network_collusion_flags: {
+        Row: {
+          cluster_id: string
+          collusion_type: string
+          detected_at: string
+          explanation: string | null
+          graph_evidence: Json | null
+          id: string
+          involved_entities: Json
+          reviewed: boolean | null
+          severity: string
+        }
+        Insert: {
+          cluster_id: string
+          collusion_type: string
+          detected_at?: string
+          explanation?: string | null
+          graph_evidence?: Json | null
+          id?: string
+          involved_entities?: Json
+          reviewed?: boolean | null
+          severity?: string
+        }
+        Update: {
+          cluster_id?: string
+          collusion_type?: string
+          detected_at?: string
+          explanation?: string | null
+          graph_evidence?: Json | null
+          id?: string
+          involved_entities?: Json
+          reviewed?: boolean | null
+          severity?: string
+        }
+        Relationships: []
+      }
       network_council_members: {
         Row: {
           active: boolean
@@ -30466,6 +30850,45 @@ export type Database = {
           target_id?: string
           target_type?: string
           verification_url?: string | null
+        }
+        Relationships: []
+      }
+      open_science_fraud_flags: {
+        Row: {
+          detected_at: string
+          entity_id: string
+          entity_type: string
+          evidence: Json | null
+          explanation: string | null
+          flag_type: string
+          id: string
+          impact_score_adjustment: number | null
+          reviewed: boolean | null
+          severity: string
+        }
+        Insert: {
+          detected_at?: string
+          entity_id: string
+          entity_type: string
+          evidence?: Json | null
+          explanation?: string | null
+          flag_type: string
+          id?: string
+          impact_score_adjustment?: number | null
+          reviewed?: boolean | null
+          severity?: string
+        }
+        Update: {
+          detected_at?: string
+          entity_id?: string
+          entity_type?: string
+          evidence?: Json | null
+          explanation?: string | null
+          flag_type?: string
+          id?: string
+          impact_score_adjustment?: number | null
+          reviewed?: boolean | null
+          severity?: string
         }
         Relationships: []
       }
@@ -31844,6 +32267,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      patent_inflation_flags: {
+        Row: {
+          detected_at: string
+          entity_id: string
+          entity_type: string
+          evidence: Json | null
+          explanation: string | null
+          flag_type: string
+          fragmentation_score: number | null
+          id: string
+          patent_quality_adjustment: number | null
+          patent_without_licensing_count: number | null
+          revenue_inconsistency: number | null
+          reviewed: boolean | null
+          severity: string
+          shell_startup_signals: number | null
+        }
+        Insert: {
+          detected_at?: string
+          entity_id: string
+          entity_type: string
+          evidence?: Json | null
+          explanation?: string | null
+          flag_type: string
+          fragmentation_score?: number | null
+          id?: string
+          patent_quality_adjustment?: number | null
+          patent_without_licensing_count?: number | null
+          revenue_inconsistency?: number | null
+          reviewed?: boolean | null
+          severity?: string
+          shell_startup_signals?: number | null
+        }
+        Update: {
+          detected_at?: string
+          entity_id?: string
+          entity_type?: string
+          evidence?: Json | null
+          explanation?: string | null
+          flag_type?: string
+          fragmentation_score?: number | null
+          id?: string
+          patent_quality_adjustment?: number | null
+          patent_without_licensing_count?: number | null
+          revenue_inconsistency?: number | null
+          reviewed?: boolean | null
+          severity?: string
+          shell_startup_signals?: number | null
+        }
+        Relationships: []
       }
       patent_pipeline: {
         Row: {
@@ -37989,6 +38463,51 @@ export type Database = {
           trust_score_snapshot?: number
           user_id?: string
           visibility_score_snapshot?: number
+        }
+        Relationships: []
+      }
+      reputation_volatility_events: {
+        Row: {
+          change_pct: number | null
+          current_value: number | null
+          detected_at: string
+          entity_id: string
+          entity_type: string
+          event_type: string
+          explanation: string | null
+          id: string
+          metric_name: string
+          previous_value: number | null
+          severity: string
+          triggered_review: boolean | null
+        }
+        Insert: {
+          change_pct?: number | null
+          current_value?: number | null
+          detected_at?: string
+          entity_id: string
+          entity_type: string
+          event_type: string
+          explanation?: string | null
+          id?: string
+          metric_name: string
+          previous_value?: number | null
+          severity?: string
+          triggered_review?: boolean | null
+        }
+        Update: {
+          change_pct?: number | null
+          current_value?: number | null
+          detected_at?: string
+          entity_id?: string
+          entity_type?: string
+          event_type?: string
+          explanation?: string | null
+          id?: string
+          metric_name?: string
+          previous_value?: number | null
+          severity?: string
+          triggered_review?: boolean | null
         }
         Relationships: []
       }
