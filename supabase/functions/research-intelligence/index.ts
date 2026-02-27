@@ -1956,6 +1956,150 @@ Return ONLY valid JSON:
       return jsonResponse({ success: true, ...parsed });
     }
 
+    // ============================================================
+    // ACTION: federated_search — Search federated claim registry
+    // ============================================================
+    if (action === "federated_search") {
+      const { query_text, region_filter, trust_tier_filter, node_id } = body;
+
+      // Log search attempt
+      await supabase.from("federation_audit_logs").insert({
+        source_node_id: node_id || null,
+        action_type: "federated_search",
+        resource_type: "claim_registry",
+        metadata: { query_text, region_filter, trust_tier_filter },
+      });
+
+      let query = supabase.from("federated_claim_registry").select(`
+        *, deployment_nodes!federated_claim_registry_origin_node_id_fkey(node_name, region, owner_type, federation_status)
+      `);
+
+      if (region_filter) query = query.eq("data_residency_tag", region_filter);
+      if (trust_tier_filter === "high") query = query.gte("trust_weight", 0.7);
+
+      const { data: claims } = await query.order("influence_score", { ascending: false }).limit(50);
+
+      // Filter restricted claims
+      const results = (claims || []).map((c: any) => {
+        if (c.is_restricted) {
+          return {
+            global_claim_id: c.global_claim_id,
+            topic_tags: c.topic_tags,
+            influence_score: c.influence_score,
+            institution_origin: c.institution_origin,
+            data_residency_tag: c.data_residency_tag,
+            is_restricted: true,
+            message: "Access Restricted — Request Federation Permission",
+          };
+        }
+        return c;
+      });
+
+      return jsonResponse({ results, total: results.length });
+    }
+
+    // ============================================================
+    // ACTION: compute_trust_proxy — Cross-node trust reconciliation
+    // ============================================================
+    if (action === "compute_trust_proxy") {
+      const { target_user_id, origin_node_id, target_node_id } = body;
+
+      // Fetch origin node trust info
+      const { data: originNode } = await supabase.from("deployment_nodes")
+        .select("*").eq("id", origin_node_id).single();
+      const { data: targetNode } = await supabase.from("deployment_nodes")
+        .select("*").eq("id", target_node_id).single();
+
+      if (!originNode || !targetNode) return jsonResponse({ error: "Node not found" }, 404);
+
+      // Check federation agreement
+      const { data: agreement } = await supabase.from("federation_agreements")
+        .select("*")
+        .or(`and(source_node_id.eq.${origin_node_id},target_node_id.eq.${target_node_id}),and(source_node_id.eq.${target_node_id},target_node_id.eq.${origin_node_id})`)
+        .eq("status", "active")
+        .maybeSingle();
+
+      if (!agreement) {
+        await supabase.from("federation_audit_logs").insert({
+          source_node_id: origin_node_id, target_node_id,
+          action_type: "trust_proxy_denied", was_blocked: true,
+          block_reason: "No active federation agreement",
+        });
+        return jsonResponse({ error: "No active federation agreement between nodes" }, 403);
+      }
+
+      // Simulate trust proxy calculation
+      const originEcs = Math.random() * 100;
+      const federatedWeight = originNode.trust_interoperability_level === "full" ? 0.9 :
+        originNode.trust_interoperability_level === "verified" ? 0.7 : 0.4;
+      const peerReview = Math.random() * 0.8 + 0.2;
+      const fundingRate = Math.random() * 0.6 + 0.2;
+      const proxyScore = (originEcs * 0.4 + federatedWeight * 25 + peerReview * 15 + fundingRate * 20) / 100;
+
+      const { data: proxy } = await supabase.from("trust_proxy_mappings").upsert({
+        user_id: target_user_id,
+        origin_node_id, target_node_id,
+        origin_ecs: originEcs,
+        federated_trust_weight: federatedWeight,
+        institution_verification_level: originNode.trust_interoperability_level,
+        peer_review_credibility: peerReview,
+        funding_success_rate: fundingRate,
+        local_proxy_score: proxyScore,
+        computed_at: new Date().toISOString(),
+      }, { onConflict: "user_id,origin_node_id,target_node_id" }).select().single();
+
+      await supabase.from("federation_audit_logs").insert({
+        source_node_id: origin_node_id, target_node_id,
+        action_type: "trust_proxy_computed",
+        metadata: { user_id: target_user_id, proxy_score: proxyScore },
+      });
+
+      return jsonResponse({ success: true, proxy });
+    }
+
+    // ============================================================
+    // ACTION: validate_compliance — Check federation compliance
+    // ============================================================
+    if (action === "validate_compliance") {
+      const { source_node_id, target_node_id, requested_action } = body;
+
+      const [{ data: srcNode }, { data: tgtNode }, { data: agreement }] = await Promise.all([
+        supabase.from("deployment_nodes").select("*").eq("id", source_node_id).single(),
+        supabase.from("deployment_nodes").select("*").eq("id", target_node_id).single(),
+        supabase.from("federation_agreements").select("*")
+          .or(`and(source_node_id.eq.${source_node_id},target_node_id.eq.${target_node_id}),and(source_node_id.eq.${target_node_id},target_node_id.eq.${source_node_id})`)
+          .eq("status", "active").maybeSingle(),
+      ]);
+
+      const violations: string[] = [];
+      if (!srcNode || !tgtNode) violations.push("One or both nodes not found");
+      if (!agreement) violations.push("No active federation agreement");
+      if (srcNode?.federation_status === "isolated") violations.push("Source node is isolated");
+      if (tgtNode?.federation_status === "isolated") violations.push("Target node is isolated");
+
+      // Check data exchange scope
+      if (agreement?.data_exchange_scope) {
+        const scope = agreement.data_exchange_scope as Record<string, boolean>;
+        if (requested_action === "full_document_access" && !scope.full_documents) {
+          violations.push("Full document access not permitted by agreement");
+        }
+        if (requested_action === "funding_details" && !scope.funding_details) {
+          violations.push("Funding detail access not permitted by agreement");
+        }
+      }
+
+      const passed = violations.length === 0;
+      await supabase.from("federation_audit_logs").insert({
+        source_node_id, target_node_id,
+        action_type: "compliance_validation",
+        resource_type: requested_action,
+        was_blocked: !passed,
+        block_reason: violations.join("; ") || null,
+      });
+
+      return jsonResponse({ passed, violations });
+    }
+
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

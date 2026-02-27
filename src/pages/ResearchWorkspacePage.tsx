@@ -24,6 +24,7 @@ import { PolicySimulationPanel } from "@/components/research/PolicySimulationPan
 import { KnowledgeMonitorPanel } from "@/components/research/KnowledgeMonitorPanel";
 import { ResearchPortfolioPanel } from "@/components/research/ResearchPortfolioPanel";
 import { ResearchMarketplacePanel } from "@/components/research/ResearchMarketplacePanel";
+import { FederatedKnowledgePanel } from "@/components/research/FederatedKnowledgePanel";
 import {
   BookOpen, Upload, Search, FileText, MessageSquare,
   Loader2, CheckCircle, AlertCircle, ChevronRight,
@@ -509,6 +510,15 @@ export default function ResearchWorkspacePage() {
           Global Research Marketplace
         </h2>
         <ResearchMarketplacePanel />
+      </div>
+
+      {/* Federated Knowledge Sovereignty */}
+      <div className="mt-6">
+        <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-primary" />
+          Federated Knowledge Sovereignty
+        </h2>
+        <FederatedKnowledgePanel />
       </div>
     </div>
   );
