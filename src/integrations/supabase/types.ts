@@ -13113,6 +13113,47 @@ export type Database = {
           },
         ]
       }
+      debate_entries: {
+        Row: {
+          author_id: string
+          cited_claim_ids: string[] | null
+          cited_sources: Json | null
+          content: string
+          created_at: string
+          entry_type: string
+          id: string
+          thread_id: string
+        }
+        Insert: {
+          author_id: string
+          cited_claim_ids?: string[] | null
+          cited_sources?: Json | null
+          content: string
+          created_at?: string
+          entry_type?: string
+          id?: string
+          thread_id: string
+        }
+        Update: {
+          author_id?: string
+          cited_claim_ids?: string[] | null
+          cited_sources?: Json | null
+          content?: string
+          created_at?: string
+          entry_type?: string
+          id?: string
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "debate_entries_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "debate_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       debate_responses: {
         Row: {
           author_id: string
@@ -13153,6 +13194,50 @@ export type Database = {
             columns: ["debate_id"]
             isOneToOne: false
             referencedRelation: "structured_debates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      debate_threads: {
+        Row: {
+          claim_id: string | null
+          created_at: string
+          id: string
+          initiated_by: string
+          moderator_summary: string | null
+          resolved_at: string | null
+          review_cycle_id: string
+          status: string
+          title: string
+        }
+        Insert: {
+          claim_id?: string | null
+          created_at?: string
+          id?: string
+          initiated_by: string
+          moderator_summary?: string | null
+          resolved_at?: string | null
+          review_cycle_id: string
+          status?: string
+          title: string
+        }
+        Update: {
+          claim_id?: string | null
+          created_at?: string
+          id?: string
+          initiated_by?: string
+          moderator_summary?: string | null
+          resolved_at?: string | null
+          review_cycle_id?: string
+          status?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "debate_threads_review_cycle_id_fkey"
+            columns: ["review_cycle_id"]
+            isOneToOne: false
+            referencedRelation: "peer_review_cycles"
             referencedColumns: ["id"]
           },
         ]
@@ -41645,6 +41730,53 @@ export type Database = {
         }
         Relationships: []
       }
+      peer_review_cycles: {
+        Row: {
+          closed_at: string | null
+          created_at: string
+          id: string
+          initiated_by: string
+          metadata: Json | null
+          review_type: string
+          status: string
+          title: string
+          workspace_id: string
+          workspace_version_id: string | null
+        }
+        Insert: {
+          closed_at?: string | null
+          created_at?: string
+          id?: string
+          initiated_by: string
+          metadata?: Json | null
+          review_type?: string
+          status?: string
+          title?: string
+          workspace_id: string
+          workspace_version_id?: string | null
+        }
+        Update: {
+          closed_at?: string | null
+          created_at?: string
+          id?: string
+          initiated_by?: string
+          metadata?: Json | null
+          review_type?: string
+          status?: string
+          title?: string
+          workspace_id?: string
+          workspace_version_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "peer_review_cycles_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       peer_review_requests: {
         Row: {
           created_at: string
@@ -41682,6 +41814,50 @@ export type Database = {
             columns: ["requester_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      peer_review_reviewers: {
+        Row: {
+          assigned_at: string
+          completed_at: string | null
+          expertise_tags: string[] | null
+          id: string
+          review_cycle_id: string
+          review_weight: number
+          reviewer_id: string
+          reviewer_role: string
+          status: string
+        }
+        Insert: {
+          assigned_at?: string
+          completed_at?: string | null
+          expertise_tags?: string[] | null
+          id?: string
+          review_cycle_id: string
+          review_weight?: number
+          reviewer_id: string
+          reviewer_role?: string
+          status?: string
+        }
+        Update: {
+          assigned_at?: string
+          completed_at?: string | null
+          expertise_tags?: string[] | null
+          id?: string
+          review_cycle_id?: string
+          review_weight?: number
+          reviewer_id?: string
+          reviewer_role?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "peer_review_reviewers_review_cycle_id_fkey"
+            columns: ["review_cycle_id"]
+            isOneToOne: false
+            referencedRelation: "peer_review_cycles"
             referencedColumns: ["id"]
           },
         ]
@@ -52686,6 +52862,103 @@ export type Database = {
             columns: ["governed_by"]
             isOneToOne: false
             referencedRelation: "governance_councils"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      review_comments: {
+        Row: {
+          ai_analysis: Json | null
+          claim_id: string | null
+          comment_text: string
+          comment_type: string
+          created_at: string
+          id: string
+          is_resolved: boolean
+          resolved_by_version: number | null
+          review_cycle_id: string
+          reviewer_id: string
+          section_reference: string | null
+          severity_level: string
+        }
+        Insert: {
+          ai_analysis?: Json | null
+          claim_id?: string | null
+          comment_text: string
+          comment_type?: string
+          created_at?: string
+          id?: string
+          is_resolved?: boolean
+          resolved_by_version?: number | null
+          review_cycle_id: string
+          reviewer_id: string
+          section_reference?: string | null
+          severity_level?: string
+        }
+        Update: {
+          ai_analysis?: Json | null
+          claim_id?: string | null
+          comment_text?: string
+          comment_type?: string
+          created_at?: string
+          id?: string
+          is_resolved?: boolean
+          resolved_by_version?: number | null
+          review_cycle_id?: string
+          reviewer_id?: string
+          section_reference?: string | null
+          severity_level?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_comments_review_cycle_id_fkey"
+            columns: ["review_cycle_id"]
+            isOneToOne: false
+            referencedRelation: "peer_review_cycles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      review_outcomes: {
+        Row: {
+          created_at: string
+          decision: string
+          id: string
+          institutional_seal: boolean
+          review_cycle_id: string
+          reviewer_scores: Json | null
+          summary: string
+          trust_impact_applied: boolean
+          weighted_score: number | null
+        }
+        Insert: {
+          created_at?: string
+          decision: string
+          id?: string
+          institutional_seal?: boolean
+          review_cycle_id: string
+          reviewer_scores?: Json | null
+          summary: string
+          trust_impact_applied?: boolean
+          weighted_score?: number | null
+        }
+        Update: {
+          created_at?: string
+          decision?: string
+          id?: string
+          institutional_seal?: boolean
+          review_cycle_id?: string
+          reviewer_scores?: Json | null
+          summary?: string
+          trust_impact_applied?: boolean
+          weighted_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_outcomes_review_cycle_id_fkey"
+            columns: ["review_cycle_id"]
+            isOneToOne: false
+            referencedRelation: "peer_review_cycles"
             referencedColumns: ["id"]
           },
         ]
