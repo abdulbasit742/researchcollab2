@@ -5495,6 +5495,68 @@ export type Database = {
         }
         Relationships: []
       }
+      code_reproducibility_records: {
+        Row: {
+          benchmark_results: Json | null
+          container_image: string | null
+          created_at: string
+          dependency_manifest: Json | null
+          documentation_completeness: number | null
+          environment_spec: Json | null
+          experiment_logs: Json | null
+          hyperparameters: Json | null
+          id: string
+          lro_id: string | null
+          model_weights_path: string | null
+          repository_url: string | null
+          reproducibility_test_passed: boolean | null
+          updated_at: string
+          version_count: number | null
+        }
+        Insert: {
+          benchmark_results?: Json | null
+          container_image?: string | null
+          created_at?: string
+          dependency_manifest?: Json | null
+          documentation_completeness?: number | null
+          environment_spec?: Json | null
+          experiment_logs?: Json | null
+          hyperparameters?: Json | null
+          id?: string
+          lro_id?: string | null
+          model_weights_path?: string | null
+          repository_url?: string | null
+          reproducibility_test_passed?: boolean | null
+          updated_at?: string
+          version_count?: number | null
+        }
+        Update: {
+          benchmark_results?: Json | null
+          container_image?: string | null
+          created_at?: string
+          dependency_manifest?: Json | null
+          documentation_completeness?: number | null
+          environment_spec?: Json | null
+          experiment_logs?: Json | null
+          hyperparameters?: Json | null
+          id?: string
+          lro_id?: string | null
+          model_weights_path?: string | null
+          repository_url?: string | null
+          reproducibility_test_passed?: boolean | null
+          updated_at?: string
+          version_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "code_reproducibility_records_lro_id_fkey"
+            columns: ["lro_id"]
+            isOneToOne: false
+            referencedRelation: "living_research_objects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cohort_members: {
         Row: {
           cohort_id: string
@@ -10351,6 +10413,39 @@ export type Database = {
           retention_days?: number
           table_name?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      dataset_access_audit: {
+        Row: {
+          access_granted: boolean
+          access_type: string
+          accessed_at: string
+          accessed_by: string | null
+          dataset_id: string
+          denial_reason: string | null
+          id: string
+          ip_hash: string | null
+        }
+        Insert: {
+          access_granted?: boolean
+          access_type: string
+          accessed_at?: string
+          accessed_by?: string | null
+          dataset_id: string
+          denial_reason?: string | null
+          id?: string
+          ip_hash?: string | null
+        }
+        Update: {
+          access_granted?: boolean
+          access_type?: string
+          accessed_at?: string
+          accessed_by?: string | null
+          dataset_id?: string
+          denial_reason?: string | null
+          id?: string
+          ip_hash?: string | null
         }
         Relationships: []
       }
@@ -26840,6 +26935,119 @@ export type Database = {
           },
         ]
       }
+      living_research_objects: {
+        Row: {
+          abstract: string | null
+          code_repository_url: string | null
+          created_at: string
+          current_version: number
+          dataset_links: string[] | null
+          ethical_approval_doc: string | null
+          funding_breakdown: Json | null
+          grant_id: string | null
+          id: string
+          industry_application_note: string | null
+          institution_id: string | null
+          institutional_validation: string | null
+          metadata: Json | null
+          milestone_timeline: Json | null
+          openness_level: string
+          patent_id: string | null
+          reproducibility_status: string | null
+          researcher_id: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          abstract?: string | null
+          code_repository_url?: string | null
+          created_at?: string
+          current_version?: number
+          dataset_links?: string[] | null
+          ethical_approval_doc?: string | null
+          funding_breakdown?: Json | null
+          grant_id?: string | null
+          id?: string
+          industry_application_note?: string | null
+          institution_id?: string | null
+          institutional_validation?: string | null
+          metadata?: Json | null
+          milestone_timeline?: Json | null
+          openness_level?: string
+          patent_id?: string | null
+          reproducibility_status?: string | null
+          researcher_id?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          abstract?: string | null
+          code_repository_url?: string | null
+          created_at?: string
+          current_version?: number
+          dataset_links?: string[] | null
+          ethical_approval_doc?: string | null
+          funding_breakdown?: Json | null
+          grant_id?: string | null
+          id?: string
+          industry_application_note?: string | null
+          institution_id?: string | null
+          institutional_validation?: string | null
+          metadata?: Json | null
+          milestone_timeline?: Json | null
+          openness_level?: string
+          patent_id?: string | null
+          reproducibility_status?: string | null
+          researcher_id?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      lro_versions: {
+        Row: {
+          change_summary: string
+          change_type: string
+          content_snapshot: Json | null
+          created_at: string
+          id: string
+          lro_id: string
+          updated_by: string | null
+          version_number: number
+        }
+        Insert: {
+          change_summary: string
+          change_type: string
+          content_snapshot?: Json | null
+          created_at?: string
+          id?: string
+          lro_id: string
+          updated_by?: string | null
+          version_number: number
+        }
+        Update: {
+          change_summary?: string
+          change_type?: string
+          content_snapshot?: Json | null
+          created_at?: string
+          id?: string
+          lro_id?: string
+          updated_by?: string | null
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lro_versions_lro_id_fkey"
+            columns: ["lro_id"]
+            isOneToOne: false
+            referencedRelation: "living_research_objects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       macro_simulation_results: {
         Row: {
           capital_stress_ripple: Json | null
@@ -29322,6 +29530,54 @@ export type Database = {
           target_id?: string
           target_type?: string
           verification_url?: string | null
+        }
+        Relationships: []
+      }
+      open_science_impact_scores: {
+        Row: {
+          code_fork_count: number | null
+          community_validation_depth: number | null
+          computed_at: string
+          cross_domain_reuse: number | null
+          dataset_reuse_frequency: number | null
+          derivative_citations: number | null
+          entity_id: string
+          entity_type: string
+          id: string
+          industry_dataset_adoption: number | null
+          overall_score: number | null
+          replication_attempts: number | null
+          replication_success_rate: number | null
+        }
+        Insert: {
+          code_fork_count?: number | null
+          community_validation_depth?: number | null
+          computed_at?: string
+          cross_domain_reuse?: number | null
+          dataset_reuse_frequency?: number | null
+          derivative_citations?: number | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          industry_dataset_adoption?: number | null
+          overall_score?: number | null
+          replication_attempts?: number | null
+          replication_success_rate?: number | null
+        }
+        Update: {
+          code_fork_count?: number | null
+          community_validation_depth?: number | null
+          computed_at?: string
+          cross_domain_reuse?: number | null
+          dataset_reuse_frequency?: number | null
+          derivative_citations?: number | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          industry_dataset_adoption?: number | null
+          overall_score?: number | null
+          replication_attempts?: number | null
+          replication_success_rate?: number | null
         }
         Relationships: []
       }
@@ -36308,6 +36564,54 @@ export type Database = {
           },
         ]
       }
+      replication_attempts: {
+        Row: {
+          completed_at: string | null
+          corrections_suggested: Json | null
+          derivative_lro_id: string | null
+          extension_proposals: Json | null
+          id: string
+          inconsistencies: Json | null
+          institution_id: string | null
+          lro_id: string
+          replicator_id: string | null
+          report_summary: string | null
+          status: string
+          submitted_at: string
+          success: boolean | null
+        }
+        Insert: {
+          completed_at?: string | null
+          corrections_suggested?: Json | null
+          derivative_lro_id?: string | null
+          extension_proposals?: Json | null
+          id?: string
+          inconsistencies?: Json | null
+          institution_id?: string | null
+          lro_id: string
+          replicator_id?: string | null
+          report_summary?: string | null
+          status?: string
+          submitted_at?: string
+          success?: boolean | null
+        }
+        Update: {
+          completed_at?: string | null
+          corrections_suggested?: Json | null
+          derivative_lro_id?: string | null
+          extension_proposals?: Json | null
+          id?: string
+          inconsistencies?: Json | null
+          institution_id?: string | null
+          lro_id?: string
+          replicator_id?: string | null
+          report_summary?: string | null
+          status?: string
+          submitted_at?: string
+          success?: boolean | null
+        }
+        Relationships: []
+      }
       reported_posts: {
         Row: {
           comment_id: string | null
@@ -36553,6 +36857,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      reproducibility_scores: {
+        Row: {
+          code_availability: number | null
+          computed_at: string
+          dataset_accessibility: number | null
+          dependency_clarity: number | null
+          documentation_completeness: number | null
+          environment_reproducibility: number | null
+          id: string
+          lro_id: string
+          overall_rri: number | null
+          replication_success_rate: number | null
+          third_party_replications: number | null
+          version_transparency: number | null
+        }
+        Insert: {
+          code_availability?: number | null
+          computed_at?: string
+          dataset_accessibility?: number | null
+          dependency_clarity?: number | null
+          documentation_completeness?: number | null
+          environment_reproducibility?: number | null
+          id?: string
+          lro_id: string
+          overall_rri?: number | null
+          replication_success_rate?: number | null
+          third_party_replications?: number | null
+          version_transparency?: number | null
+        }
+        Update: {
+          code_availability?: number | null
+          computed_at?: string
+          dataset_accessibility?: number | null
+          dependency_clarity?: number | null
+          documentation_completeness?: number | null
+          environment_reproducibility?: number | null
+          id?: string
+          lro_id?: string
+          overall_rri?: number | null
+          replication_success_rate?: number | null
+          third_party_replications?: number | null
+          version_transparency?: number | null
+        }
+        Relationships: []
       }
       reputation_index: {
         Row: {
@@ -37210,64 +37559,100 @@ export type Database = {
       research_datasets: {
         Row: {
           access_level: string
+          anonymization_verified: boolean | null
           consent_type: string | null
           created_at: string
+          data_schema: Json | null
           dataset_type: string
           description: string | null
           doi: string | null
           embargo_until: string | null
+          encryption_verified: boolean | null
           ethical_approval_ref: string | null
+          file_count: number | null
+          file_size_bytes: number | null
+          fork_count: number | null
           id: string
           is_active: boolean | null
           keywords: string[] | null
           license: string | null
+          lro_id: string | null
+          metadata_standard: string | null
           methodology_summary: string | null
           owner_user_id: string
+          privacy_compliance_tags: string[] | null
           research_timeline_id: string | null
+          retention_policy: string | null
+          reuse_count: number | null
           size_mb: number | null
           storage_location: string | null
+          storage_path: string | null
           title: string
           updated_at: string
         }
         Insert: {
           access_level?: string
+          anonymization_verified?: boolean | null
           consent_type?: string | null
           created_at?: string
+          data_schema?: Json | null
           dataset_type: string
           description?: string | null
           doi?: string | null
           embargo_until?: string | null
+          encryption_verified?: boolean | null
           ethical_approval_ref?: string | null
+          file_count?: number | null
+          file_size_bytes?: number | null
+          fork_count?: number | null
           id?: string
           is_active?: boolean | null
           keywords?: string[] | null
           license?: string | null
+          lro_id?: string | null
+          metadata_standard?: string | null
           methodology_summary?: string | null
           owner_user_id: string
+          privacy_compliance_tags?: string[] | null
           research_timeline_id?: string | null
+          retention_policy?: string | null
+          reuse_count?: number | null
           size_mb?: number | null
           storage_location?: string | null
+          storage_path?: string | null
           title: string
           updated_at?: string
         }
         Update: {
           access_level?: string
+          anonymization_verified?: boolean | null
           consent_type?: string | null
           created_at?: string
+          data_schema?: Json | null
           dataset_type?: string
           description?: string | null
           doi?: string | null
           embargo_until?: string | null
+          encryption_verified?: boolean | null
           ethical_approval_ref?: string | null
+          file_count?: number | null
+          file_size_bytes?: number | null
+          fork_count?: number | null
           id?: string
           is_active?: boolean | null
           keywords?: string[] | null
           license?: string | null
+          lro_id?: string | null
+          metadata_standard?: string | null
           methodology_summary?: string | null
           owner_user_id?: string
+          privacy_compliance_tags?: string[] | null
           research_timeline_id?: string | null
+          retention_policy?: string | null
+          reuse_count?: number | null
           size_mb?: number | null
           storage_location?: string | null
+          storage_path?: string | null
           title?: string
           updated_at?: string
         }
