@@ -2249,6 +2249,54 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_growth_advisor_records: {
+        Row: {
+          action_items: Json | null
+          advisor_type: string
+          communication_suggestions: Json | null
+          domain_expansion_recommendations: Json | null
+          execution_weaknesses: Json | null
+          generated_at: string | null
+          id: string
+          institutional_opportunities: Json | null
+          model_version: string | null
+          overall_growth_score: number | null
+          risk_mitigation_alerts: Json | null
+          skill_gaps_detected: Json | null
+          user_id: string
+        }
+        Insert: {
+          action_items?: Json | null
+          advisor_type: string
+          communication_suggestions?: Json | null
+          domain_expansion_recommendations?: Json | null
+          execution_weaknesses?: Json | null
+          generated_at?: string | null
+          id?: string
+          institutional_opportunities?: Json | null
+          model_version?: string | null
+          overall_growth_score?: number | null
+          risk_mitigation_alerts?: Json | null
+          skill_gaps_detected?: Json | null
+          user_id: string
+        }
+        Update: {
+          action_items?: Json | null
+          advisor_type?: string
+          communication_suggestions?: Json | null
+          domain_expansion_recommendations?: Json | null
+          execution_weaknesses?: Json | null
+          generated_at?: string | null
+          id?: string
+          institutional_opportunities?: Json | null
+          model_version?: string | null
+          overall_growth_score?: number | null
+          risk_mitigation_alerts?: Json | null
+          skill_gaps_detected?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_guardrail_events: {
         Row: {
           guardrail_type: string
@@ -13630,6 +13678,63 @@ export type Database = {
         }
         Relationships: []
       }
+      execution_discovery_index: {
+        Row: {
+          completion_velocity: number | null
+          deliverable_depth: number | null
+          display_name: string | null
+          domain: string | null
+          economic_graph_weight: number | null
+          entity_id: string
+          entity_type: string
+          escrow_reliability: number | null
+          id: string
+          institution_ids: string[] | null
+          institutional_performance: number | null
+          last_indexed_at: string | null
+          overall_discovery_score: number | null
+          risk_profile: number | null
+          skills: string[] | null
+          sponsor_repeat_rate: number | null
+        }
+        Insert: {
+          completion_velocity?: number | null
+          deliverable_depth?: number | null
+          display_name?: string | null
+          domain?: string | null
+          economic_graph_weight?: number | null
+          entity_id: string
+          entity_type: string
+          escrow_reliability?: number | null
+          id?: string
+          institution_ids?: string[] | null
+          institutional_performance?: number | null
+          last_indexed_at?: string | null
+          overall_discovery_score?: number | null
+          risk_profile?: number | null
+          skills?: string[] | null
+          sponsor_repeat_rate?: number | null
+        }
+        Update: {
+          completion_velocity?: number | null
+          deliverable_depth?: number | null
+          display_name?: string | null
+          domain?: string | null
+          economic_graph_weight?: number | null
+          entity_id?: string
+          entity_type?: string
+          escrow_reliability?: number | null
+          id?: string
+          institution_ids?: string[] | null
+          institutional_performance?: number | null
+          last_indexed_at?: string | null
+          overall_discovery_score?: number | null
+          risk_profile?: number | null
+          skills?: string[] | null
+          sponsor_repeat_rate?: number | null
+        }
+        Relationships: []
+      }
       execution_health_snapshots: {
         Row: {
           details: Json | null
@@ -13666,6 +13771,81 @@ export type Database = {
           stuck_milestones?: number
           stuck_offers?: number
           wallet_mismatches?: number
+        }
+        Relationships: []
+      }
+      execution_marketplace: {
+        Row: {
+          applications_count: number | null
+          budget_range_max: number | null
+          budget_range_min: number | null
+          complexity_tier: string | null
+          created_at: string | null
+          creator_id: string
+          description: string | null
+          domain: string | null
+          escrow_required: boolean | null
+          expected_duration_days: number | null
+          faculty_collaboration: boolean | null
+          id: string
+          institution_id: string | null
+          institutional_oversight: boolean | null
+          is_public: boolean | null
+          listing_type: string | null
+          milestone_count: number | null
+          required_skills: string[] | null
+          sponsor_id: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          applications_count?: number | null
+          budget_range_max?: number | null
+          budget_range_min?: number | null
+          complexity_tier?: string | null
+          created_at?: string | null
+          creator_id: string
+          description?: string | null
+          domain?: string | null
+          escrow_required?: boolean | null
+          expected_duration_days?: number | null
+          faculty_collaboration?: boolean | null
+          id?: string
+          institution_id?: string | null
+          institutional_oversight?: boolean | null
+          is_public?: boolean | null
+          listing_type?: string | null
+          milestone_count?: number | null
+          required_skills?: string[] | null
+          sponsor_id?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          applications_count?: number | null
+          budget_range_max?: number | null
+          budget_range_min?: number | null
+          complexity_tier?: string | null
+          created_at?: string | null
+          creator_id?: string
+          description?: string | null
+          domain?: string | null
+          escrow_required?: boolean | null
+          expected_duration_days?: number | null
+          faculty_collaboration?: boolean | null
+          id?: string
+          institution_id?: string | null
+          institutional_oversight?: boolean | null
+          is_public?: boolean | null
+          listing_type?: string | null
+          milestone_count?: number | null
+          required_skills?: string[] | null
+          sponsor_id?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -25016,6 +25196,56 @@ export type Database = {
         }
         Relationships: []
       }
+      marketplace_applications: {
+        Row: {
+          applicant_id: string
+          created_at: string | null
+          escrow_history_summary: Json | null
+          id: string
+          listing_id: string | null
+          proposal_text: string | null
+          proposed_budget: number | null
+          proposed_timeline_days: number | null
+          relevant_portfolio_ids: string[] | null
+          status: string | null
+          trust_score_at_application: number | null
+        }
+        Insert: {
+          applicant_id: string
+          created_at?: string | null
+          escrow_history_summary?: Json | null
+          id?: string
+          listing_id?: string | null
+          proposal_text?: string | null
+          proposed_budget?: number | null
+          proposed_timeline_days?: number | null
+          relevant_portfolio_ids?: string[] | null
+          status?: string | null
+          trust_score_at_application?: number | null
+        }
+        Update: {
+          applicant_id?: string
+          created_at?: string | null
+          escrow_history_summary?: Json | null
+          id?: string
+          listing_id?: string | null
+          proposal_text?: string | null
+          proposed_budget?: number | null
+          proposed_timeline_days?: number | null
+          relevant_portfolio_ids?: string[] | null
+          status?: string | null
+          trust_score_at_application?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_applications_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "execution_marketplace"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mentorship_interactions: {
         Row: {
           created_at: string
@@ -29327,6 +29557,39 @@ export type Database = {
           },
         ]
       }
+      platform_category_positioning: {
+        Row: {
+          category_label: string
+          competitor_comparison: Json | null
+          differentiators: Json | null
+          id: string
+          is_active: boolean | null
+          moat_factors: Json | null
+          positioning_statement: string
+          updated_at: string | null
+        }
+        Insert: {
+          category_label: string
+          competitor_comparison?: Json | null
+          differentiators?: Json | null
+          id?: string
+          is_active?: boolean | null
+          moat_factors?: Json | null
+          positioning_statement: string
+          updated_at?: string | null
+        }
+        Update: {
+          category_label?: string
+          competitor_comparison?: Json | null
+          differentiators?: Json | null
+          id?: string
+          is_active?: boolean | null
+          moat_factors?: Json | null
+          positioning_statement?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       platform_charters: {
         Row: {
           amendment_process: string | null
@@ -31754,6 +32017,42 @@ export type Database = {
           probability_of_default?: number | null
           revenue_volatility?: number | null
           updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      professional_lifecycle_events: {
+        Row: {
+          completed_at: string | null
+          duration_hours: number | null
+          entered_at: string | null
+          id: string
+          outcome: string | null
+          project_id: string | null
+          stage: string
+          stage_data: Json | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          duration_hours?: number | null
+          entered_at?: string | null
+          id?: string
+          outcome?: string | null
+          project_id?: string | null
+          stage: string
+          stage_data?: Json | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          duration_hours?: number | null
+          entered_at?: string | null
+          id?: string
+          outcome?: string | null
+          project_id?: string | null
+          stage?: string
+          stage_data?: Json | null
           user_id?: string
         }
         Relationships: []
@@ -43220,6 +43519,63 @@ export type Database = {
           projects_weight?: number | null
           rating_weight?: number | null
           verification_weight?: number | null
+        }
+        Relationships: []
+      }
+      unified_execution_identity: {
+        Row: {
+          career_trajectory_trend: string | null
+          collaboration_clusters: number | null
+          communication_reliability: number | null
+          created_at: string | null
+          economic_trust_weight: number | null
+          escrow_backed_projects: number | null
+          id: string
+          identity_completeness_pct: number | null
+          institutional_validations: number | null
+          last_computed_at: string | null
+          research_outputs_count: number | null
+          sponsor_funding_footprint: number | null
+          talent_readiness_score: number | null
+          total_escrow_volume: number | null
+          user_id: string
+          visual_deliverables_count: number | null
+        }
+        Insert: {
+          career_trajectory_trend?: string | null
+          collaboration_clusters?: number | null
+          communication_reliability?: number | null
+          created_at?: string | null
+          economic_trust_weight?: number | null
+          escrow_backed_projects?: number | null
+          id?: string
+          identity_completeness_pct?: number | null
+          institutional_validations?: number | null
+          last_computed_at?: string | null
+          research_outputs_count?: number | null
+          sponsor_funding_footprint?: number | null
+          talent_readiness_score?: number | null
+          total_escrow_volume?: number | null
+          user_id: string
+          visual_deliverables_count?: number | null
+        }
+        Update: {
+          career_trajectory_trend?: string | null
+          collaboration_clusters?: number | null
+          communication_reliability?: number | null
+          created_at?: string | null
+          economic_trust_weight?: number | null
+          escrow_backed_projects?: number | null
+          id?: string
+          identity_completeness_pct?: number | null
+          institutional_validations?: number | null
+          last_computed_at?: string | null
+          research_outputs_count?: number | null
+          sponsor_funding_footprint?: number | null
+          talent_readiness_score?: number | null
+          total_escrow_volume?: number | null
+          user_id?: string
+          visual_deliverables_count?: number | null
         }
         Relationships: []
       }
