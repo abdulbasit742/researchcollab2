@@ -3649,6 +3649,109 @@ export type Database = {
         }
         Relationships: []
       }
+      api_access_grants: {
+        Row: {
+          api_id: string | null
+          api_key_hash: string | null
+          created_at: string
+          expires_at: string | null
+          granted_by: string | null
+          grantee_id: string
+          grantee_type: string
+          id: string
+          is_active: boolean | null
+          permission_level: string
+          scopes: string[] | null
+        }
+        Insert: {
+          api_id?: string | null
+          api_key_hash?: string | null
+          created_at?: string
+          expires_at?: string | null
+          granted_by?: string | null
+          grantee_id: string
+          grantee_type: string
+          id?: string
+          is_active?: boolean | null
+          permission_level?: string
+          scopes?: string[] | null
+        }
+        Update: {
+          api_id?: string | null
+          api_key_hash?: string | null
+          created_at?: string
+          expires_at?: string | null
+          granted_by?: string | null
+          grantee_id?: string
+          grantee_type?: string
+          id?: string
+          is_active?: boolean | null
+          permission_level?: string
+          scopes?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_access_grants_api_id_fkey"
+            columns: ["api_id"]
+            isOneToOne: false
+            referencedRelation: "api_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      api_audit_logs: {
+        Row: {
+          api_id: string | null
+          called_at: string
+          caller_id: string
+          caller_type: string
+          endpoint: string
+          id: string
+          ip_address: string | null
+          jurisdiction: string | null
+          method: string
+          request_metadata: Json | null
+          response_summary: Json | null
+          status_code: number | null
+        }
+        Insert: {
+          api_id?: string | null
+          called_at?: string
+          caller_id: string
+          caller_type: string
+          endpoint: string
+          id?: string
+          ip_address?: string | null
+          jurisdiction?: string | null
+          method: string
+          request_metadata?: Json | null
+          response_summary?: Json | null
+          status_code?: number | null
+        }
+        Update: {
+          api_id?: string | null
+          called_at?: string
+          caller_id?: string
+          caller_type?: string
+          endpoint?: string
+          id?: string
+          ip_address?: string | null
+          jurisdiction?: string | null
+          method?: string
+          request_metadata?: Json | null
+          response_summary?: Json | null
+          status_code?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_audit_logs_api_id_fkey"
+            columns: ["api_id"]
+            isOneToOne: false
+            referencedRelation: "api_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       api_clients: {
         Row: {
           client_name: string
@@ -3688,6 +3791,54 @@ export type Database = {
           rate_limit_per_hour?: number | null
           scopes?: string[]
           status?: string
+        }
+        Relationships: []
+      }
+      api_registry: {
+        Row: {
+          api_name: string
+          api_type: string
+          api_version: string
+          auth_method: string
+          base_path: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          rate_limit_per_minute: number | null
+          supports_events: boolean | null
+          supports_webhooks: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          api_name: string
+          api_type: string
+          api_version?: string
+          auth_method?: string
+          base_path: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          rate_limit_per_minute?: number | null
+          supports_events?: boolean | null
+          supports_webhooks?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          api_name?: string
+          api_type?: string
+          api_version?: string
+          auth_method?: string
+          base_path?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          rate_limit_per_minute?: number | null
+          supports_events?: boolean | null
+          supports_webhooks?: boolean | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -9979,6 +10130,54 @@ export type Database = {
         }
         Relationships: []
       }
+      cross_border_data_transfers: {
+        Row: {
+          approval_status: string
+          approved_at: string | null
+          approved_by: string | null
+          compliance_flags: Json | null
+          data_category: string
+          data_classification: string
+          destination_jurisdiction: string
+          encryption_verified: boolean | null
+          id: string
+          requested_at: string
+          requester_id: string
+          requester_type: string
+          source_jurisdiction: string
+        }
+        Insert: {
+          approval_status?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          compliance_flags?: Json | null
+          data_category: string
+          data_classification?: string
+          destination_jurisdiction: string
+          encryption_verified?: boolean | null
+          id?: string
+          requested_at?: string
+          requester_id: string
+          requester_type: string
+          source_jurisdiction: string
+        }
+        Update: {
+          approval_status?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          compliance_flags?: Json | null
+          data_category?: string
+          data_classification?: string
+          destination_jurisdiction?: string
+          encryption_verified?: boolean | null
+          id?: string
+          requested_at?: string
+          requester_id?: string
+          requester_type?: string
+          source_jurisdiction?: string
+        }
+        Relationships: []
+      }
       cross_border_simulations: {
         Row: {
           capital_amount: number | null
@@ -10505,6 +10704,45 @@ export type Database = {
           },
         ]
       }
+      data_export_logs: {
+        Row: {
+          destination: string | null
+          export_format: string
+          export_scope: string
+          exported_at: string
+          exporter_id: string
+          exporter_type: string
+          id: string
+          is_aggregated: boolean | null
+          jurisdiction: string | null
+          record_count: number | null
+        }
+        Insert: {
+          destination?: string | null
+          export_format: string
+          export_scope: string
+          exported_at?: string
+          exporter_id: string
+          exporter_type: string
+          id?: string
+          is_aggregated?: boolean | null
+          jurisdiction?: string | null
+          record_count?: number | null
+        }
+        Update: {
+          destination?: string | null
+          export_format?: string
+          export_scope?: string
+          exported_at?: string
+          exporter_id?: string
+          exporter_type?: string
+          id?: string
+          is_aggregated?: boolean | null
+          jurisdiction?: string | null
+          record_count?: number | null
+        }
+        Relationships: []
+      }
       data_format_versions: {
         Row: {
           backward_compatible_with: string[] | null
@@ -10752,6 +10990,39 @@ export type Database = {
           retention_days?: number
           table_name?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      data_standardization_mappings: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          schema_type: string
+          source_field: string
+          source_system: string
+          target_field: string
+          transformation_rule: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          schema_type: string
+          source_field: string
+          source_system: string
+          target_field: string
+          transformation_rule?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          schema_type?: string
+          source_field?: string
+          source_system?: string
+          target_field?: string
+          transformation_rule?: string | null
         }
         Relationships: []
       }
@@ -14601,6 +14872,42 @@ export type Database = {
           },
         ]
       }
+      event_bus_log: {
+        Row: {
+          emitted_at: string
+          entity_id: string | null
+          entity_type: string | null
+          event_source: string
+          event_type: string
+          id: string
+          payload: Json | null
+          processing_status: string | null
+          subscribers_notified: number | null
+        }
+        Insert: {
+          emitted_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          event_source: string
+          event_type: string
+          id?: string
+          payload?: Json | null
+          processing_status?: string | null
+          subscribers_notified?: number | null
+        }
+        Update: {
+          emitted_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          event_source?: string
+          event_type?: string
+          id?: string
+          payload?: Json | null
+          processing_status?: string | null
+          subscribers_notified?: number | null
+        }
+        Relationships: []
+      }
       event_reminders: {
         Row: {
           created_at: string | null
@@ -15429,6 +15736,111 @@ export type Database = {
           id?: string
           requested_by?: string
           status?: string
+        }
+        Relationships: []
+      }
+      extension_marketplace: {
+        Row: {
+          created_at: string
+          description: string | null
+          developer_id: string
+          extension_name: string
+          extension_type: string
+          id: string
+          install_count: number | null
+          integrity_audit_status: string | null
+          is_active: boolean | null
+          is_verified: boolean | null
+          permission_scopes: string[] | null
+          published_at: string | null
+          security_review_status: string | null
+          version: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          developer_id: string
+          extension_name: string
+          extension_type: string
+          id?: string
+          install_count?: number | null
+          integrity_audit_status?: string | null
+          is_active?: boolean | null
+          is_verified?: boolean | null
+          permission_scopes?: string[] | null
+          published_at?: string | null
+          security_review_status?: string | null
+          version?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          developer_id?: string
+          extension_name?: string
+          extension_type?: string
+          id?: string
+          install_count?: number | null
+          integrity_audit_status?: string | null
+          is_active?: boolean | null
+          is_verified?: boolean | null
+          permission_scopes?: string[] | null
+          published_at?: string | null
+          security_review_status?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
+      external_integration_configs: {
+        Row: {
+          auth_config: Json | null
+          config: Json | null
+          created_at: string
+          error_log: Json | null
+          id: string
+          institution_id: string | null
+          integration_name: string
+          integration_type: string
+          is_active: boolean | null
+          last_sync_at: string | null
+          provider: string
+          sandbox_mode: boolean | null
+          sync_frequency: string | null
+          sync_status: string | null
+          updated_at: string
+        }
+        Insert: {
+          auth_config?: Json | null
+          config?: Json | null
+          created_at?: string
+          error_log?: Json | null
+          id?: string
+          institution_id?: string | null
+          integration_name: string
+          integration_type: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          provider: string
+          sandbox_mode?: boolean | null
+          sync_frequency?: string | null
+          sync_status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          auth_config?: Json | null
+          config?: Json | null
+          created_at?: string
+          error_log?: Json | null
+          id?: string
+          institution_id?: string | null
+          integration_name?: string
+          integration_type?: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          provider?: string
+          sandbox_mode?: boolean | null
+          sync_frequency?: string | null
+          sync_status?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -21779,6 +22191,42 @@ export type Database = {
           response?: Json | null
           status?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      identity_federation_links: {
+        Row: {
+          display_name: string | null
+          external_id: string
+          id: string
+          institution_id: string | null
+          linked_at: string
+          provider: string
+          user_id: string
+          verified: boolean | null
+          verified_at: string | null
+        }
+        Insert: {
+          display_name?: string | null
+          external_id: string
+          id?: string
+          institution_id?: string | null
+          linked_at?: string
+          provider: string
+          user_id: string
+          verified?: boolean | null
+          verified_at?: string | null
+        }
+        Update: {
+          display_name?: string | null
+          external_id?: string
+          id?: string
+          institution_id?: string | null
+          linked_at?: string
+          provider?: string
+          user_id?: string
+          verified?: boolean | null
+          verified_at?: string | null
         }
         Relationships: []
       }
@@ -49921,6 +50369,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      webhook_subscriptions: {
+        Row: {
+          callback_url: string
+          created_at: string
+          event_types: string[]
+          failure_count: number | null
+          id: string
+          is_active: boolean | null
+          last_triggered_at: string | null
+          secret_hash: string | null
+          subscriber_id: string
+          subscriber_type: string
+        }
+        Insert: {
+          callback_url: string
+          created_at?: string
+          event_types?: string[]
+          failure_count?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          secret_hash?: string | null
+          subscriber_id: string
+          subscriber_type: string
+        }
+        Update: {
+          callback_url?: string
+          created_at?: string
+          event_types?: string[]
+          failure_count?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          secret_hash?: string | null
+          subscriber_id?: string
+          subscriber_type?: string
+        }
+        Relationships: []
       }
       whitelisted_domains: {
         Row: {
