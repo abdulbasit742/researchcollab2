@@ -14958,6 +14958,59 @@ export type Database = {
           },
         ]
       }
+      ecosystem_alignment_analytics: {
+        Row: {
+          computed_at: string
+          ecosystem_readiness_score: number | null
+          existing_grants_alignment: number | null
+          id: string
+          industry_demand_alignment: number | null
+          initiative_id: string
+          innovation_velocity: number | null
+          institutional_strategy_alignment: number | null
+          national_priority_alignment: number | null
+          patent_cluster_alignment: number | null
+          skill_supply_alignment: number | null
+          startup_ecosystem_alignment: number | null
+        }
+        Insert: {
+          computed_at?: string
+          ecosystem_readiness_score?: number | null
+          existing_grants_alignment?: number | null
+          id?: string
+          industry_demand_alignment?: number | null
+          initiative_id: string
+          innovation_velocity?: number | null
+          institutional_strategy_alignment?: number | null
+          national_priority_alignment?: number | null
+          patent_cluster_alignment?: number | null
+          skill_supply_alignment?: number | null
+          startup_ecosystem_alignment?: number | null
+        }
+        Update: {
+          computed_at?: string
+          ecosystem_readiness_score?: number | null
+          existing_grants_alignment?: number | null
+          id?: string
+          industry_demand_alignment?: number | null
+          initiative_id?: string
+          innovation_velocity?: number | null
+          institutional_strategy_alignment?: number | null
+          national_priority_alignment?: number | null
+          patent_cluster_alignment?: number | null
+          skill_supply_alignment?: number | null
+          startup_ecosystem_alignment?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecosystem_alignment_analytics_initiative_id_fkey"
+            columns: ["initiative_id"]
+            isOneToOne: false
+            referencedRelation: "global_initiatives"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ecosystem_apps: {
         Row: {
           app_name: string
@@ -21445,6 +21498,69 @@ export type Database = {
         }
         Relationships: []
       }
+      global_initiatives: {
+        Row: {
+          compliance_requirements: string[] | null
+          created_at: string
+          created_by: string
+          domain_classification: string[] | null
+          execution_phases: Json | null
+          expected_outcomes: Json | null
+          funding_structure: Json | null
+          geographic_scope: string[] | null
+          governance_structure: Json | null
+          id: string
+          impact_metrics: Json | null
+          institutional_partners: string[] | null
+          milestone_roadmap: Json | null
+          problem_statement: string | null
+          required_skills: string[] | null
+          status: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          compliance_requirements?: string[] | null
+          created_at?: string
+          created_by: string
+          domain_classification?: string[] | null
+          execution_phases?: Json | null
+          expected_outcomes?: Json | null
+          funding_structure?: Json | null
+          geographic_scope?: string[] | null
+          governance_structure?: Json | null
+          id?: string
+          impact_metrics?: Json | null
+          institutional_partners?: string[] | null
+          milestone_roadmap?: Json | null
+          problem_statement?: string | null
+          required_skills?: string[] | null
+          status?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          compliance_requirements?: string[] | null
+          created_at?: string
+          created_by?: string
+          domain_classification?: string[] | null
+          execution_phases?: Json | null
+          expected_outcomes?: Json | null
+          funding_structure?: Json | null
+          geographic_scope?: string[] | null
+          governance_structure?: Json | null
+          id?: string
+          impact_metrics?: Json | null
+          institutional_partners?: string[] | null
+          milestone_roadmap?: Json | null
+          problem_statement?: string | null
+          required_skills?: string[] | null
+          status?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       global_innovation_map: {
         Row: {
           active_grants: number | null
@@ -25202,6 +25318,438 @@ export type Database = {
             columns: ["infrastructure_id"]
             isOneToOne: false
             referencedRelation: "infrastructure_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      initiative_coordination_memory: {
+        Row: {
+          description: string | null
+          event_type: string
+          id: string
+          initiative_id: string
+          metadata: Json | null
+          recorded_at: string
+        }
+        Insert: {
+          description?: string | null
+          event_type: string
+          id?: string
+          initiative_id: string
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Update: {
+          description?: string | null
+          event_type?: string
+          id?: string
+          initiative_id?: string
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "initiative_coordination_memory_initiative_id_fkey"
+            columns: ["initiative_id"]
+            isOneToOne: false
+            referencedRelation: "global_initiatives"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      initiative_cross_border: {
+        Row: {
+          compliance_obligations: string[] | null
+          computed_at: string
+          cross_border_viability: number | null
+          cultural_friction: number | null
+          currency_flows: Json | null
+          data_localization: string[] | null
+          funding_jurisdiction_rules: Json | null
+          id: string
+          initiative_id: string
+          institutional_trust_strength: number | null
+          ip_ownership_structure: string | null
+          regulatory_compatibility: number | null
+        }
+        Insert: {
+          compliance_obligations?: string[] | null
+          computed_at?: string
+          cross_border_viability?: number | null
+          cultural_friction?: number | null
+          currency_flows?: Json | null
+          data_localization?: string[] | null
+          funding_jurisdiction_rules?: Json | null
+          id?: string
+          initiative_id: string
+          institutional_trust_strength?: number | null
+          ip_ownership_structure?: string | null
+          regulatory_compatibility?: number | null
+        }
+        Update: {
+          compliance_obligations?: string[] | null
+          computed_at?: string
+          cross_border_viability?: number | null
+          cultural_friction?: number | null
+          currency_flows?: Json | null
+          data_localization?: string[] | null
+          funding_jurisdiction_rules?: Json | null
+          id?: string
+          initiative_id?: string
+          institutional_trust_strength?: number | null
+          ip_ownership_structure?: string | null
+          regulatory_compatibility?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "initiative_cross_border_initiative_id_fkey"
+            columns: ["initiative_id"]
+            isOneToOne: false
+            referencedRelation: "global_initiatives"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      initiative_funding: {
+        Row: {
+          amount: number | null
+          created_at: string
+          currency: string | null
+          escrow_protected: boolean | null
+          id: string
+          initiative_id: string
+          milestone_linked: string | null
+          source_id: string | null
+          source_type: string
+          status: string | null
+          transparency_report: Json | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string
+          currency?: string | null
+          escrow_protected?: boolean | null
+          id?: string
+          initiative_id: string
+          milestone_linked?: string | null
+          source_id?: string | null
+          source_type: string
+          status?: string | null
+          transparency_report?: Json | null
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string
+          currency?: string | null
+          escrow_protected?: boolean | null
+          id?: string
+          initiative_id?: string
+          milestone_linked?: string | null
+          source_id?: string | null
+          source_type?: string
+          status?: string | null
+          transparency_report?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "initiative_funding_initiative_id_fkey"
+            columns: ["initiative_id"]
+            isOneToOne: false
+            referencedRelation: "global_initiatives"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      initiative_governance: {
+        Row: {
+          appeal_mechanism: string | null
+          audit_trail: Json | null
+          compliance_officer_id: string | null
+          conflict_disclosures: Json | null
+          created_at: string
+          dispute_resolution_method: string | null
+          governance_board_members: string[] | null
+          id: string
+          initiative_id: string
+          reporting_cadence: string | null
+        }
+        Insert: {
+          appeal_mechanism?: string | null
+          audit_trail?: Json | null
+          compliance_officer_id?: string | null
+          conflict_disclosures?: Json | null
+          created_at?: string
+          dispute_resolution_method?: string | null
+          governance_board_members?: string[] | null
+          id?: string
+          initiative_id: string
+          reporting_cadence?: string | null
+        }
+        Update: {
+          appeal_mechanism?: string | null
+          audit_trail?: Json | null
+          compliance_officer_id?: string | null
+          conflict_disclosures?: Json | null
+          created_at?: string
+          dispute_resolution_method?: string | null
+          governance_board_members?: string[] | null
+          id?: string
+          initiative_id?: string
+          reporting_cadence?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "initiative_governance_initiative_id_fkey"
+            columns: ["initiative_id"]
+            isOneToOne: false
+            referencedRelation: "global_initiatives"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      initiative_mobilization_metrics: {
+        Row: {
+          active_participants: number | null
+          cross_border_diversity: number | null
+          funding_secured: number | null
+          geographic_distribution: Json | null
+          id: string
+          industry_engagement_status: string | null
+          initiative_id: string
+          milestones_completed: number | null
+          risk_exposure: number | null
+          skill_coverage_pct: number | null
+          timeline_progress_pct: number | null
+          trust_density: number | null
+          updated_at: string
+        }
+        Insert: {
+          active_participants?: number | null
+          cross_border_diversity?: number | null
+          funding_secured?: number | null
+          geographic_distribution?: Json | null
+          id?: string
+          industry_engagement_status?: string | null
+          initiative_id: string
+          milestones_completed?: number | null
+          risk_exposure?: number | null
+          skill_coverage_pct?: number | null
+          timeline_progress_pct?: number | null
+          trust_density?: number | null
+          updated_at?: string
+        }
+        Update: {
+          active_participants?: number | null
+          cross_border_diversity?: number | null
+          funding_secured?: number | null
+          geographic_distribution?: Json | null
+          id?: string
+          industry_engagement_status?: string | null
+          initiative_id?: string
+          milestones_completed?: number | null
+          risk_exposure?: number | null
+          skill_coverage_pct?: number | null
+          timeline_progress_pct?: number | null
+          trust_density?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "initiative_mobilization_metrics_initiative_id_fkey"
+            columns: ["initiative_id"]
+            isOneToOne: true
+            referencedRelation: "global_initiatives"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      initiative_movement_index: {
+        Row: {
+          collaboration_density: number | null
+          compliance_stability: number | null
+          composite_movement_score: number | null
+          computed_at: string
+          cross_border_reach: number | null
+          economic_impact: number | null
+          execution_progress: number | null
+          funding_efficiency: number | null
+          id: string
+          initiative_id: string
+          innovation_output: number | null
+          long_term_sustainability: number | null
+        }
+        Insert: {
+          collaboration_density?: number | null
+          compliance_stability?: number | null
+          composite_movement_score?: number | null
+          computed_at?: string
+          cross_border_reach?: number | null
+          economic_impact?: number | null
+          execution_progress?: number | null
+          funding_efficiency?: number | null
+          id?: string
+          initiative_id: string
+          innovation_output?: number | null
+          long_term_sustainability?: number | null
+        }
+        Update: {
+          collaboration_density?: number | null
+          compliance_stability?: number | null
+          composite_movement_score?: number | null
+          computed_at?: string
+          cross_border_reach?: number | null
+          economic_impact?: number | null
+          execution_progress?: number | null
+          funding_efficiency?: number | null
+          id?: string
+          initiative_id?: string
+          innovation_output?: number | null
+          long_term_sustainability?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "initiative_movement_index_initiative_id_fkey"
+            columns: ["initiative_id"]
+            isOneToOne: true
+            referencedRelation: "global_initiatives"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      initiative_participants: {
+        Row: {
+          id: string
+          initiative_id: string
+          institution_id: string | null
+          joined_at: string
+          responsibilities: string[] | null
+          role: string
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          initiative_id: string
+          institution_id?: string | null
+          joined_at?: string
+          responsibilities?: string[] | null
+          role: string
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          initiative_id?: string
+          institution_id?: string | null
+          joined_at?: string
+          responsibilities?: string[] | null
+          role?: string
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "initiative_participants_initiative_id_fkey"
+            columns: ["initiative_id"]
+            isOneToOne: false
+            referencedRelation: "global_initiatives"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      initiative_skill_mobilization: {
+        Row: {
+          computed_at: string
+          cross_domain_candidates: string[] | null
+          geographic_talent_pools: Json | null
+          high_liquidity_talent: string[] | null
+          id: string
+          initiative_id: string
+          recruitment_suggestions: Json | null
+          skill_shortages: string[] | null
+          trust_verified_contributors: string[] | null
+          underutilized_professionals: string[] | null
+        }
+        Insert: {
+          computed_at?: string
+          cross_domain_candidates?: string[] | null
+          geographic_talent_pools?: Json | null
+          high_liquidity_talent?: string[] | null
+          id?: string
+          initiative_id: string
+          recruitment_suggestions?: Json | null
+          skill_shortages?: string[] | null
+          trust_verified_contributors?: string[] | null
+          underutilized_professionals?: string[] | null
+        }
+        Update: {
+          computed_at?: string
+          cross_domain_candidates?: string[] | null
+          geographic_talent_pools?: Json | null
+          high_liquidity_talent?: string[] | null
+          id?: string
+          initiative_id?: string
+          recruitment_suggestions?: Json | null
+          skill_shortages?: string[] | null
+          trust_verified_contributors?: string[] | null
+          underutilized_professionals?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "initiative_skill_mobilization_initiative_id_fkey"
+            columns: ["initiative_id"]
+            isOneToOne: false
+            referencedRelation: "global_initiatives"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      initiative_startup_tracking: {
+        Row: {
+          commercialization_stage: string | null
+          exit_events: Json | null
+          id: string
+          industry_pilot_status: string | null
+          initiative_id: string
+          patents_converted: number | null
+          revenue_milestones: Json | null
+          startup_id: string | null
+          startup_name: string | null
+          tracked_at: string
+          venture_funding: number | null
+        }
+        Insert: {
+          commercialization_stage?: string | null
+          exit_events?: Json | null
+          id?: string
+          industry_pilot_status?: string | null
+          initiative_id: string
+          patents_converted?: number | null
+          revenue_milestones?: Json | null
+          startup_id?: string | null
+          startup_name?: string | null
+          tracked_at?: string
+          venture_funding?: number | null
+        }
+        Update: {
+          commercialization_stage?: string | null
+          exit_events?: Json | null
+          id?: string
+          industry_pilot_status?: string | null
+          initiative_id?: string
+          patents_converted?: number | null
+          revenue_milestones?: Json | null
+          startup_id?: string | null
+          startup_name?: string | null
+          tracked_at?: string
+          venture_funding?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "initiative_startup_tracking_initiative_id_fkey"
+            columns: ["initiative_id"]
+            isOneToOne: false
+            referencedRelation: "global_initiatives"
             referencedColumns: ["id"]
           },
         ]
