@@ -1,6 +1,7 @@
  import { MainLayout } from "@/components/layout/MainLayout";
  import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+ import { InfrastructureStabilityReport } from "@/components/admin/InfrastructureStabilityReport";
  import { Badge } from "@/components/ui/badge";
  import { Progress } from "@/components/ui/progress";
  import { Button } from "@/components/ui/button";
@@ -119,11 +120,16 @@
  
        <div className="container px-4 py-6 sm:py-8">
          <Tabs defaultValue="overview" className="space-y-6">
-           <TabsList>
-             <TabsTrigger value="overview">System Overview</TabsTrigger>
-             <TabsTrigger value="health">Health Monitor</TabsTrigger>
-             <TabsTrigger value="events">Event Stream</TabsTrigger>
-           </TabsList>
+            <TabsList>
+              <TabsTrigger value="stability">Stability Audit</TabsTrigger>
+              <TabsTrigger value="overview">System Overview</TabsTrigger>
+              <TabsTrigger value="health">Health Monitor</TabsTrigger>
+              <TabsTrigger value="events">Event Stream</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="stability">
+              <InfrastructureStabilityReport />
+            </TabsContent>
  
            <TabsContent value="overview" className="space-y-6">
              {/* System Grid */}
