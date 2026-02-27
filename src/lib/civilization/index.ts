@@ -13,6 +13,8 @@ export { simulateAdversarialAttack } from "./adversarialSimulator";
 export { getLatestRegulatoryProfile, createRegulatoryVersion, simulateSanctionZoneImpact } from "./adaptiveRegulation";
 export { calculateCivilizationalHealth } from "./civilizationalHealthIndex";
 export { generateStabilityTransparencyReport } from "./stabilityTransparency";
+export { determineGovernancePhase, calculateCivilizationMaturity, checkTechEvolutionGate, checkFinancialStabilityGate, GOVERNANCE_PHASES, CONSTITUTIONAL_PRINCIPLES, FIFTY_YEAR_SUCCESS_INDICATORS } from "./fiftyYearGovernance";
+export { generateAnnualTransparencyReport } from "./publicAccountability";
 
 export type { ConstitutionalPrinciple, InvariantCategory } from "./constitutionalLayer";
 export type { ResilienceScenario, ResilienceResult } from "./economicResilience";
@@ -25,3 +27,5 @@ export type { AttackScenario, AdversarialResult } from "./adversarialSimulator";
 export type { RegulatoryProfile } from "./adaptiveRegulation";
 export type { CivilizationalHealthScore } from "./civilizationalHealthIndex";
 export type { StabilityTransparencyReport } from "./stabilityTransparency";
+export type { GovernancePhase, GovernancePhaseDefinition, CivilizationMaturityScore, CivilizationSuccessIndicator } from "./fiftyYearGovernance";
+export type { AnnualTransparencyReport } from "./publicAccountability";
