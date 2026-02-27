@@ -26419,6 +26419,39 @@ export type Database = {
         }
         Relationships: []
       }
+      institutional_video_channels: {
+        Row: {
+          channel_name: string
+          channel_type: string
+          created_at: string
+          description: string | null
+          id: string
+          institution_id: string
+          is_verified: boolean | null
+          video_count: number | null
+        }
+        Insert: {
+          channel_name: string
+          channel_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_id: string
+          is_verified?: boolean | null
+          video_count?: number | null
+        }
+        Update: {
+          channel_name?: string
+          channel_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_id?: string
+          is_verified?: boolean | null
+          video_count?: number | null
+        }
+        Relationships: []
+      }
       integration_mappings: {
         Row: {
           created_at: string
@@ -30383,6 +30416,78 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      micro_execution_videos: {
+        Row: {
+          collaboration_opportunity: boolean | null
+          created_at: string
+          creator_id: string
+          depth_tier: string
+          description: string | null
+          difficulty_level: string | null
+          domain_tags: string[] | null
+          duration_seconds: number
+          execution_phase: string | null
+          funding_relevance: boolean | null
+          id: string
+          innovation_category: string | null
+          linked_entity_id: string | null
+          linked_entity_type: string | null
+          project_link: string | null
+          related_doc_link: string | null
+          skill_tags: string[] | null
+          status: string
+          thumbnail_url: string | null
+          title: string
+          video_url: string | null
+        }
+        Insert: {
+          collaboration_opportunity?: boolean | null
+          created_at?: string
+          creator_id: string
+          depth_tier?: string
+          description?: string | null
+          difficulty_level?: string | null
+          domain_tags?: string[] | null
+          duration_seconds: number
+          execution_phase?: string | null
+          funding_relevance?: boolean | null
+          id?: string
+          innovation_category?: string | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          project_link?: string | null
+          related_doc_link?: string | null
+          skill_tags?: string[] | null
+          status?: string
+          thumbnail_url?: string | null
+          title: string
+          video_url?: string | null
+        }
+        Update: {
+          collaboration_opportunity?: boolean | null
+          created_at?: string
+          creator_id?: string
+          depth_tier?: string
+          description?: string | null
+          difficulty_level?: string | null
+          domain_tags?: string[] | null
+          duration_seconds?: number
+          execution_phase?: string | null
+          funding_relevance?: boolean | null
+          id?: string
+          innovation_category?: string | null
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          project_link?: string | null
+          related_doc_link?: string | null
+          skill_tags?: string[] | null
+          status?: string
+          thumbnail_url?: string | null
+          title?: string
+          video_url?: string | null
+        }
+        Relationships: []
       }
       milestones: {
         Row: {
@@ -51451,6 +51556,228 @@ export type Database = {
           total_shares?: number
           vesting_duration?: number
           vesting_interval?: string | null
+        }
+        Relationships: []
+      }
+      video_learning_playlists: {
+        Row: {
+          created_at: string
+          creator_id: string
+          description: string | null
+          difficulty_progression: string[] | null
+          id: string
+          is_public: boolean | null
+          milestone_suggestions: Json | null
+          practice_assignments: Json | null
+          skill_path: string | null
+          title: string
+          video_ids: string[] | null
+        }
+        Insert: {
+          created_at?: string
+          creator_id: string
+          description?: string | null
+          difficulty_progression?: string[] | null
+          id?: string
+          is_public?: boolean | null
+          milestone_suggestions?: Json | null
+          practice_assignments?: Json | null
+          skill_path?: string | null
+          title: string
+          video_ids?: string[] | null
+        }
+        Update: {
+          created_at?: string
+          creator_id?: string
+          description?: string | null
+          difficulty_progression?: string[] | null
+          id?: string
+          is_public?: boolean | null
+          milestone_suggestions?: Json | null
+          practice_assignments?: Json | null
+          skill_path?: string | null
+          title?: string
+          video_ids?: string[] | null
+        }
+        Relationships: []
+      }
+      video_quality_index: {
+        Row: {
+          clarity_score: number | null
+          collaboration_signal: number | null
+          composite_quality: number | null
+          computed_at: string
+          id: string
+          innovation_signal: number | null
+          long_term_relevance: number | null
+          skill_articulation: number | null
+          technical_depth: number | null
+          video_id: string
+        }
+        Insert: {
+          clarity_score?: number | null
+          collaboration_signal?: number | null
+          composite_quality?: number | null
+          computed_at?: string
+          id?: string
+          innovation_signal?: number | null
+          long_term_relevance?: number | null
+          skill_articulation?: number | null
+          technical_depth?: number | null
+          video_id: string
+        }
+        Update: {
+          clarity_score?: number | null
+          collaboration_signal?: number | null
+          composite_quality?: number | null
+          computed_at?: string
+          id?: string
+          innovation_signal?: number | null
+          long_term_relevance?: number | null
+          skill_articulation?: number | null
+          technical_depth?: number | null
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_quality_index_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "micro_execution_videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_structured_comments: {
+        Row: {
+          comment_type: string
+          content: string
+          created_at: string
+          id: string
+          is_collaboration_offer: boolean | null
+          parent_comment_id: string | null
+          user_id: string
+          video_id: string
+        }
+        Insert: {
+          comment_type?: string
+          content: string
+          created_at?: string
+          id?: string
+          is_collaboration_offer?: boolean | null
+          parent_comment_id?: string | null
+          user_id: string
+          video_id: string
+        }
+        Update: {
+          comment_type?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_collaboration_offer?: boolean | null
+          parent_comment_id?: string | null
+          user_id?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_structured_comments_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "micro_execution_videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_value_rankings: {
+        Row: {
+          collaboration_potential: number | null
+          composite_rank: number | null
+          computed_at: string
+          domain_relevance: number | null
+          execution_originality: number | null
+          funding_alignment: number | null
+          id: string
+          innovation_depth: number | null
+          long_term_usefulness: number | null
+          peer_validation: number | null
+          replication_reference: number | null
+          skill_demonstration: number | null
+          video_id: string
+        }
+        Insert: {
+          collaboration_potential?: number | null
+          composite_rank?: number | null
+          computed_at?: string
+          domain_relevance?: number | null
+          execution_originality?: number | null
+          funding_alignment?: number | null
+          id?: string
+          innovation_depth?: number | null
+          long_term_usefulness?: number | null
+          peer_validation?: number | null
+          replication_reference?: number | null
+          skill_demonstration?: number | null
+          video_id: string
+        }
+        Update: {
+          collaboration_potential?: number | null
+          composite_rank?: number | null
+          computed_at?: string
+          domain_relevance?: number | null
+          execution_originality?: number | null
+          funding_alignment?: number | null
+          id?: string
+          innovation_depth?: number | null
+          long_term_usefulness?: number | null
+          peer_validation?: number | null
+          replication_reference?: number | null
+          skill_demonstration?: number | null
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_value_rankings_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "micro_execution_videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_viewing_sessions: {
+        Row: {
+          ended_at: string | null
+          id: string
+          reflection_category: string | null
+          reflection_response: string | null
+          session_size: number | null
+          started_at: string
+          time_spent_seconds: number | null
+          user_id: string
+          videos_watched: number | null
+        }
+        Insert: {
+          ended_at?: string | null
+          id?: string
+          reflection_category?: string | null
+          reflection_response?: string | null
+          session_size?: number | null
+          started_at?: string
+          time_spent_seconds?: number | null
+          user_id: string
+          videos_watched?: number | null
+        }
+        Update: {
+          ended_at?: string | null
+          id?: string
+          reflection_category?: string | null
+          reflection_response?: string | null
+          session_size?: number | null
+          started_at?: string
+          time_spent_seconds?: number | null
+          user_id?: string
+          videos_watched?: number | null
         }
         Relationships: []
       }
