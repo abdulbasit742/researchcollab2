@@ -26269,6 +26269,103 @@ export type Database = {
           },
         ]
       }
+      governance_actions: {
+        Row: {
+          action_type: string
+          created_at: string | null
+          executed_by: string
+          governance_event_id: string
+          id: string
+          is_reversible: boolean | null
+          justification: string
+          parameters: Json | null
+          reversed_at: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string | null
+          executed_by?: string
+          governance_event_id: string
+          id?: string
+          is_reversible?: boolean | null
+          justification: string
+          parameters?: Json | null
+          reversed_at?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string | null
+          executed_by?: string
+          governance_event_id?: string
+          id?: string
+          is_reversible?: boolean | null
+          justification?: string
+          parameters?: Json | null
+          reversed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_actions_governance_event_id_fkey"
+            columns: ["governance_event_id"]
+            isOneToOne: false
+            referencedRelation: "governance_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      governance_appeals: {
+        Row: {
+          appeal_reason: string
+          appellant_id: string
+          created_at: string | null
+          evidence_submitted: Json | null
+          governance_event_id: string
+          id: string
+          institution_verification: string | null
+          peer_endorsements: string[] | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          reviewed_by: string | null
+          status: string
+        }
+        Insert: {
+          appeal_reason: string
+          appellant_id: string
+          created_at?: string | null
+          evidence_submitted?: Json | null
+          governance_event_id: string
+          id?: string
+          institution_verification?: string | null
+          peer_endorsements?: string[] | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+        }
+        Update: {
+          appeal_reason?: string
+          appellant_id?: string
+          created_at?: string | null
+          evidence_submitted?: Json | null
+          governance_event_id?: string
+          id?: string
+          institution_verification?: string | null
+          peer_endorsements?: string[] | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_appeals_governance_event_id_fkey"
+            columns: ["governance_event_id"]
+            isOneToOne: false
+            referencedRelation: "governance_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       governance_assignments: {
         Row: {
           assigned_at: string
@@ -26612,6 +26709,57 @@ export type Database = {
           risk_profile?: number
           start_year?: number
           trust_shift?: number
+        }
+        Relationships: []
+      }
+      governance_events: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          detection_source: string
+          detection_trace: Json | null
+          event_type: string
+          evidence: Json | null
+          id: string
+          node_id: string | null
+          related_entity_id: string
+          related_entity_type: string
+          resolved_at: string | null
+          resolved_by: string | null
+          severity_level: string
+          status: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          detection_source?: string
+          detection_trace?: Json | null
+          event_type: string
+          evidence?: Json | null
+          id?: string
+          node_id?: string | null
+          related_entity_id: string
+          related_entity_type: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity_level?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          detection_source?: string
+          detection_trace?: Json | null
+          event_type?: string
+          evidence?: Json | null
+          id?: string
+          node_id?: string | null
+          related_entity_id?: string
+          related_entity_type?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity_level?: string
+          status?: string
         }
         Relationships: []
       }

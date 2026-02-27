@@ -2207,6 +2207,127 @@ Return ONLY valid JSON:
       return jsonResponse({ success: true, entity_id: entity.id, ...metricsPayload });
     }
 
+    // ============================================================
+    // ACTION: governance_scan — Autonomous integrity scanning
+    // ============================================================
+    if (action === "governance_scan") {
+      const { scan_type = "full", entity_type, entity_id } = body;
+
+      const aiResult = await callAI([{
+        role: "system",
+        content: `You are a Research Governance Integrity Scanner. Analyze the given entity for potential governance violations.
+Scan for: trust anomalies, citation inflation, funding misuse, collusion, bias patterns, AI misuse, policy manipulation, systemic risk.
+Return ONLY valid JSON:
+{
+  "events": [
+    {
+      "event_type": "trust_anomaly|citation_inflation|funding_misuse|collusion|bias_pattern|ai_misuse|policy_manipulation|systemic_risk",
+      "severity_level": "low|medium|high|critical",
+      "description": "...",
+      "evidence": {"indicator": "...", "confidence": 0.0-1.0},
+      "recommended_action": "warning|trust_adjustment|funding_freeze|review_required|temporary_suspension|monitoring_increase",
+      "justification": "..."
+    }
+  ],
+  "overall_integrity_score": 0-100,
+  "risk_summary": "..."
+}`
+      }, {
+        role: "user",
+        content: `Scan entity: ${entity_type || "system"} / ${entity_id || "global"}. Scan type: ${scan_type}. Generate realistic governance findings.`
+      }]);
+
+      let result: any = { events: [], overall_integrity_score: 85, risk_summary: "No issues detected" };
+      try {
+        const cleaned = (aiResult.text || "").replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+        result = JSON.parse(cleaned);
+      } catch { /* use defaults */ }
+
+      // Persist governance events and actions
+      for (const evt of (result.events || [])) {
+        const { data: ge } = await supabase.from("governance_events").insert({
+          event_type: evt.event_type,
+          related_entity_type: entity_type || "system",
+          related_entity_id: entity_id || "global",
+          severity_level: evt.severity_level,
+          detection_source: "automated",
+          description: evt.description,
+          evidence: evt.evidence,
+          detection_trace: { scan_type, model: "gemini-3-flash-preview" },
+        }).select("id").single();
+
+        if (ge && evt.recommended_action) {
+          await supabase.from("governance_actions").insert({
+            governance_event_id: ge.id,
+            action_type: evt.recommended_action,
+            executed_by: "ai_system",
+            justification: evt.justification || evt.description,
+          });
+        }
+      }
+
+      return jsonResponse({
+        success: true,
+        events_created: result.events?.length || 0,
+        overall_integrity_score: result.overall_integrity_score,
+        risk_summary: result.risk_summary,
+      });
+    }
+
+    // ============================================================
+    // ACTION: submit_appeal — Due process appeal submission
+    // ============================================================
+    if (action === "submit_appeal") {
+      const { governance_event_id, appeal_reason, evidence_submitted } = body;
+
+      const { data: evt } = await supabase.from("governance_events")
+        .select("*").eq("id", governance_event_id).single();
+      if (!evt) return jsonResponse({ error: "Governance event not found" }, 404);
+
+      const { data: appeal, error } = await supabase.from("governance_appeals").insert({
+        governance_event_id,
+        appellant_id: user.id,
+        appeal_reason,
+        evidence_submitted: evidence_submitted || {},
+        status: "pending",
+      }).select().single();
+
+      if (error) return jsonResponse({ error: error.message }, 400);
+
+      // Update event status
+      await supabase.from("governance_events")
+        .update({ status: "under_review" }).eq("id", governance_event_id);
+
+      return jsonResponse({ success: true, appeal_id: appeal.id });
+    }
+
+    // ============================================================
+    // ACTION: resolve_appeal — Review and resolve an appeal
+    // ============================================================
+    if (action === "resolve_appeal") {
+      const { appeal_id, decision, resolution_notes } = body;
+
+      const { error } = await supabase.from("governance_appeals").update({
+        status: decision, // upheld, overturned, partially_overturned
+        reviewed_by: user.id,
+        resolution_notes,
+        resolved_at: new Date().toISOString(),
+      }).eq("id", appeal_id);
+
+      if (error) return jsonResponse({ error: error.message }, 400);
+
+      // If overturned, dismiss the event
+      const { data: appeal } = await supabase.from("governance_appeals")
+        .select("governance_event_id").eq("id", appeal_id).single();
+      if (appeal && (decision === "overturned")) {
+        await supabase.from("governance_events").update({
+          status: "dismissed", resolved_at: new Date().toISOString(), resolved_by: user.id,
+        }).eq("id", appeal.governance_event_id);
+      }
+
+      return jsonResponse({ success: true });
+    }
+
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
