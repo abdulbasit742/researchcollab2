@@ -19,6 +19,7 @@ import { ResearchTimelinePanel } from "@/components/research/ResearchTimelinePan
 import { FundingPlanPanel } from "@/components/research/FundingPlanPanel";
 import { PeerReviewPanel } from "@/components/research/PeerReviewPanel";
 import { KnowledgeGraphPanel } from "@/components/research/KnowledgeGraphPanel";
+import { CARCResponsePanel } from "@/components/research/CARCResponsePanel";
 import {
   BookOpen, Upload, Search, FileText, MessageSquare,
   Loader2, CheckCircle, AlertCircle, ChevronRight,
@@ -399,6 +400,17 @@ export default function ResearchWorkspacePage() {
           )}
         </div>
       </div>
+
+      {/* Constraint-Aware Research Copilot */}
+      {workspaceId && (
+        <div className="mt-6">
+          <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-primary" />
+            Constraint-Aware Research Copilot
+          </h2>
+          <CARCResponsePanel workspaceId={workspaceId} />
+        </div>
+      )}
 
       {/* Cross-Document Synthesis Panel */}
       {workspaceId && (

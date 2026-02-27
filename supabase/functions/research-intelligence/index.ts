@@ -95,7 +95,173 @@ serve(async (req) => {
     }
 
     // ============================================================
-    // ACTION: query — Source-grounded AI query
+    // ACTION: carc_query — Constraint-Aware Research Copilot query
+    // ============================================================
+    if (action === "carc_query") {
+      const { workspace_id, query_text, compliance_mode = false, multi_hypothesis = false } = body;
+
+      const { data: queryRec, error: qErr } = await supabase
+        .from("research_queries")
+        .insert({ workspace_id, user_id: user.id, query_text, status: "processing" })
+        .select().single();
+      if (qErr) throw qErr;
+
+      const { data: docs } = await supabase
+        .from("research_documents")
+        .select("id, file_name, document_chunks, extracted_text")
+        .eq("workspace_id", workspace_id)
+        .eq("processing_status", "completed")
+        .eq("is_latest_version", true);
+
+      if (!docs || docs.length === 0) {
+        await supabase.from("research_queries").update({ status: "failed" }).eq("id", queryRec.id);
+        return jsonResponse({ error: "No processed documents in workspace" }, 400);
+      }
+
+      const topChunks = rankChunks(docs, query_text, 12);
+      const chunkIds = topChunks.map(c => c.chunk.chunk_id);
+
+      const sourceContext = topChunks.map((c, i) =>
+        `[Source ${i + 1} — ${c.doc_name}, Chunk ${c.chunk.section_index}]\n${c.chunk.text}`
+      ).join("\n\n---\n\n");
+
+      // Build CARC system prompt
+      let systemPrompt = `You are a Constraint-Aware Research Copilot. You MUST:
+1. ONLY use information from the provided source chunks. Never inject external knowledge.
+2. Clearly separate your response into these exact JSON sections.
+3. Express uncertainty numerically (0.0-1.0).
+4. If data is insufficient, say so explicitly.
+
+Return a valid JSON object with this structure:
+{
+  "evidence": [{"statement": "...", "source_index": N, "strength": "empirically_strong|moderately_supported|preliminary|speculative|contested|unverified"}],
+  "inferences": [{"statement": "...", "based_on_sources": [N], "confidence": 0.0-1.0, "reasoning": "..."}],
+  "assumptions": [{"statement": "...", "justification": "..."}],
+  "unknowns": [{"statement": "...", "what_would_help": "..."}],
+  "confidence_score": 0.0-1.0,
+  "data_completeness": 0.0-1.0,
+  "evidence_density": 0.0-1.0,
+  "contradiction_risk": 0.0-1.0,
+  "risk_level": "low|moderate|high|exploratory",
+  "summary": "...",
+  "fallacy_flags": [{"type": "...", "description": "...", "affected_claim": "..."}],
+  "counter_arguments": [{"position": "...", "supporting_evidence": "...", "strength": 0.0-1.0}]`;
+
+      if (multi_hypothesis) {
+        systemPrompt += `,
+  "hypotheses": [{"label": "Hypothesis A/B/C", "statement": "...", "supporting_evidence": [N], "contradicting_evidence": [N], "assumptions": ["..."], "confidence": 0.0-1.0}]`;
+      }
+
+      if (compliance_mode) {
+        systemPrompt += `,
+  "compliance_flags": [{"type": "regulatory|export_control|ethics|privacy|funding|conflict_of_interest", "description": "...", "severity": "low|medium|high"}]`;
+      }
+
+      systemPrompt += `
+}
+Return ONLY valid JSON. No markdown, no explanation outside the JSON.`;
+
+      const aiResult = await callAI([
+        { role: "system", content: systemPrompt },
+        { role: "user", content: `SOURCES:\n\n${sourceContext}\n\n---\n\nQUESTION: ${query_text}` }
+      ]);
+
+      if (aiResult.error) {
+        await supabase.from("research_queries").update({ status: "failed" }).eq("id", queryRec.id);
+        return jsonResponse({ error: aiResult.error }, aiResult.status || 500);
+      }
+
+      let parsed: any;
+      try {
+        const cleaned = aiResult.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        parsed = JSON.parse(cleaned);
+      } catch {
+        // Fallback: return raw with warning
+        parsed = {
+          summary: aiResult.text,
+          evidence: [],
+          inferences: [],
+          assumptions: [],
+          unknowns: [],
+          confidence_score: 0.3,
+          data_completeness: 0.5,
+          evidence_density: 0.5,
+          contradiction_risk: 0.5,
+          risk_level: "moderate",
+          fallacy_flags: [],
+          counter_arguments: [],
+          _parse_warning: "AI response could not be structured. Raw text returned in summary.",
+        };
+      }
+
+      // Hallucination check: verify source references exist
+      const maxSourceIndex = topChunks.length;
+      let hallucinationPassed = true;
+      for (const ev of (parsed.evidence || [])) {
+        if (ev.source_index && (ev.source_index < 1 || ev.source_index > maxSourceIndex)) {
+          hallucinationPassed = false;
+          break;
+        }
+      }
+
+      const citationMap = topChunks.map((c, i) => ({
+        source_index: i + 1,
+        document_id: c.doc_id,
+        document_name: c.doc_name,
+        chunk_id: c.chunk.chunk_id,
+        section_index: c.chunk.section_index,
+        text_preview: c.chunk.text.substring(0, 200),
+        relevance_score: c.score,
+      }));
+
+      // Store reasoning log
+      await supabase.from("ai_reasoning_logs").insert({
+        query_id: queryRec.id,
+        workspace_id,
+        user_id: user.id,
+        retrieved_chunk_ids: chunkIds,
+        reasoning_steps: parsed.inferences || [],
+        evidence_points: parsed.evidence || [],
+        inference_points: parsed.inferences || [],
+        assumption_points: parsed.assumptions || [],
+        unknown_points: parsed.unknowns || [],
+        hypotheses: parsed.hypotheses || [],
+        counter_arguments: parsed.counter_arguments || [],
+        fallacy_flags: parsed.fallacy_flags || [],
+        compliance_flags: parsed.compliance_flags || [],
+        uncertainty_score: 1 - (parsed.confidence_score || 0.5),
+        data_completeness: parsed.data_completeness || 0,
+        evidence_density: parsed.evidence_density || 0,
+        contradiction_risk: parsed.contradiction_risk || 0,
+        risk_level: parsed.risk_level || "moderate",
+        hallucination_check_passed: hallucinationPassed,
+        model_used: "google/gemini-3-flash-preview",
+        token_count: aiResult.tokens || 0,
+      });
+
+      // Also save standard response
+      await supabase.from("research_responses").insert({
+        query_id: queryRec.id,
+        ai_response: parsed.summary || aiResult.text,
+        citation_map: citationMap,
+        confidence_score: parsed.confidence_score || 0.5,
+        model_used: "google/gemini-3-flash-preview",
+        token_count: aiResult.tokens || 0,
+      });
+
+      await supabase.from("research_queries").update({ status: "completed" }).eq("id", queryRec.id);
+
+      return jsonResponse({
+        query_id: queryRec.id,
+        ...parsed,
+        citation_map: citationMap,
+        hallucination_check_passed: hallucinationPassed,
+        chunk_count: topChunks.length,
+      });
+    }
+
+    // ============================================================
+    // ACTION: query — Source-grounded AI query (legacy)
     // ============================================================
     if (action === "query") {
       const { workspace_id, query_text } = body;

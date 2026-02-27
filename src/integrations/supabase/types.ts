@@ -3157,6 +3157,87 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_reasoning_logs: {
+        Row: {
+          assumption_points: Json | null
+          compliance_flags: Json | null
+          consensus_stability: number | null
+          contradiction_risk: number | null
+          counter_arguments: Json | null
+          created_at: string | null
+          data_completeness: number | null
+          evidence_density: number | null
+          evidence_points: Json | null
+          fallacy_flags: Json | null
+          hallucination_check_passed: boolean | null
+          hypotheses: Json | null
+          id: string
+          inference_points: Json | null
+          model_used: string | null
+          query_id: string | null
+          reasoning_steps: Json | null
+          retrieved_chunk_ids: string[] | null
+          risk_level: string | null
+          token_count: number | null
+          uncertainty_score: number | null
+          unknown_points: Json | null
+          user_id: string | null
+          workspace_id: string | null
+        }
+        Insert: {
+          assumption_points?: Json | null
+          compliance_flags?: Json | null
+          consensus_stability?: number | null
+          contradiction_risk?: number | null
+          counter_arguments?: Json | null
+          created_at?: string | null
+          data_completeness?: number | null
+          evidence_density?: number | null
+          evidence_points?: Json | null
+          fallacy_flags?: Json | null
+          hallucination_check_passed?: boolean | null
+          hypotheses?: Json | null
+          id?: string
+          inference_points?: Json | null
+          model_used?: string | null
+          query_id?: string | null
+          reasoning_steps?: Json | null
+          retrieved_chunk_ids?: string[] | null
+          risk_level?: string | null
+          token_count?: number | null
+          uncertainty_score?: number | null
+          unknown_points?: Json | null
+          user_id?: string | null
+          workspace_id?: string | null
+        }
+        Update: {
+          assumption_points?: Json | null
+          compliance_flags?: Json | null
+          consensus_stability?: number | null
+          contradiction_risk?: number | null
+          counter_arguments?: Json | null
+          created_at?: string | null
+          data_completeness?: number | null
+          evidence_density?: number | null
+          evidence_points?: Json | null
+          fallacy_flags?: Json | null
+          hallucination_check_passed?: boolean | null
+          hypotheses?: Json | null
+          id?: string
+          inference_points?: Json | null
+          model_used?: string | null
+          query_id?: string | null
+          reasoning_steps?: Json | null
+          retrieved_chunk_ids?: string[] | null
+          risk_level?: string | null
+          token_count?: number | null
+          uncertainty_score?: number | null
+          unknown_points?: Json | null
+          user_id?: string | null
+          workspace_id?: string | null
+        }
+        Relationships: []
+      }
       ai_team_formation_suggestions: {
         Row: {
           commercialization_potential: number | null
