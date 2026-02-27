@@ -2328,6 +2328,145 @@ Return ONLY valid JSON:
       return jsonResponse({ success: true });
     }
 
+    // ============================================================
+    // ACTION: civilization_compute — Compute civilization cycle metrics
+    // ============================================================
+    if (action === "civilization_compute") {
+      // Get latest cycle version
+      const { data: lastCycle } = await supabase.from("civilization_cycles")
+        .select("cycle_version").order("cycle_version", { ascending: false }).limit(1).maybeSingle();
+      const nextVersion = (lastCycle?.cycle_version || 0) + 1;
+
+      const aiResult = await callAI([{
+        role: "system",
+        content: `You are computing a Civilization Cycle for a research economy infrastructure. This system unifies knowledge, trust, capital, execution, policy, and governance into self-reinforcing loops.
+
+Compute scores (0-100) for each dimension and provide optimization suggestions.
+Return ONLY valid JSON:
+{
+  "knowledge_growth_index": N,
+  "trust_growth_index": N,
+  "capital_efficiency_index": N,
+  "policy_impact_index": N,
+  "governance_stability_index": N,
+  "feedback_loops": {
+    "knowledge_to_trust": {"strength": N, "bottleneck": "..."},
+    "trust_to_capital": {"strength": N, "bottleneck": "..."},
+    "capital_to_execution": {"strength": N, "bottleneck": "..."},
+    "execution_to_policy": {"strength": N, "bottleneck": "..."},
+    "policy_to_knowledge": {"strength": N, "bottleneck": "..."}
+  },
+  "optimization_suggestions": [
+    {"category": "...", "suggestion": "...", "expected_impact": N, "urgency": "low|medium|high"}
+  ],
+  "risk_summary": "..."
+}`
+      }, {
+        role: "user",
+        content: `Compute civilization cycle v${nextVersion}. Analyze the health of knowledge→trust→capital→execution→policy feedback loops.`
+      }]);
+
+      let scores: any = {};
+      try {
+        const cleaned = (aiResult.text || "").replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+        scores = JSON.parse(cleaned);
+      } catch {
+        scores = {
+          knowledge_growth_index: 55, trust_growth_index: 60,
+          capital_efficiency_index: 50, policy_impact_index: 35,
+          governance_stability_index: 70,
+          feedback_loops: {}, optimization_suggestions: [],
+          risk_summary: "Default computation"
+        };
+      }
+
+      const composite = (
+        (scores.knowledge_growth_index || 0) * 0.22 +
+        (scores.trust_growth_index || 0) * 0.22 +
+        (scores.capital_efficiency_index || 0) * 0.20 +
+        (scores.policy_impact_index || 0) * 0.18 +
+        (scores.governance_stability_index || 0) * 0.18
+      );
+
+      const { data: cycle } = await supabase.from("civilization_cycles").insert({
+        cycle_version: nextVersion,
+        knowledge_growth_index: scores.knowledge_growth_index,
+        trust_growth_index: scores.trust_growth_index,
+        capital_efficiency_index: scores.capital_efficiency_index,
+        policy_impact_index: scores.policy_impact_index,
+        governance_stability_index: scores.governance_stability_index,
+        composite_civilization_score: Math.round(composite * 100) / 100,
+        feedback_loops: scores.feedback_loops,
+        optimization_suggestions: scores.optimization_suggestions,
+        cycle_metadata: { risk_summary: scores.risk_summary },
+      }).select().single();
+
+      // Create loop events for each feedback loop
+      if (cycle && scores.feedback_loops) {
+        const loopTypes = ["knowledge_to_trust", "trust_to_capital", "capital_to_execution", "execution_to_policy", "policy_to_knowledge"];
+        for (const lt of loopTypes) {
+          const loop = scores.feedback_loops[lt];
+          if (loop) {
+            await supabase.from("civilization_loop_events").insert({
+              cycle_id: cycle.id, loop_type: lt,
+              impact_delta: loop.strength || 0,
+              description: loop.bottleneck || "No bottleneck detected",
+              evidence: loop,
+            });
+          }
+        }
+      }
+
+      return jsonResponse({ success: true, cycle_version: nextVersion, composite_score: Math.round(composite * 100) / 100, ...scores });
+    }
+
+    // ============================================================
+    // ACTION: civilization_shock — Simulate ecosystem shock
+    // ============================================================
+    if (action === "civilization_shock") {
+      const { shock_type, magnitude = 0.5 } = body;
+
+      const { data: lastCycle } = await supabase.from("civilization_cycles")
+        .select("*").order("cycle_version", { ascending: false }).limit(1).maybeSingle();
+
+      const preScore = lastCycle?.composite_civilization_score || 50;
+
+      const aiResult = await callAI([{
+        role: "system",
+        content: `Simulate a "${shock_type}" shock (magnitude ${magnitude}) on a research civilization with pre-shock score ${preScore}.
+Return ONLY valid JSON:
+{
+  "post_shock_score": N,
+  "resilience_index": N,
+  "capital_loss_projection": N,
+  "impact_loss_projection": N,
+  "recovery_timeline_days": N,
+  "corrective_measures": [{"action": "...", "priority": "high|medium|low", "expected_recovery": N}]
+}`
+      }, { role: "user", content: `Shock: ${shock_type}, magnitude: ${magnitude}` }]);
+
+      let result: any = {};
+      try {
+        const cleaned = (aiResult.text || "").replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+        result = JSON.parse(cleaned);
+      } catch {
+        result = { post_shock_score: preScore * (1 - magnitude * 0.3), resilience_index: 60, capital_loss_projection: magnitude * 20, impact_loss_projection: magnitude * 15, recovery_timeline_days: 90, corrective_measures: [] };
+      }
+
+      await supabase.from("civilization_shock_simulations").insert({
+        cycle_id: lastCycle?.id, shock_type, shock_magnitude: magnitude,
+        pre_shock_score: preScore,
+        post_shock_score: result.post_shock_score,
+        resilience_index: result.resilience_index,
+        capital_loss_projection: result.capital_loss_projection,
+        impact_loss_projection: result.impact_loss_projection,
+        recovery_timeline_days: result.recovery_timeline_days,
+        corrective_measures: result.corrective_measures,
+      });
+
+      return jsonResponse({ success: true, ...result, pre_shock_score: preScore });
+    }
+
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
