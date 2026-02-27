@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { ClaimGraphPanel } from "@/components/research/ClaimGraphPanel";
+import { ResearchTimelinePanel } from "@/components/research/ResearchTimelinePanel";
 import {
   BookOpen, Upload, Search, FileText, MessageSquare,
   Loader2, CheckCircle, AlertCircle, ChevronRight,
@@ -404,6 +405,17 @@ export default function ResearchWorkspacePage() {
             Cross-Document Synthesis Engine
           </h2>
           <ClaimGraphPanel workspaceId={workspaceId} />
+        </div>
+      )}
+
+      {/* Longitudinal Research Memory */}
+      {workspaceId && (
+        <div className="mt-6">
+          <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-primary" />
+            Research Memory & Evolution
+          </h2>
+          <ResearchTimelinePanel workspaceId={workspaceId} />
         </div>
       )}
     </div>

@@ -6730,6 +6730,57 @@ export type Database = {
         }
         Relationships: []
       }
+      claim_mutation_log: {
+        Row: {
+          claim_id: string
+          created_at: string
+          id: string
+          mutated_by: string | null
+          mutation_type: string
+          new_values: Json | null
+          old_values: Json | null
+          reason: string | null
+          workspace_id: string
+        }
+        Insert: {
+          claim_id: string
+          created_at?: string
+          id?: string
+          mutated_by?: string | null
+          mutation_type: string
+          new_values?: Json | null
+          old_values?: Json | null
+          reason?: string | null
+          workspace_id: string
+        }
+        Update: {
+          claim_id?: string
+          created_at?: string
+          id?: string
+          mutated_by?: string | null
+          mutation_type?: string
+          new_values?: Json | null
+          old_values?: Json | null
+          reason?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claim_mutation_log_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "research_claims"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "claim_mutation_log_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       claim_relationships: {
         Row: {
           ai_reasoning: string | null
@@ -49345,7 +49396,13 @@ export type Database = {
           created_at: string
           document_id: string
           evidence_strength: number | null
+          first_detected_at: string | null
           id: string
+          last_updated_at: string | null
+          revision_parent_id: string | null
+          revision_reason: string | null
+          status: string | null
+          version_introduced: number | null
           workspace_id: string
         }
         Insert: {
@@ -49356,7 +49413,13 @@ export type Database = {
           created_at?: string
           document_id: string
           evidence_strength?: number | null
+          first_detected_at?: string | null
           id?: string
+          last_updated_at?: string | null
+          revision_parent_id?: string | null
+          revision_reason?: string | null
+          status?: string | null
+          version_introduced?: number | null
           workspace_id: string
         }
         Update: {
@@ -49367,7 +49430,13 @@ export type Database = {
           created_at?: string
           document_id?: string
           evidence_strength?: number | null
+          first_detected_at?: string | null
           id?: string
+          last_updated_at?: string | null
+          revision_parent_id?: string | null
+          revision_reason?: string | null
+          status?: string | null
+          version_introduced?: number | null
           workspace_id?: string
         }
         Relationships: [
@@ -49376,6 +49445,13 @@ export type Database = {
             columns: ["document_id"]
             isOneToOne: false
             referencedRelation: "research_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "research_claims_revision_parent_id_fkey"
+            columns: ["revision_parent_id"]
+            isOneToOne: false
+            referencedRelation: "research_claims"
             referencedColumns: ["id"]
           },
           {
@@ -50578,6 +50654,50 @@ export type Database = {
           underinvestment_score?: number | null
         }
         Relationships: []
+      }
+      research_impact_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          metadata: Json | null
+          related_entity_id: string | null
+          related_entity_type: string | null
+          trust_delta: number | null
+          version_number: number | null
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          trust_delta?: number | null
+          version_number?: number | null
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          trust_delta?: number | null
+          version_number?: number | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_impact_events_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       research_impact_index: {
         Row: {
@@ -60268,6 +60388,53 @@ export type Database = {
         }
         Relationships: []
       }
+      topic_consensus_history: {
+        Row: {
+          claim_count: number | null
+          consensus_score: number | null
+          contradiction_count: number | null
+          created_at: string
+          evidence_density: number | null
+          id: string
+          reinforcement_count: number | null
+          topic: string
+          version_number: number
+          workspace_id: string
+        }
+        Insert: {
+          claim_count?: number | null
+          consensus_score?: number | null
+          contradiction_count?: number | null
+          created_at?: string
+          evidence_density?: number | null
+          id?: string
+          reinforcement_count?: number | null
+          topic: string
+          version_number: number
+          workspace_id: string
+        }
+        Update: {
+          claim_count?: number | null
+          consensus_score?: number | null
+          contradiction_count?: number | null
+          created_at?: string
+          evidence_density?: number | null
+          id?: string
+          reinforcement_count?: number | null
+          topic?: string
+          version_number?: number
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "topic_consensus_history_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       treaty_execution_logs: {
         Row: {
           action_type: string
@@ -65239,6 +65406,62 @@ export type Database = {
             columns: ["workspace_id"]
             isOneToOne: false
             referencedRelation: "collaborative_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_versions: {
+        Row: {
+          claim_count: number | null
+          claim_graph_snapshot: Json | null
+          consensus_snapshot: Json | null
+          created_at: string
+          created_by: string | null
+          document_count: number | null
+          id: string
+          institutional_certification: Json | null
+          is_archived: boolean | null
+          is_locked: boolean | null
+          summary_snapshot: string | null
+          version_number: number
+          workspace_id: string
+        }
+        Insert: {
+          claim_count?: number | null
+          claim_graph_snapshot?: Json | null
+          consensus_snapshot?: Json | null
+          created_at?: string
+          created_by?: string | null
+          document_count?: number | null
+          id?: string
+          institutional_certification?: Json | null
+          is_archived?: boolean | null
+          is_locked?: boolean | null
+          summary_snapshot?: string | null
+          version_number: number
+          workspace_id: string
+        }
+        Update: {
+          claim_count?: number | null
+          claim_graph_snapshot?: Json | null
+          consensus_snapshot?: Json | null
+          created_at?: string
+          created_by?: string | null
+          document_count?: number | null
+          id?: string
+          institutional_certification?: Json | null
+          is_archived?: boolean | null
+          is_locked?: boolean | null
+          summary_snapshot?: string | null
+          version_number?: number
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_versions_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
             referencedColumns: ["id"]
           },
         ]
