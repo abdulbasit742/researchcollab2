@@ -20,6 +20,7 @@ import { FundingPlanPanel } from "@/components/research/FundingPlanPanel";
 import { PeerReviewPanel } from "@/components/research/PeerReviewPanel";
 import { KnowledgeGraphPanel } from "@/components/research/KnowledgeGraphPanel";
 import { CARCResponsePanel } from "@/components/research/CARCResponsePanel";
+import { PolicySimulationPanel } from "@/components/research/PolicySimulationPanel";
 import {
   BookOpen, Upload, Search, FileText, MessageSquare,
   Loader2, CheckCircle, AlertCircle, ChevronRight,
@@ -452,7 +453,18 @@ export default function ResearchWorkspacePage() {
             <Sparkles className="h-5 w-5 text-primary" />
             Global Knowledge Graph & Citation Intelligence
           </h2>
-          <KnowledgeGraphPanel workspaceId={workspaceId} />
+        <KnowledgeGraphPanel workspaceId={workspaceId} />
+        </div>
+      )}
+
+      {/* Policy Simulation & Impact Modeling */}
+      {workspaceId && (
+        <div className="mt-6">
+          <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-primary" />
+            Policy Simulation & Impact Modeling
+          </h2>
+          <PolicySimulationPanel workspaceId={workspaceId} />
         </div>
       )}
 
