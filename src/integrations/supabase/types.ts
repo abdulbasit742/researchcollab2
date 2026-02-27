@@ -578,6 +578,60 @@ export type Database = {
         }
         Relationships: []
       }
+      accreditation_reports: {
+        Row: {
+          created_at: string | null
+          cross_institution_collaboration_index: number | null
+          economic_contribution_amount: number | null
+          export_format: string | null
+          funded_fyp_participation_rate: number | null
+          id: string
+          industry_collaboration_frequency: number | null
+          institution_id: string
+          project_completion_reliability: number | null
+          published_at: string | null
+          report_data: Json | null
+          report_period_end: string
+          report_period_start: string
+          research_commercialization_count: number | null
+          student_industry_engagement_pct: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          cross_institution_collaboration_index?: number | null
+          economic_contribution_amount?: number | null
+          export_format?: string | null
+          funded_fyp_participation_rate?: number | null
+          id?: string
+          industry_collaboration_frequency?: number | null
+          institution_id: string
+          project_completion_reliability?: number | null
+          published_at?: string | null
+          report_data?: Json | null
+          report_period_end: string
+          report_period_start: string
+          research_commercialization_count?: number | null
+          student_industry_engagement_pct?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          cross_institution_collaboration_index?: number | null
+          economic_contribution_amount?: number | null
+          export_format?: string | null
+          funded_fyp_participation_rate?: number | null
+          id?: string
+          industry_collaboration_frequency?: number | null
+          institution_id?: string
+          project_completion_reliability?: number | null
+          published_at?: string | null
+          report_data?: Json | null
+          report_period_end?: string
+          report_period_start?: string
+          research_commercialization_count?: number | null
+          student_industry_engagement_pct?: number | null
+        }
+        Relationships: []
+      }
       action_confirmations: {
         Row: {
           action_target_id: string
@@ -8695,6 +8749,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      cross_institution_agreements: {
+        Row: {
+          agreement_type: string | null
+          co_funded_projects: number | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          innovation_cluster_domains: string[] | null
+          institution_a_id: string
+          institution_b_id: string
+          joint_completion_rate: number | null
+          shared_sponsors: number | null
+          signed_at: string | null
+          status: string | null
+        }
+        Insert: {
+          agreement_type?: string | null
+          co_funded_projects?: number | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          innovation_cluster_domains?: string[] | null
+          institution_a_id: string
+          institution_b_id: string
+          joint_completion_rate?: number | null
+          shared_sponsors?: number | null
+          signed_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          agreement_type?: string | null
+          co_funded_projects?: number | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          innovation_cluster_domains?: string[] | null
+          institution_a_id?: string
+          institution_b_id?: string
+          joint_completion_rate?: number | null
+          shared_sponsors?: number | null
+          signed_at?: string | null
+          status?: string | null
+        }
+        Relationships: []
       }
       cross_node_capital_flows: {
         Row: {
@@ -18045,6 +18144,51 @@ export type Database = {
           },
         ]
       }
+      government_innovation_snapshots: {
+        Row: {
+          active_institutions: number | null
+          active_sponsors: number | null
+          collaboration_density: number | null
+          completion_rate_pct: number | null
+          id: string
+          innovation_clusters: Json | null
+          milestone_velocity_avg: number | null
+          region: string
+          sector: string | null
+          snapshot_at: string | null
+          total_funding_volume: number | null
+          total_projects: number | null
+        }
+        Insert: {
+          active_institutions?: number | null
+          active_sponsors?: number | null
+          collaboration_density?: number | null
+          completion_rate_pct?: number | null
+          id?: string
+          innovation_clusters?: Json | null
+          milestone_velocity_avg?: number | null
+          region: string
+          sector?: string | null
+          snapshot_at?: string | null
+          total_funding_volume?: number | null
+          total_projects?: number | null
+        }
+        Update: {
+          active_institutions?: number | null
+          active_sponsors?: number | null
+          collaboration_density?: number | null
+          completion_rate_pct?: number | null
+          id?: string
+          innovation_clusters?: Json | null
+          milestone_velocity_avg?: number | null
+          region?: string
+          sector?: string | null
+          snapshot_at?: string | null
+          total_funding_volume?: number | null
+          total_projects?: number | null
+        }
+        Relationships: []
+      }
       government_partners: {
         Row: {
           anti_capture_acknowledged: boolean | null
@@ -18337,6 +18481,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      grant_funding_records: {
+        Row: {
+          audit_trail: Json | null
+          compliance_status: string | null
+          created_at: string | null
+          current_phase: number | null
+          disbursed_amount: number | null
+          expires_at: string | null
+          grant_name: string
+          granting_body: string
+          id: string
+          institution_id: string | null
+          milestone_release_log: Json | null
+          phase_count: number | null
+          remaining_amount: number | null
+          started_at: string | null
+          status: string | null
+          total_amount: number
+          updated_at: string | null
+          utilization_pct: number | null
+        }
+        Insert: {
+          audit_trail?: Json | null
+          compliance_status?: string | null
+          created_at?: string | null
+          current_phase?: number | null
+          disbursed_amount?: number | null
+          expires_at?: string | null
+          grant_name: string
+          granting_body: string
+          id?: string
+          institution_id?: string | null
+          milestone_release_log?: Json | null
+          phase_count?: number | null
+          remaining_amount?: number | null
+          started_at?: string | null
+          status?: string | null
+          total_amount?: number
+          updated_at?: string | null
+          utilization_pct?: number | null
+        }
+        Update: {
+          audit_trail?: Json | null
+          compliance_status?: string | null
+          created_at?: string | null
+          current_phase?: number | null
+          disbursed_amount?: number | null
+          expires_at?: string | null
+          grant_name?: string
+          granting_body?: string
+          id?: string
+          institution_id?: string | null
+          milestone_release_log?: Json | null
+          phase_count?: number | null
+          remaining_amount?: number | null
+          started_at?: string | null
+          status?: string | null
+          total_amount?: number
+          updated_at?: string | null
+          utilization_pct?: number | null
+        }
+        Relationships: []
       }
       grants: {
         Row: {
@@ -21203,6 +21410,81 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      institutional_transparency: {
+        Row: {
+          id: string
+          institution_id: string
+          public_profile_url: string | null
+          publish_completion_pct: boolean | null
+          publish_funding_distribution: boolean | null
+          publish_innovation_summary: boolean | null
+          publish_sponsor_repeat_pct: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          institution_id: string
+          public_profile_url?: string | null
+          publish_completion_pct?: boolean | null
+          publish_funding_distribution?: boolean | null
+          publish_innovation_summary?: boolean | null
+          publish_sponsor_repeat_pct?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          institution_id?: string
+          public_profile_url?: string | null
+          publish_completion_pct?: boolean | null
+          publish_funding_distribution?: boolean | null
+          publish_innovation_summary?: boolean | null
+          publish_sponsor_repeat_pct?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      institutional_trust_scores: {
+        Row: {
+          completion_reliability: number | null
+          dispute_ratio: number | null
+          escrow_invariant_compliance: number | null
+          faculty_oversight_participation: number | null
+          financial_reconciliation_consistency: number | null
+          id: string
+          institution_id: string
+          overall_its: number | null
+          snapshot_at: string | null
+          sponsor_retention: number | null
+          tier: string | null
+        }
+        Insert: {
+          completion_reliability?: number | null
+          dispute_ratio?: number | null
+          escrow_invariant_compliance?: number | null
+          faculty_oversight_participation?: number | null
+          financial_reconciliation_consistency?: number | null
+          id?: string
+          institution_id: string
+          overall_its?: number | null
+          snapshot_at?: string | null
+          sponsor_retention?: number | null
+          tier?: string | null
+        }
+        Update: {
+          completion_reliability?: number | null
+          dispute_ratio?: number | null
+          escrow_invariant_compliance?: number | null
+          faculty_oversight_participation?: number | null
+          financial_reconciliation_consistency?: number | null
+          id?: string
+          institution_id?: string
+          overall_its?: number | null
+          snapshot_at?: string | null
+          sponsor_retention?: number | null
+          tier?: string | null
+        }
+        Relationships: []
       }
       integration_mappings: {
         Row: {
@@ -33548,6 +33830,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      research_commercialization: {
+        Row: {
+          commercialization_type: string | null
+          conversion_status: string | null
+          created_at: string | null
+          economic_value: number | null
+          funded_project_id: string | null
+          id: string
+          industry_sector: string | null
+          institution_id: string | null
+          research_project_id: string | null
+          sponsor_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          commercialization_type?: string | null
+          conversion_status?: string | null
+          created_at?: string | null
+          economic_value?: number | null
+          funded_project_id?: string | null
+          id?: string
+          industry_sector?: string | null
+          institution_id?: string | null
+          research_project_id?: string | null
+          sponsor_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          commercialization_type?: string | null
+          conversion_status?: string | null
+          created_at?: string | null
+          economic_value?: number | null
+          funded_project_id?: string | null
+          id?: string
+          industry_sector?: string | null
+          institution_id?: string | null
+          research_project_id?: string | null
+          sponsor_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       research_commercialization_ledger: {
         Row: {
