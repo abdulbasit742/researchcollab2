@@ -77,3 +77,6 @@ export type { OpennessLevel, LROChangeType, LROInput, LROVersionInput, DatasetIn
 
 export { upsertCareerProfile, getCareerProfile, computeMDRS, saveMDRS, getMDRS, saveExecutionReliability, getExecutionReliability, computeAdaptability, saveAdaptability, getAdaptability, detectCareerRisks, saveCareerRisks, getCareerRisks, saveTrajectorySnapshot, getCareerTrajectory, generateCareerAdvice, exportAcademicIdentity, CAREER_STAGES, ACIRO_TRANSPARENCY, MDRS_WEIGHTS, ADAPTABILITY_WEIGHTS } from "./academicCareerIntelligence";
 export type { CareerStage, CareerProfileInput, MDRSInput, ExecutionReliabilityInput, AdaptabilityInput, CareerRiskInput, CareerRiskResult, CareerAdvisorSuggestion } from "./academicCareerIntelligence";
+
+export { computeNIEI, saveNIEI, getNIEI, recordCapitalFlow, getCapitalFlows, saveDomainDominance, getDomainDominance, saveResearchLaborData, getResearchLaborMarket, computeCompetitionIndex, saveCompetitionIndex, getCompetitionIndex, detectMacroRisks, saveMacroRisks, simulateFundingAllocation, saveSimulation, saveNetworkEdge, getNetworkEdges, MACRO_RISK_TYPES, CAPITAL_FLOW_TYPES, GREIIE_TRANSPARENCY, COMPETITION_INDEX_WEIGHTS } from "./researchEconomyIntelligence";
+export type { MacroRiskType, NIEIInput, CompetitionIndexInput, CapitalFlowInput, SimulationInput, SimulationResult } from "./researchEconomyIntelligence";
