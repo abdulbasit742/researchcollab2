@@ -12621,6 +12621,54 @@ export type Database = {
         }
         Relationships: []
       }
+      domain_dominance_profiles: {
+        Row: {
+          commercialization_share: number | null
+          computed_at: string
+          country_code: string
+          domain: string
+          funding_concentration: number | null
+          id: string
+          is_declining: boolean | null
+          is_emerging_leader: boolean | null
+          patent_share: number | null
+          period: string
+          publication_share: number | null
+          startup_share: number | null
+          talent_concentration: number | null
+        }
+        Insert: {
+          commercialization_share?: number | null
+          computed_at?: string
+          country_code: string
+          domain: string
+          funding_concentration?: number | null
+          id?: string
+          is_declining?: boolean | null
+          is_emerging_leader?: boolean | null
+          patent_share?: number | null
+          period: string
+          publication_share?: number | null
+          startup_share?: number | null
+          talent_concentration?: number | null
+        }
+        Update: {
+          commercialization_share?: number | null
+          computed_at?: string
+          country_code?: string
+          domain?: string
+          funding_concentration?: number | null
+          id?: string
+          is_declining?: boolean | null
+          is_emerging_leader?: boolean | null
+          patent_share?: number | null
+          period?: string
+          publication_share?: number | null
+          startup_share?: number | null
+          talent_concentration?: number | null
+        }
+        Relationships: []
+      }
       dominance_conditions: {
         Row: {
           category: string
@@ -17253,6 +17301,51 @@ export type Database = {
           signal_type?: string
           status?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      funding_allocation_simulations: {
+        Row: {
+          country_code: string
+          created_at: string
+          explanation: Json | null
+          id: string
+          parameters: Json
+          predicted_economic_growth: number | null
+          predicted_innovation_yield: number | null
+          predicted_patent_output: number | null
+          predicted_policy_influence: number | null
+          predicted_startup_formation: number | null
+          simulated_by: string | null
+          simulation_name: string
+        }
+        Insert: {
+          country_code: string
+          created_at?: string
+          explanation?: Json | null
+          id?: string
+          parameters?: Json
+          predicted_economic_growth?: number | null
+          predicted_innovation_yield?: number | null
+          predicted_patent_output?: number | null
+          predicted_policy_influence?: number | null
+          predicted_startup_formation?: number | null
+          simulated_by?: string | null
+          simulation_name: string
+        }
+        Update: {
+          country_code?: string
+          created_at?: string
+          explanation?: Json | null
+          id?: string
+          parameters?: Json
+          predicted_economic_growth?: number | null
+          predicted_innovation_yield?: number | null
+          predicted_patent_output?: number | null
+          predicted_policy_influence?: number | null
+          predicted_startup_formation?: number | null
+          simulated_by?: string | null
+          simulation_name?: string
         }
         Relationships: []
       }
@@ -22269,6 +22362,60 @@ export type Database = {
         }
         Relationships: []
       }
+      innovation_competition_index: {
+        Row: {
+          collaboration_stability: number | null
+          commercialization_speed: number | null
+          computed_at: string
+          country_code: string
+          funding_growth_rate: number | null
+          global_rank: number | null
+          id: string
+          industry_integration_density: number | null
+          overall_competition_score: number | null
+          patent_velocity: number | null
+          period: string
+          regulatory_compliance_maturity: number | null
+          research_to_market_velocity: number | null
+          startup_survival_rate: number | null
+          venture_capital_alignment: number | null
+        }
+        Insert: {
+          collaboration_stability?: number | null
+          commercialization_speed?: number | null
+          computed_at?: string
+          country_code: string
+          funding_growth_rate?: number | null
+          global_rank?: number | null
+          id?: string
+          industry_integration_density?: number | null
+          overall_competition_score?: number | null
+          patent_velocity?: number | null
+          period: string
+          regulatory_compliance_maturity?: number | null
+          research_to_market_velocity?: number | null
+          startup_survival_rate?: number | null
+          venture_capital_alignment?: number | null
+        }
+        Update: {
+          collaboration_stability?: number | null
+          commercialization_speed?: number | null
+          computed_at?: string
+          country_code?: string
+          funding_growth_rate?: number | null
+          global_rank?: number | null
+          id?: string
+          industry_integration_density?: number | null
+          overall_competition_score?: number | null
+          patent_velocity?: number | null
+          period?: string
+          regulatory_compliance_maturity?: number | null
+          research_to_market_velocity?: number | null
+          startup_survival_rate?: number | null
+          venture_capital_alignment?: number | null
+        }
+        Relationships: []
+      }
       innovation_failure_records: {
         Row: {
           created_at: string
@@ -22371,6 +22518,57 @@ export type Database = {
           region?: string | null
           skill_evolution_trends?: Json | null
           snapshot_period?: string
+        }
+        Relationships: []
+      }
+      innovation_network_edges: {
+        Row: {
+          collaboration_reliability: number | null
+          computed_at: string
+          edge_type: string
+          funding_amount: number | null
+          id: string
+          patent_co_ownership: number | null
+          period: string | null
+          policy_alignment: number | null
+          source_id: string
+          source_type: string
+          startup_co_formation: number | null
+          target_id: string
+          target_type: string
+          weight: number | null
+        }
+        Insert: {
+          collaboration_reliability?: number | null
+          computed_at?: string
+          edge_type: string
+          funding_amount?: number | null
+          id?: string
+          patent_co_ownership?: number | null
+          period?: string | null
+          policy_alignment?: number | null
+          source_id: string
+          source_type: string
+          startup_co_formation?: number | null
+          target_id: string
+          target_type: string
+          weight?: number | null
+        }
+        Update: {
+          collaboration_reliability?: number | null
+          computed_at?: string
+          edge_type?: string
+          funding_amount?: number | null
+          id?: string
+          patent_co_ownership?: number | null
+          period?: string | null
+          policy_alignment?: number | null
+          source_id?: string
+          source_type?: string
+          startup_co_formation?: number | null
+          target_id?: string
+          target_type?: string
+          weight?: number | null
         }
         Relationships: []
       }
@@ -37564,6 +37762,81 @@ export type Database = {
         }
         Relationships: []
       }
+      research_capital_flows: {
+        Row: {
+          amount: number
+          collaboration_count: number | null
+          destination_country: string
+          domain: string | null
+          flow_type: string
+          funding_source_type: string | null
+          id: string
+          period: string
+          recorded_at: string
+          source_country: string
+        }
+        Insert: {
+          amount?: number
+          collaboration_count?: number | null
+          destination_country: string
+          domain?: string | null
+          flow_type?: string
+          funding_source_type?: string | null
+          id?: string
+          period: string
+          recorded_at?: string
+          source_country: string
+        }
+        Update: {
+          amount?: number
+          collaboration_count?: number | null
+          destination_country?: string
+          domain?: string | null
+          flow_type?: string
+          funding_source_type?: string | null
+          id?: string
+          period?: string
+          recorded_at?: string
+          source_country?: string
+        }
+        Relationships: []
+      }
+      research_capital_risks: {
+        Row: {
+          description: string | null
+          detected_at: string
+          entity_id: string
+          entity_type: string
+          evidence: Json | null
+          id: string
+          risk_type: string
+          severity: string
+          trend_direction: string | null
+        }
+        Insert: {
+          description?: string | null
+          detected_at?: string
+          entity_id: string
+          entity_type: string
+          evidence?: Json | null
+          id?: string
+          risk_type: string
+          severity?: string
+          trend_direction?: string | null
+        }
+        Update: {
+          description?: string | null
+          detected_at?: string
+          entity_id?: string
+          entity_type?: string
+          evidence?: Json | null
+          id?: string
+          risk_type?: string
+          severity?: string
+          trend_direction?: string | null
+        }
+        Relationships: []
+      }
       research_collaborators: {
         Row: {
           added_at: string
@@ -38882,6 +39155,51 @@ export type Database = {
           report_title?: string
           report_type?: string | null
           sector?: string | null
+        }
+        Relationships: []
+      }
+      research_labor_market: {
+        Row: {
+          brain_drain_index: number | null
+          computed_at: string
+          country_code: string
+          domain: string | null
+          funding_driven_migration_pct: number | null
+          graduate_industry_placement_pct: number | null
+          id: string
+          period: string
+          phd_production: number | null
+          researcher_inflow: number | null
+          researcher_outflow: number | null
+          talent_concentration_index: number | null
+        }
+        Insert: {
+          brain_drain_index?: number | null
+          computed_at?: string
+          country_code: string
+          domain?: string | null
+          funding_driven_migration_pct?: number | null
+          graduate_industry_placement_pct?: number | null
+          id?: string
+          period: string
+          phd_production?: number | null
+          researcher_inflow?: number | null
+          researcher_outflow?: number | null
+          talent_concentration_index?: number | null
+        }
+        Update: {
+          brain_drain_index?: number | null
+          computed_at?: string
+          country_code?: string
+          domain?: string | null
+          funding_driven_migration_pct?: number | null
+          graduate_industry_placement_pct?: number | null
+          id?: string
+          period?: string
+          phd_production?: number | null
+          researcher_inflow?: number | null
+          researcher_outflow?: number | null
+          talent_concentration_index?: number | null
         }
         Relationships: []
       }
