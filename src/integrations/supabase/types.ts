@@ -37400,6 +37400,153 @@ export type Database = {
         }
         Relationships: []
       }
+      mpbsb_deliverables: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          deliverable_name: string
+          evidence: string | null
+          id: string
+          phase_id: number
+          status: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          deliverable_name: string
+          evidence?: string | null
+          id?: string
+          phase_id: number
+          status?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          deliverable_name?: string
+          evidence?: string | null
+          id?: string
+          phase_id?: number
+          status?: string
+        }
+        Relationships: []
+      }
+      mpbsb_phase_status: {
+        Row: {
+          activated_at: string | null
+          completed_at: string | null
+          completed_deliverables: number | null
+          created_at: string
+          id: string
+          phase_code: string
+          phase_id: number
+          phase_name: string
+          stability_gate_notes: string | null
+          stability_gate_passed: boolean | null
+          status: string
+          total_deliverables: number
+          updated_at: string | null
+        }
+        Insert: {
+          activated_at?: string | null
+          completed_at?: string | null
+          completed_deliverables?: number | null
+          created_at?: string
+          id?: string
+          phase_code: string
+          phase_id: number
+          phase_name: string
+          stability_gate_notes?: string | null
+          stability_gate_passed?: boolean | null
+          status?: string
+          total_deliverables: number
+          updated_at?: string | null
+        }
+        Update: {
+          activated_at?: string | null
+          completed_at?: string | null
+          completed_deliverables?: number | null
+          created_at?: string
+          id?: string
+          phase_code?: string
+          phase_id?: number
+          phase_name?: string
+          stability_gate_notes?: string | null
+          stability_gate_passed?: boolean | null
+          status?: string
+          total_deliverables?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      mpbsb_phase_transitions: {
+        Row: {
+          approved_by: string | null
+          blockers_resolved: Json | null
+          from_phase: number
+          id: string
+          notes: string | null
+          to_phase: number
+          transition_type: string
+          transitioned_at: string
+        }
+        Insert: {
+          approved_by?: string | null
+          blockers_resolved?: Json | null
+          from_phase: number
+          id?: string
+          notes?: string | null
+          to_phase: number
+          transition_type?: string
+          transitioned_at?: string
+        }
+        Update: {
+          approved_by?: string | null
+          blockers_resolved?: Json | null
+          from_phase?: number
+          id?: string
+          notes?: string | null
+          to_phase?: number
+          transition_type?: string
+          transitioned_at?: string
+        }
+        Relationships: []
+      }
+      mpbsb_route_mapping: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          is_hidden: boolean | null
+          notes: string | null
+          phase_required: number
+          pillar: string
+          route_path: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          is_hidden?: boolean | null
+          notes?: string | null
+          phase_required?: number
+          pillar: string
+          route_path: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          is_hidden?: boolean | null
+          notes?: string | null
+          phase_required?: number
+          pillar?: string
+          route_path?: string
+        }
+        Relationships: []
+      }
       multi_dimensional_reputation_scores: {
         Row: {
           citation_quality_index: number | null

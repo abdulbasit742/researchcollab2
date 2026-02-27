@@ -188,3 +188,6 @@ export type { GovEntryVector, GovEntryPoint, GrantManagementCapability, Procurem
 
 export { WAR_PRINCIPLES, BATTLEFIELD_SEGMENTS, BEACHHEAD_STRATEGY, DENSITY_THRESHOLDS, FORTRESS_COMPONENTS, CAPITAL_ANCHORS, ENTERPRISE_TROJAN_HORSES, GOV_ENTRY_STRATEGIES, COMPETITOR_CONTAINMENT, NETWORK_LOOPS, PARTNERSHIP_STRATEGY, BRAND_WAR, EXPANSION_TIMELINE, FAILURE_CONTAINMENT, WIN_CONDITIONS, checkDensityReady, FGTMW_VERSION, FGTMW_EFFECTIVE_DATE } from "./gtmWarEngine";
 export type { BattlefieldSegment, BattlefieldProfile, BeachheadProfile, DensityThreshold, FortressComponent, CapitalAnchorTarget, TrojanHorseVector, GovEntryStrategy, CompetitorContainment, NetworkLoop, PartnershipTarget, ExpansionYear, FailureResponse, WinCondition } from "./gtmWarEngine";
+
+export { BUILD_PHASES, CORE_PILLARS, SEQUENCING_RULES, PRODUCT_OBJECTIVE, canAdvancePhase, MPBSB_VERSION, MPBSB_EFFECTIVE_DATE } from "./buildSequencingEngine";
+export type { PhaseStatus, BuildPhase, CorePillar, PillarDefinition, PhaseProgress } from "./buildSequencingEngine";
