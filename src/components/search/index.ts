@@ -1,4 +1,10 @@
 export { GlobalSearchBar } from "./GlobalSearchBar";
 export { SearchResultCard } from "./SearchResultCard";
 export { AdvancedSearchFilters, defaultFilters, type SearchFilters } from "./AdvancedSearchFilters";
- export { VoiceSearchButton, VoiceSearchTrigger } from "./VoiceSearchButton";
+export { VoiceSearchButton, VoiceSearchTrigger } from "./VoiceSearchButton";
+export { SmartFilterBar } from "./SmartFilterBar";
+export { SearchResultsList } from "./SearchResultsList";
+export { RelevanceTooltip } from "./RelevanceTooltip";
+export { RecommendationsPanel } from "./RecommendationsPanel";
+export { SimilarProjectsPanel } from "./SimilarProjectsPanel";
+export { TagCloud } from "./TagCloud";

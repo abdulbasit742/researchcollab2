@@ -170,6 +170,7 @@ const AdminSecurityDashboardPage = lazy(() => import("./pages/AdminSecurityDashb
 // Growth & Engagement
 const EngagementAnalyticsPage = lazy(() => import("./pages/EngagementAnalyticsPage"));
 const InstitutionEngagementPage = lazy(() => import("./pages/InstitutionEngagementPage"));
+const PublicDiscoveryPage = lazy(() => import("./pages/PublicDiscoveryPage"));
 
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
@@ -326,6 +327,7 @@ const AppContent = () => {
           {/* Search & Discovery */}
           <Route path="/search" element={<SearchPage />} />
           <Route path="/discover" element={<ProtectedRoute><DiscoverPage /></ProtectedRoute>} />
+          <Route path="/discover/public" element={<PublicDiscoveryPage />} />
           <Route path="/trending" element={<ProtectedRoute><TrendingPage /></ProtectedRoute>} />
 
           {/* Faculty */}

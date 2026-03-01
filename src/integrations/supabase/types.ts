@@ -15075,6 +15075,33 @@ export type Database = {
         }
         Relationships: []
       }
+      discovery_recommendations: {
+        Row: {
+          entity_id: string
+          entity_type: string
+          generated_at: string
+          id: string
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          entity_id: string
+          entity_type: string
+          generated_at?: string
+          id?: string
+          reason: string
+          user_id: string
+        }
+        Update: {
+          entity_id?: string
+          entity_type?: string
+          generated_at?: string
+          id?: string
+          reason?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       discovery_sessions: {
         Row: {
           created_at: string
@@ -27188,36 +27215,51 @@ export type Database = {
       }
       global_search_index: {
         Row: {
+          activity_score: number | null
+          composite_rank_score: number | null
           content_excerpt: string | null
           created_at: string
           entity_id: string
           entity_type: string
+          execution_quality_score: number | null
           id: string
           institution_id: string | null
+          recency_score: number | null
+          relevance_score: number | null
           searchable_tsv: unknown
           title: string
           updated_at: string
           visibility_scope: string
         }
         Insert: {
+          activity_score?: number | null
+          composite_rank_score?: number | null
           content_excerpt?: string | null
           created_at?: string
           entity_id: string
           entity_type: string
+          execution_quality_score?: number | null
           id?: string
           institution_id?: string | null
+          recency_score?: number | null
+          relevance_score?: number | null
           searchable_tsv?: unknown
           title: string
           updated_at?: string
           visibility_scope?: string
         }
         Update: {
+          activity_score?: number | null
+          composite_rank_score?: number | null
           content_excerpt?: string | null
           created_at?: string
           entity_id?: string
           entity_type?: string
+          execution_quality_score?: number | null
           id?: string
           institution_id?: string | null
+          recency_score?: number | null
+          relevance_score?: number | null
           searchable_tsv?: unknown
           title?: string
           updated_at?: string
@@ -49748,6 +49790,30 @@ export type Database = {
           },
         ]
       }
+      project_similarity_index: {
+        Row: {
+          generated_at: string
+          id: string
+          project_id: string
+          similar_project_id: string
+          similarity_score: number
+        }
+        Insert: {
+          generated_at?: string
+          id?: string
+          project_id: string
+          similar_project_id: string
+          similarity_score?: number
+        }
+        Update: {
+          generated_at?: string
+          id?: string
+          project_id?: string
+          similar_project_id?: string
+          similarity_score?: number
+        }
+        Relationships: []
+      }
       project_thresholds: {
         Row: {
           applies_to: string
@@ -58475,6 +58541,39 @@ export type Database = {
         }
         Relationships: []
       }
+      search_query_logs: {
+        Row: {
+          created_at: string
+          entity_type_filter: string | null
+          flagged: boolean | null
+          id: string
+          query_text: string
+          response_time_ms: number | null
+          results_count: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          entity_type_filter?: string | null
+          flagged?: boolean | null
+          id?: string
+          query_text: string
+          response_time_ms?: number | null
+          results_count?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          entity_type_filter?: string | null
+          flagged?: boolean | null
+          id?: string
+          query_text?: string
+          response_time_ms?: number | null
+          results_count?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       sector_acceleration: {
         Row: {
           acceleration_confidence: number | null
@@ -63561,6 +63660,30 @@ export type Database = {
           overall_risk_score?: number | null
           period?: string | null
           risk_grade?: string | null
+        }
+        Relationships: []
+      }
+      tag_index: {
+        Row: {
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          tag_name: string
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          tag_name: string
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          tag_name?: string
         }
         Relationships: []
       }
@@ -70141,6 +70264,10 @@ export type Database = {
       compute_profile_proof_metrics: {
         Args: { p_user_id: string }
         Returns: undefined
+      }
+      compute_search_rank: {
+        Args: { p_entity_id: string; p_entity_type: string }
+        Returns: number
       }
       compute_trending_entities: {
         Args: { limit_count?: number }
