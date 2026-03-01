@@ -2096,6 +2096,36 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_collaboration_metrics: {
+        Row: {
+          engagement_score: number | null
+          generated_at: string
+          id: string
+          overall_quality_score: number | null
+          project_id: string
+          response_time_score: number | null
+          workload_balance_score: number | null
+        }
+        Insert: {
+          engagement_score?: number | null
+          generated_at?: string
+          id?: string
+          overall_quality_score?: number | null
+          project_id: string
+          response_time_score?: number | null
+          workload_balance_score?: number | null
+        }
+        Update: {
+          engagement_score?: number | null
+          generated_at?: string
+          id?: string
+          overall_quality_score?: number | null
+          project_id?: string
+          response_time_score?: number | null
+          workload_balance_score?: number | null
+        }
+        Relationships: []
+      }
       ai_constitutional_rules: {
         Row: {
           can_be_suspended: boolean | null
@@ -2423,6 +2453,33 @@ export type Database = {
           period?: string
           recorded_at?: string
           startup_lifecycle_duration_avg?: number | null
+        }
+        Relationships: []
+      }
+      ai_deadline_predictions: {
+        Row: {
+          confidence_score: number | null
+          factors: Json | null
+          generated_at: string
+          id: string
+          milestone_id: string
+          predicted_completion_date: string | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          factors?: Json | null
+          generated_at?: string
+          id?: string
+          milestone_id: string
+          predicted_completion_date?: string | null
+        }
+        Update: {
+          confidence_score?: number | null
+          factors?: Json | null
+          generated_at?: string
+          id?: string
+          milestone_id?: string
+          predicted_completion_date?: string | null
         }
         Relationships: []
       }
@@ -2819,6 +2876,45 @@ export type Database = {
           },
         ]
       }
+      ai_milestone_suggestions: {
+        Row: {
+          accepted: boolean | null
+          estimated_timeline: string | null
+          generated_at: string
+          id: string
+          milestone_id: string | null
+          review_points: string[] | null
+          risk_factors: string[] | null
+          suggestion_text: string
+          task_breakdown: Json | null
+          user_id: string
+        }
+        Insert: {
+          accepted?: boolean | null
+          estimated_timeline?: string | null
+          generated_at?: string
+          id?: string
+          milestone_id?: string | null
+          review_points?: string[] | null
+          risk_factors?: string[] | null
+          suggestion_text: string
+          task_breakdown?: Json | null
+          user_id: string
+        }
+        Update: {
+          accepted?: boolean | null
+          estimated_timeline?: string | null
+          generated_at?: string
+          id?: string
+          milestone_id?: string | null
+          review_points?: string[] | null
+          risk_factors?: string[] | null
+          suggestion_text?: string
+          task_breakdown?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_model_performance_logs: {
         Row: {
           id: string
@@ -3002,6 +3098,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_nudges: {
+        Row: {
+          created_at: string
+          dismissed: boolean | null
+          id: string
+          message: string
+          nudge_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dismissed?: boolean | null
+          id?: string
+          message: string
+          nudge_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dismissed?: boolean | null
+          id?: string
+          message?: string
+          nudge_type?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       ai_override_logs: {
         Row: {
@@ -3190,6 +3313,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_project_insights: {
+        Row: {
+          confidence_score: number | null
+          generated_at: string
+          id: string
+          insight_message: string
+          insight_type: string
+          project_id: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          generated_at?: string
+          id?: string
+          insight_message: string
+          insight_type: string
+          project_id: string
+        }
+        Update: {
+          confidence_score?: number | null
+          generated_at?: string
+          id?: string
+          insight_message?: string
+          insight_type?: string
+          project_id?: string
+        }
+        Relationships: []
+      }
       ai_reasoning_logs: {
         Row: {
           assumption_points: Json | null
@@ -3268,6 +3418,33 @@ export type Database = {
           unknown_points?: Json | null
           user_id?: string | null
           workspace_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_task_recommendations: {
+        Row: {
+          generated_at: string
+          id: string
+          milestone_id: string
+          priority: string | null
+          recommendation_text: string
+          user_id: string
+        }
+        Insert: {
+          generated_at?: string
+          id?: string
+          milestone_id: string
+          priority?: string | null
+          recommendation_text: string
+          user_id: string
+        }
+        Update: {
+          generated_at?: string
+          id?: string
+          milestone_id?: string
+          priority?: string | null
+          recommendation_text?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -3430,6 +3607,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_workflow_logs: {
+        Row: {
+          context_type: string
+          created_at: string
+          feature_used: string
+          id: string
+          input_summary: string | null
+          output_hash: string | null
+          tokens_used: number | null
+          user_id: string
+        }
+        Insert: {
+          context_type: string
+          created_at?: string
+          feature_used: string
+          id?: string
+          input_summary?: string | null
+          output_hash?: string | null
+          tokens_used?: number | null
+          user_id: string
+        }
+        Update: {
+          context_type?: string
+          created_at?: string
+          feature_used?: string
+          id?: string
+          input_summary?: string | null
+          output_hash?: string | null
+          tokens_used?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       algorithm_manipulation_flags: {
         Row: {
