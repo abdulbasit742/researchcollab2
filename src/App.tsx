@@ -187,6 +187,9 @@ const ExecutiveOverviewPage = lazy(() => import("./pages/ExecutiveOverviewPage")
 // Safe Automation
 const AutomationControlPanelPage = lazy(() => import("./pages/AutomationControlPanelPage"));
 
+// Adaptive Intelligence
+const AdaptiveIntelligencePage = lazy(() => import("./pages/AdaptiveIntelligencePage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -432,6 +435,7 @@ const AppContent = () => {
           <Route path="/institution/policies" element={<ProtectedRoute><InstitutionPoliciesPage /></ProtectedRoute>} />
           <Route path="/institution/executive" element={<ProtectedRoute><ExecutiveOverviewPage /></ProtectedRoute>} />
           <Route path="/institution/automation" element={<ProtectedRoute><AutomationControlPanelPage /></ProtectedRoute>} />
+          <Route path="/institution/adaptive-intelligence" element={<ProtectedRoute><AdaptiveIntelligencePage /></ProtectedRoute>} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}
