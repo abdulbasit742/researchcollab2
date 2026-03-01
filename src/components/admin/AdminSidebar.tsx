@@ -54,6 +54,7 @@ import {
   Compass,
   AlertTriangle,
   Network,
+  Banknote,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -168,6 +169,8 @@ const navItems = [
   { icon: AlertTriangle, label: "National Risk Map", href: "/national/risk-map" },
   { icon: Network, label: "Global Overview", href: "/global/overview" },
   { icon: ShieldAlert, label: "Governance Map", href: "/global/governance-map" },
+  { icon: Banknote, label: "Capital Intelligence", href: "/institution/capital-intelligence" },
+  { icon: FlaskConical, label: "Capital Simulation", href: "/admin/capital-simulation" },
 ];
 
 const platformItems = [

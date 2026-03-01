@@ -235,6 +235,10 @@ const GlobalOverviewPage = lazy(() => import("./pages/GlobalOverviewPage"));
 const GlobalGovernanceMapPage = lazy(() => import("./pages/GlobalGovernanceMapPage"));
 const GlobalCertVerifyPage = lazy(() => import("./pages/GlobalCertVerifyPage"));
 
+// Capital Coordination
+const CapitalIntelligencePage = lazy(() => import("./pages/CapitalIntelligencePage"));
+const CapitalSimulationPage = lazy(() => import("./pages/CapitalSimulationPage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -507,6 +511,8 @@ const AppContent = () => {
           <Route path="/global/governance-map" element={<ProtectedRoute><GlobalGovernanceMapPage /></ProtectedRoute>} />
           <Route path="/global/verify/:certHash" element={<GlobalCertVerifyPage />} />
           <Route path="/global/verify" element={<GlobalCertVerifyPage />} />
+          <Route path="/institution/capital-intelligence" element={<ProtectedRoute><CapitalIntelligencePage /></ProtectedRoute>} />
+          <Route path="/admin/capital-simulation" element={<ProtectedRoute><CapitalSimulationPage /></ProtectedRoute>} />
           <Route path="/verify/:certificateId" element={<CertificateVerificationPage />} />
           <Route path="/verify" element={<CertificateVerificationPage />} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />

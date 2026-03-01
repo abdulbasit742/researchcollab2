@@ -6153,6 +6153,39 @@ export type Database = {
         }
         Relationships: []
       }
+      capital_bottlenecks: {
+        Row: {
+          bottleneck_score: number | null
+          bottleneck_type: string
+          detected_at: string
+          estimated_capital_delay: number | null
+          id: string
+          institution_id: string | null
+          project_id: string
+          suggested_resolution: string | null
+        }
+        Insert: {
+          bottleneck_score?: number | null
+          bottleneck_type: string
+          detected_at?: string
+          estimated_capital_delay?: number | null
+          id?: string
+          institution_id?: string | null
+          project_id: string
+          suggested_resolution?: string | null
+        }
+        Update: {
+          bottleneck_score?: number | null
+          bottleneck_type?: string
+          detected_at?: string
+          estimated_capital_delay?: number | null
+          id?: string
+          institution_id?: string | null
+          project_id?: string
+          suggested_resolution?: string | null
+        }
+        Relationships: []
+      }
       capital_efficiency_index: {
         Row: {
           completion_rate: number | null
@@ -6262,6 +6295,36 @@ export type Database = {
           },
         ]
       }
+      capital_flow_efficiency_metrics: {
+        Row: {
+          average_lock_duration: number | null
+          average_release_time: number | null
+          capital_velocity_index: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          stagnation_score: number | null
+        }
+        Insert: {
+          average_lock_duration?: number | null
+          average_release_time?: number | null
+          capital_velocity_index?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          stagnation_score?: number | null
+        }
+        Update: {
+          average_lock_duration?: number | null
+          average_release_time?: number | null
+          capital_velocity_index?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          stagnation_score?: number | null
+        }
+        Relationships: []
+      }
       capital_flow_events: {
         Row: {
           amount: number
@@ -6346,6 +6409,42 @@ export type Database = {
           sponsor_retention_pct?: number | null
           total_funded_fyps?: number | null
           weekly_funding_velocity?: number | null
+        }
+        Relationships: []
+      }
+      capital_governance_flags: {
+        Row: {
+          created_at: string
+          description: string | null
+          entity_id: string
+          entity_type: string
+          flag_type: string
+          id: string
+          institution_id: string | null
+          resolved: boolean | null
+          severity: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          entity_id: string
+          entity_type: string
+          flag_type: string
+          id?: string
+          institution_id?: string | null
+          resolved?: boolean | null
+          severity?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          entity_id?: string
+          entity_type?: string
+          flag_type?: string
+          id?: string
+          institution_id?: string | null
+          resolved?: boolean | null
+          severity?: string
         }
         Relationships: []
       }
@@ -6672,6 +6771,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      capital_risk_predictions: {
+        Row: {
+          capital_exposure_risk_score: number | null
+          confidence_score: number | null
+          dispute_probability: number | null
+          generated_at: string
+          id: string
+          milestone_id: string
+          predicted_lock_extension_days: number | null
+          project_id: string | null
+        }
+        Insert: {
+          capital_exposure_risk_score?: number | null
+          confidence_score?: number | null
+          dispute_probability?: number | null
+          generated_at?: string
+          id?: string
+          milestone_id: string
+          predicted_lock_extension_days?: number | null
+          project_id?: string | null
+        }
+        Update: {
+          capital_exposure_risk_score?: number | null
+          confidence_score?: number | null
+          dispute_probability?: number | null
+          generated_at?: string
+          id?: string
+          milestone_id?: string
+          predicted_lock_extension_days?: number | null
+          project_id?: string | null
+        }
+        Relationships: []
+      }
+      capital_simulation_results: {
+        Row: {
+          generated_at: string
+          id: string
+          institution_id: string
+          projected_capital_velocity_change: number | null
+          projected_dispute_impact: number | null
+          simulated_parameter_changes: Json | null
+          simulation_type: string
+        }
+        Insert: {
+          generated_at?: string
+          id?: string
+          institution_id: string
+          projected_capital_velocity_change?: number | null
+          projected_dispute_impact?: number | null
+          simulated_parameter_changes?: Json | null
+          simulation_type: string
+        }
+        Update: {
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          projected_capital_velocity_change?: number | null
+          projected_dispute_impact?: number | null
+          simulated_parameter_changes?: Json | null
+          simulation_type?: string
+        }
+        Relationships: []
       }
       capital_source_profiles: {
         Row: {
@@ -24858,6 +25020,36 @@ export type Database = {
         }
         Relationships: []
       }
+      funding_allocation_insights: {
+        Row: {
+          capital_risk_clusters: Json | null
+          generated_at: string
+          high_efficiency_projects: number | null
+          id: string
+          institution_id: string
+          low_efficiency_projects: number | null
+          optimization_suggestions: Json | null
+        }
+        Insert: {
+          capital_risk_clusters?: Json | null
+          generated_at?: string
+          high_efficiency_projects?: number | null
+          id?: string
+          institution_id: string
+          low_efficiency_projects?: number | null
+          optimization_suggestions?: Json | null
+        }
+        Update: {
+          capital_risk_clusters?: Json | null
+          generated_at?: string
+          high_efficiency_projects?: number | null
+          id?: string
+          institution_id?: string
+          low_efficiency_projects?: number | null
+          optimization_suggestions?: Json | null
+        }
+        Relationships: []
+      }
       funding_allocation_simulations: {
         Row: {
           country_code: string
@@ -34465,6 +34657,39 @@ export type Database = {
           submitted_by?: string | null
           updated_at?: string
           verification_doc_url?: string | null
+        }
+        Relationships: []
+      }
+      institution_capital_health: {
+        Row: {
+          capital_velocity_score: number | null
+          dispute_impact_score: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          liquidity_efficiency_score: number | null
+          overall_capital_health: number | null
+          release_consistency_score: number | null
+        }
+        Insert: {
+          capital_velocity_score?: number | null
+          dispute_impact_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          liquidity_efficiency_score?: number | null
+          overall_capital_health?: number | null
+          release_consistency_score?: number | null
+        }
+        Update: {
+          capital_velocity_score?: number | null
+          dispute_impact_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          liquidity_efficiency_score?: number | null
+          overall_capital_health?: number | null
+          release_consistency_score?: number | null
         }
         Relationships: []
       }
