@@ -37,7 +37,10 @@ import { DealMilestoneTracker } from "@/components/deals/DealMilestoneTracker";
 import { DealDecisionLog } from "@/components/deals/DealDecisionLog";
 import { EscrowStatusCard } from "@/components/deals/EscrowStatusCard";
 import { TrustImpactPreview } from "@/components/deals/TrustImpactPreview";
+import { DealStateVisualizer } from "@/components/deals/DealStateVisualizer";
+import { ExecutionHealthPanel } from "@/components/deals/ExecutionHealthPanel";
 import { useDealDecisions } from "@/hooks/useDealDecisions";
+import { PageTransition } from "@/components/layout/PageTransition";
 
 export default function DealDetailPage() {
   const { dealId } = useParams<{ dealId: string }>();
@@ -46,7 +49,7 @@ export default function DealDetailPage() {
   const { trustProfile } = useMyTrustProfile();
   const { data: decisions = [] } = useDealDecisions(dealId);
   
-  const { data: deal, isLoading } = useDealRoom(dealId || "");
+  const { data: deal, isLoading, error } = useDealRoom(dealId || "");
   const acceptDeal = useAcceptDeal();
   const submitProposal = useSubmitProposal();
 
@@ -58,17 +61,35 @@ export default function DealDetailPage() {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className="container py-8">
-          <Skeleton className="h-10 w-24 mb-6" />
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-6">
+        <div className="container py-8 max-w-6xl">
+          <Skeleton className="h-8 w-20 mb-6" />
+          <div className="grid lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-4">
+              <Skeleton className="h-12" />
               <Skeleton className="h-48" />
               <Skeleton className="h-64" />
             </div>
-            <div className="space-y-6">
+            <div className="space-y-4">
               <Skeleton className="h-32" />
               <Skeleton className="h-48" />
+              <Skeleton className="h-32" />
             </div>
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <MainLayout>
+        <div className="container py-16 text-center max-w-lg mx-auto">
+          <Shield className="h-12 w-12 mx-auto text-destructive mb-4" />
+          <h1 className="text-xl font-bold mb-2">Error Loading Deal</h1>
+          <p className="text-sm text-muted-foreground mb-4">{(error as Error).message}</p>
+          <div className="flex gap-2 justify-center">
+            <Button variant="outline" onClick={() => navigate(-1)}>Go Back</Button>
+            <Button onClick={() => window.location.reload()}>Retry</Button>
           </div>
         </div>
       </MainLayout>
@@ -78,10 +99,10 @@ export default function DealDetailPage() {
   if (!deal) {
     return (
       <MainLayout>
-        <div className="container py-16 text-center">
+        <div className="container py-16 text-center max-w-lg mx-auto">
           <Shield className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-          <h1 className="text-2xl font-bold mb-2">Deal Room Not Found</h1>
-          <p className="text-muted-foreground mb-4">
+          <h1 className="text-xl font-bold mb-2">Deal Not Found</h1>
+          <p className="text-sm text-muted-foreground mb-4">
             This deal may have been completed, cancelled, or you don't have access.
           </p>
           <Button asChild>
@@ -92,23 +113,26 @@ export default function DealDetailPage() {
     );
   }
 
-  // Use deal_rooms schema: buyer_id, seller_id
   const isBuyer = user?.id === deal.buyer_id;
   const otherPartyId = isBuyer ? deal.seller_id : deal.buyer_id;
   const isInProgress = deal.status === "in_progress";
   const isNegotiating = deal.status === "negotiating";
   const isCompleted = deal.status === "completed";
 
-  // Extract data from terms JSON
   const terms = deal.terms as Record<string, any> | null;
   const deliverables: string[] = terms?.deliverables || [];
   const agreedDeadline: string | null = terms?.deadline || null;
   const escrowLocked = deal.escrow_amount || 0;
   const escrowReleased = deal.escrow_status === "released" ? (deal.escrow_amount || 0) : 0;
+  const milestones = (deal.milestones as unknown as DealMilestone[]) || [];
+
+  // Compute real health metrics
+  const completedMs = milestones.filter(m => m.status === "approved").length;
+  const submittedMs = milestones.filter(m => m.status === "submitted").length;
+  const rejectedMs = milestones.filter(m => m.status === "rejected").length;
 
   const handleAcceptDeal = async () => {
     if (!deal) return;
-    
     await acceptDeal.mutateAsync({
       room_id: deal.id,
       offer_id: deal.offer_id || deal.id,
@@ -121,31 +145,37 @@ export default function DealDetailPage() {
 
   const handleSubmitProposal = async () => {
     if (!deal) return;
-    
     await submitProposal.mutateAsync({
       room_id: deal.id,
       amount: parseFloat(proposalAmount) || 0,
       deliverables: proposalDeliverables.split("\n").filter(d => d.trim()),
       deadline: proposalDeadline || undefined,
     });
-    
     setShowProposalModal(false);
   };
 
   return (
     <MainLayout>
-      <div className="container py-8">
-        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
-          <ArrowLeft className="h-4 w-4 mr-2" />
+      <PageTransition>
+      <div className="container py-6 max-w-6xl">
+        <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="mb-4">
+          <ArrowLeft className="h-4 w-4 mr-1.5" />
           Back
         </Button>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        {/* Deal State Visualizer */}
+        <DealStateVisualizer
+          currentStatus={deal.status}
+          escrowFunded={escrowLocked > 0}
+          className="mb-6"
+        />
+
+        <div className="grid lg:grid-cols-3 gap-6">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4">
             {/* Deal Header */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
@@ -156,15 +186,15 @@ export default function DealDetailPage() {
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
                         <DealStatusBadge status={deal.status} />
                         {escrowLocked > 0 && (
-                          <Badge variant="outline" className="gap-1 border-amber-500/50 text-amber-600">
+                          <Badge variant="outline" className="gap-1 border-amber-500/50 text-amber-600 dark:text-amber-400">
                             <Lock className="h-3 w-3" />
                             Escrow Protected
                           </Badge>
                         )}
                       </div>
-                      <CardTitle className="text-2xl">{deal.title}</CardTitle>
-                      <CardDescription className="mt-2">
-                        Deal Room
+                      <CardTitle className="text-xl">{deal.title}</CardTitle>
+                      <CardDescription className="mt-1">
+                        Deal Room • Created {new Date(deal.created_at).toLocaleDateString()}
                       </CardDescription>
                     </div>
                   </div>
@@ -172,39 +202,37 @@ export default function DealDetailPage() {
 
                 <CardContent className="space-y-6">
                   {/* Deal Stats */}
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="p-4 rounded-lg bg-muted/50 text-center">
-                      <DollarSign className="h-5 w-5 mx-auto text-primary mb-1" />
-                      <p className="font-semibold">{deal.agreed_amount ? formatPKR(deal.agreed_amount) : "TBD"}</p>
-                      <p className="text-xs text-muted-foreground">Agreed Amount</p>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="p-3 rounded-lg bg-muted/50 text-center">
+                      <DollarSign className="h-4 w-4 mx-auto text-primary mb-1" />
+                      <p className="font-semibold text-sm">{deal.agreed_amount ? formatPKR(deal.agreed_amount) : "TBD"}</p>
+                      <p className="text-[10px] text-muted-foreground">Agreed Amount</p>
                     </div>
-                    <div className="p-4 rounded-lg bg-muted/50 text-center">
-                      <Clock className="h-5 w-5 mx-auto text-primary mb-1" />
-                      <p className="font-semibold">
-                        {agreedDeadline 
-                          ? new Date(agreedDeadline).toLocaleDateString() 
-                          : "TBD"}
+                    <div className="p-3 rounded-lg bg-muted/50 text-center">
+                      <Clock className="h-4 w-4 mx-auto text-primary mb-1" />
+                      <p className="font-semibold text-sm">
+                        {agreedDeadline ? new Date(agreedDeadline).toLocaleDateString() : "TBD"}
                       </p>
-                      <p className="text-xs text-muted-foreground">Deadline</p>
+                      <p className="text-[10px] text-muted-foreground">Deadline</p>
                     </div>
-                    <div className="p-4 rounded-lg bg-muted/50 text-center">
-                      <Target className="h-5 w-5 mx-auto text-primary mb-1" />
-                      <p className="font-semibold">{deliverables.length}</p>
-                      <p className="text-xs text-muted-foreground">Deliverables</p>
+                    <div className="p-3 rounded-lg bg-muted/50 text-center">
+                      <Target className="h-4 w-4 mx-auto text-primary mb-1" />
+                      <p className="font-semibold text-sm">{deliverables.length}</p>
+                      <p className="text-[10px] text-muted-foreground">Deliverables</p>
                     </div>
                   </div>
 
                   {/* Deliverables */}
                   {deliverables.length > 0 && (
                     <div>
-                      <h4 className="font-medium mb-2 flex items-center gap-2">
+                      <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
                         <FileText className="h-4 w-4" />
                         Agreed Deliverables
                       </h4>
                       <ul className="space-y-1">
                         {deliverables.map((d, i) => (
                           <li key={i} className="flex items-start gap-2 text-sm">
-                            <CheckCircle className="h-4 w-4 text-muted-foreground mt-0.5" />
+                            <CheckCircle className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <span>{d}</span>
                           </li>
                         ))}
@@ -217,52 +245,32 @@ export default function DealDetailPage() {
                     <div className="flex gap-2 pt-4 border-t">
                       <Dialog open={showProposalModal} onOpenChange={setShowProposalModal}>
                         <DialogTrigger asChild>
-                          <Button variant="outline" className="gap-1">
-                            <Plus className="h-4 w-4" />
-                            Submit Counter-Proposal
+                          <Button variant="outline" size="sm" className="gap-1">
+                            <Plus className="h-3.5 w-3.5" />
+                            Counter-Proposal
                           </Button>
                         </DialogTrigger>
                         <DialogContent>
                           <DialogHeader>
                             <DialogTitle>Submit Proposal</DialogTitle>
-                            <DialogDescription>
-                              Update the terms of this deal.
-                            </DialogDescription>
+                            <DialogDescription>Update the terms of this deal.</DialogDescription>
                           </DialogHeader>
                           <div className="space-y-4 pt-4">
                             <div className="space-y-2">
                               <Label>Amount (PKR)</Label>
-                              <Input
-                                type="number"
-                                value={proposalAmount}
-                                onChange={(e) => setProposalAmount(e.target.value)}
-                                placeholder="Enter amount"
-                              />
+                              <Input type="number" value={proposalAmount} onChange={(e) => setProposalAmount(e.target.value)} placeholder="Enter amount" />
                             </div>
                             <div className="space-y-2">
                               <Label>Deliverables (one per line)</Label>
-                              <Textarea
-                                value={proposalDeliverables}
-                                onChange={(e) => setProposalDeliverables(e.target.value)}
-                                placeholder="Enter deliverables..."
-                                rows={4}
-                              />
+                              <Textarea value={proposalDeliverables} onChange={(e) => setProposalDeliverables(e.target.value)} placeholder="Enter deliverables..." rows={4} />
                             </div>
                             <div className="space-y-2">
                               <Label>Deadline</Label>
-                              <Input
-                                type="date"
-                                value={proposalDeadline}
-                                onChange={(e) => setProposalDeadline(e.target.value)}
-                              />
+                              <Input type="date" value={proposalDeadline} onChange={(e) => setProposalDeadline(e.target.value)} />
                             </div>
                             <div className="flex justify-end gap-2">
-                              <Button variant="outline" onClick={() => setShowProposalModal(false)}>
-                                Cancel
-                              </Button>
-                              <Button onClick={handleSubmitProposal} disabled={submitProposal.isPending}>
-                                Submit Proposal
-                              </Button>
+                              <Button variant="outline" onClick={() => setShowProposalModal(false)}>Cancel</Button>
+                              <Button onClick={handleSubmitProposal} disabled={submitProposal.isPending}>Submit Proposal</Button>
                             </div>
                           </div>
                         </DialogContent>
@@ -271,9 +279,10 @@ export default function DealDetailPage() {
                       <Button 
                         onClick={handleAcceptDeal}
                         disabled={acceptDeal.isPending || !deal.agreed_amount}
+                        size="sm"
                         className="gap-1"
                       >
-                        <CheckCircle className="h-4 w-4" />
+                        <CheckCircle className="h-3.5 w-3.5" />
                         Accept & Lock Escrow
                       </Button>
                     </div>
@@ -283,9 +292,9 @@ export default function DealDetailPage() {
             </motion.div>
 
             {/* Milestones */}
-            <DealMilestoneTracker 
+            <DealMilestoneTracker
               dealId={deal.id}
-              milestones={(deal.milestones as unknown as DealMilestone[]) || []}
+              milestones={milestones}
               isInProgress={isInProgress}
               userRole={isBuyer ? "initiator" : "executor"}
             />
@@ -295,13 +304,21 @@ export default function DealDetailPage() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Escrow Status */}
             <EscrowStatusCard
               lockedAmount={escrowLocked}
               releasedAmount={escrowReleased}
               totalAmount={deal.agreed_amount || 0}
               status={deal.status}
+            />
+
+            {/* Execution Health */}
+            <ExecutionHealthPanel
+              totalMilestones={milestones.length}
+              completedMilestones={completedMs}
+              submittedMilestones={submittedMs}
+              disputedMilestones={rejectedMs}
             />
 
             {/* Trust Impact Preview */}
@@ -313,14 +330,14 @@ export default function DealDetailPage() {
 
             {/* Communication */}
             <Card>
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5" />
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <MessageSquare className="h-4 w-4" />
                   Messages
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" className="w-full" asChild>
+                <Button variant="outline" size="sm" className="w-full" asChild>
                   <Link to={`/messages/${deal.id}`}>
                     Open Chat
                   </Link>
@@ -330,21 +347,25 @@ export default function DealDetailPage() {
           </div>
         </div>
       </div>
+      </PageTransition>
     </MainLayout>
   );
 }
 
 function DealStatusBadge({ status }: { status: string }) {
-  const config: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
-    negotiating: { label: "Negotiating", variant: "secondary" },
-    agreed: { label: "Agreed", variant: "default" },
-    in_progress: { label: "In Progress", variant: "default" },
-    completed: { label: "Completed", variant: "default" },
-    cancelled: { label: "Cancelled", variant: "outline" },
-    disputed: { label: "Disputed", variant: "destructive" },
+  const config: Record<string, { label: string; className: string }> = {
+    negotiating: { label: "Negotiating", className: "bg-muted text-muted-foreground" },
+    agreed: { label: "Agreed", className: "bg-blue-500/10 text-blue-600 dark:text-blue-400" },
+    in_progress: { label: "In Progress", className: "bg-primary/10 text-primary" },
+    escrow_funded: { label: "Escrow Funded", className: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+    milestone_submitted: { label: "Milestone Submitted", className: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+    milestone_approved: { label: "Milestone Approved", className: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
+    completed: { label: "Completed", className: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
+    cancelled: { label: "Cancelled", className: "bg-muted text-muted-foreground" },
+    disputed: { label: "Disputed", className: "bg-destructive/10 text-destructive" },
   };
 
-  const { label, variant } = config[status] || { label: status, variant: "secondary" as const };
+  const c = config[status] || { label: status, className: "bg-muted text-muted-foreground" };
 
-  return <Badge variant={variant}>{label}</Badge>;
+  return <Badge className={c.className}>{c.label}</Badge>;
 }
