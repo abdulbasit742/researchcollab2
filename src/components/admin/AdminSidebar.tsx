@@ -58,6 +58,7 @@ const navItems = [
   { icon: Briefcase, label: "Projects", href: "/admin/projects" },
   { icon: ShieldCheck, label: "Verifications", href: "/admin/verifications" },
   { icon: ShieldCheck, label: "Platform Integrity", href: "/admin/integrity" },
+  { icon: Gauge, label: "Performance", href: "/admin/performance" },
   { icon: DollarSign, label: "Finance", href: "/admin/finance" },
   { icon: Flag, label: "Reports", href: "/admin/reports" },
   { icon: MessageSquare, label: "Support", href: "/admin/support" },
