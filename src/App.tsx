@@ -181,6 +181,11 @@ const SystemicRiskDashboardPage = lazy(() => import("./pages/SystemicRiskDashboa
 const CapitalOptimizerDashboardPage = lazy(() => import("./pages/CapitalOptimizerDashboardPage"));
 const InstitutionalDriftDashboardPage = lazy(() => import("./pages/InstitutionalDriftDashboardPage"));
 
+// Platform Excellence Modules
+const ProjectWorkspacePage = lazy(() => import("./pages/ProjectWorkspacePage"));
+const ExecutionTimelinePage = lazy(() => import("./pages/ExecutionTimelinePage"));
+const PublicProfilePage = lazy(() => import("./pages/PublicProfilePage"));
+
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
     <div className="flex flex-col items-center gap-4">
@@ -274,6 +279,11 @@ const AppContent = () => {
           <Route path="/capital-optimizer" element={<ProtectedRoute><CapitalOptimizerDashboardPage /></ProtectedRoute>} />
           <Route path="/institutional-drift" element={<ProtectedRoute><InstitutionalDriftDashboardPage /></ProtectedRoute>} />
 
+          {/* Platform Excellence Modules */}
+          <Route path="/workspace/:projectId" element={<ProtectedRoute><ProjectWorkspacePage /></ProtectedRoute>} />
+          <Route path="/execution-timeline/:projectId" element={<ProtectedRoute><ExecutionTimelinePage /></ProtectedRoute>} />
+          <Route path="/execution-timeline" element={<ProtectedRoute><ExecutionTimelinePage /></ProtectedRoute>} />
+          <Route path="/profile/:username" element={<PublicProfilePage />} />
 
           {/* Verification — Trust */}
           <Route path="/verification" element={<ProtectedRoute><VerificationCenterPage /></ProtectedRoute>} />

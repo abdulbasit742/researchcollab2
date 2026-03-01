@@ -19572,6 +19572,36 @@ export type Database = {
         }
         Relationships: []
       }
+      execution_recommendations: {
+        Row: {
+          generated_at: string
+          id: string
+          is_dismissed: boolean | null
+          project_id: string
+          recommendation_text: string
+          recommendation_type: string
+          severity: string | null
+        }
+        Insert: {
+          generated_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          project_id: string
+          recommendation_text: string
+          recommendation_type: string
+          severity?: string | null
+        }
+        Update: {
+          generated_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          project_id?: string
+          recommendation_text?: string
+          recommendation_type?: string
+          severity?: string | null
+        }
+        Relationships: []
+      }
       execution_reels: {
         Row: {
           created_at: string | null
@@ -19803,6 +19833,36 @@ export type Database = {
           sponsor_dissatisfaction_probability?: number | null
           suggested_actions?: Json | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      execution_snapshots: {
+        Row: {
+          created_at: string
+          dispute_status: string | null
+          funding_progress_percentage: number | null
+          id: string
+          milestone_progress_percentage: number | null
+          project_id: string
+          snapshot_date: string
+        }
+        Insert: {
+          created_at?: string
+          dispute_status?: string | null
+          funding_progress_percentage?: number | null
+          id?: string
+          milestone_progress_percentage?: number | null
+          project_id: string
+          snapshot_date?: string
+        }
+        Update: {
+          created_at?: string
+          dispute_status?: string | null
+          funding_progress_percentage?: number | null
+          id?: string
+          milestone_progress_percentage?: number | null
+          project_id?: string
+          snapshot_date?: string
         }
         Relationships: []
       }
@@ -49241,6 +49301,51 @@ export type Database = {
           },
         ]
       }
+      public_profiles: {
+        Row: {
+          bio: string | null
+          created_at: string
+          execution_score: number | null
+          expertise_tags: string[] | null
+          headline: string | null
+          id: string
+          is_public: boolean | null
+          published_research_count: number | null
+          updated_at: string
+          user_id: string
+          username: string | null
+          verified_projects_count: number | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          execution_score?: number | null
+          expertise_tags?: string[] | null
+          headline?: string | null
+          id?: string
+          is_public?: boolean | null
+          published_research_count?: number | null
+          updated_at?: string
+          user_id: string
+          username?: string | null
+          verified_projects_count?: number | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          execution_score?: number | null
+          expertise_tags?: string[] | null
+          headline?: string | null
+          id?: string
+          is_public?: boolean | null
+          published_research_count?: number | null
+          updated_at?: string
+          user_id?: string
+          username?: string | null
+          verified_projects_count?: number | null
+        }
+        Relationships: []
+      }
       publication_authors: {
         Row: {
           affiliation: string | null
@@ -54665,6 +54770,7 @@ export type Database = {
           id: string
           institution_id: string | null
           owner_id: string
+          project_id: string | null
           title: string
           updated_at: string
           visibility: string
@@ -54675,6 +54781,7 @@ export type Database = {
           id?: string
           institution_id?: string | null
           owner_id: string
+          project_id?: string | null
           title: string
           updated_at?: string
           visibility?: string
@@ -54685,6 +54792,7 @@ export type Database = {
           id?: string
           institution_id?: string | null
           owner_id?: string
+          project_id?: string | null
           title?: string
           updated_at?: string
           visibility?: string
@@ -68364,6 +68472,82 @@ export type Database = {
             columns: ["workspace_id"]
             isOneToOne: false
             referencedRelation: "collaborative_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_document_history: {
+        Row: {
+          content: Json
+          created_at: string
+          document_id: string
+          edited_by: string
+          id: string
+          version_number: number
+        }
+        Insert: {
+          content: Json
+          created_at?: string
+          document_id: string
+          edited_by: string
+          id?: string
+          version_number: number
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          document_id?: string
+          edited_by?: string
+          id?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_document_history_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_documents: {
+        Row: {
+          content: Json | null
+          created_at: string
+          created_by: string
+          id: string
+          title: string
+          updated_at: string
+          version_number: number
+          workspace_id: string
+        }
+        Insert: {
+          content?: Json | null
+          created_at?: string
+          created_by: string
+          id?: string
+          title?: string
+          updated_at?: string
+          version_number?: number
+          workspace_id: string
+        }
+        Update: {
+          content?: Json | null
+          created_at?: string
+          created_by?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          version_number?: number
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_documents_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "research_workspaces"
             referencedColumns: ["id"]
           },
         ]
