@@ -42,6 +42,7 @@ import {
   Target,
   Gauge,
   Zap,
+  Award,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -134,6 +135,7 @@ const navItems = [
   { icon: BarChart3, label: "Executive Overview", href: "/institution/executive" },
   { icon: Zap, label: "Automation", href: "/institution/automation" },
   { icon: Brain, label: "Adaptive Intelligence", href: "/institution/adaptive-intelligence" },
+  { icon: Award, label: "Accreditation", href: "/institution/accreditation" },
 ];
 
 const platformItems = [

@@ -7200,6 +7200,39 @@ export type Database = {
         }
         Relationships: []
       }
+      certification_audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          institution_id: string | null
+          reason: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          institution_id?: string | null
+          reason?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          institution_id?: string | null
+          reason?: string | null
+        }
+        Relationships: []
+      }
       change_freeze_policy: {
         Row: {
           allowed_changes: string[] | null
@@ -33368,6 +33401,42 @@ export type Database = {
         }
         Relationships: []
       }
+      institution_accreditation_levels: {
+        Row: {
+          accreditation_tier: string
+          completion_rate: number | null
+          compliance_score: number | null
+          engagement_score: number | null
+          governance_score: number | null
+          id: string
+          institution_id: string
+          issued_at: string
+          reviewed_at: string | null
+        }
+        Insert: {
+          accreditation_tier?: string
+          completion_rate?: number | null
+          compliance_score?: number | null
+          engagement_score?: number | null
+          governance_score?: number | null
+          id?: string
+          institution_id: string
+          issued_at?: string
+          reviewed_at?: string | null
+        }
+        Update: {
+          accreditation_tier?: string
+          completion_rate?: number | null
+          compliance_score?: number | null
+          engagement_score?: number | null
+          governance_score?: number | null
+          id?: string
+          institution_id?: string
+          issued_at?: string
+          reviewed_at?: string | null
+        }
+        Relationships: []
+      }
       institution_adoption_tiers: {
         Row: {
           created_at: string
@@ -40699,6 +40768,42 @@ export type Database = {
           status?: string | null
           task_type?: string
           title?: string
+        }
+        Relationships: []
+      }
+      milestone_certifications: {
+        Row: {
+          certification_notes: string | null
+          certification_score: number | null
+          certification_type: string
+          certified_by: string
+          id: string
+          institution_id: string | null
+          issued_at: string
+          milestone_id: string
+          verification_hash: string
+        }
+        Insert: {
+          certification_notes?: string | null
+          certification_score?: number | null
+          certification_type?: string
+          certified_by: string
+          id?: string
+          institution_id?: string | null
+          issued_at?: string
+          milestone_id: string
+          verification_hash: string
+        }
+        Update: {
+          certification_notes?: string | null
+          certification_score?: number | null
+          certification_type?: string
+          certified_by?: string
+          id?: string
+          institution_id?: string | null
+          issued_at?: string
+          milestone_id?: string
+          verification_hash?: string
         }
         Relationships: []
       }
@@ -50481,6 +50586,45 @@ export type Database = {
           project_id?: string
           updated_at?: string
           views?: number
+        }
+        Relationships: []
+      }
+      project_execution_certificates: {
+        Row: {
+          certificate_hash: string
+          completion_score: number | null
+          dispute_ratio: number | null
+          execution_stability_score: number | null
+          id: string
+          institution_id: string | null
+          issued_at: string
+          issued_by: string
+          project_id: string
+          review_quality_score: number | null
+        }
+        Insert: {
+          certificate_hash: string
+          completion_score?: number | null
+          dispute_ratio?: number | null
+          execution_stability_score?: number | null
+          id?: string
+          institution_id?: string | null
+          issued_at?: string
+          issued_by: string
+          project_id: string
+          review_quality_score?: number | null
+        }
+        Update: {
+          certificate_hash?: string
+          completion_score?: number | null
+          dispute_ratio?: number | null
+          execution_stability_score?: number | null
+          id?: string
+          institution_id?: string | null
+          issued_at?: string
+          issued_by?: string
+          project_id?: string
+          review_quality_score?: number | null
         }
         Relationships: []
       }
@@ -68117,6 +68261,42 @@ export type Database = {
           id?: string
           title?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_execution_credentials: {
+        Row: {
+          credential_hash: string
+          credential_type: string
+          id: string
+          institution_id: string | null
+          issued_at: string
+          milestones_completed: number | null
+          on_time_completion_rate: number | null
+          review_score_average: number | null
+          user_id: string
+        }
+        Insert: {
+          credential_hash: string
+          credential_type: string
+          id?: string
+          institution_id?: string | null
+          issued_at?: string
+          milestones_completed?: number | null
+          on_time_completion_rate?: number | null
+          review_score_average?: number | null
+          user_id: string
+        }
+        Update: {
+          credential_hash?: string
+          credential_type?: string
+          id?: string
+          institution_id?: string | null
+          issued_at?: string
+          milestones_completed?: number | null
+          on_time_completion_rate?: number | null
+          review_score_average?: number | null
           user_id?: string
         }
         Relationships: []
