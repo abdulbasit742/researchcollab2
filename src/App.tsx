@@ -176,6 +176,10 @@ const SovereignNodeDashboardPage2 = lazy(() => import("./pages/SovereignNodeDash
 const CrossBorderDashboardPage = lazy(() => import("./pages/CrossBorderDashboardPage"));
 const GovernanceHealthDashboardPage = lazy(() => import("./pages/GovernanceHealthDashboardPage"));
 const HumanCapitalDashboardPage = lazy(() => import("./pages/HumanCapitalDashboardPage"));
+const ExecutionDriftDashboardPage = lazy(() => import("./pages/ExecutionDriftDashboardPage"));
+const SystemicRiskDashboardPage = lazy(() => import("./pages/SystemicRiskDashboardPage"));
+const CapitalOptimizerDashboardPage = lazy(() => import("./pages/CapitalOptimizerDashboardPage"));
+const InstitutionalDriftDashboardPage = lazy(() => import("./pages/InstitutionalDriftDashboardPage"));
 
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
@@ -265,8 +269,11 @@ const AppContent = () => {
           <Route path="/cross-border" element={<ProtectedRoute><CrossBorderDashboardPage /></ProtectedRoute>} />
           <Route path="/governance-health" element={<ProtectedRoute><GovernanceHealthDashboardPage /></ProtectedRoute>} />
           <Route path="/human-capital" element={<ProtectedRoute><HumanCapitalDashboardPage /></ProtectedRoute>} />
+          <Route path="/execution-drift" element={<ProtectedRoute><ExecutionDriftDashboardPage /></ProtectedRoute>} />
+          <Route path="/systemic-risk" element={<ProtectedRoute><SystemicRiskDashboardPage /></ProtectedRoute>} />
+          <Route path="/capital-optimizer" element={<ProtectedRoute><CapitalOptimizerDashboardPage /></ProtectedRoute>} />
+          <Route path="/institutional-drift" element={<ProtectedRoute><InstitutionalDriftDashboardPage /></ProtectedRoute>} />
 
-          <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
 
           {/* Verification — Trust */}
           <Route path="/verification" element={<ProtectedRoute><VerificationCenterPage /></ProtectedRoute>} />
