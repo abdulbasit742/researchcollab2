@@ -275,6 +275,16 @@ const TrendingPage = lazy(() => import("./pages/TrendingPage"));
 // Execution Workspace
 const ExecutionWorkspacePage = lazy(() => import("./pages/ExecutionWorkspacePage"));
 
+// Super Admin
+const SuperAdminOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminOverviewPage"));
+const SuperAdminRiskClustersPage = lazy(() => import("./pages/super-admin/SuperAdminRiskClustersPage"));
+const SuperAdminPerformancePage = lazy(() => import("./pages/super-admin/SuperAdminPerformancePage"));
+const SuperAdminIntegrityPage = lazy(() => import("./pages/super-admin/SuperAdminIntegrityPage"));
+const SuperAdminFederationPage = lazy(() => import("./pages/super-admin/SuperAdminFederationPage"));
+const SuperAdminFeaturesPage = lazy(() => import("./pages/super-admin/SuperAdminFeaturesPage"));
+const SuperAdminRevenuePage = lazy(() => import("./pages/super-admin/SuperAdminRevenuePage"));
+const SuperAdminAuditLogPage = lazy(() => import("./pages/super-admin/SuperAdminAuditLogPage"));
+
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
     <div className="flex flex-col items-center gap-4">
@@ -517,6 +527,15 @@ const AppContent = () => {
           <Route path="/verify" element={<CertificateVerificationPage />} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
 
+          {/* ====== SUPER ADMIN ====== */}
+          <Route path="/super-admin/overview" element={<ProtectedRoute><SuperAdminOverviewPage /></ProtectedRoute>} />
+          <Route path="/super-admin/risk-clusters" element={<ProtectedRoute><SuperAdminRiskClustersPage /></ProtectedRoute>} />
+          <Route path="/super-admin/performance" element={<ProtectedRoute><SuperAdminPerformancePage /></ProtectedRoute>} />
+          <Route path="/super-admin/integrity" element={<ProtectedRoute><SuperAdminIntegrityPage /></ProtectedRoute>} />
+          <Route path="/super-admin/federation" element={<ProtectedRoute><SuperAdminFederationPage /></ProtectedRoute>} />
+          <Route path="/super-admin/features" element={<ProtectedRoute><SuperAdminFeaturesPage /></ProtectedRoute>} />
+          <Route path="/super-admin/revenue" element={<ProtectedRoute><SuperAdminRevenuePage /></ProtectedRoute>} />
+          <Route path="/super-admin/audit-log" element={<ProtectedRoute><SuperAdminAuditLogPage /></ProtectedRoute>} />
           {/* ====== REDIRECTS — Everything else → Core ====== */}
           {/* Dashboard consolidation */}
           <Route path="/dashboard/*" element={<Navigate to="/home" replace />} />

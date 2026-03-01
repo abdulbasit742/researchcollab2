@@ -66001,6 +66001,39 @@ export type Database = {
         }
         Relationships: []
       }
+      super_admin_activity_log: {
+        Row: {
+          action_type: string
+          created_at: string
+          id: string
+          ip_address: string | null
+          metadata: Json | null
+          super_admin_id: string
+          target_entity_id: string | null
+          target_entity_type: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          super_admin_id: string
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          super_admin_id?: string
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+        }
+        Relationships: []
+      }
       supervision_records: {
         Row: {
           actual_end_date: string | null
@@ -73891,6 +73924,7 @@ export type Database = {
       is_pilot_frozen: { Args: never; Returns: boolean }
       is_pilot_participant: { Args: { p_user_id: string }; Returns: boolean }
       is_shadow_banned: { Args: { check_user_id: string }; Returns: boolean }
+      is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       is_tenant_admin: {
         Args: { _tenant_id: string; _user_id: string }
         Returns: boolean
@@ -74147,6 +74181,7 @@ export type Database = {
         | "compliance_officer"
         | "sponsor_admin"
         | "tenant_admin"
+        | "super_admin"
       deployment_type: "saas" | "dedicated" | "sovereign"
       due_diligence_status: "pending" | "in_progress" | "completed" | "flagged"
       entity_lifecycle_state:
@@ -74392,6 +74427,7 @@ export const Constants = {
         "compliance_officer",
         "sponsor_admin",
         "tenant_admin",
+        "super_admin",
       ],
       deployment_type: ["saas", "dedicated", "sovereign"],
       due_diligence_status: ["pending", "in_progress", "completed", "flagged"],
