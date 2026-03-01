@@ -220,6 +220,11 @@ const ExecutionFlowPage = lazy(() => import("./pages/ExecutionFlowPage"));
 // Federation
 const FederationControlPanelPage = lazy(() => import("./pages/FederationControlPanelPage"));
 
+// Strategic Positioning
+const PositioningPage = lazy(() => import("./pages/PositioningPage"));
+const CompetitiveIntelligencePage = lazy(() => import("./pages/CompetitiveIntelligencePage"));
+const StrategyPanelPage = lazy(() => import("./pages/StrategyPanelPage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -481,6 +486,9 @@ const AppContent = () => {
           <Route path="/admin/orchestration" element={<ProtectedRoute><OrchestrationDashboardPage /></ProtectedRoute>} />
           <Route path="/admin/execution-flow" element={<ProtectedRoute><ExecutionFlowPage /></ProtectedRoute>} />
           <Route path="/admin/federation" element={<ProtectedRoute><FederationControlPanelPage /></ProtectedRoute>} />
+          <Route path="/admin/positioning" element={<ProtectedRoute><PositioningPage /></ProtectedRoute>} />
+          <Route path="/admin/competitive-intelligence" element={<ProtectedRoute><CompetitiveIntelligencePage /></ProtectedRoute>} />
+          <Route path="/admin/strategy" element={<ProtectedRoute><StrategyPanelPage /></ProtectedRoute>} />
           <Route path="/verify/:certificateId" element={<CertificateVerificationPage />} />
           <Route path="/verify" element={<CertificateVerificationPage />} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />

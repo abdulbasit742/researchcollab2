@@ -49,6 +49,9 @@ import {
   ShieldAlert,
   MapPin,
   GitBranch,
+  Crosshair,
+  Swords,
+  Compass,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -156,6 +159,9 @@ const navItems = [
   { icon: Workflow, label: "AI Orchestration", href: "/admin/orchestration" },
   { icon: GitBranch, label: "Execution Flow", href: "/admin/execution-flow" },
   { icon: Globe, label: "Federation", href: "/admin/federation" },
+  { icon: Crosshair, label: "Positioning", href: "/admin/positioning" },
+  { icon: Swords, label: "Competitive Intel", href: "/admin/competitive-intelligence" },
+  { icon: Compass, label: "Strategy Panel", href: "/admin/strategy" },
 ];
 
 const platformItems = [

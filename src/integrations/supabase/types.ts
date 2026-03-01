@@ -9912,6 +9912,45 @@ export type Database = {
         }
         Relationships: []
       }
+      competitive_positioning_matrix: {
+        Row: {
+          capital_integration_score: number | null
+          competitor_category: string | null
+          competitor_name: string
+          compliance_score: number | null
+          created_at: string
+          differentiation_summary: string | null
+          execution_depth_score: number | null
+          governance_score: number | null
+          id: string
+          orchestration_score: number | null
+        }
+        Insert: {
+          capital_integration_score?: number | null
+          competitor_category?: string | null
+          competitor_name: string
+          compliance_score?: number | null
+          created_at?: string
+          differentiation_summary?: string | null
+          execution_depth_score?: number | null
+          governance_score?: number | null
+          id?: string
+          orchestration_score?: number | null
+        }
+        Update: {
+          capital_integration_score?: number | null
+          competitor_category?: string | null
+          competitor_name?: string
+          compliance_score?: number | null
+          created_at?: string
+          differentiation_summary?: string | null
+          execution_depth_score?: number | null
+          governance_score?: number | null
+          id?: string
+          orchestration_score?: number | null
+        }
+        Relationships: []
+      }
       competitor_analysis: {
         Row: {
           arbitration_structure: number | null
@@ -32291,6 +32330,45 @@ export type Database = {
           },
         ]
       }
+      impact_reports: {
+        Row: {
+          certification_volume: number | null
+          compliance_improvement: number | null
+          engagement_change: number | null
+          execution_growth: number | null
+          file_url: string | null
+          generated_at: string
+          governance_stability_change: number | null
+          id: string
+          institution_id: string
+          period: string
+        }
+        Insert: {
+          certification_volume?: number | null
+          compliance_improvement?: number | null
+          engagement_change?: number | null
+          execution_growth?: number | null
+          file_url?: string | null
+          generated_at?: string
+          governance_stability_change?: number | null
+          id?: string
+          institution_id: string
+          period: string
+        }
+        Update: {
+          certification_volume?: number | null
+          compliance_improvement?: number | null
+          engagement_change?: number | null
+          execution_growth?: number | null
+          file_url?: string | null
+          generated_at?: string
+          governance_stability_change?: number | null
+          id?: string
+          institution_id?: string
+          period?: string
+        }
+        Relationships: []
+      }
       inactivity_flags: {
         Row: {
           dismissed: boolean
@@ -40801,6 +40879,39 @@ export type Database = {
         }
         Relationships: []
       }
+      market_differentiation_insights: {
+        Row: {
+          accreditation_depth_score: number | null
+          execution_strength_score: number | null
+          federation_readiness_score: number | null
+          generated_at: string
+          governance_strength_score: number | null
+          id: string
+          institution_id: string | null
+          predictive_intelligence_score: number | null
+        }
+        Insert: {
+          accreditation_depth_score?: number | null
+          execution_strength_score?: number | null
+          federation_readiness_score?: number | null
+          generated_at?: string
+          governance_strength_score?: number | null
+          id?: string
+          institution_id?: string | null
+          predictive_intelligence_score?: number | null
+        }
+        Update: {
+          accreditation_depth_score?: number | null
+          execution_strength_score?: number | null
+          federation_readiness_score?: number | null
+          generated_at?: string
+          governance_strength_score?: number | null
+          id?: string
+          institution_id?: string | null
+          predictive_intelligence_score?: number | null
+        }
+        Relationships: []
+      }
       market_liquidity_metrics: {
         Row: {
           buyer_geo_distribution: Json | null
@@ -47445,6 +47556,33 @@ export type Database = {
           id?: string
           last_check_at?: string
           status?: string
+        }
+        Relationships: []
+      }
+      platform_identity_config: {
+        Row: {
+          category_label: string
+          differentiation_points: Json | null
+          id: string
+          positioning_statement: string
+          updated_at: string
+          value_proposition: string
+        }
+        Insert: {
+          category_label?: string
+          differentiation_points?: Json | null
+          id?: string
+          positioning_statement?: string
+          updated_at?: string
+          value_proposition?: string
+        }
+        Update: {
+          category_label?: string
+          differentiation_points?: Json | null
+          id?: string
+          positioning_statement?: string
+          updated_at?: string
+          value_proposition?: string
         }
         Relationships: []
       }
@@ -70144,6 +70282,36 @@ export type Database = {
           valuation_high?: number | null
           valuation_low?: number | null
           valuation_mid?: number | null
+        }
+        Relationships: []
+      }
+      value_proof_metrics: {
+        Row: {
+          completion_rate_improvement: number | null
+          dispute_reduction_rate: number | null
+          execution_velocity_increase: number | null
+          generated_at: string
+          id: string
+          institution_id: string | null
+          review_efficiency_gain: number | null
+        }
+        Insert: {
+          completion_rate_improvement?: number | null
+          dispute_reduction_rate?: number | null
+          execution_velocity_increase?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+          review_efficiency_gain?: number | null
+        }
+        Update: {
+          completion_rate_improvement?: number | null
+          dispute_reduction_rate?: number | null
+          execution_velocity_increase?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+          review_efficiency_gain?: number | null
         }
         Relationships: []
       }
