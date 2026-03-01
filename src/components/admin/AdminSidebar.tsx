@@ -125,6 +125,8 @@ const navItems = [
   { icon: Radio, label: "Strategic Feed", href: "/feed/strategic" },
   { icon: Activity, label: "Engagement Analytics", href: "/analytics/engagement" },
   { icon: Building2, label: "Institution Engagement", href: "/institution/engagement" },
+  { icon: Building2, label: "Institution Control Panel", href: "/institution/control-panel" },
+  { icon: Shield, label: "Tenant Boundary Tests", href: "/admin/tenant-boundary-test" },
 ];
 
 const platformItems = [

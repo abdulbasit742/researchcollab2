@@ -172,6 +172,10 @@ const EngagementAnalyticsPage = lazy(() => import("./pages/EngagementAnalyticsPa
 const InstitutionEngagementPage = lazy(() => import("./pages/InstitutionEngagementPage"));
 const PublicDiscoveryPage = lazy(() => import("./pages/PublicDiscoveryPage"));
 
+// Multi-Tenant
+const InstitutionControlPanelPage = lazy(() => import("./pages/InstitutionControlPanelPage"));
+const TenantBoundaryTestPage = lazy(() => import("./pages/TenantBoundaryTestPage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -410,6 +414,8 @@ const AppContent = () => {
           <Route path="/admin/security-dashboard" element={<ProtectedRoute><AdminSecurityDashboardPage /></ProtectedRoute>} />
           <Route path="/analytics/engagement" element={<ProtectedRoute><EngagementAnalyticsPage /></ProtectedRoute>} />
           <Route path="/institution/engagement" element={<ProtectedRoute><InstitutionEngagementPage /></ProtectedRoute>} />
+          <Route path="/institution/control-panel" element={<ProtectedRoute><InstitutionControlPanelPage /></ProtectedRoute>} />
+          <Route path="/admin/tenant-boundary-test" element={<ProtectedRoute><TenantBoundaryTestPage /></ProtectedRoute>} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}

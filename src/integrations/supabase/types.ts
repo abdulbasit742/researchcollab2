@@ -33118,6 +33118,36 @@ export type Database = {
         }
         Relationships: []
       }
+      institution_exports: {
+        Row: {
+          created_at: string
+          export_type: string
+          file_url: string | null
+          id: string
+          institution_id: string
+          requested_by: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          export_type: string
+          file_url?: string | null
+          id?: string
+          institution_id: string
+          requested_by: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          export_type?: string
+          file_url?: string | null
+          id?: string
+          institution_id?: string
+          requested_by?: string
+          status?: string
+        }
+        Relationships: []
+      }
       institution_identity_registry: {
         Row: {
           created_at: string
@@ -33501,6 +33531,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      institution_roles: {
+        Row: {
+          created_at: string
+          id: string
+          institution_id: string
+          permissions: Json
+          role_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution_id: string
+          permissions?: Json
+          role_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution_id?: string
+          permissions?: Json
+          role_name?: string
+        }
+        Relationships: []
+      }
+      institution_settings: {
+        Row: {
+          branding_logo_url: string | null
+          created_at: string
+          custom_domain: string | null
+          feature_flags: Json
+          id: string
+          institution_id: string
+          primary_color: string | null
+          secondary_color: string | null
+          updated_at: string
+        }
+        Insert: {
+          branding_logo_url?: string | null
+          created_at?: string
+          custom_domain?: string | null
+          feature_flags?: Json
+          id?: string
+          institution_id: string
+          primary_color?: string | null
+          secondary_color?: string | null
+          updated_at?: string
+        }
+        Update: {
+          branding_logo_url?: string | null
+          created_at?: string
+          custom_domain?: string | null
+          feature_flags?: Json
+          id?: string
+          institution_id?: string
+          primary_color?: string | null
+          secondary_color?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       institution_subscriptions: {
         Row: {
@@ -56688,6 +56778,33 @@ export type Database = {
         }
         Relationships: []
       }
+      role_assignment_audit: {
+        Row: {
+          actor_id: string
+          created_at: string
+          id: string
+          institution_id: string
+          role_assigned: string
+          target_user_id: string
+        }
+        Insert: {
+          actor_id: string
+          created_at?: string
+          id?: string
+          institution_id: string
+          role_assigned: string
+          target_user_id: string
+        }
+        Update: {
+          actor_id?: string
+          created_at?: string
+          id?: string
+          institution_id?: string
+          role_assigned?: string
+          target_user_id?: string
+        }
+        Relationships: []
+      }
       role_permissions: {
         Row: {
           action_key: string
@@ -64384,6 +64501,63 @@ export type Database = {
         }
         Relationships: []
       }
+      tenant_activity_metrics: {
+        Row: {
+          created_at: string
+          id: string
+          institution_id: string
+          messaging_volume: number
+          request_volume: number
+          search_volume: number
+          upload_volume: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution_id: string
+          messaging_volume?: number
+          request_volume?: number
+          search_volume?: number
+          upload_volume?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution_id?: string
+          messaging_volume?: number
+          request_volume?: number
+          search_volume?: number
+          upload_volume?: number
+        }
+        Relationships: []
+      }
+      tenant_boundary_audit: {
+        Row: {
+          checked_at: string
+          id: string
+          issue_detected: string | null
+          rls_enforced: boolean
+          table_name: string
+          tenant_column_present: boolean
+        }
+        Insert: {
+          checked_at?: string
+          id?: string
+          issue_detected?: string | null
+          rls_enforced?: boolean
+          table_name: string
+          tenant_column_present?: boolean
+        }
+        Update: {
+          checked_at?: string
+          id?: string
+          issue_detected?: string | null
+          rls_enforced?: boolean
+          table_name?: string
+          tenant_column_present?: boolean
+        }
+        Relationships: []
+      }
       tenant_memberships: {
         Row: {
           id: string
@@ -64418,6 +64592,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      tenant_security_tests: {
+        Row: {
+          checked_at: string
+          details: string | null
+          id: string
+          passed: boolean
+          test_type: string
+        }
+        Insert: {
+          checked_at?: string
+          details?: string | null
+          id?: string
+          passed?: boolean
+          test_type: string
+        }
+        Update: {
+          checked_at?: string
+          details?: string | null
+          id?: string
+          passed?: boolean
+          test_type?: string
+        }
+        Relationships: []
       }
       tenants: {
         Row: {
