@@ -4,62 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { GraduationCap, Target, TrendingUp, DollarSign, Clock, CheckCircle2, AlertTriangle, Plus } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { MainLayout } from "@/components/layout/MainLayout";
-
-const mockFYPs = [
-  {
-    id: "1",
-    project_title: "AI-Powered Academic Integrity System",
-    domain: "Computer Science",
-    status: "active",
-    trust_weight: 1.2,
-    economic_value: 25000,
-    final_score: null,
-    milestones: [
-      { name: "Proposal Approved", status: "completed", due: "2025-09-15" },
-      { name: "Literature Review", status: "completed", due: "2025-11-01" },
-      { name: "Prototype Development", status: "active", due: "2026-02-15" },
-      { name: "Testing & Evaluation", status: "pending", due: "2026-04-01" },
-      { name: "Final Submission", status: "pending", due: "2026-05-15" },
-    ],
-    supervisor: "Dr. Ahmed Khan",
-    student: "Fatima Ali",
-  },
-  {
-    id: "2",
-    project_title: "Blockchain-Based Credential Verification",
-    domain: "Information Systems",
-    status: "proposal",
-    trust_weight: 1.0,
-    economic_value: 15000,
-    final_score: null,
-    milestones: [
-      { name: "Proposal Submission", status: "active", due: "2026-03-01" },
-    ],
-    supervisor: "Prof. Sara Malik",
-    student: "Hassan Raza",
-  },
-  {
-    id: "3",
-    project_title: "IoT Smart Campus Energy Monitor",
-    domain: "Electrical Engineering",
-    status: "completed",
-    trust_weight: 1.5,
-    economic_value: 35000,
-    final_score: 88,
-    milestones: [
-      { name: "Proposal Approved", status: "completed", due: "2025-02-01" },
-      { name: "Hardware Design", status: "completed", due: "2025-05-01" },
-      { name: "Software Integration", status: "completed", due: "2025-08-01" },
-      { name: "Final Defense", status: "completed", due: "2025-11-15" },
-    ],
-    supervisor: "Dr. Usman Tariq",
-    student: "Aisha Noor",
-  },
-];
+import { useFYPProjects, useFYPStats } from "@/hooks/useFYPProjects";
 
 const statusColor: Record<string, string> = {
   proposal: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20",
@@ -71,11 +20,8 @@ const statusColor: Record<string, string> = {
 export default function FYPDashboardPage() {
   const { user } = useAuth();
   const [view, setView] = useState<"student" | "supervisor">("student");
-
-  const completedMilestones = mockFYPs.flatMap(f => f.milestones).filter(m => m.status === "completed").length;
-  const totalMilestones = mockFYPs.flatMap(f => f.milestones).length;
-  const completionRate = Math.round((completedMilestones / totalMilestones) * 100);
-  const totalEconomicValue = mockFYPs.reduce((s, f) => s + f.economic_value, 0);
+  const { data: fypProjects = [], isLoading } = useFYPProjects();
+  const stats = useFYPStats(fypProjects);
 
   return (
     <MainLayout>
@@ -97,7 +43,7 @@ export default function FYPDashboardPage() {
             <div className="flex items-center gap-3">
               <Target className="h-8 w-8 text-primary" />
               <div>
-                <p className="text-2xl font-bold">{mockFYPs.length}</p>
+                {isLoading ? <Skeleton className="h-8 w-12" /> : <p className="text-2xl font-bold">{stats.totalFYPs}</p>}
                 <p className="text-sm text-muted-foreground">Total FYPs</p>
               </div>
             </div>
@@ -106,7 +52,7 @@ export default function FYPDashboardPage() {
             <div className="flex items-center gap-3">
               <CheckCircle2 className="h-8 w-8 text-green-500" />
               <div>
-                <p className="text-2xl font-bold">{completionRate}%</p>
+                {isLoading ? <Skeleton className="h-8 w-12" /> : <p className="text-2xl font-bold">{stats.completionRate}%</p>}
                 <p className="text-sm text-muted-foreground">Milestone Completion</p>
               </div>
             </div>
@@ -115,7 +61,7 @@ export default function FYPDashboardPage() {
             <div className="flex items-center gap-3">
               <TrendingUp className="h-8 w-8 text-blue-500" />
               <div>
-                <p className="text-2xl font-bold">{mockFYPs.filter(f => f.status === "active").length}</p>
+                {isLoading ? <Skeleton className="h-8 w-12" /> : <p className="text-2xl font-bold">{stats.activeProjects}</p>}
                 <p className="text-sm text-muted-foreground">Active Projects</p>
               </div>
             </div>
@@ -124,7 +70,7 @@ export default function FYPDashboardPage() {
             <div className="flex items-center gap-3">
               <DollarSign className="h-8 w-8 text-yellow-500" />
               <div>
-                <p className="text-2xl font-bold">PKR {totalEconomicValue.toLocaleString()}</p>
+                {isLoading ? <Skeleton className="h-8 w-12" /> : <p className="text-2xl font-bold">PKR {stats.totalEconomicValue.toLocaleString()}</p>}
                 <p className="text-sm text-muted-foreground">Economic Value</p>
               </div>
             </div>
@@ -138,55 +84,78 @@ export default function FYPDashboardPage() {
           </TabsList>
 
           <TabsContent value="student" className="space-y-4 mt-4">
-            {mockFYPs.map((fyp) => (
-              <Card key={fyp.id}>
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-lg">{fyp.project_title}</CardTitle>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {fyp.domain} · Supervisor: {fyp.supervisor}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className={statusColor[fyp.status]}>{fyp.status}</Badge>
-                      <Badge variant="outline">Trust ×{fyp.trust_weight}</Badge>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-muted-foreground">Milestone Progress</span>
-                      <span className="font-medium">
-                        {fyp.milestones.filter(m => m.status === "completed").length}/{fyp.milestones.length}
-                      </span>
-                    </div>
-                    <Progress value={(fyp.milestones.filter(m => m.status === "completed").length / fyp.milestones.length) * 100} />
-                  </div>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-                    {fyp.milestones.map((m, i) => (
-                      <div key={i} className={`p-2 rounded-lg border text-center text-xs ${
-                        m.status === "completed" ? "bg-green-500/10 border-green-500/20" :
-                        m.status === "active" ? "bg-blue-500/10 border-blue-500/20" :
-                        "bg-muted/50 border-border"
-                      }`}>
-                        {m.status === "completed" ? <CheckCircle2 className="h-3 w-3 mx-auto mb-1 text-green-500" /> :
-                         m.status === "active" ? <Clock className="h-3 w-3 mx-auto mb-1 text-blue-500" /> :
-                         <AlertTriangle className="h-3 w-3 mx-auto mb-1 text-muted-foreground" />}
-                        <p className="font-medium">{m.name}</p>
-                        <p className="text-muted-foreground">{m.due}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex justify-between items-center pt-2 border-t">
-                    <span className="text-sm text-muted-foreground">Economic Value: <strong>PKR {fyp.economic_value.toLocaleString()}</strong></span>
-                    {fyp.final_score && <span className="text-sm font-semibold text-green-600">Score: {fyp.final_score}/100</span>}
-                    <Button size="sm" variant="outline">View Details</Button>
-                  </div>
+            {isLoading ? (
+              <div className="space-y-4">
+                {[1, 2, 3].map(i => <Skeleton key={i} className="h-48" />)}
+              </div>
+            ) : fypProjects.length === 0 ? (
+              <Card>
+                <CardContent className="py-12 text-center">
+                  <GraduationCap className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">No FYP Projects</h3>
+                  <p className="text-muted-foreground mb-4">
+                    You don't have any final year projects yet. Create one to get started.
+                  </p>
+                  <Button><Plus className="h-4 w-4 mr-2" /> Create FYP Project</Button>
                 </CardContent>
               </Card>
-            ))}
+            ) : (
+              fypProjects.map((fyp) => (
+                <Card key={fyp.id}>
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-lg">{fyp.project_title}</CardTitle>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {fyp.domain || "General"} · Supervisor: {fyp.supervisor_name || "Unassigned"}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className={statusColor[fyp.status] || statusColor.proposal}>{fyp.status}</Badge>
+                        {fyp.trust_weight && <Badge variant="outline">Trust ×{fyp.trust_weight}</Badge>}
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {fyp.milestones.length > 0 && (
+                      <>
+                        <div>
+                          <div className="flex justify-between text-sm mb-1">
+                            <span className="text-muted-foreground">Milestone Progress</span>
+                            <span className="font-medium">
+                              {fyp.milestones.filter(m => m.status === "completed").length}/{fyp.milestones.length}
+                            </span>
+                          </div>
+                          <Progress value={(fyp.milestones.filter(m => m.status === "completed").length / fyp.milestones.length) * 100} />
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+                          {fyp.milestones.map((m, i) => (
+                            <div key={i} className={`p-2 rounded-lg border text-center text-xs ${
+                              m.status === "completed" ? "bg-green-500/10 border-green-500/20" :
+                              m.status === "active" ? "bg-blue-500/10 border-blue-500/20" :
+                              "bg-muted/50 border-border"
+                            }`}>
+                              {m.status === "completed" ? <CheckCircle2 className="h-3 w-3 mx-auto mb-1 text-green-500" /> :
+                               m.status === "active" ? <Clock className="h-3 w-3 mx-auto mb-1 text-blue-500" /> :
+                               <AlertTriangle className="h-3 w-3 mx-auto mb-1 text-muted-foreground" />}
+                              <p className="font-medium">{m.name}</p>
+                              <p className="text-muted-foreground">{m.due}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                    <div className="flex justify-between items-center pt-2 border-t">
+                      <span className="text-sm text-muted-foreground">
+                        Economic Value: <strong>PKR {(fyp.economic_value || 0).toLocaleString()}</strong>
+                      </span>
+                      {fyp.final_score && <span className="text-sm font-semibold text-green-600">Score: {fyp.final_score}/100</span>}
+                      <Button size="sm" variant="outline">View Details</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </TabsContent>
 
           <TabsContent value="supervisor" className="space-y-4 mt-4">
@@ -197,33 +166,46 @@ export default function FYPDashboardPage() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                   <div className="text-center p-4 rounded-lg bg-muted/50">
-                    <p className="text-2xl font-bold">{mockFYPs.length}</p>
+                    {isLoading ? <Skeleton className="h-8 w-12 mx-auto" /> : <p className="text-2xl font-bold">{stats.totalFYPs}</p>}
                     <p className="text-sm text-muted-foreground">Supervised Projects</p>
                   </div>
                   <div className="text-center p-4 rounded-lg bg-muted/50">
-                    <p className="text-2xl font-bold">{mockFYPs.filter(f => f.status === "active").length}</p>
+                    {isLoading ? <Skeleton className="h-8 w-12 mx-auto" /> : <p className="text-2xl font-bold">{stats.activeProjects}</p>}
                     <p className="text-sm text-muted-foreground">Needing Attention</p>
                   </div>
                   <div className="text-center p-4 rounded-lg bg-muted/50">
-                    <p className="text-2xl font-bold">{mockFYPs.filter(f => f.status === "completed").length}</p>
+                    {isLoading ? <Skeleton className="h-8 w-12 mx-auto" /> : <p className="text-2xl font-bold">{stats.completedProjects}</p>}
                     <p className="text-sm text-muted-foreground">Completed</p>
                   </div>
                 </div>
-                <div className="space-y-3">
-                  {mockFYPs.map((fyp) => (
-                    <div key={fyp.id} className="flex items-center justify-between p-3 rounded-lg border">
-                      <div>
-                        <p className="font-medium">{fyp.student}</p>
-                        <p className="text-sm text-muted-foreground">{fyp.project_title}</p>
+                {isLoading ? (
+                  <div className="space-y-3">
+                    {[1, 2, 3].map(i => <Skeleton key={i} className="h-16" />)}
+                  </div>
+                ) : fypProjects.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8">No projects to supervise yet.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {fypProjects.map((fyp) => (
+                      <div key={fyp.id} className="flex items-center justify-between p-3 rounded-lg border">
+                        <div>
+                          <p className="font-medium">{fyp.student_name}</p>
+                          <p className="text-sm text-muted-foreground">{fyp.project_title}</p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Badge variant="outline" className={statusColor[fyp.status] || statusColor.proposal}>{fyp.status}</Badge>
+                          {fyp.milestones.length > 0 && (
+                            <Progress 
+                              value={(fyp.milestones.filter(m => m.status === "completed").length / fyp.milestones.length) * 100} 
+                              className="w-24" 
+                            />
+                          )}
+                          <Button size="sm" variant="outline">Review</Button>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <Badge variant="outline" className={statusColor[fyp.status]}>{fyp.status}</Badge>
-                        <Progress value={(fyp.milestones.filter(m => m.status === "completed").length / fyp.milestones.length) * 100} className="w-24" />
-                        <Button size="sm" variant="outline">Review</Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
