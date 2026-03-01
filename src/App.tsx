@@ -194,6 +194,12 @@ const AdaptiveIntelligencePage = lazy(() => import("./pages/AdaptiveIntelligence
 const AccreditationDashboardPage = lazy(() => import("./pages/AccreditationDashboardPage"));
 const CertificateVerificationPage = lazy(() => import("./pages/CertificateVerificationPage"));
 
+// Institutional Expansion
+const InstitutionOnboardingPage = lazy(() => import("./pages/InstitutionOnboardingPage"));
+const AdoptionMetricsPage = lazy(() => import("./pages/AdoptionMetricsPage"));
+const DepartmentComparisonPage = lazy(() => import("./pages/DepartmentComparisonPage"));
+const InstitutionalToolkitPage = lazy(() => import("./pages/InstitutionalToolkitPage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -441,6 +447,10 @@ const AppContent = () => {
           <Route path="/institution/automation" element={<ProtectedRoute><AutomationControlPanelPage /></ProtectedRoute>} />
           <Route path="/institution/adaptive-intelligence" element={<ProtectedRoute><AdaptiveIntelligencePage /></ProtectedRoute>} />
           <Route path="/institution/accreditation" element={<ProtectedRoute><AccreditationDashboardPage /></ProtectedRoute>} />
+          <Route path="/institution/onboarding" element={<ProtectedRoute><InstitutionOnboardingPage /></ProtectedRoute>} />
+          <Route path="/institution/adoption" element={<ProtectedRoute><AdoptionMetricsPage /></ProtectedRoute>} />
+          <Route path="/institution/departments" element={<ProtectedRoute><DepartmentComparisonPage /></ProtectedRoute>} />
+          <Route path="/institution/toolkit" element={<ProtectedRoute><InstitutionalToolkitPage /></ProtectedRoute>} />
           <Route path="/verify/:certificateId" element={<CertificateVerificationPage />} />
           <Route path="/verify" element={<CertificateVerificationPage />} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
