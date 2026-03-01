@@ -5222,6 +5222,36 @@ export type Database = {
         }
         Relationships: []
       }
+      board_report_exports: {
+        Row: {
+          created_at: string
+          file_url: string | null
+          generated_by: string
+          id: string
+          institution_id: string
+          report_type: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          file_url?: string | null
+          generated_by: string
+          id?: string
+          institution_id: string
+          report_type: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          file_url?: string | null
+          generated_by?: string
+          id?: string
+          institution_id?: string
+          report_type?: string
+          status?: string
+        }
+        Relationships: []
+      }
       board_reports: {
         Row: {
           alliance_growth: Json | null
@@ -14460,6 +14490,42 @@ export type Database = {
           },
         ]
       }
+      department_performance_metrics: {
+        Row: {
+          completion_rate: number | null
+          department_id: string
+          department_name: string | null
+          dispute_ratio: number | null
+          engagement_score: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          review_turnaround: number | null
+        }
+        Insert: {
+          completion_rate?: number | null
+          department_id: string
+          department_name?: string | null
+          dispute_ratio?: number | null
+          engagement_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          review_turnaround?: number | null
+        }
+        Update: {
+          completion_rate?: number | null
+          department_id?: string
+          department_name?: string | null
+          dispute_ratio?: number | null
+          engagement_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          review_turnaround?: number | null
+        }
+        Relationships: []
+      }
       deployment_admins: {
         Row: {
           admin_role: string
@@ -20612,6 +20678,69 @@ export type Database = {
           user_id?: string
           visual_impact_score?: number | null
           visual_type?: string
+        }
+        Relationships: []
+      }
+      executive_capital_metrics: {
+        Row: {
+          dispute_financial_ratio: number | null
+          funding_velocity_index: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          release_efficiency_ratio: number | null
+          total_milestones_completed: number | null
+          total_milestones_funded: number | null
+        }
+        Insert: {
+          dispute_financial_ratio?: number | null
+          funding_velocity_index?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          release_efficiency_ratio?: number | null
+          total_milestones_completed?: number | null
+          total_milestones_funded?: number | null
+        }
+        Update: {
+          dispute_financial_ratio?: number | null
+          funding_velocity_index?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          release_efficiency_ratio?: number | null
+          total_milestones_completed?: number | null
+          total_milestones_funded?: number | null
+        }
+        Relationships: []
+      }
+      executive_predictions: {
+        Row: {
+          confidence_score: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          predicted_completion_rate_next_quarter: number | null
+          predicted_dispute_risk: number | null
+          predicted_engagement_trend: number | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          predicted_completion_rate_next_quarter?: number | null
+          predicted_dispute_risk?: number | null
+          predicted_engagement_trend?: number | null
+        }
+        Update: {
+          confidence_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          predicted_completion_rate_next_quarter?: number | null
+          predicted_dispute_risk?: number | null
+          predicted_engagement_trend?: number | null
         }
         Relationships: []
       }
@@ -28407,6 +28536,42 @@ export type Database = {
           role_name?: string
           succession_order?: number | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      governance_stability_metrics: {
+        Row: {
+          anomaly_rate: number | null
+          audit_log_completeness: number | null
+          dispute_resolution_speed: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          overall_stability_score: number | null
+          review_accountability_score: number | null
+          role_integrity_score: number | null
+        }
+        Insert: {
+          anomaly_rate?: number | null
+          audit_log_completeness?: number | null
+          dispute_resolution_speed?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          overall_stability_score?: number | null
+          review_accountability_score?: number | null
+          role_integrity_score?: number | null
+        }
+        Update: {
+          anomaly_rate?: number | null
+          audit_log_completeness?: number | null
+          dispute_resolution_speed?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          overall_stability_score?: number | null
+          review_accountability_score?: number | null
+          role_integrity_score?: number | null
         }
         Relationships: []
       }

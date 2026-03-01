@@ -130,6 +130,7 @@ const navItems = [
   { icon: Shield, label: "Governance Oversight", href: "/institution/governance" },
   { icon: Activity, label: "Compliance Access Log", href: "/institution/compliance-access-log" },
   { icon: BookOpen, label: "Policies", href: "/institution/policies" },
+  { icon: BarChart3, label: "Executive Overview", href: "/institution/executive" },
 ];
 
 const platformItems = [
