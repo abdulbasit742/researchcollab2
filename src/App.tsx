@@ -520,6 +520,7 @@ const AppContent = () => {
           {/* ====== REDIRECTS — Everything else → Core ====== */}
           {/* Dashboard consolidation */}
           <Route path="/dashboard/*" element={<Navigate to="/home" replace />} />
+          <Route path="/inbox" element={<Navigate to="/notifications" replace />} />
           <Route path="/my-os" element={<Navigate to="/home" replace />} />
           <Route path="/productivity" element={<Navigate to="/home" replace />} />
           <Route path="/progress" element={<Navigate to="/home" replace />} />
