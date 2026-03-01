@@ -953,6 +953,108 @@ export type Database = {
         }
         Relationships: []
       }
+      adaptive_model_accuracy: {
+        Row: {
+          accuracy_score: number | null
+          actual_value: number | null
+          evaluated_at: string
+          id: string
+          institution_id: string | null
+          model_type: string
+          predicted_value: number | null
+          prediction_id: string | null
+        }
+        Insert: {
+          accuracy_score?: number | null
+          actual_value?: number | null
+          evaluated_at?: string
+          id?: string
+          institution_id?: string | null
+          model_type: string
+          predicted_value?: number | null
+          prediction_id?: string | null
+        }
+        Update: {
+          accuracy_score?: number | null
+          actual_value?: number | null
+          evaluated_at?: string
+          id?: string
+          institution_id?: string | null
+          model_type?: string
+          predicted_value?: number | null
+          prediction_id?: string | null
+        }
+        Relationships: []
+      }
+      adaptive_optimization_suggestions: {
+        Row: {
+          confidence_score: number | null
+          generated_at: string
+          id: string
+          impact_estimate: string | null
+          institution_id: string | null
+          project_id: string
+          suggestion_reason: string
+          suggestion_type: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          generated_at?: string
+          id?: string
+          impact_estimate?: string | null
+          institution_id?: string | null
+          project_id: string
+          suggestion_reason: string
+          suggestion_type: string
+        }
+        Update: {
+          confidence_score?: number | null
+          generated_at?: string
+          id?: string
+          impact_estimate?: string | null
+          institution_id?: string | null
+          project_id?: string
+          suggestion_reason?: string
+          suggestion_type?: string
+        }
+        Relationships: []
+      }
+      adaptive_risk_models: {
+        Row: {
+          activity_weight: number | null
+          confidence_score: number | null
+          delay_weight: number | null
+          dispute_weight: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          review_weight: number | null
+          risk_model_version: number
+        }
+        Insert: {
+          activity_weight?: number | null
+          confidence_score?: number | null
+          delay_weight?: number | null
+          dispute_weight?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          review_weight?: number | null
+          risk_model_version?: number
+        }
+        Update: {
+          activity_weight?: number | null
+          confidence_score?: number | null
+          delay_weight?: number | null
+          dispute_weight?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          review_weight?: number | null
+          risk_model_version?: number
+        }
+        Relationships: []
+      }
       admin_audit_logs: {
         Row: {
           action: string
@@ -18178,6 +18280,33 @@ export type Database = {
         }
         Relationships: []
       }
+      engagement_adaptive_models: {
+        Row: {
+          engagement_factor_weights: Json
+          generated_at: string
+          id: string
+          institution_id: string
+          predicted_dropoff_rate: number | null
+          retention_risk_score: number | null
+        }
+        Insert: {
+          engagement_factor_weights?: Json
+          generated_at?: string
+          id?: string
+          institution_id: string
+          predicted_dropoff_rate?: number | null
+          retention_risk_score?: number | null
+        }
+        Update: {
+          engagement_factor_weights?: Json
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          predicted_dropoff_rate?: number | null
+          retention_risk_score?: number | null
+        }
+        Relationships: []
+      }
       enterprise_contracts: {
         Row: {
           contract_name: string
@@ -20129,6 +20258,36 @@ export type Database = {
           stuck_milestones?: number
           stuck_offers?: number
           wallet_mismatches?: number
+        }
+        Relationships: []
+      }
+      execution_history_patterns: {
+        Row: {
+          confidence_score: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          pattern_data: Json
+          pattern_type: string
+          sample_size: number
+        }
+        Insert: {
+          confidence_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          pattern_data?: Json
+          pattern_type: string
+          sample_size?: number
+        }
+        Update: {
+          confidence_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          pattern_data?: Json
+          pattern_type?: string
+          sample_size?: number
         }
         Relationships: []
       }
@@ -33670,6 +33829,36 @@ export type Database = {
           },
         ]
       }
+      institution_learning_summary: {
+        Row: {
+          engagement_trend: number | null
+          generated_at: string
+          governance_trend: number | null
+          id: string
+          improvement_trend: number | null
+          institution_id: string
+          stability_trend: number | null
+        }
+        Insert: {
+          engagement_trend?: number | null
+          generated_at?: string
+          governance_trend?: number | null
+          id?: string
+          improvement_trend?: number | null
+          institution_id: string
+          stability_trend?: number | null
+        }
+        Update: {
+          engagement_trend?: number | null
+          generated_at?: string
+          governance_trend?: number | null
+          id?: string
+          improvement_trend?: number | null
+          institution_id?: string
+          stability_trend?: number | null
+        }
+        Relationships: []
+      }
       institution_partnerships: {
         Row: {
           agreement_end_date: string | null
@@ -45036,6 +45225,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      performance_drift_analysis: {
+        Row: {
+          baseline_score: number | null
+          current_score: number | null
+          drift_direction: string
+          drift_percentage: number | null
+          entity_id: string
+          entity_type: string
+          generated_at: string
+          id: string
+          institution_id: string | null
+        }
+        Insert: {
+          baseline_score?: number | null
+          current_score?: number | null
+          drift_direction?: string
+          drift_percentage?: number | null
+          entity_id: string
+          entity_type: string
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+        }
+        Update: {
+          baseline_score?: number | null
+          current_score?: number | null
+          drift_direction?: string
+          drift_percentage?: number | null
+          entity_id?: string
+          entity_type?: string
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+        }
+        Relationships: []
       }
       performance_metrics: {
         Row: {

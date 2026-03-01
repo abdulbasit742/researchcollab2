@@ -133,6 +133,7 @@ const navItems = [
   { icon: BookOpen, label: "Policies", href: "/institution/policies" },
   { icon: BarChart3, label: "Executive Overview", href: "/institution/executive" },
   { icon: Zap, label: "Automation", href: "/institution/automation" },
+  { icon: Brain, label: "Adaptive Intelligence", href: "/institution/adaptive-intelligence" },
 ];
 
 const platformItems = [
