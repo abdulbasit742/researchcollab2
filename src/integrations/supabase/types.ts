@@ -50077,6 +50077,36 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_logs: {
+        Row: {
+          blocked: boolean
+          created_at: string
+          endpoint: string
+          id: string
+          request_count: number | null
+          user_id: string | null
+          window_start: string | null
+        }
+        Insert: {
+          blocked?: boolean
+          created_at?: string
+          endpoint: string
+          id?: string
+          request_count?: number | null
+          user_id?: string | null
+          window_start?: string | null
+        }
+        Update: {
+          blocked?: boolean
+          created_at?: string
+          endpoint?: string
+          id?: string
+          request_count?: number | null
+          user_id?: string | null
+          window_start?: string | null
+        }
+        Relationships: []
+      }
       rate_limits: {
         Row: {
           action_type: string
@@ -56190,6 +56220,30 @@ export type Database = {
         }
         Relationships: []
       }
+      rls_audit_history: {
+        Row: {
+          checked_at: string
+          id: string
+          issue_detected: string | null
+          severity: string
+          table_name: string
+        }
+        Insert: {
+          checked_at?: string
+          id?: string
+          issue_detected?: string | null
+          severity?: string
+          table_name: string
+        }
+        Update: {
+          checked_at?: string
+          id?: string
+          issue_detected?: string | null
+          severity?: string
+          table_name?: string
+        }
+        Relationships: []
+      }
       rls_validation_results: {
         Row: {
           checked_at: string
@@ -58348,6 +58402,45 @@ export type Database = {
         }
         Relationships: []
       }
+      security_audit_logs: {
+        Row: {
+          action_type: string
+          actor_id: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          ip_address: string | null
+          metadata: Json | null
+          severity: string
+          user_agent: string | null
+        }
+        Insert: {
+          action_type: string
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          severity?: string
+          user_agent?: string | null
+        }
+        Update: {
+          action_type?: string
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          severity?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       security_events: {
         Row: {
           created_at: string
@@ -58885,6 +58978,45 @@ export type Database = {
           service_name?: string
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      session_audit_logs: {
+        Row: {
+          created_at: string
+          device_info: string | null
+          id: string
+          ip_address: string | null
+          login_time: string
+          logout_time: string | null
+          suspicious_flag: boolean
+          suspicious_reason: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_info?: string | null
+          id?: string
+          ip_address?: string | null
+          login_time?: string
+          logout_time?: string | null
+          suspicious_flag?: boolean
+          suspicious_reason?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_info?: string | null
+          id?: string
+          ip_address?: string | null
+          login_time?: string
+          logout_time?: string | null
+          suspicious_flag?: boolean
+          suspicious_reason?: string | null
+          user_agent?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -61376,6 +61508,39 @@ export type Database = {
           trust_decrease?: number | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      storage_security_logs: {
+        Row: {
+          artifact_id: string | null
+          checked_at: string
+          file_name: string | null
+          id: string
+          mime_verified: boolean
+          rejection_reason: string | null
+          signature_valid: boolean
+          size_valid: boolean
+        }
+        Insert: {
+          artifact_id?: string | null
+          checked_at?: string
+          file_name?: string | null
+          id?: string
+          mime_verified?: boolean
+          rejection_reason?: string | null
+          signature_valid?: boolean
+          size_valid?: boolean
+        }
+        Update: {
+          artifact_id?: string | null
+          checked_at?: string
+          file_name?: string | null
+          id?: string
+          mime_verified?: boolean
+          rejection_reason?: string | null
+          signature_valid?: boolean
+          size_valid?: boolean
         }
         Relationships: []
       }
