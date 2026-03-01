@@ -5061,6 +5061,99 @@ export type Database = {
         }
         Relationships: []
       }
+      auto_archive_settings: {
+        Row: {
+          archive_after_days: number
+          created_at: string
+          enabled: boolean
+          id: string
+          institution_id: string
+        }
+        Insert: {
+          archive_after_days?: number
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          institution_id: string
+        }
+        Update: {
+          archive_after_days?: number
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          institution_id?: string
+        }
+        Relationships: []
+      }
+      automation_logs: {
+        Row: {
+          action_taken: string
+          actor_type: string
+          automation_type: string
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          institution_id: string | null
+        }
+        Insert: {
+          action_taken: string
+          actor_type?: string
+          automation_type: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          institution_id?: string | null
+        }
+        Update: {
+          action_taken?: string
+          actor_type?: string
+          automation_type?: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          institution_id?: string | null
+        }
+        Relationships: []
+      }
+      automation_rules: {
+        Row: {
+          action_type: string
+          created_at: string
+          enabled: boolean
+          id: string
+          institution_id: string
+          rule_name: string
+          rule_type: string
+          trigger_condition: Json
+          updated_at: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          institution_id: string
+          rule_name: string
+          rule_type: string
+          trigger_condition?: Json
+          updated_at?: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          institution_id?: string
+          rule_name?: string
+          rule_type?: string
+          trigger_condition?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       background_job_runs: {
         Row: {
           completed_at: string | null
@@ -14015,6 +14108,30 @@ export type Database = {
           },
         ]
       }
+      deadline_suggestions: {
+        Row: {
+          based_on: string
+          generated_at: string
+          id: string
+          milestone_id: string
+          suggested_date: string
+        }
+        Insert: {
+          based_on?: string
+          generated_at?: string
+          id?: string
+          milestone_id: string
+          suggested_date: string
+        }
+        Update: {
+          based_on?: string
+          generated_at?: string
+          id?: string
+          milestone_id?: string
+          suggested_date?: string
+        }
+        Relationships: []
+      }
       deal_efficiency_metrics: {
         Row: {
           created_at: string | null
@@ -15037,6 +15154,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      derived_project_status: {
+        Row: {
+          derived_from: Json
+          generated_at: string
+          id: string
+          project_id: string
+          status_label: string
+        }
+        Insert: {
+          derived_from?: Json
+          generated_at?: string
+          id?: string
+          project_id: string
+          status_label?: string
+        }
+        Update: {
+          derived_from?: Json
+          generated_at?: string
+          id?: string
+          project_id?: string
+          status_label?: string
+        }
+        Relationships: []
       }
       development_transparency_ledger: {
         Row: {
@@ -40459,6 +40600,33 @@ export type Database = {
         }
         Relationships: []
       }
+      milestone_templates: {
+        Row: {
+          created_at: string
+          default_review_points: number | null
+          default_tasks: Json
+          id: string
+          institution_id: string
+          template_name: string
+        }
+        Insert: {
+          created_at?: string
+          default_review_points?: number | null
+          default_tasks?: Json
+          id?: string
+          institution_id: string
+          template_name: string
+        }
+        Update: {
+          created_at?: string
+          default_review_points?: number | null
+          default_tasks?: Json
+          id?: string
+          institution_id?: string
+          template_name?: string
+        }
+        Relationships: []
+      }
       milestones: {
         Row: {
           amount: number
@@ -56828,6 +56996,30 @@ export type Database = {
         }
         Relationships: []
       }
+      review_routing_rules: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: string
+          institution_id: string
+          routing_logic: Json
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          institution_id: string
+          routing_logic?: Json
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          institution_id?: string
+          routing_logic?: Json
+        }
+        Relationships: []
+      }
       review_unlock_queue: {
         Row: {
           created_at: string
@@ -70169,6 +70361,39 @@ export type Database = {
           verified?: boolean | null
           verified_at?: string | null
           verified_by?: string | null
+        }
+        Relationships: []
+      }
+      workflow_escalations: {
+        Row: {
+          entity_id: string
+          entity_type: string
+          escalation_type: string
+          id: string
+          institution_id: string | null
+          resolved: boolean
+          resolved_at: string | null
+          triggered_at: string
+        }
+        Insert: {
+          entity_id: string
+          entity_type: string
+          escalation_type: string
+          id?: string
+          institution_id?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          triggered_at?: string
+        }
+        Update: {
+          entity_id?: string
+          entity_type?: string
+          escalation_type?: string
+          id?: string
+          institution_id?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          triggered_at?: string
         }
         Relationships: []
       }
