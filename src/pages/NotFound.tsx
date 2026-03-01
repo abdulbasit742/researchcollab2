@@ -28,8 +28,8 @@ const NotFound = () => {
           Page Not Found
         </h1>
         <p className="text-muted-foreground mt-2 max-w-md mx-auto">
-          The page you're looking for doesn't exist or has been moved.
-          Let's get you back on track.
+          The requested page does not exist or has been relocated.
+          Navigate back to continue.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">

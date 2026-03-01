@@ -77,9 +77,9 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               <AlertTriangle className="h-8 w-8 text-destructive" />
             </div>
             <div className="space-y-2">
-              <h1 className="text-xl font-semibold text-foreground">Something went wrong</h1>
+              <h1 className="text-xl font-semibold text-foreground">An error has occurred</h1>
               <p className="text-muted-foreground text-sm">
-                An unexpected error occurred. Please try refreshing the page.
+                The system encountered an unexpected issue. Refreshing the page typically resolves this.
               </p>
             </div>
             {this.state.error && (

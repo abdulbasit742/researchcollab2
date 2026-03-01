@@ -42,7 +42,7 @@ export function LoadingScreen({ isLoading, progress, isComplete }: LoadingScreen
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.4 }}
               >
-                Connecting minds, accelerating research
+                Institutional Execution Infrastructure
               </motion.p>
             </motion.div>
 
