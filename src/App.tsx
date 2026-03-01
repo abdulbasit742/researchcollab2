@@ -192,6 +192,10 @@ const ProjectArtifactsPage = lazy(() => import("./pages/ProjectArtifactsPage"));
 const ReviewsPage = lazy(() => import("./pages/ReviewsPage"));
 const ProjectActivityPage = lazy(() => import("./pages/ProjectActivityPage"));
 
+// Advanced Search & Discovery
+const DiscoverPage = lazy(() => import("./pages/DiscoverPage"));
+const TrendingPage = lazy(() => import("./pages/TrendingPage"));
+
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
     <div className="flex flex-col items-center gap-4">
@@ -305,8 +309,10 @@ const AppContent = () => {
           <Route path="/messages/:threadId" element={<ProtectedRoute><MessageThreadPage /></ProtectedRoute>} />
           <Route path="/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
 
-          {/* Search */}
+          {/* Search & Discovery */}
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/discover" element={<ProtectedRoute><DiscoverPage /></ProtectedRoute>} />
+          <Route path="/trending" element={<ProtectedRoute><TrendingPage /></ProtectedRoute>} />
 
           {/* Faculty */}
           <Route path="/faculty/supervisor-dashboard" element={<ProtectedRoute><SupervisorDashboardPage /></ProtectedRoute>} />
