@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Rss, Compass, Film, User } from "lucide-react";
+import { Home, FolderKanban, MessageSquare, Search, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useDemoWalkthrough } from "@/contexts/DemoWalkthroughContext";
@@ -19,13 +19,12 @@ export function MobileBottomNav() {
 
   const navItems: NavItem[] = [
     { icon: Home, label: "Home", route: "/home" },
-    { icon: Rss, label: "Feed", route: "/feed" },
-    { icon: Compass, label: "Explore", route: "/explore" },
-    { icon: Film, label: "Reels", route: "/reels" },
+    { icon: FolderKanban, label: "Projects", route: "/deals" },
+    { icon: Search, label: "Search", route: "/search" },
+    { icon: MessageSquare, label: "Messages", route: "/messages" },
     { icon: User, label: "Profile", route: "/profile" },
   ];
 
-  // Hide on desktop or when tour is active
   if (!isMobile || isTourActive) return null;
 
   const isActive = (route: string) => {
