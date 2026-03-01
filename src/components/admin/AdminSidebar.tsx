@@ -45,6 +45,7 @@ import {
   Award,
   Rocket,
   CreditCard,
+  FlaskConical,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -145,6 +146,8 @@ const navItems = [
   { icon: CreditCard, label: "Billing", href: "/institution/billing" },
   { icon: DollarSign, label: "Revenue", href: "/admin/revenue" },
   { icon: Briefcase, label: "Enterprise Sales", href: "/admin/enterprise-intelligence" },
+  { icon: Brain, label: "Predictive Insights", href: "/admin/predictive-insights" },
+  { icon: FlaskConical, label: "Risk Simulation", href: "/admin/simulation" },
 ];
 
 const platformItems = [

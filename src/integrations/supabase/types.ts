@@ -16037,6 +16037,39 @@ export type Database = {
           },
         ]
       }
+      dispute_risk_forecasts: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          id: string
+          institution_id: string | null
+          milestone_id: string
+          model_version: string | null
+          predicted_dispute_probability: number | null
+          risk_factors: Json | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          milestone_id: string
+          model_version?: string | null
+          predicted_dispute_probability?: number | null
+          risk_factors?: Json | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          milestone_id?: string
+          model_version?: string | null
+          predicted_dispute_probability?: number | null
+          risk_factors?: Json | null
+        }
+        Relationships: []
+      }
       dispute_risk_model: {
         Row: {
           contributing_factors: Json | null
@@ -18379,6 +18412,39 @@ export type Database = {
           institution_id?: string
           predicted_dropoff_rate?: number | null
           retention_risk_score?: number | null
+        }
+        Relationships: []
+      }
+      engagement_dropout_predictions: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          dropout_risk_probability: number | null
+          id: string
+          inactivity_forecast_days: number | null
+          institution_id: string | null
+          model_version: string | null
+          user_id: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          dropout_risk_probability?: number | null
+          id?: string
+          inactivity_forecast_days?: number | null
+          institution_id?: string | null
+          model_version?: string | null
+          user_id: string
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          dropout_risk_probability?: number | null
+          id?: string
+          inactivity_forecast_days?: number | null
+          institution_id?: string | null
+          model_version?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -34588,6 +34654,42 @@ export type Database = {
         }
         Relationships: []
       }
+      institution_stability_predictions: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          id: string
+          institution_id: string
+          model_version: string | null
+          predicted_completion_trend: number | null
+          predicted_dispute_trend: number | null
+          predicted_engagement_trend: number | null
+          stability_score: number | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          institution_id: string
+          model_version?: string | null
+          predicted_completion_trend?: number | null
+          predicted_dispute_trend?: number | null
+          predicted_engagement_trend?: number | null
+          stability_score?: number | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          institution_id?: string
+          model_version?: string | null
+          predicted_completion_trend?: number | null
+          predicted_dispute_trend?: number | null
+          predicted_engagement_trend?: number | null
+          stability_score?: number | null
+        }
+        Relationships: []
+      }
       institution_subscription_plans: {
         Row: {
           advanced_analytics_enabled: boolean | null
@@ -41107,6 +41209,39 @@ export type Database = {
           issued_at?: string
           milestone_id?: string
           verification_hash?: string
+        }
+        Relationships: []
+      }
+      milestone_delay_predictions: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          delay_probability: number | null
+          id: string
+          institution_id: string | null
+          milestone_id: string
+          model_version: string | null
+          predicted_delay_days: number | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          delay_probability?: number | null
+          id?: string
+          institution_id?: string | null
+          milestone_id: string
+          model_version?: string | null
+          predicted_delay_days?: number | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          delay_probability?: number | null
+          id?: string
+          institution_id?: string | null
+          milestone_id?: string
+          model_version?: string | null
+          predicted_delay_days?: number | null
         }
         Relationships: []
       }
@@ -49091,6 +49226,36 @@ export type Database = {
         }
         Relationships: []
       }
+      prediction_accuracy_tracking: {
+        Row: {
+          accuracy_score: number | null
+          actual_value: number | null
+          entity_id: string
+          evaluated_at: string
+          id: string
+          predicted_value: number | null
+          prediction_type: string
+        }
+        Insert: {
+          accuracy_score?: number | null
+          actual_value?: number | null
+          entity_id: string
+          evaluated_at?: string
+          id?: string
+          predicted_value?: number | null
+          prediction_type: string
+        }
+        Update: {
+          accuracy_score?: number | null
+          actual_value?: number | null
+          entity_id?: string
+          evaluated_at?: string
+          id?: string
+          predicted_value?: number | null
+          prediction_type?: string
+        }
+        Relationships: []
+      }
       prediction_markets: {
         Row: {
           created_at: string
@@ -50889,6 +51054,42 @@ export type Database = {
           project_id?: string
           updated_at?: string
           views?: number
+        }
+        Relationships: []
+      }
+      project_completion_predictions: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          id: string
+          institution_id: string | null
+          model_version: string | null
+          predicted_completion_date: string | null
+          predicted_completion_probability: number | null
+          project_id: string
+          risk_score: number | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          model_version?: string | null
+          predicted_completion_date?: string | null
+          predicted_completion_probability?: number | null
+          project_id: string
+          risk_score?: number | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          model_version?: string | null
+          predicted_completion_date?: string | null
+          predicted_completion_probability?: number | null
+          project_id?: string
+          risk_score?: number | null
         }
         Relationships: []
       }
@@ -57957,6 +58158,42 @@ export type Database = {
           pricing_anomaly_score?: number | null
           risk_level?: string
           trust_volatility?: number | null
+        }
+        Relationships: []
+      }
+      risk_simulation_results: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          entity_id: string
+          id: string
+          institution_id: string | null
+          projected_outcome: string | null
+          risk_shift: number | null
+          simulated_parameters: Json | null
+          simulation_type: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          entity_id: string
+          id?: string
+          institution_id?: string | null
+          projected_outcome?: string | null
+          risk_shift?: number | null
+          simulated_parameters?: Json | null
+          simulation_type: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          entity_id?: string
+          id?: string
+          institution_id?: string | null
+          projected_outcome?: string | null
+          risk_shift?: number | null
+          simulated_parameters?: Json | null
+          simulation_type?: string
         }
         Relationships: []
       }
