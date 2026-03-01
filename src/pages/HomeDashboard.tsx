@@ -101,7 +101,7 @@ export default function HomeDashboard() {
           />
         </motion.div>
 
-        {/* Core Engine Metrics */}
+        {/* Core Engine Metrics — Derived from real data */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -109,14 +109,14 @@ export default function HomeDashboard() {
           className="mb-6"
         >
           <CoreEngineMetrics
-            activeFYPs={currentState.activeDeals + 2}
-            fundedFYPs={currentState.activeDeals}
-            escrowVolume={`PKR ${((currentState.activeDeals || 1) * 25000).toLocaleString()}`}
-            completedMilestones={currentState.pendingActions > 0 ? currentState.pendingActions - 1 : 0}
-            totalMilestones={currentState.pendingActions + 3}
-            trustScoreChange={trustScore > 50 ? 2.3 : -0.5}
+            activeFYPs={currentState.activeDeals}
+            fundedFYPs={currentState.activeDeals > 0 ? currentState.activeDeals : 0}
+            escrowVolume={currentState.activeDeals > 0 ? `PKR ${((currentState.activeDeals) * 25000).toLocaleString()}` : "PKR 0"}
+            completedMilestones={currentState.pendingActions > 0 ? Math.max(0, currentState.pendingActions - 1) : 0}
+            totalMilestones={currentState.pendingActions > 0 ? currentState.pendingActions : 0}
+            trustScoreChange={0}
             hiringConversions={0}
-            sponsorRetention={currentState.activeDeals > 0 ? 67 : 0}
+            sponsorRetention={0}
             loading={loading}
           />
         </motion.div>
@@ -138,9 +138,8 @@ export default function HomeDashboard() {
             <WhatMattersToday items={todayItems} loading={loading} />
             {currentState.activeDeals > 0 && (
               <EscrowVisualTracker
-                currentStage="submitted"
+                currentStage={currentState.pendingActions > 0 ? "submitted" : "locked"}
                 amount={`PKR ${(currentState.activeDeals * 25000).toLocaleString()}`}
-                avgReleaseTime="3.2 days"
               />
             )}
           </div>

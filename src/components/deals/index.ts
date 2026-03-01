@@ -3,3 +3,7 @@ export { DealMilestoneTracker } from "./DealMilestoneTracker";
 export { DealDecisionLog } from "./DealDecisionLog";
 export { EscrowStatusCard } from "./EscrowStatusCard";
 export { TrustImpactPreview } from "./TrustImpactPreview";
+export { DealStateVisualizer } from "./DealStateVisualizer";
+export { MilestoneActionGuard } from "./MilestoneActionGuard";
+export { ExecutionHealthPanel } from "./ExecutionHealthPanel";
+export { MilestoneSubmissionModal } from "./MilestoneSubmissionModal";
