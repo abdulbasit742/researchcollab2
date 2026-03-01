@@ -217,6 +217,9 @@ const GovernanceRiskMapPage = lazy(() => import("./pages/GovernanceRiskMapPage")
 const OrchestrationDashboardPage = lazy(() => import("./pages/OrchestrationDashboardPage"));
 const ExecutionFlowPage = lazy(() => import("./pages/ExecutionFlowPage"));
 
+// Federation
+const FederationControlPanelPage = lazy(() => import("./pages/FederationControlPanelPage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -477,6 +480,7 @@ const AppContent = () => {
           <Route path="/admin/governance-intelligence" element={<ProtectedRoute><GovernanceIntelligencePage /></ProtectedRoute>} />
           <Route path="/admin/orchestration" element={<ProtectedRoute><OrchestrationDashboardPage /></ProtectedRoute>} />
           <Route path="/admin/execution-flow" element={<ProtectedRoute><ExecutionFlowPage /></ProtectedRoute>} />
+          <Route path="/admin/federation" element={<ProtectedRoute><FederationControlPanelPage /></ProtectedRoute>} />
           <Route path="/verify/:certificateId" element={<CertificateVerificationPage />} />
           <Route path="/verify" element={<CertificateVerificationPage />} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />

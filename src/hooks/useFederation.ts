@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -299,4 +300,94 @@ export function useIntegrationMappings() {
     loading,
     fetchMappings,
   };
+}
+
+// ── Platform Node Hooks (Federation Infrastructure) ──
+const FED_STALE = 10 * 60 * 1000;
+
+export function usePlatformNodes() {
+  return useQuery({
+    queryKey: ["platform-nodes"],
+    queryFn: async () => {
+      const { data } = await supabase.from("platform_nodes").select("*").order("created_at", { ascending: false });
+      return (data ?? []) as any[];
+    },
+    staleTime: FED_STALE,
+  });
+}
+
+export function useNodeGovernanceMetrics(nodeId?: string) {
+  return useQuery({
+    queryKey: ["node-gov-metrics", nodeId],
+    queryFn: async () => {
+      if (!nodeId) return null;
+      const { data } = await supabase.from("node_governance_metrics").select("*").eq("node_id", nodeId).order("generated_at", { ascending: false }).limit(1).maybeSingle();
+      return data as any | null;
+    },
+    enabled: !!nodeId,
+    staleTime: FED_STALE,
+  });
+}
+
+export function useFederationMetadata(nodeId?: string) {
+  return useQuery({
+    queryKey: ["fed-metadata", nodeId],
+    queryFn: async () => {
+      let q = supabase.from("federation_metadata_registry").select("*").order("registered_at", { ascending: false }).limit(20);
+      if (nodeId) q = q.eq("node_origin", nodeId);
+      const { data } = await q;
+      return (data ?? []) as any[];
+    },
+    staleTime: FED_STALE,
+  });
+}
+
+export function useFederatedDiscovery(nodeId?: string) {
+  return useQuery({
+    queryKey: ["fed-discovery", nodeId],
+    queryFn: async () => {
+      let q = supabase.from("federated_discovery_index").select("*").order("created_at", { ascending: false }).limit(20);
+      if (nodeId) q = q.eq("node_id", nodeId);
+      const { data } = await q;
+      return (data ?? []) as any[];
+    },
+    staleTime: FED_STALE,
+  });
+}
+
+export function useInteroperabilityEndpoints(nodeId?: string) {
+  return useQuery({
+    queryKey: ["interop-endpoints", nodeId],
+    queryFn: async () => {
+      let q = supabase.from("interoperability_endpoints").select("*").order("created_at", { ascending: false }).limit(20);
+      if (nodeId) q = q.eq("node_id", nodeId);
+      const { data } = await q;
+      return (data ?? []) as any[];
+    },
+    staleTime: FED_STALE,
+  });
+}
+
+export function useFederatedIdentityLinks() {
+  return useQuery({
+    queryKey: ["fed-identity-links"],
+    queryFn: async () => {
+      const { data } = await supabase.from("federated_identity_links").select("*").order("created_at", { ascending: false }).limit(20);
+      return (data ?? []) as any[];
+    },
+    staleTime: FED_STALE,
+  });
+}
+
+export function useFederationComplianceFlags(nodeId?: string) {
+  return useQuery({
+    queryKey: ["fed-compliance", nodeId],
+    queryFn: async () => {
+      if (!nodeId) return null;
+      const { data } = await supabase.from("federation_compliance_flags").select("*").eq("node_id", nodeId).order("generated_at", { ascending: false }).limit(1).maybeSingle();
+      return data as any | null;
+    },
+    enabled: !!nodeId,
+    staleTime: FED_STALE,
+  });
 }
