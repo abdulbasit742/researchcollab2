@@ -190,7 +190,7 @@
   }
 
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+    @apply transition-shadow duration-200 hover:shadow-md;
   }
 
   /* Premium gradient border */
@@ -363,7 +363,7 @@
   animation: marquee-reverse 40s linear infinite;
 }
 
-/* Gradient mesh for CTA */
+/* Gradient mesh for CTA — uses design tokens */
 @keyframes gradient-mesh {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -375,10 +375,10 @@
 .animate-gradient-mesh-bg {
   background: linear-gradient(
     -45deg,
-    hsl(263, 70%, 58%),
-    hsl(280, 80%, 55%),
-    hsl(300, 70%, 50%),
-    hsl(263, 70%, 58%)
+    hsl(215, 65%, 45%),
+    hsl(220, 70%, 50%),
+    hsl(215, 55%, 55%),
+    hsl(215, 65%, 45%)
   );
   background-size: 400% 400%;
   animation: gradient-mesh 8s ease infinite;

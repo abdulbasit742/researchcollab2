@@ -9,7 +9,6 @@ const stats = [
     suffix: "+",
     label: "Active FYPs",
     sublabel: "Student projects in execution",
-    gradient: "from-primary to-blue-500",
   },
   {
     icon: DollarSign,
@@ -17,7 +16,6 @@ const stats = [
     suffix: "+",
     label: "Funded Projects",
     sublabel: "Sponsor-backed with escrow",
-    gradient: "from-emerald-400 to-teal-500",
   },
   {
     icon: Shield,
@@ -26,7 +24,6 @@ const stats = [
     prefix: "PKR ",
     label: "Escrow Volume",
     sublabel: "Capital locked and protected",
-    gradient: "from-violet-400 to-purple-500",
     live: true,
   },
   {
@@ -35,7 +32,6 @@ const stats = [
     suffix: "",
     label: "Completed Milestones",
     sublabel: "Verified deliverables approved",
-    gradient: "from-amber-400 to-orange-500",
   },
   {
     icon: Zap,
@@ -43,7 +39,6 @@ const stats = [
     suffix: "%",
     label: "Milestone Rate",
     sublabel: "On-time delivery performance",
-    gradient: "from-primary to-blue-500",
   },
   {
     icon: UserCheck,
@@ -51,7 +46,6 @@ const stats = [
     suffix: "",
     label: "Hiring Conversions",
     sublabel: "FYP → employment outcomes",
-    gradient: "from-cyan-400 to-blue-500",
   },
 ];
 
@@ -59,7 +53,6 @@ export function StatsSection() {
   return (
     <section className="py-20 md:py-28 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/20 to-background" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.03),transparent_70%)]" />
 
       <div className="container px-4 md:px-6 relative">
         <motion.div
@@ -69,7 +62,7 @@ export function StatsSection() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
             Execution Metrics.
             <br />
             <span className="text-primary">Not Vanity.</span>
@@ -83,30 +76,27 @@ export function StatsSection() {
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.06 }}
               viewport={{ once: true }}
-              className="group"
             >
-              <div className="relative rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-6 md:p-8 transition-all duration-500 hover:shadow-2xl hover:border-primary/20 hover:-translate-y-2 overflow-hidden">
-                <div className={`absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-10 blur-3xl transition-opacity duration-500`} />
-                
-                <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${stat.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  <stat.icon className="h-6 w-6 text-white" />
+              <div className="rounded-lg border bg-card p-6 md:p-8 transition-shadow duration-200 hover:shadow-md">
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <stat.icon className="h-5 w-5 text-primary" />
                 </div>
 
-                <div className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight">
+                <div className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">
                   {stat.prefix || ""}
                   <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={2200} delay={i * 150} />
                 </div>
 
-                <div className="mt-2 text-sm font-bold text-foreground/80 flex items-center gap-2">
+                <div className="mt-2 text-sm font-semibold text-foreground/80 flex items-center gap-2">
                   {stat.label}
                   {stat.live && (
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75" />
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-success" />
                     </span>
                   )}
                 </div>
