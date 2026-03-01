@@ -14,6 +14,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { DealMilestone } from "@/hooks/useDealRoom";
+import { useSubmitMilestone, useApproveMilestone, useRejectMilestone } from "@/hooks/useMilestoneActions";
 import { formatPKR } from "@/lib/currency";
 import {
   Target,
@@ -21,7 +22,7 @@ import {
   Clock,
   Upload,
   AlertCircle,
-  ArrowRight,
+  XCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -48,6 +49,12 @@ export function DealMilestoneTracker({
 }: DealMilestoneTrackerProps) {
   const [submitMilestoneId, setSubmitMilestoneId] = useState<string | null>(null);
   const [submissionNotes, setSubmissionNotes] = useState("");
+  const [rejectMilestoneId, setRejectMilestoneId] = useState<string | null>(null);
+  const [rejectionReason, setRejectionReason] = useState("");
+
+  const submitMilestone = useSubmitMilestone();
+  const approveMilestone = useApproveMilestone();
+  const rejectMilestone = useRejectMilestone();
 
   const completedMilestones = milestones.filter(m => m.status === "approved").length;
   const progressPercent = milestones.length > 0 
@@ -59,10 +66,29 @@ export function DealMilestoneTracker({
     .reduce((sum, m) => sum + m.amount, 0);
 
   const handleSubmitMilestone = async () => {
-    // TODO: Implement milestone submission
-    console.log("Submitting milestone:", submitMilestoneId, submissionNotes);
+    if (!submitMilestoneId) return;
+    await submitMilestone.mutateAsync({
+      dealId,
+      milestoneId: submitMilestoneId,
+      notes: submissionNotes || undefined,
+    });
     setSubmitMilestoneId(null);
     setSubmissionNotes("");
+  };
+
+  const handleApproveMilestone = async (milestoneId: string) => {
+    await approveMilestone.mutateAsync({ dealId, milestoneId });
+  };
+
+  const handleRejectMilestone = async () => {
+    if (!rejectMilestoneId) return;
+    await rejectMilestone.mutateAsync({
+      dealId,
+      milestoneId: rejectMilestoneId,
+      reason: rejectionReason || undefined,
+    });
+    setRejectMilestoneId(null);
+    setRejectionReason("");
   };
 
   if (milestones.length === 0) {
@@ -92,7 +118,6 @@ export function DealMilestoneTracker({
           </Badge>
         </div>
         
-        {/* Progress Overview */}
         <div className="space-y-2 mt-4">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Progress</span>
@@ -111,8 +136,7 @@ export function DealMilestoneTracker({
           .sort((a, b) => a.order_index - b.order_index)
           .map((milestone, index) => {
             const status = statusConfig[milestone.status];
-            const isActive = milestone.status === "in_progress" || milestone.status === "pending";
-            const canSubmit = userRole === "executor" && milestone.status === "in_progress";
+            const canSubmit = userRole === "executor" && (milestone.status === "in_progress" || milestone.status === "rejected");
             const canApprove = userRole === "initiator" && milestone.status === "submitted";
 
             return (
@@ -123,12 +147,12 @@ export function DealMilestoneTracker({
                   milestone.status === "approved" && "bg-emerald-500/5 border-emerald-500/20",
                   milestone.status === "in_progress" && "bg-blue-500/5 border-blue-500/20",
                   milestone.status === "submitted" && "bg-amber-500/5 border-amber-500/20",
+                  milestone.status === "rejected" && "bg-destructive/5 border-destructive/20",
                   milestone.status === "pending" && "bg-muted/30"
                 )}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-3">
-                    {/* Status Icon */}
                     <div className={cn(
                       "h-8 w-8 rounded-full flex items-center justify-center shrink-0",
                       status.bg
@@ -137,6 +161,8 @@ export function DealMilestoneTracker({
                         <CheckCircle className={cn("h-4 w-4", status.color)} />
                       ) : milestone.status === "submitted" ? (
                         <Upload className={cn("h-4 w-4", status.color)} />
+                      ) : milestone.status === "rejected" ? (
+                        <XCircle className={cn("h-4 w-4", status.color)} />
                       ) : (
                         <span className={cn("text-sm font-medium", status.color)}>
                           {index + 1}
@@ -171,7 +197,10 @@ export function DealMilestoneTracker({
                   {/* Actions */}
                   <div className="flex items-center gap-2">
                     {canSubmit && (
-                      <Dialog>
+                      <Dialog open={submitMilestoneId === milestone.id} onOpenChange={(open) => {
+                        if (open) setSubmitMilestoneId(milestone.id);
+                        else { setSubmitMilestoneId(null); setSubmissionNotes(""); }
+                      }}>
                         <DialogTrigger asChild>
                           <Button size="sm" className="gap-1">
                             <Upload className="h-3 w-3" />
@@ -182,7 +211,7 @@ export function DealMilestoneTracker({
                           <DialogHeader>
                             <DialogTitle>Submit Milestone</DialogTitle>
                             <DialogDescription>
-                              Confirm that you've completed this milestone. The initiator will review.
+                              Confirm completion of "{milestone.title}". The sponsor will review and release {formatPKR(milestone.amount)}.
                             </DialogDescription>
                           </DialogHeader>
                           <div className="space-y-4 pt-4">
@@ -191,13 +220,16 @@ export function DealMilestoneTracker({
                               <Textarea
                                 value={submissionNotes}
                                 onChange={(e) => setSubmissionNotes(e.target.value)}
-                                placeholder="Add any notes about the deliverable..."
+                                placeholder="Add notes about the deliverable..."
                               />
                             </div>
                             <div className="flex justify-end gap-2">
-                              <Button variant="outline">Cancel</Button>
-                              <Button onClick={handleSubmitMilestone}>
-                                Submit for Review
+                              <Button variant="outline" onClick={() => setSubmitMilestoneId(null)}>Cancel</Button>
+                              <Button 
+                                onClick={handleSubmitMilestone}
+                                disabled={submitMilestone.isPending}
+                              >
+                                {submitMilestone.isPending ? "Submitting..." : "Submit for Review"}
                               </Button>
                             </div>
                           </div>
@@ -207,13 +239,54 @@ export function DealMilestoneTracker({
 
                     {canApprove && (
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline" className="gap-1">
-                          <AlertCircle className="h-3 w-3" />
-                          Request Changes
-                        </Button>
-                        <Button size="sm" className="gap-1">
+                        <Dialog open={rejectMilestoneId === milestone.id} onOpenChange={(open) => {
+                          if (open) setRejectMilestoneId(milestone.id);
+                          else { setRejectMilestoneId(null); setRejectionReason(""); }
+                        }}>
+                          <DialogTrigger asChild>
+                            <Button size="sm" variant="outline" className="gap-1">
+                              <AlertCircle className="h-3 w-3" />
+                              Request Changes
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Request Changes</DialogTitle>
+                              <DialogDescription>
+                                Explain what needs to be revised for "{milestone.title}".
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="space-y-4 pt-4">
+                              <div className="space-y-2">
+                                <Label>Reason</Label>
+                                <Textarea
+                                  value={rejectionReason}
+                                  onChange={(e) => setRejectionReason(e.target.value)}
+                                  placeholder="What needs to change?"
+                                />
+                              </div>
+                              <div className="flex justify-end gap-2">
+                                <Button variant="outline" onClick={() => setRejectMilestoneId(null)}>Cancel</Button>
+                                <Button 
+                                  variant="destructive"
+                                  onClick={handleRejectMilestone}
+                                  disabled={rejectMilestone.isPending}
+                                >
+                                  {rejectMilestone.isPending ? "Rejecting..." : "Request Changes"}
+                                </Button>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+
+                        <Button 
+                          size="sm" 
+                          className="gap-1"
+                          onClick={() => handleApproveMilestone(milestone.id)}
+                          disabled={approveMilestone.isPending}
+                        >
                           <CheckCircle className="h-3 w-3" />
-                          Approve & Release
+                          {approveMilestone.isPending ? "Approving..." : "Approve & Release"}
                         </Button>
                       </div>
                     )}

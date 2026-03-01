@@ -37,12 +37,14 @@ import { DealMilestoneTracker } from "@/components/deals/DealMilestoneTracker";
 import { DealDecisionLog } from "@/components/deals/DealDecisionLog";
 import { EscrowStatusCard } from "@/components/deals/EscrowStatusCard";
 import { TrustImpactPreview } from "@/components/deals/TrustImpactPreview";
+import { useDealDecisions } from "@/hooks/useDealDecisions";
 
 export default function DealDetailPage() {
   const { dealId } = useParams<{ dealId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { trustProfile } = useMyTrustProfile();
+  const { data: decisions = [] } = useDealDecisions(dealId);
   
   const { data: deal, isLoading } = useDealRoom(dealId || "");
   const acceptDeal = useAcceptDeal();
@@ -289,7 +291,7 @@ export default function DealDetailPage() {
             />
 
             {/* Decision Log */}
-            <DealDecisionLog decisions={[]} />
+            <DealDecisionLog decisions={decisions} />
           </div>
 
           {/* Sidebar */}
