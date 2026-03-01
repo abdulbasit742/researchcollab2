@@ -5086,6 +5086,33 @@ export type Database = {
           },
         ]
       }
+      cached_analytics_snapshots: {
+        Row: {
+          entity_id: string | null
+          expires_at: string
+          generated_at: string
+          id: string
+          snapshot_data: Json
+          snapshot_type: string
+        }
+        Insert: {
+          entity_id?: string | null
+          expires_at?: string
+          generated_at?: string
+          id?: string
+          snapshot_data?: Json
+          snapshot_type: string
+        }
+        Update: {
+          entity_id?: string | null
+          expires_at?: string
+          generated_at?: string
+          id?: string
+          snapshot_data?: Json
+          snapshot_type?: string
+        }
+        Relationships: []
+      }
       canonical_knowledge_records: {
         Row: {
           abstract: string | null
@@ -18380,6 +18407,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      error_logs: {
+        Row: {
+          endpoint: string
+          error_message: string
+          id: string
+          metadata: Json | null
+          occurred_at: string
+          stack_trace: string | null
+          user_id: string | null
+        }
+        Insert: {
+          endpoint: string
+          error_message: string
+          id?: string
+          metadata?: Json | null
+          occurred_at?: string
+          stack_trace?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          endpoint?: string
+          error_message?: string
+          id?: string
+          metadata?: Json | null
+          occurred_at?: string
+          stack_trace?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       escrow_audit_logs: {
         Row: {
@@ -62458,6 +62515,36 @@ export type Database = {
         }
         Relationships: []
       }
+      system_health_metrics: {
+        Row: {
+          error_rate: number | null
+          health_score: number | null
+          id: string
+          last_checked: string
+          metadata: Json | null
+          response_time_ms: number | null
+          subsystem_name: string
+        }
+        Insert: {
+          error_rate?: number | null
+          health_score?: number | null
+          id?: string
+          last_checked?: string
+          metadata?: Json | null
+          response_time_ms?: number | null
+          subsystem_name: string
+        }
+        Update: {
+          error_rate?: number | null
+          health_score?: number | null
+          id?: string
+          last_checked?: string
+          metadata?: Json | null
+          response_time_ms?: number | null
+          subsystem_name?: string
+        }
+        Relationships: []
+      }
       system_health_snapshots: {
         Row: {
           active_optimizations: number | null
@@ -69351,6 +69438,16 @@ export type Database = {
         Args: { p_user_id: string }
         Returns: undefined
       }
+      compute_health_score: {
+        Args: never
+        Returns: {
+          error_rate: number
+          health_score: number
+          last_checked: string
+          response_time_ms: number
+          subsystem_name: string
+        }[]
+      }
       compute_profile_proof_metrics: {
         Args: { p_user_id: string }
         Returns: undefined
@@ -69417,6 +69514,14 @@ export type Database = {
       }
       generate_scholar_id: { Args: never; Returns: string }
       generate_user_data_export: { Args: { p_user_id: string }; Returns: Json }
+      get_cached_institution_summary: {
+        Args: { p_institution_id: string }
+        Returns: Json
+      }
+      get_cached_project_summary: {
+        Args: { p_project_id: string }
+        Returns: Json
+      }
       get_collaboration_dampening: {
         Args: { p_user_a: string; p_user_b: string }
         Returns: number

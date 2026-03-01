@@ -162,6 +162,7 @@ const UniversityImpactDashboardPage = lazy(() => import("./pages/admin/Universit
 const SalesDataPackPage = lazy(() => import("./pages/admin/SalesDataPackPage"));
 const StudentOutcomePage = lazy(() => import("./pages/StudentOutcomePage"));
 const IntelligenceDashboardPage = lazy(() => import("./pages/admin/IntelligenceDashboardPage"));
+const AdminSystemHealthPage = lazy(() => import("./pages/admin/AdminSystemHealthPage"));
 
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
@@ -212,6 +213,8 @@ const queryClient = new QueryClient({
       gcTime: 10 * 60 * 1000,
       refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnMount: false,
+      refetchOnReconnect: true,
     },
   },
 });
@@ -388,6 +391,7 @@ const AppContent = () => {
           <Route path="/admin/university-impact" element={<ProtectedRoute><UniversityImpactDashboardPage /></ProtectedRoute>} />
           <Route path="/admin/sales-data-pack" element={<ProtectedRoute><SalesDataPackPage /></ProtectedRoute>} />
           <Route path="/admin/intelligence" element={<ProtectedRoute><IntelligenceDashboardPage /></ProtectedRoute>} />
+          <Route path="/admin/system-health" element={<ProtectedRoute><AdminSystemHealthPage /></ProtectedRoute>} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}
