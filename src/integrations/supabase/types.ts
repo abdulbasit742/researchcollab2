@@ -35652,6 +35652,47 @@ export type Database = {
         }
         Relationships: []
       }
+      institution_sla_definitions: {
+        Row: {
+          breach_threshold_percent: number
+          created_at: string
+          id: string
+          institution_id: string
+          sla_type: string
+          target_hours: number
+          updated_at: string
+          warning_threshold_percent: number
+        }
+        Insert: {
+          breach_threshold_percent?: number
+          created_at?: string
+          id?: string
+          institution_id: string
+          sla_type: string
+          target_hours?: number
+          updated_at?: string
+          warning_threshold_percent?: number
+        }
+        Update: {
+          breach_threshold_percent?: number
+          created_at?: string
+          id?: string
+          institution_id?: string
+          sla_type?: string
+          target_hours?: number
+          updated_at?: string
+          warning_threshold_percent?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_sla_definitions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       institution_stability_predictions: {
         Row: {
           confidence_score: number | null
@@ -63588,6 +63629,158 @@ export type Database = {
           trend_direction?: string | null
         }
         Relationships: []
+      }
+      sla_breach_events: {
+        Row: {
+          breach_level: string
+          detected_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          institution_id: string
+          resolved: boolean
+          sla_type: string
+        }
+        Insert: {
+          breach_level: string
+          detected_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          institution_id: string
+          resolved?: boolean
+          sla_type: string
+        }
+        Update: {
+          breach_level?: string
+          detected_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          institution_id?: string
+          resolved?: boolean
+          sla_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sla_breach_events_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sla_escalation_flags: {
+        Row: {
+          id: string
+          institution_id: string
+          project_id: string | null
+          resolved_at: string | null
+          severity_level: string
+          triggered_at: string
+        }
+        Insert: {
+          id?: string
+          institution_id: string
+          project_id?: string | null
+          resolved_at?: string | null
+          severity_level?: string
+          triggered_at?: string
+        }
+        Update: {
+          id?: string
+          institution_id?: string
+          project_id?: string | null
+          resolved_at?: string | null
+          severity_level?: string
+          triggered_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sla_escalation_flags_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sla_performance_metrics: {
+        Row: {
+          avg_actual_hours: number | null
+          breach_rate_percent: number | null
+          compliance_rate_percent: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          measured_period: string
+          sla_type: string
+          warning_rate_percent: number | null
+        }
+        Insert: {
+          avg_actual_hours?: number | null
+          breach_rate_percent?: number | null
+          compliance_rate_percent?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          measured_period: string
+          sla_type: string
+          warning_rate_percent?: number | null
+        }
+        Update: {
+          avg_actual_hours?: number | null
+          breach_rate_percent?: number | null
+          compliance_rate_percent?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          measured_period?: string
+          sla_type?: string
+          warning_rate_percent?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sla_performance_metrics_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sla_reports: {
+        Row: {
+          file_url: string | null
+          generated_at: string
+          id: string
+          institution_id: string
+          report_period: string
+        }
+        Insert: {
+          file_url?: string | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          report_period: string
+        }
+        Update: {
+          file_url?: string | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          report_period?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sla_reports_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       smart_match_results: {
         Row: {
