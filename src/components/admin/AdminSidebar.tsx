@@ -127,6 +127,9 @@ const navItems = [
   { icon: Building2, label: "Institution Engagement", href: "/institution/engagement" },
   { icon: Building2, label: "Institution Control Panel", href: "/institution/control-panel" },
   { icon: Shield, label: "Tenant Boundary Tests", href: "/admin/tenant-boundary-test" },
+  { icon: Shield, label: "Governance Oversight", href: "/institution/governance" },
+  { icon: Activity, label: "Compliance Access Log", href: "/institution/compliance-access-log" },
+  { icon: BookOpen, label: "Policies", href: "/institution/policies" },
 ];
 
 const platformItems = [
