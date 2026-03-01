@@ -197,6 +197,9 @@ const ProjectActivityPage = lazy(() => import("./pages/ProjectActivityPage"));
 const DiscoverPage = lazy(() => import("./pages/DiscoverPage"));
 const TrendingPage = lazy(() => import("./pages/TrendingPage"));
 
+// Execution Workspace
+const ExecutionWorkspacePage = lazy(() => import("./pages/ExecutionWorkspacePage"));
+
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
     <div className="flex flex-col items-center gap-4">
@@ -294,6 +297,7 @@ const AppContent = () => {
 
           {/* Platform Excellence Modules */}
           <Route path="/workspace/:projectId" element={<ProtectedRoute><ProjectWorkspacePage /></ProtectedRoute>} />
+          <Route path="/project/:id/workspace" element={<ProtectedRoute><ExecutionWorkspacePage /></ProtectedRoute>} />
           <Route path="/execution-timeline/:projectId" element={<ProtectedRoute><ExecutionTimelinePage /></ProtectedRoute>} />
           <Route path="/execution-timeline" element={<ProtectedRoute><ExecutionTimelinePage /></ProtectedRoute>} />
           <Route path="/profile/:username" element={<PublicProfilePage />} />

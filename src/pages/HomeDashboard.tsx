@@ -9,7 +9,7 @@ import { CoreEngineMetrics } from "@/components/home/CoreEngineMetrics";
 import { QuickActionsCard } from "@/components/home/QuickActionsCard";
 import { EscrowVisualTracker } from "@/components/deals/EscrowVisualTracker";
 import { TrustExplainer } from "@/components/trust/TrustExplainer";
-import { GettingStartedChecklist } from "@/components/home/GettingStartedChecklist";
+import { OnboardingChecklist } from "@/components/onboarding/OnboardingChecklist";
 import { FirstTimeUserOverlay } from "@/components/onboarding/FirstTimeUserOverlay";
 import { PostSignupIntentSelector } from "@/components/onboarding/PostSignupIntentSelector";
 import { ArrowRight } from "lucide-react";
@@ -134,7 +134,7 @@ export default function HomeDashboard() {
         <div className="grid lg:grid-cols-12 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-4">
-            <GettingStartedChecklist />
+            <OnboardingChecklist />
             <WhatMattersToday items={todayItems} loading={loading} />
             {currentState.activeDeals > 0 && (
               <EscrowVisualTracker

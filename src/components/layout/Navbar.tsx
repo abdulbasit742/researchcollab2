@@ -9,31 +9,56 @@ import {
   Menu,
   X,
   GraduationCap,
-  Briefcase,
   Home,
   Target,
   User,
   LogOut,
-  DollarSign,
-  Rss,
-  Compass,
-  Film,
+  Handshake,
+  MessageSquare,
+  Search,
+  FolderKanban,
+  FileText,
+  ClipboardCheck,
+  BarChart3,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { MegaMenu } from "@/components/navigation/MegaMenu";
 import { KeyboardShortcutsHelp } from "@/components/navigation/KeyboardShortcutsHelp";
 import { UserAvatarMenu } from "@/components/layout/UserAvatarMenu";
 import { AnnouncementBanner } from "@/components/layout/AnnouncementBanner";
 
-// Pilot-focused navigation — core modules + social
-const navItems = [
+// Execution-focused navigation grouped by pillar
+const primaryNav = [
   { label: "Dashboard", href: "/home", icon: Home },
-  { label: "Feed", href: "/feed", icon: Rss },
-  { label: "FYP", href: "/fyp", icon: Briefcase },
-  { label: "Explore", href: "/explore", icon: Compass },
-  { label: "Reels", href: "/reels", icon: Film },
+  { label: "Projects", href: "/deals", icon: FolderKanban },
   { label: "Opportunities", href: "/offers", icon: Target },
-  { label: "Deals", href: "/deals", icon: DollarSign },
+  { label: "Messages", href: "/messages", icon: MessageSquare },
+];
+
+const mobileNavGroups = [
+  {
+    label: "Execution",
+    items: [
+      { label: "Dashboard", href: "/home", icon: Home },
+      { label: "Projects", href: "/deals", icon: FolderKanban },
+      { label: "Opportunities", href: "/offers", icon: Target },
+      { label: "Reviews", href: "/reviews", icon: ClipboardCheck },
+    ],
+  },
+  {
+    label: "Collaboration",
+    items: [
+      { label: "Messages", href: "/messages", icon: MessageSquare },
+      { label: "Search", href: "/search", icon: Search },
+      { label: "Discover", href: "/discover", icon: BarChart3 },
+    ],
+  },
+  {
+    label: "Knowledge",
+    items: [
+      { label: "Research", href: "/research", icon: FileText },
+      { label: "Grants", href: "/grants", icon: Handshake },
+    ],
+  },
 ];
 
 export function Navbar() {
@@ -83,31 +108,47 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Navigation - Core modules + Mega Menu */}
-        <nav className="hidden lg:flex items-center gap-1">
-          {navItems.slice(0, 4).map((item) => (
-            <Link
-              key={item.href}
-              to={item.href}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                location.pathname.startsWith(item.href)
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
-            >
-              <item.icon className="h-4 w-4" />
-              {item.label}
-            </Link>
-          ))}
-          <MegaMenu />
-        </nav>
+        {/* Desktop Navigation — Execution focused */}
+        {user && (
+          <nav className="hidden lg:flex items-center gap-1">
+            {primaryNav.map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  location.pathname.startsWith(item.href) && item.href !== "/"
+                    ? "bg-primary/10 text-primary"
+                    : location.pathname === item.href
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                }`}
+              >
+                <item.icon className="h-4 w-4" />
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        )}
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-2">
-          <VoiceSearchButton
-            onTranscript={handleVoiceSearch}
-            className="h-9 w-9"
-          />
+          {user && (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9"
+                onClick={() => navigate("/search")}
+                aria-label="Search"
+              >
+                <Search className="h-4 w-4" />
+              </Button>
+              <VoiceSearchButton
+                onTranscript={handleVoiceSearch}
+                className="h-9 w-9"
+              />
+            </>
+          )}
           <KeyboardShortcutsHelp />
           <ThemeToggle />
           <NotificationBell />
@@ -140,7 +181,7 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation — Grouped */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -149,21 +190,30 @@ export function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="lg:hidden border-t bg-background overflow-y-auto max-h-[70vh]"
           >
-            <div className="container py-3 px-4 space-y-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors touch-manipulation ${
-                    location.pathname.startsWith(item.href)
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-muted"
-                  }`}
-                >
-                  <item.icon className="h-5 w-5" />
-                  {item.label}
-                </Link>
+            <div className="container py-3 px-4 space-y-4">
+              {mobileNavGroups.map((group) => (
+                <div key={group.label}>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 mb-1">
+                    {group.label}
+                  </p>
+                  <div className="space-y-0.5">
+                    {group.items.map((item) => (
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        onClick={() => setIsOpen(false)}
+                        className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors touch-manipulation ${
+                          location.pathname.startsWith(item.href)
+                            ? "bg-primary/10 text-primary"
+                            : "text-muted-foreground hover:bg-muted"
+                        }`}
+                      >
+                        <item.icon className="h-4 w-4" />
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               ))}
 
               <div className="pt-3 border-t space-y-2">
