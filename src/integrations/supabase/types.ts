@@ -22405,6 +22405,44 @@ export type Database = {
           },
         ]
       }
+      federated_discovery_index: {
+        Row: {
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          node_id: string
+          summary_metadata: Json | null
+          visibility_level: string
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          node_id: string
+          summary_metadata?: Json | null
+          visibility_level?: string
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          node_id?: string
+          summary_metadata?: Json | null
+          visibility_level?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_discovery_index_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "platform_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       federated_identities: {
         Row: {
           id: string
@@ -22455,6 +22493,41 @@ export type Database = {
             columns: ["remote_instance_id"]
             isOneToOne: false
             referencedRelation: "federated_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federated_identity_links: {
+        Row: {
+          created_at: string
+          external_node_id: string | null
+          external_user_reference: string
+          id: string
+          local_user_id: string
+          verification_status: string
+        }
+        Insert: {
+          created_at?: string
+          external_node_id?: string | null
+          external_user_reference: string
+          id?: string
+          local_user_id: string
+          verification_status?: string
+        }
+        Update: {
+          created_at?: string
+          external_node_id?: string | null
+          external_user_reference?: string
+          id?: string
+          local_user_id?: string
+          verification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_identity_links_external_node_id_fkey"
+            columns: ["external_node_id"]
+            isOneToOne: false
+            referencedRelation: "platform_nodes"
             referencedColumns: ["id"]
           },
         ]
@@ -22825,6 +22898,79 @@ export type Database = {
             columns: ["target_node_id"]
             isOneToOne: false
             referencedRelation: "deployment_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federation_compliance_flags: {
+        Row: {
+          audit_completeness: number | null
+          compliance_score: number | null
+          generated_at: string
+          id: string
+          node_id: string
+          risk_flag: string | null
+        }
+        Insert: {
+          audit_completeness?: number | null
+          compliance_score?: number | null
+          generated_at?: string
+          id?: string
+          node_id: string
+          risk_flag?: string | null
+        }
+        Update: {
+          audit_completeness?: number | null
+          compliance_score?: number | null
+          generated_at?: string
+          id?: string
+          node_id?: string
+          risk_flag?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federation_compliance_flags_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "platform_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federation_metadata_registry: {
+        Row: {
+          entity_id: string
+          entity_type: string
+          federation_visibility: string
+          id: string
+          metadata_hash: string | null
+          node_origin: string | null
+          registered_at: string
+        }
+        Insert: {
+          entity_id: string
+          entity_type: string
+          federation_visibility?: string
+          id?: string
+          metadata_hash?: string | null
+          node_origin?: string | null
+          registered_at?: string
+        }
+        Update: {
+          entity_id?: string
+          entity_type?: string
+          federation_visibility?: string
+          id?: string
+          metadata_hash?: string | null
+          node_origin?: string | null
+          registered_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federation_metadata_registry_node_origin_fkey"
+            columns: ["node_origin"]
+            isOneToOne: false
+            referencedRelation: "platform_nodes"
             referencedColumns: ["id"]
           },
         ]
@@ -37752,6 +37898,44 @@ export type Database = {
           },
         ]
       }
+      interoperability_endpoints: {
+        Row: {
+          access_scope: string
+          created_at: string
+          endpoint_name: string
+          endpoint_type: string
+          id: string
+          is_active: boolean | null
+          node_id: string | null
+        }
+        Insert: {
+          access_scope?: string
+          created_at?: string
+          endpoint_name: string
+          endpoint_type: string
+          id?: string
+          is_active?: boolean | null
+          node_id?: string | null
+        }
+        Update: {
+          access_scope?: string
+          created_at?: string
+          endpoint_name?: string
+          endpoint_type?: string
+          id?: string
+          is_active?: boolean | null
+          node_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interoperability_endpoints_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "platform_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interplanetary_capital_flows: {
         Row: {
           amount: number
@@ -43237,6 +43421,44 @@ export type Database = {
           },
         ]
       }
+      node_governance_metrics: {
+        Row: {
+          anomaly_density: number | null
+          dispute_ratio: number | null
+          generated_at: string
+          governance_stability_score: number | null
+          id: string
+          node_id: string
+          review_integrity_score: number | null
+        }
+        Insert: {
+          anomaly_density?: number | null
+          dispute_ratio?: number | null
+          generated_at?: string
+          governance_stability_score?: number | null
+          id?: string
+          node_id: string
+          review_integrity_score?: number | null
+        }
+        Update: {
+          anomaly_density?: number | null
+          dispute_ratio?: number | null
+          generated_at?: string
+          governance_stability_score?: number | null
+          id?: string
+          node_id?: string
+          review_integrity_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "node_governance_metrics_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "platform_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       node_launch_workspaces: {
         Row: {
           arbitration_alignment: string | null
@@ -47298,6 +47520,33 @@ export type Database = {
           superseded_at?: string | null
           superseded_by_version?: number | null
           version_number?: number
+        }
+        Relationships: []
+      }
+      platform_nodes: {
+        Row: {
+          created_at: string
+          deployment_type: string
+          id: string
+          is_active: boolean | null
+          node_name: string
+          region: string
+        }
+        Insert: {
+          created_at?: string
+          deployment_type?: string
+          id?: string
+          is_active?: boolean | null
+          node_name: string
+          region: string
+        }
+        Update: {
+          created_at?: string
+          deployment_type?: string
+          id?: string
+          is_active?: boolean | null
+          node_name?: string
+          region?: string
         }
         Relationships: []
       }

@@ -155,6 +155,7 @@ const navItems = [
   { icon: MapPin, label: "Governance Risk Map", href: "/institution/governance-risk-map" },
   { icon: Workflow, label: "AI Orchestration", href: "/admin/orchestration" },
   { icon: GitBranch, label: "Execution Flow", href: "/admin/execution-flow" },
+  { icon: Globe, label: "Federation", href: "/admin/federation" },
 ];
 
 const platformItems = [
