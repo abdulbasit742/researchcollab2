@@ -176,6 +176,11 @@ const PublicDiscoveryPage = lazy(() => import("./pages/PublicDiscoveryPage"));
 const InstitutionControlPanelPage = lazy(() => import("./pages/InstitutionControlPanelPage"));
 const TenantBoundaryTestPage = lazy(() => import("./pages/TenantBoundaryTestPage"));
 
+// Compliance & Governance
+const GovernanceOversightPage = lazy(() => import("./pages/GovernanceOversightPage"));
+const ComplianceAccessLogPage = lazy(() => import("./pages/ComplianceAccessLogPage"));
+const InstitutionPoliciesPage = lazy(() => import("./pages/InstitutionPoliciesPage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -416,6 +421,9 @@ const AppContent = () => {
           <Route path="/institution/engagement" element={<ProtectedRoute><InstitutionEngagementPage /></ProtectedRoute>} />
           <Route path="/institution/control-panel" element={<ProtectedRoute><InstitutionControlPanelPage /></ProtectedRoute>} />
           <Route path="/admin/tenant-boundary-test" element={<ProtectedRoute><TenantBoundaryTestPage /></ProtectedRoute>} />
+          <Route path="/institution/governance" element={<ProtectedRoute><GovernanceOversightPage /></ProtectedRoute>} />
+          <Route path="/institution/compliance-access-log" element={<ProtectedRoute><ComplianceAccessLogPage /></ProtectedRoute>} />
+          <Route path="/institution/policies" element={<ProtectedRoute><InstitutionPoliciesPage /></ProtectedRoute>} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}

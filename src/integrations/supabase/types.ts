@@ -4576,6 +4576,30 @@ export type Database = {
           },
         ]
       }
+      archived_entities: {
+        Row: {
+          archived_at: string
+          archived_by: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+        }
+        Insert: {
+          archived_at?: string
+          archived_by?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+        }
+        Update: {
+          archived_at?: string
+          archived_by?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+        }
+        Relationships: []
+      }
       artifact_lineage: {
         Row: {
           child_artifact_id: string
@@ -9749,6 +9773,51 @@ export type Database = {
         }
         Relationships: []
       }
+      compliance_audit_log: {
+        Row: {
+          action_type: string
+          actor_id: string | null
+          actor_role: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          institution_id: string | null
+          ip_address: string | null
+          new_state_hash: string | null
+          previous_state_hash: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          action_type: string
+          actor_id?: string | null
+          actor_role?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          institution_id?: string | null
+          ip_address?: string | null
+          new_state_hash?: string | null
+          previous_state_hash?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          action_type?: string
+          actor_id?: string | null
+          actor_role?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          institution_id?: string | null
+          ip_address?: string | null
+          new_state_hash?: string | null
+          previous_state_hash?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       compliance_audit_logs: {
         Row: {
           action: string
@@ -9793,6 +9862,39 @@ export type Database = {
           },
         ]
       }
+      compliance_flags: {
+        Row: {
+          created_at: string
+          description: string | null
+          entity_id: string
+          entity_type: string
+          flag_type: string
+          id: string
+          institution_id: string | null
+          severity: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          entity_id: string
+          entity_type: string
+          flag_type: string
+          id?: string
+          institution_id?: string | null
+          severity?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          entity_id?: string
+          entity_type?: string
+          flag_type?: string
+          id?: string
+          institution_id?: string | null
+          severity?: string
+        }
+        Relationships: []
+      }
       compliance_forecasts: {
         Row: {
           audit_failure_risk: number | null
@@ -9835,6 +9937,42 @@ export type Database = {
           model_version?: string | null
           regulatory_breach_risk?: number | null
           reporting_delay_risk?: number | null
+        }
+        Relationships: []
+      }
+      compliance_health_metrics: {
+        Row: {
+          audit_completeness_score: number | null
+          data_access_traceability_score: number | null
+          dispute_transparency_score: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          overall_compliance_score: number | null
+          review_accountability_score: number | null
+          role_integrity_score: number | null
+        }
+        Insert: {
+          audit_completeness_score?: number | null
+          data_access_traceability_score?: number | null
+          dispute_transparency_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          overall_compliance_score?: number | null
+          review_accountability_score?: number | null
+          role_integrity_score?: number | null
+        }
+        Update: {
+          audit_completeness_score?: number | null
+          data_access_traceability_score?: number | null
+          dispute_transparency_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          overall_compliance_score?: number | null
+          review_accountability_score?: number | null
+          role_integrity_score?: number | null
         }
         Relationships: []
       }
@@ -13100,6 +13238,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      data_access_log: {
+        Row: {
+          access_type: string
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          institution_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          access_type?: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          institution_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          access_type?: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          institution_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       data_access_requests: {
         Row: {
@@ -46574,6 +46742,30 @@ export type Database = {
         }
         Relationships: []
       }
+      policy_acknowledgments: {
+        Row: {
+          acknowledged_at: string
+          id: string
+          institution_id: string | null
+          policy_version: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string
+          id?: string
+          institution_id?: string | null
+          policy_version: string
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string
+          id?: string
+          institution_id?: string | null
+          policy_version?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       policy_assumptions: {
         Row: {
           assumption_text: string
@@ -51442,6 +51634,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      regulatory_reports: {
+        Row: {
+          created_at: string
+          file_url: string | null
+          generated_by: string
+          id: string
+          institution_id: string
+          report_type: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          file_url?: string | null
+          generated_by: string
+          id?: string
+          institution_id: string
+          report_type: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          file_url?: string | null
+          generated_by?: string
+          id?: string
+          institution_id?: string
+          report_type?: string
+          status?: string
+        }
+        Relationships: []
       }
       regulatory_templates: {
         Row: {
