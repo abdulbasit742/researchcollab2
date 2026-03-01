@@ -1,6 +1,7 @@
 import { Component, ErrorInfo, ReactNode } from "react";
 import { AlertTriangle, RefreshCw, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -10,6 +11,36 @@ interface ErrorBoundaryProps {
 interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
+}
+
+/**
+ * Sanitize stack trace — remove file paths and internal details.
+ */
+function sanitizeStack(stack?: string): string {
+  if (!stack) return "";
+  return stack
+    .split("\n")
+    .slice(0, 5)
+    .map((line) => line.replace(/https?:\/\/[^\s]+/g, "[url]"))
+    .join("\n");
+}
+
+/**
+ * Log error to frontend_error_logs table (fire-and-forget).
+ */
+async function logErrorToDb(error: Error, componentStack?: string) {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    await (supabase as any).from("frontend_error_logs").insert({
+      user_id: user?.id || null,
+      route: window.location.pathname,
+      error_message: error.message?.slice(0, 500) || "Unknown error",
+      stack_trace: sanitizeStack(error.stack),
+      component_stack: componentStack?.slice(0, 1000) || null,
+    });
+  } catch {
+    // Silent — logging must never crash the app
+  }
 }
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -24,6 +55,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("ErrorBoundary caught:", error, errorInfo);
+    logErrorToDb(error, errorInfo.componentStack || undefined);
   }
 
   handleReload = () => {
@@ -45,7 +77,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               <AlertTriangle className="h-8 w-8 text-destructive" />
             </div>
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold text-foreground">Something went wrong</h1>
+              <h1 className="text-xl font-semibold text-foreground">Something went wrong</h1>
               <p className="text-muted-foreground text-sm">
                 An unexpected error occurred. Please try refreshing the page.
               </p>

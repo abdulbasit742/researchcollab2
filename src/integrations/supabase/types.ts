@@ -19403,6 +19403,36 @@ export type Database = {
         }
         Relationships: []
       }
+      execution_flow_audit: {
+        Row: {
+          anomaly_description: string | null
+          anomaly_detected: boolean
+          checked_at: string
+          flow_state_valid: boolean
+          id: string
+          milestone_id: string | null
+          project_id: string | null
+        }
+        Insert: {
+          anomaly_description?: string | null
+          anomaly_detected?: boolean
+          checked_at?: string
+          flow_state_valid?: boolean
+          id?: string
+          milestone_id?: string | null
+          project_id?: string | null
+        }
+        Update: {
+          anomaly_description?: string | null
+          anomaly_detected?: boolean
+          checked_at?: string
+          flow_state_valid?: boolean
+          id?: string
+          milestone_id?: string | null
+          project_id?: string | null
+        }
+        Relationships: []
+      }
       execution_health_snapshots: {
         Row: {
           details: Json | null
@@ -23177,6 +23207,36 @@ export type Database = {
           severity?: string
           signal_type?: string
           status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      frontend_error_logs: {
+        Row: {
+          component_stack: string | null
+          error_message: string
+          id: string
+          occurred_at: string
+          route: string | null
+          stack_trace: string | null
+          user_id: string | null
+        }
+        Insert: {
+          component_stack?: string | null
+          error_message: string
+          id?: string
+          occurred_at?: string
+          route?: string | null
+          stack_trace?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          component_stack?: string | null
+          error_message?: string
+          id?: string
+          occurred_at?: string
+          route?: string | null
+          stack_trace?: string | null
           user_id?: string | null
         }
         Relationships: []
@@ -50218,6 +50278,36 @@ export type Database = {
           },
         ]
       }
+      reconciliation_reports: {
+        Row: {
+          check_type: string
+          created_at: string
+          details: Json | null
+          id: string
+          issues_found: number
+          report_date: string
+          status: string
+        }
+        Insert: {
+          check_type: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          issues_found?: number
+          report_date?: string
+          status?: string
+        }
+        Update: {
+          check_type?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          issues_found?: number
+          report_date?: string
+          status?: string
+        }
+        Relationships: []
+      }
       reel_bookmarks: {
         Row: {
           created_at: string
@@ -56070,6 +56160,33 @@ export type Database = {
           table_name?: string
           update_policy_verified?: boolean | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      rls_validation_results: {
+        Row: {
+          checked_at: string
+          id: string
+          policy_count: number
+          rls_enabled: boolean
+          table_name: string
+          validation_status: string
+        }
+        Insert: {
+          checked_at?: string
+          id?: string
+          policy_count?: number
+          rls_enabled?: boolean
+          table_name: string
+          validation_status?: string
+        }
+        Update: {
+          checked_at?: string
+          id?: string
+          policy_count?: number
+          rls_enabled?: boolean
+          table_name?: string
+          validation_status?: string
         }
         Relationships: []
       }
@@ -62575,6 +62692,36 @@ export type Database = {
           id?: string
           overall_score?: number | null
           snapshot_at?: string | null
+        }
+        Relationships: []
+      }
+      system_integrity_checks: {
+        Row: {
+          check_type: string
+          description: string | null
+          detected_at: string
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          status: string
+        }
+        Insert: {
+          check_type: string
+          description?: string | null
+          detected_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          status?: string
+        }
+        Update: {
+          check_type?: string
+          description?: string | null
+          detected_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          status?: string
         }
         Relationships: []
       }
@@ -69749,6 +69896,7 @@ export type Database = {
         }
         Returns: Json
       }
+      run_integrity_checks: { Args: never; Returns: Json }
       run_nightly_reconciliation: { Args: never; Returns: Json }
       search_platform: {
         Args: {
@@ -69822,6 +69970,7 @@ export type Database = {
         Args: { p_escrow_id: string }
         Returns: Json
       }
+      validate_rls_policies: { Args: never; Returns: Json }
       validate_state_transition: {
         Args: {
           p_entity_type: string
