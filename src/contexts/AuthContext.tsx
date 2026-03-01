@@ -23,7 +23,7 @@ export interface Profile {
 export interface UserRole {
   id: string;
   user_id: string;
-  role: "student" | "researcher" | "admin" | "government_admin" | "compliance_officer" | "sponsor_admin" | "tenant_admin";
+  role: "student" | "researcher" | "admin" | "government_admin" | "compliance_officer" | "sponsor_admin" | "tenant_admin" | "super_admin";
   created_at: string;
 }
 
@@ -244,6 +244,8 @@ export function getRoleBasedRedirect(role: string | undefined): string {
   switch (role) {
     case "admin":
       return "/admin";
+    case "super_admin":
+      return "/super-admin/overview";
     default:
       return "/home";
   }
