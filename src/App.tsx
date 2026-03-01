@@ -181,6 +181,9 @@ const GovernanceOversightPage = lazy(() => import("./pages/GovernanceOversightPa
 const ComplianceAccessLogPage = lazy(() => import("./pages/ComplianceAccessLogPage"));
 const InstitutionPoliciesPage = lazy(() => import("./pages/InstitutionPoliciesPage"));
 
+// Executive Intelligence
+const ExecutiveOverviewPage = lazy(() => import("./pages/ExecutiveOverviewPage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -424,6 +427,7 @@ const AppContent = () => {
           <Route path="/institution/governance" element={<ProtectedRoute><GovernanceOversightPage /></ProtectedRoute>} />
           <Route path="/institution/compliance-access-log" element={<ProtectedRoute><ComplianceAccessLogPage /></ProtectedRoute>} />
           <Route path="/institution/policies" element={<ProtectedRoute><InstitutionPoliciesPage /></ProtectedRoute>} />
+          <Route path="/institution/executive" element={<ProtectedRoute><ExecutiveOverviewPage /></ProtectedRoute>} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}
