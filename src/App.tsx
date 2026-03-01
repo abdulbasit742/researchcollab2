@@ -186,6 +186,12 @@ const ProjectWorkspacePage = lazy(() => import("./pages/ProjectWorkspacePage"));
 const ExecutionTimelinePage = lazy(() => import("./pages/ExecutionTimelinePage"));
 const PublicProfilePage = lazy(() => import("./pages/PublicProfilePage"));
 
+// Research Workflow Modules
+const MilestoneTasksPage = lazy(() => import("./pages/MilestoneTasksPage"));
+const ProjectArtifactsPage = lazy(() => import("./pages/ProjectArtifactsPage"));
+const ReviewsPage = lazy(() => import("./pages/ReviewsPage"));
+const ProjectActivityPage = lazy(() => import("./pages/ProjectActivityPage"));
+
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
     <div className="flex flex-col items-center gap-4">
@@ -284,6 +290,12 @@ const AppContent = () => {
           <Route path="/execution-timeline/:projectId" element={<ProtectedRoute><ExecutionTimelinePage /></ProtectedRoute>} />
           <Route path="/execution-timeline" element={<ProtectedRoute><ExecutionTimelinePage /></ProtectedRoute>} />
           <Route path="/profile/:username" element={<PublicProfilePage />} />
+
+          {/* Research Workflow Modules */}
+          <Route path="/milestone/:milestoneId/tasks" element={<ProtectedRoute><MilestoneTasksPage /></ProtectedRoute>} />
+          <Route path="/project/:projectId/artifacts" element={<ProtectedRoute><ProjectArtifactsPage /></ProtectedRoute>} />
+          <Route path="/reviews" element={<ProtectedRoute><ReviewsPage /></ProtectedRoute>} />
+          <Route path="/project/:projectId/activity" element={<ProtectedRoute><ProjectActivityPage /></ProtectedRoute>} />
 
           {/* Verification — Trust */}
           <Route path="/verification" element={<ProtectedRoute><VerificationCenterPage /></ProtectedRoute>} />
