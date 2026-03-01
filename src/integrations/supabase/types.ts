@@ -3742,6 +3742,33 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics_cache: {
+        Row: {
+          cache_key: string
+          entity_id: string | null
+          expires_at: string
+          generated_at: string
+          id: string
+          snapshot_data: Json
+        }
+        Insert: {
+          cache_key: string
+          entity_id?: string | null
+          expires_at?: string
+          generated_at?: string
+          id?: string
+          snapshot_data?: Json
+        }
+        Update: {
+          cache_key?: string
+          entity_id?: string | null
+          expires_at?: string
+          generated_at?: string
+          id?: string
+          snapshot_data?: Json
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           created_at: string
@@ -69845,6 +69872,7 @@ export type Database = {
         }
         Returns: string
       }
+      refresh_expired_caches: { Args: never; Returns: number }
       refund_escrow_atomic: {
         Args: {
           p_escrow_id: string
