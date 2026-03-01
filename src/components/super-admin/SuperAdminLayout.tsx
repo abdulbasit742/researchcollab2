@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Shield, Activity, Server, Globe, ToggleLeft,
-  DollarSign, FileText, ChevronRight, LogOut, ShieldCheck,
+  DollarSign, FileText, ChevronRight, LogOut, ShieldCheck, GitBranch,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,7 @@ const NAV_ITEMS = [
   { label: "Revenue", href: "/super-admin/revenue", icon: DollarSign },
   { label: "Audit Log", href: "/super-admin/audit-log", icon: FileText },
   { label: "SLA Overview", href: "/super-admin/sla-overview", icon: ShieldCheck },
+  { label: "Audit Map", href: "/super-admin/audit-map", icon: GitBranch },
 ];
 
 export function SuperAdminLayout({ children }: { children: ReactNode }) {

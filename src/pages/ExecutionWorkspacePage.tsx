@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow, differenceInDays } from "date-fns";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
+import { AuditVisualizer } from "@/components/workspace/AuditVisualizer";
 
 // ============= Shared Data Hooks =============
 
@@ -872,6 +873,7 @@ function WorkspaceContent({ projectId, activeTab, setActiveTab }: { projectId: s
           <TabsTrigger value="messages" className="gap-1.5 text-xs"><MessageSquare className="h-3.5 w-3.5" /> Messages</TabsTrigger>
           <TabsTrigger value="activity" className="gap-1.5 text-xs"><Activity className="h-3.5 w-3.5" /> Activity</TabsTrigger>
           <TabsTrigger value="analytics" className="gap-1.5 text-xs"><BarChart3 className="h-3.5 w-3.5" /> Analytics</TabsTrigger>
+          <TabsTrigger value="audit" className="gap-1.5 text-xs"><Eye className="h-3.5 w-3.5" /> Audit</TabsTrigger>
         </TabsList>
 
         <div className="mt-6">
@@ -893,6 +895,7 @@ function WorkspaceContent({ projectId, activeTab, setActiveTab }: { projectId: s
           <TabsContent value="messages"><MessagesTab projectId={projectId} /></TabsContent>
           <TabsContent value="activity"><ActivityTimeline data={data} /></TabsContent>
           <TabsContent value="analytics"><AnalyticsTab data={data} /></TabsContent>
+          <TabsContent value="audit"><AuditVisualizer projectId={projectId} milestones={data.milestones.data || []} milestoneIds={data.milestoneIds} /></TabsContent>
         </div>
       </Tabs>
     </div>

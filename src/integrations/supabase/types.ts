@@ -5010,6 +5010,36 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_visual_exports: {
+        Row: {
+          export_type: string
+          file_url: string | null
+          generated_at: string
+          generated_by: string | null
+          id: string
+          milestone_id: string | null
+          project_id: string | null
+        }
+        Insert: {
+          export_type?: string
+          file_url?: string | null
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          milestone_id?: string | null
+          project_id?: string | null
+        }
+        Update: {
+          export_type?: string
+          file_url?: string | null
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          milestone_id?: string | null
+          project_id?: string | null
+        }
+        Relationships: []
+      }
       author_credibility_scores: {
         Row: {
           avg_substance_rank: number | null
@@ -42352,6 +42382,45 @@ export type Database = {
           milestone_id?: string
           model_version?: string | null
           predicted_delay_days?: number | null
+        }
+        Relationships: []
+      }
+      milestone_lifecycle_events: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          duration_from_previous_ms: number | null
+          event_hash: string | null
+          event_timestamp: string
+          event_type: string
+          id: string
+          milestone_id: string
+          new_state: string | null
+          previous_state: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          duration_from_previous_ms?: number | null
+          event_hash?: string | null
+          event_timestamp?: string
+          event_type: string
+          id?: string
+          milestone_id: string
+          new_state?: string | null
+          previous_state?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          duration_from_previous_ms?: number | null
+          event_hash?: string | null
+          event_timestamp?: string
+          event_type?: string
+          id?: string
+          milestone_id?: string
+          new_state?: string | null
+          previous_state?: string | null
         }
         Relationships: []
       }
