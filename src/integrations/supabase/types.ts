@@ -4496,6 +4496,39 @@ export type Database = {
         }
         Relationships: []
       }
+      approval_pattern_analysis: {
+        Row: {
+          anomaly_score: number | null
+          approval_frequency: number | null
+          approval_time_distribution: Json | null
+          approver_id: string
+          generated_at: string
+          id: string
+          institution_id: string | null
+          project_id: string | null
+        }
+        Insert: {
+          anomaly_score?: number | null
+          approval_frequency?: number | null
+          approval_time_distribution?: Json | null
+          approver_id: string
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+          project_id?: string | null
+        }
+        Update: {
+          anomaly_score?: number | null
+          approval_frequency?: number | null
+          approval_time_distribution?: Json | null
+          approver_id?: string
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+          project_id?: string | null
+        }
+        Relationships: []
+      }
       arbitration_cases: {
         Row: {
           against_party: string
@@ -5289,6 +5322,42 @@ export type Database = {
           records_processed?: number | null
           started_at?: string
           status?: string
+        }
+        Relationships: []
+      }
+      behavioral_drift_monitor: {
+        Row: {
+          baseline_behavior_score: number | null
+          current_behavior_score: number | null
+          drift_percentage: number | null
+          entity_id: string
+          entity_type: string
+          generated_at: string
+          id: string
+          institution_id: string | null
+          risk_flag: string | null
+        }
+        Insert: {
+          baseline_behavior_score?: number | null
+          current_behavior_score?: number | null
+          drift_percentage?: number | null
+          entity_id: string
+          entity_type: string
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+          risk_flag?: string | null
+        }
+        Update: {
+          baseline_behavior_score?: number | null
+          current_behavior_score?: number | null
+          drift_percentage?: number | null
+          entity_id?: string
+          entity_type?: string
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+          risk_flag?: string | null
         }
         Relationships: []
       }
@@ -15927,6 +15996,36 @@ export type Database = {
           },
         ]
       }
+      dispute_pattern_intelligence: {
+        Row: {
+          clustering_score: number | null
+          dispute_rate_trend: number | null
+          escalation_pattern_score: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          repeat_dispute_pairs: Json | null
+        }
+        Insert: {
+          clustering_score?: number | null
+          dispute_rate_trend?: number | null
+          escalation_pattern_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          repeat_dispute_pairs?: Json | null
+        }
+        Update: {
+          clustering_score?: number | null
+          dispute_rate_trend?: number | null
+          escalation_pattern_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          repeat_dispute_pairs?: Json | null
+        }
+        Relationships: []
+      }
       dispute_prediction_logs: {
         Row: {
           contributing_factors: Json | null
@@ -18339,6 +18438,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      endorsement_integrity_analysis: {
+        Row: {
+          anomaly_score: number | null
+          circular_endorsement_score: number | null
+          endorsement_density: number | null
+          generated_at: string
+          id: string
+          institution_id: string | null
+          user_id: string
+        }
+        Insert: {
+          anomaly_score?: number | null
+          circular_endorsement_score?: number | null
+          endorsement_density?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+          user_id: string
+        }
+        Update: {
+          anomaly_score?: number | null
+          circular_endorsement_score?: number | null
+          endorsement_density?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       endowment_funds: {
         Row: {
@@ -28189,6 +28318,42 @@ export type Database = {
         }
         Relationships: []
       }
+      governance_anomaly_detection: {
+        Row: {
+          anomaly_score: number | null
+          anomaly_type: string
+          detected_at: string
+          entity_id: string
+          entity_type: string
+          explanation: string | null
+          id: string
+          institution_id: string | null
+          severity_level: string | null
+        }
+        Insert: {
+          anomaly_score?: number | null
+          anomaly_type: string
+          detected_at?: string
+          entity_id: string
+          entity_type: string
+          explanation?: string | null
+          id?: string
+          institution_id?: string | null
+          severity_level?: string | null
+        }
+        Update: {
+          anomaly_score?: number | null
+          anomaly_type?: string
+          detected_at?: string
+          entity_id?: string
+          entity_type?: string
+          explanation?: string | null
+          id?: string
+          institution_id?: string | null
+          severity_level?: string | null
+        }
+        Relationships: []
+      }
       governance_appeals: {
         Row: {
           appeal_reason: string
@@ -29007,6 +29172,39 @@ export type Database = {
         }
         Relationships: []
       }
+      governance_stability_index: {
+        Row: {
+          anomaly_density: number | null
+          dispute_stability_score: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          overall_governance_score: number | null
+          review_integrity_score: number | null
+          role_integrity_score: number | null
+        }
+        Insert: {
+          anomaly_density?: number | null
+          dispute_stability_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          overall_governance_score?: number | null
+          review_integrity_score?: number | null
+          role_integrity_score?: number | null
+        }
+        Update: {
+          anomaly_density?: number | null
+          dispute_stability_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          overall_governance_score?: number | null
+          review_integrity_score?: number | null
+          role_integrity_score?: number | null
+        }
+        Relationships: []
+      }
       governance_stability_metrics: {
         Row: {
           anomaly_rate: number | null
@@ -29040,6 +29238,39 @@ export type Database = {
           overall_stability_score?: number | null
           review_accountability_score?: number | null
           role_integrity_score?: number | null
+        }
+        Relationships: []
+      }
+      governance_transparency_reports: {
+        Row: {
+          anomaly_summary: Json | null
+          dispute_patterns: Json | null
+          file_url: string | null
+          generated_at: string
+          id: string
+          institution_id: string
+          integrity_metrics: Json | null
+          review_patterns: Json | null
+        }
+        Insert: {
+          anomaly_summary?: Json | null
+          dispute_patterns?: Json | null
+          file_url?: string | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          integrity_metrics?: Json | null
+          review_patterns?: Json | null
+        }
+        Update: {
+          anomaly_summary?: Json | null
+          dispute_patterns?: Json | null
+          file_url?: string | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          integrity_metrics?: Json | null
+          review_patterns?: Json | null
         }
         Relationships: []
       }
@@ -57848,6 +58079,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      review_integrity_metrics: {
+        Row: {
+          approval_rate: number | null
+          average_review_time: number | null
+          bias_risk_score: number | null
+          generated_at: string
+          id: string
+          institution_id: string | null
+          rejection_rate: number | null
+          reviewer_id: string
+          variance_score: number | null
+        }
+        Insert: {
+          approval_rate?: number | null
+          average_review_time?: number | null
+          bias_risk_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+          rejection_rate?: number | null
+          reviewer_id: string
+          variance_score?: number | null
+        }
+        Update: {
+          approval_rate?: number | null
+          average_review_time?: number | null
+          bias_risk_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string | null
+          rejection_rate?: number | null
+          reviewer_id?: string
+          variance_score?: number | null
+        }
+        Relationships: []
       }
       review_outcomes: {
         Row: {

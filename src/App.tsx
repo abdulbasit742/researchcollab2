@@ -209,6 +209,10 @@ const EnterpriseSalesIntelligencePage = lazy(() => import("./pages/EnterpriseSal
 const PredictiveInsightsPage = lazy(() => import("./pages/PredictiveInsightsPage"));
 const RiskSimulationPage = lazy(() => import("./pages/RiskSimulationPage"));
 
+// Governance Intelligence
+const GovernanceIntelligencePage = lazy(() => import("./pages/GovernanceIntelligencePage"));
+const GovernanceRiskMapPage = lazy(() => import("./pages/GovernanceRiskMapPage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -461,10 +465,12 @@ const AppContent = () => {
           <Route path="/institution/departments" element={<ProtectedRoute><DepartmentComparisonPage /></ProtectedRoute>} />
           <Route path="/institution/toolkit" element={<ProtectedRoute><InstitutionalToolkitPage /></ProtectedRoute>} />
           <Route path="/institution/billing" element={<ProtectedRoute><InstitutionBillingPage /></ProtectedRoute>} />
+          <Route path="/institution/governance-risk-map" element={<ProtectedRoute><GovernanceRiskMapPage /></ProtectedRoute>} />
           <Route path="/admin/revenue" element={<ProtectedRoute><RevenueDashboardPage /></ProtectedRoute>} />
           <Route path="/admin/enterprise-intelligence" element={<ProtectedRoute><EnterpriseSalesIntelligencePage /></ProtectedRoute>} />
           <Route path="/admin/predictive-insights" element={<ProtectedRoute><PredictiveInsightsPage /></ProtectedRoute>} />
           <Route path="/admin/simulation" element={<ProtectedRoute><RiskSimulationPage /></ProtectedRoute>} />
+          <Route path="/admin/governance-intelligence" element={<ProtectedRoute><GovernanceIntelligencePage /></ProtectedRoute>} />
           <Route path="/verify/:certificateId" element={<CertificateVerificationPage />} />
           <Route path="/verify" element={<CertificateVerificationPage />} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />

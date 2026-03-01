@@ -46,6 +46,8 @@ import {
   Rocket,
   CreditCard,
   FlaskConical,
+  ShieldAlert,
+  MapPin,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -148,6 +150,8 @@ const navItems = [
   { icon: Briefcase, label: "Enterprise Sales", href: "/admin/enterprise-intelligence" },
   { icon: Brain, label: "Predictive Insights", href: "/admin/predictive-insights" },
   { icon: FlaskConical, label: "Risk Simulation", href: "/admin/simulation" },
+  { icon: ShieldAlert, label: "Governance Intelligence", href: "/admin/governance-intelligence" },
+  { icon: MapPin, label: "Governance Risk Map", href: "/institution/governance-risk-map" },
 ];
 
 const platformItems = [
