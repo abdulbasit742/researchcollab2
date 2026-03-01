@@ -9530,6 +9530,44 @@ export type Database = {
         }
         Relationships: []
       }
+      compute_proofs: {
+        Row: {
+          compute_metadata: Json
+          created_at: string
+          id: string
+          integrity_signature: string
+          proof_type: string
+          research_execution_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          compute_metadata?: Json
+          created_at?: string
+          id?: string
+          integrity_signature: string
+          proof_type?: string
+          research_execution_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          compute_metadata?: Json
+          created_at?: string
+          id?: string
+          integrity_signature?: string
+          proof_type?: string
+          research_execution_id?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compute_proofs_research_execution_id_fkey"
+            columns: ["research_execution_id"]
+            isOneToOne: false
+            referencedRelation: "research_executions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       compute_usage_ledger: {
         Row: {
           cost_estimate: number | null
@@ -38991,6 +39029,51 @@ export type Database = {
         }
         Relationships: []
       }
+      milestone_risk_forecasts: {
+        Row: {
+          deal_id: string | null
+          dispute_probability: number
+          failure_probability: number
+          generated_at: string
+          generated_by: string | null
+          id: string
+          milestone_id: string
+          model_version: string | null
+          predicted_delay_days: number | null
+          recommendation: string | null
+          risk_factors: Json | null
+          risk_score: number
+        }
+        Insert: {
+          deal_id?: string | null
+          dispute_probability?: number
+          failure_probability?: number
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          milestone_id: string
+          model_version?: string | null
+          predicted_delay_days?: number | null
+          recommendation?: string | null
+          risk_factors?: Json | null
+          risk_score?: number
+        }
+        Update: {
+          deal_id?: string | null
+          dispute_probability?: number
+          failure_probability?: number
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          milestone_id?: string
+          model_version?: string | null
+          predicted_delay_days?: number | null
+          recommendation?: string | null
+          risk_factors?: Json | null
+          risk_score?: number
+        }
+        Relationships: []
+      }
       milestones: {
         Row: {
           amount: number
@@ -52709,6 +52792,51 @@ export type Database = {
         }
         Relationships: []
       }
+      research_executions: {
+        Row: {
+          created_at: string
+          dataset_signature: string | null
+          environment_snapshot: Json | null
+          execution_hash: string
+          id: string
+          metadata: Json | null
+          milestone_id: string | null
+          project_id: string | null
+          reproducibility_hash: string | null
+          status: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dataset_signature?: string | null
+          environment_snapshot?: Json | null
+          execution_hash: string
+          id?: string
+          metadata?: Json | null
+          milestone_id?: string | null
+          project_id?: string | null
+          reproducibility_hash?: string | null
+          status?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dataset_signature?: string | null
+          environment_snapshot?: Json | null
+          execution_hash?: string
+          id?: string
+          metadata?: Json | null
+          milestone_id?: string | null
+          project_id?: string | null
+          reproducibility_hash?: string | null
+          status?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       research_funding_pledges: {
         Row: {
           amount: number
@@ -61115,6 +61243,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      supervisor_performance_index: {
+        Row: {
+          completion_score: number | null
+          composite_score: number | null
+          dispute_involvement_score: number | null
+          funding_success_rate: number | null
+          grade: string | null
+          id: string
+          period: string | null
+          student_satisfaction_score: number | null
+          supervisor_id: string
+          updated_at: string
+          validation_score: number | null
+        }
+        Insert: {
+          completion_score?: number | null
+          composite_score?: number | null
+          dispute_involvement_score?: number | null
+          funding_success_rate?: number | null
+          grade?: string | null
+          id?: string
+          period?: string | null
+          student_satisfaction_score?: number | null
+          supervisor_id: string
+          updated_at?: string
+          validation_score?: number | null
+        }
+        Update: {
+          completion_score?: number | null
+          composite_score?: number | null
+          dispute_involvement_score?: number | null
+          funding_success_rate?: number | null
+          grade?: string | null
+          id?: string
+          period?: string | null
+          student_satisfaction_score?: number | null
+          supervisor_id?: string
+          updated_at?: string
+          validation_score?: number | null
+        }
+        Relationships: []
       }
       supervisor_performance_metrics: {
         Row: {

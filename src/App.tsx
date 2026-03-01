@@ -168,6 +168,10 @@ const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrus
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
 const SovereignDashboardPage = lazy(() => import("./pages/SovereignDashboardPage"));
 const ResearchAssetsPage = lazy(() => import("./pages/ResearchAssetsPage"));
+const ResearchVerificationDashboardPage = lazy(() => import("./pages/ResearchVerificationDashboardPage"));
+const InstitutionalIntelligenceDashboardPage = lazy(() => import("./pages/InstitutionalIntelligenceDashboardPage"));
+const CapitalRiskRadarPage = lazy(() => import("./pages/CapitalRiskRadarPage"));
+const ResearchAssetRegistryPage = lazy(() => import("./pages/ResearchAssetRegistryPage"));
 
 // Suspense fallback
 const SuspenseFallback = () => (
@@ -250,6 +254,10 @@ const AppContent = () => {
           <Route path="/funding-intelligence" element={<ProtectedRoute><FundingIntelligencePage2 /></ProtectedRoute>} />
           <Route path="/sovereign" element={<ProtectedRoute><SovereignDashboardPage /></ProtectedRoute>} />
           <Route path="/research-assets" element={<ProtectedRoute><ResearchAssetsPage /></ProtectedRoute>} />
+          <Route path="/research-verification" element={<ProtectedRoute><ResearchVerificationDashboardPage /></ProtectedRoute>} />
+          <Route path="/institutional-intelligence" element={<ProtectedRoute><InstitutionalIntelligenceDashboardPage /></ProtectedRoute>} />
+          <Route path="/capital-risk-radar" element={<ProtectedRoute><CapitalRiskRadarPage /></ProtectedRoute>} />
+          <Route path="/research-asset-registry" element={<ProtectedRoute><ResearchAssetRegistryPage /></ProtectedRoute>} />
 
           {/* Wallet — Payment */}
           <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
