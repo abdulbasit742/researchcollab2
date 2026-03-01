@@ -167,6 +167,10 @@ const AdminIntegrityPage = lazy(() => import("./pages/AdminIntegrityPage"));
 const AdminPerformancePage = lazy(() => import("./pages/AdminPerformancePage"));
 const AdminSecurityDashboardPage = lazy(() => import("./pages/AdminSecurityDashboardPage"));
 
+// Growth & Engagement
+const EngagementAnalyticsPage = lazy(() => import("./pages/EngagementAnalyticsPage"));
+const InstitutionEngagementPage = lazy(() => import("./pages/InstitutionEngagementPage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -402,6 +406,8 @@ const AppContent = () => {
           <Route path="/admin/integrity" element={<ProtectedRoute><AdminIntegrityPage /></ProtectedRoute>} />
           <Route path="/admin/performance" element={<ProtectedRoute><AdminPerformancePage /></ProtectedRoute>} />
           <Route path="/admin/security-dashboard" element={<ProtectedRoute><AdminSecurityDashboardPage /></ProtectedRoute>} />
+          <Route path="/analytics/engagement" element={<ProtectedRoute><EngagementAnalyticsPage /></ProtectedRoute>} />
+          <Route path="/institution/engagement" element={<ProtectedRoute><InstitutionEngagementPage /></ProtectedRoute>} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}

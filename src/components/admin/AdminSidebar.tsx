@@ -123,6 +123,8 @@ const navItems = [
   { icon: Layers, label: "My OS", href: "/my-os" },
   { icon: TrendingUp, label: "Opportunity Dashboard", href: "/opportunities/dashboard" },
   { icon: Radio, label: "Strategic Feed", href: "/feed/strategic" },
+  { icon: Activity, label: "Engagement Analytics", href: "/analytics/engagement" },
+  { icon: Building2, label: "Institution Engagement", href: "/institution/engagement" },
 ];
 
 const platformItems = [

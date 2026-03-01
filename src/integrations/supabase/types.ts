@@ -857,6 +857,27 @@ export type Database = {
         }
         Relationships: []
       }
+      activation_funnel_events: {
+        Row: {
+          event_type: string
+          id: string
+          occurred_at: string
+          user_id: string
+        }
+        Insert: {
+          event_type: string
+          id?: string
+          occurred_at?: string
+          user_id: string
+        }
+        Update: {
+          event_type?: string
+          id?: string
+          occurred_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       activity_feed: {
         Row: {
           action: string
@@ -30987,6 +31008,33 @@ export type Database = {
           },
         ]
       }
+      inactivity_flags: {
+        Row: {
+          dismissed: boolean
+          entity_id: string
+          entity_type: string
+          flagged_at: string
+          id: string
+          inactivity_days: number
+        }
+        Insert: {
+          dismissed?: boolean
+          entity_id: string
+          entity_type: string
+          flagged_at?: string
+          id?: string
+          inactivity_days?: number
+        }
+        Update: {
+          dismissed?: boolean
+          entity_id?: string
+          entity_type?: string
+          flagged_at?: string
+          id?: string
+          inactivity_days?: number
+        }
+        Relationships: []
+      }
       incentive_alignment_state: {
         Row: {
           active_penalties: Json
@@ -32994,6 +33042,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      institution_engagement_metrics: {
+        Row: {
+          active_projects_7d: number
+          active_users_7d: number
+          completion_rate: number | null
+          dispute_ratio: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          review_turnaround_avg: number | null
+        }
+        Insert: {
+          active_projects_7d?: number
+          active_users_7d?: number
+          completion_rate?: number | null
+          dispute_ratio?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          review_turnaround_avg?: number | null
+        }
+        Update: {
+          active_projects_7d?: number
+          active_users_7d?: number
+          completion_rate?: number | null
+          dispute_ratio?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          review_turnaround_avg?: number | null
+        }
+        Relationships: []
       }
       institution_identity_registry: {
         Row: {
@@ -45552,6 +45633,33 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_reminders: {
+        Row: {
+          created_at: string
+          dismissed: boolean
+          id: string
+          message: string
+          reminder_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dismissed?: boolean
+          id?: string
+          message: string
+          reminder_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dismissed?: boolean
+          id?: string
+          message?: string
+          reminder_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       platform_revenue_ledger: {
         Row: {
           created_at: string
@@ -49536,6 +49644,39 @@ export type Database = {
           milestone_number?: number | null
           project_id?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      project_momentum_metrics: {
+        Row: {
+          engagement_score: number | null
+          generated_at: string
+          id: string
+          last_active_at: string | null
+          milestone_velocity: number | null
+          project_id: string
+          task_completion_velocity: number | null
+          weekly_activity_count: number
+        }
+        Insert: {
+          engagement_score?: number | null
+          generated_at?: string
+          id?: string
+          last_active_at?: string | null
+          milestone_velocity?: number | null
+          project_id: string
+          task_completion_velocity?: number | null
+          weekly_activity_count?: number
+        }
+        Update: {
+          engagement_score?: number | null
+          generated_at?: string
+          id?: string
+          last_active_at?: string | null
+          milestone_velocity?: number | null
+          project_id?: string
+          task_completion_velocity?: number | null
+          weekly_activity_count?: number
         }
         Relationships: []
       }
