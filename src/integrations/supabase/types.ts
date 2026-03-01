@@ -26811,6 +26811,45 @@ export type Database = {
         }
         Relationships: []
       }
+      global_search_index: {
+        Row: {
+          content_excerpt: string | null
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          institution_id: string | null
+          searchable_tsv: unknown
+          title: string
+          updated_at: string
+          visibility_scope: string
+        }
+        Insert: {
+          content_excerpt?: string | null
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          institution_id?: string | null
+          searchable_tsv?: unknown
+          title: string
+          updated_at?: string
+          visibility_scope?: string
+        }
+        Update: {
+          content_excerpt?: string | null
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          institution_id?: string | null
+          searchable_tsv?: unknown
+          title?: string
+          updated_at?: string
+          visibility_scope?: string
+        }
+        Relationships: []
+      }
       global_trust_index: {
         Row: {
           collaboration_stability: number | null
@@ -49498,6 +49537,45 @@ export type Database = {
         }
         Relationships: []
       }
+      public_research_index: {
+        Row: {
+          created_at: string
+          execution_score: number | null
+          id: string
+          institution_id: string | null
+          institution_name: string | null
+          project_title: string
+          research_execution_id: string | null
+          searchable_tags: string[] | null
+          searchable_tsv: unknown
+          validation_status: string | null
+        }
+        Insert: {
+          created_at?: string
+          execution_score?: number | null
+          id?: string
+          institution_id?: string | null
+          institution_name?: string | null
+          project_title: string
+          research_execution_id?: string | null
+          searchable_tags?: string[] | null
+          searchable_tsv?: unknown
+          validation_status?: string | null
+        }
+        Update: {
+          created_at?: string
+          execution_score?: number | null
+          id?: string
+          institution_id?: string | null
+          institution_name?: string | null
+          project_title?: string
+          research_execution_id?: string | null
+          searchable_tags?: string[] | null
+          searchable_tsv?: unknown
+          validation_status?: string | null
+        }
+        Relationships: []
+      }
       publication_authors: {
         Row: {
           affiliation: string | null
@@ -57639,6 +57717,33 @@ export type Database = {
           },
         ]
       }
+      search_audit_log: {
+        Row: {
+          created_at: string
+          filters: Json | null
+          id: string
+          query_text: string
+          result_count: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          filters?: Json | null
+          id?: string
+          query_text: string
+          result_count?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          filters?: Json | null
+          id?: string
+          query_text?: string
+          result_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       search_events: {
         Row: {
           created_at: string
@@ -63973,6 +64078,36 @@ export type Database = {
           },
         ]
       }
+      trending_signals: {
+        Row: {
+          activity_velocity: number | null
+          engagement_score: number | null
+          entity_id: string
+          entity_title: string | null
+          entity_type: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          activity_velocity?: number | null
+          engagement_score?: number | null
+          entity_id: string
+          entity_title?: string | null
+          entity_type: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          activity_velocity?: number | null
+          engagement_score?: number | null
+          entity_id?: string
+          entity_title?: string | null
+          entity_type?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       trust_access_gates: {
         Row: {
           created_at: string | null
@@ -69220,6 +69355,16 @@ export type Database = {
         Args: { p_user_id: string }
         Returns: undefined
       }
+      compute_trending_entities: {
+        Args: { limit_count?: number }
+        Returns: {
+          activity_velocity: number
+          engagement_score: number
+          entity_id: string
+          entity_title: string
+          entity_type: string
+        }[]
+      }
       create_academic_record_from_offer: {
         Args: { p_offer_id: string }
         Returns: string
@@ -69500,6 +69645,28 @@ export type Database = {
         Returns: Json
       }
       run_nightly_reconciliation: { Args: never; Returns: Json }
+      search_platform: {
+        Args: {
+          filter_date_from?: string
+          filter_date_to?: string
+          filter_entity_types?: string[]
+          filter_institution_id?: string
+          page_num?: number
+          page_size?: number
+          query_text: string
+        }
+        Returns: {
+          content_excerpt: string
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          institution_id: string
+          rank: number
+          title: string
+          visibility_scope: string
+        }[]
+      }
       send_message_secure: {
         Args: {
           p_body: string
