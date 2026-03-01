@@ -12288,6 +12288,45 @@ export type Database = {
         }
         Relationships: []
       }
+      cross_border_projects: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          cross_border_trust_score: number | null
+          id: string
+          metadata: Json | null
+          origin_country: string
+          partner_country: string
+          project_id: string | null
+          regulatory_flag: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          cross_border_trust_score?: number | null
+          id?: string
+          metadata?: Json | null
+          origin_country: string
+          partner_country: string
+          project_id?: string | null
+          regulatory_flag?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          cross_border_trust_score?: number | null
+          id?: string
+          metadata?: Json | null
+          origin_country?: string
+          partner_country?: string
+          project_id?: string | null
+          regulatory_flag?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       cross_border_simulations: {
         Row: {
           capital_amount: number | null
@@ -26681,6 +26720,45 @@ export type Database = {
           },
         ]
       }
+      governance_anomalies: {
+        Row: {
+          anomaly_score: number
+          anomaly_type: string
+          created_at: string
+          detected_by: string | null
+          entity_id: string
+          entity_type: string
+          flagged_reason: string | null
+          id: string
+          severity: string | null
+          status: string | null
+        }
+        Insert: {
+          anomaly_score?: number
+          anomaly_type: string
+          created_at?: string
+          detected_by?: string | null
+          entity_id: string
+          entity_type: string
+          flagged_reason?: string | null
+          id?: string
+          severity?: string | null
+          status?: string | null
+        }
+        Update: {
+          anomaly_score?: number
+          anomaly_type?: string
+          created_at?: string
+          detected_by?: string | null
+          entity_id?: string
+          entity_type?: string
+          flagged_reason?: string | null
+          id?: string
+          severity?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       governance_appeals: {
         Row: {
           appeal_reason: string
@@ -27128,6 +27206,45 @@ export type Database = {
           resolved_by?: string | null
           severity_level?: string
           status?: string
+        }
+        Relationships: []
+      }
+      governance_health_index: {
+        Row: {
+          dispute_pattern_score: number | null
+          endorsement_irregularity_score: number | null
+          entity_id: string
+          entity_type: string
+          governance_composite_score: number | null
+          grade: string | null
+          id: string
+          manipulation_risk_score: number | null
+          period: string | null
+          updated_at: string
+        }
+        Insert: {
+          dispute_pattern_score?: number | null
+          endorsement_irregularity_score?: number | null
+          entity_id: string
+          entity_type?: string
+          governance_composite_score?: number | null
+          grade?: string | null
+          id?: string
+          manipulation_risk_score?: number | null
+          period?: string | null
+          updated_at?: string
+        }
+        Update: {
+          dispute_pattern_score?: number | null
+          endorsement_irregularity_score?: number | null
+          entity_id?: string
+          entity_type?: string
+          governance_composite_score?: number | null
+          grade?: string | null
+          id?: string
+          manipulation_risk_score?: number | null
+          period?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -29486,6 +29603,45 @@ export type Database = {
           recorded_at?: string
           skill_composition?: Json | null
           team_id?: string | null
+        }
+        Relationships: []
+      }
+      human_capital_index: {
+        Row: {
+          composite_hci: number | null
+          execution_maturity_score: number | null
+          graduate_employability_index: number | null
+          id: string
+          institution_id: string
+          period: string | null
+          research_commercialization_index: number | null
+          skill_growth_rate: number | null
+          talent_retention_score: number | null
+          updated_at: string
+        }
+        Insert: {
+          composite_hci?: number | null
+          execution_maturity_score?: number | null
+          graduate_employability_index?: number | null
+          id?: string
+          institution_id: string
+          period?: string | null
+          research_commercialization_index?: number | null
+          skill_growth_rate?: number | null
+          talent_retention_score?: number | null
+          updated_at?: string
+        }
+        Update: {
+          composite_hci?: number | null
+          execution_maturity_score?: number | null
+          graduate_employability_index?: number | null
+          id?: string
+          institution_id?: string
+          period?: string | null
+          research_commercialization_index?: number | null
+          skill_growth_rate?: number | null
+          talent_retention_score?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -50012,6 +50168,44 @@ export type Database = {
           },
         ]
       }
+      regulatory_compliance_logs: {
+        Row: {
+          audit_notes: string | null
+          compliance_status: string
+          created_at: string
+          cross_border_project_id: string | null
+          id: string
+          project_id: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          audit_notes?: string | null
+          compliance_status?: string
+          created_at?: string
+          cross_border_project_id?: string | null
+          id?: string
+          project_id?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          audit_notes?: string | null
+          compliance_status?: string
+          created_at?: string
+          cross_border_project_id?: string | null
+          id?: string
+          project_id?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regulatory_compliance_logs_cross_border_project_id_fkey"
+            columns: ["cross_border_project_id"]
+            isOneToOne: false
+            referencedRelation: "cross_border_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       regulatory_partners: {
         Row: {
           api_enabled: boolean | null
@@ -58965,6 +59159,42 @@ export type Database = {
           status?: string | null
           target_country?: string
           treaty_reference?: string | null
+        }
+        Relationships: []
+      }
+      sovereign_metrics: {
+        Row: {
+          execution_efficiency_index: number | null
+          funding_velocity: number | null
+          id: string
+          national_trust_score: number | null
+          node_id: string
+          period: string | null
+          research_output_index: number | null
+          talent_retention_rate: number | null
+          updated_at: string
+        }
+        Insert: {
+          execution_efficiency_index?: number | null
+          funding_velocity?: number | null
+          id?: string
+          national_trust_score?: number | null
+          node_id: string
+          period?: string | null
+          research_output_index?: number | null
+          talent_retention_rate?: number | null
+          updated_at?: string
+        }
+        Update: {
+          execution_efficiency_index?: number | null
+          funding_velocity?: number | null
+          id?: string
+          national_trust_score?: number | null
+          node_id?: string
+          period?: string | null
+          research_output_index?: number | null
+          talent_retention_rate?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
