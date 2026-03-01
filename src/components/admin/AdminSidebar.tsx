@@ -48,6 +48,7 @@ import {
   FlaskConical,
   ShieldAlert,
   MapPin,
+  GitBranch,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -152,6 +153,8 @@ const navItems = [
   { icon: FlaskConical, label: "Risk Simulation", href: "/admin/simulation" },
   { icon: ShieldAlert, label: "Governance Intelligence", href: "/admin/governance-intelligence" },
   { icon: MapPin, label: "Governance Risk Map", href: "/institution/governance-risk-map" },
+  { icon: Workflow, label: "AI Orchestration", href: "/admin/orchestration" },
+  { icon: GitBranch, label: "Execution Flow", href: "/admin/execution-flow" },
 ];
 
 const platformItems = [

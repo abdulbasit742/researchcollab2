@@ -13436,6 +13436,36 @@ export type Database = {
           },
         ]
       }
+      cross_project_orchestration_insights: {
+        Row: {
+          coordination_overlap_score: number | null
+          created_at: string
+          id: string
+          institution_id: string
+          multi_project_delay_risk: number | null
+          reviewer_overload_clusters: Json | null
+          suggested_rebalancing: Json | null
+        }
+        Insert: {
+          coordination_overlap_score?: number | null
+          created_at?: string
+          id?: string
+          institution_id: string
+          multi_project_delay_risk?: number | null
+          reviewer_overload_clusters?: Json | null
+          suggested_rebalancing?: Json | null
+        }
+        Update: {
+          coordination_overlap_score?: number | null
+          created_at?: string
+          id?: string
+          institution_id?: string
+          multi_project_delay_risk?: number | null
+          reviewer_overload_clusters?: Json | null
+          suggested_rebalancing?: Json | null
+        }
+        Relationships: []
+      }
       currency_profiles: {
         Row: {
           id: string
@@ -20273,6 +20303,39 @@ export type Database = {
           repeat_collaboration?: number | null
           sponsor_retention?: number | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      execution_bottlenecks: {
+        Row: {
+          affected_entity: string | null
+          bottleneck_score: number | null
+          bottleneck_type: string
+          created_at: string
+          id: string
+          institution_id: string | null
+          project_id: string
+          suggested_resolution: string | null
+        }
+        Insert: {
+          affected_entity?: string | null
+          bottleneck_score?: number | null
+          bottleneck_type: string
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          project_id: string
+          suggested_resolution?: string | null
+        }
+        Update: {
+          affected_entity?: string | null
+          bottleneck_score?: number | null
+          bottleneck_type?: string
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          project_id?: string
+          suggested_resolution?: string | null
         }
         Relationships: []
       }
@@ -44665,6 +44728,69 @@ export type Database = {
           },
         ]
       }
+      orchestrated_timeline_models: {
+        Row: {
+          created_at: string
+          id: string
+          institution_id: string | null
+          model_version: string | null
+          optimized_milestone_sequence: Json | null
+          optimized_review_windows: Json | null
+          predicted_efficiency_gain: number | null
+          project_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          model_version?: string | null
+          optimized_milestone_sequence?: Json | null
+          optimized_review_windows?: Json | null
+          predicted_efficiency_gain?: number | null
+          project_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          model_version?: string | null
+          optimized_milestone_sequence?: Json | null
+          optimized_review_windows?: Json | null
+          predicted_efficiency_gain?: number | null
+          project_id?: string
+        }
+        Relationships: []
+      }
+      orchestration_feedback: {
+        Row: {
+          accepted: boolean | null
+          evaluated_at: string
+          id: string
+          outcome_improvement_score: number | null
+          recommendation_id: string
+          recommendation_type: string
+          user_id: string | null
+        }
+        Insert: {
+          accepted?: boolean | null
+          evaluated_at?: string
+          id?: string
+          outcome_improvement_score?: number | null
+          recommendation_id: string
+          recommendation_type: string
+          user_id?: string | null
+        }
+        Update: {
+          accepted?: boolean | null
+          evaluated_at?: string
+          id?: string
+          outcome_improvement_score?: number | null
+          recommendation_id?: string
+          recommendation_type?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       org_bulk_licenses: {
         Row: {
           created_at: string | null
@@ -58620,6 +58746,39 @@ export type Database = {
         }
         Relationships: []
       }
+      role_coordination_suggestions: {
+        Row: {
+          confidence_score: number | null
+          coordination_gap_type: string
+          created_at: string
+          id: string
+          institution_id: string | null
+          project_id: string
+          role_type: string
+          suggestion_text: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          coordination_gap_type: string
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          project_id: string
+          role_type: string
+          suggestion_text: string
+        }
+        Update: {
+          confidence_score?: number | null
+          coordination_gap_type?: string
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          project_id?: string
+          role_type?: string
+          suggestion_text?: string
+        }
+        Relationships: []
+      }
       role_permissions: {
         Row: {
           action_key: string
@@ -71693,6 +71852,42 @@ export type Database = {
           resolved?: boolean
           resolved_at?: string | null
           triggered_at?: string
+        }
+        Relationships: []
+      }
+      workflow_sequence_recommendations: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          current_state: string | null
+          id: string
+          institution_id: string | null
+          model_version: string | null
+          project_id: string
+          reasoning: string | null
+          recommended_next_actions: Json | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          current_state?: string | null
+          id?: string
+          institution_id?: string | null
+          model_version?: string | null
+          project_id: string
+          reasoning?: string | null
+          recommended_next_actions?: Json | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          current_state?: string | null
+          id?: string
+          institution_id?: string | null
+          model_version?: string | null
+          project_id?: string
+          reasoning?: string | null
+          recommended_next_actions?: Json | null
         }
         Relationships: []
       }
