@@ -52,6 +52,7 @@ import {
   Crosshair,
   Swords,
   Compass,
+  AlertTriangle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -162,6 +163,8 @@ const navItems = [
   { icon: Crosshair, label: "Positioning", href: "/admin/positioning" },
   { icon: Swords, label: "Competitive Intel", href: "/admin/competitive-intelligence" },
   { icon: Compass, label: "Strategy Panel", href: "/admin/strategy" },
+  { icon: Building2, label: "National Oversight", href: "/national/oversight" },
+  { icon: AlertTriangle, label: "National Risk Map", href: "/national/risk-map" },
 ];
 
 const platformItems = [
