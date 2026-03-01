@@ -13085,6 +13085,36 @@ export type Database = {
           },
         ]
       }
+      cross_border_collaborations: {
+        Row: {
+          collaborating_country: string
+          collaboration_type: string | null
+          created_at: string
+          id: string
+          originating_country: string
+          project_id: string | null
+          status: string
+        }
+        Insert: {
+          collaborating_country: string
+          collaboration_type?: string | null
+          created_at?: string
+          id?: string
+          originating_country: string
+          project_id?: string | null
+          status?: string
+        }
+        Update: {
+          collaborating_country?: string
+          collaboration_type?: string | null
+          created_at?: string
+          id?: string
+          originating_country?: string
+          project_id?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       cross_border_compliance_matrix: {
         Row: {
           assessed_at: string
@@ -13414,6 +13444,44 @@ export type Database = {
           status?: string | null
         }
         Relationships: []
+      }
+      cross_national_metadata_index: {
+        Row: {
+          created_at: string
+          entity_hash: string
+          entity_type: string
+          federation_id: string
+          id: string
+          origin_node: string
+          visibility_scope: string
+        }
+        Insert: {
+          created_at?: string
+          entity_hash: string
+          entity_type: string
+          federation_id: string
+          id?: string
+          origin_node: string
+          visibility_scope?: string
+        }
+        Update: {
+          created_at?: string
+          entity_hash?: string
+          entity_type?: string
+          federation_id?: string
+          id?: string
+          origin_node?: string
+          visibility_scope?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cross_national_metadata_index_federation_id_fkey"
+            columns: ["federation_id"]
+            isOneToOne: false
+            referencedRelation: "global_federation_registry"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       cross_node_capital_flows: {
         Row: {
@@ -22976,6 +23044,128 @@ export type Database = {
           },
         ]
       }
+      federation_compliance_index: {
+        Row: {
+          audit_integrity_score: number | null
+          certification_verifiability_score: number | null
+          cross_border_transparency_score: number | null
+          federation_id: string
+          generated_at: string
+          governance_alignment_score: number | null
+          id: string
+        }
+        Insert: {
+          audit_integrity_score?: number | null
+          certification_verifiability_score?: number | null
+          cross_border_transparency_score?: number | null
+          federation_id: string
+          generated_at?: string
+          governance_alignment_score?: number | null
+          id?: string
+        }
+        Update: {
+          audit_integrity_score?: number | null
+          certification_verifiability_score?: number | null
+          cross_border_transparency_score?: number | null
+          federation_id?: string
+          generated_at?: string
+          governance_alignment_score?: number | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federation_compliance_index_federation_id_fkey"
+            columns: ["federation_id"]
+            isOneToOne: false
+            referencedRelation: "global_federation_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federation_interoperability_status: {
+        Row: {
+          compliance_sync_status: string | null
+          federation_id: string
+          id: string
+          last_sync_at: string | null
+          metadata_exchange_status: string | null
+          national_registry_id: string
+          verification_sync_status: string | null
+        }
+        Insert: {
+          compliance_sync_status?: string | null
+          federation_id: string
+          id?: string
+          last_sync_at?: string | null
+          metadata_exchange_status?: string | null
+          national_registry_id: string
+          verification_sync_status?: string | null
+        }
+        Update: {
+          compliance_sync_status?: string | null
+          federation_id?: string
+          id?: string
+          last_sync_at?: string | null
+          metadata_exchange_status?: string | null
+          national_registry_id?: string
+          verification_sync_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federation_interoperability_status_federation_id_fkey"
+            columns: ["federation_id"]
+            isOneToOne: false
+            referencedRelation: "global_federation_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "federation_interoperability_status_national_registry_id_fkey"
+            columns: ["national_registry_id"]
+            isOneToOne: false
+            referencedRelation: "national_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federation_members: {
+        Row: {
+          federation_id: string
+          id: string
+          joined_at: string
+          membership_status: string
+          national_registry_id: string
+        }
+        Insert: {
+          federation_id: string
+          id?: string
+          joined_at?: string
+          membership_status?: string
+          national_registry_id: string
+        }
+        Update: {
+          federation_id?: string
+          id?: string
+          joined_at?: string
+          membership_status?: string
+          national_registry_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federation_members_federation_id_fkey"
+            columns: ["federation_id"]
+            isOneToOne: false
+            referencedRelation: "global_federation_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "federation_members_national_registry_id_fkey"
+            columns: ["national_registry_id"]
+            isOneToOne: false
+            referencedRelation: "national_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       federation_metadata_registry: {
         Row: {
           entity_id: string
@@ -28080,6 +28270,71 @@ export type Database = {
           region?: string
           underrepresented_domain_boost?: number | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      global_execution_index: {
+        Row: {
+          aggregate_completion_rate: number | null
+          aggregate_compliance_score: number | null
+          aggregate_engagement_score: number | null
+          aggregate_governance_score: number | null
+          federation_id: string
+          generated_at: string
+          id: string
+          overall_global_score: number | null
+        }
+        Insert: {
+          aggregate_completion_rate?: number | null
+          aggregate_compliance_score?: number | null
+          aggregate_engagement_score?: number | null
+          aggregate_governance_score?: number | null
+          federation_id: string
+          generated_at?: string
+          id?: string
+          overall_global_score?: number | null
+        }
+        Update: {
+          aggregate_completion_rate?: number | null
+          aggregate_compliance_score?: number | null
+          aggregate_engagement_score?: number | null
+          aggregate_governance_score?: number | null
+          federation_id?: string
+          generated_at?: string
+          id?: string
+          overall_global_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "global_execution_index_federation_id_fkey"
+            columns: ["federation_id"]
+            isOneToOne: false
+            referencedRelation: "global_federation_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      global_federation_registry: {
+        Row: {
+          created_at: string
+          description: string | null
+          federation_name: string
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          federation_name: string
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          federation_name?: string
+          id?: string
+          status?: string
         }
         Relationships: []
       }
