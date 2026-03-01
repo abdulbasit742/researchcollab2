@@ -163,6 +163,12 @@ const SalesDataPackPage = lazy(() => import("./pages/admin/SalesDataPackPage"));
 const StudentOutcomePage = lazy(() => import("./pages/StudentOutcomePage"));
 const IntelligenceDashboardPage = lazy(() => import("./pages/admin/IntelligenceDashboardPage"));
 
+// Strategic Expansion Modules
+const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
+const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
+const SovereignDashboardPage = lazy(() => import("./pages/SovereignDashboardPage"));
+const ResearchAssetsPage = lazy(() => import("./pages/ResearchAssetsPage"));
+
 // Suspense fallback
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
@@ -238,6 +244,12 @@ const AppContent = () => {
           <Route path="/deals" element={<ProtectedRoute><DealsPage /></ProtectedRoute>} />
           <Route path="/deals/:dealId" element={<ProtectedRoute><DealDetailPage /></ProtectedRoute>} />
           <Route path="/workroom/:offerId" element={<ProtectedRoute><WorkRoomPage /></ProtectedRoute>} />
+
+          {/* Strategic Expansion Modules */}
+          <Route path="/institutional-trust" element={<ProtectedRoute><InstitutionalTrustGraphPage /></ProtectedRoute>} />
+          <Route path="/funding-intelligence" element={<ProtectedRoute><FundingIntelligencePage2 /></ProtectedRoute>} />
+          <Route path="/sovereign" element={<ProtectedRoute><SovereignDashboardPage /></ProtectedRoute>} />
+          <Route path="/research-assets" element={<ProtectedRoute><ResearchAssetsPage /></ProtectedRoute>} />
 
           {/* Wallet — Payment */}
           <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
