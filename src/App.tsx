@@ -190,6 +190,10 @@ const AutomationControlPanelPage = lazy(() => import("./pages/AutomationControlP
 // Adaptive Intelligence
 const AdaptiveIntelligencePage = lazy(() => import("./pages/AdaptiveIntelligencePage"));
 
+// Accreditation & Certification
+const AccreditationDashboardPage = lazy(() => import("./pages/AccreditationDashboardPage"));
+const CertificateVerificationPage = lazy(() => import("./pages/CertificateVerificationPage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -436,6 +440,9 @@ const AppContent = () => {
           <Route path="/institution/executive" element={<ProtectedRoute><ExecutiveOverviewPage /></ProtectedRoute>} />
           <Route path="/institution/automation" element={<ProtectedRoute><AutomationControlPanelPage /></ProtectedRoute>} />
           <Route path="/institution/adaptive-intelligence" element={<ProtectedRoute><AdaptiveIntelligencePage /></ProtectedRoute>} />
+          <Route path="/institution/accreditation" element={<ProtectedRoute><AccreditationDashboardPage /></ProtectedRoute>} />
+          <Route path="/verify/:certificateId" element={<CertificateVerificationPage />} />
+          <Route path="/verify" element={<CertificateVerificationPage />} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}
