@@ -5698,6 +5698,39 @@ export type Database = {
         }
         Relationships: []
       }
+      capital_optimization_advice: {
+        Row: {
+          execution_confidence_index: number | null
+          generated_at: string
+          generated_by: string | null
+          id: string
+          project_id: string
+          rationale: string | null
+          recommended_funding_adjustment: number | null
+          risk_adjusted_score: number | null
+        }
+        Insert: {
+          execution_confidence_index?: number | null
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          project_id: string
+          rationale?: string | null
+          recommended_funding_adjustment?: number | null
+          risk_adjusted_score?: number | null
+        }
+        Update: {
+          execution_confidence_index?: number | null
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          project_id?: string
+          rationale?: string | null
+          recommended_funding_adjustment?: number | null
+          risk_adjusted_score?: number | null
+        }
+        Relationships: []
+      }
       capital_partnerships: {
         Row: {
           allocation_rules: Json | null
@@ -19194,6 +19227,45 @@ export type Database = {
           risk_profile?: number | null
           skills?: string[] | null
           sponsor_repeat_rate?: number | null
+        }
+        Relationships: []
+      }
+      execution_drift_analysis: {
+        Row: {
+          anomaly_flag: boolean | null
+          completion_pattern_variance: number | null
+          delay_trend_score: number | null
+          drift_severity: string | null
+          generated_at: string
+          generated_by: string | null
+          id: string
+          milestone_velocity_score: number | null
+          project_id: string
+          recommendation: string | null
+        }
+        Insert: {
+          anomaly_flag?: boolean | null
+          completion_pattern_variance?: number | null
+          delay_trend_score?: number | null
+          drift_severity?: string | null
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          milestone_velocity_score?: number | null
+          project_id: string
+          recommendation?: string | null
+        }
+        Update: {
+          anomaly_flag?: boolean | null
+          completion_pattern_variance?: number | null
+          delay_trend_score?: number | null
+          drift_severity?: string | null
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          milestone_velocity_score?: number | null
+          project_id?: string
+          recommendation?: string | null
         }
         Relationships: []
       }
@@ -33085,6 +33157,45 @@ export type Database = {
           total_revenue_generated?: number | null
           trust_average?: number | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      institutional_drift_monitor: {
+        Row: {
+          anomaly_score: number | null
+          drift_direction: string | null
+          endorsement_integrity_trend: number | null
+          execution_quality_trend: number | null
+          generated_at: string
+          generated_by: string | null
+          id: string
+          institution_id: string
+          period: string | null
+          trust_score_trend: number | null
+        }
+        Insert: {
+          anomaly_score?: number | null
+          drift_direction?: string | null
+          endorsement_integrity_trend?: number | null
+          execution_quality_trend?: number | null
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          institution_id: string
+          period?: string | null
+          trust_score_trend?: number | null
+        }
+        Update: {
+          anomaly_score?: number | null
+          drift_direction?: string | null
+          endorsement_integrity_trend?: number | null
+          execution_quality_trend?: number | null
+          generated_at?: string
+          generated_by?: string | null
+          id?: string
+          institution_id?: string
+          period?: string | null
+          trust_score_trend?: number | null
         }
         Relationships: []
       }
@@ -62182,6 +62293,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      systemic_risk_index: {
+        Row: {
+          capital_concentration_risk: number | null
+          dispute_cluster_risk: number | null
+          execution_instability_score: number | null
+          generated_at: string
+          generated_by: string | null
+          governance_pressure_score: number | null
+          id: string
+          institution_id: string
+          overall_risk_score: number | null
+          period: string | null
+          risk_grade: string | null
+        }
+        Insert: {
+          capital_concentration_risk?: number | null
+          dispute_cluster_risk?: number | null
+          execution_instability_score?: number | null
+          generated_at?: string
+          generated_by?: string | null
+          governance_pressure_score?: number | null
+          id?: string
+          institution_id: string
+          overall_risk_score?: number | null
+          period?: string | null
+          risk_grade?: string | null
+        }
+        Update: {
+          capital_concentration_risk?: number | null
+          dispute_cluster_risk?: number | null
+          execution_instability_score?: number | null
+          generated_at?: string
+          generated_by?: string | null
+          governance_pressure_score?: number | null
+          id?: string
+          institution_id?: string
+          overall_risk_score?: number | null
+          period?: string | null
+          risk_grade?: string | null
+        }
+        Relationships: []
       }
       talent_allocation_logs: {
         Row: {
