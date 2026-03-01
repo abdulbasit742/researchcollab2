@@ -9530,6 +9530,50 @@ export type Database = {
         }
         Relationships: []
       }
+      compute_usage_ledger: {
+        Row: {
+          cost_estimate: number | null
+          currency: string | null
+          experiment_session_id: string
+          id: string
+          recorded_at: string
+          resource_type: string
+          unit_type: string
+          units_consumed: number
+          user_id: string
+        }
+        Insert: {
+          cost_estimate?: number | null
+          currency?: string | null
+          experiment_session_id: string
+          id?: string
+          recorded_at?: string
+          resource_type?: string
+          unit_type?: string
+          units_consumed?: number
+          user_id: string
+        }
+        Update: {
+          cost_estimate?: number | null
+          currency?: string | null
+          experiment_session_id?: string
+          id?: string
+          recorded_at?: string
+          resource_type?: string
+          unit_type?: string
+          units_consumed?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compute_usage_ledger_experiment_session_id_fkey"
+            columns: ["experiment_session_id"]
+            isOneToOne: false
+            referencedRelation: "experiment_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       concentration_metrics: {
         Row: {
           concentration_index: number
@@ -19778,6 +19822,63 @@ export type Database = {
         }
         Relationships: []
       }
+      experiment_sessions: {
+        Row: {
+          completed_at: string | null
+          compute_duration_seconds: number | null
+          created_at: string
+          dataset_signature: string | null
+          description: string | null
+          execution_environment: Json | null
+          gpu_type: string | null
+          id: string
+          linked_milestone_id: string | null
+          metadata: Json | null
+          project_id: string | null
+          reproducibility_hash: string | null
+          started_at: string
+          status: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          compute_duration_seconds?: number | null
+          created_at?: string
+          dataset_signature?: string | null
+          description?: string | null
+          execution_environment?: Json | null
+          gpu_type?: string | null
+          id?: string
+          linked_milestone_id?: string | null
+          metadata?: Json | null
+          project_id?: string | null
+          reproducibility_hash?: string | null
+          started_at?: string
+          status?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          compute_duration_seconds?: number | null
+          created_at?: string
+          dataset_signature?: string | null
+          description?: string | null
+          execution_environment?: Json | null
+          gpu_type?: string | null
+          id?: string
+          linked_milestone_id?: string | null
+          metadata?: Json | null
+          project_id?: string | null
+          reproducibility_hash?: string | null
+          started_at?: string
+          status?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       export_packages: {
         Row: {
           created_at: string
@@ -23456,6 +23557,63 @@ export type Database = {
           total_capital?: number | null
           total_yield?: number | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      funding_predictions: {
+        Row: {
+          computed_at: string
+          computed_by: string | null
+          confidence: number | null
+          entity_id: string
+          entity_type: string
+          expires_at: string | null
+          factors: Json | null
+          flagged_issues: Json | null
+          id: string
+          model_version: string | null
+          predicted_outcome: string | null
+          prediction_type: string
+          recommendation: string | null
+          risk_score: number | null
+          severity: string | null
+          status: string | null
+        }
+        Insert: {
+          computed_at?: string
+          computed_by?: string | null
+          confidence?: number | null
+          entity_id: string
+          entity_type: string
+          expires_at?: string | null
+          factors?: Json | null
+          flagged_issues?: Json | null
+          id?: string
+          model_version?: string | null
+          predicted_outcome?: string | null
+          prediction_type: string
+          recommendation?: string | null
+          risk_score?: number | null
+          severity?: string | null
+          status?: string | null
+        }
+        Update: {
+          computed_at?: string
+          computed_by?: string | null
+          confidence?: number | null
+          entity_id?: string
+          entity_type?: string
+          expires_at?: string | null
+          factors?: Json | null
+          flagged_issues?: Json | null
+          id?: string
+          model_version?: string | null
+          predicted_outcome?: string | null
+          prediction_type?: string
+          recommendation?: string | null
+          risk_score?: number | null
+          severity?: string | null
+          status?: string | null
         }
         Relationships: []
       }
@@ -34092,6 +34250,60 @@ export type Database = {
           publish_innovation_summary?: boolean | null
           publish_sponsor_repeat_pct?: boolean | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      institutional_trust_index: {
+        Row: {
+          capital_efficiency: number
+          composite_trust_score: number
+          computed_at: string
+          cross_border_collab_score: number
+          dispute_ratio: number
+          execution_score: number
+          id: string
+          institution_id: string
+          institution_name: string
+          metadata: Json | null
+          peer_validation_score: number
+          period: string
+          rank_position: number | null
+          research_output_score: number
+          tier: string | null
+        }
+        Insert: {
+          capital_efficiency?: number
+          composite_trust_score?: number
+          computed_at?: string
+          cross_border_collab_score?: number
+          dispute_ratio?: number
+          execution_score?: number
+          id?: string
+          institution_id: string
+          institution_name: string
+          metadata?: Json | null
+          peer_validation_score?: number
+          period?: string
+          rank_position?: number | null
+          research_output_score?: number
+          tier?: string | null
+        }
+        Update: {
+          capital_efficiency?: number
+          composite_trust_score?: number
+          computed_at?: string
+          cross_border_collab_score?: number
+          dispute_ratio?: number
+          execution_score?: number
+          id?: string
+          institution_id?: string
+          institution_name?: string
+          metadata?: Json | null
+          peer_validation_score?: number
+          period?: string
+          rank_position?: number | null
+          research_output_score?: number
+          tier?: string | null
         }
         Relationships: []
       }
@@ -51142,6 +51354,74 @@ export type Database = {
             columns: ["uploaded_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_assets: {
+        Row: {
+          asset_type: string
+          created_at: string
+          creator_id: string
+          description: string | null
+          id: string
+          ip_status: string | null
+          licensing_terms: Json | null
+          linked_experiment_id: string | null
+          linked_milestone_id: string | null
+          metadata: Json | null
+          reproducibility_hash: string | null
+          title: string
+          updated_at: string
+          validation_count: number | null
+          validation_status: string
+          valuation_currency: string | null
+          valuation_score: number | null
+        }
+        Insert: {
+          asset_type?: string
+          created_at?: string
+          creator_id: string
+          description?: string | null
+          id?: string
+          ip_status?: string | null
+          licensing_terms?: Json | null
+          linked_experiment_id?: string | null
+          linked_milestone_id?: string | null
+          metadata?: Json | null
+          reproducibility_hash?: string | null
+          title: string
+          updated_at?: string
+          validation_count?: number | null
+          validation_status?: string
+          valuation_currency?: string | null
+          valuation_score?: number | null
+        }
+        Update: {
+          asset_type?: string
+          created_at?: string
+          creator_id?: string
+          description?: string | null
+          id?: string
+          ip_status?: string | null
+          licensing_terms?: Json | null
+          linked_experiment_id?: string | null
+          linked_milestone_id?: string | null
+          metadata?: Json | null
+          reproducibility_hash?: string | null
+          title?: string
+          updated_at?: string
+          validation_count?: number | null
+          validation_status?: string
+          valuation_currency?: string | null
+          valuation_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_assets_linked_experiment_id_fkey"
+            columns: ["linked_experiment_id"]
+            isOneToOne: false
+            referencedRelation: "experiment_sessions"
             referencedColumns: ["id"]
           },
         ]
