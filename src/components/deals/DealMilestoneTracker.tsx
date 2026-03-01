@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { StatusBadge } from "@/components/ui/status-badge";
 import {
   Dialog,
   DialogContent,
@@ -33,13 +33,7 @@ interface DealMilestoneTrackerProps {
   userRole: "initiator" | "executor";
 }
 
-const statusConfig = {
-  pending: { label: "Pending", color: "text-muted-foreground", bg: "bg-muted" },
-  in_progress: { label: "In Progress", color: "text-blue-600", bg: "bg-blue-500/10" },
-  submitted: { label: "Submitted", color: "text-amber-600", bg: "bg-amber-500/10" },
-  approved: { label: "Approved", color: "text-emerald-600", bg: "bg-emerald-500/10" },
-  rejected: { label: "Rejected", color: "text-destructive", bg: "bg-destructive/10" },
-};
+// Removed custom statusConfig — using unified StatusBadge instead
 
 export function DealMilestoneTracker({
   dealId,
@@ -109,13 +103,11 @@ export function DealMilestoneTracker({
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-sm">
+            <Target className="h-4 w-4" />
             Milestones
           </CardTitle>
-          <Badge variant="outline">
-            {completedMilestones} / {milestones.length} complete
-          </Badge>
+          <StatusBadge status="active" label={`${completedMilestones} / ${milestones.length} complete`} showDot={false} />
         </div>
         
         <div className="space-y-2 mt-4">
@@ -131,11 +123,10 @@ export function DealMilestoneTracker({
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         {milestones
           .sort((a, b) => a.order_index - b.order_index)
           .map((milestone, index) => {
-            const status = statusConfig[milestone.status];
             const canSubmit = userRole === "executor" && (milestone.status === "in_progress" || milestone.status === "rejected");
             const canApprove = userRole === "initiator" && milestone.status === "submitted";
 
@@ -144,38 +135,31 @@ export function DealMilestoneTracker({
                 key={milestone.id}
                 className={cn(
                   "p-4 rounded-lg border transition-colors",
-                  milestone.status === "approved" && "bg-emerald-500/5 border-emerald-500/20",
-                  milestone.status === "in_progress" && "bg-blue-500/5 border-blue-500/20",
-                  milestone.status === "submitted" && "bg-amber-500/5 border-amber-500/20",
+                  milestone.status === "approved" && "bg-success/5 border-success/20",
+                  milestone.status === "in_progress" && "bg-primary/5 border-primary/20",
+                  milestone.status === "submitted" && "bg-warning/5 border-warning/20",
                   milestone.status === "rejected" && "bg-destructive/5 border-destructive/20",
                   milestone.status === "pending" && "bg-muted/30"
                 )}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-3">
-                    <div className={cn(
-                      "h-8 w-8 rounded-full flex items-center justify-center shrink-0",
-                      status.bg
-                    )}>
+                    <div className="h-7 w-7 rounded-full flex items-center justify-center shrink-0 bg-muted text-xs font-semibold">
                       {milestone.status === "approved" ? (
-                        <CheckCircle className={cn("h-4 w-4", status.color)} />
+                        <CheckCircle className="h-4 w-4 text-success" />
                       ) : milestone.status === "submitted" ? (
-                        <Upload className={cn("h-4 w-4", status.color)} />
+                        <Upload className="h-4 w-4 text-warning" />
                       ) : milestone.status === "rejected" ? (
-                        <XCircle className={cn("h-4 w-4", status.color)} />
+                        <XCircle className="h-4 w-4 text-destructive" />
                       ) : (
-                        <span className={cn("text-sm font-medium", status.color)}>
-                          {index + 1}
-                        </span>
+                        <span>{index + 1}</span>
                       )}
                     </div>
 
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <h4 className="font-medium">{milestone.title}</h4>
-                        <Badge variant="secondary" className={cn("text-xs", status.bg, status.color)}>
-                          {status.label}
-                        </Badge>
+                        <h4 className="text-sm font-medium">{milestone.title}</h4>
+                        <StatusBadge status={milestone.status} size="sm" />
                       </div>
                       {milestone.description && (
                         <p className="text-sm text-muted-foreground">{milestone.description}</p>
