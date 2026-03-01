@@ -44,6 +44,7 @@ import {
   Zap,
   Award,
   Rocket,
+  CreditCard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -141,6 +142,9 @@ const navItems = [
   { icon: TrendingUp, label: "Adoption Metrics", href: "/institution/adoption" },
   { icon: Building2, label: "Departments", href: "/institution/departments" },
   { icon: Wrench, label: "Toolkit", href: "/institution/toolkit" },
+  { icon: CreditCard, label: "Billing", href: "/institution/billing" },
+  { icon: DollarSign, label: "Revenue", href: "/admin/revenue" },
+  { icon: Briefcase, label: "Enterprise Sales", href: "/admin/enterprise-intelligence" },
 ];
 
 const platformItems = [

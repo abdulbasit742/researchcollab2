@@ -200,6 +200,11 @@ const AdoptionMetricsPage = lazy(() => import("./pages/AdoptionMetricsPage"));
 const DepartmentComparisonPage = lazy(() => import("./pages/DepartmentComparisonPage"));
 const InstitutionalToolkitPage = lazy(() => import("./pages/InstitutionalToolkitPage"));
 
+// Monetization & Revenue
+const RevenueDashboardPage = lazy(() => import("./pages/RevenueDashboardPage"));
+const InstitutionBillingPage = lazy(() => import("./pages/InstitutionBillingPage"));
+const EnterpriseSalesIntelligencePage = lazy(() => import("./pages/EnterpriseSalesIntelligencePage"));
+
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
 const FundingIntelligencePage2 = lazy(() => import("./pages/FundingIntelligencePage"));
@@ -451,6 +456,9 @@ const AppContent = () => {
           <Route path="/institution/adoption" element={<ProtectedRoute><AdoptionMetricsPage /></ProtectedRoute>} />
           <Route path="/institution/departments" element={<ProtectedRoute><DepartmentComparisonPage /></ProtectedRoute>} />
           <Route path="/institution/toolkit" element={<ProtectedRoute><InstitutionalToolkitPage /></ProtectedRoute>} />
+          <Route path="/institution/billing" element={<ProtectedRoute><InstitutionBillingPage /></ProtectedRoute>} />
+          <Route path="/admin/revenue" element={<ProtectedRoute><RevenueDashboardPage /></ProtectedRoute>} />
+          <Route path="/admin/enterprise-intelligence" element={<ProtectedRoute><EnterpriseSalesIntelligencePage /></ProtectedRoute>} />
           <Route path="/verify/:certificateId" element={<CertificateVerificationPage />} />
           <Route path="/verify" element={<CertificateVerificationPage />} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />

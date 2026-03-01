@@ -21608,6 +21608,33 @@ export type Database = {
         }
         Relationships: []
       }
+      feature_access_logs: {
+        Row: {
+          access_granted: boolean
+          created_at: string
+          feature_name: string
+          id: string
+          institution_id: string
+          user_id: string | null
+        }
+        Insert: {
+          access_granted?: boolean
+          created_at?: string
+          feature_name: string
+          id?: string
+          institution_id: string
+          user_id?: string | null
+        }
+        Update: {
+          access_granted?: boolean
+          created_at?: string
+          feature_name?: string
+          id?: string
+          institution_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       feature_alignment_audit: {
         Row: {
           adoption_impact: string | null
@@ -34558,6 +34585,45 @@ export type Database = {
           primary_color?: string | null
           secondary_color?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      institution_subscription_plans: {
+        Row: {
+          advanced_analytics_enabled: boolean | null
+          ai_features_enabled: boolean | null
+          certification_module_enabled: boolean | null
+          created_at: string
+          executive_dashboard_enabled: boolean | null
+          export_enabled: boolean | null
+          id: string
+          max_projects: number | null
+          monthly_price_pkr: number | null
+          plan_name: string
+        }
+        Insert: {
+          advanced_analytics_enabled?: boolean | null
+          ai_features_enabled?: boolean | null
+          certification_module_enabled?: boolean | null
+          created_at?: string
+          executive_dashboard_enabled?: boolean | null
+          export_enabled?: boolean | null
+          id?: string
+          max_projects?: number | null
+          monthly_price_pkr?: number | null
+          plan_name: string
+        }
+        Update: {
+          advanced_analytics_enabled?: boolean | null
+          ai_features_enabled?: boolean | null
+          certification_module_enabled?: boolean | null
+          created_at?: string
+          executive_dashboard_enabled?: boolean | null
+          export_enabled?: boolean | null
+          id?: string
+          max_projects?: number | null
+          monthly_price_pkr?: number | null
+          plan_name?: string
         }
         Relationships: []
       }
@@ -57170,6 +57236,36 @@ export type Database = {
         }
         Relationships: []
       }
+      revenue_forecast_models: {
+        Row: {
+          churn_projection: number | null
+          forecast_at: string
+          forecast_period: string
+          growth_projection: number | null
+          id: string
+          projected_arr: number | null
+          projected_mrr: number | null
+        }
+        Insert: {
+          churn_projection?: number | null
+          forecast_at?: string
+          forecast_period: string
+          growth_projection?: number | null
+          id?: string
+          projected_arr?: number | null
+          projected_mrr?: number | null
+        }
+        Update: {
+          churn_projection?: number | null
+          forecast_at?: string
+          forecast_period?: string
+          growth_projection?: number | null
+          id?: string
+          projected_arr?: number | null
+          projected_mrr?: number | null
+        }
+        Relationships: []
+      }
       revenue_forecasts: {
         Row: {
           churn_risk: number
@@ -57251,6 +57347,36 @@ export type Database = {
           subscription_revenue?: number
           total_revenue?: number
           transaction_revenue?: number
+        }
+        Relationships: []
+      }
+      revenue_metrics_snapshots: {
+        Row: {
+          active_subscriptions: number | null
+          churn_rate: number | null
+          id: string
+          snapshot_at: string
+          total_arr: number | null
+          total_mrr: number | null
+          upgrade_rate: number | null
+        }
+        Insert: {
+          active_subscriptions?: number | null
+          churn_rate?: number | null
+          id?: string
+          snapshot_at?: string
+          total_arr?: number | null
+          total_mrr?: number | null
+          upgrade_rate?: number | null
+        }
+        Update: {
+          active_subscriptions?: number | null
+          churn_rate?: number | null
+          id?: string
+          snapshot_at?: string
+          total_arr?: number | null
+          total_mrr?: number | null
+          upgrade_rate?: number | null
         }
         Relationships: []
       }
@@ -68186,6 +68312,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      upgrade_recommendations: {
+        Row: {
+          id: string
+          institution_id: string
+          projected_benefit: string | null
+          reason: string
+          recommended_at: string
+          recommended_plan: string
+        }
+        Insert: {
+          id?: string
+          institution_id: string
+          projected_benefit?: string | null
+          reason: string
+          recommended_at?: string
+          recommended_plan: string
+        }
+        Update: {
+          id?: string
+          institution_id?: string
+          projected_benefit?: string | null
+          reason?: string
+          recommended_at?: string
+          recommended_plan?: string
+        }
+        Relationships: []
       }
       user_ai_credits: {
         Row: {
