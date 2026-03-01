@@ -163,6 +163,7 @@ const SalesDataPackPage = lazy(() => import("./pages/admin/SalesDataPackPage"));
 const StudentOutcomePage = lazy(() => import("./pages/StudentOutcomePage"));
 const IntelligenceDashboardPage = lazy(() => import("./pages/admin/IntelligenceDashboardPage"));
 const AdminSystemHealthPage = lazy(() => import("./pages/admin/AdminSystemHealthPage"));
+const AdminIntegrityPage = lazy(() => import("./pages/AdminIntegrityPage"));
 
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
@@ -396,6 +397,7 @@ const AppContent = () => {
           <Route path="/admin/sales-data-pack" element={<ProtectedRoute><SalesDataPackPage /></ProtectedRoute>} />
           <Route path="/admin/intelligence" element={<ProtectedRoute><IntelligenceDashboardPage /></ProtectedRoute>} />
           <Route path="/admin/system-health" element={<ProtectedRoute><AdminSystemHealthPage /></ProtectedRoute>} />
+          <Route path="/admin/integrity" element={<ProtectedRoute><AdminIntegrityPage /></ProtectedRoute>} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}
