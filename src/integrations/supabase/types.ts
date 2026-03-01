@@ -857,6 +857,39 @@ export type Database = {
         }
         Relationships: []
       }
+      activity_feed: {
+        Row: {
+          action: string
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          metadata: Json | null
+          performed_by: string
+          project_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          metadata?: Json | null
+          performed_by: string
+          project_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          metadata?: Json | null
+          performed_by?: string
+          project_id?: string
+        }
+        Relationships: []
+      }
       adaptability_index: {
         Row: {
           collaboration_diversity: number | null
@@ -4322,6 +4355,50 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      artifact_versions: {
+        Row: {
+          artifact_id: string
+          changelog: string | null
+          created_at: string
+          file_size: number | null
+          file_url: string
+          id: string
+          mime_type: string | null
+          uploaded_by: string
+          version_number: number
+        }
+        Insert: {
+          artifact_id: string
+          changelog?: string | null
+          created_at?: string
+          file_size?: number | null
+          file_url: string
+          id?: string
+          mime_type?: string | null
+          uploaded_by: string
+          version_number: number
+        }
+        Update: {
+          artifact_id?: string
+          changelog?: string | null
+          created_at?: string
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          mime_type?: string | null
+          uploaded_by?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artifact_versions_artifact_id_fkey"
+            columns: ["artifact_id"]
+            isOneToOne: false
+            referencedRelation: "research_artifacts"
             referencedColumns: ["id"]
           },
         ]
@@ -39401,6 +39478,48 @@ export type Database = {
         }
         Relationships: []
       }
+      milestone_tasks: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          due_date: string | null
+          id: string
+          milestone_id: string
+          sort_order: number | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          milestone_id: string
+          sort_order?: number | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          milestone_id?: string
+          sort_order?: number | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       milestones: {
         Row: {
           amount: number
@@ -48916,6 +49035,39 @@ export type Database = {
           },
         ]
       }
+      project_activity_summary: {
+        Row: {
+          activity_score: number | null
+          artifact_count: number | null
+          completed_tasks: number | null
+          id: string
+          project_id: string
+          review_count: number | null
+          total_tasks: number | null
+          updated_at: string
+        }
+        Insert: {
+          activity_score?: number | null
+          artifact_count?: number | null
+          completed_tasks?: number | null
+          id?: string
+          project_id: string
+          review_count?: number | null
+          total_tasks?: number | null
+          updated_at?: string
+        }
+        Update: {
+          activity_score?: number | null
+          artifact_count?: number | null
+          completed_tasks?: number | null
+          id?: string
+          project_id?: string
+          review_count?: number | null
+          total_tasks?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       project_analytics: {
         Row: {
           avg_bid_amount: number | null
@@ -51801,9 +51953,14 @@ export type Database = {
           file_size_bytes: number | null
           file_url: string
           id: string
+          milestone_id: string | null
+          mime_type: string | null
+          project_id: string | null
           related_entry_id: string | null
-          research_timeline_id: string
+          research_timeline_id: string | null
+          title: string | null
           uploaded_by: string
+          version_number: number | null
         }
         Insert: {
           artifact_type: string
@@ -51812,9 +51969,14 @@ export type Database = {
           file_size_bytes?: number | null
           file_url: string
           id?: string
+          milestone_id?: string | null
+          mime_type?: string | null
+          project_id?: string | null
           related_entry_id?: string | null
-          research_timeline_id: string
+          research_timeline_id?: string | null
+          title?: string | null
           uploaded_by: string
+          version_number?: number | null
         }
         Update: {
           artifact_type?: string
@@ -51823,9 +51985,14 @@ export type Database = {
           file_size_bytes?: number | null
           file_url?: string
           id?: string
+          milestone_id?: string | null
+          mime_type?: string | null
+          project_id?: string | null
           related_entry_id?: string | null
-          research_timeline_id?: string
+          research_timeline_id?: string | null
+          title?: string | null
           uploaded_by?: string
+          version_number?: number | null
         }
         Relationships: [
           {
@@ -55370,6 +55537,41 @@ export type Database = {
           },
         ]
       }
+      review_feedback: {
+        Row: {
+          created_at: string
+          created_by: string
+          feedback_text: string
+          id: string
+          rating_score: number
+          review_request_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          feedback_text: string
+          id?: string
+          rating_score?: number
+          review_request_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          feedback_text?: string
+          id?: string
+          rating_score?: number
+          review_request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_feedback_review_request_id_fkey"
+            columns: ["review_request_id"]
+            isOneToOne: false
+            referencedRelation: "review_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       review_outcomes: {
         Row: {
           created_at: string
@@ -55413,6 +55615,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      review_requests: {
+        Row: {
+          created_at: string
+          id: string
+          milestone_id: string
+          notes: string | null
+          project_id: string
+          requested_by: string
+          reviewer_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          milestone_id: string
+          notes?: string | null
+          project_id: string
+          requested_by: string
+          reviewer_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          milestone_id?: string
+          notes?: string | null
+          project_id?: string
+          requested_by?: string
+          reviewer_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       review_unlock_queue: {
         Row: {
@@ -62779,6 +63017,41 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      task_activity_logs: {
+        Row: {
+          action_type: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          performed_by: string
+          task_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          performed_by: string
+          task_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          performed_by?: string
+          task_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_activity_logs_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "milestone_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       teaching_research_outputs: {
         Row: {

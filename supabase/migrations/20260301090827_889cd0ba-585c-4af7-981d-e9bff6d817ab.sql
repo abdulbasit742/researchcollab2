@@ -1,0 +1,1 @@
+ALTER TABLE public.research_artifacts ALTER COLUMN research_timeline_id DROP NOT NULL;
