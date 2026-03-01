@@ -42633,6 +42633,85 @@ export type Database = {
           },
         ]
       }
+      national_certification_registry: {
+        Row: {
+          certificate_hash: string | null
+          certificate_id: string
+          certificate_type: string | null
+          holder_display_name: string | null
+          id: string
+          issued_at: string
+          issuing_institution_name: string
+          national_registry_id: string | null
+        }
+        Insert: {
+          certificate_hash?: string | null
+          certificate_id: string
+          certificate_type?: string | null
+          holder_display_name?: string | null
+          id?: string
+          issued_at?: string
+          issuing_institution_name: string
+          national_registry_id?: string | null
+        }
+        Update: {
+          certificate_hash?: string | null
+          certificate_id?: string
+          certificate_type?: string | null
+          holder_display_name?: string | null
+          id?: string
+          issued_at?: string
+          issuing_institution_name?: string
+          national_registry_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "national_certification_registry_national_registry_id_fkey"
+            columns: ["national_registry_id"]
+            isOneToOne: false
+            referencedRelation: "national_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      national_compliance_metrics: {
+        Row: {
+          audit_completeness_avg: number | null
+          dispute_resolution_speed_avg: number | null
+          generated_at: string
+          governance_stability_score_avg: number | null
+          id: string
+          national_registry_id: string
+          review_integrity_score_avg: number | null
+        }
+        Insert: {
+          audit_completeness_avg?: number | null
+          dispute_resolution_speed_avg?: number | null
+          generated_at?: string
+          governance_stability_score_avg?: number | null
+          id?: string
+          national_registry_id: string
+          review_integrity_score_avg?: number | null
+        }
+        Update: {
+          audit_completeness_avg?: number | null
+          dispute_resolution_speed_avg?: number | null
+          generated_at?: string
+          governance_stability_score_avg?: number | null
+          id?: string
+          national_registry_id?: string
+          review_integrity_score_avg?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "national_compliance_metrics_national_registry_id_fkey"
+            columns: ["national_registry_id"]
+            isOneToOne: false
+            referencedRelation: "national_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       national_dashboard_access: {
         Row: {
           access_level: string
@@ -42683,6 +42762,85 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      national_execution_index: {
+        Row: {
+          engagement_index: number | null
+          execution_velocity_index: number | null
+          generated_at: string
+          id: string
+          milestone_completion_index: number | null
+          national_registry_id: string
+          overall_health_score: number | null
+          predictive_stability_index: number | null
+        }
+        Insert: {
+          engagement_index?: number | null
+          execution_velocity_index?: number | null
+          generated_at?: string
+          id?: string
+          milestone_completion_index?: number | null
+          national_registry_id: string
+          overall_health_score?: number | null
+          predictive_stability_index?: number | null
+        }
+        Update: {
+          engagement_index?: number | null
+          execution_velocity_index?: number | null
+          generated_at?: string
+          id?: string
+          milestone_completion_index?: number | null
+          national_registry_id?: string
+          overall_health_score?: number | null
+          predictive_stability_index?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "national_execution_index_national_registry_id_fkey"
+            columns: ["national_registry_id"]
+            isOneToOne: false
+            referencedRelation: "national_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      national_exports: {
+        Row: {
+          created_at: string
+          export_type: string
+          file_url: string | null
+          id: string
+          national_registry_id: string
+          requested_by: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          export_type: string
+          file_url?: string | null
+          id?: string
+          national_registry_id: string
+          requested_by: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          export_type?: string
+          file_url?: string | null
+          id?: string
+          national_registry_id?: string
+          requested_by?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "national_exports_national_registry_id_fkey"
+            columns: ["national_registry_id"]
+            isOneToOne: false
+            referencedRelation: "national_registry"
             referencedColumns: ["id"]
           },
         ]
@@ -42873,6 +43031,74 @@ export type Database = {
           simulation_mode?: boolean | null
         }
         Relationships: []
+      }
+      national_registry: {
+        Row: {
+          compliance_framework: string | null
+          country_code: string
+          country_name: string
+          created_at: string
+          id: string
+          regulatory_authority_name: string
+          status: string
+        }
+        Insert: {
+          compliance_framework?: string | null
+          country_code: string
+          country_name: string
+          created_at?: string
+          id?: string
+          regulatory_authority_name: string
+          status?: string
+        }
+        Update: {
+          compliance_framework?: string | null
+          country_code?: string
+          country_name?: string
+          created_at?: string
+          id?: string
+          regulatory_authority_name?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      national_registry_settings: {
+        Row: {
+          cross_region_visibility: string | null
+          data_residency_policy: string | null
+          export_controls: string | null
+          federation_enabled: boolean | null
+          id: string
+          national_registry_id: string
+          updated_at: string
+        }
+        Insert: {
+          cross_region_visibility?: string | null
+          data_residency_policy?: string | null
+          export_controls?: string | null
+          federation_enabled?: boolean | null
+          id?: string
+          national_registry_id: string
+          updated_at?: string
+        }
+        Update: {
+          cross_region_visibility?: string | null
+          data_residency_policy?: string | null
+          export_controls?: string | null
+          federation_enabled?: boolean | null
+          id?: string
+          national_registry_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "national_registry_settings_national_registry_id_fkey"
+            columns: ["national_registry_id"]
+            isOneToOne: true
+            referencedRelation: "national_registry"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       national_research_snapshots: {
         Row: {
@@ -53234,6 +53460,41 @@ export type Database = {
             columns: ["region_id"]
             isOneToOne: false
             referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      regional_clusters: {
+        Row: {
+          created_at: string
+          id: string
+          national_registry_id: string
+          region_code: string | null
+          region_name: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          national_registry_id: string
+          region_code?: string | null
+          region_name: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          national_registry_id?: string
+          region_code?: string | null
+          region_name?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regional_clusters_national_registry_id_fkey"
+            columns: ["national_registry_id"]
+            isOneToOne: false
+            referencedRelation: "national_registry"
             referencedColumns: ["id"]
           },
         ]
