@@ -165,6 +165,7 @@ const IntelligenceDashboardPage = lazy(() => import("./pages/admin/IntelligenceD
 const AdminSystemHealthPage = lazy(() => import("./pages/admin/AdminSystemHealthPage"));
 const AdminIntegrityPage = lazy(() => import("./pages/AdminIntegrityPage"));
 const AdminPerformancePage = lazy(() => import("./pages/AdminPerformancePage"));
+const AdminSecurityDashboardPage = lazy(() => import("./pages/AdminSecurityDashboardPage"));
 
 // Strategic Expansion Modules
 const InstitutionalTrustGraphPage = lazy(() => import("./pages/InstitutionalTrustGraphPage"));
@@ -400,6 +401,7 @@ const AppContent = () => {
           <Route path="/admin/system-health" element={<ProtectedRoute><AdminSystemHealthPage /></ProtectedRoute>} />
           <Route path="/admin/integrity" element={<ProtectedRoute><AdminIntegrityPage /></ProtectedRoute>} />
           <Route path="/admin/performance" element={<ProtectedRoute><AdminPerformancePage /></ProtectedRoute>} />
+          <Route path="/admin/security-dashboard" element={<ProtectedRoute><AdminSecurityDashboardPage /></ProtectedRoute>} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
 
           {/* ====== REDIRECTS — Everything else → Core ====== */}

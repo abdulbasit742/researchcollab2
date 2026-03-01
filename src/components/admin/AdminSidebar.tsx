@@ -59,6 +59,7 @@ const navItems = [
   { icon: ShieldCheck, label: "Verifications", href: "/admin/verifications" },
   { icon: ShieldCheck, label: "Platform Integrity", href: "/admin/integrity" },
   { icon: Gauge, label: "Performance", href: "/admin/performance" },
+  { icon: Shield, label: "Security Monitor", href: "/admin/security-dashboard" },
   { icon: DollarSign, label: "Finance", href: "/admin/finance" },
   { icon: Flag, label: "Reports", href: "/admin/reports" },
   { icon: MessageSquare, label: "Support", href: "/admin/support" },
