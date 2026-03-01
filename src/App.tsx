@@ -286,6 +286,7 @@ const SuperAdminRevenuePage = lazy(() => import("./pages/super-admin/SuperAdminR
 const SuperAdminAuditLogPage = lazy(() => import("./pages/super-admin/SuperAdminAuditLogPage"));
 const SuperAdminSLAOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminSLAOverviewPage"));
 const SLAMonitoringPage = lazy(() => import("./pages/institution/SLAMonitoringPage"));
+const SuperAdminAuditMapPage = lazy(() => import("./pages/super-admin/SuperAdminAuditMapPage"));
 
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
@@ -540,6 +541,7 @@ const AppContent = () => {
           <Route path="/super-admin/audit-log" element={<ProtectedRoute><SuperAdminAuditLogPage /></ProtectedRoute>} />
           <Route path="/super-admin/sla-overview" element={<ProtectedRoute><SuperAdminSLAOverviewPage /></ProtectedRoute>} />
           <Route path="/institution/sla-monitoring" element={<ProtectedRoute><SLAMonitoringPage /></ProtectedRoute>} />
+          <Route path="/super-admin/audit-map" element={<ProtectedRoute><SuperAdminAuditMapPage /></ProtectedRoute>} />
           {/* ====== REDIRECTS — Everything else → Core ====== */}
           {/* Dashboard consolidation */}
           <Route path="/dashboard/*" element={<Navigate to="/home" replace />} />
