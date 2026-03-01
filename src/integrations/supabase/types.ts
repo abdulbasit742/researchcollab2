@@ -5593,6 +5593,48 @@ export type Database = {
           },
         ]
       }
+      bulk_user_import_jobs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error_count: number | null
+          error_details: Json | null
+          file_url: string | null
+          id: string
+          institution_id: string
+          processed_count: number | null
+          status: string
+          total_rows: number | null
+          uploaded_by: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error_count?: number | null
+          error_details?: Json | null
+          file_url?: string | null
+          id?: string
+          institution_id: string
+          processed_count?: number | null
+          status?: string
+          total_rows?: number | null
+          uploaded_by: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error_count?: number | null
+          error_details?: Json | null
+          file_url?: string | null
+          id?: string
+          institution_id?: string
+          processed_count?: number | null
+          status?: string
+          total_rows?: number | null
+          uploaded_by?: string
+        }
+        Relationships: []
+      }
       cached_analytics_snapshots: {
         Row: {
           entity_id: string | null
@@ -33437,6 +33479,39 @@ export type Database = {
         }
         Relationships: []
       }
+      institution_adoption_metrics: {
+        Row: {
+          active_projects_7d: number | null
+          active_users_7d: number | null
+          engagement_score: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          milestone_creation_rate: number | null
+          review_completion_rate: number | null
+        }
+        Insert: {
+          active_projects_7d?: number | null
+          active_users_7d?: number | null
+          engagement_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          milestone_creation_rate?: number | null
+          review_completion_rate?: number | null
+        }
+        Update: {
+          active_projects_7d?: number | null
+          active_users_7d?: number | null
+          engagement_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          milestone_creation_rate?: number | null
+          review_completion_rate?: number | null
+        }
+        Relationships: []
+      }
       institution_adoption_tiers: {
         Row: {
           created_at: string
@@ -33687,6 +33762,33 @@ export type Database = {
           },
         ]
       }
+      institution_departments: {
+        Row: {
+          created_at: string
+          department_code: string | null
+          department_name: string
+          head_user_id: string | null
+          id: string
+          institution_id: string
+        }
+        Insert: {
+          created_at?: string
+          department_code?: string | null
+          department_name: string
+          head_user_id?: string | null
+          id?: string
+          institution_id: string
+        }
+        Update: {
+          created_at?: string
+          department_code?: string | null
+          department_name?: string
+          head_user_id?: string | null
+          id?: string
+          institution_id?: string
+        }
+        Relationships: []
+      }
       institution_documents: {
         Row: {
           access_level: string
@@ -33820,6 +33922,39 @@ export type Database = {
         }
         Relationships: []
       }
+      institution_expansion_health: {
+        Row: {
+          adoption_score: number | null
+          engagement_score: number | null
+          execution_score: number | null
+          generated_at: string
+          governance_score: number | null
+          id: string
+          institution_id: string
+          overall_expansion_score: number | null
+        }
+        Insert: {
+          adoption_score?: number | null
+          engagement_score?: number | null
+          execution_score?: number | null
+          generated_at?: string
+          governance_score?: number | null
+          id?: string
+          institution_id: string
+          overall_expansion_score?: number | null
+        }
+        Update: {
+          adoption_score?: number | null
+          engagement_score?: number | null
+          execution_score?: number | null
+          generated_at?: string
+          governance_score?: number | null
+          id?: string
+          institution_id?: string
+          overall_expansion_score?: number | null
+        }
+        Relationships: []
+      }
       institution_exports: {
         Row: {
           created_at: string
@@ -33847,6 +33982,36 @@ export type Database = {
           institution_id?: string
           requested_by?: string
           status?: string
+        }
+        Relationships: []
+      }
+      institution_growth_forecast: {
+        Row: {
+          confidence_score: number | null
+          generated_at: string
+          id: string
+          institution_id: string
+          predicted_active_users_30d: number | null
+          predicted_completion_trend: number | null
+          predicted_project_growth: number | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id: string
+          predicted_active_users_30d?: number | null
+          predicted_completion_trend?: number | null
+          predicted_project_growth?: number | null
+        }
+        Update: {
+          confidence_score?: number | null
+          generated_at?: string
+          id?: string
+          institution_id?: string
+          predicted_active_users_30d?: number | null
+          predicted_completion_trend?: number | null
+          predicted_project_growth?: number | null
         }
         Relationships: []
       }
@@ -33925,6 +34090,48 @@ export type Database = {
           improvement_trend?: number | null
           institution_id?: string
           stability_trend?: number | null
+        }
+        Relationships: []
+      }
+      institution_onboarding_status: {
+        Row: {
+          adoption_rate: number | null
+          departments_configured: boolean | null
+          first_analytics_reviewed: boolean | null
+          first_certification_issued: boolean | null
+          first_milestone_completed: boolean | null
+          id: string
+          institution_id: string
+          projects_created: boolean | null
+          roles_assigned: boolean | null
+          setup_stage: string
+          updated_at: string
+        }
+        Insert: {
+          adoption_rate?: number | null
+          departments_configured?: boolean | null
+          first_analytics_reviewed?: boolean | null
+          first_certification_issued?: boolean | null
+          first_milestone_completed?: boolean | null
+          id?: string
+          institution_id: string
+          projects_created?: boolean | null
+          roles_assigned?: boolean | null
+          setup_stage?: string
+          updated_at?: string
+        }
+        Update: {
+          adoption_rate?: number | null
+          departments_configured?: boolean | null
+          first_analytics_reviewed?: boolean | null
+          first_certification_issued?: boolean | null
+          first_milestone_completed?: boolean | null
+          id?: string
+          institution_id?: string
+          projects_created?: boolean | null
+          roles_assigned?: boolean | null
+          setup_stage?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -34285,6 +34492,36 @@ export type Database = {
           institution_id?: string
           permissions?: Json
           role_name?: string
+        }
+        Relationships: []
+      }
+      institution_rollout_phases: {
+        Row: {
+          completion_date: string | null
+          created_at: string
+          id: string
+          institution_id: string
+          phase_name: string
+          phase_status: string
+          start_date: string | null
+        }
+        Insert: {
+          completion_date?: string | null
+          created_at?: string
+          id?: string
+          institution_id: string
+          phase_name: string
+          phase_status?: string
+          start_date?: string | null
+        }
+        Update: {
+          completion_date?: string | null
+          created_at?: string
+          id?: string
+          institution_id?: string
+          phase_name?: string
+          phase_status?: string
+          start_date?: string | null
         }
         Relationships: []
       }
