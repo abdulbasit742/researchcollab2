@@ -7,7 +7,7 @@ import { useMyTrustProfile } from "@/hooks/useMyTrustProfile";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -184,12 +184,9 @@ export default function DealDetailPage() {
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <DealStatusBadge status={deal.status} />
+                        <StatusBadge status={deal.status} size="lg" />
                         {escrowLocked > 0 && (
-                          <Badge variant="outline" className="gap-1 border-amber-500/50 text-amber-600 dark:text-amber-400">
-                            <Lock className="h-3 w-3" />
-                            Escrow Protected
-                          </Badge>
+                          <StatusBadge status="escrow_funded" label="Escrow Protected" size="lg" />
                         )}
                       </div>
                       <CardTitle className="text-xl">{deal.title}</CardTitle>
@@ -350,22 +347,4 @@ export default function DealDetailPage() {
       </PageTransition>
     </MainLayout>
   );
-}
-
-function DealStatusBadge({ status }: { status: string }) {
-  const config: Record<string, { label: string; className: string }> = {
-    negotiating: { label: "Negotiating", className: "bg-muted text-muted-foreground" },
-    agreed: { label: "Agreed", className: "bg-blue-500/10 text-blue-600 dark:text-blue-400" },
-    in_progress: { label: "In Progress", className: "bg-primary/10 text-primary" },
-    escrow_funded: { label: "Escrow Funded", className: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
-    milestone_submitted: { label: "Milestone Submitted", className: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
-    milestone_approved: { label: "Milestone Approved", className: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
-    completed: { label: "Completed", className: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
-    cancelled: { label: "Cancelled", className: "bg-muted text-muted-foreground" },
-    disputed: { label: "Disputed", className: "bg-destructive/10 text-destructive" },
-  };
-
-  const c = config[status] || { label: status, className: "bg-muted text-muted-foreground" };
-
-  return <Badge className={c.className}>{c.label}</Badge>;
 }
