@@ -1019,6 +1019,36 @@ export type Database = {
         }
         Relationships: []
       }
+      adaptive_rate_limits_config: {
+        Row: {
+          base_limit_per_minute: number
+          burst_limit: number
+          cooldown_seconds: number | null
+          dynamic_adjustment_enabled: boolean | null
+          endpoint: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          base_limit_per_minute?: number
+          burst_limit?: number
+          cooldown_seconds?: number | null
+          dynamic_adjustment_enabled?: boolean | null
+          endpoint: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          base_limit_per_minute?: number
+          burst_limit?: number
+          cooldown_seconds?: number | null
+          dynamic_adjustment_enabled?: boolean | null
+          endpoint?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       adaptive_risk_models: {
         Row: {
           activity_weight: number | null
@@ -5758,6 +5788,36 @@ export type Database = {
           id?: string
           snapshot_data?: Json
           snapshot_type?: string
+        }
+        Relationships: []
+      }
+      cached_snapshots: {
+        Row: {
+          entity_id: string | null
+          entity_type: string | null
+          expires_at: string
+          generated_at: string
+          id: string
+          snapshot_data: Json
+          snapshot_key: string
+        }
+        Insert: {
+          entity_id?: string | null
+          entity_type?: string | null
+          expires_at: string
+          generated_at?: string
+          id?: string
+          snapshot_data?: Json
+          snapshot_key: string
+        }
+        Update: {
+          entity_id?: string | null
+          entity_type?: string | null
+          expires_at?: string
+          generated_at?: string
+          id?: string
+          snapshot_data?: Json
+          snapshot_key?: string
         }
         Relationships: []
       }
@@ -18846,6 +18906,39 @@ export type Database = {
         }
         Relationships: []
       }
+      endpoint_latency_metrics: {
+        Row: {
+          avg_response_ms: number | null
+          endpoint: string
+          error_rate: number | null
+          id: string
+          p95_ms: number | null
+          p99_ms: number | null
+          recorded_at: string
+          request_count: number | null
+        }
+        Insert: {
+          avg_response_ms?: number | null
+          endpoint: string
+          error_rate?: number | null
+          id?: string
+          p95_ms?: number | null
+          p99_ms?: number | null
+          recorded_at?: string
+          request_count?: number | null
+        }
+        Update: {
+          avg_response_ms?: number | null
+          endpoint?: string
+          error_rate?: number | null
+          id?: string
+          p95_ms?: number | null
+          p99_ms?: number | null
+          recorded_at?: string
+          request_count?: number | null
+        }
+        Relationships: []
+      }
       engagement_adaptive_models: {
         Row: {
           engagement_factor_weights: Json
@@ -19823,6 +19916,42 @@ export type Database = {
           occurred_at?: string
           stack_trace?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      error_registry: {
+        Row: {
+          created_at: string
+          error_hash: string
+          error_type: string
+          frequency: number | null
+          id: string
+          last_seen: string | null
+          route: string | null
+          severity: string | null
+          stack_trace_sanitized: string | null
+        }
+        Insert: {
+          created_at?: string
+          error_hash: string
+          error_type: string
+          frequency?: number | null
+          id?: string
+          last_seen?: string | null
+          route?: string | null
+          severity?: string | null
+          stack_trace_sanitized?: string | null
+        }
+        Update: {
+          created_at?: string
+          error_hash?: string
+          error_type?: string
+          frequency?: number | null
+          id?: string
+          last_seen?: string | null
+          route?: string | null
+          severity?: string | null
+          stack_trace_sanitized?: string | null
         }
         Relationships: []
       }
@@ -44436,6 +44565,36 @@ export type Database = {
           },
         ]
       }
+      node_load_metrics: {
+        Row: {
+          active_connections: number | null
+          cpu_estimate: number | null
+          created_at: string
+          id: string
+          memory_estimate: number | null
+          node_id: string
+          request_throughput: number | null
+        }
+        Insert: {
+          active_connections?: number | null
+          cpu_estimate?: number | null
+          created_at?: string
+          id?: string
+          memory_estimate?: number | null
+          node_id: string
+          request_throughput?: number | null
+        }
+        Update: {
+          active_connections?: number | null
+          cpu_estimate?: number | null
+          created_at?: string
+          id?: string
+          memory_estimate?: number | null
+          node_id?: string
+          request_throughput?: number | null
+        }
+        Relationships: []
+      }
       node_onboarding_status: {
         Row: {
           assigned_to: string | null
@@ -53659,6 +53818,36 @@ export type Database = {
         }
         Relationships: []
       }
+      realtime_connection_logs: {
+        Row: {
+          channel_name: string | null
+          connection_ended: string | null
+          connection_started: string
+          duration_seconds: number | null
+          id: string
+          institution_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          channel_name?: string | null
+          connection_ended?: string | null
+          connection_started?: string
+          duration_seconds?: number | null
+          id?: string
+          institution_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          channel_name?: string | null
+          connection_ended?: string | null
+          connection_started?: string
+          duration_seconds?: number | null
+          id?: string
+          institution_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       reciprocal_relationships: {
         Row: {
           created_at: string | null
@@ -55712,6 +55901,81 @@ export type Database = {
           previous_value?: number | null
           severity?: string
           triggered_review?: boolean | null
+        }
+        Relationships: []
+      }
+      request_processing_queue: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          entity_id: string | null
+          error_message: string | null
+          id: string
+          priority: number | null
+          request_type: string
+          result_data: Json | null
+          status: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          entity_id?: string | null
+          error_message?: string | null
+          id?: string
+          priority?: number | null
+          request_type: string
+          result_data?: Json | null
+          status?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          entity_id?: string | null
+          error_message?: string | null
+          id?: string
+          priority?: number | null
+          request_type?: string
+          result_data?: Json | null
+          status?: string
+        }
+        Relationships: []
+      }
+      request_traces: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          error_flag: boolean | null
+          id: string
+          institution_id: string | null
+          method: string
+          response_status: number | null
+          route: string
+          trace_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          error_flag?: boolean | null
+          id?: string
+          institution_id?: string | null
+          method?: string
+          response_status?: number | null
+          route: string
+          trace_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          error_flag?: boolean | null
+          id?: string
+          institution_id?: string | null
+          method?: string
+          response_status?: number | null
+          route?: string
+          trace_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -65442,6 +65706,39 @@ export type Database = {
         }
         Relationships: []
       }
+      storage_operation_logs: {
+        Row: {
+          artifact_id: string | null
+          created_at: string
+          file_size: number | null
+          id: string
+          mime_type: string | null
+          success_flag: boolean | null
+          upload_duration_ms: number | null
+          user_id: string | null
+        }
+        Insert: {
+          artifact_id?: string | null
+          created_at?: string
+          file_size?: number | null
+          id?: string
+          mime_type?: string | null
+          success_flag?: boolean | null
+          upload_duration_ms?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          artifact_id?: string | null
+          created_at?: string
+          file_size?: number | null
+          id?: string
+          mime_type?: string | null
+          success_flag?: boolean | null
+          upload_duration_ms?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       storage_security_logs: {
         Row: {
           artifact_id: string | null
@@ -66788,6 +67085,78 @@ export type Database = {
         }
         Relationships: []
       }
+      system_alert_thresholds: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          metric_type: string
+          severity_level: string
+          threshold_value: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          metric_type: string
+          severity_level?: string
+          threshold_value: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          metric_type?: string
+          severity_level?: string
+          threshold_value?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      system_event_telemetry: {
+        Row: {
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          event_type: string
+          id: string
+          institution_id: string | null
+          metadata: Json | null
+          node_id: string | null
+          severity_level: string
+          trace_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type: string
+          id?: string
+          institution_id?: string | null
+          metadata?: Json | null
+          node_id?: string | null
+          severity_level?: string
+          trace_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type?: string
+          id?: string
+          institution_id?: string | null
+          metadata?: Json | null
+          node_id?: string | null
+          severity_level?: string
+          trace_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       system_health_metrics: {
         Row: {
           error_rate: number | null
@@ -66878,6 +67247,30 @@ export type Database = {
           entity_type?: string | null
           id?: string
           status?: string
+        }
+        Relationships: []
+      }
+      system_load_state: {
+        Row: {
+          current_load_level: string
+          detected_at: string
+          id: string
+          metadata: Json | null
+          resolved_at: string | null
+        }
+        Insert: {
+          current_load_level?: string
+          detected_at?: string
+          id?: string
+          metadata?: Json | null
+          resolved_at?: string | null
+        }
+        Update: {
+          current_load_level?: string
+          detected_at?: string
+          id?: string
+          metadata?: Json | null
+          resolved_at?: string | null
         }
         Relationships: []
       }

@@ -287,6 +287,11 @@ const SuperAdminAuditLogPage = lazy(() => import("./pages/super-admin/SuperAdmin
 const SuperAdminSLAOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminSLAOverviewPage"));
 const SLAMonitoringPage = lazy(() => import("./pages/institution/SLAMonitoringPage"));
 const SuperAdminAuditMapPage = lazy(() => import("./pages/super-admin/SuperAdminAuditMapPage"));
+const SuperAdminDiagnosticsPage = lazy(() => import("./pages/super-admin/SuperAdminDiagnosticsPage"));
+const SuperAdminPerformanceHeatmapPage = lazy(() => import("./pages/super-admin/SuperAdminPerformanceHeatmapPage"));
+const SuperAdminEventTracePage = lazy(() => import("./pages/super-admin/SuperAdminEventTracePage"));
+const SuperAdminStressSimulationPage = lazy(() => import("./pages/super-admin/SuperAdminStressSimulationPage"));
+const SuperAdminAlertThresholdsPage = lazy(() => import("./pages/super-admin/SuperAdminAlertThresholdsPage"));
 
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
@@ -542,6 +547,11 @@ const AppContent = () => {
           <Route path="/super-admin/sla-overview" element={<ProtectedRoute><SuperAdminSLAOverviewPage /></ProtectedRoute>} />
           <Route path="/institution/sla-monitoring" element={<ProtectedRoute><SLAMonitoringPage /></ProtectedRoute>} />
           <Route path="/super-admin/audit-map" element={<ProtectedRoute><SuperAdminAuditMapPage /></ProtectedRoute>} />
+          <Route path="/super-admin/diagnostics" element={<ProtectedRoute><SuperAdminDiagnosticsPage /></ProtectedRoute>} />
+          <Route path="/super-admin/performance-heatmap" element={<ProtectedRoute><SuperAdminPerformanceHeatmapPage /></ProtectedRoute>} />
+          <Route path="/super-admin/event-trace/:traceId?" element={<ProtectedRoute><SuperAdminEventTracePage /></ProtectedRoute>} />
+          <Route path="/super-admin/stress-simulation" element={<ProtectedRoute><SuperAdminStressSimulationPage /></ProtectedRoute>} />
+          <Route path="/super-admin/alert-thresholds" element={<ProtectedRoute><SuperAdminAlertThresholdsPage /></ProtectedRoute>} />
           {/* ====== REDIRECTS — Everything else → Core ====== */}
           {/* Dashboard consolidation */}
           <Route path="/dashboard/*" element={<Navigate to="/home" replace />} />
