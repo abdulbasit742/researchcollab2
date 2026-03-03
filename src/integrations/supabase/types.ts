@@ -33035,6 +33035,185 @@ export type Database = {
         }
         Relationships: []
       }
+      incident_acknowledgments: {
+        Row: {
+          acknowledged_at: string
+          acknowledged_by: string
+          id: string
+          incident_id: string
+        }
+        Insert: {
+          acknowledged_at?: string
+          acknowledged_by: string
+          id?: string
+          incident_id: string
+        }
+        Update: {
+          acknowledged_at?: string
+          acknowledged_by?: string
+          id?: string
+          incident_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_acknowledgments_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incident_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      incident_metrics: {
+        Row: {
+          affected_users_count: number | null
+          created_at: string
+          id: string
+          incident_id: string
+          time_to_detection_minutes: number | null
+          time_to_mitigation_minutes: number | null
+          time_to_resolution_minutes: number | null
+        }
+        Insert: {
+          affected_users_count?: number | null
+          created_at?: string
+          id?: string
+          incident_id: string
+          time_to_detection_minutes?: number | null
+          time_to_mitigation_minutes?: number | null
+          time_to_resolution_minutes?: number | null
+        }
+        Update: {
+          affected_users_count?: number | null
+          created_at?: string
+          id?: string
+          incident_id?: string
+          time_to_detection_minutes?: number | null
+          time_to_mitigation_minutes?: number | null
+          time_to_resolution_minutes?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_metrics_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incident_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      incident_postmortems: {
+        Row: {
+          contributing_factors: string | null
+          created_at: string
+          id: string
+          incident_id: string
+          preventive_actions: string | null
+          resolution_summary: string | null
+          root_cause_summary: string | null
+        }
+        Insert: {
+          contributing_factors?: string | null
+          created_at?: string
+          id?: string
+          incident_id: string
+          preventive_actions?: string | null
+          resolution_summary?: string | null
+          root_cause_summary?: string | null
+        }
+        Update: {
+          contributing_factors?: string | null
+          created_at?: string
+          id?: string
+          incident_id?: string
+          preventive_actions?: string | null
+          resolution_summary?: string | null
+          root_cause_summary?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_postmortems_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incident_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      incident_registry: {
+        Row: {
+          created_at: string
+          description: string | null
+          detected_by: string
+          id: string
+          incident_type: string
+          institution_id: string | null
+          node_id: string | null
+          resolved_at: string | null
+          severity_level: string
+          status: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          detected_by?: string
+          id?: string
+          incident_type?: string
+          institution_id?: string | null
+          node_id?: string | null
+          resolved_at?: string | null
+          severity_level?: string
+          status?: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          detected_by?: string
+          id?: string
+          incident_type?: string
+          institution_id?: string | null
+          node_id?: string | null
+          resolved_at?: string | null
+          severity_level?: string
+          status?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      incident_reports: {
+        Row: {
+          export_type: string
+          file_url: string | null
+          generated_at: string
+          id: string
+          incident_id: string
+        }
+        Insert: {
+          export_type?: string
+          file_url?: string | null
+          generated_at?: string
+          id?: string
+          incident_id: string
+        }
+        Update: {
+          export_type?: string
+          file_url?: string | null
+          generated_at?: string
+          id?: string
+          incident_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_reports_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incident_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       incident_response_actions: {
         Row: {
           action_description: string
@@ -33082,6 +33261,77 @@ export type Database = {
             columns: ["performed_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      incident_runbook_links: {
+        Row: {
+          id: string
+          incident_id: string
+          linked_at: string
+          runbook_id: string
+        }
+        Insert: {
+          id?: string
+          incident_id: string
+          linked_at?: string
+          runbook_id: string
+        }
+        Update: {
+          id?: string
+          incident_id?: string
+          linked_at?: string
+          runbook_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_runbook_links_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incident_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "incident_runbook_links_runbook_id_fkey"
+            columns: ["runbook_id"]
+            isOneToOne: false
+            referencedRelation: "operational_runbooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      incident_status_history: {
+        Row: {
+          changed_at: string
+          changed_by: string | null
+          id: string
+          incident_id: string
+          new_status: string
+          previous_status: string | null
+        }
+        Insert: {
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          incident_id: string
+          new_status: string
+          previous_status?: string | null
+        }
+        Update: {
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          incident_id?: string
+          new_status?: string
+          previous_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_status_history_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incident_registry"
             referencedColumns: ["id"]
           },
         ]
@@ -45422,6 +45672,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      operational_runbooks: {
+        Row: {
+          created_at: string
+          id: string
+          incident_type: string
+          runbook_name: string
+          severity_level: string
+          step_sequence: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          incident_type: string
+          runbook_name: string
+          severity_level?: string
+          step_sequence?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          incident_type?: string
+          runbook_name?: string
+          severity_level?: string
+          step_sequence?: Json
+          updated_at?: string
+        }
+        Relationships: []
       }
       opportunity_alerts: {
         Row: {

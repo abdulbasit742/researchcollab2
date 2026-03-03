@@ -292,6 +292,9 @@ const SuperAdminPerformanceHeatmapPage = lazy(() => import("./pages/super-admin/
 const SuperAdminEventTracePage = lazy(() => import("./pages/super-admin/SuperAdminEventTracePage"));
 const SuperAdminStressSimulationPage = lazy(() => import("./pages/super-admin/SuperAdminStressSimulationPage"));
 const SuperAdminAlertThresholdsPage = lazy(() => import("./pages/super-admin/SuperAdminAlertThresholdsPage"));
+const SuperAdminIncidentsPage = lazy(() => import("./pages/super-admin/SuperAdminIncidentsPage"));
+const SuperAdminIncidentDetailPage = lazy(() => import("./pages/super-admin/SuperAdminIncidentDetailPage"));
+const SuperAdminRunbooksPage = lazy(() => import("./pages/super-admin/SuperAdminRunbooksPage"));
 
 const SuspenseFallback = () => (
   <div className="min-h-screen flex items-center justify-center gradient-hero">
@@ -552,6 +555,9 @@ const AppContent = () => {
           <Route path="/super-admin/event-trace/:traceId?" element={<ProtectedRoute><SuperAdminEventTracePage /></ProtectedRoute>} />
           <Route path="/super-admin/stress-simulation" element={<ProtectedRoute><SuperAdminStressSimulationPage /></ProtectedRoute>} />
           <Route path="/super-admin/alert-thresholds" element={<ProtectedRoute><SuperAdminAlertThresholdsPage /></ProtectedRoute>} />
+          <Route path="/super-admin/incidents" element={<ProtectedRoute><SuperAdminIncidentsPage /></ProtectedRoute>} />
+          <Route path="/super-admin/incidents/:id" element={<ProtectedRoute><SuperAdminIncidentDetailPage /></ProtectedRoute>} />
+          <Route path="/super-admin/runbooks" element={<ProtectedRoute><SuperAdminRunbooksPage /></ProtectedRoute>} />
           {/* ====== REDIRECTS — Everything else → Core ====== */}
           {/* Dashboard consolidation */}
           <Route path="/dashboard/*" element={<Navigate to="/home" replace />} />

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Shield, Activity, Server, Globe, ToggleLeft,
   DollarSign, FileText, ChevronRight, LogOut, ShieldCheck, GitBranch,
-  Stethoscope, Flame, Search, Gauge, Bell,
+  Stethoscope, Flame, Search, Gauge, Bell, Siren, BookOpen,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,8 @@ const NAV_ITEMS = [
   { label: "Event Trace", href: "/super-admin/event-trace", icon: Search },
   { label: "Stress Test", href: "/super-admin/stress-simulation", icon: Gauge },
   { label: "Alerts", href: "/super-admin/alert-thresholds", icon: Bell },
+  { label: "Incidents", href: "/super-admin/incidents", icon: Siren },
+  { label: "Runbooks", href: "/super-admin/runbooks", icon: BookOpen },
 ];
 
 export function SuperAdminLayout({ children }: { children: ReactNode }) {
