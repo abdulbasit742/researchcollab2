@@ -457,8 +457,8 @@ const AppContent = () => {
 
           {/* FYP — Create & Execute */}
           <Route path="/fyp" element={<FYPBrowsePage />} />
-          <Route path="/fyp/:topicId" element={<ProtectedRoute><FYPTopicDetailPage /></ProtectedRoute>} />
           <Route path="/fyp/submit-problem" element={<ProtectedRoute><FYPSubmitProblemPage /></ProtectedRoute>} />
+          <Route path="/fyp/:topicId" element={<ProtectedRoute><FYPTopicDetailPage /></ProtectedRoute>} />
           <Route path="/student/fyp" element={<ProtectedRoute><StudentFYPDashboardPage /></ProtectedRoute>} />
           <Route path="/faculty/fyp" element={<ProtectedRoute><FacultyFYPCommandPage /></ProtectedRoute>} />
           <Route path="/industry/fyp" element={<ProtectedRoute><SponsorFYPDashboardPage /></ProtectedRoute>} />
