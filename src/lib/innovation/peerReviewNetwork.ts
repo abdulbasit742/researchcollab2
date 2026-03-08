@@ -28,7 +28,7 @@ export async function fetchReviewRequests(status?: string) {
 }
 
 export async function createReviewRequest(request: Record<string, any>) {
-  const { data, error } = await supabase.from("peer_review_requests").insert([request]).select().single();
+  const { data, error } = await supabase.from("peer_review_requests").insert([request] as any).select().single();
   if (error) throw error;
   return data;
 }
@@ -38,7 +38,7 @@ export async function submitReview(response: Record<string, any>) {
     ...response,
     status: "submitted",
     submitted_at: new Date().toISOString(),
-  }]).select().single();
+  }] as any).select().single();
   if (error) throw error;
   return data;
 }

@@ -28,7 +28,7 @@ export async function fetchKnowledgeListings(category?: string) {
 }
 
 export async function createKnowledgeListing(listing: Record<string, any>) {
-  const { data, error } = await supabase.from("knowledge_exchange_listings").insert([listing]).select().single();
+  const { data, error } = await supabase.from("knowledge_exchange_listings").insert([listing] as any).select().single();
   if (error) throw error;
   return data;
 }
