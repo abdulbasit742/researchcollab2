@@ -34007,6 +34007,323 @@ export type Database = {
           },
         ]
       }
+      gtex_ai_matches: {
+        Row: {
+          confidence_score: number
+          id: string
+          match_reasons: Json | null
+          opportunity_id: string
+          recommended_at: string
+          talent_id: string
+        }
+        Insert: {
+          confidence_score?: number
+          id?: string
+          match_reasons?: Json | null
+          opportunity_id: string
+          recommended_at?: string
+          talent_id: string
+        }
+        Update: {
+          confidence_score?: number
+          id?: string
+          match_reasons?: Json | null
+          opportunity_id?: string
+          recommended_at?: string
+          talent_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gtex_ai_matches_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "gtex_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gtex_ai_matches_talent_id_fkey"
+            columns: ["talent_id"]
+            isOneToOne: false
+            referencedRelation: "gtex_talent_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gtex_applications: {
+        Row: {
+          cover_note: string | null
+          created_at: string
+          id: string
+          match_explanation: string | null
+          match_score: number | null
+          opportunity_id: string
+          proposed_rate: number | null
+          proposed_timeline_weeks: number | null
+          reviewed_at: string | null
+          status: string
+          talent_id: string
+        }
+        Insert: {
+          cover_note?: string | null
+          created_at?: string
+          id?: string
+          match_explanation?: string | null
+          match_score?: number | null
+          opportunity_id: string
+          proposed_rate?: number | null
+          proposed_timeline_weeks?: number | null
+          reviewed_at?: string | null
+          status?: string
+          talent_id: string
+        }
+        Update: {
+          cover_note?: string | null
+          created_at?: string
+          id?: string
+          match_explanation?: string | null
+          match_score?: number | null
+          opportunity_id?: string
+          proposed_rate?: number | null
+          proposed_timeline_weeks?: number | null
+          reviewed_at?: string | null
+          status?: string
+          talent_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gtex_applications_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "gtex_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gtex_applications_talent_id_fkey"
+            columns: ["talent_id"]
+            isOneToOne: false
+            referencedRelation: "gtex_talent_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gtex_execution_contracts: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          id: string
+          milestones: Json | null
+          opportunity_id: string | null
+          organization_id: string | null
+          signed_at: string | null
+          status: string
+          talent_id: string
+          timeline_weeks: number | null
+          title: string
+          total_compensation: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          milestones?: Json | null
+          opportunity_id?: string | null
+          organization_id?: string | null
+          signed_at?: string | null
+          status?: string
+          talent_id: string
+          timeline_weeks?: number | null
+          title: string
+          total_compensation?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          milestones?: Json | null
+          opportunity_id?: string | null
+          organization_id?: string | null
+          signed_at?: string | null
+          status?: string
+          talent_id?: string
+          timeline_weeks?: number | null
+          title?: string
+          total_compensation?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gtex_execution_contracts_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "gtex_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gtex_execution_contracts_talent_id_fkey"
+            columns: ["talent_id"]
+            isOneToOne: false
+            referencedRelation: "gtex_talent_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gtex_opportunities: {
+        Row: {
+          applications_count: number | null
+          compensation_range_max: number | null
+          compensation_range_min: number | null
+          created_at: string
+          description: string | null
+          domain: string | null
+          expires_at: string | null
+          id: string
+          milestones_planned: number | null
+          min_trust_score: number | null
+          opportunity_type: string
+          organization_id: string | null
+          posted_by: string
+          required_skills: string[] | null
+          status: string
+          timeline_weeks: number | null
+          title: string
+        }
+        Insert: {
+          applications_count?: number | null
+          compensation_range_max?: number | null
+          compensation_range_min?: number | null
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          expires_at?: string | null
+          id?: string
+          milestones_planned?: number | null
+          min_trust_score?: number | null
+          opportunity_type?: string
+          organization_id?: string | null
+          posted_by: string
+          required_skills?: string[] | null
+          status?: string
+          timeline_weeks?: number | null
+          title: string
+        }
+        Update: {
+          applications_count?: number | null
+          compensation_range_max?: number | null
+          compensation_range_min?: number | null
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          expires_at?: string | null
+          id?: string
+          milestones_planned?: number | null
+          min_trust_score?: number | null
+          opportunity_type?: string
+          organization_id?: string | null
+          posted_by?: string
+          required_skills?: string[] | null
+          status?: string
+          timeline_weeks?: number | null
+          title?: string
+        }
+        Relationships: []
+      }
+      gtex_saved_candidates: {
+        Row: {
+          id: string
+          notes: string | null
+          saved_at: string
+          saved_by: string
+          talent_id: string
+        }
+        Insert: {
+          id?: string
+          notes?: string | null
+          saved_at?: string
+          saved_by: string
+          talent_id: string
+        }
+        Update: {
+          id?: string
+          notes?: string | null
+          saved_at?: string
+          saved_by?: string
+          talent_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gtex_saved_candidates_talent_id_fkey"
+            columns: ["talent_id"]
+            isOneToOne: false
+            referencedRelation: "gtex_talent_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gtex_talent_profiles: {
+        Row: {
+          availability_status: string
+          bio: string | null
+          collaboration_count: number | null
+          created_at: string
+          display_name: string
+          domain_expertise: string[] | null
+          execution_reliability: number | null
+          geographic_region: string | null
+          hourly_rate: number | null
+          id: string
+          institution_id: string | null
+          is_public: boolean | null
+          milestone_completion_rate: number | null
+          skills: string[] | null
+          total_projects_completed: number | null
+          trust_score_snapshot: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          availability_status?: string
+          bio?: string | null
+          collaboration_count?: number | null
+          created_at?: string
+          display_name: string
+          domain_expertise?: string[] | null
+          execution_reliability?: number | null
+          geographic_region?: string | null
+          hourly_rate?: number | null
+          id?: string
+          institution_id?: string | null
+          is_public?: boolean | null
+          milestone_completion_rate?: number | null
+          skills?: string[] | null
+          total_projects_completed?: number | null
+          trust_score_snapshot?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          availability_status?: string
+          bio?: string | null
+          collaboration_count?: number | null
+          created_at?: string
+          display_name?: string
+          domain_expertise?: string[] | null
+          execution_reliability?: number | null
+          geographic_region?: string | null
+          hourly_rate?: number | null
+          id?: string
+          institution_id?: string | null
+          is_public?: boolean | null
+          milestone_completion_rate?: number | null
+          skills?: string[] | null
+          total_projects_completed?: number | null
+          trust_score_snapshot?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       guardian_audit_logs: {
         Row: {
           anomaly_score: number

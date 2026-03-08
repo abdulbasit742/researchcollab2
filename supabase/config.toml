@@ -98,3 +98,6 @@ verify_jwt = false
 
 [functions.venture-signal-engine]
 verify_jwt = false
+
+[functions.gtex-talent-matching]
+verify_jwt = false
