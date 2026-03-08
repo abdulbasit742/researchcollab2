@@ -3842,6 +3842,66 @@ export type Database = {
         }
         Relationships: []
       }
+      aian_agent_registry: {
+        Row: {
+          agent_key: string
+          agent_name: string
+          agent_type: string
+          avg_response_ms: number | null
+          capabilities: Json | null
+          config: Json | null
+          created_at: string | null
+          description: string | null
+          id: string
+          last_active_at: string | null
+          max_concurrency: number | null
+          permission_scopes: string[] | null
+          status: string
+          tasks_completed: number | null
+          total_errors: number | null
+          updated_at: string | null
+          version: string | null
+        }
+        Insert: {
+          agent_key: string
+          agent_name: string
+          agent_type?: string
+          avg_response_ms?: number | null
+          capabilities?: Json | null
+          config?: Json | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          last_active_at?: string | null
+          max_concurrency?: number | null
+          permission_scopes?: string[] | null
+          status?: string
+          tasks_completed?: number | null
+          total_errors?: number | null
+          updated_at?: string | null
+          version?: string | null
+        }
+        Update: {
+          agent_key?: string
+          agent_name?: string
+          agent_type?: string
+          avg_response_ms?: number | null
+          capabilities?: Json | null
+          config?: Json | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          last_active_at?: string | null
+          max_concurrency?: number | null
+          permission_scopes?: string[] | null
+          status?: string
+          tasks_completed?: number | null
+          total_errors?: number | null
+          updated_at?: string | null
+          version?: string | null
+        }
+        Relationships: []
+      }
       aian_agent_runs: {
         Row: {
           agent_type: string
@@ -3872,6 +3932,36 @@ export type Database = {
           insights_generated?: number | null
           started_at?: string
           status?: string
+        }
+        Relationships: []
+      }
+      aian_agent_signals: {
+        Row: {
+          acknowledged: boolean | null
+          created_at: string | null
+          id: string
+          payload: Json | null
+          signal_type: string
+          source_agent: string
+          target_agent: string | null
+        }
+        Insert: {
+          acknowledged?: boolean | null
+          created_at?: string | null
+          id?: string
+          payload?: Json | null
+          signal_type: string
+          source_agent: string
+          target_agent?: string | null
+        }
+        Update: {
+          acknowledged?: boolean | null
+          created_at?: string | null
+          id?: string
+          payload?: Json | null
+          signal_type?: string
+          source_agent?: string
+          target_agent?: string | null
         }
         Relationships: []
       }
@@ -4071,6 +4161,60 @@ export type Database = {
           key_findings?: Json | null
           report_type?: string
           title?: string
+        }
+        Relationships: []
+      }
+      aian_task_queue: {
+        Row: {
+          agent_key: string
+          completed_at: string | null
+          created_at: string | null
+          created_by: string | null
+          error_message: string | null
+          id: string
+          max_retries: number | null
+          payload: Json | null
+          priority: string | null
+          result: Json | null
+          retry_count: number | null
+          scheduled_at: string | null
+          started_at: string | null
+          status: string
+          task_type: string
+        }
+        Insert: {
+          agent_key: string
+          completed_at?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          error_message?: string | null
+          id?: string
+          max_retries?: number | null
+          payload?: Json | null
+          priority?: string | null
+          result?: Json | null
+          retry_count?: number | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string
+          task_type: string
+        }
+        Update: {
+          agent_key?: string
+          completed_at?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          error_message?: string | null
+          id?: string
+          max_retries?: number | null
+          payload?: Json | null
+          priority?: string | null
+          result?: Json | null
+          retry_count?: number | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string
+          task_type?: string
         }
         Relationships: []
       }
