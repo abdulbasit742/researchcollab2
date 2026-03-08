@@ -6609,6 +6609,42 @@ export type Database = {
         }
         Relationships: []
       }
+      capital_intelligence_scores: {
+        Row: {
+          commercialization_likelihood: number | null
+          computed_at: string | null
+          execution_reliability: number | null
+          id: string
+          project_id: string
+          reasoning: Json | null
+          recommendation_type: string | null
+          success_probability: number | null
+          team_trust_tier: string | null
+        }
+        Insert: {
+          commercialization_likelihood?: number | null
+          computed_at?: string | null
+          execution_reliability?: number | null
+          id?: string
+          project_id: string
+          reasoning?: Json | null
+          recommendation_type?: string | null
+          success_probability?: number | null
+          team_trust_tier?: string | null
+        }
+        Update: {
+          commercialization_likelihood?: number | null
+          computed_at?: string | null
+          execution_reliability?: number | null
+          id?: string
+          project_id?: string
+          reasoning?: Json | null
+          recommendation_type?: string | null
+          success_probability?: number | null
+          team_trust_tier?: string | null
+        }
+        Relationships: []
+      }
       capital_optimization_advice: {
         Row: {
           execution_confidence_index: number | null
@@ -9221,6 +9257,51 @@ export type Database = {
         }
         Relationships: []
       }
+      collaboration_map_nodes: {
+        Row: {
+          active_projects: number | null
+          active_teams: number | null
+          country_code: string | null
+          domain: string | null
+          id: string
+          institution_id: string | null
+          label: string
+          latitude: number | null
+          longitude: number | null
+          metadata: Json | null
+          node_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          active_projects?: number | null
+          active_teams?: number | null
+          country_code?: string | null
+          domain?: string | null
+          id?: string
+          institution_id?: string | null
+          label: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          node_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          active_projects?: number | null
+          active_teams?: number | null
+          country_code?: string | null
+          domain?: string | null
+          id?: string
+          institution_id?: string | null
+          label?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          node_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       collaboration_members: {
         Row: {
           collaboration_id: string
@@ -9434,6 +9515,39 @@ export type Database = {
           punctuality_improvement?: number | null
           user_a_id?: string
           user_b_id?: string
+        }
+        Relationships: []
+      }
+      collaboration_suggestions: {
+        Row: {
+          compatibility_score: number | null
+          created_at: string | null
+          id: string
+          reason: string | null
+          shared_domains: string[] | null
+          status: string | null
+          team_a_id: string | null
+          team_b_id: string | null
+        }
+        Insert: {
+          compatibility_score?: number | null
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          shared_domains?: string[] | null
+          status?: string | null
+          team_a_id?: string | null
+          team_b_id?: string | null
+        }
+        Update: {
+          compatibility_score?: number | null
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          shared_domains?: string[] | null
+          status?: string | null
+          team_a_id?: string | null
+          team_b_id?: string | null
         }
         Relationships: []
       }
@@ -28961,6 +29075,60 @@ export type Database = {
         }
         Relationships: []
       }
+      global_problems: {
+        Row: {
+          affected_population: string | null
+          category: string
+          commercialization_potential: string | null
+          created_at: string | null
+          description: string | null
+          funding_availability: string | null
+          id: string
+          institution_id: string | null
+          proposed_by: string | null
+          research_coverage_score: number | null
+          severity_score: number | null
+          status: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          affected_population?: string | null
+          category: string
+          commercialization_potential?: string | null
+          created_at?: string | null
+          description?: string | null
+          funding_availability?: string | null
+          id?: string
+          institution_id?: string | null
+          proposed_by?: string | null
+          research_coverage_score?: number | null
+          severity_score?: number | null
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          affected_population?: string | null
+          category?: string
+          commercialization_potential?: string | null
+          created_at?: string | null
+          description?: string | null
+          funding_availability?: string | null
+          id?: string
+          institution_id?: string | null
+          proposed_by?: string | null
+          research_coverage_score?: number | null
+          severity_score?: number | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       global_search_index: {
         Row: {
           activity_score: number | null
@@ -41884,6 +42052,45 @@ export type Database = {
         }
         Relationships: []
       }
+      market_simulations: {
+        Row: {
+          created_at: string | null
+          domain: string | null
+          id: string
+          parameters: Json | null
+          region: string | null
+          results: Json | null
+          run_by: string | null
+          simulation_type: string
+          status: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          domain?: string | null
+          id?: string
+          parameters?: Json | null
+          region?: string | null
+          results?: Json | null
+          run_by?: string | null
+          simulation_type: string
+          status?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          domain?: string | null
+          id?: string
+          parameters?: Json | null
+          region?: string | null
+          results?: Json | null
+          run_by?: string | null
+          simulation_type?: string
+          status?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       marketplace_applications: {
         Row: {
           applicant_id: string
@@ -51759,6 +51966,70 @@ export type Database = {
         }
         Relationships: []
       }
+      problem_project_links: {
+        Row: {
+          created_at: string | null
+          id: string
+          linked_by: string | null
+          problem_id: string
+          project_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          linked_by?: string | null
+          problem_id: string
+          project_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          linked_by?: string | null
+          problem_id?: string
+          project_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "problem_project_links_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "global_problems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      problem_votes: {
+        Row: {
+          created_at: string | null
+          id: string
+          problem_id: string
+          vote_type: string | null
+          voter_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          problem_id: string
+          vote_type?: string | null
+          voter_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          problem_id?: string
+          vote_type?: string | null
+          voter_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "problem_votes_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "global_problems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       production_capacity_metrics: {
         Row: {
           capacity_utilization_pct: number | null
@@ -53331,6 +53602,54 @@ export type Database = {
           threshold_type?: string
           threshold_value?: number
           trust_level_required?: number | null
+        }
+        Relationships: []
+      }
+      proof_of_execution: {
+        Row: {
+          created_at: string | null
+          credential_level: string | null
+          description: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          metadata: Json | null
+          proof_type: string
+          title: string
+          user_id: string
+          verification_hash: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          credential_level?: string | null
+          description?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          metadata?: Json | null
+          proof_type: string
+          title: string
+          user_id: string
+          verification_hash?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          credential_level?: string | null
+          description?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          metadata?: Json | null
+          proof_type?: string
+          title?: string
+          user_id?: string
+          verification_hash?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Relationships: []
       }
@@ -56091,6 +56410,92 @@ export type Database = {
         }
         Relationships: []
       }
+      reputation_service_engagements: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          feedback: string | null
+          id: string
+          listing_id: string
+          provider_id: string
+          rating: number | null
+          requester_id: string
+          status: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          feedback?: string | null
+          id?: string
+          listing_id: string
+          provider_id: string
+          rating?: number | null
+          requester_id: string
+          status?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          feedback?: string | null
+          id?: string
+          listing_id?: string
+          provider_id?: string
+          rating?: number | null
+          requester_id?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reputation_service_engagements_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "reputation_service_listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reputation_service_listings: {
+        Row: {
+          availability: string | null
+          completed_count: number | null
+          created_at: string | null
+          description: string | null
+          fee_amount: number | null
+          id: string
+          min_ecs_required: number | null
+          provider_id: string
+          rating_avg: number | null
+          service_type: string
+          title: string
+        }
+        Insert: {
+          availability?: string | null
+          completed_count?: number | null
+          created_at?: string | null
+          description?: string | null
+          fee_amount?: number | null
+          id?: string
+          min_ecs_required?: number | null
+          provider_id: string
+          rating_avg?: number | null
+          service_type: string
+          title: string
+        }
+        Update: {
+          availability?: string | null
+          completed_count?: number | null
+          created_at?: string | null
+          description?: string | null
+          fee_amount?: number | null
+          id?: string
+          min_ecs_required?: number | null
+          provider_id?: string
+          rating_avg?: number | null
+          service_type?: string
+          title?: string
+        }
+        Relationships: []
+      }
       reputation_stack_profiles: {
         Row: {
           breakdown: Json | null
@@ -58211,6 +58616,38 @@ export type Database = {
         }
         Relationships: []
       }
+      research_lab_members: {
+        Row: {
+          id: string
+          joined_at: string | null
+          lab_id: string
+          role: string | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string | null
+          lab_id: string
+          role?: string | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string | null
+          lab_id?: string
+          role?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_lab_members_lab_id_fkey"
+            columns: ["lab_id"]
+            isOneToOne: false
+            referencedRelation: "research_labs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_labor_market: {
         Row: {
           brain_drain_index: number | null
@@ -58253,6 +58690,54 @@ export type Database = {
           researcher_inflow?: number | null
           researcher_outflow?: number | null
           talent_concentration_index?: number | null
+        }
+        Relationships: []
+      }
+      research_labs: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          domain: string
+          funding_pool_total: number | null
+          governance_type: string | null
+          id: string
+          institution_id: string | null
+          member_count: number | null
+          name: string
+          status: string | null
+          tags: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          domain: string
+          funding_pool_total?: number | null
+          governance_type?: string | null
+          id?: string
+          institution_id?: string | null
+          member_count?: number | null
+          name: string
+          status?: string | null
+          tags?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          domain?: string
+          funding_pool_total?: number | null
+          governance_type?: string | null
+          id?: string
+          institution_id?: string | null
+          member_count?: number | null
+          name?: string
+          status?: string | null
+          tags?: string[] | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -58540,6 +59025,62 @@ export type Database = {
             columns: ["research_timeline_id"]
             isOneToOne: false
             referencedRelation: "research_timelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      research_opportunities: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          domain: string | null
+          funding_interest: string | null
+          id: string
+          market_potential: string | null
+          problem_id: string | null
+          region: string | null
+          research_gap_score: number | null
+          source_type: string | null
+          status: string | null
+          suggested_institutions: string[] | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          funding_interest?: string | null
+          id?: string
+          market_potential?: string | null
+          problem_id?: string | null
+          region?: string | null
+          research_gap_score?: number | null
+          source_type?: string | null
+          status?: string | null
+          suggested_institutions?: string[] | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          funding_interest?: string | null
+          id?: string
+          market_potential?: string | null
+          problem_id?: string | null
+          region?: string | null
+          research_gap_score?: number | null
+          source_type?: string | null
+          status?: string | null
+          suggested_institutions?: string[] | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_opportunities_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "global_problems"
             referencedColumns: ["id"]
           },
         ]
@@ -59001,6 +59542,45 @@ export type Database = {
           template_type?: string
           title?: string
           usage_count?: number
+        }
+        Relationships: []
+      }
+      research_timeline_events: {
+        Row: {
+          confidence: number | null
+          created_at: string | null
+          description: string | null
+          domain: string
+          event_type: string | null
+          event_year: number
+          id: string
+          is_prediction: boolean | null
+          source: string | null
+          title: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string | null
+          description?: string | null
+          domain: string
+          event_type?: string | null
+          event_year: number
+          id?: string
+          is_prediction?: boolean | null
+          source?: string | null
+          title: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string | null
+          description?: string | null
+          domain?: string
+          event_type?: string | null
+          event_year?: number
+          id?: string
+          is_prediction?: boolean | null
+          source?: string | null
+          title?: string
         }
         Relationships: []
       }
@@ -67966,6 +68546,48 @@ export type Database = {
         }
         Relationships: []
       }
+      talent_discovery_profiles: {
+        Row: {
+          availability: string | null
+          completed_milestones: number | null
+          cross_border_collaborations: number | null
+          discovery_score: number | null
+          domains: string[] | null
+          id: string
+          knowledge_contributions: number | null
+          peer_endorsements: number | null
+          top_skills: string[] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          availability?: string | null
+          completed_milestones?: number | null
+          cross_border_collaborations?: number | null
+          discovery_score?: number | null
+          domains?: string[] | null
+          id?: string
+          knowledge_contributions?: number | null
+          peer_endorsements?: number | null
+          top_skills?: string[] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          availability?: string | null
+          completed_milestones?: number | null
+          cross_border_collaborations?: number | null
+          discovery_score?: number | null
+          domains?: string[] | null
+          id?: string
+          knowledge_contributions?: number | null
+          peer_endorsements?: number | null
+          top_skills?: string[] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       talent_forecasts: {
         Row: {
           created_at: string
@@ -68207,6 +68829,39 @@ export type Database = {
           talent_readiness_score?: number | null
           tier?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      talent_recommendations: {
+        Row: {
+          created_at: string | null
+          id: string
+          match_reasons: string[] | null
+          match_score: number | null
+          recommended_for_id: string
+          recommended_for_type: string
+          status: string | null
+          talent_user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          match_reasons?: string[] | null
+          match_score?: number | null
+          recommended_for_id: string
+          recommended_for_type: string
+          status?: string | null
+          talent_user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          match_reasons?: string[] | null
+          match_score?: number | null
+          recommended_for_id?: string
+          recommended_for_type?: string
+          status?: string | null
+          talent_user_id?: string
         }
         Relationships: []
       }
