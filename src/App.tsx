@@ -47,6 +47,7 @@ const FYPSubmitProblemPage = lazy(() => import("./pages/FYPSubmitProblemPage"));
 const StudentFYPDashboardPage = lazy(() => import("./pages/StudentFYPDashboardPage"));
 const FacultyFYPCommandPage = lazy(() => import("./pages/FacultyFYPCommandPage"));
 const SponsorFYPDashboardPage = lazy(() => import("./pages/SponsorFYPDashboardPage"));
+const FYPTopicDetailPage = lazy(() => import("./pages/FYPTopicDetailPage"));
 
 // Opportunities — Core Loop Step 2: Match & Fund
 const OpportunitiesPage = lazy(() => import("./pages/OpportunitiesPage"));
@@ -456,6 +457,7 @@ const AppContent = () => {
 
           {/* FYP — Create & Execute */}
           <Route path="/fyp" element={<FYPBrowsePage />} />
+          <Route path="/fyp/:topicId" element={<ProtectedRoute><FYPTopicDetailPage /></ProtectedRoute>} />
           <Route path="/fyp/submit-problem" element={<ProtectedRoute><FYPSubmitProblemPage /></ProtectedRoute>} />
           <Route path="/student/fyp" element={<ProtectedRoute><StudentFYPDashboardPage /></ProtectedRoute>} />
           <Route path="/faculty/fyp" element={<ProtectedRoute><FacultyFYPCommandPage /></ProtectedRoute>} />
