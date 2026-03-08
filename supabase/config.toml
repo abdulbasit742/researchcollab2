@@ -107,3 +107,6 @@ verify_jwt = false
 
 [functions.gin-discovery]
 verify_jwt = false
+
+[functions.eco-orchestrator]
+verify_jwt = false
