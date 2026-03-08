@@ -326,6 +326,11 @@ const InnovationLabPage = lazy(() => import("./pages/innovation/InnovationLabPag
 const ExpansionRoadmapPage = lazy(() => import("./pages/innovation/ExpansionRoadmapPage"));
 const ImpactModelingPage = lazy(() => import("./pages/innovation/ImpactModelingPage"));
 
+// Viral Referral & Reputation Loop
+const ReferralDashboardPage = lazy(() => import("./pages/referral/ReferralDashboardPage"));
+const GrowthAnalyticsPage = lazy(() => import("./pages/referral/GrowthAnalyticsPage"));
+const InstitutionReferralPage = lazy(() => import("./pages/referral/InstitutionReferralPage"));
+
 // Revenue Intelligence & Problem Marketplace
 const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
 const ProblemMarketplacePage = lazy(() => import("./pages/ProblemMarketplacePage"));
