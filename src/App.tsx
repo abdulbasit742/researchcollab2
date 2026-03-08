@@ -293,6 +293,12 @@ const TalentGraphPage = lazy(() => import("./pages/innovation/TalentGraphPage"))
 const InnovationLicensePage = lazy(() => import("./pages/innovation/InnovationLicensePage"));
 const ResearchCapitalMarketPage = lazy(() => import("./pages/innovation/ResearchCapitalMarketPage"));
 
+// Omnichannel AI Agent Layer
+const OmniCommandCenterPage = lazy(() => import("./pages/omnichannel/OmniCommandCenterPage"));
+const OmniCRMPage = lazy(() => import("./pages/omnichannel/OmniCRMPage"));
+const OmniAnalyticsPage = lazy(() => import("./pages/omnichannel/OmniAnalyticsPage"));
+const OmniCampaignsPage = lazy(() => import("./pages/omnichannel/OmniCampaignsPage"));
+
 // Super Admin
 const SuperAdminOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminOverviewPage"));
 const SuperAdminRiskClustersPage = lazy(() => import("./pages/super-admin/SuperAdminRiskClustersPage"));
@@ -572,6 +578,12 @@ const AppContent = () => {
           <Route path="/innovation/talent-graph" element={<ProtectedRoute><TalentGraphPage /></ProtectedRoute>} />
           <Route path="/innovation/licensing" element={<ProtectedRoute><InnovationLicensePage /></ProtectedRoute>} />
           <Route path="/innovation/capital-market" element={<ProtectedRoute><ResearchCapitalMarketPage /></ProtectedRoute>} />
+
+          {/* ====== OMNICHANNEL AI AGENT LAYER ====== */}
+          <Route path="/omni/command-center" element={<ProtectedRoute><OmniCommandCenterPage /></ProtectedRoute>} />
+          <Route path="/omni/crm" element={<ProtectedRoute><OmniCRMPage /></ProtectedRoute>} />
+          <Route path="/omni/analytics" element={<ProtectedRoute><OmniAnalyticsPage /></ProtectedRoute>} />
+          <Route path="/omni/campaigns" element={<ProtectedRoute><OmniCampaignsPage /></ProtectedRoute>} />
 
           {/* ====== SUPER ADMIN ====== */}
           <Route path="/super-admin/overview" element={<ProtectedRoute><SuperAdminOverviewPage /></ProtectedRoute>} />
