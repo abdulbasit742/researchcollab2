@@ -9980,6 +9980,51 @@ export type Database = {
           },
         ]
       }
+      commercialization_paths: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          market_potential_score: number | null
+          path_type: string
+          readiness_score: number | null
+          recommended_steps: Json | null
+          source_project_id: string | null
+          source_user_id: string | null
+          status: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          market_potential_score?: number | null
+          path_type: string
+          readiness_score?: number | null
+          recommended_steps?: Json | null
+          source_project_id?: string | null
+          source_user_id?: string | null
+          status?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          market_potential_score?: number | null
+          path_type?: string
+          readiness_score?: number | null
+          recommended_steps?: Json | null
+          source_project_id?: string | null
+          source_user_id?: string | null
+          status?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       commercialization_requests: {
         Row: {
           business_plan_summary: string | null
@@ -54083,6 +54128,56 @@ export type Database = {
         }
         Relationships: []
       }
+      problem_funding_pools: {
+        Row: {
+          allocated_amount: number
+          created_at: string | null
+          currency: string | null
+          expires_at: string | null
+          id: string
+          pool_name: string
+          problem_id: string
+          remaining_amount: number | null
+          sponsor_id: string
+          status: string
+          total_amount: number
+        }
+        Insert: {
+          allocated_amount?: number
+          created_at?: string | null
+          currency?: string | null
+          expires_at?: string | null
+          id?: string
+          pool_name: string
+          problem_id: string
+          remaining_amount?: number | null
+          sponsor_id: string
+          status?: string
+          total_amount?: number
+        }
+        Update: {
+          allocated_amount?: number
+          created_at?: string | null
+          currency?: string | null
+          expires_at?: string | null
+          id?: string
+          pool_name?: string
+          problem_id?: string
+          remaining_amount?: number | null
+          sponsor_id?: string
+          status?: string
+          total_amount?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "problem_funding_pools_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "global_problems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       problem_project_links: {
         Row: {
           created_at: string | null
@@ -54108,6 +54203,68 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "problem_project_links_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "global_problems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      problem_proposals: {
+        Row: {
+          approach_summary: string | null
+          created_at: string | null
+          estimated_budget: number | null
+          estimated_timeline_months: number | null
+          id: string
+          institution_id: string | null
+          problem_id: string
+          proposer_id: string
+          required_skills: string[] | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          team_size: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          approach_summary?: string | null
+          created_at?: string | null
+          estimated_budget?: number | null
+          estimated_timeline_months?: number | null
+          id?: string
+          institution_id?: string | null
+          problem_id: string
+          proposer_id: string
+          required_skills?: string[] | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          team_size?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          approach_summary?: string | null
+          created_at?: string | null
+          estimated_budget?: number | null
+          estimated_timeline_months?: number | null
+          id?: string
+          institution_id?: string | null
+          problem_id?: string
+          proposer_id?: string
+          required_skills?: string[] | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          team_size?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "problem_proposals_problem_id_fkey"
             columns: ["problem_id"]
             isOneToOne: false
             referencedRelation: "global_problems"
@@ -62477,6 +62634,63 @@ export type Database = {
         }
         Relationships: []
       }
+      revenue_opportunities: {
+        Row: {
+          confidence_score: number | null
+          created_at: string | null
+          description: string | null
+          detected_at: string | null
+          estimated_value: number | null
+          id: string
+          metadata: Json | null
+          opportunity_type: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          source_entity_id: string | null
+          source_entity_type: string | null
+          status: string
+          target_entity_id: string | null
+          target_entity_type: string | null
+          title: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          detected_at?: string | null
+          estimated_value?: number | null
+          id?: string
+          metadata?: Json | null
+          opportunity_type: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          status?: string
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+          title: string
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          detected_at?: string | null
+          estimated_value?: number | null
+          id?: string
+          metadata?: Json | null
+          opportunity_type?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          status?: string
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       revenue_projections: {
         Row: {
           created_at: string
@@ -67565,6 +67779,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sponsor_matches: {
+        Row: {
+          created_at: string | null
+          domain_alignment: number | null
+          execution_fit: number | null
+          funding_fit: number | null
+          id: string
+          match_reasons: Json | null
+          match_score: number | null
+          sponsor_id: string | null
+          status: string
+          target_id: string
+          target_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          domain_alignment?: number | null
+          execution_fit?: number | null
+          funding_fit?: number | null
+          id?: string
+          match_reasons?: Json | null
+          match_score?: number | null
+          sponsor_id?: string | null
+          status?: string
+          target_id: string
+          target_type: string
+        }
+        Update: {
+          created_at?: string | null
+          domain_alignment?: number | null
+          execution_fit?: number | null
+          funding_fit?: number | null
+          id?: string
+          match_reasons?: Json | null
+          match_score?: number | null
+          sponsor_id?: string | null
+          status?: string
+          target_id?: string
+          target_type?: string
+        }
+        Relationships: []
       }
       sponsor_performance_feedback: {
         Row: {
