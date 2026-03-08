@@ -110,3 +110,6 @@ verify_jwt = false
 
 [functions.eco-orchestrator]
 verify_jwt = false
+
+[functions.rev-optimizer]
+verify_jwt = false

@@ -319,6 +319,9 @@ const CrossInstitutionTeamsPage = lazy(() => import("./pages/network/CrossInstit
 const EcosystemDashboardPage = lazy(() => import("./pages/ecosystem/EcosystemDashboardPage"));
 const OperatorCommandCenterPage = lazy(() => import("./pages/ecosystem/OperatorCommandCenterPage"));
 const EcosystemRevenuePage = lazy(() => import("./pages/ecosystem/EcosystemRevenuePage"));
+const RevenueOptimizerPage = lazy(() => import("./pages/revenue/RevenueOptimizerPage"));
+const SponsorDiscoveryPage = lazy(() => import("./pages/revenue/SponsorDiscoveryPage"));
+const PricingLabPage = lazy(() => import("./pages/revenue/PricingLabPage"));
 
 // Revenue Intelligence & Problem Marketplace
 const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
@@ -658,6 +661,9 @@ const AppContent = () => {
           <Route path="/ecosystem/dashboard" element={<ProtectedRoute><EcosystemDashboardPage /></ProtectedRoute>} />
           <Route path="/ecosystem/command-center" element={<ProtectedRoute><OperatorCommandCenterPage /></ProtectedRoute>} />
           <Route path="/ecosystem/revenue" element={<ProtectedRoute><EcosystemRevenuePage /></ProtectedRoute>} />
+          <Route path="/revenue/optimizer" element={<ProtectedRoute><RevenueOptimizerPage /></ProtectedRoute>} />
+          <Route path="/revenue/sponsor-discovery" element={<ProtectedRoute><SponsorDiscoveryPage /></ProtectedRoute>} />
+          <Route path="/revenue/pricing-lab" element={<ProtectedRoute><PricingLabPage /></ProtectedRoute>} />
 
           {/* ====== REVENUE INTELLIGENCE & PROBLEM MARKETPLACE ====== */}
           <Route path="/revenue-intelligence" element={<ProtectedRoute><RevenueIntelligencePage /></ProtectedRoute>} />

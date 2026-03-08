@@ -66228,6 +66228,264 @@ export type Database = {
         }
         Relationships: []
       }
+      rev_alerts: {
+        Row: {
+          acknowledged: boolean | null
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          alert_type: string
+          created_at: string | null
+          description: string | null
+          id: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          revenue_impact: number | null
+          severity: string | null
+          title: string
+        }
+        Insert: {
+          acknowledged?: boolean | null
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          alert_type: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          revenue_impact?: number | null
+          severity?: string | null
+          title: string
+        }
+        Update: {
+          acknowledged?: boolean | null
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          alert_type?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          revenue_impact?: number | null
+          severity?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      rev_forecasts: {
+        Row: {
+          assumptions: Json | null
+          confidence_interval: Json | null
+          created_at: string | null
+          forecast_period: string
+          forecast_type: string
+          id: string
+          model_version: string | null
+          projected_growth_rate: number | null
+          projected_revenue: number | null
+        }
+        Insert: {
+          assumptions?: Json | null
+          confidence_interval?: Json | null
+          created_at?: string | null
+          forecast_period: string
+          forecast_type: string
+          id?: string
+          model_version?: string | null
+          projected_growth_rate?: number | null
+          projected_revenue?: number | null
+        }
+        Update: {
+          assumptions?: Json | null
+          confidence_interval?: Json | null
+          created_at?: string | null
+          forecast_period?: string
+          forecast_type?: string
+          id?: string
+          model_version?: string | null
+          projected_growth_rate?: number | null
+          projected_revenue?: number | null
+        }
+        Relationships: []
+      }
+      rev_premium_candidates: {
+        Row: {
+          created_at: string | null
+          current_tier: string | null
+          engagement_score: number | null
+          entity_id: string
+          entity_name: string | null
+          entity_type: string
+          estimated_revenue: number | null
+          id: string
+          recommended_tier: string | null
+          status: string | null
+          upgrade_reason: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_tier?: string | null
+          engagement_score?: number | null
+          entity_id: string
+          entity_name?: string | null
+          entity_type: string
+          estimated_revenue?: number | null
+          id?: string
+          recommended_tier?: string | null
+          status?: string | null
+          upgrade_reason?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current_tier?: string | null
+          engagement_score?: number | null
+          entity_id?: string
+          entity_name?: string | null
+          entity_type?: string
+          estimated_revenue?: number | null
+          id?: string
+          recommended_tier?: string | null
+          status?: string | null
+          upgrade_reason?: string | null
+        }
+        Relationships: []
+      }
+      rev_pricing_experiments: {
+        Row: {
+          control_model: Json | null
+          created_at: string | null
+          created_by: string | null
+          ended_at: string | null
+          experiment_name: string
+          hypothesis: string | null
+          id: string
+          pricing_model: Json
+          results: Json | null
+          started_at: string | null
+          status: string | null
+          target_segment: string
+        }
+        Insert: {
+          control_model?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          ended_at?: string | null
+          experiment_name: string
+          hypothesis?: string | null
+          id?: string
+          pricing_model?: Json
+          results?: Json | null
+          started_at?: string | null
+          status?: string | null
+          target_segment: string
+        }
+        Update: {
+          control_model?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          ended_at?: string | null
+          experiment_name?: string
+          hypothesis?: string | null
+          id?: string
+          pricing_model?: Json
+          results?: Json | null
+          started_at?: string | null
+          status?: string | null
+          target_segment?: string
+        }
+        Relationships: []
+      }
+      rev_signals: {
+        Row: {
+          actioned_at: string | null
+          actioned_by: string | null
+          confidence_score: number | null
+          created_at: string | null
+          description: string | null
+          id: string
+          priority: string | null
+          revenue_potential: number | null
+          signal_type: string
+          source_data: Json | null
+          status: string | null
+          title: string
+        }
+        Insert: {
+          actioned_at?: string | null
+          actioned_by?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          priority?: string | null
+          revenue_potential?: number | null
+          signal_type: string
+          source_data?: Json | null
+          status?: string | null
+          title: string
+        }
+        Update: {
+          actioned_at?: string | null
+          actioned_by?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          priority?: string | null
+          revenue_potential?: number | null
+          signal_type?: string
+          source_data?: Json | null
+          status?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      rev_sponsor_leads: {
+        Row: {
+          company_name: string
+          contact_info: Json | null
+          created_at: string | null
+          estimated_budget: number | null
+          id: string
+          industry: string | null
+          match_reason: string | null
+          match_score: number | null
+          notes: string | null
+          outreach_status: string | null
+          target_domains: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          company_name: string
+          contact_info?: Json | null
+          created_at?: string | null
+          estimated_budget?: number | null
+          id?: string
+          industry?: string | null
+          match_reason?: string | null
+          match_score?: number | null
+          notes?: string | null
+          outreach_status?: string | null
+          target_domains?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          company_name?: string
+          contact_info?: Json | null
+          created_at?: string | null
+          estimated_budget?: number | null
+          id?: string
+          industry?: string | null
+          match_reason?: string | null
+          match_score?: number | null
+          notes?: string | null
+          outreach_status?: string | null
+          target_domains?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       revenue_distribution_metrics: {
         Row: {
           created_at: string | null
