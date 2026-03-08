@@ -14774,9 +14774,9 @@ export type Database = {
           dispute_probability_score: number | null
           id: string
           milestone_delay_ratio: number | null
-          time_to_accept: unknown
-          time_to_first_milestone: unknown
-          total_duration: unknown
+          time_to_accept: string | null
+          time_to_first_milestone: string | null
+          total_duration: string | null
         }
         Insert: {
           created_at?: string | null
@@ -14784,9 +14784,9 @@ export type Database = {
           dispute_probability_score?: number | null
           id?: string
           milestone_delay_ratio?: number | null
-          time_to_accept?: unknown
-          time_to_first_milestone?: unknown
-          total_duration?: unknown
+          time_to_accept?: string | null
+          time_to_first_milestone?: string | null
+          total_duration?: string | null
         }
         Update: {
           created_at?: string | null
@@ -14794,9 +14794,9 @@ export type Database = {
           dispute_probability_score?: number | null
           id?: string
           milestone_delay_ratio?: number | null
-          time_to_accept?: unknown
-          time_to_first_milestone?: unknown
-          total_duration?: unknown
+          time_to_accept?: string | null
+          time_to_first_milestone?: string | null
+          total_duration?: string | null
         }
         Relationships: []
       }
