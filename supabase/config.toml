@@ -80,3 +80,9 @@ verify_jwt = false
 
 [functions.omni-agent]
 verify_jwt = false
+
+[functions.gpe-ai-triage]
+verify_jwt = false
+
+[functions.gpe-ai-matching]
+verify_jwt = false

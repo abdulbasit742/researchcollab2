@@ -307,6 +307,11 @@ const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePa
 const ProblemMarketplacePage = lazy(() => import("./pages/ProblemMarketplacePage"));
 const ExecutionExchangePage = lazy(() => import("./pages/ExecutionExchangePage"));
 
+// Global Problem → Execution Layer (GPE)
+const GPEProblemMarketplacePage = lazy(() => import("./pages/gpe/ProblemMarketplacePage"));
+const GPESponsorCommandCenterPage = lazy(() => import("./pages/gpe/SponsorCommandCenterPage"));
+const GPEOperatorWorkbenchPage = lazy(() => import("./pages/gpe/OperatorWorkbenchPage"));
+
 // Omnichannel AI Agent Layer
 const OmniCommandCenterPage = lazy(() => import("./pages/omnichannel/OmniCommandCenterPage"));
 const OmniCRMPage = lazy(() => import("./pages/omnichannel/OmniCRMPage"));
@@ -619,6 +624,11 @@ const AppContent = () => {
           <Route path="/revenue-intelligence" element={<ProtectedRoute><RevenueIntelligencePage /></ProtectedRoute>} />
           <Route path="/problem-marketplace" element={<ProtectedRoute><ProblemMarketplacePage /></ProtectedRoute>} />
           <Route path="/execution-exchange" element={<ProtectedRoute><ExecutionExchangePage /></ProtectedRoute>} />
+
+          {/* ====== GLOBAL PROBLEM → EXECUTION LAYER (GPE) ====== */}
+          <Route path="/gpe/marketplace" element={<ProtectedRoute><GPEProblemMarketplacePage /></ProtectedRoute>} />
+          <Route path="/gpe/sponsor" element={<ProtectedRoute><GPESponsorCommandCenterPage /></ProtectedRoute>} />
+          <Route path="/gpe/operator" element={<ProtectedRoute><GPEOperatorWorkbenchPage /></ProtectedRoute>} />
 
           {/* ====== OMNICHANNEL AI AGENT LAYER ====== */}
           <Route path="/omni/command-center" element={<ProtectedRoute><OmniCommandCenterPage /></ProtectedRoute>} />
