@@ -826,7 +826,7 @@ const AppContent = () => {
           <Route path="/demo/*" element={<Navigate to="/home" replace />} />
           <Route path="/alliance/*" element={<Navigate to="/home" replace />} />
           <Route path="/spinoffs" element={<Navigate to="/home" replace />} />
-          <Route path="/ecosystem/*" element={<Navigate to="/home" replace />} />
+          
           <Route path="/government/*" element={<Navigate to="/home" replace />} />
           <Route path="/national/*" element={<Navigate to="/home" replace />} />
           <Route path="/country/*" element={<Navigate to="/home" replace />} />
