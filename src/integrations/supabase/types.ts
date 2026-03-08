@@ -70632,6 +70632,275 @@ export type Database = {
         }
         Relationships: []
       }
+      sim_analytics: {
+        Row: {
+          created_at: string
+          dimension: string | null
+          dimension_value: string | null
+          id: string
+          metadata: Json | null
+          metric_type: string
+          metric_value: number
+          period: string | null
+        }
+        Insert: {
+          created_at?: string
+          dimension?: string | null
+          dimension_value?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_type: string
+          metric_value?: number
+          period?: string | null
+        }
+        Update: {
+          created_at?: string
+          dimension?: string | null
+          dimension_value?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_type?: string
+          metric_value?: number
+          period?: string | null
+        }
+        Relationships: []
+      }
+      sim_bookings: {
+        Row: {
+          booker_id: string
+          cancellation_reason: string | null
+          created_at: string
+          end_date: string
+          id: string
+          institution_id: string | null
+          listing_id: string
+          platform_fee: number
+          project_reference: string | null
+          purpose: string | null
+          rating: number | null
+          review_text: string | null
+          special_requirements: string | null
+          start_date: string
+          status: string
+          total_cost: number
+          updated_at: string
+        }
+        Insert: {
+          booker_id: string
+          cancellation_reason?: string | null
+          created_at?: string
+          end_date: string
+          id?: string
+          institution_id?: string | null
+          listing_id: string
+          platform_fee?: number
+          project_reference?: string | null
+          purpose?: string | null
+          rating?: number | null
+          review_text?: string | null
+          special_requirements?: string | null
+          start_date: string
+          status?: string
+          total_cost?: number
+          updated_at?: string
+        }
+        Update: {
+          booker_id?: string
+          cancellation_reason?: string | null
+          created_at?: string
+          end_date?: string
+          id?: string
+          institution_id?: string | null
+          listing_id?: string
+          platform_fee?: number
+          project_reference?: string | null
+          purpose?: string | null
+          rating?: number | null
+          review_text?: string | null
+          special_requirements?: string | null
+          start_date?: string
+          status?: string
+          total_cost?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sim_bookings_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sim_bookings_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "sim_listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sim_listings: {
+        Row: {
+          availability_status: string
+          capacity_units: number | null
+          category: string
+          created_at: string
+          currency: string | null
+          daily_rate: number | null
+          description: string | null
+          hourly_rate: number | null
+          id: string
+          images: string[] | null
+          institution_id: string | null
+          location_city: string | null
+          location_country: string | null
+          max_booking_days: number | null
+          min_booking_hours: number | null
+          monthly_rate: number | null
+          owner_id: string
+          rating_avg: number | null
+          rating_count: number | null
+          requires_approval: boolean | null
+          requires_training: boolean | null
+          resource_type: string
+          specifications: Json | null
+          status: string
+          tags: string[] | null
+          title: string
+          total_bookings: number | null
+          total_revenue: number | null
+          updated_at: string
+        }
+        Insert: {
+          availability_status?: string
+          capacity_units?: number | null
+          category?: string
+          created_at?: string
+          currency?: string | null
+          daily_rate?: number | null
+          description?: string | null
+          hourly_rate?: number | null
+          id?: string
+          images?: string[] | null
+          institution_id?: string | null
+          location_city?: string | null
+          location_country?: string | null
+          max_booking_days?: number | null
+          min_booking_hours?: number | null
+          monthly_rate?: number | null
+          owner_id: string
+          rating_avg?: number | null
+          rating_count?: number | null
+          requires_approval?: boolean | null
+          requires_training?: boolean | null
+          resource_type?: string
+          specifications?: Json | null
+          status?: string
+          tags?: string[] | null
+          title: string
+          total_bookings?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
+        Update: {
+          availability_status?: string
+          capacity_units?: number | null
+          category?: string
+          created_at?: string
+          currency?: string | null
+          daily_rate?: number | null
+          description?: string | null
+          hourly_rate?: number | null
+          id?: string
+          images?: string[] | null
+          institution_id?: string | null
+          location_city?: string | null
+          location_country?: string | null
+          max_booking_days?: number | null
+          min_booking_hours?: number | null
+          monthly_rate?: number | null
+          owner_id?: string
+          rating_avg?: number | null
+          rating_count?: number | null
+          requires_approval?: boolean | null
+          requires_training?: boolean | null
+          resource_type?: string
+          specifications?: Json | null
+          status?: string
+          tags?: string[] | null
+          title?: string
+          total_bookings?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sim_listings_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sim_reviews: {
+        Row: {
+          booking_id: string | null
+          created_at: string
+          equipment_quality: number | null
+          facility_cleanliness: number | null
+          id: string
+          listing_id: string
+          rating: number
+          review_text: string | null
+          reviewer_id: string
+          staff_helpfulness: number | null
+          value_for_money: number | null
+        }
+        Insert: {
+          booking_id?: string | null
+          created_at?: string
+          equipment_quality?: number | null
+          facility_cleanliness?: number | null
+          id?: string
+          listing_id: string
+          rating: number
+          review_text?: string | null
+          reviewer_id: string
+          staff_helpfulness?: number | null
+          value_for_money?: number | null
+        }
+        Update: {
+          booking_id?: string | null
+          created_at?: string
+          equipment_quality?: number | null
+          facility_cleanliness?: number | null
+          id?: string
+          listing_id?: string
+          rating?: number
+          review_text?: string | null
+          reviewer_id?: string
+          staff_helpfulness?: number | null
+          value_for_money?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sim_reviews_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "sim_bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sim_reviews_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "sim_listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sip_amendment_logs: {
         Row: {
           activation_date: string | null
