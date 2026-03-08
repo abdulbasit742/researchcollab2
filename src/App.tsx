@@ -296,6 +296,7 @@ const ResearchCapitalMarketPage = lazy(() => import("./pages/innovation/Research
 // Revenue Intelligence & Problem Marketplace
 const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
 const ProblemMarketplacePage = lazy(() => import("./pages/ProblemMarketplacePage"));
+const ExecutionExchangePage = lazy(() => import("./pages/ExecutionExchangePage"));
 
 // Omnichannel AI Agent Layer
 const OmniCommandCenterPage = lazy(() => import("./pages/omnichannel/OmniCommandCenterPage"));
@@ -597,6 +598,7 @@ const AppContent = () => {
           {/* ====== REVENUE INTELLIGENCE & PROBLEM MARKETPLACE ====== */}
           <Route path="/revenue-intelligence" element={<ProtectedRoute><RevenueIntelligencePage /></ProtectedRoute>} />
           <Route path="/problem-marketplace" element={<ProtectedRoute><ProblemMarketplacePage /></ProtectedRoute>} />
+          <Route path="/execution-exchange" element={<ProtectedRoute><ExecutionExchangePage /></ProtectedRoute>} />
 
           {/* ====== OMNICHANNEL AI AGENT LAYER ====== */}
           <Route path="/omni/command-center" element={<ProtectedRoute><OmniCommandCenterPage /></ProtectedRoute>} />
