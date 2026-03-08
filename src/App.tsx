@@ -549,6 +549,17 @@ const AppContent = () => {
           <Route path="/verify/:certificateId" element={<CertificateVerificationPage />} />
           <Route path="/verify" element={<CertificateVerificationPage />} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
+          {/* ====== INNOVATION LAYERS ====== */}
+          <Route path="/innovation/problems" element={<ProtectedRoute><GlobalProblemRegistryPage /></ProtectedRoute>} />
+          <Route path="/innovation/opportunities" element={<ProtectedRoute><ResearchOpportunityExplorerPage /></ProtectedRoute>} />
+          <Route path="/innovation/capital-intelligence" element={<ProtectedRoute><CapitalIntelligencePanelPage /></ProtectedRoute>} />
+          <Route path="/innovation/collaboration-map" element={<ProtectedRoute><GlobalCollaborationMapPage /></ProtectedRoute>} />
+          <Route path="/innovation/labs" element={<ProtectedRoute><ResearchLabsPage /></ProtectedRoute>} />
+          <Route path="/innovation/reputation-market" element={<ProtectedRoute><ReputationMarketplacePage /></ProtectedRoute>} />
+          <Route path="/innovation/timeline" element={<ProtectedRoute><PlanetaryTimelinePage /></ProtectedRoute>} />
+          <Route path="/innovation/simulator" element={<ProtectedRoute><MarketSimulatorPage /></ProtectedRoute>} />
+          <Route path="/innovation/talent" element={<ProtectedRoute><TalentDiscoveryPage /></ProtectedRoute>} />
+          <Route path="/innovation/proof-of-execution" element={<ProtectedRoute><ProofOfExecutionPage /></ProtectedRoute>} />
 
           {/* ====== SUPER ADMIN ====== */}
           <Route path="/super-admin/overview" element={<ProtectedRoute><SuperAdminOverviewPage /></ProtectedRoute>} />
