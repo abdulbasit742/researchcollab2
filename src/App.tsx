@@ -675,6 +675,9 @@ const AppContent = () => {
           <Route path="/innovation/lab" element={<ProtectedRoute><InnovationLabPage /></ProtectedRoute>} />
           <Route path="/innovation/expansion-roadmap" element={<ProtectedRoute><ExpansionRoadmapPage /></ProtectedRoute>} />
           <Route path="/innovation/impact-modeling" element={<ProtectedRoute><ImpactModelingPage /></ProtectedRoute>} />
+          <Route path="/referral/dashboard" element={<ProtectedRoute><ReferralDashboardPage /></ProtectedRoute>} />
+          <Route path="/referral/growth-analytics" element={<ProtectedRoute><GrowthAnalyticsPage /></ProtectedRoute>} />
+          <Route path="/referral/institution-program" element={<ProtectedRoute><InstitutionReferralPage /></ProtectedRoute>} />
 
           {/* ====== REVENUE INTELLIGENCE & PROBLEM MARKETPLACE ====== */}
           <Route path="/revenue-intelligence" element={<ProtectedRoute><RevenueIntelligencePage /></ProtectedRoute>} />
