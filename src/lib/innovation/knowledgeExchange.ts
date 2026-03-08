@@ -24,21 +24,21 @@ export async function fetchKnowledgeListings(category?: string) {
   if (category) query = query.eq("category", category);
   const { data, error } = await query;
   if (error) throw error;
-  return data as KnowledgeListing[];
+  return (data ?? []) as unknown as KnowledgeListing[];
 }
 
-export async function createKnowledgeListing(listing: Partial<KnowledgeListing>) {
-  const { data, error } = await supabase.from("knowledge_exchange_listings").insert(listing).select().single();
+export async function createKnowledgeListing(listing: Record<string, any>) {
+  const { data, error } = await supabase.from("knowledge_exchange_listings").insert([listing]).select().single();
   if (error) throw error;
   return data;
 }
 
 export async function purchaseKnowledge(listingId: string, buyerId: string, amount: number) {
-  const { data, error } = await supabase.from("knowledge_exchange_purchases").insert({
+  const { data, error } = await supabase.from("knowledge_exchange_purchases").insert([{
     listing_id: listingId,
     buyer_id: buyerId,
     amount_paid: amount,
-  }).select().single();
+  }]).select().single();
   if (error) throw error;
   return data;
 }
