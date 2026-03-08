@@ -46298,6 +46298,44 @@ export type Database = {
           },
         ]
       }
+      omni_content_calendar: {
+        Row: {
+          channel: string
+          content_id: string | null
+          created_at: string | null
+          id: string
+          scheduled_date: string
+          slot_time: string | null
+          status: string | null
+        }
+        Insert: {
+          channel: string
+          content_id?: string | null
+          created_at?: string | null
+          id?: string
+          scheduled_date: string
+          slot_time?: string | null
+          status?: string | null
+        }
+        Update: {
+          channel?: string
+          content_id?: string | null
+          created_at?: string | null
+          id?: string
+          scheduled_date?: string
+          slot_time?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_content_calendar_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "omni_marketing_content"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       omni_conversations: {
         Row: {
           assigned_agent: string | null
@@ -46491,6 +46529,153 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      omni_growth_experiments: {
+        Row: {
+          channel: string | null
+          created_at: string | null
+          created_by: string | null
+          end_date: string | null
+          experiment_name: string
+          hypothesis: string | null
+          id: string
+          results: Json | null
+          start_date: string | null
+          status: string | null
+          updated_at: string | null
+          variant_a: string | null
+          variant_b: string | null
+          winner: string | null
+        }
+        Insert: {
+          channel?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          end_date?: string | null
+          experiment_name: string
+          hypothesis?: string | null
+          id?: string
+          results?: Json | null
+          start_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+          variant_a?: string | null
+          variant_b?: string | null
+          winner?: string | null
+        }
+        Update: {
+          channel?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          end_date?: string | null
+          experiment_name?: string
+          hypothesis?: string | null
+          id?: string
+          results?: Json | null
+          start_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+          variant_a?: string | null
+          variant_b?: string | null
+          winner?: string | null
+        }
+        Relationships: []
+      }
+      omni_growth_metrics: {
+        Row: {
+          change_pct: number | null
+          channel: string | null
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          metric_type: string
+          period_end: string
+          period_start: string
+          previous_value: number | null
+          value: number | null
+        }
+        Insert: {
+          change_pct?: number | null
+          channel?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_type: string
+          period_end: string
+          period_start: string
+          previous_value?: number | null
+          value?: number | null
+        }
+        Update: {
+          change_pct?: number | null
+          channel?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_type?: string
+          period_end?: string
+          period_start?: string
+          previous_value?: number | null
+          value?: number | null
+        }
+        Relationships: []
+      }
+      omni_marketing_content: {
+        Row: {
+          ai_generated: boolean | null
+          body: string
+          channel: string
+          content_type: string
+          created_at: string | null
+          created_by: string | null
+          engagement_metrics: Json | null
+          hashtags: string[] | null
+          id: string
+          media_urls: string[] | null
+          published_at: string | null
+          scheduled_at: string | null
+          status: string | null
+          target_audience: string | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          ai_generated?: boolean | null
+          body: string
+          channel: string
+          content_type: string
+          created_at?: string | null
+          created_by?: string | null
+          engagement_metrics?: Json | null
+          hashtags?: string[] | null
+          id?: string
+          media_urls?: string[] | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          status?: string | null
+          target_audience?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ai_generated?: boolean | null
+          body?: string
+          channel?: string
+          content_type?: string
+          created_at?: string | null
+          created_by?: string | null
+          engagement_metrics?: Json | null
+          hashtags?: string[] | null
+          id?: string
+          media_urls?: string[] | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          status?: string | null
+          target_audience?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       omni_messages: {
         Row: {
