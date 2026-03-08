@@ -330,6 +330,9 @@ const OmniKnowledgePage = lazy(() => import("./pages/omnichannel/OmniKnowledgePa
 const OmniAgentPerformancePage = lazy(() => import("./pages/omnichannel/OmniAgentPerformancePage"));
 const GrowthAutomationPage = lazy(() => import("./pages/omnichannel/GrowthAutomationPage"));
 const LeadIntelligencePage = lazy(() => import("./pages/omnichannel/LeadIntelligencePage"));
+const SponsorIntakePage = lazy(() => import("./pages/omnichannel/SponsorIntakePage"));
+const InstitutionOnboardingAgentPage = lazy(() => import("./pages/omnichannel/InstitutionOnboardingAgentPage"));
+const OpportunityMatchingPage = lazy(() => import("./pages/omnichannel/OpportunityMatchingPage"));
 
 // Super Admin
 const SuperAdminOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminOverviewPage"));
@@ -648,6 +651,9 @@ const AppContent = () => {
           <Route path="/omni/agent-performance" element={<ProtectedRoute><OmniAgentPerformancePage /></ProtectedRoute>} />
           <Route path="/omni/growth-automation" element={<ProtectedRoute><GrowthAutomationPage /></ProtectedRoute>} />
           <Route path="/omni/lead-intelligence" element={<ProtectedRoute><LeadIntelligencePage /></ProtectedRoute>} />
+          <Route path="/omni/sponsor-intake" element={<ProtectedRoute><SponsorIntakePage /></ProtectedRoute>} />
+          <Route path="/omni/institution-onboarding-agent" element={<ProtectedRoute><InstitutionOnboardingAgentPage /></ProtectedRoute>} />
+          <Route path="/omni/opportunity-matching" element={<ProtectedRoute><OpportunityMatchingPage /></ProtectedRoute>} />
 
           {/* ====== SUPER ADMIN ====== */}
           <Route path="/super-admin/overview" element={<ProtectedRoute><SuperAdminOverviewPage /></ProtectedRoute>} />

@@ -86,3 +86,9 @@ verify_jwt = false
 
 [functions.gpe-ai-matching]
 verify_jwt = false
+
+[functions.sponsor-intake-agent]
+verify_jwt = false
+
+[functions.institution-onboarding-agent]
+verify_jwt = false

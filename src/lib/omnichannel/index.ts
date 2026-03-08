@@ -18,3 +18,4 @@ export * from "./operatorService";
 export * from "./templateService";
 export * from "./offerRecommendationService";
 export * from "./conversionService";
+export * from "./intakeService";
