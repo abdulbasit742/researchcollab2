@@ -661,6 +661,9 @@ const AppContent = () => {
           <Route path="/ecosystem/dashboard" element={<ProtectedRoute><EcosystemDashboardPage /></ProtectedRoute>} />
           <Route path="/ecosystem/command-center" element={<ProtectedRoute><OperatorCommandCenterPage /></ProtectedRoute>} />
           <Route path="/ecosystem/revenue" element={<ProtectedRoute><EcosystemRevenuePage /></ProtectedRoute>} />
+          <Route path="/revenue/optimizer" element={<ProtectedRoute><RevenueOptimizerPage /></ProtectedRoute>} />
+          <Route path="/revenue/sponsor-discovery" element={<ProtectedRoute><SponsorDiscoveryPage /></ProtectedRoute>} />
+          <Route path="/revenue/pricing-lab" element={<ProtectedRoute><PricingLabPage /></ProtectedRoute>} />
 
           {/* ====== REVENUE INTELLIGENCE & PROBLEM MARKETPLACE ====== */}
           <Route path="/revenue-intelligence" element={<ProtectedRoute><RevenueIntelligencePage /></ProtectedRoute>} />
