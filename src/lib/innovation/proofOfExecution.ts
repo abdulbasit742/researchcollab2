@@ -19,7 +19,7 @@ export async function createProofOfExecution(input: {
 }) {
   const hash = input.verification_hash || generateHash(input);
   const { data, error } = await supabase.from("proof_of_execution")
-    .insert({ ...input, verification_hash: hash }).select().single();
+    .insert([{ ...input, verification_hash: hash }]).select().single();
   if (error) throw error;
   return data;
 }

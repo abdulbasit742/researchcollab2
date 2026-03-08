@@ -19,7 +19,7 @@ export async function runSimulation(input: {
   // Compute results client-side (advisory only)
   const results = simulateMarket(input.parameters);
   const { data, error } = await supabase.from("market_simulations")
-    .insert({ ...input, results, status: "completed" }).select().single();
+    .insert([{ ...input, results, status: "completed" }]).select().single();
   if (error) throw error;
   return data;
 }

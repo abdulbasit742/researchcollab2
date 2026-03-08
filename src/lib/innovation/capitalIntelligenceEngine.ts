@@ -20,7 +20,7 @@ export async function computeAndSaveScore(input: {
   recommendation_type: string;
   reasoning: Record<string, unknown>;
 }) {
-  const { data, error } = await supabase.from("capital_intelligence_scores").insert(input).select().single();
+  const { data, error } = await supabase.from("capital_intelligence_scores").insert([input]).select().single();
   if (error) throw error;
   return data;
 }
