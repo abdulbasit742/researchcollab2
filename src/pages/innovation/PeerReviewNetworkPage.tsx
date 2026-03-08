@@ -32,7 +32,9 @@ export default function PeerReviewNetworkPage() {
     if (!user) return;
     try {
       await createReviewRequest({
-        submitter_id: user.id,
+        requester_id: user.id,
+        target_type: "research_output",
+        target_id: crypto.randomUUID(),
         title: form.title,
         abstract: form.abstract,
         research_domain: form.research_domain,
