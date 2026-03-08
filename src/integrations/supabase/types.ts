@@ -11706,6 +11706,53 @@ export type Database = {
           },
         ]
       }
+      contract_applications: {
+        Row: {
+          applicant_id: string
+          contract_id: string
+          cover_note: string | null
+          created_at: string | null
+          id: string
+          proposed_budget: number | null
+          proposed_timeline_months: number | null
+          reviewed_at: string | null
+          status: string
+          trust_score_snapshot: number | null
+        }
+        Insert: {
+          applicant_id: string
+          contract_id: string
+          cover_note?: string | null
+          created_at?: string | null
+          id?: string
+          proposed_budget?: number | null
+          proposed_timeline_months?: number | null
+          reviewed_at?: string | null
+          status?: string
+          trust_score_snapshot?: number | null
+        }
+        Update: {
+          applicant_id?: string
+          contract_id?: string
+          cover_note?: string | null
+          created_at?: string | null
+          id?: string
+          proposed_budget?: number | null
+          proposed_timeline_months?: number | null
+          reviewed_at?: string | null
+          status?: string
+          trust_score_snapshot?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_applications_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "execution_exchange_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contract_signatures: {
         Row: {
           contract_id: string
@@ -21243,6 +21290,69 @@ export type Database = {
           region?: string | null
           report_type?: string
           summary?: string | null
+        }
+        Relationships: []
+      }
+      execution_exchange_contracts: {
+        Row: {
+          assigned_to: string | null
+          budget_amount: number | null
+          contract_type: string
+          created_at: string | null
+          created_by: string | null
+          currency: string | null
+          description: string | null
+          domain: string | null
+          duration_months: number | null
+          id: string
+          milestone_count: number | null
+          min_trust_score: number | null
+          organization_id: string | null
+          organization_name: string | null
+          required_skills: string[] | null
+          status: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          budget_amount?: number | null
+          contract_type?: string
+          created_at?: string | null
+          created_by?: string | null
+          currency?: string | null
+          description?: string | null
+          domain?: string | null
+          duration_months?: number | null
+          id?: string
+          milestone_count?: number | null
+          min_trust_score?: number | null
+          organization_id?: string | null
+          organization_name?: string | null
+          required_skills?: string[] | null
+          status?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          budget_amount?: number | null
+          contract_type?: string
+          created_at?: string | null
+          created_by?: string | null
+          currency?: string | null
+          description?: string | null
+          domain?: string | null
+          duration_months?: number | null
+          id?: string
+          milestone_count?: number | null
+          min_trust_score?: number | null
+          organization_id?: string | null
+          organization_name?: string | null
+          required_skills?: string[] | null
+          status?: string
+          title?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -38185,6 +38295,48 @@ export type Database = {
         }
         Relationships: []
       }
+      institutional_talent_pools: {
+        Row: {
+          avg_trust_score: number | null
+          created_at: string | null
+          description: string | null
+          domain: string | null
+          id: string
+          institution_id: string | null
+          is_public: boolean | null
+          member_count: number | null
+          pool_name: string
+          pool_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          avg_trust_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          id?: string
+          institution_id?: string | null
+          is_public?: boolean | null
+          member_count?: number | null
+          pool_name: string
+          pool_type?: string
+          updated_at?: string | null
+        }
+        Update: {
+          avg_trust_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          id?: string
+          institution_id?: string | null
+          is_public?: boolean | null
+          member_count?: number | null
+          pool_name?: string
+          pool_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       institutional_talent_snapshots: {
         Row: {
           avg_deal_health: number
@@ -54786,6 +54938,71 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_opportunities: {
+        Row: {
+          budget_range_max: number | null
+          budget_range_min: number | null
+          created_at: string | null
+          deadline: string | null
+          description: string | null
+          domain: string | null
+          id: string
+          is_active: boolean | null
+          location: string | null
+          min_trust_score: number | null
+          opportunity_type: string
+          organization_name: string | null
+          posted_by: string | null
+          required_skills: string[] | null
+          source_contract_id: string | null
+          title: string
+        }
+        Insert: {
+          budget_range_max?: number | null
+          budget_range_min?: number | null
+          created_at?: string | null
+          deadline?: string | null
+          description?: string | null
+          domain?: string | null
+          id?: string
+          is_active?: boolean | null
+          location?: string | null
+          min_trust_score?: number | null
+          opportunity_type: string
+          organization_name?: string | null
+          posted_by?: string | null
+          required_skills?: string[] | null
+          source_contract_id?: string | null
+          title: string
+        }
+        Update: {
+          budget_range_max?: number | null
+          budget_range_min?: number | null
+          created_at?: string | null
+          deadline?: string | null
+          description?: string | null
+          domain?: string | null
+          id?: string
+          is_active?: boolean | null
+          location?: string | null
+          min_trust_score?: number | null
+          opportunity_type?: string
+          organization_name?: string | null
+          posted_by?: string | null
+          required_skills?: string[] | null
+          source_contract_id?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_opportunities_source_contract_id_fkey"
+            columns: ["source_contract_id"]
+            isOneToOne: false
+            referencedRelation: "execution_exchange_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       professional_privacy_settings: {
         Row: {
           allow_profile_indexing: boolean | null
@@ -71255,6 +71472,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      talent_pool_members: {
+        Row: {
+          availability: string | null
+          id: string
+          joined_at: string | null
+          pool_id: string
+          role_in_pool: string | null
+          top_skills: string[] | null
+          trust_score_snapshot: number | null
+          user_id: string
+        }
+        Insert: {
+          availability?: string | null
+          id?: string
+          joined_at?: string | null
+          pool_id: string
+          role_in_pool?: string | null
+          top_skills?: string[] | null
+          trust_score_snapshot?: number | null
+          user_id: string
+        }
+        Update: {
+          availability?: string | null
+          id?: string
+          joined_at?: string | null
+          pool_id?: string
+          role_in_pool?: string | null
+          top_skills?: string[] | null
+          trust_score_snapshot?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "talent_pool_members_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "institutional_talent_pools"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       talent_readiness_snapshots: {
         Row: {
