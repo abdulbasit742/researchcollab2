@@ -2921,6 +2921,54 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_innovation_proposals: {
+        Row: {
+          ai_model_used: string | null
+          context_domain: string | null
+          core_components: Json | null
+          created_at: string | null
+          estimated_impact: string | null
+          id: string
+          innovation_category: string | null
+          proposal_summary: string | null
+          proposal_title: string | null
+          requested_by: string
+          revenue_model: string | null
+          status: string | null
+          user_rating: number | null
+        }
+        Insert: {
+          ai_model_used?: string | null
+          context_domain?: string | null
+          core_components?: Json | null
+          created_at?: string | null
+          estimated_impact?: string | null
+          id?: string
+          innovation_category?: string | null
+          proposal_summary?: string | null
+          proposal_title?: string | null
+          requested_by: string
+          revenue_model?: string | null
+          status?: string | null
+          user_rating?: number | null
+        }
+        Update: {
+          ai_model_used?: string | null
+          context_domain?: string | null
+          core_components?: Json | null
+          created_at?: string | null
+          estimated_impact?: string | null
+          id?: string
+          innovation_category?: string | null
+          proposal_summary?: string | null
+          proposal_title?: string | null
+          requested_by?: string
+          revenue_model?: string | null
+          status?: string | null
+          user_rating?: number | null
+        }
+        Relationships: []
+      }
       ai_kill_switches: {
         Row: {
           activated_at: string | null
@@ -54694,6 +54742,110 @@ export type Database = {
           },
         ]
       }
+      procurement_bids: {
+        Row: {
+          bid_amount: number
+          certifications: string[] | null
+          created_at: string | null
+          delivery_timeline_days: number | null
+          id: string
+          proposal_details: string | null
+          request_id: string
+          status: string | null
+          trust_score_snapshot: number | null
+          vendor_id: string
+          vendor_name: string | null
+        }
+        Insert: {
+          bid_amount: number
+          certifications?: string[] | null
+          created_at?: string | null
+          delivery_timeline_days?: number | null
+          id?: string
+          proposal_details?: string | null
+          request_id: string
+          status?: string | null
+          trust_score_snapshot?: number | null
+          vendor_id: string
+          vendor_name?: string | null
+        }
+        Update: {
+          bid_amount?: number
+          certifications?: string[] | null
+          created_at?: string | null
+          delivery_timeline_days?: number | null
+          id?: string
+          proposal_details?: string | null
+          request_id?: string
+          status?: string | null
+          trust_score_snapshot?: number | null
+          vendor_id?: string
+          vendor_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "procurement_bids_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "procurement_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      procurement_requests: {
+        Row: {
+          bid_count: number | null
+          budget_max: number | null
+          budget_min: number | null
+          category: string | null
+          created_at: string | null
+          deadline: string | null
+          description: string | null
+          id: string
+          institution_id: string | null
+          requester_id: string
+          required_certifications: string[] | null
+          selected_vendor_id: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          bid_count?: number | null
+          budget_max?: number | null
+          budget_min?: number | null
+          category?: string | null
+          created_at?: string | null
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          requester_id: string
+          required_certifications?: string[] | null
+          selected_vendor_id?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          bid_count?: number | null
+          budget_max?: number | null
+          budget_min?: number | null
+          category?: string | null
+          created_at?: string | null
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          requester_id?: string
+          required_certifications?: string[] | null
+          selected_vendor_id?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       production_capacity_metrics: {
         Row: {
           capacity_utilization_pct: number | null
@@ -62244,6 +62396,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      research_syndicates: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          domain: string | null
+          funding_committed: number | null
+          funding_target: number | null
+          governance_model: string | null
+          id: string
+          ip_sharing_policy: string | null
+          lead_coordinator_id: string | null
+          lead_institution_id: string | null
+          member_count: number | null
+          status: string | null
+          syndicate_name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          funding_committed?: number | null
+          funding_target?: number | null
+          governance_model?: string | null
+          id?: string
+          ip_sharing_policy?: string | null
+          lead_coordinator_id?: string | null
+          lead_institution_id?: string | null
+          member_count?: number | null
+          status?: string | null
+          syndicate_name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          funding_committed?: number | null
+          funding_target?: number | null
+          governance_model?: string | null
+          id?: string
+          ip_sharing_policy?: string | null
+          lead_coordinator_id?: string | null
+          lead_institution_id?: string | null
+          member_count?: number | null
+          status?: string | null
+          syndicate_name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       research_synthesis_reports: {
         Row: {
@@ -70832,6 +71035,94 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      syndicate_members: {
+        Row: {
+          funding_commitment: number | null
+          id: string
+          institution_id: string | null
+          joined_at: string | null
+          role: string | null
+          status: string | null
+          syndicate_id: string
+          user_id: string
+          voting_weight: number | null
+        }
+        Insert: {
+          funding_commitment?: number | null
+          id?: string
+          institution_id?: string | null
+          joined_at?: string | null
+          role?: string | null
+          status?: string | null
+          syndicate_id: string
+          user_id: string
+          voting_weight?: number | null
+        }
+        Update: {
+          funding_commitment?: number | null
+          id?: string
+          institution_id?: string | null
+          joined_at?: string | null
+          role?: string | null
+          status?: string | null
+          syndicate_id?: string
+          user_id?: string
+          voting_weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "syndicate_members_syndicate_id_fkey"
+            columns: ["syndicate_id"]
+            isOneToOne: false
+            referencedRelation: "research_syndicates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      syndicate_projects: {
+        Row: {
+          budget_allocated: number | null
+          created_at: string | null
+          description: string | null
+          id: string
+          lead_researcher_id: string | null
+          milestone_count: number | null
+          project_title: string
+          status: string | null
+          syndicate_id: string
+        }
+        Insert: {
+          budget_allocated?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          lead_researcher_id?: string | null
+          milestone_count?: number | null
+          project_title: string
+          status?: string | null
+          syndicate_id: string
+        }
+        Update: {
+          budget_allocated?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          lead_researcher_id?: string | null
+          milestone_count?: number | null
+          project_title?: string
+          status?: string | null
+          syndicate_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "syndicate_projects_syndicate_id_fkey"
+            columns: ["syndicate_id"]
+            isOneToOne: false
+            referencedRelation: "research_syndicates"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       system_alert_thresholds: {
         Row: {
