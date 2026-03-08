@@ -52830,6 +52830,200 @@ export type Database = {
           },
         ]
       }
+      pai_conversations: {
+        Row: {
+          context_id: string | null
+          context_type: string | null
+          created_at: string | null
+          id: string
+          is_archived: boolean | null
+          title: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string | null
+          id?: string
+          is_archived?: boolean | null
+          title?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string | null
+          id?: string
+          is_archived?: boolean | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pai_insights: {
+        Row: {
+          action_suggestion: string | null
+          created_at: string | null
+          description: string | null
+          expires_at: string | null
+          id: string
+          insight_type: string
+          is_read: boolean | null
+          severity: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          action_suggestion?: string | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          insight_type: string
+          is_read?: boolean | null
+          severity?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          action_suggestion?: string | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          insight_type?: string
+          is_read?: boolean | null
+          severity?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pai_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          role: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          role: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pai_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "pai_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pai_recommendations: {
+        Row: {
+          acted_at: string | null
+          created_at: string | null
+          dismissed: boolean | null
+          id: string
+          recommendation_type: string
+          relevance_score: number | null
+          source_entity_id: string | null
+          source_entity_type: string | null
+          summary: string | null
+          title: string
+          user_id: string
+          was_acted_on: boolean | null
+        }
+        Insert: {
+          acted_at?: string | null
+          created_at?: string | null
+          dismissed?: boolean | null
+          id?: string
+          recommendation_type: string
+          relevance_score?: number | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          summary?: string | null
+          title: string
+          user_id: string
+          was_acted_on?: boolean | null
+        }
+        Update: {
+          acted_at?: string | null
+          created_at?: string | null
+          dismissed?: boolean | null
+          id?: string
+          recommendation_type?: string
+          relevance_score?: number | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          summary?: string | null
+          title?: string
+          user_id?: string
+          was_acted_on?: boolean | null
+        }
+        Relationships: []
+      }
+      pai_user_profiles: {
+        Row: {
+          ai_personality_notes: string | null
+          career_goals: string | null
+          collaboration_preferences: Json | null
+          created_at: string | null
+          execution_summary: Json | null
+          id: string
+          last_synced_at: string | null
+          research_domains: string[] | null
+          skill_tags: string[] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          ai_personality_notes?: string | null
+          career_goals?: string | null
+          collaboration_preferences?: Json | null
+          created_at?: string | null
+          execution_summary?: Json | null
+          id?: string
+          last_synced_at?: string | null
+          research_domains?: string[] | null
+          skill_tags?: string[] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          ai_personality_notes?: string | null
+          career_goals?: string | null
+          collaboration_preferences?: Json | null
+          created_at?: string | null
+          execution_summary?: Json | null
+          id?: string
+          last_synced_at?: string | null
+          research_domains?: string[] | null
+          skill_tags?: string[] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       paid_boosts: {
         Row: {
           boost_type: string
