@@ -101,3 +101,6 @@ verify_jwt = false
 
 [functions.gtex-talent-matching]
 verify_jwt = false
+
+[functions.aian-orchestrator]
+verify_jwt = false

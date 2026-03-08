@@ -3842,6 +3842,238 @@ export type Database = {
         }
         Relationships: []
       }
+      aian_agent_runs: {
+        Row: {
+          agent_type: string
+          completed_at: string | null
+          error_message: string | null
+          events_processed: number | null
+          id: string
+          insights_generated: number | null
+          started_at: string
+          status: string
+        }
+        Insert: {
+          agent_type: string
+          completed_at?: string | null
+          error_message?: string | null
+          events_processed?: number | null
+          id?: string
+          insights_generated?: number | null
+          started_at?: string
+          status?: string
+        }
+        Update: {
+          agent_type?: string
+          completed_at?: string | null
+          error_message?: string | null
+          events_processed?: number | null
+          id?: string
+          insights_generated?: number | null
+          started_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      aian_events: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          event_type: string
+          id: string
+          institution_id: string | null
+          payload: Json | null
+          processed: boolean | null
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type: string
+          id?: string
+          institution_id?: string | null
+          payload?: Json | null
+          processed?: boolean | null
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type?: string
+          id?: string
+          institution_id?: string | null
+          payload?: Json | null
+          processed?: boolean | null
+        }
+        Relationships: []
+      }
+      aian_feed_items: {
+        Row: {
+          action_url: string | null
+          created_at: string
+          description: string | null
+          feed_type: string
+          id: string
+          is_acted: boolean | null
+          is_seen: boolean | null
+          relevance_score: number | null
+          source_agent: string | null
+          source_insight_id: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          action_url?: string | null
+          created_at?: string
+          description?: string | null
+          feed_type?: string
+          id?: string
+          is_acted?: boolean | null
+          is_seen?: boolean | null
+          relevance_score?: number | null
+          source_agent?: string | null
+          source_insight_id?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          action_url?: string | null
+          created_at?: string
+          description?: string | null
+          feed_type?: string
+          id?: string
+          is_acted?: boolean | null
+          is_seen?: boolean | null
+          relevance_score?: number | null
+          source_agent?: string | null
+          source_insight_id?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aian_feed_items_source_insight_id_fkey"
+            columns: ["source_insight_id"]
+            isOneToOne: false
+            referencedRelation: "aian_insights"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aian_insights: {
+        Row: {
+          action_suggested: string | null
+          action_url: string | null
+          agent_run_id: string | null
+          agent_type: string
+          confidence_score: number | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          insight_type: string
+          is_dismissed: boolean | null
+          is_read: boolean | null
+          metadata: Json | null
+          priority: string | null
+          summary: string | null
+          target_entity_id: string | null
+          target_entity_type: string | null
+          target_institution_id: string | null
+          target_user_id: string | null
+          title: string
+        }
+        Insert: {
+          action_suggested?: string | null
+          action_url?: string | null
+          agent_run_id?: string | null
+          agent_type: string
+          confidence_score?: number | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          insight_type: string
+          is_dismissed?: boolean | null
+          is_read?: boolean | null
+          metadata?: Json | null
+          priority?: string | null
+          summary?: string | null
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+          target_institution_id?: string | null
+          target_user_id?: string | null
+          title: string
+        }
+        Update: {
+          action_suggested?: string | null
+          action_url?: string | null
+          agent_run_id?: string | null
+          agent_type?: string
+          confidence_score?: number | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          insight_type?: string
+          is_dismissed?: boolean | null
+          is_read?: boolean | null
+          metadata?: Json | null
+          priority?: string | null
+          summary?: string | null
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+          target_institution_id?: string | null
+          target_user_id?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aian_insights_agent_run_id_fkey"
+            columns: ["agent_run_id"]
+            isOneToOne: false
+            referencedRelation: "aian_agent_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aian_knowledge_reports: {
+        Row: {
+          content: string | null
+          created_at: string
+          data_sources: number | null
+          domain: string
+          generated_by: string | null
+          id: string
+          key_findings: Json | null
+          report_type: string
+          title: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          data_sources?: number | null
+          domain: string
+          generated_by?: string | null
+          id?: string
+          key_findings?: Json | null
+          report_type?: string
+          title: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          data_sources?: number | null
+          domain?: string
+          generated_by?: string | null
+          id?: string
+          key_findings?: Json | null
+          report_type?: string
+          title?: string
+        }
+        Relationships: []
+      }
       algorithm_manipulation_flags: {
         Row: {
           dampening_applied: number | null
