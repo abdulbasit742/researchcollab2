@@ -301,6 +301,9 @@ const ProcurementExchangePage = lazy(() => import("./pages/innovation/Procuremen
 const ResearchImpactBondsPage = lazy(() => import("./pages/innovation/ResearchImpactBondsPage"));
 const KnowledgeExchangePage = lazy(() => import("./pages/innovation/KnowledgeExchangePage"));
 const PeerReviewNetworkPage = lazy(() => import("./pages/innovation/PeerReviewNetworkPage"));
+const DatasetRegistryPage = lazy(() => import("./pages/innovation/DatasetRegistryPage"));
+const DatasetDiscoveryPage = lazy(() => import("./pages/innovation/DatasetDiscoveryPage"));
+const DatasetQualityReviewPage = lazy(() => import("./pages/innovation/DatasetQualityReviewPage"));
 
 // Revenue Intelligence & Problem Marketplace
 const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
@@ -622,6 +625,9 @@ const AppContent = () => {
           <Route path="/innovation/impact-bonds" element={<ProtectedRoute><ResearchImpactBondsPage /></ProtectedRoute>} />
           <Route path="/innovation/knowledge-exchange" element={<ProtectedRoute><KnowledgeExchangePage /></ProtectedRoute>} />
           <Route path="/innovation/peer-review" element={<ProtectedRoute><PeerReviewNetworkPage /></ProtectedRoute>} />
+          <Route path="/innovation/dataset-registry" element={<ProtectedRoute><DatasetRegistryPage /></ProtectedRoute>} />
+          <Route path="/innovation/dataset-discovery" element={<ProtectedRoute><DatasetDiscoveryPage /></ProtectedRoute>} />
+          <Route path="/innovation/dataset-quality-review" element={<ProtectedRoute><DatasetQualityReviewPage /></ProtectedRoute>} />
 
           {/* ====== REVENUE INTELLIGENCE & PROBLEM MARKETPLACE ====== */}
           <Route path="/revenue-intelligence" element={<ProtectedRoute><RevenueIntelligencePage /></ProtectedRoute>} />
