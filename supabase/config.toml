@@ -77,3 +77,6 @@ verify_jwt = false
 
 [functions.research-intelligence]
 verify_jwt = false
+
+[functions.omni-agent]
+verify_jwt = false
