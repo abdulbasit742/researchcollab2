@@ -275,6 +275,18 @@ const TrendingPage = lazy(() => import("./pages/TrendingPage"));
 // Execution Workspace
 const ExecutionWorkspacePage = lazy(() => import("./pages/ExecutionWorkspacePage"));
 
+// Innovation Layers
+const GlobalProblemRegistryPage = lazy(() => import("./pages/innovation/GlobalProblemRegistryPage"));
+const ResearchOpportunityExplorerPage = lazy(() => import("./pages/innovation/ResearchOpportunityExplorerPage"));
+const CapitalIntelligencePanelPage = lazy(() => import("./pages/innovation/CapitalIntelligencePanelPage"));
+const GlobalCollaborationMapPage = lazy(() => import("./pages/innovation/GlobalCollaborationMapPage"));
+const ResearchLabsPage = lazy(() => import("./pages/innovation/ResearchLabsPage"));
+const ReputationMarketplacePage = lazy(() => import("./pages/innovation/ReputationMarketplacePage"));
+const PlanetaryTimelinePage = lazy(() => import("./pages/innovation/PlanetaryTimelinePage"));
+const MarketSimulatorPage = lazy(() => import("./pages/innovation/MarketSimulatorPage"));
+const TalentDiscoveryPage = lazy(() => import("./pages/innovation/TalentDiscoveryPage"));
+const ProofOfExecutionPage = lazy(() => import("./pages/innovation/ProofOfExecutionPage"));
+
 // Super Admin
 const SuperAdminOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminOverviewPage"));
 const SuperAdminRiskClustersPage = lazy(() => import("./pages/super-admin/SuperAdminRiskClustersPage"));
