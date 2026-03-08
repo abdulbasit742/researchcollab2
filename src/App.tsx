@@ -319,6 +319,9 @@ const CrossInstitutionTeamsPage = lazy(() => import("./pages/network/CrossInstit
 const EcosystemDashboardPage = lazy(() => import("./pages/ecosystem/EcosystemDashboardPage"));
 const OperatorCommandCenterPage = lazy(() => import("./pages/ecosystem/OperatorCommandCenterPage"));
 const EcosystemRevenuePage = lazy(() => import("./pages/ecosystem/EcosystemRevenuePage"));
+const RevenueOptimizerPage = lazy(() => import("./pages/revenue/RevenueOptimizerPage"));
+const SponsorDiscoveryPage = lazy(() => import("./pages/revenue/SponsorDiscoveryPage"));
+const PricingLabPage = lazy(() => import("./pages/revenue/PricingLabPage"));
 
 // Revenue Intelligence & Problem Marketplace
 const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
