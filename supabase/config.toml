@@ -119,3 +119,6 @@ verify_jwt = false
 
 [functions.sim-advisor]
 verify_jwt = false
+
+[functions.pai-assistant]
+verify_jwt = false

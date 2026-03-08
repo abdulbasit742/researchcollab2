@@ -363,6 +363,10 @@ const SponsorIntakePage = lazy(() => import("./pages/omnichannel/SponsorIntakePa
 const InstitutionOnboardingAgentPage = lazy(() => import("./pages/omnichannel/InstitutionOnboardingAgentPage"));
 const OpportunityMatchingPage = lazy(() => import("./pages/omnichannel/OpportunityMatchingPage"));
 
+// Personal AI Assistant
+const AIAssistantPage = lazy(() => import("./pages/ai-assistant/AIAssistantPage"));
+const AIInsightsPage = lazy(() => import("./pages/ai-assistant/AIInsightsPage"));
+
 // Scientific Infrastructure Marketplace
 const ScientificMarketplacePage = lazy(() => import("./pages/infrastructure/ScientificMarketplacePage"));
 const BookingManagementPage = lazy(() => import("./pages/infrastructure/BookingManagementPage"));
@@ -683,6 +687,10 @@ const AppContent = () => {
           <Route path="/referral/dashboard" element={<ProtectedRoute><ReferralDashboardPage /></ProtectedRoute>} />
           <Route path="/referral/growth-analytics" element={<ProtectedRoute><GrowthAnalyticsPage /></ProtectedRoute>} />
           <Route path="/referral/institution-program" element={<ProtectedRoute><InstitutionReferralPage /></ProtectedRoute>} />
+
+          {/* ====== PERSONAL AI ASSISTANT ====== */}
+          <Route path="/assistant" element={<ProtectedRoute><AIAssistantPage /></ProtectedRoute>} />
+          <Route path="/assistant/insights" element={<ProtectedRoute><AIInsightsPage /></ProtectedRoute>} />
 
           {/* ====== SCIENTIFIC INFRASTRUCTURE MARKETPLACE ====== */}
           <Route path="/infrastructure/marketplace" element={<ProtectedRoute><ScientificMarketplacePage /></ProtectedRoute>} />
