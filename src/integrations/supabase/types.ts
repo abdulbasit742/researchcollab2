@@ -48700,6 +48700,63 @@ export type Database = {
         }
         Relationships: []
       }
+      omni_institution_onboarding_sessions: {
+        Row: {
+          ai_summary: string | null
+          channel_type: string | null
+          completion_pct: number | null
+          contact_id: string | null
+          conversation_id: string | null
+          country: string | null
+          created_at: string | null
+          departments: Json | null
+          faculty_contacts: Json | null
+          id: string
+          institution_name: string | null
+          institution_type: string | null
+          labs: Json | null
+          linked_organization_id: string | null
+          onboarding_step: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          ai_summary?: string | null
+          channel_type?: string | null
+          completion_pct?: number | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          country?: string | null
+          created_at?: string | null
+          departments?: Json | null
+          faculty_contacts?: Json | null
+          id?: string
+          institution_name?: string | null
+          institution_type?: string | null
+          labs?: Json | null
+          linked_organization_id?: string | null
+          onboarding_step?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ai_summary?: string | null
+          channel_type?: string | null
+          completion_pct?: number | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          country?: string | null
+          created_at?: string | null
+          departments?: Json | null
+          faculty_contacts?: Json | null
+          id?: string
+          institution_name?: string | null
+          institution_type?: string | null
+          labs?: Json | null
+          linked_organization_id?: string | null
+          onboarding_step?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       omni_knowledge_base: {
         Row: {
           category: string
@@ -49135,6 +49192,54 @@ export type Database = {
           },
         ]
       }
+      omni_opportunity_matches: {
+        Row: {
+          channel_type: string | null
+          clicked: boolean | null
+          contact_id: string | null
+          converted: boolean | null
+          created_at: string | null
+          id: string
+          match_reasons: Json | null
+          match_score: number | null
+          notified: boolean | null
+          notified_at: string | null
+          opportunity_id: string | null
+          opportunity_title: string | null
+          opportunity_type: string | null
+        }
+        Insert: {
+          channel_type?: string | null
+          clicked?: boolean | null
+          contact_id?: string | null
+          converted?: boolean | null
+          created_at?: string | null
+          id?: string
+          match_reasons?: Json | null
+          match_score?: number | null
+          notified?: boolean | null
+          notified_at?: string | null
+          opportunity_id?: string | null
+          opportunity_title?: string | null
+          opportunity_type?: string | null
+        }
+        Update: {
+          channel_type?: string | null
+          clicked?: boolean | null
+          contact_id?: string | null
+          converted?: boolean | null
+          created_at?: string | null
+          id?: string
+          match_reasons?: Json | null
+          match_score?: number | null
+          notified?: boolean | null
+          notified_at?: string | null
+          opportunity_id?: string | null
+          opportunity_title?: string | null
+          opportunity_type?: string | null
+        }
+        Relationships: []
+      }
       omni_policy_flags: {
         Row: {
           auto_action: string | null
@@ -49383,6 +49488,75 @@ export type Database = {
           priority?: string | null
           resolution_hours?: number | null
           target_name?: string
+        }
+        Relationships: []
+      }
+      omni_sponsor_intake_sessions: {
+        Row: {
+          ai_confidence: number | null
+          budget_range: string | null
+          channel_type: string | null
+          clarity_score: number | null
+          contact_id: string | null
+          conversation_id: string | null
+          created_at: string | null
+          domain_category: string | null
+          expected_outcomes: string | null
+          fundability_score: number | null
+          gpe_problem_id: string | null
+          id: string
+          intake_status: string | null
+          operator_notes: string | null
+          problem_title: string | null
+          raw_input: string
+          required_expertise: string[] | null
+          structured_problem: Json | null
+          timeline: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          ai_confidence?: number | null
+          budget_range?: string | null
+          channel_type?: string | null
+          clarity_score?: number | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          domain_category?: string | null
+          expected_outcomes?: string | null
+          fundability_score?: number | null
+          gpe_problem_id?: string | null
+          id?: string
+          intake_status?: string | null
+          operator_notes?: string | null
+          problem_title?: string | null
+          raw_input: string
+          required_expertise?: string[] | null
+          structured_problem?: Json | null
+          timeline?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ai_confidence?: number | null
+          budget_range?: string | null
+          channel_type?: string | null
+          clarity_score?: number | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          domain_category?: string | null
+          expected_outcomes?: string | null
+          fundability_score?: number | null
+          gpe_problem_id?: string | null
+          id?: string
+          intake_status?: string | null
+          operator_notes?: string | null
+          problem_title?: string | null
+          raw_input?: string
+          required_expertise?: string[] | null
+          structured_problem?: Json | null
+          timeline?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
