@@ -286,6 +286,12 @@ const PlanetaryTimelinePage = lazy(() => import("./pages/innovation/PlanetaryTim
 const MarketSimulatorPage = lazy(() => import("./pages/innovation/MarketSimulatorPage"));
 const TalentDiscoveryPage = lazy(() => import("./pages/innovation/TalentDiscoveryPage"));
 const ProofOfExecutionPage = lazy(() => import("./pages/innovation/ProofOfExecutionPage"));
+const DatasetMarketplacePage = lazy(() => import("./pages/innovation/DatasetMarketplacePage"));
+const GlobalExecutionIndexPage = lazy(() => import("./pages/innovation/GlobalExecutionIndexPage"));
+const ExecutionEconomyAnalyticsPage = lazy(() => import("./pages/innovation/ExecutionEconomyAnalyticsPage"));
+const TalentGraphPage = lazy(() => import("./pages/innovation/TalentGraphPage"));
+const InnovationLicensePage = lazy(() => import("./pages/innovation/InnovationLicensePage"));
+const ResearchCapitalMarketPage = lazy(() => import("./pages/innovation/ResearchCapitalMarketPage"));
 
 // Super Admin
 const SuperAdminOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminOverviewPage"));
@@ -560,6 +566,12 @@ const AppContent = () => {
           <Route path="/innovation/simulator" element={<ProtectedRoute><MarketSimulatorPage /></ProtectedRoute>} />
           <Route path="/innovation/talent" element={<ProtectedRoute><TalentDiscoveryPage /></ProtectedRoute>} />
           <Route path="/innovation/proof-of-execution" element={<ProtectedRoute><ProofOfExecutionPage /></ProtectedRoute>} />
+          <Route path="/innovation/datasets" element={<ProtectedRoute><DatasetMarketplacePage /></ProtectedRoute>} />
+          <Route path="/innovation/execution-index" element={<ProtectedRoute><GlobalExecutionIndexPage /></ProtectedRoute>} />
+          <Route path="/innovation/economy-analytics" element={<ProtectedRoute><ExecutionEconomyAnalyticsPage /></ProtectedRoute>} />
+          <Route path="/innovation/talent-graph" element={<ProtectedRoute><TalentGraphPage /></ProtectedRoute>} />
+          <Route path="/innovation/licensing" element={<ProtectedRoute><InnovationLicensePage /></ProtectedRoute>} />
+          <Route path="/innovation/capital-market" element={<ProtectedRoute><ResearchCapitalMarketPage /></ProtectedRoute>} />
 
           {/* ====== SUPER ADMIN ====== */}
           <Route path="/super-admin/overview" element={<ProtectedRoute><SuperAdminOverviewPage /></ProtectedRoute>} />
