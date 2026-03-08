@@ -95,3 +95,6 @@ verify_jwt = false
 
 [functions.dke-ai-discovery]
 verify_jwt = false
+
+[functions.venture-signal-engine]
+verify_jwt = false

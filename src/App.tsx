@@ -304,6 +304,9 @@ const PeerReviewNetworkPage = lazy(() => import("./pages/innovation/PeerReviewNe
 const DatasetRegistryPage = lazy(() => import("./pages/innovation/DatasetRegistryPage"));
 const DatasetDiscoveryPage = lazy(() => import("./pages/innovation/DatasetDiscoveryPage"));
 const DatasetQualityReviewPage = lazy(() => import("./pages/innovation/DatasetQualityReviewPage"));
+const VentureFactoryPage = lazy(() => import("./pages/innovation/VentureFactoryPage"));
+const InvestorDiscoveryPage = lazy(() => import("./pages/innovation/InvestorDiscoveryPage"));
+const IncubationWorkspacePage = lazy(() => import("./pages/innovation/IncubationWorkspacePage"));
 
 // Revenue Intelligence & Problem Marketplace
 const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
@@ -628,6 +631,9 @@ const AppContent = () => {
           <Route path="/innovation/dataset-registry" element={<ProtectedRoute><DatasetRegistryPage /></ProtectedRoute>} />
           <Route path="/innovation/dataset-discovery" element={<ProtectedRoute><DatasetDiscoveryPage /></ProtectedRoute>} />
           <Route path="/innovation/dataset-quality-review" element={<ProtectedRoute><DatasetQualityReviewPage /></ProtectedRoute>} />
+          <Route path="/innovation/venture-factory" element={<ProtectedRoute><VentureFactoryPage /></ProtectedRoute>} />
+          <Route path="/innovation/investor-discovery" element={<ProtectedRoute><InvestorDiscoveryPage /></ProtectedRoute>} />
+          <Route path="/innovation/incubation-workspace" element={<ProtectedRoute><IncubationWorkspacePage /></ProtectedRoute>} />
 
           {/* ====== REVENUE INTELLIGENCE & PROBLEM MARKETPLACE ====== */}
           <Route path="/revenue-intelligence" element={<ProtectedRoute><RevenueIntelligencePage /></ProtectedRoute>} />
