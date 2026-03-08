@@ -313,6 +313,7 @@ const OrgDashboardPage = lazy(() => import("./pages/innovation/OrgDashboardPage"
 const AIInsightsDashboardPage = lazy(() => import("./pages/intelligence/AIInsightsDashboardPage"));
 const PersonalizedFeedPage = lazy(() => import("./pages/intelligence/PersonalizedFeedPage"));
 const OperatorAssistantPage = lazy(() => import("./pages/intelligence/OperatorAssistantPage"));
+const AgentControlCenterPage = lazy(() => import("./pages/intelligence/AgentControlCenterPage"));
 const InstitutionNetworkPage = lazy(() => import("./pages/network/InstitutionNetworkPage"));
 const ChallengePortalPage = lazy(() => import("./pages/network/ChallengePortalPage"));
 const CrossInstitutionTeamsPage = lazy(() => import("./pages/network/CrossInstitutionTeamsPage"));
@@ -672,6 +673,7 @@ const AppContent = () => {
           <Route path="/intelligence/ai-insights" element={<ProtectedRoute><AIInsightsDashboardPage /></ProtectedRoute>} />
           <Route path="/intelligence/personalized-feed" element={<ProtectedRoute><PersonalizedFeedPage /></ProtectedRoute>} />
           <Route path="/intelligence/operator-assistant" element={<ProtectedRoute><OperatorAssistantPage /></ProtectedRoute>} />
+          <Route path="/intelligence/agent-control" element={<ProtectedRoute><AgentControlCenterPage /></ProtectedRoute>} />
           <Route path="/network/institution-network" element={<ProtectedRoute><InstitutionNetworkPage /></ProtectedRoute>} />
           <Route path="/network/challenge-portal" element={<ProtectedRoute><ChallengePortalPage /></ProtectedRoute>} />
           <Route path="/network/cross-institution-teams" element={<ProtectedRoute><CrossInstitutionTeamsPage /></ProtectedRoute>} />
