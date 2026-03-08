@@ -29792,6 +29792,331 @@ export type Database = {
         }
         Relationships: []
       }
+      gin_challenge_applications: {
+        Row: {
+          applicant_id: string
+          challenge_id: string
+          created_at: string
+          id: string
+          institution_id: string | null
+          proposal_summary: string | null
+          review_score: number | null
+          status: string
+          team_members: Json | null
+          team_name: string | null
+        }
+        Insert: {
+          applicant_id: string
+          challenge_id: string
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          proposal_summary?: string | null
+          review_score?: number | null
+          status?: string
+          team_members?: Json | null
+          team_name?: string | null
+        }
+        Update: {
+          applicant_id?: string
+          challenge_id?: string
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          proposal_summary?: string | null
+          review_score?: number | null
+          status?: string
+          team_members?: Json | null
+          team_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gin_challenge_applications_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "gin_challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gin_challenge_applications_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "gin_institution_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gin_challenges: {
+        Row: {
+          application_deadline: string | null
+          challenge_type: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          domains: string[] | null
+          funding_amount: number | null
+          id: string
+          institution_id: string
+          max_teams: number | null
+          status: string
+          submissions_count: number | null
+          title: string
+        }
+        Insert: {
+          application_deadline?: string | null
+          challenge_type?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          domains?: string[] | null
+          funding_amount?: number | null
+          id?: string
+          institution_id: string
+          max_teams?: number | null
+          status?: string
+          submissions_count?: number | null
+          title: string
+        }
+        Update: {
+          application_deadline?: string | null
+          challenge_type?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          domains?: string[] | null
+          funding_amount?: number | null
+          id?: string
+          institution_id?: string
+          max_teams?: number | null
+          status?: string
+          submissions_count?: number | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gin_challenges_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "gin_institution_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gin_collaborations: {
+        Row: {
+          collaboration_type: string
+          created_at: string
+          description: string | null
+          id: string
+          institution_a_id: string
+          institution_b_id: string
+          is_active: boolean | null
+          project_count: number | null
+          shared_domains: string[] | null
+          strength_score: number | null
+          title: string | null
+        }
+        Insert: {
+          collaboration_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_a_id: string
+          institution_b_id: string
+          is_active?: boolean | null
+          project_count?: number | null
+          shared_domains?: string[] | null
+          strength_score?: number | null
+          title?: string | null
+        }
+        Update: {
+          collaboration_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          institution_a_id?: string
+          institution_b_id?: string
+          is_active?: boolean | null
+          project_count?: number | null
+          shared_domains?: string[] | null
+          strength_score?: number | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gin_collaborations_institution_a_id_fkey"
+            columns: ["institution_a_id"]
+            isOneToOne: false
+            referencedRelation: "gin_institution_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gin_collaborations_institution_b_id_fkey"
+            columns: ["institution_b_id"]
+            isOneToOne: false
+            referencedRelation: "gin_institution_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gin_cross_team_members: {
+        Row: {
+          id: string
+          institution_id: string | null
+          joined_at: string
+          role: string | null
+          team_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          institution_id?: string | null
+          joined_at?: string
+          role?: string | null
+          team_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          institution_id?: string | null
+          joined_at?: string
+          role?: string | null
+          team_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gin_cross_team_members_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "gin_institution_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gin_cross_team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "gin_cross_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gin_cross_teams: {
+        Row: {
+          created_at: string
+          description: string | null
+          domains: string[] | null
+          id: string
+          lead_institution_id: string | null
+          lead_user_id: string
+          status: string
+          team_name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          domains?: string[] | null
+          id?: string
+          lead_institution_id?: string | null
+          lead_user_id: string
+          status?: string
+          team_name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          domains?: string[] | null
+          id?: string
+          lead_institution_id?: string | null
+          lead_user_id?: string
+          status?: string
+          team_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gin_cross_teams_lead_institution_id_fkey"
+            columns: ["lead_institution_id"]
+            isOneToOne: false
+            referencedRelation: "gin_institution_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gin_institution_nodes: {
+        Row: {
+          country: string
+          created_at: string
+          departments: Json | null
+          domains_of_expertise: string[] | null
+          id: string
+          institution_name: string
+          institution_type: string
+          labs: Json | null
+          logo_url: string | null
+          node_status: string
+          organization_id: string | null
+          project_success_rate: number | null
+          region: string | null
+          registered_by: string | null
+          reputation_score: number | null
+          total_datasets: number | null
+          total_funding_received: number | null
+          total_projects: number | null
+          total_ventures: number | null
+          updated_at: string
+          verification_status: string
+          website_url: string | null
+        }
+        Insert: {
+          country: string
+          created_at?: string
+          departments?: Json | null
+          domains_of_expertise?: string[] | null
+          id?: string
+          institution_name: string
+          institution_type?: string
+          labs?: Json | null
+          logo_url?: string | null
+          node_status?: string
+          organization_id?: string | null
+          project_success_rate?: number | null
+          region?: string | null
+          registered_by?: string | null
+          reputation_score?: number | null
+          total_datasets?: number | null
+          total_funding_received?: number | null
+          total_projects?: number | null
+          total_ventures?: number | null
+          updated_at?: string
+          verification_status?: string
+          website_url?: string | null
+        }
+        Update: {
+          country?: string
+          created_at?: string
+          departments?: Json | null
+          domains_of_expertise?: string[] | null
+          id?: string
+          institution_name?: string
+          institution_type?: string
+          labs?: Json | null
+          logo_url?: string | null
+          node_status?: string
+          organization_id?: string | null
+          project_success_rate?: number | null
+          region?: string | null
+          registered_by?: string | null
+          reputation_score?: number | null
+          total_datasets?: number | null
+          total_funding_received?: number | null
+          total_projects?: number | null
+          total_ventures?: number | null
+          updated_at?: string
+          verification_status?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       global_equity_weights: {
         Row: {
           citation_normalization_factor: number | null
