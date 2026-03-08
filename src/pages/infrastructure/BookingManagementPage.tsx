@@ -35,7 +35,7 @@ export default function BookingManagementPage() {
   };
 
   return (
-    <DashboardLayout>
+    <MainLayout>
       <Helmet><title>Booking Management | RCollab</title></Helmet>
       <div className="space-y-6">
         <div>
@@ -85,6 +85,6 @@ export default function BookingManagementPage() {
           ))}
         </Tabs>
       </div>
-    </DashboardLayout>
+    </MainLayout>
   );
 }

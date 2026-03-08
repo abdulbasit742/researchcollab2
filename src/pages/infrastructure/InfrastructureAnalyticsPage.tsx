@@ -26,7 +26,7 @@ export default function InfrastructureAnalyticsPage() {
   });
 
   return (
-    <DashboardLayout>
+    <MainLayout>
       <Helmet><title>Infrastructure Analytics | RCollab</title></Helmet>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -101,6 +101,6 @@ export default function InfrastructureAnalyticsPage() {
           </Card>
         )}
       </div>
-    </DashboardLayout>
+    </MainLayout>
   );
 }

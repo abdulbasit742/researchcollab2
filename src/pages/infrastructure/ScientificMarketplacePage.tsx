@@ -42,7 +42,7 @@ export default function ScientificMarketplacePage() {
   const categoryIcons: Record<string, any> = { "Lab Equipment": Beaker, "Compute Resources": Cpu, "Research Facilities": Building2, "Specialized Instruments": Microscope };
 
   return (
-    <DashboardLayout>
+    <MainLayout>
       <Helmet><title>Scientific Infrastructure Marketplace | RCollab</title></Helmet>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -136,6 +136,6 @@ export default function ScientificMarketplacePage() {
           </TabsContent>
         </Tabs>
       </div>
-    </DashboardLayout>
+    </MainLayout>
   );
 }
