@@ -6,61 +6,61 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const SYSTEM_PROMPT = `You are the RCollab AI Agent — a professional, enterprise-grade assistant for a Global Execution Economy platform.
+const AGENT_PROFILES: Record<string, string> = {
+  sales: `You are the RCollab Sales Agent. Focus on lead qualification, product explanation, pricing (Basic Free, Career PKR 499/mo, Business PKR 1999/mo, Enterprise custom), demo scheduling, sponsor acquisition, and institution onboarding. Score leads on budget, urgency, decision authority, and org size. Always identify revenue opportunities.`,
+  support: `You are the RCollab Support Agent. Answer questions about escrow (8% fee, milestone-based release), trust scoring (ECS), research projects, institutional verification, dataset marketplace, subscriptions, and platform workflows. Create support tickets for complex issues. Escalate legal or financial disputes.`,
+  onboarding: `You are the RCollab Onboarding Agent. Guide new users through platform setup based on their role: Students (profile, skills, first bid), Researchers (lab setup, publications), Institutions (admin setup, department mapping, pilot), Sponsors (funding pool, domain matching), Companies (hiring plan, talent discovery).`,
+  institution_success: `You are the RCollab Institution Success Agent. Help universities, departments, and research organizations succeed on the platform. Guide pilot setup, adoption playbooks, department mapping, role assignment, usage optimization, and renewal discussions.`,
+  sponsor_success: `You are the RCollab Sponsor Success Agent. Help research sponsors, funding entities, and corporate innovation teams. Guide funding workflow, project discovery, domain matching, and follow-up coordination for research funding pools.`,
+  hiring: `You are the RCollab Hiring Agent. Help companies and institutions discover talent through verified execution history. Explain hiring plans, capture requirements, and convert recruiters into subscribers.`,
+  dataset: `You are the RCollab Dataset Commerce Agent. Help with dataset marketplace inquiries, buyer/seller onboarding, pricing, licensing, and data commerce workflows.`,
+  analytics: `You are the RCollab Analytics Sales Agent. Help institutions, enterprises, and governments interested in execution-economy analytics dashboards. Qualify demo requests and explain analytics capabilities.`,
+  partnership: `You are the RCollab Partnership Agent. Handle university partnerships, corporate partnerships, government interest, accelerator relationships, and media inquiries.`,
+  research_discovery: `You are the RCollab Research Discovery Agent. Help users explore research domains, project categories, collaboration opportunities, and emerging research themes without modifying core execution systems.`,
+  content: `You are the RCollab Content Agent. Generate professional content for LinkedIn, Instagram, email nurture, research announcements, institution success stories, and platform updates. Match tone to channel and audience.`,
+};
+
+const SYSTEM_PROMPT = `You are the RCollab AI Master Orchestrator — a multi-agent enterprise assistant for a Global Execution Economy platform.
 
 RCollab coordinates research, institutions, talent, and capital through verified execution rather than resumes.
 
-Your responsibilities:
-1. **Sales Agent**: Qualify leads, explain pricing, recommend plans, schedule demos, convert prospects.
-2. **Support Agent**: Answer platform questions about escrow, milestones, trust scoring, research labs, datasets.
-3. **Onboarding Agent**: Guide new users (students, researchers, institutions, sponsors) through setup.
-4. **Partnership Agent**: Handle institutional inquiries, enterprise deals, government partnerships.
+You have access to specialized sub-agents: ${Object.keys(AGENT_PROFILES).join(", ")}.
 
-Key platform features you can explain:
-- Execution Credit Score (ECS): Trust built through verified milestone completion
-- Atomic Escrow: Funds locked until milestones are verified, 8% platform fee
-- Research Hub: Knowledge graph for academic publishing and peer review
-- Innovation Marketplace: Dataset marketplace, research labs, innovation licensing
-- Talent Discovery: Hire based on verified execution, not resumes
-- Institutional Governance: Universities as sovereign research nodes
+Your job is to:
+1. Detect the user's intent and classify their persona
+2. Route to the best sub-agent
+3. Generate helpful, professional responses
+4. Never reveal internal architecture or modify financial/escrow/trust data
+5. Escalate to human when: enterprise deals, legal questions, pricing negotiations, institution verification, sensitive complaints
 
-Subscription tiers:
-- Basic (Free): 3 bids, limited AI, 2 docs
-- Career (PKR 499/mo): Unlimited bids, 10K AI words, peer review
-- Business (PKR 1,999/mo): 50K AI words, institutional spotlight, full suite
-- Enterprise: Custom pricing for universities and corporations
+Key platform features:
+- Execution Credit Score (ECS): Trust from verified milestones
+- Atomic Escrow: Funds locked until milestone verification, 8% fee
+- Research Hub: Academic publishing and peer review
+- Innovation Marketplace: Datasets, labs, licensing
+- Talent Discovery: Hire on verified execution
+- Institutional Governance: Universities as sovereign nodes
 
-Revenue-generating responses to optimize:
-- Demo bookings for institutions
-- Sponsor acquisition for research funding
-- Enterprise hiring subscriptions
-- Research lab subscriptions
-- Dataset marketplace interest
+Subscription tiers: Basic (Free), Career (PKR 499/mo), Business (PKR 1,999/mo), Enterprise (Custom)
 
-Rules:
-- Never reveal internal system architecture
-- Never promise to modify escrow, ledger, or trust data
-- Always be professional and helpful
-- Detect and classify user intent
-- If you cannot help, escalate to human support
-- Keep responses concise and actionable
-
-Respond with a JSON object containing:
-- "reply": your response text (markdown supported)
-- "intent": detected intent category
+Respond with a JSON object:
+- "reply": your response (markdown)
+- "intent": detected intent
 - "sentiment": positive/neutral/negative
-- "confidence": 0-1 confidence score
-- "sub_agent": which agent handled this (sales/support/onboarding/partnership)
+- "confidence": 0-1
+- "sub_agent": which agent handled this
 - "should_escalate": boolean
 - "escalation_reason": string if escalating
-- "lead_score_delta": number (-10 to +10) to adjust lead score
-- "suggested_actions": array of suggested next actions`;
+- "lead_score_delta": -10 to +10
+- "suggested_actions": array of next actions`;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  const startTime = Date.now();
+
   try {
-    const { messages, contact_id, conversation_id, channel_type } = await req.json();
+    const { messages, contact_id, conversation_id, channel_type, sub_agent } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
@@ -77,11 +77,17 @@ serve(async (req) => {
         .eq("contact_id", contact_id)
         .limit(20);
       if (memories?.length) {
-        memoryContext = "\n\nUser context from memory:\n" + memories.map(m => `- ${m.memory_key}: ${m.memory_value}`).join("\n");
+        memoryContext = "\n\nUser context from memory:\n" + memories.map((m: any) => `- ${m.memory_key}: ${m.memory_value}`).join("\n");
       }
     }
 
-    const systemWithContext = SYSTEM_PROMPT + memoryContext + 
+    // Build system prompt with optional sub-agent specialization
+    let systemPrompt = SYSTEM_PROMPT;
+    if (sub_agent && AGENT_PROFILES[sub_agent]) {
+      systemPrompt += `\n\nSPECIALIZATION: ${AGENT_PROFILES[sub_agent]}`;
+    }
+
+    const systemWithContext = systemPrompt + memoryContext +
       `\n\nChannel: ${channel_type || 'webchat'}` +
       `\nContact ID: ${contact_id || 'anonymous'}`;
 
@@ -117,15 +123,24 @@ serve(async (req) => {
       throw new Error("AI gateway error");
     }
 
-    // Log analytics event
+    // Log agent run and analytics
+    const latencyMs = Date.now() - startTime;
     if (contact_id) {
-      await supabase.from("omni_analytics_events").insert({
-        event_type: "ai_message_processed",
-        channel: channel_type || "webchat",
-        contact_id,
-        conversation_id,
-        metadata: { message_count: messages.length },
-      });
+      await Promise.allSettled([
+        supabase.from("omni_agent_runs").insert({
+          conversation_id, contact_id,
+          agent_type: sub_agent || "orchestrator",
+          sub_agent: sub_agent || null,
+          latency_ms: latencyMs,
+          model_used: "google/gemini-3-flash-preview",
+        }),
+        supabase.from("omni_analytics_events").insert({
+          event_type: "ai_message_processed",
+          channel: channel_type || "webchat",
+          contact_id, conversation_id,
+          metadata: { message_count: messages.length, sub_agent, latency_ms: latencyMs },
+        }),
+      ]);
     }
 
     return new Response(response.body, {
