@@ -293,6 +293,10 @@ const TalentGraphPage = lazy(() => import("./pages/innovation/TalentGraphPage"))
 const InnovationLicensePage = lazy(() => import("./pages/innovation/InnovationLicensePage"));
 const ResearchCapitalMarketPage = lazy(() => import("./pages/innovation/ResearchCapitalMarketPage"));
 
+// Revenue Intelligence & Problem Marketplace
+const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
+const ProblemMarketplacePage = lazy(() => import("./pages/ProblemMarketplacePage"));
+
 // Omnichannel AI Agent Layer
 const OmniCommandCenterPage = lazy(() => import("./pages/omnichannel/OmniCommandCenterPage"));
 const OmniCRMPage = lazy(() => import("./pages/omnichannel/OmniCRMPage"));
