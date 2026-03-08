@@ -19,5 +19,9 @@ Disallow: /messages/
 Disallow: /settings/
 Disallow: /onboarding
 Disallow: /profile/settings
+Disallow: /intelligence/
+Disallow: /ecosystem/
+Disallow: /omni/
+Disallow: /notification-settings
 
 Sitemap: https://academic-forge-flow.lovable.app/sitemap.xml

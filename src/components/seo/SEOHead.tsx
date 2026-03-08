@@ -9,11 +9,12 @@ interface SEOHeadProps {
   noIndex?: boolean;
   jsonLd?: Record<string, unknown>;
   keywords?: string;
+  breadcrumbs?: { name: string; url: string }[];
 }
 
 const SITE_NAME = "RCollab";
 const DEFAULT_DESCRIPTION =
-  "Connect with researchers worldwide, access premium AI tools, earn money with your academic skills. The all-in-one platform for research collaboration and academic success.";
+  "RCollab is the escrow-backed execution platform for FYP funding, milestone verification, AI research matching, and institutional collaboration. Create → Fund → Execute → Hire.";
 const BASE_URL = "https://academic-forge-flow.lovable.app";
 const DEFAULT_OG_IMAGE = `${BASE_URL}/og-image.png`;
 
@@ -26,9 +27,23 @@ export function SEOHead({
   noIndex = false,
   jsonLd,
   keywords,
+  breadcrumbs,
 }: SEOHeadProps) {
-  const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} - Research Collaboration, AI Tools & Earning Platform`;
+  const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} — Escrow-Backed Research Execution & FYP Funding`;
   const canonicalUrl = canonicalPath ? `${BASE_URL}${canonicalPath}` : undefined;
+
+  const breadcrumbJsonLd = breadcrumbs?.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: breadcrumbs.map((b, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: b.name,
+          item: `${BASE_URL}${b.url}`,
+        })),
+      }
+    : null;
 
   return (
     <Helmet>
@@ -55,6 +70,11 @@ export function SEOHead({
       {/* JSON-LD Structured Data */}
       {jsonLd && (
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      )}
+
+      {/* Breadcrumb JSON-LD */}
+      {breadcrumbJsonLd && (
+        <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
       )}
     </Helmet>
   );
