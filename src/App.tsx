@@ -594,6 +594,10 @@ const AppContent = () => {
           <Route path="/innovation/licensing" element={<ProtectedRoute><InnovationLicensePage /></ProtectedRoute>} />
           <Route path="/innovation/capital-market" element={<ProtectedRoute><ResearchCapitalMarketPage /></ProtectedRoute>} />
 
+          {/* ====== REVENUE INTELLIGENCE & PROBLEM MARKETPLACE ====== */}
+          <Route path="/revenue-intelligence" element={<ProtectedRoute><RevenueIntelligencePage /></ProtectedRoute>} />
+          <Route path="/problem-marketplace" element={<ProtectedRoute><ProblemMarketplacePage /></ProtectedRoute>} />
+
           {/* ====== OMNICHANNEL AI AGENT LAYER ====== */}
           <Route path="/omni/command-center" element={<ProtectedRoute><OmniCommandCenterPage /></ProtectedRoute>} />
           <Route path="/omni/crm" element={<ProtectedRoute><OmniCRMPage /></ProtectedRoute>} />
