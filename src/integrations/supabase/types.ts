@@ -7632,6 +7632,65 @@ export type Database = {
         }
         Relationships: []
       }
+      challenge_proposals: {
+        Row: {
+          approach: string | null
+          challenge_id: string
+          created_at: string | null
+          id: string
+          proposal_summary: string | null
+          proposed_budget: number | null
+          proposed_timeline_months: number | null
+          proposer_id: string
+          reviewed_at: string | null
+          reviewer_notes: string | null
+          status: string | null
+          team_members: string[] | null
+          team_name: string | null
+          trust_score_snapshot: number | null
+        }
+        Insert: {
+          approach?: string | null
+          challenge_id: string
+          created_at?: string | null
+          id?: string
+          proposal_summary?: string | null
+          proposed_budget?: number | null
+          proposed_timeline_months?: number | null
+          proposer_id: string
+          reviewed_at?: string | null
+          reviewer_notes?: string | null
+          status?: string | null
+          team_members?: string[] | null
+          team_name?: string | null
+          trust_score_snapshot?: number | null
+        }
+        Update: {
+          approach?: string | null
+          challenge_id?: string
+          created_at?: string | null
+          id?: string
+          proposal_summary?: string | null
+          proposed_budget?: number | null
+          proposed_timeline_months?: number | null
+          proposer_id?: string
+          reviewed_at?: string | null
+          reviewer_notes?: string | null
+          status?: string | null
+          team_members?: string[] | null
+          team_name?: string | null
+          trust_score_snapshot?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_proposals_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "industry_challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       change_freeze_policy: {
         Row: {
           allowed_changes: string[] | null
@@ -34103,6 +34162,69 @@ export type Database = {
         }
         Relationships: []
       }
+      industry_challenges: {
+        Row: {
+          application_count: number | null
+          budget_amount: number | null
+          challenge_type: string | null
+          company_logo_url: string | null
+          company_name: string
+          created_at: string | null
+          deadline: string | null
+          description: string | null
+          domain: string | null
+          id: string
+          is_featured: boolean | null
+          min_trust_score: number | null
+          posted_by: string | null
+          required_expertise: string[] | null
+          selected_team_id: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          application_count?: number | null
+          budget_amount?: number | null
+          challenge_type?: string | null
+          company_logo_url?: string | null
+          company_name: string
+          created_at?: string | null
+          deadline?: string | null
+          description?: string | null
+          domain?: string | null
+          id?: string
+          is_featured?: boolean | null
+          min_trust_score?: number | null
+          posted_by?: string | null
+          required_expertise?: string[] | null
+          selected_team_id?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          application_count?: number | null
+          budget_amount?: number | null
+          challenge_type?: string | null
+          company_logo_url?: string | null
+          company_name?: string
+          created_at?: string | null
+          deadline?: string | null
+          description?: string | null
+          domain?: string | null
+          id?: string
+          is_featured?: boolean | null
+          min_trust_score?: number | null
+          posted_by?: string | null
+          required_expertise?: string[] | null
+          selected_team_id?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       industry_influence_scores: {
         Row: {
           advisory_participation: number | null
@@ -42933,6 +43055,65 @@ export type Database = {
           },
         ]
       }
+      mentorship_engagements: {
+        Row: {
+          created_at: string | null
+          ended_at: string | null
+          goals: string | null
+          id: string
+          listing_id: string
+          mentee_id: string
+          mentee_rating: number | null
+          mentor_id: string
+          mentor_rating: number | null
+          next_session_at: string | null
+          outcome_summary: string | null
+          sessions_completed: number | null
+          started_at: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          ended_at?: string | null
+          goals?: string | null
+          id?: string
+          listing_id: string
+          mentee_id: string
+          mentee_rating?: number | null
+          mentor_id: string
+          mentor_rating?: number | null
+          next_session_at?: string | null
+          outcome_summary?: string | null
+          sessions_completed?: number | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          ended_at?: string | null
+          goals?: string | null
+          id?: string
+          listing_id?: string
+          mentee_id?: string
+          mentee_rating?: number | null
+          mentor_id?: string
+          mentor_rating?: number | null
+          next_session_at?: string | null
+          outcome_summary?: string | null
+          sessions_completed?: number | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentorship_engagements_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "mentorship_listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mentorship_interactions: {
         Row: {
           created_at: string
@@ -42980,6 +43161,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      mentorship_listings: {
+        Row: {
+          avg_rating: number | null
+          created_at: string | null
+          current_mentees: number | null
+          description: string | null
+          domain: string | null
+          expertise_areas: string[] | null
+          id: string
+          is_active: boolean | null
+          max_mentees: number | null
+          mentor_id: string
+          session_duration_minutes: number | null
+          session_rate_amount: number | null
+          title: string
+          total_sessions: number | null
+          trust_score_snapshot: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avg_rating?: number | null
+          created_at?: string | null
+          current_mentees?: number | null
+          description?: string | null
+          domain?: string | null
+          expertise_areas?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          max_mentees?: number | null
+          mentor_id: string
+          session_duration_minutes?: number | null
+          session_rate_amount?: number | null
+          title: string
+          total_sessions?: number | null
+          trust_score_snapshot?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          avg_rating?: number | null
+          created_at?: string | null
+          current_mentees?: number | null
+          description?: string | null
+          domain?: string | null
+          expertise_areas?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          max_mentees?: number | null
+          mentor_id?: string
+          session_duration_minutes?: number | null
+          session_rate_amount?: number | null
+          title?: string
+          total_sessions?: number | null
+          trust_score_snapshot?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       mentorship_relationships: {
         Row: {
@@ -75520,6 +75758,172 @@ export type Database = {
           unit_type?: string
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      venture_applications: {
+        Row: {
+          applicant_id: string
+          cover_note: string | null
+          created_at: string | null
+          id: string
+          reviewed_at: string | null
+          role: string | null
+          status: string | null
+          trust_score_snapshot: number | null
+          venture_id: string
+        }
+        Insert: {
+          applicant_id: string
+          cover_note?: string | null
+          created_at?: string | null
+          id?: string
+          reviewed_at?: string | null
+          role?: string | null
+          status?: string | null
+          trust_score_snapshot?: number | null
+          venture_id: string
+        }
+        Update: {
+          applicant_id?: string
+          cover_note?: string | null
+          created_at?: string | null
+          id?: string
+          reviewed_at?: string | null
+          role?: string | null
+          status?: string | null
+          trust_score_snapshot?: number | null
+          venture_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "venture_applications_venture_id_fkey"
+            columns: ["venture_id"]
+            isOneToOne: false
+            referencedRelation: "venture_tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      venture_milestones: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          description: string | null
+          due_date: string | null
+          evidence_url: string | null
+          funding_unlocked: number | null
+          id: string
+          milestone_type: string | null
+          review_notes: string | null
+          reviewer_id: string | null
+          status: string | null
+          title: string
+          venture_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          evidence_url?: string | null
+          funding_unlocked?: number | null
+          id?: string
+          milestone_type?: string | null
+          review_notes?: string | null
+          reviewer_id?: string | null
+          status?: string | null
+          title: string
+          venture_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          evidence_url?: string | null
+          funding_unlocked?: number | null
+          id?: string
+          milestone_type?: string | null
+          review_notes?: string | null
+          reviewer_id?: string | null
+          status?: string | null
+          title?: string
+          venture_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "venture_milestones_venture_id_fkey"
+            columns: ["venture_id"]
+            isOneToOne: false
+            referencedRelation: "venture_tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      venture_tracks: {
+        Row: {
+          created_at: string | null
+          demo_day_date: string | null
+          description: string | null
+          domain: string | null
+          founder_id: string | null
+          funding_raised: number | null
+          funding_target: number | null
+          graduation_date: string | null
+          id: string
+          institution_id: string | null
+          ip_status: string | null
+          is_active: boolean | null
+          mentor_ids: string[] | null
+          milestones_completed: number | null
+          milestones_total: number | null
+          project_id: string | null
+          stage: string
+          updated_at: string | null
+          venture_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          demo_day_date?: string | null
+          description?: string | null
+          domain?: string | null
+          founder_id?: string | null
+          funding_raised?: number | null
+          funding_target?: number | null
+          graduation_date?: string | null
+          id?: string
+          institution_id?: string | null
+          ip_status?: string | null
+          is_active?: boolean | null
+          mentor_ids?: string[] | null
+          milestones_completed?: number | null
+          milestones_total?: number | null
+          project_id?: string | null
+          stage?: string
+          updated_at?: string | null
+          venture_name: string
+        }
+        Update: {
+          created_at?: string | null
+          demo_day_date?: string | null
+          description?: string | null
+          domain?: string | null
+          founder_id?: string | null
+          funding_raised?: number | null
+          funding_target?: number | null
+          graduation_date?: string | null
+          id?: string
+          institution_id?: string | null
+          ip_status?: string | null
+          is_active?: boolean | null
+          mentor_ids?: string[] | null
+          milestones_completed?: number | null
+          milestones_total?: number | null
+          project_id?: string | null
+          stage?: string
+          updated_at?: string | null
+          venture_name?: string
         }
         Relationships: []
       }

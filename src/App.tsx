@@ -292,6 +292,9 @@ const ExecutionEconomyAnalyticsPage = lazy(() => import("./pages/innovation/Exec
 const TalentGraphPage = lazy(() => import("./pages/innovation/TalentGraphPage"));
 const InnovationLicensePage = lazy(() => import("./pages/innovation/InnovationLicensePage"));
 const ResearchCapitalMarketPage = lazy(() => import("./pages/innovation/ResearchCapitalMarketPage"));
+const VentureStudioPage = lazy(() => import("./pages/innovation/VentureStudioPage"));
+const IndustryPartnershipPage = lazy(() => import("./pages/innovation/IndustryPartnershipPage"));
+const MentorshipEconomyPage = lazy(() => import("./pages/innovation/MentorshipEconomyPage"));
 
 // Revenue Intelligence & Problem Marketplace
 const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
@@ -594,6 +597,9 @@ const AppContent = () => {
           <Route path="/innovation/talent-graph" element={<ProtectedRoute><TalentGraphPage /></ProtectedRoute>} />
           <Route path="/innovation/licensing" element={<ProtectedRoute><InnovationLicensePage /></ProtectedRoute>} />
           <Route path="/innovation/capital-market" element={<ProtectedRoute><ResearchCapitalMarketPage /></ProtectedRoute>} />
+          <Route path="/innovation/venture-studio" element={<ProtectedRoute><VentureStudioPage /></ProtectedRoute>} />
+          <Route path="/innovation/industry-partnerships" element={<ProtectedRoute><IndustryPartnershipPage /></ProtectedRoute>} />
+          <Route path="/innovation/mentorship-economy" element={<ProtectedRoute><MentorshipEconomyPage /></ProtectedRoute>} />
 
           {/* ====== REVENUE INTELLIGENCE & PROBLEM MARKETPLACE ====== */}
           <Route path="/revenue-intelligence" element={<ProtectedRoute><RevenueIntelligencePage /></ProtectedRoute>} />
