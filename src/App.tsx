@@ -302,6 +302,13 @@ const OmniMarketingPage = lazy(() => import("./pages/omnichannel/OmniMarketingPa
 const OmniGrowthPage = lazy(() => import("./pages/omnichannel/OmniGrowthPage"));
 const OmniResearchDiscoveryPage = lazy(() => import("./pages/omnichannel/OmniResearchDiscoveryPage"));
 const OmniRevenuePage = lazy(() => import("./pages/omnichannel/OmniRevenuePage"));
+const OmniUnifiedInboxPage = lazy(() => import("./pages/omnichannel/OmniUnifiedInboxPage"));
+const OmniPipelinePage = lazy(() => import("./pages/omnichannel/OmniPipelinePage"));
+const OmniSupportPage = lazy(() => import("./pages/omnichannel/OmniSupportPage"));
+const OmniTasksPage = lazy(() => import("./pages/omnichannel/OmniTasksPage"));
+const OmniExecutiveOverviewPage = lazy(() => import("./pages/omnichannel/OmniExecutiveOverviewPage"));
+const OmniKnowledgePage = lazy(() => import("./pages/omnichannel/OmniKnowledgePage"));
+const OmniAgentPerformancePage = lazy(() => import("./pages/omnichannel/OmniAgentPerformancePage"));
 
 // Super Admin
 const SuperAdminOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminOverviewPage"));
