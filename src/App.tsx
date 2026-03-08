@@ -326,6 +326,11 @@ const InnovationLabPage = lazy(() => import("./pages/innovation/InnovationLabPag
 const ExpansionRoadmapPage = lazy(() => import("./pages/innovation/ExpansionRoadmapPage"));
 const ImpactModelingPage = lazy(() => import("./pages/innovation/ImpactModelingPage"));
 
+// Viral Referral & Reputation Loop
+const ReferralDashboardPage = lazy(() => import("./pages/referral/ReferralDashboardPage"));
+const GrowthAnalyticsPage = lazy(() => import("./pages/referral/GrowthAnalyticsPage"));
+const InstitutionReferralPage = lazy(() => import("./pages/referral/InstitutionReferralPage"));
+
 // Revenue Intelligence & Problem Marketplace
 const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
 const ProblemMarketplacePage = lazy(() => import("./pages/ProblemMarketplacePage"));
@@ -670,6 +675,9 @@ const AppContent = () => {
           <Route path="/innovation/lab" element={<ProtectedRoute><InnovationLabPage /></ProtectedRoute>} />
           <Route path="/innovation/expansion-roadmap" element={<ProtectedRoute><ExpansionRoadmapPage /></ProtectedRoute>} />
           <Route path="/innovation/impact-modeling" element={<ProtectedRoute><ImpactModelingPage /></ProtectedRoute>} />
+          <Route path="/referral/dashboard" element={<ProtectedRoute><ReferralDashboardPage /></ProtectedRoute>} />
+          <Route path="/referral/growth-analytics" element={<ProtectedRoute><GrowthAnalyticsPage /></ProtectedRoute>} />
+          <Route path="/referral/institution-program" element={<ProtectedRoute><InstitutionReferralPage /></ProtectedRoute>} />
 
           {/* ====== REVENUE INTELLIGENCE & PROBLEM MARKETPLACE ====== */}
           <Route path="/revenue-intelligence" element={<ProtectedRoute><RevenueIntelligencePage /></ProtectedRoute>} />

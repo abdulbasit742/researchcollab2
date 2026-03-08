@@ -80917,6 +80917,251 @@ export type Database = {
           },
         ]
       }
+      vrl_growth_feed: {
+        Row: {
+          actor_id: string | null
+          actor_name: string | null
+          created_at: string
+          description: string | null
+          entity_id: string | null
+          entity_type: string | null
+          event_type: string
+          id: string
+          is_public: boolean | null
+          metadata: Json | null
+          title: string
+        }
+        Insert: {
+          actor_id?: string | null
+          actor_name?: string | null
+          created_at?: string
+          description?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type: string
+          id?: string
+          is_public?: boolean | null
+          metadata?: Json | null
+          title: string
+        }
+        Update: {
+          actor_id?: string | null
+          actor_name?: string | null
+          created_at?: string
+          description?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type?: string
+          id?: string
+          is_public?: boolean | null
+          metadata?: Json | null
+          title?: string
+        }
+        Relationships: []
+      }
+      vrl_influence_scores: {
+        Row: {
+          collaboration_score: number | null
+          computed_at: string
+          id: string
+          institution_invite_score: number | null
+          overall_influence: number | null
+          referral_score: number | null
+          team_participation_score: number | null
+          tier: string | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_score?: number | null
+          computed_at?: string
+          id?: string
+          institution_invite_score?: number | null
+          overall_influence?: number | null
+          referral_score?: number | null
+          team_participation_score?: number | null
+          tier?: string | null
+          user_id: string
+        }
+        Update: {
+          collaboration_score?: number | null
+          computed_at?: string
+          id?: string
+          institution_invite_score?: number | null
+          overall_influence?: number | null
+          referral_score?: number | null
+          team_participation_score?: number | null
+          tier?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vrl_institution_referrals: {
+        Row: {
+          converted_at: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          partnership_type: string | null
+          referred_by_user_id: string
+          referred_institution_id: string | null
+          referring_institution_id: string | null
+          status: string
+        }
+        Insert: {
+          converted_at?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          partnership_type?: string | null
+          referred_by_user_id: string
+          referred_institution_id?: string | null
+          referring_institution_id?: string | null
+          status?: string
+        }
+        Update: {
+          converted_at?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          partnership_type?: string | null
+          referred_by_user_id?: string
+          referred_institution_id?: string | null
+          referring_institution_id?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      vrl_invitations: {
+        Row: {
+          channel: string
+          clicked_at: string | null
+          created_at: string
+          id: string
+          message: string | null
+          opened_at: string | null
+          recipient_email: string | null
+          recipient_name: string | null
+          referral_code: string
+          registered_at: string | null
+          sender_id: string
+          status: string
+        }
+        Insert: {
+          channel?: string
+          clicked_at?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          opened_at?: string | null
+          recipient_email?: string | null
+          recipient_name?: string | null
+          referral_code: string
+          registered_at?: string | null
+          sender_id: string
+          status?: string
+        }
+        Update: {
+          channel?: string
+          clicked_at?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          opened_at?: string | null
+          recipient_email?: string | null
+          recipient_name?: string | null
+          referral_code?: string
+          registered_at?: string | null
+          sender_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      vrl_referrals: {
+        Row: {
+          converted_at: string | null
+          created_at: string
+          id: string
+          invitation_channel: string
+          metadata: Json | null
+          referral_code: string
+          referral_status: string
+          referred_user_id: string | null
+          referrer_user_id: string
+          updated_at: string
+        }
+        Insert: {
+          converted_at?: string | null
+          created_at?: string
+          id?: string
+          invitation_channel?: string
+          metadata?: Json | null
+          referral_code: string
+          referral_status?: string
+          referred_user_id?: string | null
+          referrer_user_id: string
+          updated_at?: string
+        }
+        Update: {
+          converted_at?: string | null
+          created_at?: string
+          id?: string
+          invitation_channel?: string
+          metadata?: Json | null
+          referral_code?: string
+          referral_status?: string
+          referred_user_id?: string | null
+          referrer_user_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      vrl_rewards: {
+        Row: {
+          created_at: string
+          description: string | null
+          expires_at: string | null
+          granted_at: string | null
+          id: string
+          referral_id: string | null
+          reward_type: string
+          reward_value: number | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          granted_at?: string | null
+          id?: string
+          referral_id?: string | null
+          reward_type: string
+          reward_value?: number | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          granted_at?: string | null
+          id?: string
+          referral_id?: string | null
+          reward_type?: string
+          reward_value?: number | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vrl_rewards_referral_id_fkey"
+            columns: ["referral_id"]
+            isOneToOne: false
+            referencedRelation: "vrl_referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wallet_transactions: {
         Row: {
           amount: number
