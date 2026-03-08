@@ -31427,6 +31427,992 @@ export type Database = {
           },
         ]
       }
+      gpe_ai_matching_runs: {
+        Row: {
+          confidence_scores: Json | null
+          created_at: string | null
+          id: string
+          match_explanations: Json | null
+          matched_institutions: Json | null
+          matched_researchers: Json | null
+          matched_teams: Json | null
+          missing_role_suggestions: string[] | null
+          model_used: string | null
+          problem_id: string
+          recommended_reviewers: Json | null
+          risk_notes: string[] | null
+          team_composition_suggestions: Json | null
+        }
+        Insert: {
+          confidence_scores?: Json | null
+          created_at?: string | null
+          id?: string
+          match_explanations?: Json | null
+          matched_institutions?: Json | null
+          matched_researchers?: Json | null
+          matched_teams?: Json | null
+          missing_role_suggestions?: string[] | null
+          model_used?: string | null
+          problem_id: string
+          recommended_reviewers?: Json | null
+          risk_notes?: string[] | null
+          team_composition_suggestions?: Json | null
+        }
+        Update: {
+          confidence_scores?: Json | null
+          created_at?: string | null
+          id?: string
+          match_explanations?: Json | null
+          matched_institutions?: Json | null
+          matched_researchers?: Json | null
+          matched_teams?: Json | null
+          missing_role_suggestions?: string[] | null
+          model_used?: string | null
+          problem_id?: string
+          recommended_reviewers?: Json | null
+          risk_notes?: string[] | null
+          team_composition_suggestions?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gpe_ai_matching_runs_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "gpe_problem_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gpe_ai_triage_runs: {
+        Row: {
+          capability_extraction: Json | null
+          clarity_score: number | null
+          commercialization_potential: number | null
+          created_at: string | null
+          deliverable_extraction: Json | null
+          execution_readiness_score: number | null
+          fundability_score: number | null
+          id: string
+          model_used: string | null
+          problem_id: string
+          recommendations: Json | null
+          research_intensity_score: number | null
+          risk_tags: string[] | null
+          structured_summary: string | null
+        }
+        Insert: {
+          capability_extraction?: Json | null
+          clarity_score?: number | null
+          commercialization_potential?: number | null
+          created_at?: string | null
+          deliverable_extraction?: Json | null
+          execution_readiness_score?: number | null
+          fundability_score?: number | null
+          id?: string
+          model_used?: string | null
+          problem_id: string
+          recommendations?: Json | null
+          research_intensity_score?: number | null
+          risk_tags?: string[] | null
+          structured_summary?: string | null
+        }
+        Update: {
+          capability_extraction?: Json | null
+          clarity_score?: number | null
+          commercialization_potential?: number | null
+          created_at?: string | null
+          deliverable_extraction?: Json | null
+          execution_readiness_score?: number | null
+          fundability_score?: number | null
+          id?: string
+          model_used?: string | null
+          problem_id?: string
+          recommendations?: Json | null
+          research_intensity_score?: number | null
+          risk_tags?: string[] | null
+          structured_summary?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gpe_ai_triage_runs_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "gpe_problem_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gpe_audit_events: {
+        Row: {
+          actor_id: string | null
+          created_at: string | null
+          entity_id: string | null
+          entity_type: string | null
+          event_name: string
+          id: string
+          metadata: Json | null
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          event_name: string
+          id?: string
+          metadata?: Json | null
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          event_name?: string
+          id?: string
+          metadata?: Json | null
+        }
+        Relationships: []
+      }
+      gpe_commercialization_signals: {
+        Row: {
+          created_at: string | null
+          enterprise_fit_score: number | null
+          evidence: Json | null
+          id: string
+          ip_potential_score: number | null
+          market_pull_score: number | null
+          problem_id: string | null
+          proposal_id: string | null
+          recommendations: string[] | null
+          signal_strength: number | null
+          signal_type: string
+          startup_potential_score: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          enterprise_fit_score?: number | null
+          evidence?: Json | null
+          id?: string
+          ip_potential_score?: number | null
+          market_pull_score?: number | null
+          problem_id?: string | null
+          proposal_id?: string | null
+          recommendations?: string[] | null
+          signal_strength?: number | null
+          signal_type: string
+          startup_potential_score?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          enterprise_fit_score?: number | null
+          evidence?: Json | null
+          id?: string
+          ip_potential_score?: number | null
+          market_pull_score?: number | null
+          problem_id?: string | null
+          proposal_id?: string | null
+          recommendations?: string[] | null
+          signal_strength?: number | null
+          signal_type?: string
+          startup_potential_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gpe_commercialization_signals_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "gpe_problem_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gpe_commercialization_signals_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "gpe_proposals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gpe_funding_pools: {
+        Row: {
+          allocation_rules: Json | null
+          audit_ref: string | null
+          available_capital: number | null
+          country_constraints: string[] | null
+          created_at: string | null
+          description: string | null
+          funding_window_end: string | null
+          funding_window_start: string | null
+          id: string
+          institution_eligibility: string[] | null
+          linked_domains: string[] | null
+          linked_problem_ids: string[] | null
+          pool_type: string | null
+          reserved_capital: number | null
+          review_rules: Json | null
+          risk_tolerance: string | null
+          sponsor_entity_id: string | null
+          sponsor_user_id: string
+          status: string | null
+          title: string
+          total_committed_capital: number | null
+          updated_at: string | null
+          visibility: string | null
+        }
+        Insert: {
+          allocation_rules?: Json | null
+          audit_ref?: string | null
+          available_capital?: number | null
+          country_constraints?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          funding_window_end?: string | null
+          funding_window_start?: string | null
+          id?: string
+          institution_eligibility?: string[] | null
+          linked_domains?: string[] | null
+          linked_problem_ids?: string[] | null
+          pool_type?: string | null
+          reserved_capital?: number | null
+          review_rules?: Json | null
+          risk_tolerance?: string | null
+          sponsor_entity_id?: string | null
+          sponsor_user_id: string
+          status?: string | null
+          title: string
+          total_committed_capital?: number | null
+          updated_at?: string | null
+          visibility?: string | null
+        }
+        Update: {
+          allocation_rules?: Json | null
+          audit_ref?: string | null
+          available_capital?: number | null
+          country_constraints?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          funding_window_end?: string | null
+          funding_window_start?: string | null
+          id?: string
+          institution_eligibility?: string[] | null
+          linked_domains?: string[] | null
+          linked_problem_ids?: string[] | null
+          pool_type?: string | null
+          reserved_capital?: number | null
+          review_rules?: Json | null
+          risk_tolerance?: string | null
+          sponsor_entity_id?: string | null
+          sponsor_user_id?: string
+          status?: string | null
+          title?: string
+          total_committed_capital?: number | null
+          updated_at?: string | null
+          visibility?: string | null
+        }
+        Relationships: []
+      }
+      gpe_institution_portals: {
+        Row: {
+          active_problems: number | null
+          branding: Json | null
+          created_at: string | null
+          created_by: string
+          departments: string[] | null
+          description: string | null
+          id: string
+          institution_id: string
+          portal_name: string
+          status: string | null
+          total_funding: number | null
+          total_proposals: number | null
+          updated_at: string | null
+          visibility: string | null
+        }
+        Insert: {
+          active_problems?: number | null
+          branding?: Json | null
+          created_at?: string | null
+          created_by: string
+          departments?: string[] | null
+          description?: string | null
+          id?: string
+          institution_id: string
+          portal_name: string
+          status?: string | null
+          total_funding?: number | null
+          total_proposals?: number | null
+          updated_at?: string | null
+          visibility?: string | null
+        }
+        Update: {
+          active_problems?: number | null
+          branding?: Json | null
+          created_at?: string | null
+          created_by?: string
+          departments?: string[] | null
+          description?: string | null
+          id?: string
+          institution_id?: string
+          portal_name?: string
+          status?: string | null
+          total_funding?: number | null
+          total_proposals?: number | null
+          updated_at?: string | null
+          visibility?: string | null
+        }
+        Relationships: []
+      }
+      gpe_lead_capture: {
+        Row: {
+          assigned_to: string | null
+          channel: string
+          contact_email: string | null
+          contact_name: string | null
+          created_at: string | null
+          funding_intent_score: number | null
+          id: string
+          lead_type: string | null
+          notes: string | null
+          organization: string | null
+          raw_inquiry: string | null
+          status: string | null
+          structured_intent: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          channel: string
+          contact_email?: string | null
+          contact_name?: string | null
+          created_at?: string | null
+          funding_intent_score?: number | null
+          id?: string
+          lead_type?: string | null
+          notes?: string | null
+          organization?: string | null
+          raw_inquiry?: string | null
+          status?: string | null
+          structured_intent?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          channel?: string
+          contact_email?: string | null
+          contact_name?: string | null
+          created_at?: string | null
+          funding_intent_score?: number | null
+          id?: string
+          lead_type?: string | null
+          notes?: string | null
+          organization?: string | null
+          raw_inquiry?: string | null
+          status?: string | null
+          structured_intent?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      gpe_operator_tasks: {
+        Row: {
+          ai_summary: string | null
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string | null
+          description: string | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          notes: string | null
+          priority: string | null
+          status: string | null
+          task_type: string
+          title: string
+        }
+        Insert: {
+          ai_summary?: string | null
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          status?: string | null
+          task_type: string
+          title: string
+        }
+        Update: {
+          ai_summary?: string | null
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          status?: string | null
+          task_type?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      gpe_opportunity_feed: {
+        Row: {
+          budget_range: string | null
+          created_at: string | null
+          domain: string | null
+          entity_id: string | null
+          entity_type: string | null
+          event_type: string
+          id: string
+          metadata: Json | null
+          summary: string | null
+          target_audience: string[] | null
+          title: string
+          urgency: string | null
+        }
+        Insert: {
+          budget_range?: string | null
+          created_at?: string | null
+          domain?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          summary?: string | null
+          target_audience?: string[] | null
+          title: string
+          urgency?: string | null
+        }
+        Update: {
+          budget_range?: string | null
+          created_at?: string | null
+          domain?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          summary?: string | null
+          target_audience?: string[] | null
+          title?: string
+          urgency?: string | null
+        }
+        Relationships: []
+      }
+      gpe_problem_briefs: {
+        Row: {
+          brief_type: string | null
+          content: string | null
+          created_at: string | null
+          document_url: string | null
+          id: string
+          problem_id: string
+          title: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          brief_type?: string | null
+          content?: string | null
+          created_at?: string | null
+          document_url?: string | null
+          id?: string
+          problem_id: string
+          title: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          brief_type?: string | null
+          content?: string | null
+          created_at?: string | null
+          document_url?: string | null
+          id?: string
+          problem_id?: string
+          title?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gpe_problem_briefs_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "gpe_problem_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gpe_problem_registry: {
+        Row: {
+          affected_population: string | null
+          ai_clarity_score: number | null
+          ai_commercialization_score: number | null
+          ai_fundability_score: number | null
+          ai_triage_score: number | null
+          audit_ref: string | null
+          budget_range_max: number | null
+          budget_range_min: number | null
+          category: string
+          compliance_constraints: string[] | null
+          country_constraints: string[] | null
+          created_at: string | null
+          created_by: string | null
+          desired_outcomes: string[] | null
+          difficulty_level: string | null
+          domain_tags: string[] | null
+          evidence_required: string[] | null
+          execution_deadline: string | null
+          expected_deliverables: string[] | null
+          full_problem_brief: string | null
+          funding_model: string | null
+          geographic_scope: string | null
+          id: string
+          institution_eligibility: string[] | null
+          linked_campaign_id: string | null
+          linked_funding_pool_id: string | null
+          problem_summary: string | null
+          problem_title: string
+          proposal_deadline: string | null
+          required_capabilities: string[] | null
+          review_requirements: Json | null
+          sponsor_type: string | null
+          status: string | null
+          sub_category: string | null
+          tenant_id: string | null
+          timeline_expectation: string | null
+          total_funding_committed: number | null
+          total_proposals: number | null
+          trust_requirements: Json | null
+          updated_at: string | null
+          urgency_level: string | null
+          visibility_mode: string | null
+        }
+        Insert: {
+          affected_population?: string | null
+          ai_clarity_score?: number | null
+          ai_commercialization_score?: number | null
+          ai_fundability_score?: number | null
+          ai_triage_score?: number | null
+          audit_ref?: string | null
+          budget_range_max?: number | null
+          budget_range_min?: number | null
+          category?: string
+          compliance_constraints?: string[] | null
+          country_constraints?: string[] | null
+          created_at?: string | null
+          created_by?: string | null
+          desired_outcomes?: string[] | null
+          difficulty_level?: string | null
+          domain_tags?: string[] | null
+          evidence_required?: string[] | null
+          execution_deadline?: string | null
+          expected_deliverables?: string[] | null
+          full_problem_brief?: string | null
+          funding_model?: string | null
+          geographic_scope?: string | null
+          id?: string
+          institution_eligibility?: string[] | null
+          linked_campaign_id?: string | null
+          linked_funding_pool_id?: string | null
+          problem_summary?: string | null
+          problem_title: string
+          proposal_deadline?: string | null
+          required_capabilities?: string[] | null
+          review_requirements?: Json | null
+          sponsor_type?: string | null
+          status?: string | null
+          sub_category?: string | null
+          tenant_id?: string | null
+          timeline_expectation?: string | null
+          total_funding_committed?: number | null
+          total_proposals?: number | null
+          trust_requirements?: Json | null
+          updated_at?: string | null
+          urgency_level?: string | null
+          visibility_mode?: string | null
+        }
+        Update: {
+          affected_population?: string | null
+          ai_clarity_score?: number | null
+          ai_commercialization_score?: number | null
+          ai_fundability_score?: number | null
+          ai_triage_score?: number | null
+          audit_ref?: string | null
+          budget_range_max?: number | null
+          budget_range_min?: number | null
+          category?: string
+          compliance_constraints?: string[] | null
+          country_constraints?: string[] | null
+          created_at?: string | null
+          created_by?: string | null
+          desired_outcomes?: string[] | null
+          difficulty_level?: string | null
+          domain_tags?: string[] | null
+          evidence_required?: string[] | null
+          execution_deadline?: string | null
+          expected_deliverables?: string[] | null
+          full_problem_brief?: string | null
+          funding_model?: string | null
+          geographic_scope?: string | null
+          id?: string
+          institution_eligibility?: string[] | null
+          linked_campaign_id?: string | null
+          linked_funding_pool_id?: string | null
+          problem_summary?: string | null
+          problem_title?: string
+          proposal_deadline?: string | null
+          required_capabilities?: string[] | null
+          review_requirements?: Json | null
+          sponsor_type?: string | null
+          status?: string | null
+          sub_category?: string | null
+          tenant_id?: string | null
+          timeline_expectation?: string | null
+          total_funding_committed?: number | null
+          total_proposals?: number | null
+          trust_requirements?: Json | null
+          updated_at?: string | null
+          urgency_level?: string | null
+          visibility_mode?: string | null
+        }
+        Relationships: []
+      }
+      gpe_proposal_reviews: {
+        Row: {
+          bias_flags: Json | null
+          budget_score: number | null
+          comments: string | null
+          created_at: string | null
+          feasibility_score: number | null
+          id: string
+          impact_score: number | null
+          overall_score: number | null
+          proposal_id: string
+          quality_score: number | null
+          recommendation: string | null
+          reviewer_id: string
+          reviewer_type: string | null
+        }
+        Insert: {
+          bias_flags?: Json | null
+          budget_score?: number | null
+          comments?: string | null
+          created_at?: string | null
+          feasibility_score?: number | null
+          id?: string
+          impact_score?: number | null
+          overall_score?: number | null
+          proposal_id: string
+          quality_score?: number | null
+          recommendation?: string | null
+          reviewer_id: string
+          reviewer_type?: string | null
+        }
+        Update: {
+          bias_flags?: Json | null
+          budget_score?: number | null
+          comments?: string | null
+          created_at?: string | null
+          feasibility_score?: number | null
+          id?: string
+          impact_score?: number | null
+          overall_score?: number | null
+          proposal_id?: string
+          quality_score?: number | null
+          recommendation?: string | null
+          reviewer_id?: string
+          reviewer_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gpe_proposal_reviews_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "gpe_proposals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gpe_proposal_team: {
+        Row: {
+          capabilities: string[] | null
+          id: string
+          joined_at: string | null
+          proposal_id: string
+          role: string | null
+          user_id: string
+        }
+        Insert: {
+          capabilities?: string[] | null
+          id?: string
+          joined_at?: string | null
+          proposal_id: string
+          role?: string | null
+          user_id: string
+        }
+        Update: {
+          capabilities?: string[] | null
+          id?: string
+          joined_at?: string | null
+          proposal_id?: string
+          role?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gpe_proposal_team_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "gpe_proposals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gpe_proposals: {
+        Row: {
+          ai_clarity_score: number | null
+          ai_sponsor_fit_score: number | null
+          budget_request: number | null
+          capability_summary: string | null
+          commercialization_potential: string | null
+          created_at: string | null
+          cross_border_dependencies: string[] | null
+          dataset_requirements: string | null
+          evidence_of_readiness: string | null
+          execution_strategy: string | null
+          expected_impact: string | null
+          expected_outputs: string[] | null
+          governance_requirements: string | null
+          id: string
+          lead_institution_id: string | null
+          lead_user_id: string
+          prior_execution_examples: Json | null
+          problem_id: string
+          proposed_milestones: Json | null
+          research_methodology: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reviewer_needs: string | null
+          risk_mitigation_plan: string | null
+          status: string | null
+          team_member_ids: string[] | null
+          timeline: string | null
+          tool_requirements: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          ai_clarity_score?: number | null
+          ai_sponsor_fit_score?: number | null
+          budget_request?: number | null
+          capability_summary?: string | null
+          commercialization_potential?: string | null
+          created_at?: string | null
+          cross_border_dependencies?: string[] | null
+          dataset_requirements?: string | null
+          evidence_of_readiness?: string | null
+          execution_strategy?: string | null
+          expected_impact?: string | null
+          expected_outputs?: string[] | null
+          governance_requirements?: string | null
+          id?: string
+          lead_institution_id?: string | null
+          lead_user_id: string
+          prior_execution_examples?: Json | null
+          problem_id: string
+          proposed_milestones?: Json | null
+          research_methodology?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_needs?: string | null
+          risk_mitigation_plan?: string | null
+          status?: string | null
+          team_member_ids?: string[] | null
+          timeline?: string | null
+          tool_requirements?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ai_clarity_score?: number | null
+          ai_sponsor_fit_score?: number | null
+          budget_request?: number | null
+          capability_summary?: string | null
+          commercialization_potential?: string | null
+          created_at?: string | null
+          cross_border_dependencies?: string[] | null
+          dataset_requirements?: string | null
+          evidence_of_readiness?: string | null
+          execution_strategy?: string | null
+          expected_impact?: string | null
+          expected_outputs?: string[] | null
+          governance_requirements?: string | null
+          id?: string
+          lead_institution_id?: string | null
+          lead_user_id?: string
+          prior_execution_examples?: Json | null
+          problem_id?: string
+          proposed_milestones?: Json | null
+          research_methodology?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_needs?: string | null
+          risk_mitigation_plan?: string | null
+          status?: string | null
+          team_member_ids?: string[] | null
+          timeline?: string | null
+          tool_requirements?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gpe_proposals_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "gpe_problem_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gpe_revenue_events: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          currency: string | null
+          description: string | null
+          event_type: string
+          fee_percentage: number | null
+          fee_type: string | null
+          id: string
+          institution_id: string | null
+          source_entity_id: string | null
+          source_entity_type: string | null
+          sponsor_id: string | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          event_type: string
+          fee_percentage?: number | null
+          fee_type?: string | null
+          id?: string
+          institution_id?: string | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          sponsor_id?: string | null
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          event_type?: string
+          fee_percentage?: number | null
+          fee_type?: string | null
+          id?: string
+          institution_id?: string | null
+          source_entity_id?: string | null
+          source_entity_type?: string | null
+          sponsor_id?: string | null
+        }
+        Relationships: []
+      }
+      gpe_saved_items: {
+        Row: {
+          action_type: string | null
+          created_at: string | null
+          id: string
+          problem_id: string
+          user_id: string
+        }
+        Insert: {
+          action_type?: string | null
+          created_at?: string | null
+          id?: string
+          problem_id: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string | null
+          created_at?: string | null
+          id?: string
+          problem_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gpe_saved_items_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "gpe_problem_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gpe_sponsor_accounts: {
+        Row: {
+          active_pools: number | null
+          active_problems: number | null
+          country: string | null
+          created_at: string | null
+          id: string
+          industry: string | null
+          is_verified: boolean | null
+          organization_name: string
+          preferences: Json | null
+          roi_score: number | null
+          sponsor_type: string | null
+          total_capital_deployed: number | null
+          total_executions_completed: number | null
+          total_proposals_received: number | null
+          trust_level: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          active_pools?: number | null
+          active_problems?: number | null
+          country?: string | null
+          created_at?: string | null
+          id?: string
+          industry?: string | null
+          is_verified?: boolean | null
+          organization_name: string
+          preferences?: Json | null
+          roi_score?: number | null
+          sponsor_type?: string | null
+          total_capital_deployed?: number | null
+          total_executions_completed?: number | null
+          total_proposals_received?: number | null
+          trust_level?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          active_pools?: number | null
+          active_problems?: number | null
+          country?: string | null
+          created_at?: string | null
+          id?: string
+          industry?: string | null
+          is_verified?: boolean | null
+          organization_name?: string
+          preferences?: Json | null
+          roi_score?: number | null
+          sponsor_type?: string | null
+          total_capital_deployed?: number | null
+          total_executions_completed?: number | null
+          total_proposals_received?: number | null
+          trust_level?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       grant_allocations: {
         Row: {
           allocated_amount: number
