@@ -599,6 +599,13 @@ const AppContent = () => {
           <Route path="/omni/growth" element={<ProtectedRoute><OmniGrowthPage /></ProtectedRoute>} />
           <Route path="/omni/research-discovery" element={<ProtectedRoute><OmniResearchDiscoveryPage /></ProtectedRoute>} />
           <Route path="/omni/revenue" element={<ProtectedRoute><OmniRevenuePage /></ProtectedRoute>} />
+          <Route path="/omni/inbox" element={<ProtectedRoute><OmniUnifiedInboxPage /></ProtectedRoute>} />
+          <Route path="/omni/pipeline" element={<ProtectedRoute><OmniPipelinePage /></ProtectedRoute>} />
+          <Route path="/omni/support" element={<ProtectedRoute><OmniSupportPage /></ProtectedRoute>} />
+          <Route path="/omni/tasks" element={<ProtectedRoute><OmniTasksPage /></ProtectedRoute>} />
+          <Route path="/omni/executive" element={<ProtectedRoute><OmniExecutiveOverviewPage /></ProtectedRoute>} />
+          <Route path="/omni/knowledge" element={<ProtectedRoute><OmniKnowledgePage /></ProtectedRoute>} />
+          <Route path="/omni/agent-performance" element={<ProtectedRoute><OmniAgentPerformancePage /></ProtectedRoute>} />
 
           {/* ====== SUPER ADMIN ====== */}
           <Route path="/super-admin/overview" element={<ProtectedRoute><SuperAdminOverviewPage /></ProtectedRoute>} />
