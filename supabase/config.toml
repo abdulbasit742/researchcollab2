@@ -104,3 +104,6 @@ verify_jwt = false
 
 [functions.aian-orchestrator]
 verify_jwt = false
+
+[functions.gin-discovery]
+verify_jwt = false
