@@ -302,6 +302,13 @@ const OmniMarketingPage = lazy(() => import("./pages/omnichannel/OmniMarketingPa
 const OmniGrowthPage = lazy(() => import("./pages/omnichannel/OmniGrowthPage"));
 const OmniResearchDiscoveryPage = lazy(() => import("./pages/omnichannel/OmniResearchDiscoveryPage"));
 const OmniRevenuePage = lazy(() => import("./pages/omnichannel/OmniRevenuePage"));
+const OmniUnifiedInboxPage = lazy(() => import("./pages/omnichannel/OmniUnifiedInboxPage"));
+const OmniPipelinePage = lazy(() => import("./pages/omnichannel/OmniPipelinePage"));
+const OmniSupportPage = lazy(() => import("./pages/omnichannel/OmniSupportPage"));
+const OmniTasksPage = lazy(() => import("./pages/omnichannel/OmniTasksPage"));
+const OmniExecutiveOverviewPage = lazy(() => import("./pages/omnichannel/OmniExecutiveOverviewPage"));
+const OmniKnowledgePage = lazy(() => import("./pages/omnichannel/OmniKnowledgePage"));
+const OmniAgentPerformancePage = lazy(() => import("./pages/omnichannel/OmniAgentPerformancePage"));
 
 // Super Admin
 const SuperAdminOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminOverviewPage"));
@@ -592,6 +599,13 @@ const AppContent = () => {
           <Route path="/omni/growth" element={<ProtectedRoute><OmniGrowthPage /></ProtectedRoute>} />
           <Route path="/omni/research-discovery" element={<ProtectedRoute><OmniResearchDiscoveryPage /></ProtectedRoute>} />
           <Route path="/omni/revenue" element={<ProtectedRoute><OmniRevenuePage /></ProtectedRoute>} />
+          <Route path="/omni/inbox" element={<ProtectedRoute><OmniUnifiedInboxPage /></ProtectedRoute>} />
+          <Route path="/omni/pipeline" element={<ProtectedRoute><OmniPipelinePage /></ProtectedRoute>} />
+          <Route path="/omni/support" element={<ProtectedRoute><OmniSupportPage /></ProtectedRoute>} />
+          <Route path="/omni/tasks" element={<ProtectedRoute><OmniTasksPage /></ProtectedRoute>} />
+          <Route path="/omni/executive" element={<ProtectedRoute><OmniExecutiveOverviewPage /></ProtectedRoute>} />
+          <Route path="/omni/knowledge" element={<ProtectedRoute><OmniKnowledgePage /></ProtectedRoute>} />
+          <Route path="/omni/agent-performance" element={<ProtectedRoute><OmniAgentPerformancePage /></ProtectedRoute>} />
 
           {/* ====== SUPER ADMIN ====== */}
           <Route path="/super-admin/overview" element={<ProtectedRoute><SuperAdminOverviewPage /></ProtectedRoute>} />
