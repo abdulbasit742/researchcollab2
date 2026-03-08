@@ -363,6 +363,11 @@ const SponsorIntakePage = lazy(() => import("./pages/omnichannel/SponsorIntakePa
 const InstitutionOnboardingAgentPage = lazy(() => import("./pages/omnichannel/InstitutionOnboardingAgentPage"));
 const OpportunityMatchingPage = lazy(() => import("./pages/omnichannel/OpportunityMatchingPage"));
 
+// Scientific Infrastructure Marketplace
+const ScientificMarketplacePage = lazy(() => import("./pages/infrastructure/ScientificMarketplacePage"));
+const BookingManagementPage = lazy(() => import("./pages/infrastructure/BookingManagementPage"));
+const InfrastructureAnalyticsPage = lazy(() => import("./pages/infrastructure/InfrastructureAnalyticsPage"));
+
 // Super Admin
 const SuperAdminOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminOverviewPage"));
 const SuperAdminRiskClustersPage = lazy(() => import("./pages/super-admin/SuperAdminRiskClustersPage"));
@@ -678,6 +683,11 @@ const AppContent = () => {
           <Route path="/referral/dashboard" element={<ProtectedRoute><ReferralDashboardPage /></ProtectedRoute>} />
           <Route path="/referral/growth-analytics" element={<ProtectedRoute><GrowthAnalyticsPage /></ProtectedRoute>} />
           <Route path="/referral/institution-program" element={<ProtectedRoute><InstitutionReferralPage /></ProtectedRoute>} />
+
+          {/* ====== SCIENTIFIC INFRASTRUCTURE MARKETPLACE ====== */}
+          <Route path="/infrastructure/marketplace" element={<ProtectedRoute><ScientificMarketplacePage /></ProtectedRoute>} />
+          <Route path="/infrastructure/bookings" element={<ProtectedRoute><BookingManagementPage /></ProtectedRoute>} />
+          <Route path="/infrastructure/analytics" element={<ProtectedRoute><InfrastructureAnalyticsPage /></ProtectedRoute>} />
 
           {/* ====== REVENUE INTELLIGENCE & PROBLEM MARKETPLACE ====== */}
           <Route path="/revenue-intelligence" element={<ProtectedRoute><RevenueIntelligencePage /></ProtectedRoute>} />
