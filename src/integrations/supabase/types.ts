@@ -14761,6 +14761,104 @@ export type Database = {
           },
         ]
       }
+      dataset_listings: {
+        Row: {
+          category: string
+          created_at: string | null
+          currency: string | null
+          data_format: string | null
+          description: string | null
+          download_count: number | null
+          id: string
+          institution_id: string | null
+          license_type: string | null
+          owner_id: string
+          price_amount: number | null
+          rating_avg: number | null
+          record_count: number | null
+          sample_available: boolean | null
+          status: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string
+          created_at?: string | null
+          currency?: string | null
+          data_format?: string | null
+          description?: string | null
+          download_count?: number | null
+          id?: string
+          institution_id?: string | null
+          license_type?: string | null
+          owner_id: string
+          price_amount?: number | null
+          rating_avg?: number | null
+          record_count?: number | null
+          sample_available?: boolean | null
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          currency?: string | null
+          data_format?: string | null
+          description?: string | null
+          download_count?: number | null
+          id?: string
+          institution_id?: string | null
+          license_type?: string | null
+          owner_id?: string
+          price_amount?: number | null
+          rating_avg?: number | null
+          record_count?: number | null
+          sample_available?: boolean | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      dataset_purchases: {
+        Row: {
+          amount_paid: number
+          buyer_id: string
+          dataset_id: string
+          id: string
+          platform_fee: number | null
+          purchased_at: string | null
+        }
+        Insert: {
+          amount_paid: number
+          buyer_id: string
+          dataset_id: string
+          id?: string
+          platform_fee?: number | null
+          purchased_at?: string | null
+        }
+        Update: {
+          amount_paid?: number
+          buyer_id?: string
+          dataset_id?: string
+          id?: string
+          platform_fee?: number | null
+          purchased_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dataset_purchases_dataset_id_fkey"
+            columns: ["dataset_id"]
+            isOneToOne: false
+            referencedRelation: "dataset_listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dataset_usage_logs: {
         Row: {
           created_at: string
@@ -21067,6 +21165,42 @@ export type Database = {
         }
         Relationships: []
       }
+      execution_economy_reports: {
+        Row: {
+          created_at: string | null
+          id: string
+          institution_id: string | null
+          metrics: Json | null
+          period_end: string
+          period_start: string
+          region: string | null
+          report_type: string
+          summary: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          metrics?: Json | null
+          period_end: string
+          period_start: string
+          region?: string | null
+          report_type: string
+          summary?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          metrics?: Json | null
+          period_end?: string
+          period_start?: string
+          region?: string | null
+          report_type?: string
+          summary?: string | null
+        }
+        Relationships: []
+      }
       execution_flow_audit: {
         Row: {
           anomaly_description: string | null
@@ -25293,6 +25427,73 @@ export type Database = {
         }
         Relationships: []
       }
+      fund_allocations: {
+        Row: {
+          allocated_at: string | null
+          allocation_reason: string | null
+          amount: number
+          fund_id: string
+          id: string
+          project_id: string | null
+        }
+        Insert: {
+          allocated_at?: string | null
+          allocation_reason?: string | null
+          amount: number
+          fund_id: string
+          id?: string
+          project_id?: string | null
+        }
+        Update: {
+          allocated_at?: string | null
+          allocation_reason?: string | null
+          amount?: number
+          fund_id?: string
+          id?: string
+          project_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fund_allocations_fund_id_fkey"
+            columns: ["fund_id"]
+            isOneToOne: false
+            referencedRelation: "research_funds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fund_contributions: {
+        Row: {
+          amount: number
+          contributed_at: string | null
+          contributor_id: string
+          fund_id: string
+          id: string
+        }
+        Insert: {
+          amount: number
+          contributed_at?: string | null
+          contributor_id: string
+          fund_id: string
+          id?: string
+        }
+        Update: {
+          amount?: number
+          contributed_at?: string | null
+          contributor_id?: string
+          fund_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fund_contributions_fund_id_fkey"
+            columns: ["fund_id"]
+            isOneToOne: false
+            referencedRelation: "research_funds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       funding_allocation_insights: {
         Row: {
           capital_risk_clusters: Json | null
@@ -28778,6 +28979,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      global_execution_rankings: {
+        Row: {
+          collaboration_success: number | null
+          composite_rank_score: number | null
+          computed_at: string | null
+          domain: string | null
+          entity_id: string
+          entity_name: string
+          entity_type: string
+          funding_reliability: number | null
+          global_rank: number | null
+          id: string
+          milestone_reliability: number | null
+          region: string | null
+          research_impact: number | null
+        }
+        Insert: {
+          collaboration_success?: number | null
+          composite_rank_score?: number | null
+          computed_at?: string | null
+          domain?: string | null
+          entity_id: string
+          entity_name: string
+          entity_type: string
+          funding_reliability?: number | null
+          global_rank?: number | null
+          id?: string
+          milestone_reliability?: number | null
+          region?: string | null
+          research_impact?: number | null
+        }
+        Update: {
+          collaboration_success?: number | null
+          composite_rank_score?: number | null
+          computed_at?: string | null
+          domain?: string | null
+          entity_id?: string
+          entity_name?: string
+          entity_type?: string
+          funding_reliability?: number | null
+          global_rank?: number | null
+          id?: string
+          milestone_reliability?: number | null
+          region?: string | null
+          research_impact?: number | null
+        }
+        Relationships: []
       }
       global_federation_registry: {
         Row: {
@@ -34745,6 +34994,63 @@ export type Database = {
           region?: string | null
           skill_evolution_trends?: Json | null
           snapshot_period?: string
+        }
+        Relationships: []
+      }
+      innovation_licenses: {
+        Row: {
+          created_at: string | null
+          currency: string | null
+          description: string | null
+          id: string
+          innovation_type: string
+          institution_id: string | null
+          license_model: string | null
+          owner_id: string
+          price_amount: number | null
+          royalty_percentage: number | null
+          status: string | null
+          tags: string[] | null
+          title: string
+          total_licenses_sold: number | null
+          total_revenue: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          id?: string
+          innovation_type: string
+          institution_id?: string | null
+          license_model?: string | null
+          owner_id: string
+          price_amount?: number | null
+          royalty_percentage?: number | null
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          total_licenses_sold?: number | null
+          total_revenue?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          id?: string
+          innovation_type?: string
+          institution_id?: string | null
+          license_model?: string | null
+          owner_id?: string
+          price_amount?: number | null
+          royalty_percentage?: number | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          total_licenses_sold?: number | null
+          total_revenue?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -41327,6 +41633,41 @@ export type Database = {
             columns: ["lesson_id"]
             isOneToOne: false
             referencedRelation: "course_lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      license_transactions: {
+        Row: {
+          amount_paid: number
+          buyer_id: string
+          id: string
+          license_id: string
+          platform_commission: number | null
+          purchased_at: string | null
+        }
+        Insert: {
+          amount_paid: number
+          buyer_id: string
+          id?: string
+          license_id: string
+          platform_commission?: number | null
+          purchased_at?: string | null
+        }
+        Update: {
+          amount_paid?: number
+          buyer_id?: string
+          id?: string
+          license_id?: string
+          platform_commission?: number | null
+          purchased_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "license_transactions_license_id_fkey"
+            columns: ["license_id"]
+            isOneToOne: false
+            referencedRelation: "innovation_licenses"
             referencedColumns: ["id"]
           },
         ]
@@ -58336,6 +58677,66 @@ export type Database = {
           },
         ]
       }
+      research_funds: {
+        Row: {
+          active_projects: number | null
+          allocated_amount: number | null
+          available_amount: number | null
+          created_at: string | null
+          created_by: string
+          description: string | null
+          domain: string | null
+          fund_name: string
+          fund_type: string | null
+          id: string
+          management_fee_pct: number | null
+          participating_institutions: number | null
+          region: string | null
+          status: string | null
+          success_fee_pct: number | null
+          total_size: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          active_projects?: number | null
+          allocated_amount?: number | null
+          available_amount?: number | null
+          created_at?: string | null
+          created_by: string
+          description?: string | null
+          domain?: string | null
+          fund_name: string
+          fund_type?: string | null
+          id?: string
+          management_fee_pct?: number | null
+          participating_institutions?: number | null
+          region?: string | null
+          status?: string | null
+          success_fee_pct?: number | null
+          total_size?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          active_projects?: number | null
+          allocated_amount?: number | null
+          available_amount?: number | null
+          created_at?: string | null
+          created_by?: string
+          description?: string | null
+          domain?: string | null
+          fund_name?: string
+          fund_type?: string | null
+          id?: string
+          management_fee_pct?: number | null
+          participating_institutions?: number | null
+          region?: string | null
+          status?: string | null
+          success_fee_pct?: number | null
+          total_size?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       research_gap_findings: {
         Row: {
           citation_density_gap: number | null
@@ -68625,6 +69026,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      talent_graph_edges: {
+        Row: {
+          created_at: string | null
+          id: string
+          relationship_type: string
+          shared_domains: string[] | null
+          shared_projects: number | null
+          source_user_id: string
+          target_user_id: string
+          trust_weighted_score: number | null
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          relationship_type: string
+          shared_domains?: string[] | null
+          shared_projects?: number | null
+          source_user_id: string
+          target_user_id: string
+          trust_weighted_score?: number | null
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          relationship_type?: string
+          shared_domains?: string[] | null
+          shared_projects?: number | null
+          source_user_id?: string
+          target_user_id?: string
+          trust_weighted_score?: number | null
+          weight?: number | null
+        }
+        Relationships: []
       }
       talent_infrastructure_matches: {
         Row: {
