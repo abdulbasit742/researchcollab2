@@ -45988,6 +45988,47 @@ export type Database = {
           },
         ]
       }
+      omni_agent_decisions: {
+        Row: {
+          alternatives: Json | null
+          confidence: number | null
+          created_at: string | null
+          decision_type: string
+          decision_value: string
+          id: string
+          reasoning: string | null
+          run_id: string | null
+        }
+        Insert: {
+          alternatives?: Json | null
+          confidence?: number | null
+          created_at?: string | null
+          decision_type: string
+          decision_value: string
+          id?: string
+          reasoning?: string | null
+          run_id?: string | null
+        }
+        Update: {
+          alternatives?: Json | null
+          confidence?: number | null
+          created_at?: string | null
+          decision_type?: string
+          decision_value?: string
+          id?: string
+          reasoning?: string | null
+          run_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_agent_decisions_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "omni_agent_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       omni_agent_memory: {
         Row: {
           contact_id: string
@@ -46025,6 +46066,120 @@ export type Database = {
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      omni_agent_performance: {
+        Row: {
+          agent_type: string
+          avg_confidence: number | null
+          avg_latency_ms: number | null
+          containment_rate: number | null
+          conversion_contribution: number | null
+          created_at: string | null
+          handoff_count: number | null
+          id: string
+          period_end: string
+          period_start: string
+          policy_incidents: number | null
+          total_runs: number | null
+        }
+        Insert: {
+          agent_type: string
+          avg_confidence?: number | null
+          avg_latency_ms?: number | null
+          containment_rate?: number | null
+          conversion_contribution?: number | null
+          created_at?: string | null
+          handoff_count?: number | null
+          id?: string
+          period_end: string
+          period_start: string
+          policy_incidents?: number | null
+          total_runs?: number | null
+        }
+        Update: {
+          agent_type?: string
+          avg_confidence?: number | null
+          avg_latency_ms?: number | null
+          containment_rate?: number | null
+          conversion_contribution?: number | null
+          created_at?: string | null
+          handoff_count?: number | null
+          id?: string
+          period_end?: string
+          period_start?: string
+          policy_incidents?: number | null
+          total_runs?: number | null
+        }
+        Relationships: []
+      }
+      omni_agent_runs: {
+        Row: {
+          agent_type: string
+          confidence_score: number | null
+          contact_id: string | null
+          conversation_id: string | null
+          created_at: string | null
+          entities_extracted: Json | null
+          escalation_reason: string | null
+          id: string
+          intent_detected: string | null
+          latency_ms: number | null
+          model_used: string | null
+          response_generated: string | null
+          should_escalate: boolean | null
+          sub_agent: string | null
+          tools_called: Json | null
+        }
+        Insert: {
+          agent_type?: string
+          confidence_score?: number | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          entities_extracted?: Json | null
+          escalation_reason?: string | null
+          id?: string
+          intent_detected?: string | null
+          latency_ms?: number | null
+          model_used?: string | null
+          response_generated?: string | null
+          should_escalate?: boolean | null
+          sub_agent?: string | null
+          tools_called?: Json | null
+        }
+        Update: {
+          agent_type?: string
+          confidence_score?: number | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          entities_extracted?: Json | null
+          escalation_reason?: string | null
+          id?: string
+          intent_detected?: string | null
+          latency_ms?: number | null
+          model_used?: string | null
+          response_generated?: string | null
+          should_escalate?: boolean | null
+          sub_agent?: string | null
+          tools_called?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_agent_runs_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "omni_agent_runs_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "omni_conversations"
             referencedColumns: ["id"]
           },
         ]
@@ -46161,6 +46316,45 @@ export type Database = {
           total_replied?: number | null
           total_sent?: number | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      omni_channel_health: {
+        Row: {
+          avg_delivery_ms: number | null
+          channel_type: string
+          checked_at: string | null
+          error_count_24h: number | null
+          id: string
+          last_error: string | null
+          last_webhook_at: string | null
+          messages_received_24h: number | null
+          messages_sent_24h: number | null
+          status: string | null
+        }
+        Insert: {
+          avg_delivery_ms?: number | null
+          channel_type: string
+          checked_at?: string | null
+          error_count_24h?: number | null
+          id?: string
+          last_error?: string | null
+          last_webhook_at?: string | null
+          messages_received_24h?: number | null
+          messages_sent_24h?: number | null
+          status?: string | null
+        }
+        Update: {
+          avg_delivery_ms?: number | null
+          channel_type?: string
+          checked_at?: string | null
+          error_count_24h?: number | null
+          id?: string
+          last_error?: string | null
+          last_webhook_at?: string | null
+          messages_received_24h?: number | null
+          messages_sent_24h?: number | null
+          status?: string | null
         }
         Relationships: []
       }
@@ -46336,6 +46530,57 @@ export type Database = {
           },
         ]
       }
+      omni_conversation_summaries: {
+        Row: {
+          action_items: Json | null
+          contact_id: string | null
+          conversation_id: string | null
+          created_at: string | null
+          generated_by: string | null
+          id: string
+          key_topics: string[] | null
+          summary_text: string
+          summary_type: string | null
+        }
+        Insert: {
+          action_items?: Json | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          generated_by?: string | null
+          id?: string
+          key_topics?: string[] | null
+          summary_text: string
+          summary_type?: string | null
+        }
+        Update: {
+          action_items?: Json | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          generated_by?: string | null
+          id?: string
+          key_topics?: string[] | null
+          summary_text?: string
+          summary_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_conversation_summaries_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "omni_conversation_summaries_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "omni_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       omni_conversations: {
         Row: {
           assigned_agent: string | null
@@ -46410,6 +46655,60 @@ export type Database = {
           },
         ]
       }
+      omni_conversion_predictions: {
+        Row: {
+          best_channel: string | null
+          best_next_message: string | null
+          best_send_time: string | null
+          computed_at: string | null
+          contact_id: string | null
+          id: string
+          lead_id: string | null
+          model_version: string | null
+          prediction_type: string
+          probability: number | null
+        }
+        Insert: {
+          best_channel?: string | null
+          best_next_message?: string | null
+          best_send_time?: string | null
+          computed_at?: string | null
+          contact_id?: string | null
+          id?: string
+          lead_id?: string | null
+          model_version?: string | null
+          prediction_type?: string
+          probability?: number | null
+        }
+        Update: {
+          best_channel?: string | null
+          best_next_message?: string | null
+          best_send_time?: string | null
+          computed_at?: string | null
+          contact_id?: string | null
+          id?: string
+          lead_id?: string | null
+          model_version?: string | null
+          prediction_type?: string
+          probability?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_conversion_predictions_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "omni_conversion_predictions_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "omni_lead_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       omni_crm_notes: {
         Row: {
           completed_at: string | null
@@ -46454,6 +46753,53 @@ export type Database = {
           },
           {
             foreignKeyName: "omni_crm_notes_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "omni_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      omni_delivery_logs: {
+        Row: {
+          channel_type: string
+          conversation_id: string | null
+          created_at: string | null
+          delivered_at: string | null
+          delivery_state: string | null
+          error_message: string | null
+          external_message_id: string | null
+          id: string
+          message_id: string | null
+          retry_count: number | null
+        }
+        Insert: {
+          channel_type: string
+          conversation_id?: string | null
+          created_at?: string | null
+          delivered_at?: string | null
+          delivery_state?: string | null
+          error_message?: string | null
+          external_message_id?: string | null
+          id?: string
+          message_id?: string | null
+          retry_count?: number | null
+        }
+        Update: {
+          channel_type?: string
+          conversation_id?: string | null
+          created_at?: string | null
+          delivered_at?: string | null
+          delivery_state?: string | null
+          error_message?: string | null
+          external_message_id?: string | null
+          id?: string
+          message_id?: string | null
+          retry_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_delivery_logs_conversation_id_fkey"
             columns: ["conversation_id"]
             isOneToOne: false
             referencedRelation: "omni_conversations"
@@ -46620,6 +46966,131 @@ export type Database = {
         }
         Relationships: []
       }
+      omni_knowledge_base: {
+        Row: {
+          category: string
+          channel_types: string[] | null
+          content: string
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+          usage_count: number | null
+        }
+        Insert: {
+          category?: string
+          channel_types?: string[] | null
+          content: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+          usage_count?: number | null
+        }
+        Update: {
+          category?: string
+          channel_types?: string[] | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+          usage_count?: number | null
+        }
+        Relationships: []
+      }
+      omni_lead_records: {
+        Row: {
+          budget_signal: string | null
+          channel_source: string | null
+          contact_id: string
+          conversion_probability: number | null
+          country: string | null
+          created_at: string | null
+          decision_maker_confidence: number | null
+          demo_intent: boolean | null
+          engagement_depth: number | null
+          estimated_contract_value: number | null
+          id: string
+          industry: string | null
+          institution_type: string | null
+          interest_domain: string | null
+          last_activity_at: string | null
+          lead_source: string | null
+          organization_size: string | null
+          persona_fit: string | null
+          pipeline_stage: string | null
+          product_fit_score: number | null
+          sales_cycle_days: number | null
+          updated_at: string | null
+          urgency_signal: string | null
+        }
+        Insert: {
+          budget_signal?: string | null
+          channel_source?: string | null
+          contact_id: string
+          conversion_probability?: number | null
+          country?: string | null
+          created_at?: string | null
+          decision_maker_confidence?: number | null
+          demo_intent?: boolean | null
+          engagement_depth?: number | null
+          estimated_contract_value?: number | null
+          id?: string
+          industry?: string | null
+          institution_type?: string | null
+          interest_domain?: string | null
+          last_activity_at?: string | null
+          lead_source?: string | null
+          organization_size?: string | null
+          persona_fit?: string | null
+          pipeline_stage?: string | null
+          product_fit_score?: number | null
+          sales_cycle_days?: number | null
+          updated_at?: string | null
+          urgency_signal?: string | null
+        }
+        Update: {
+          budget_signal?: string | null
+          channel_source?: string | null
+          contact_id?: string
+          conversion_probability?: number | null
+          country?: string | null
+          created_at?: string | null
+          decision_maker_confidence?: number | null
+          demo_intent?: boolean | null
+          engagement_depth?: number | null
+          estimated_contract_value?: number | null
+          id?: string
+          industry?: string | null
+          institution_type?: string | null
+          interest_domain?: string | null
+          last_activity_at?: string | null
+          lead_source?: string | null
+          organization_size?: string | null
+          persona_fit?: string | null
+          pipeline_stage?: string | null
+          product_fit_score?: number | null
+          sales_cycle_days?: number | null
+          updated_at?: string | null
+          urgency_signal?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_lead_records_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       omni_marketing_content: {
         Row: {
           ai_generated: boolean | null
@@ -46674,6 +47145,51 @@ export type Database = {
           target_audience?: string | null
           title?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      omni_message_templates: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          category: string | null
+          channel_type: string
+          content_template: string
+          created_at: string | null
+          id: string
+          is_approved: boolean | null
+          template_name: string
+          updated_at: string | null
+          usage_count: number | null
+          variables: Json | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          category?: string | null
+          channel_type?: string
+          content_template: string
+          created_at?: string | null
+          id?: string
+          is_approved?: boolean | null
+          template_name: string
+          updated_at?: string | null
+          usage_count?: number | null
+          variables?: Json | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          category?: string | null
+          channel_type?: string
+          content_template?: string
+          created_at?: string | null
+          id?: string
+          is_approved?: boolean | null
+          template_name?: string
+          updated_at?: string | null
+          usage_count?: number | null
+          variables?: Json | null
         }
         Relationships: []
       }
@@ -46739,6 +47255,172 @@ export type Database = {
           },
           {
             foreignKeyName: "omni_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "omni_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      omni_offer_recommendations: {
+        Row: {
+          accepted_at: string | null
+          contact_id: string | null
+          created_at: string | null
+          id: string
+          lead_id: string | null
+          match_score: number | null
+          offer_name: string
+          offer_type: string
+          presented_at: string | null
+          reasoning: string | null
+          status: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          id?: string
+          lead_id?: string | null
+          match_score?: number | null
+          offer_name: string
+          offer_type: string
+          presented_at?: string | null
+          reasoning?: string | null
+          status?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          id?: string
+          lead_id?: string | null
+          match_score?: number | null
+          offer_name?: string
+          offer_type?: string
+          presented_at?: string | null
+          reasoning?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_offer_recommendations_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "omni_offer_recommendations_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "omni_lead_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      omni_operator_notes: {
+        Row: {
+          contact_id: string | null
+          conversation_id: string | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          lead_id: string | null
+          note_text: string
+          note_type: string | null
+        }
+        Insert: {
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          lead_id?: string | null
+          note_text: string
+          note_type?: string | null
+        }
+        Update: {
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          lead_id?: string | null
+          note_text?: string
+          note_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_operator_notes_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "omni_operator_notes_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "omni_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "omni_operator_notes_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "omni_lead_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      omni_policy_flags: {
+        Row: {
+          auto_action: string | null
+          contact_id: string | null
+          conversation_id: string | null
+          created_at: string | null
+          flag_type: string
+          id: string
+          reason: string
+          resolved: boolean | null
+          resolved_at: string | null
+          severity: string | null
+        }
+        Insert: {
+          auto_action?: string | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          flag_type: string
+          id?: string
+          reason: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+        }
+        Update: {
+          auto_action?: string | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          flag_type?: string
+          id?: string
+          reason?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_policy_flags_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "omni_policy_flags_conversation_id_fkey"
             columns: ["conversation_id"]
             isOneToOne: false
             referencedRelation: "omni_conversations"
@@ -46879,6 +47561,205 @@ export type Database = {
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      omni_sales_pipelines: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          pipeline_name: string
+          pipeline_type: string
+          stages: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          pipeline_name: string
+          pipeline_type?: string
+          stages?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          pipeline_name?: string
+          pipeline_type?: string
+          stages?: Json | null
+        }
+        Relationships: []
+      }
+      omni_sla_targets: {
+        Row: {
+          created_at: string | null
+          first_response_minutes: number | null
+          id: string
+          is_active: boolean | null
+          persona_type: string | null
+          priority: string | null
+          resolution_hours: number | null
+          target_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          first_response_minutes?: number | null
+          id?: string
+          is_active?: boolean | null
+          persona_type?: string | null
+          priority?: string | null
+          resolution_hours?: number | null
+          target_name: string
+        }
+        Update: {
+          created_at?: string | null
+          first_response_minutes?: number | null
+          id?: string
+          is_active?: boolean | null
+          persona_type?: string | null
+          priority?: string | null
+          resolution_hours?: number | null
+          target_name?: string
+        }
+        Relationships: []
+      }
+      omni_support_tickets: {
+        Row: {
+          assigned_to: string | null
+          category: string | null
+          contact_id: string | null
+          conversation_id: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          priority: string | null
+          resolution: string | null
+          resolved_at: string | null
+          sla_target_hours: number | null
+          status: string | null
+          subject: string
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          category?: string | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          priority?: string | null
+          resolution?: string | null
+          resolved_at?: string | null
+          sla_target_hours?: number | null
+          status?: string | null
+          subject: string
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          category?: string | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          priority?: string | null
+          resolution?: string | null
+          resolved_at?: string | null
+          sla_target_hours?: number | null
+          status?: string | null
+          subject?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_support_tickets_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "omni_support_tickets_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "omni_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      omni_tasks: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          contact_id: string | null
+          conversation_id: string | null
+          created_at: string | null
+          description: string | null
+          due_at: string | null
+          id: string
+          lead_id: string | null
+          priority: string | null
+          status: string | null
+          task_type: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          lead_id?: string | null
+          priority?: string | null
+          status?: string | null
+          task_type?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          lead_id?: string | null
+          priority?: string | null
+          status?: string | null
+          task_type?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_tasks_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "omni_tasks_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "omni_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "omni_tasks_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "omni_lead_records"
             referencedColumns: ["id"]
           },
         ]
