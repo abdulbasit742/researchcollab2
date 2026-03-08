@@ -92,3 +92,6 @@ verify_jwt = false
 
 [functions.institution-onboarding-agent]
 verify_jwt = false
+
+[functions.dke-ai-discovery]
+verify_jwt = false

@@ -17100,6 +17100,366 @@ export type Database = {
           },
         ]
       }
+      dke_ai_recommendations: {
+        Row: {
+          asset_id: string
+          asset_title: string | null
+          asset_type: string | null
+          created_at: string | null
+          id: string
+          match_reasons: Json | null
+          match_score: number | null
+          user_id: string
+          was_acquired: boolean | null
+          was_clicked: boolean | null
+        }
+        Insert: {
+          asset_id: string
+          asset_title?: string | null
+          asset_type?: string | null
+          created_at?: string | null
+          id?: string
+          match_reasons?: Json | null
+          match_score?: number | null
+          user_id: string
+          was_acquired?: boolean | null
+          was_clicked?: boolean | null
+        }
+        Update: {
+          asset_id?: string
+          asset_title?: string | null
+          asset_type?: string | null
+          created_at?: string | null
+          id?: string
+          match_reasons?: Json | null
+          match_score?: number | null
+          user_id?: string
+          was_acquired?: boolean | null
+          was_clicked?: boolean | null
+        }
+        Relationships: []
+      }
+      dke_analytics_events: {
+        Row: {
+          asset_id: string | null
+          asset_type: string | null
+          created_at: string | null
+          event_type: string
+          id: string
+          institution_id: string | null
+          metadata: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          asset_id?: string | null
+          asset_type?: string | null
+          created_at?: string | null
+          event_type: string
+          id?: string
+          institution_id?: string | null
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          asset_id?: string | null
+          asset_type?: string | null
+          created_at?: string | null
+          event_type?: string
+          id?: string
+          institution_id?: string | null
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      dke_dataset_registry: {
+        Row: {
+          access_level: string | null
+          citation_count: number | null
+          completeness_score: number | null
+          created_at: string | null
+          creator_id: string | null
+          creator_seid: string | null
+          currency: string | null
+          data_format: string | null
+          data_type: string | null
+          dataset_size_mb: number | null
+          description: string | null
+          domain_category: string
+          download_count: number | null
+          feature_count: number | null
+          freshness_score: number | null
+          id: string
+          institution_id: string | null
+          license_type: string | null
+          price_amount: number | null
+          published_at: string | null
+          quality_score: number | null
+          rating_avg: number | null
+          rating_count: number | null
+          record_count: number | null
+          related_project_ids: string[] | null
+          sample_preview: Json | null
+          schema_definition: Json | null
+          status: string | null
+          sub_domain: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          access_level?: string | null
+          citation_count?: number | null
+          completeness_score?: number | null
+          created_at?: string | null
+          creator_id?: string | null
+          creator_seid?: string | null
+          currency?: string | null
+          data_format?: string | null
+          data_type?: string | null
+          dataset_size_mb?: number | null
+          description?: string | null
+          domain_category: string
+          download_count?: number | null
+          feature_count?: number | null
+          freshness_score?: number | null
+          id?: string
+          institution_id?: string | null
+          license_type?: string | null
+          price_amount?: number | null
+          published_at?: string | null
+          quality_score?: number | null
+          rating_avg?: number | null
+          rating_count?: number | null
+          record_count?: number | null
+          related_project_ids?: string[] | null
+          sample_preview?: Json | null
+          schema_definition?: Json | null
+          status?: string | null
+          sub_domain?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          access_level?: string | null
+          citation_count?: number | null
+          completeness_score?: number | null
+          created_at?: string | null
+          creator_id?: string | null
+          creator_seid?: string | null
+          currency?: string | null
+          data_format?: string | null
+          data_type?: string | null
+          dataset_size_mb?: number | null
+          description?: string | null
+          domain_category?: string
+          download_count?: number | null
+          feature_count?: number | null
+          freshness_score?: number | null
+          id?: string
+          institution_id?: string | null
+          license_type?: string | null
+          price_amount?: number | null
+          published_at?: string | null
+          quality_score?: number | null
+          rating_avg?: number | null
+          rating_count?: number | null
+          record_count?: number | null
+          related_project_ids?: string[] | null
+          sample_preview?: Json | null
+          schema_definition?: Json | null
+          status?: string | null
+          sub_domain?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      dke_knowledge_objects: {
+        Row: {
+          access_level: string | null
+          author_id: string | null
+          author_seid: string | null
+          citation_count: number | null
+          content_hash: string | null
+          content_url: string | null
+          created_at: string | null
+          description: string | null
+          domain: string | null
+          download_count: number | null
+          id: string
+          institution_id: string | null
+          license_type: string | null
+          linked_dataset_ids: string[] | null
+          linked_project_ids: string[] | null
+          object_type: string
+          price_amount: number | null
+          published_at: string | null
+          quality_score: number | null
+          status: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+          version: string | null
+        }
+        Insert: {
+          access_level?: string | null
+          author_id?: string | null
+          author_seid?: string | null
+          citation_count?: number | null
+          content_hash?: string | null
+          content_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          download_count?: number | null
+          id?: string
+          institution_id?: string | null
+          license_type?: string | null
+          linked_dataset_ids?: string[] | null
+          linked_project_ids?: string[] | null
+          object_type?: string
+          price_amount?: number | null
+          published_at?: string | null
+          quality_score?: number | null
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+          version?: string | null
+        }
+        Update: {
+          access_level?: string | null
+          author_id?: string | null
+          author_seid?: string | null
+          citation_count?: number | null
+          content_hash?: string | null
+          content_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          download_count?: number | null
+          id?: string
+          institution_id?: string | null
+          license_type?: string | null
+          linked_dataset_ids?: string[] | null
+          linked_project_ids?: string[] | null
+          object_type?: string
+          price_amount?: number | null
+          published_at?: string | null
+          quality_score?: number | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+          version?: string | null
+        }
+        Relationships: []
+      }
+      dke_license_transactions: {
+        Row: {
+          access_expires_at: string | null
+          access_granted_at: string | null
+          amount_paid: number | null
+          asset_id: string
+          asset_type: string
+          created_at: string | null
+          currency: string | null
+          fee_rate: number | null
+          id: string
+          license_type: string
+          licensee_id: string
+          licensor_id: string | null
+          platform_fee: number | null
+          status: string | null
+        }
+        Insert: {
+          access_expires_at?: string | null
+          access_granted_at?: string | null
+          amount_paid?: number | null
+          asset_id: string
+          asset_type?: string
+          created_at?: string | null
+          currency?: string | null
+          fee_rate?: number | null
+          id?: string
+          license_type: string
+          licensee_id: string
+          licensor_id?: string | null
+          platform_fee?: number | null
+          status?: string | null
+        }
+        Update: {
+          access_expires_at?: string | null
+          access_granted_at?: string | null
+          amount_paid?: number | null
+          asset_id?: string
+          asset_type?: string
+          created_at?: string | null
+          currency?: string | null
+          fee_rate?: number | null
+          id?: string
+          license_type?: string
+          licensee_id?: string
+          licensor_id?: string | null
+          platform_fee?: number | null
+          status?: string | null
+        }
+        Relationships: []
+      }
+      dke_quality_reviews: {
+        Row: {
+          accuracy_score: number | null
+          asset_id: string
+          asset_type: string | null
+          completed_at: string | null
+          completeness_score: number | null
+          created_at: string | null
+          documentation_score: number | null
+          id: string
+          quality_score: number | null
+          recommendation: string | null
+          review_notes: string | null
+          reviewer_id: string
+          reviewer_role: string | null
+          status: string | null
+        }
+        Insert: {
+          accuracy_score?: number | null
+          asset_id: string
+          asset_type?: string | null
+          completed_at?: string | null
+          completeness_score?: number | null
+          created_at?: string | null
+          documentation_score?: number | null
+          id?: string
+          quality_score?: number | null
+          recommendation?: string | null
+          review_notes?: string | null
+          reviewer_id: string
+          reviewer_role?: string | null
+          status?: string | null
+        }
+        Update: {
+          accuracy_score?: number | null
+          asset_id?: string
+          asset_type?: string | null
+          completed_at?: string | null
+          completeness_score?: number | null
+          created_at?: string | null
+          documentation_score?: number | null
+          id?: string
+          quality_score?: number | null
+          recommendation?: string | null
+          review_notes?: string | null
+          reviewer_id?: string
+          reviewer_role?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       document_audit_logs: {
         Row: {
           action: string
