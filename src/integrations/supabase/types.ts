@@ -19046,6 +19046,255 @@ export type Database = {
           },
         ]
       }
+      eco_collaboration_recs: {
+        Row: {
+          accepted_at: string | null
+          created_at: string | null
+          dismissed_at: string | null
+          entity_a_id: string
+          entity_a_type: string
+          entity_b_id: string
+          entity_b_type: string
+          id: string
+          match_score: number | null
+          reasoning: string | null
+          rec_type: string
+          status: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string | null
+          dismissed_at?: string | null
+          entity_a_id: string
+          entity_a_type: string
+          entity_b_id: string
+          entity_b_type: string
+          id?: string
+          match_score?: number | null
+          reasoning?: string | null
+          rec_type: string
+          status?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string | null
+          dismissed_at?: string | null
+          entity_a_id?: string
+          entity_a_type?: string
+          entity_b_id?: string
+          entity_b_type?: string
+          id?: string
+          match_score?: number | null
+          reasoning?: string | null
+          rec_type?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
+      eco_events: {
+        Row: {
+          actor_id: string | null
+          created_at: string | null
+          entity_id: string | null
+          entity_type: string | null
+          event_type: string
+          id: string
+          payload: Json | null
+          priority: string | null
+          processed: boolean | null
+          source_system: string
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type: string
+          id?: string
+          payload?: Json | null
+          priority?: string | null
+          processed?: boolean | null
+          source_system: string
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          event_type?: string
+          id?: string
+          payload?: Json | null
+          priority?: string | null
+          processed?: boolean | null
+          source_system?: string
+        }
+        Relationships: []
+      }
+      eco_health_snapshots: {
+        Row: {
+          created_at: string | null
+          datasets_published: number | null
+          id: string
+          institution_participation: number | null
+          metadata: Json | null
+          overall_health_score: number | null
+          problems_solved: number | null
+          project_success_rate: number | null
+          snapshot_date: string
+          startups_created: number | null
+          talent_matches: number | null
+          total_active_projects: number | null
+          total_funding_volume: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          datasets_published?: number | null
+          id?: string
+          institution_participation?: number | null
+          metadata?: Json | null
+          overall_health_score?: number | null
+          problems_solved?: number | null
+          project_success_rate?: number | null
+          snapshot_date: string
+          startups_created?: number | null
+          talent_matches?: number | null
+          total_active_projects?: number | null
+          total_funding_volume?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          datasets_published?: number | null
+          id?: string
+          institution_participation?: number | null
+          metadata?: Json | null
+          overall_health_score?: number | null
+          problems_solved?: number | null
+          project_success_rate?: number | null
+          snapshot_date?: string
+          startups_created?: number | null
+          talent_matches?: number | null
+          total_active_projects?: number | null
+          total_funding_volume?: number | null
+        }
+        Relationships: []
+      }
+      eco_revenue_analytics: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          growth_rate: number | null
+          id: string
+          metadata: Json | null
+          period: string
+          revenue_source: string
+          transaction_count: number | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string | null
+          growth_rate?: number | null
+          id?: string
+          metadata?: Json | null
+          period: string
+          revenue_source: string
+          transaction_count?: number | null
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string | null
+          growth_rate?: number | null
+          id?: string
+          metadata?: Json | null
+          period?: string
+          revenue_source?: string
+          transaction_count?: number | null
+        }
+        Relationships: []
+      }
+      eco_signals: {
+        Row: {
+          confidence_score: number | null
+          created_at: string | null
+          description: string | null
+          expires_at: string | null
+          id: string
+          metadata: Json | null
+          priority: string | null
+          signal_type: string
+          source_events: string[] | null
+          status: string | null
+          target_entity_id: string | null
+          target_entity_type: string | null
+          title: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          metadata?: Json | null
+          priority?: string | null
+          signal_type: string
+          source_events?: string[] | null
+          status?: string | null
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+          title: string
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          metadata?: Json | null
+          priority?: string | null
+          signal_type?: string
+          source_events?: string[] | null
+          status?: string | null
+          target_entity_id?: string | null
+          target_entity_type?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      eco_strategic_reports: {
+        Row: {
+          created_at: string | null
+          data_sources: string[] | null
+          generated_by: string | null
+          id: string
+          insights: Json | null
+          recommendations: Json | null
+          report_type: string
+          summary: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          data_sources?: string[] | null
+          generated_by?: string | null
+          id?: string
+          insights?: Json | null
+          recommendations?: Json | null
+          report_type: string
+          summary?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          data_sources?: string[] | null
+          generated_by?: string | null
+          id?: string
+          insights?: Json | null
+          recommendations?: Json | null
+          report_type?: string
+          summary?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       economic_fairness_reports: {
         Row: {
           created_at: string
