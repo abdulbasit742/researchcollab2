@@ -275,6 +275,18 @@ const TrendingPage = lazy(() => import("./pages/TrendingPage"));
 // Execution Workspace
 const ExecutionWorkspacePage = lazy(() => import("./pages/ExecutionWorkspacePage"));
 
+// Innovation Layers
+const GlobalProblemRegistryPage = lazy(() => import("./pages/innovation/GlobalProblemRegistryPage"));
+const ResearchOpportunityExplorerPage = lazy(() => import("./pages/innovation/ResearchOpportunityExplorerPage"));
+const CapitalIntelligencePanelPage = lazy(() => import("./pages/innovation/CapitalIntelligencePanelPage"));
+const GlobalCollaborationMapPage = lazy(() => import("./pages/innovation/GlobalCollaborationMapPage"));
+const ResearchLabsPage = lazy(() => import("./pages/innovation/ResearchLabsPage"));
+const ReputationMarketplacePage = lazy(() => import("./pages/innovation/ReputationMarketplacePage"));
+const PlanetaryTimelinePage = lazy(() => import("./pages/innovation/PlanetaryTimelinePage"));
+const MarketSimulatorPage = lazy(() => import("./pages/innovation/MarketSimulatorPage"));
+const TalentDiscoveryPage = lazy(() => import("./pages/innovation/TalentDiscoveryPage"));
+const ProofOfExecutionPage = lazy(() => import("./pages/innovation/ProofOfExecutionPage"));
+
 // Super Admin
 const SuperAdminOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminOverviewPage"));
 const SuperAdminRiskClustersPage = lazy(() => import("./pages/super-admin/SuperAdminRiskClustersPage"));
@@ -537,6 +549,17 @@ const AppContent = () => {
           <Route path="/verify/:certificateId" element={<CertificateVerificationPage />} />
           <Route path="/verify" element={<CertificateVerificationPage />} />
           <Route path="/my-outcomes" element={<ProtectedRoute><StudentOutcomePage /></ProtectedRoute>} />
+          {/* ====== INNOVATION LAYERS ====== */}
+          <Route path="/innovation/problems" element={<ProtectedRoute><GlobalProblemRegistryPage /></ProtectedRoute>} />
+          <Route path="/innovation/opportunities" element={<ProtectedRoute><ResearchOpportunityExplorerPage /></ProtectedRoute>} />
+          <Route path="/innovation/capital-intelligence" element={<ProtectedRoute><CapitalIntelligencePanelPage /></ProtectedRoute>} />
+          <Route path="/innovation/collaboration-map" element={<ProtectedRoute><GlobalCollaborationMapPage /></ProtectedRoute>} />
+          <Route path="/innovation/labs" element={<ProtectedRoute><ResearchLabsPage /></ProtectedRoute>} />
+          <Route path="/innovation/reputation-market" element={<ProtectedRoute><ReputationMarketplacePage /></ProtectedRoute>} />
+          <Route path="/innovation/timeline" element={<ProtectedRoute><PlanetaryTimelinePage /></ProtectedRoute>} />
+          <Route path="/innovation/simulator" element={<ProtectedRoute><MarketSimulatorPage /></ProtectedRoute>} />
+          <Route path="/innovation/talent" element={<ProtectedRoute><TalentDiscoveryPage /></ProtectedRoute>} />
+          <Route path="/innovation/proof-of-execution" element={<ProtectedRoute><ProofOfExecutionPage /></ProtectedRoute>} />
 
           {/* ====== SUPER ADMIN ====== */}
           <Route path="/super-admin/overview" element={<ProtectedRoute><SuperAdminOverviewPage /></ProtectedRoute>} />
