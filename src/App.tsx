@@ -47,6 +47,7 @@ const FYPSubmitProblemPage = lazy(() => import("./pages/FYPSubmitProblemPage"));
 const StudentFYPDashboardPage = lazy(() => import("./pages/StudentFYPDashboardPage"));
 const FacultyFYPCommandPage = lazy(() => import("./pages/FacultyFYPCommandPage"));
 const SponsorFYPDashboardPage = lazy(() => import("./pages/SponsorFYPDashboardPage"));
+const FYPTopicDetailPage = lazy(() => import("./pages/FYPTopicDetailPage"));
 
 // Opportunities — Core Loop Step 2: Match & Fund
 const OpportunitiesPage = lazy(() => import("./pages/OpportunitiesPage"));
@@ -163,6 +164,7 @@ const SalesDataPackPage = lazy(() => import("./pages/admin/SalesDataPackPage"));
 const StudentOutcomePage = lazy(() => import("./pages/StudentOutcomePage"));
 const IntelligenceDashboardPage = lazy(() => import("./pages/admin/IntelligenceDashboardPage"));
 const AdminSystemHealthPage = lazy(() => import("./pages/admin/AdminSystemHealthPage"));
+const LaunchReadinessPage = lazy(() => import("./pages/LaunchReadinessPage"));
 const AdminIntegrityPage = lazy(() => import("./pages/AdminIntegrityPage"));
 const AdminPerformancePage = lazy(() => import("./pages/AdminPerformancePage"));
 const AdminSecurityDashboardPage = lazy(() => import("./pages/AdminSecurityDashboardPage"));
@@ -457,6 +459,7 @@ const AppContent = () => {
           {/* FYP — Create & Execute */}
           <Route path="/fyp" element={<FYPBrowsePage />} />
           <Route path="/fyp/submit-problem" element={<ProtectedRoute><FYPSubmitProblemPage /></ProtectedRoute>} />
+          <Route path="/fyp/:topicId" element={<ProtectedRoute><FYPTopicDetailPage /></ProtectedRoute>} />
           <Route path="/student/fyp" element={<ProtectedRoute><StudentFYPDashboardPage /></ProtectedRoute>} />
           <Route path="/faculty/fyp" element={<ProtectedRoute><FacultyFYPCommandPage /></ProtectedRoute>} />
           <Route path="/industry/fyp" element={<ProtectedRoute><SponsorFYPDashboardPage /></ProtectedRoute>} />
@@ -591,6 +594,7 @@ const AppContent = () => {
           <Route path="/admin/sales-data-pack" element={<ProtectedRoute><SalesDataPackPage /></ProtectedRoute>} />
           <Route path="/admin/intelligence" element={<ProtectedRoute><IntelligenceDashboardPage /></ProtectedRoute>} />
           <Route path="/admin/system-health" element={<ProtectedRoute><AdminSystemHealthPage /></ProtectedRoute>} />
+          <Route path="/admin/launch-readiness" element={<ProtectedRoute><LaunchReadinessPage /></ProtectedRoute>} />
           <Route path="/admin/integrity" element={<ProtectedRoute><AdminIntegrityPage /></ProtectedRoute>} />
           <Route path="/admin/performance" element={<ProtectedRoute><AdminPerformancePage /></ProtectedRoute>} />
           <Route path="/admin/security-dashboard" element={<ProtectedRoute><AdminSecurityDashboardPage /></ProtectedRoute>} />

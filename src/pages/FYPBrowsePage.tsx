@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -147,9 +148,13 @@ const FYPBrowsePage = () => {
                       </div>
                     )}
                     <div className="flex gap-2 mt-4">
-                      <Button size="sm"><Rocket className="h-4 w-4 mr-1" /> Apply</Button>
+                      <Link to={`/fyp/${topic.id}`}>
+                        <Button size="sm"><Rocket className="h-4 w-4 mr-1" /> View & Apply</Button>
+                      </Link>
                       {topic.funding_type === "sponsor_ready" && (
-                        <Button size="sm" variant="outline"><DollarSign className="h-4 w-4 mr-1" /> Sponsor</Button>
+                        <Link to={`/fyp/${topic.id}`}>
+                          <Button size="sm" variant="outline"><DollarSign className="h-4 w-4 mr-1" /> Sponsor</Button>
+                        </Link>
                       )}
                     </div>
                   </CardContent>
