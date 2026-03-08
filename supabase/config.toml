@@ -116,3 +116,6 @@ verify_jwt = false
 
 [functions.inn-generator]
 verify_jwt = false
+
+[functions.sim-advisor]
+verify_jwt = false
