@@ -46835,6 +46835,133 @@ export type Database = {
         }
         Relationships: []
       }
+      omni_automation_enrollments: {
+        Row: {
+          completed_at: string | null
+          contact_id: string
+          current_step: number
+          enrolled_at: string
+          id: string
+          last_step_at: string | null
+          metadata: Json | null
+          sequence_id: string
+          status: string
+        }
+        Insert: {
+          completed_at?: string | null
+          contact_id: string
+          current_step?: number
+          enrolled_at?: string
+          id?: string
+          last_step_at?: string | null
+          metadata?: Json | null
+          sequence_id: string
+          status?: string
+        }
+        Update: {
+          completed_at?: string | null
+          contact_id?: string
+          current_step?: number
+          enrolled_at?: string
+          id?: string
+          last_step_at?: string | null
+          metadata?: Json | null
+          sequence_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_automation_enrollments_sequence_id_fkey"
+            columns: ["sequence_id"]
+            isOneToOne: false
+            referencedRelation: "omni_automation_sequences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      omni_automation_sequences: {
+        Row: {
+          channel: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          target_segment: string
+          trigger_conditions: Json | null
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          channel?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          target_segment?: string
+          trigger_conditions?: Json | null
+          trigger_type?: string
+          updated_at?: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          target_segment?: string
+          trigger_conditions?: Json | null
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      omni_automation_steps: {
+        Row: {
+          conditions: Json | null
+          content: Json
+          created_at: string
+          delay_minutes: number
+          id: string
+          sequence_id: string
+          step_order: number
+          step_type: string
+        }
+        Insert: {
+          conditions?: Json | null
+          content?: Json
+          created_at?: string
+          delay_minutes?: number
+          id?: string
+          sequence_id: string
+          step_order?: number
+          step_type?: string
+        }
+        Update: {
+          conditions?: Json | null
+          content?: Json
+          created_at?: string
+          delay_minutes?: number
+          id?: string
+          sequence_id?: string
+          step_order?: number
+          step_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_automation_steps_sequence_id_fkey"
+            columns: ["sequence_id"]
+            isOneToOne: false
+            referencedRelation: "omni_automation_sequences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       omni_campaign_sends: {
         Row: {
           campaign_id: string
@@ -47712,6 +47839,33 @@ export type Database = {
           },
         ]
       }
+      omni_lead_scores: {
+        Row: {
+          computed_at: string
+          contact_id: string
+          factors: Json | null
+          id: string
+          score_type: string
+          score_value: number
+        }
+        Insert: {
+          computed_at?: string
+          contact_id: string
+          factors?: Json | null
+          id?: string
+          score_type?: string
+          score_value?: number
+        }
+        Update: {
+          computed_at?: string
+          contact_id?: string
+          factors?: Json | null
+          id?: string
+          score_type?: string
+          score_value?: number
+        }
+        Relationships: []
+      }
       omni_marketing_content: {
         Row: {
           ai_generated: boolean | null
@@ -48384,6 +48538,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      omni_webhook_logs: {
+        Row: {
+          channel: string
+          error_message: string | null
+          external_id: string | null
+          id: string
+          payload: Json
+          processed: boolean
+          received_at: string
+        }
+        Insert: {
+          channel: string
+          error_message?: string | null
+          external_id?: string | null
+          id?: string
+          payload: Json
+          processed?: boolean
+          received_at?: string
+        }
+        Update: {
+          channel?: string
+          error_message?: string | null
+          external_id?: string | null
+          id?: string
+          payload?: Json
+          processed?: boolean
+          received_at?: string
+        }
+        Relationships: []
       }
       onboarding_progress: {
         Row: {

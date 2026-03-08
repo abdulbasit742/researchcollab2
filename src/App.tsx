@@ -323,6 +323,8 @@ const OmniTasksPage = lazy(() => import("./pages/omnichannel/OmniTasksPage"));
 const OmniExecutiveOverviewPage = lazy(() => import("./pages/omnichannel/OmniExecutiveOverviewPage"));
 const OmniKnowledgePage = lazy(() => import("./pages/omnichannel/OmniKnowledgePage"));
 const OmniAgentPerformancePage = lazy(() => import("./pages/omnichannel/OmniAgentPerformancePage"));
+const GrowthAutomationPage = lazy(() => import("./pages/omnichannel/GrowthAutomationPage"));
+const LeadIntelligencePage = lazy(() => import("./pages/omnichannel/LeadIntelligencePage"));
 
 // Super Admin
 const SuperAdminOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminOverviewPage"));
@@ -634,6 +636,8 @@ const AppContent = () => {
           <Route path="/omni/executive" element={<ProtectedRoute><OmniExecutiveOverviewPage /></ProtectedRoute>} />
           <Route path="/omni/knowledge" element={<ProtectedRoute><OmniKnowledgePage /></ProtectedRoute>} />
           <Route path="/omni/agent-performance" element={<ProtectedRoute><OmniAgentPerformancePage /></ProtectedRoute>} />
+          <Route path="/omni/growth-automation" element={<ProtectedRoute><GrowthAutomationPage /></ProtectedRoute>} />
+          <Route path="/omni/lead-intelligence" element={<ProtectedRoute><LeadIntelligencePage /></ProtectedRoute>} />
 
           {/* ====== SUPER ADMIN ====== */}
           <Route path="/super-admin/overview" element={<ProtectedRoute><SuperAdminOverviewPage /></ProtectedRoute>} />
