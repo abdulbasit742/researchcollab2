@@ -292,6 +292,9 @@ const ExecutionEconomyAnalyticsPage = lazy(() => import("./pages/innovation/Exec
 const TalentGraphPage = lazy(() => import("./pages/innovation/TalentGraphPage"));
 const InnovationLicensePage = lazy(() => import("./pages/innovation/InnovationLicensePage"));
 const ResearchCapitalMarketPage = lazy(() => import("./pages/innovation/ResearchCapitalMarketPage"));
+const VentureStudioPage = lazy(() => import("./pages/innovation/VentureStudioPage"));
+const IndustryPartnershipPage = lazy(() => import("./pages/innovation/IndustryPartnershipPage"));
+const MentorshipEconomyPage = lazy(() => import("./pages/innovation/MentorshipEconomyPage"));
 
 // Revenue Intelligence & Problem Marketplace
 const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
