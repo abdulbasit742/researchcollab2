@@ -296,6 +296,7 @@ const ResearchCapitalMarketPage = lazy(() => import("./pages/innovation/Research
 // Revenue Intelligence & Problem Marketplace
 const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
 const ProblemMarketplacePage = lazy(() => import("./pages/ProblemMarketplacePage"));
+const ExecutionExchangePage = lazy(() => import("./pages/ExecutionExchangePage"));
 
 // Omnichannel AI Agent Layer
 const OmniCommandCenterPage = lazy(() => import("./pages/omnichannel/OmniCommandCenterPage"));
