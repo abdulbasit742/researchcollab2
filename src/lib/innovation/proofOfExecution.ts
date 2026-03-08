@@ -2,6 +2,7 @@
  * Proof of Execution Protocol (PoEP) — Service layer
  */
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 export async function getProofsOfExecution(userId?: string) {
   let q = supabase.from("proof_of_execution").select("*").order("created_at", { ascending: false });
@@ -18,8 +19,8 @@ export async function createProofOfExecution(input: {
   metadata?: Record<string, unknown>;
 }) {
   const hash = input.verification_hash || generateHash(input);
-  const { data, error } = await supabase.from("proof_of_execution")
-    .insert([{ ...input, verification_hash: hash }]).select().single();
+  const row = { ...input, verification_hash: hash, metadata: (input.metadata || {}) as unknown as Json };
+  const { data, error } = await supabase.from("proof_of_execution").insert([row]).select().single();
   if (error) throw error;
   return data;
 }

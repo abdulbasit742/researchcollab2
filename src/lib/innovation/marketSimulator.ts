@@ -2,6 +2,7 @@
  * Execution Market Simulator — Service layer
  */
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 export async function getSimulations(simulationType?: string) {
   let q = supabase.from("market_simulations").select("*").order("created_at", { ascending: false });
@@ -18,8 +19,8 @@ export async function runSimulation(input: {
 }) {
   // Compute results client-side (advisory only)
   const results = simulateMarket(input.parameters);
-  const { data, error } = await supabase.from("market_simulations")
-    .insert([{ ...input, results, status: "completed" }]).select().single();
+  const row = { simulation_type: input.simulation_type, title: input.title, parameters: input.parameters as unknown as Json, results: results as unknown as Json, domain: input.domain, region: input.region, run_by: input.run_by, status: "completed" as const };
+  const { data, error } = await supabase.from("market_simulations").insert([row]).select().single();
   if (error) throw error;
   return data;
 }

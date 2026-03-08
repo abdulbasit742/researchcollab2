@@ -2,6 +2,7 @@
  * Capital Intelligence Engine (CIE) — Advisory-only service layer
  */
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 export async function getCapitalIntelligenceScores(projectId?: string) {
   let q = supabase.from("capital_intelligence_scores").select("*").order("computed_at", { ascending: false });
@@ -20,7 +21,7 @@ export async function computeAndSaveScore(input: {
   recommendation_type: string;
   reasoning: Record<string, unknown>;
 }) {
-  const { data, error } = await supabase.from("capital_intelligence_scores").insert([input]).select().single();
+  const { data, error } = await supabase.from("capital_intelligence_scores").insert([{ ...input, reasoning: input.reasoning as unknown as Json }]).select().single();
   if (error) throw error;
   return data;
 }
