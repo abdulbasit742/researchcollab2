@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { SEOInternalLinks } from "@/components/seo/SEOInternalLinks";
 import { HeroSection } from "@/components/home/HeroSection";
 import { TrustedByMarquee } from "@/components/home/TrustedByMarquee";
 import { CoreLoopTimeline } from "@/components/home/CoreLoopTimeline";
@@ -27,7 +28,8 @@ const Index = forwardRef<HTMLDivElement>((_props, ref) => {
     <MainLayout>
       <SEOHead
         canonicalPath="/"
-        keywords="FYP funding, escrow payments, trust scores, student projects, sponsor funding, milestone execution"
+        keywords="FYP funding, escrow payments, trust scores, student projects, sponsor funding, milestone execution, research collaboration, AI research tools, academic escrow platform"
+        description="RCollab is the escrow-backed execution platform where students create FYPs, sponsors fund milestones, and institutions verify outcomes. Non-gameable trust scores, AI matching, and atomic payments."
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebApplication",
@@ -55,6 +57,7 @@ const Index = forwardRef<HTMLDivElement>((_props, ref) => {
       <TestimonialsSection />
       <CompetitorComparisonSection />
       <CTASection />
+      <SEOInternalLinks exclude={["/"]} />
     </MainLayout>
   );
 });
