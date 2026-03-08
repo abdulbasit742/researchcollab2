@@ -46746,6 +46746,143 @@ export type Database = {
           },
         ]
       }
+      omni_research_discoveries: {
+        Row: {
+          created_at: string
+          discovery_type: string
+          id: string
+          keywords: string[] | null
+          metadata: Json | null
+          relevance_score: number | null
+          research_domain: string | null
+          source_type: string
+          source_url: string | null
+          status: string
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          discovery_type?: string
+          id?: string
+          keywords?: string[] | null
+          metadata?: Json | null
+          relevance_score?: number | null
+          research_domain?: string | null
+          source_type?: string
+          source_url?: string | null
+          status?: string
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          discovery_type?: string
+          id?: string
+          keywords?: string[] | null
+          metadata?: Json | null
+          relevance_score?: number | null
+          research_domain?: string | null
+          source_type?: string
+          source_url?: string | null
+          status?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      omni_revenue_forecasts: {
+        Row: {
+          actual_amount: number | null
+          confidence: number | null
+          created_at: string
+          factors: Json | null
+          forecast_period: string
+          id: string
+          predicted_amount: number | null
+          stream_type: string
+        }
+        Insert: {
+          actual_amount?: number | null
+          confidence?: number | null
+          created_at?: string
+          factors?: Json | null
+          forecast_period: string
+          id?: string
+          predicted_amount?: number | null
+          stream_type: string
+        }
+        Update: {
+          actual_amount?: number | null
+          confidence?: number | null
+          created_at?: string
+          factors?: Json | null
+          forecast_period?: string
+          id?: string
+          predicted_amount?: number | null
+          stream_type?: string
+        }
+        Relationships: []
+      }
+      omni_revenue_streams: {
+        Row: {
+          ai_recommendation: string | null
+          amount: number | null
+          channel: string | null
+          contact_id: string | null
+          conversion_source: string | null
+          created_at: string
+          currency: string | null
+          id: string
+          metadata: Json | null
+          status: string
+          stream_name: string
+          stream_type: string
+          updated_at: string
+        }
+        Insert: {
+          ai_recommendation?: string | null
+          amount?: number | null
+          channel?: string | null
+          contact_id?: string | null
+          conversion_source?: string | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          metadata?: Json | null
+          status?: string
+          stream_name: string
+          stream_type?: string
+          updated_at?: string
+        }
+        Update: {
+          ai_recommendation?: string | null
+          amount?: number | null
+          channel?: string | null
+          contact_id?: string | null
+          conversion_source?: string | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          metadata?: Json | null
+          status?: string
+          stream_name?: string
+          stream_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "omni_revenue_streams_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "omni_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       onboarding_progress: {
         Row: {
           created_at: string

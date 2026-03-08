@@ -8,3 +8,5 @@ export * from "./campaignService";
 export * from "./analyticsService";
 export * from "./marketingService";
 export * from "./growthService";
+export * from "./researchDiscoveryService";
+export * from "./revenueService";

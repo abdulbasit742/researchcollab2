@@ -300,6 +300,8 @@ const OmniAnalyticsPage = lazy(() => import("./pages/omnichannel/OmniAnalyticsPa
 const OmniCampaignsPage = lazy(() => import("./pages/omnichannel/OmniCampaignsPage"));
 const OmniMarketingPage = lazy(() => import("./pages/omnichannel/OmniMarketingPage"));
 const OmniGrowthPage = lazy(() => import("./pages/omnichannel/OmniGrowthPage"));
+const OmniResearchDiscoveryPage = lazy(() => import("./pages/omnichannel/OmniResearchDiscoveryPage"));
+const OmniRevenuePage = lazy(() => import("./pages/omnichannel/OmniRevenuePage"));
 
 // Super Admin
 const SuperAdminOverviewPage = lazy(() => import("./pages/super-admin/SuperAdminOverviewPage"));
@@ -588,6 +590,8 @@ const AppContent = () => {
           <Route path="/omni/campaigns" element={<ProtectedRoute><OmniCampaignsPage /></ProtectedRoute>} />
           <Route path="/omni/marketing" element={<ProtectedRoute><OmniMarketingPage /></ProtectedRoute>} />
           <Route path="/omni/growth" element={<ProtectedRoute><OmniGrowthPage /></ProtectedRoute>} />
+          <Route path="/omni/research-discovery" element={<ProtectedRoute><OmniResearchDiscoveryPage /></ProtectedRoute>} />
+          <Route path="/omni/revenue" element={<ProtectedRoute><OmniRevenuePage /></ProtectedRoute>} />
 
           {/* ====== SUPER ADMIN ====== */}
           <Route path="/super-admin/overview" element={<ProtectedRoute><SuperAdminOverviewPage /></ProtectedRoute>} />
