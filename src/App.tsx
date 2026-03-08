@@ -322,6 +322,9 @@ const EcosystemRevenuePage = lazy(() => import("./pages/ecosystem/EcosystemReven
 const RevenueOptimizerPage = lazy(() => import("./pages/revenue/RevenueOptimizerPage"));
 const SponsorDiscoveryPage = lazy(() => import("./pages/revenue/SponsorDiscoveryPage"));
 const PricingLabPage = lazy(() => import("./pages/revenue/PricingLabPage"));
+const InnovationLabPage = lazy(() => import("./pages/innovation/InnovationLabPage"));
+const ExpansionRoadmapPage = lazy(() => import("./pages/innovation/ExpansionRoadmapPage"));
+const ImpactModelingPage = lazy(() => import("./pages/innovation/ImpactModelingPage"));
 
 // Revenue Intelligence & Problem Marketplace
 const RevenueIntelligencePage = lazy(() => import("./pages/RevenueIntelligencePage"));
