@@ -5675,6 +5675,44 @@ export type Database = {
         }
         Relationships: []
       }
+      bond_investments: {
+        Row: {
+          amount: number
+          bond_id: string
+          expected_return: number | null
+          id: string
+          invested_at: string
+          investor_id: string
+          status: string
+        }
+        Insert: {
+          amount: number
+          bond_id: string
+          expected_return?: number | null
+          id?: string
+          invested_at?: string
+          investor_id: string
+          status?: string
+        }
+        Update: {
+          amount?: number
+          bond_id?: string
+          expected_return?: number | null
+          id?: string
+          invested_at?: string
+          investor_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bond_investments_bond_id_fkey"
+            columns: ["bond_id"]
+            isOneToOne: false
+            referencedRelation: "research_impact_bonds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       brand_vs_capability: {
         Row: {
           brand_driven_growth_pct: number | null
@@ -40831,6 +40869,106 @@ export type Database = {
           },
         ]
       }
+      knowledge_exchange_listings: {
+        Row: {
+          author_id: string
+          category: string
+          content_type: string
+          created_at: string
+          description: string | null
+          domain: string
+          download_count: number
+          id: string
+          institution_id: string | null
+          is_open_access: boolean
+          price: number
+          rating_avg: number | null
+          rating_count: number | null
+          status: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          category?: string
+          content_type?: string
+          created_at?: string
+          description?: string | null
+          domain: string
+          download_count?: number
+          id?: string
+          institution_id?: string | null
+          is_open_access?: boolean
+          price?: number
+          rating_avg?: number | null
+          rating_count?: number | null
+          status?: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          category?: string
+          content_type?: string
+          created_at?: string
+          description?: string | null
+          domain?: string
+          download_count?: number
+          id?: string
+          institution_id?: string | null
+          is_open_access?: boolean
+          price?: number
+          rating_avg?: number | null
+          rating_count?: number | null
+          status?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_exchange_listings_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_exchange_purchases: {
+        Row: {
+          amount_paid: number
+          buyer_id: string
+          id: string
+          listing_id: string
+          purchased_at: string
+        }
+        Insert: {
+          amount_paid?: number
+          buyer_id: string
+          id?: string
+          listing_id: string
+          purchased_at?: string
+        }
+        Update: {
+          amount_paid?: number
+          buyer_id?: string
+          id?: string
+          listing_id?: string
+          purchased_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_exchange_purchases_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_exchange_listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       knowledge_export_jobs: {
         Row: {
           created_at: string
@@ -50355,34 +50493,61 @@ export type Database = {
       }
       peer_review_requests: {
         Row: {
+          abstract: string | null
+          ai_pre_review: Json | null
           created_at: string
+          document_url: string | null
           id: string
           instructions: string | null
+          min_reviewer_trust_score: number | null
           requester_id: string
+          research_domain: string | null
           review_type: string
+          reward_amount: number | null
           status: string
           target_id: string
           target_type: string
+          title: string | null
+          updated_at: string | null
+          urgency: string | null
         }
         Insert: {
+          abstract?: string | null
+          ai_pre_review?: Json | null
           created_at?: string
+          document_url?: string | null
           id?: string
           instructions?: string | null
+          min_reviewer_trust_score?: number | null
           requester_id: string
+          research_domain?: string | null
           review_type?: string
+          reward_amount?: number | null
           status?: string
           target_id: string
           target_type: string
+          title?: string | null
+          updated_at?: string | null
+          urgency?: string | null
         }
         Update: {
+          abstract?: string | null
+          ai_pre_review?: Json | null
           created_at?: string
+          document_url?: string | null
           id?: string
           instructions?: string | null
+          min_reviewer_trust_score?: number | null
           requester_id?: string
+          research_domain?: string | null
           review_type?: string
+          reward_amount?: number | null
           status?: string
           target_id?: string
           target_type?: string
+          title?: string | null
+          updated_at?: string | null
+          urgency?: string | null
         }
         Relationships: [
           {
@@ -50390,6 +50555,62 @@ export type Database = {
             columns: ["requester_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      peer_review_responses: {
+        Row: {
+          ai_assisted: boolean | null
+          created_at: string
+          feedback_text: string | null
+          id: string
+          methodology_score: number | null
+          novelty_score: number | null
+          overall_rating: number | null
+          recommendation: string
+          request_id: string
+          reviewer_id: string
+          rigor_score: number | null
+          status: string
+          submitted_at: string | null
+        }
+        Insert: {
+          ai_assisted?: boolean | null
+          created_at?: string
+          feedback_text?: string | null
+          id?: string
+          methodology_score?: number | null
+          novelty_score?: number | null
+          overall_rating?: number | null
+          recommendation?: string
+          request_id: string
+          reviewer_id: string
+          rigor_score?: number | null
+          status?: string
+          submitted_at?: string | null
+        }
+        Update: {
+          ai_assisted?: boolean | null
+          created_at?: string
+          feedback_text?: string | null
+          id?: string
+          methodology_score?: number | null
+          novelty_score?: number | null
+          overall_rating?: number | null
+          recommendation?: string
+          request_id?: string
+          reviewer_id?: string
+          rigor_score?: number | null
+          status?: string
+          submitted_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "peer_review_responses_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "peer_review_requests"
             referencedColumns: ["id"]
           },
         ]
@@ -61321,6 +61542,71 @@ export type Database = {
           underinvestment_score?: number | null
         }
         Relationships: []
+      }
+      research_impact_bonds: {
+        Row: {
+          bond_amount: number
+          created_at: string
+          description: string | null
+          funded_amount: number
+          id: string
+          institution_id: string | null
+          issuer_id: string
+          maturity_date: string | null
+          max_return_rate: number
+          min_investment: number
+          outcome_metrics: Json | null
+          research_domain: string
+          status: string
+          target_outcome: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          bond_amount?: number
+          created_at?: string
+          description?: string | null
+          funded_amount?: number
+          id?: string
+          institution_id?: string | null
+          issuer_id: string
+          maturity_date?: string | null
+          max_return_rate?: number
+          min_investment?: number
+          outcome_metrics?: Json | null
+          research_domain: string
+          status?: string
+          target_outcome: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          bond_amount?: number
+          created_at?: string
+          description?: string | null
+          funded_amount?: number
+          id?: string
+          institution_id?: string | null
+          issuer_id?: string
+          maturity_date?: string | null
+          max_return_rate?: number
+          min_investment?: number
+          outcome_metrics?: Json | null
+          research_domain?: string
+          status?: string
+          target_outcome?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "research_impact_bonds_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       research_impact_events: {
         Row: {
