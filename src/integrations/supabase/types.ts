@@ -50493,43 +50493,61 @@ export type Database = {
       }
       peer_review_requests: {
         Row: {
+          abstract: string | null
           ai_pre_review: Json | null
           created_at: string
+          document_url: string | null
           id: string
           instructions: string | null
           min_reviewer_trust_score: number | null
           requester_id: string
+          research_domain: string | null
           review_type: string
           reward_amount: number | null
           status: string
           target_id: string
           target_type: string
+          title: string | null
+          updated_at: string | null
+          urgency: string | null
         }
         Insert: {
+          abstract?: string | null
           ai_pre_review?: Json | null
           created_at?: string
+          document_url?: string | null
           id?: string
           instructions?: string | null
           min_reviewer_trust_score?: number | null
           requester_id: string
+          research_domain?: string | null
           review_type?: string
           reward_amount?: number | null
           status?: string
           target_id: string
           target_type: string
+          title?: string | null
+          updated_at?: string | null
+          urgency?: string | null
         }
         Update: {
+          abstract?: string | null
           ai_pre_review?: Json | null
           created_at?: string
+          document_url?: string | null
           id?: string
           instructions?: string | null
           min_reviewer_trust_score?: number | null
           requester_id?: string
+          research_domain?: string | null
           review_type?: string
           reward_amount?: number | null
           status?: string
           target_id?: string
           target_type?: string
+          title?: string | null
+          updated_at?: string | null
+          urgency?: string | null
         }
         Relationships: [
           {
@@ -50537,6 +50555,62 @@ export type Database = {
             columns: ["requester_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      peer_review_responses: {
+        Row: {
+          ai_assisted: boolean | null
+          created_at: string
+          feedback_text: string | null
+          id: string
+          methodology_score: number | null
+          novelty_score: number | null
+          overall_rating: number | null
+          recommendation: string
+          request_id: string
+          reviewer_id: string
+          rigor_score: number | null
+          status: string
+          submitted_at: string | null
+        }
+        Insert: {
+          ai_assisted?: boolean | null
+          created_at?: string
+          feedback_text?: string | null
+          id?: string
+          methodology_score?: number | null
+          novelty_score?: number | null
+          overall_rating?: number | null
+          recommendation?: string
+          request_id: string
+          reviewer_id: string
+          rigor_score?: number | null
+          status?: string
+          submitted_at?: string | null
+        }
+        Update: {
+          ai_assisted?: boolean | null
+          created_at?: string
+          feedback_text?: string | null
+          id?: string
+          methodology_score?: number | null
+          novelty_score?: number | null
+          overall_rating?: number | null
+          recommendation?: string
+          request_id?: string
+          reviewer_id?: string
+          rigor_score?: number | null
+          status?: string
+          submitted_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "peer_review_responses_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "peer_review_requests"
             referencedColumns: ["id"]
           },
         ]
