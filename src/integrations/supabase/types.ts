@@ -37571,6 +37571,214 @@ export type Database = {
           },
         ]
       }
+      inn_impact_projections: {
+        Row: {
+          assumptions: Json | null
+          confidence_score: number | null
+          created_at: string | null
+          id: string
+          projected_institutions: number | null
+          projected_revenue: number | null
+          projected_users: number | null
+          projection_type: string
+          proposal_id: string | null
+          risks: Json | null
+          time_horizon: string
+        }
+        Insert: {
+          assumptions?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          projected_institutions?: number | null
+          projected_revenue?: number | null
+          projected_users?: number | null
+          projection_type: string
+          proposal_id?: string | null
+          risks?: Json | null
+          time_horizon: string
+        }
+        Update: {
+          assumptions?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          projected_institutions?: number | null
+          projected_revenue?: number | null
+          projected_users?: number | null
+          projection_type?: string
+          proposal_id?: string | null
+          risks?: Json | null
+          time_horizon?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inn_impact_projections_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "inn_proposals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inn_metrics: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          metric_name: string
+          metric_type: string
+          metric_value: number | null
+          period: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_name: string
+          metric_type: string
+          metric_value?: number | null
+          period: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_name?: string
+          metric_type?: string
+          metric_value?: number | null
+          period?: string
+        }
+        Relationships: []
+      }
+      inn_proposals: {
+        Row: {
+          architecture_design: Json | null
+          category: string
+          complexity: string | null
+          core_components: Json | null
+          created_at: string | null
+          created_by: string | null
+          data_model: Json | null
+          expected_impact: Json | null
+          id: string
+          innovation_score: number | null
+          integration_points: Json | null
+          overview: string | null
+          revenue_model: Json | null
+          revenue_potential: number | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          architecture_design?: Json | null
+          category: string
+          complexity?: string | null
+          core_components?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          data_model?: Json | null
+          expected_impact?: Json | null
+          id?: string
+          innovation_score?: number | null
+          integration_points?: Json | null
+          overview?: string | null
+          revenue_model?: Json | null
+          revenue_potential?: number | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          architecture_design?: Json | null
+          category?: string
+          complexity?: string | null
+          core_components?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          data_model?: Json | null
+          expected_impact?: Json | null
+          id?: string
+          innovation_score?: number | null
+          integration_points?: Json | null
+          overview?: string | null
+          revenue_model?: Json | null
+          revenue_potential?: number | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      inn_roadmap: {
+        Row: {
+          created_at: string | null
+          dependencies: string[] | null
+          description: string | null
+          estimated_effort: string | null
+          id: string
+          phase: string
+          priority: string | null
+          progress: number | null
+          proposal_id: string | null
+          status: string | null
+          target_quarter: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          dependencies?: string[] | null
+          description?: string | null
+          estimated_effort?: string | null
+          id?: string
+          phase: string
+          priority?: string | null
+          progress?: number | null
+          proposal_id?: string | null
+          status?: string | null
+          target_quarter?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          dependencies?: string[] | null
+          description?: string | null
+          estimated_effort?: string | null
+          id?: string
+          phase?: string
+          priority?: string | null
+          progress?: number | null
+          proposal_id?: string | null
+          status?: string | null
+          target_quarter?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inn_roadmap_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "inn_proposals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       innovation_cluster_map: {
         Row: {
           cluster_name: string
