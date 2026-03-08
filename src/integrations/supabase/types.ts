@@ -78463,6 +78463,223 @@ export type Database = {
         }
         Relationships: []
       }
+      vf_incubation_tasks: {
+        Row: {
+          assigned_to: string | null
+          candidate_id: string
+          category: string | null
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          status: string | null
+          title: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          candidate_id: string
+          category?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          status?: string | null
+          title: string
+        }
+        Update: {
+          assigned_to?: string | null
+          candidate_id?: string
+          category?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          status?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vf_incubation_tasks_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "vf_startup_candidates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vf_investor_interests: {
+        Row: {
+          candidate_id: string
+          created_at: string
+          id: string
+          interest_level: string | null
+          investor_id: string
+          notes: string | null
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string
+          id?: string
+          interest_level?: string | null
+          investor_id: string
+          notes?: string | null
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string
+          id?: string
+          interest_level?: string | null
+          investor_id?: string
+          notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vf_investor_interests_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "vf_startup_candidates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vf_investor_interests_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "vf_investors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vf_investors: {
+        Row: {
+          created_at: string
+          id: string
+          investment_focus: string[] | null
+          investor_type: string
+          is_active: boolean | null
+          max_investment: number | null
+          min_investment: number | null
+          organization_name: string | null
+          portfolio_count: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          investment_focus?: string[] | null
+          investor_type?: string
+          is_active?: boolean | null
+          max_investment?: number | null
+          min_investment?: number | null
+          organization_name?: string | null
+          portfolio_count?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          investment_focus?: string[] | null
+          investor_type?: string
+          is_active?: boolean | null
+          max_investment?: number | null
+          min_investment?: number | null
+          organization_name?: string | null
+          portfolio_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vf_startup_candidates: {
+        Row: {
+          ai_signal_data: Json | null
+          commercialization_score: number | null
+          created_at: string
+          description: string | null
+          funding_secured: number | null
+          id: string
+          institution_id: string | null
+          market_opportunity: string | null
+          project_id: string | null
+          research_domain: string | null
+          status: string
+          team_lead_id: string | null
+          technology_readiness_level: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          ai_signal_data?: Json | null
+          commercialization_score?: number | null
+          created_at?: string
+          description?: string | null
+          funding_secured?: number | null
+          id?: string
+          institution_id?: string | null
+          market_opportunity?: string | null
+          project_id?: string | null
+          research_domain?: string | null
+          status?: string
+          team_lead_id?: string | null
+          technology_readiness_level?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          ai_signal_data?: Json | null
+          commercialization_score?: number | null
+          created_at?: string
+          description?: string | null
+          funding_secured?: number | null
+          id?: string
+          institution_id?: string | null
+          market_opportunity?: string | null
+          project_id?: string | null
+          research_domain?: string | null
+          status?: string
+          team_lead_id?: string | null
+          technology_readiness_level?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      vf_team_members: {
+        Row: {
+          candidate_id: string
+          id: string
+          joined_at: string
+          role: string
+          trust_score_snapshot: number | null
+          user_id: string
+        }
+        Insert: {
+          candidate_id: string
+          id?: string
+          joined_at?: string
+          role?: string
+          trust_score_snapshot?: number | null
+          user_id: string
+        }
+        Update: {
+          candidate_id?: string
+          id?: string
+          joined_at?: string
+          role?: string
+          trust_score_snapshot?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vf_team_members_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "vf_startup_candidates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       video_learning_playlists: {
         Row: {
           created_at: string
