@@ -98,6 +98,7 @@ const ResearchDashboardPage = lazy(() => import("./pages/ResearchDashboardPage")
 const ResearchWorkspacePage = lazy(() => import("./pages/ResearchWorkspacePage"));
 const GrantsPage = lazy(() => import("./pages/GrantsPage"));
 const ResearchGapFinderPage = lazy(() => import("./pages/ResearchGapFinderPage"));
+const AIPromptLibraryPage = lazy(() => import("./pages/AIPromptLibraryPage"));
 const TemplateLibraryPage = lazy(() => import("./pages/TemplateLibraryPage"));
 const ToolsPage = lazy(() => import("./pages/ToolsPage"));
 const LearningPage = lazy(() => import("./pages/LearningPage"));
