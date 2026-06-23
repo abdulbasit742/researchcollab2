@@ -2,7 +2,10 @@ import { forwardRef } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { SEOInternalLinks } from "@/components/seo/SEOInternalLinks";
-import { HeroSection } from "@/components/home/HeroSection";
+import { PremiumHero } from "@/components/home/PremiumHero";
+import { RoleCTAGrid } from "@/components/home/RoleCTAGrid";
+import { HowItWorksSection } from "@/components/home/HowItWorksSection";
+import { ProductMockupsSection } from "@/components/home/ProductMockupsSection";
 import { TrustedByMarquee } from "@/components/home/TrustedByMarquee";
 import { CoreLoopTimeline } from "@/components/home/CoreLoopTimeline";
 import { FeaturesSection } from "@/components/home/FeaturesSection";
@@ -46,7 +49,11 @@ const Index = forwardRef<HTMLDivElement>((_props, ref) => {
         }}
       />
       <OnboardingPopup />
-      <HeroSection />
+      <PremiumHero />
+      <TrustedByMarquee />
+      <RoleCTAGrid />
+      <HowItWorksSection />
+      <ProductMockupsSection />
       <TrustedByMarquee />
       <StatsCounter />
       <CoreLoopTimeline />
