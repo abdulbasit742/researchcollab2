@@ -41,6 +41,26 @@ interface AuthContextType {
   refreshProfile: () => Promise<void>;
 }
 
+export function getRoleBasedRedirect(role?: string | null): string {
+  switch (role) {
+    case "admin":
+    case "super_admin":
+      return "/admin";
+    case "government_admin":
+      return "/national-oversight";
+    case "compliance_officer":
+      return "/governance";
+    case "sponsor_admin":
+      return "/sponsor-dashboard";
+    case "tenant_admin":
+      return "/institution-control";
+    case "researcher":
+    case "student":
+    default:
+      return "/home";
+  }
+}
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -69,9 +89,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .single();
 
         if (createError) throw createError;
-        setProfile(newProfile);
+        setProfile(newProfile as Profile);
       } else {
-        setProfile(profileData);
+        setProfile(profileData as Profile);
       }
 
       // Fetch user role
@@ -92,9 +112,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .single();
 
         if (createRoleError) throw createRoleError;
-        setUserRole(newRole);
+        setUserRole(newRole as UserRole);
       } else {
-        setUserRole(roleData);
+        setUserRole(roleData as UserRole);
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
@@ -238,15 +258,4 @@ export function useAuth() {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-}
-
-export function getRoleBasedRedirect(role: string | undefined): string {
-  switch (role) {
-    case "admin":
-      return "/admin";
-    case "super_admin":
-      return "/super-admin/overview";
-    default:
-      return "/home";
-  }
 }
