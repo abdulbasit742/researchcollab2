@@ -541,6 +541,7 @@ const AppContent = () => {
           <Route path="/grants" element={<ProtectedRoute><GrantsPage /></ProtectedRoute>} />
           <Route path="/research-gaps" element={<ProtectedRoute><ResearchGapFinderPage /></ProtectedRoute>} />
           <Route path="/templates" element={<ProtectedRoute><TemplateLibraryPage /></ProtectedRoute>} />
+          <Route path="/ai-prompts" element={<ProtectedRoute><AIPromptLibraryPage /></ProtectedRoute>} />
           <Route path="/tools" element={<ProtectedRoute><ToolsPage /></ProtectedRoute>} />
           <Route path="/learning" element={<ProtectedRoute><LearningPage /></ProtectedRoute>} />
           <Route path="/events" element={<ProtectedRoute><EventsPage /></ProtectedRoute>} />
