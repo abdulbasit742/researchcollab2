@@ -97,6 +97,7 @@ const ResearchPapersPage = lazy(() => import("./pages/ResearchPapersPage"));
 const ResearchDashboardPage = lazy(() => import("./pages/ResearchDashboardPage"));
 const ResearchWorkspacePage = lazy(() => import("./pages/ResearchWorkspacePage"));
 const GrantsPage = lazy(() => import("./pages/GrantsPage"));
+const ResearchGapFinderPage = lazy(() => import("./pages/ResearchGapFinderPage"));
 const ToolsPage = lazy(() => import("./pages/ToolsPage"));
 const LearningPage = lazy(() => import("./pages/LearningPage"));
 const EventsPage = lazy(() => import("./pages/EventsPage"));
