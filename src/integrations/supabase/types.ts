@@ -34303,6 +34303,7 @@ export type Database = {
           amount_max: number | null
           amount_min: number | null
           application_url: string | null
+          country: string | null
           created_at: string | null
           currency: string | null
           deadline: string | null
@@ -34310,10 +34311,12 @@ export type Database = {
           eligibility: string | null
           fields: string[] | null
           funder: string
+          grant_type: string
           id: string
           is_active: boolean | null
           organization_id: string | null
           posted_by: string | null
+          region: string | null
           title: string
           updated_at: string | null
         }
@@ -34321,6 +34324,7 @@ export type Database = {
           amount_max?: number | null
           amount_min?: number | null
           application_url?: string | null
+          country?: string | null
           created_at?: string | null
           currency?: string | null
           deadline?: string | null
@@ -34328,10 +34332,12 @@ export type Database = {
           eligibility?: string | null
           fields?: string[] | null
           funder: string
+          grant_type?: string
           id?: string
           is_active?: boolean | null
           organization_id?: string | null
           posted_by?: string | null
+          region?: string | null
           title: string
           updated_at?: string | null
         }
@@ -34339,6 +34345,7 @@ export type Database = {
           amount_max?: number | null
           amount_min?: number | null
           application_url?: string | null
+          country?: string | null
           created_at?: string | null
           currency?: string | null
           deadline?: string | null
@@ -34346,10 +34353,12 @@ export type Database = {
           eligibility?: string | null
           fields?: string[] | null
           funder?: string
+          grant_type?: string
           id?: string
           is_active?: boolean | null
           organization_id?: string | null
           posted_by?: string | null
+          region?: string | null
           title?: string
           updated_at?: string | null
         }
@@ -68800,6 +68809,44 @@ export type Database = {
             columns: ["hub_id"]
             isOneToOne: false
             referencedRelation: "rpie_regional_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      saved_grants: {
+        Row: {
+          created_at: string
+          grant_id: string
+          id: string
+          notes: string | null
+          reminder_date: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          grant_id: string
+          id?: string
+          notes?: string | null
+          reminder_date?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          grant_id?: string
+          id?: string
+          notes?: string | null
+          reminder_date?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_grants_grant_id_fkey"
+            columns: ["grant_id"]
+            isOneToOne: false
+            referencedRelation: "grants"
             referencedColumns: ["id"]
           },
         ]
