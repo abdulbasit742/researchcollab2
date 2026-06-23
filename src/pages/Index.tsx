@@ -49,7 +49,11 @@ const Index = forwardRef<HTMLDivElement>((_props, ref) => {
         }}
       />
       <OnboardingPopup />
-      <HeroSection />
+      <PremiumHero />
+      <TrustedByMarquee />
+      <RoleCTAGrid />
+      <HowItWorksSection />
+      <ProductMockupsSection />
       <TrustedByMarquee />
       <StatsCounter />
       <CoreLoopTimeline />
