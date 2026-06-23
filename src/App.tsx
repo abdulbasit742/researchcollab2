@@ -450,6 +450,13 @@ const AppContent = () => {
           <Route path="/terms" element={<TermsOfServicePage />} />
           <Route path="/cookies" element={<CookiePolicyPage />} />
 
+          {/* ====== REVENUE / BILLING ====== */}
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/billing" element={<ProtectedRoute><BillingPage /></ProtectedRoute>} />
+          <Route path="/earnings" element={<ProtectedRoute><ResearcherEarningsPage /></ProtectedRoute>} />
+          <Route path="/admin/revenue" element={<ProtectedRoute><AdminRevenuePage /></ProtectedRoute>} />
+          <Route path="/admin/department-sales" element={<ProtectedRoute><AdminDepartmentSalesPage /></ProtectedRoute>} />
+
           {/* ====== ONBOARDING ====== */}
           <Route path="/onboarding" element={<OnboardingPage />} />
 
