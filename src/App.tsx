@@ -16,6 +16,7 @@ import { RouteProgress } from "@/components/layout/RouteProgress";
 import { LoadingScreen } from "@/components/loading";
 import { useAppLoading } from "@/hooks/useAppLoading";
 import { DemoWalkthroughProvider } from "@/contexts/DemoWalkthroughContext";
+import { UpgradeModalProvider } from "@/contexts/UpgradeModalContext";
 import { WalkthroughOverlay } from "@/components/walkthrough/WalkthroughOverlay";
 import { TourLaunchButton } from "@/components/walkthrough/TourLaunchButton";
 
