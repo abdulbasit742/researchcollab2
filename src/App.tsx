@@ -16,6 +16,7 @@ import { RouteProgress } from "@/components/layout/RouteProgress";
 import { LoadingScreen } from "@/components/loading";
 import { useAppLoading } from "@/hooks/useAppLoading";
 import { DemoWalkthroughProvider } from "@/contexts/DemoWalkthroughContext";
+import { UpgradeModalProvider } from "@/contexts/UpgradeModalContext";
 import { WalkthroughOverlay } from "@/components/walkthrough/WalkthroughOverlay";
 import { TourLaunchButton } from "@/components/walkthrough/TourLaunchButton";
 
@@ -128,6 +129,13 @@ const HelpCenterPage = lazy(() => import("./pages/HelpCenterPage"));
 const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
 const TermsOfServicePage = lazy(() => import("./pages/TermsOfServicePage"));
 const CookiePolicyPage = lazy(() => import("./pages/CookiePolicyPage"));
+
+// Revenue / Billing (Bundle C)
+const BillingPage = lazy(() => import("./pages/BillingPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const ResearcherEarningsPage = lazy(() => import("./pages/ResearcherEarningsPage"));
+const AdminRevenuePage = lazy(() => import("./pages/admin/AdminRevenuePage"));
+const AdminDepartmentSalesPage = lazy(() => import("./pages/admin/AdminDepartmentSalesPage"));
 
 // Admin — Keep all admin routes
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
@@ -442,6 +450,13 @@ const AppContent = () => {
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
           <Route path="/terms" element={<TermsOfServicePage />} />
           <Route path="/cookies" element={<CookiePolicyPage />} />
+
+          {/* ====== REVENUE / BILLING ====== */}
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/billing" element={<ProtectedRoute><BillingPage /></ProtectedRoute>} />
+          <Route path="/earnings" element={<ProtectedRoute><ResearcherEarningsPage /></ProtectedRoute>} />
+          <Route path="/admin/revenue" element={<ProtectedRoute><AdminRevenuePage /></ProtectedRoute>} />
+          <Route path="/admin/department-sales" element={<ProtectedRoute><AdminDepartmentSalesPage /></ProtectedRoute>} />
 
           {/* ====== ONBOARDING ====== */}
           <Route path="/onboarding" element={<OnboardingPage />} />
@@ -912,9 +927,11 @@ const App = () => (
               <AuthProvider>
                 <RealtimeProvider>
                   <DemoWalkthroughProvider>
-                    <AppContent />
-                    <TourLaunchButton />
-                    <WalkthroughOverlay />
+                    <UpgradeModalProvider>
+                      <AppContent />
+                      <TourLaunchButton />
+                      <WalkthroughOverlay />
+                    </UpgradeModalProvider>
                   </DemoWalkthroughProvider>
                 </RealtimeProvider>
               </AuthProvider>
