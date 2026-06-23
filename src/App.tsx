@@ -129,6 +129,13 @@ const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
 const TermsOfServicePage = lazy(() => import("./pages/TermsOfServicePage"));
 const CookiePolicyPage = lazy(() => import("./pages/CookiePolicyPage"));
 
+// Revenue / Billing (Bundle C)
+const BillingPage = lazy(() => import("./pages/BillingPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const ResearcherEarningsPage = lazy(() => import("./pages/ResearcherEarningsPage"));
+const AdminRevenuePage = lazy(() => import("./pages/admin/AdminRevenuePage"));
+const AdminDepartmentSalesPage = lazy(() => import("./pages/admin/AdminDepartmentSalesPage"));
+
 // Admin — Keep all admin routes
 const AdminPortalPage = lazy(() => import("./pages/AdminPortalPage"));
 const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
