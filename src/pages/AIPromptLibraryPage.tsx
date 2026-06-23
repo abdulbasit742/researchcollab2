@@ -183,7 +183,7 @@ export default function AIPromptLibraryPage() {
     if (!active) return "";
     let t = active.template;
     for (const v of active.variables) {
-      t = t.replaceAll(`{${v}}`, vars[v]?.trim() || `[${v}]`);
+      t = t.split(`{${v}}`).join(vars[v]?.trim() || `[${v}]`);
     }
     return t;
   };
