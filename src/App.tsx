@@ -927,9 +927,11 @@ const App = () => (
               <AuthProvider>
                 <RealtimeProvider>
                   <DemoWalkthroughProvider>
-                    <AppContent />
-                    <TourLaunchButton />
-                    <WalkthroughOverlay />
+                    <UpgradeModalProvider>
+                      <AppContent />
+                      <TourLaunchButton />
+                      <WalkthroughOverlay />
+                    </UpgradeModalProvider>
                   </DemoWalkthroughProvider>
                 </RealtimeProvider>
               </AuthProvider>
