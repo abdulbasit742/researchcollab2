@@ -64925,6 +64925,33 @@ export type Database = {
         }
         Relationships: []
       }
+      research_gap_searches: {
+        Row: {
+          context: string | null
+          created_at: string
+          id: string
+          result: Json
+          topic: string
+          user_id: string
+        }
+        Insert: {
+          context?: string | null
+          created_at?: string
+          id?: string
+          result?: Json
+          topic: string
+          user_id: string
+        }
+        Update: {
+          context?: string | null
+          created_at?: string
+          id?: string
+          result?: Json
+          topic?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       research_impact_bonds: {
         Row: {
           bond_amount: number

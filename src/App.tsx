@@ -97,6 +97,7 @@ const ResearchPapersPage = lazy(() => import("./pages/ResearchPapersPage"));
 const ResearchDashboardPage = lazy(() => import("./pages/ResearchDashboardPage"));
 const ResearchWorkspacePage = lazy(() => import("./pages/ResearchWorkspacePage"));
 const GrantsPage = lazy(() => import("./pages/GrantsPage"));
+const ResearchGapFinderPage = lazy(() => import("./pages/ResearchGapFinderPage"));
 const ToolsPage = lazy(() => import("./pages/ToolsPage"));
 const LearningPage = lazy(() => import("./pages/LearningPage"));
 const EventsPage = lazy(() => import("./pages/EventsPage"));
@@ -537,6 +538,7 @@ const AppContent = () => {
           <Route path="/passport" element={<ProtectedRoute><PassportPage /></ProtectedRoute>} />
           <Route path="/research-papers" element={<ProtectedRoute><ResearchPapersPage /></ProtectedRoute>} />
           <Route path="/grants" element={<ProtectedRoute><GrantsPage /></ProtectedRoute>} />
+          <Route path="/research-gaps" element={<ProtectedRoute><ResearchGapFinderPage /></ProtectedRoute>} />
           <Route path="/tools" element={<ProtectedRoute><ToolsPage /></ProtectedRoute>} />
           <Route path="/learning" element={<ProtectedRoute><LearningPage /></ProtectedRoute>} />
           <Route path="/events" element={<ProtectedRoute><EventsPage /></ProtectedRoute>} />
