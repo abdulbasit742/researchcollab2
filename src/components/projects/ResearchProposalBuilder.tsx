@@ -20,7 +20,6 @@ type ResearchProposalBuilderProps = {
 export function ResearchProposalBuilder({ sections = RESEARCH_PROPOSAL_SECTIONS }: ResearchProposalBuilderProps) {
   const completionScore = getResearchProposalCompletionScore(sections);
   const complete = sections.filter((section) => section.status === "complete").length;
-  const review = sections.filter((section) => section.status === "review").length;
   const draft = sections.filter((section) => section.status === "draft").length;
   const notStarted = sections.filter((section) => section.status === "not_started").length;
 
@@ -42,14 +41,14 @@ export function ResearchProposalBuilder({ sections = RESEARCH_PROPOSAL_SECTIONS 
                 Research Proposal Builder
               </CardTitle>
               <CardDescription>
-                Structure a supervisor-review-ready research proposal with problem, gap, questions, methodology, ethics, timeline, and references.
+                Structure a supervisor-review-ready proposal with problem, gap, questions, method, timeline, and references.
               </CardDescription>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Button variant="outline" disabled title="Proposal DOCX export will be enabled after proposal content storage is connected.">
-                <Download className="mr-2 h-4 w-4" /> Export DOCX
+              <Button variant="outline" disabled>
+                <BookMarked className="mr-2 h-4 w-4" /> Export DOCX
               </Button>
-              <Button disabled title="Proposal PDF export will be enabled after citation checks and content records are connected.">
+              <Button disabled>
                 <Download className="mr-2 h-4 w-4" /> Export PDF
               </Button>
             </div>
@@ -64,7 +63,7 @@ export function ResearchProposalBuilder({ sections = RESEARCH_PROPOSAL_SECTIONS 
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-4 text-sm text-amber-700 dark:text-amber-300">
-            This proposal builder is currently read-only planning UI. Editing, storage, supervisor comments, citation checks, and document exports should connect to project proposal records in later features.
+            This proposal builder is currently read-only planning UI. Editing, comments, checks, and exports can connect to proposal records in later features.
           </div>
 
           {sections.map((section, index) => (
@@ -105,7 +104,7 @@ function ProposalSectionCard({ section, number }: { section: ResearchProposalSec
             <p className="mt-1 text-sm text-muted-foreground">{section.description}</p>
           </div>
         </div>
-        <Button variant="outline" disabled title="Section editing will be connected after proposal content records are added.">
+        <Button variant="outline" disabled>
           <PencilLine className="mr-2 h-4 w-4" /> Edit Section
         </Button>
       </div>
@@ -131,6 +130,10 @@ function Checklist({ title, icon: Icon, items }: { title: string; icon: LucideIc
             <span>{item}</span>
           </div>
         ))}
+        <div className="flex items-start gap-2 text-sm text-muted-foreground">
+          <FileText className="mt-0.5 h-4 w-4 text-primary" />
+          <span>Keep this section aligned with the proposal file structure.</span>
+        </div>
       </div>
     </div>
   );
