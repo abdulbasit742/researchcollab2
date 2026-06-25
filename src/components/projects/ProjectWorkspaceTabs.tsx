@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
 import { LiteratureReviewMatrix } from "@/components/projects/LiteratureReviewMatrix";
+import { MethodologyBuilder } from "@/components/projects/MethodologyBuilder";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
 import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTimeline";
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
@@ -122,6 +123,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <FYPFinalReportBuilder />
           <ResearchProposalBuilder />
           <LiteratureReviewMatrix />
+          <MethodologyBuilder />
           <WorkspacePanel
             icon={FileText}
             title="Files & Evidence"
@@ -131,6 +133,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
               items={[
                 "Proposal / problem brief",
                 "Literature matrix or technical specification",
+                "Methodology and validation plan",
                 "Demo screenshots and test evidence",
                 "Final report and handover package",
               ]}
