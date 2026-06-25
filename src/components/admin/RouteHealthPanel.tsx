@@ -27,6 +27,18 @@ type BrokenLinkCheck = {
   fix: string;
 };
 
+type ImportExportStatus = "safe" | "watch" | "risk" | "manual";
+
+type ImportExportCheck = {
+  id: string;
+  area: string;
+  pattern: string;
+  status: ImportExportStatus;
+  risk: "Low" | "Medium" | "High" | "Critical";
+  evidence: string;
+  fix: string;
+};
+
 const routeHealthChecks: RouteHealthCheck[] = [
   {
     id: "landing",
@@ -204,6 +216,81 @@ const brokenLinkChecks: BrokenLinkCheck[] = [
   },
 ];
 
+const importExportChecks: ImportExportCheck[] = [
+  {
+    id: "auth-redirect-export",
+    area: "AuthContext exports",
+    pattern: "getRoleBasedRedirect",
+    status: "safe",
+    risk: "Low",
+    evidence: "The role redirect helper is exported from AuthContext and can be imported by AuthPage.",
+    fix: "Keep this export stable while role routing is expanded.",
+  },
+  {
+    id: "supabase-types-fallback",
+    area: "Supabase types",
+    pattern: "Database / Json",
+    status: "watch",
+    risk: "Medium",
+    evidence: "Database and Json are available through fallback types, but real generated types are still pending.",
+    fix: "Generate Supabase types from staging and replace the fallback before production.",
+  },
+  {
+    id: "lazy-route-imports",
+    area: "App.tsx lazy imports",
+    pattern: "lazy(() => import('./pages/...'))",
+    status: "manual",
+    risk: "High",
+    evidence: "The app has many lazy page imports. A missing default export will only fail during build/runtime.",
+    fix: "Run npm run build after every route/page addition and keep every lazy page as a default export.",
+  },
+  {
+    id: "ui-component-exports",
+    area: "shadcn/ui imports",
+    pattern: "@/components/ui/*",
+    status: "safe",
+    risk: "Low",
+    evidence: "Admin health panels use existing Card, Badge, Tabs, and Table component exports.",
+    fix: "Use existing UI exports instead of creating duplicate component names.",
+  },
+  {
+    id: "admin-panel-exports",
+    area: "Admin panels",
+    pattern: "named component exports",
+    status: "watch",
+    risk: "Medium",
+    evidence: "New admin panels should use named exports when imported into an existing page.",
+    fix: "Match named imports exactly, for example import { RouteHealthPanel } from '@/components/admin/RouteHealthPanel'.",
+  },
+  {
+    id: "alias-resolution",
+    area: "Path aliases",
+    pattern: "@/",
+    status: "safe",
+    risk: "Low",
+    evidence: "Vite config defines @ as src, so alias imports should resolve in Lovable and local builds.",
+    fix: "Avoid deep relative paths when shared aliases already exist.",
+  },
+  {
+    id: "barrel-exports",
+    area: "Index/barrel files",
+    pattern: "index.ts exports",
+    status: "manual",
+    risk: "Medium",
+    evidence: "Large apps often break when a component is moved but barrel exports are not updated.",
+    fix: "When moving shared components, update barrel exports or import from the direct file path.",
+  },
+  {
+    id: "icon-imports",
+    area: "Lucide icons",
+    pattern: "lucide-react named icons",
+    status: "watch",
+    risk: "Medium",
+    evidence: "Lucide named imports must match available icon names in the installed package.",
+    fix: "Prefer already-used icons or run npm run build after adding new icon imports.",
+  },
+];
+
 const getRouteStatusLabel = (status: RouteHealthStatus) => {
   switch (status) {
     case "ready":
@@ -264,7 +351,37 @@ const getBrokenLinkStatusClass = (status: BrokenLinkStatus) => {
   }
 };
 
-const getRiskClass = (risk: BrokenLinkCheck["risk"]) => {
+const getImportExportStatusLabel = (status: ImportExportStatus) => {
+  switch (status) {
+    case "safe":
+      return "Safe";
+    case "watch":
+      return "Watch";
+    case "risk":
+      return "Risk";
+    case "manual":
+      return "Manual";
+    default:
+      return "Unknown";
+  }
+};
+
+const getImportExportStatusClass = (status: ImportExportStatus) => {
+  switch (status) {
+    case "safe":
+      return "bg-green-500/10 text-green-600 border-green-500/30";
+    case "watch":
+      return "bg-amber-500/10 text-amber-600 border-amber-500/30";
+    case "risk":
+      return "bg-red-500/10 text-red-600 border-red-500/30";
+    case "manual":
+      return "bg-blue-500/10 text-blue-600 border-blue-500/30";
+    default:
+      return "bg-muted text-muted-foreground";
+  }
+};
+
+const getRiskClass = (risk: BrokenLinkCheck["risk"] | ImportExportCheck["risk"]) => {
   switch (risk) {
     case "Critical":
       return "bg-red-600/10 text-red-700 border-red-600/30";
@@ -288,6 +405,18 @@ export function RouteHealthPanel() {
   const reviewLinks = brokenLinkChecks.filter((check) => check.status === "review");
   const okLinks = brokenLinkChecks.filter((check) => check.status === "ok");
   const externalLinks = brokenLinkChecks.filter((check) => check.status === "external");
+  const importExportSafe = importExportChecks.filter((check) => check.status === "safe");
+  const importExportWatch = importExportChecks.filter((check) => check.status === "watch");
+  const importExportRisk = importExportChecks.filter((check) => check.status === "risk");
+  const importExportManual = importExportChecks.filter((check) => check.status === "manual");
+  const importExportScore = Math.round(
+    importExportChecks.reduce((total, check) => {
+      if (check.status === "safe") return total + 100;
+      if (check.status === "watch") return total + 65;
+      if (check.status === "manual") return total + 45;
+      return total;
+    }, 0) / importExportChecks.length
+  );
   const linkReadinessScore = Math.round(
     brokenLinkChecks.reduce((total, check) => {
       if (check.status === "ok") return total + 100;
@@ -417,6 +546,79 @@ export function RouteHealthPanel() {
 
           <div className="rounded-lg bg-muted/50 p-4 text-sm text-muted-foreground">
             This scanner is a static admin QA checklist. For automated scanning, add a CI job later that crawls built routes and fails on invalid internal links.
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className={importExportRisk.length > 0 ? "border-red-500/40" : "border-amber-500/30"}>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            {importExportRisk.length > 0 ? <AlertTriangle className="h-5 w-5 text-red-500" /> : <CheckCircle className="h-5 w-5 text-green-500" />}
+            Missing Import/Export Detector
+          </CardTitle>
+          <CardDescription>
+            Static import/export risk scanner for lazy routes, named exports, Supabase types, UI imports, path aliases, and icon imports.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="rounded-lg border p-3">
+              <p className="text-xs text-muted-foreground">Import Score</p>
+              <p className="text-2xl font-bold">{importExportScore}%</p>
+            </div>
+            <div className="rounded-lg border p-3">
+              <p className="text-xs text-muted-foreground">Safe</p>
+              <p className="text-2xl font-bold text-green-600">{importExportSafe.length}</p>
+            </div>
+            <div className="rounded-lg border p-3">
+              <p className="text-xs text-muted-foreground">Watch</p>
+              <p className="text-2xl font-bold text-amber-600">{importExportWatch.length}</p>
+            </div>
+            <div className="rounded-lg border p-3">
+              <p className="text-xs text-muted-foreground">Manual</p>
+              <p className="text-2xl font-bold text-blue-600">{importExportManual.length}</p>
+            </div>
+            <div className="rounded-lg border p-3">
+              <p className="text-xs text-muted-foreground">Risk</p>
+              <p className="text-2xl font-bold text-red-600">{importExportRisk.length}</p>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Area</TableHead>
+                  <TableHead>Pattern</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Risk</TableHead>
+                  <TableHead>Evidence</TableHead>
+                  <TableHead>Fix</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {importExportChecks.map((check) => (
+                  <TableRow key={check.id}>
+                    <TableCell className="font-medium">{check.area}</TableCell>
+                    <TableCell className="font-mono text-xs">{check.pattern}</TableCell>
+                    <TableCell>
+                      <Badge className={getImportExportStatusClass(check.status)}>
+                        {getImportExportStatusLabel(check.status)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={getRiskClass(check.risk)}>{check.risk}</Badge>
+                    </TableCell>
+                    <TableCell className="max-w-sm text-sm text-muted-foreground">{check.evidence}</TableCell>
+                    <TableCell className="max-w-sm text-sm">{check.fix}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          <div className="rounded-lg bg-muted/50 p-4 text-sm text-muted-foreground">
+            This detector is a static QA guard. The real source of truth is still <code className="rounded bg-background px-1 py-0.5">npm run build</code>, because TypeScript/Vite will catch missing imports, missing default exports, and unresolved aliases.
           </div>
         </CardContent>
       </Card>
