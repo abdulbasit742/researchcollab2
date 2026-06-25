@@ -27,6 +27,7 @@ import { ResearcherServiceProfilePanel } from "@/components/projects/ResearcherS
 import { ResearchGapFinderPanel } from "@/components/projects/ResearchGapFinderPanel";
 import { ResearchProposalBuilder } from "@/components/projects/ResearchProposalBuilder";
 import { SavedAIOutputsPanel } from "@/components/projects/SavedAIOutputsPanel";
+import { ServicePackagesPanel } from "@/components/projects/ServicePackagesPanel";
 import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePanel";
 import { SupervisorSectionCommentsPanel } from "@/components/projects/SupervisorSectionCommentsPanel";
 import { TaskManager } from "@/components/projects/TaskManager";
@@ -187,6 +188,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
           <MarketplaceBrowsePanel />
+          <ServicePackagesPanel />
           <WorkspacePanel
             icon={Users}
             title="Team"
@@ -200,6 +202,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
+                "Service package tiers",
                 "Sponsor or institution contact",
               ]}
             />
