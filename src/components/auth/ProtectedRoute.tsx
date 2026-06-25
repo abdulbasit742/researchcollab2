@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { getRoleLabel, type AppRole } from "@/config/roles";
+import { getRoleLabel, ONBOARDING_PATH, type AppRole } from "@/config/roles";
 import { useAuth } from "@/contexts/AuthContext";
 import AccessDeniedPage from "@/pages/AccessDeniedPage";
 
@@ -9,6 +9,8 @@ interface ProtectedRouteProps {
   allowedRoles?: AppRole[];
   redirectTo?: string;
   unauthorizedTo?: string;
+  requireOnboarding?: boolean;
+  onboardingTo?: string;
 }
 
 function RouteLoadingState({ message = "Verifying session…" }: { message?: string }) {
@@ -27,8 +29,10 @@ export function ProtectedRoute({
   allowedRoles,
   redirectTo = "/auth",
   unauthorizedTo,
+  requireOnboarding = true,
+  onboardingTo = ONBOARDING_PATH,
 }: ProtectedRouteProps) {
-  const { user, userRole, isLoading } = useAuth();
+  const { user, profile, userRole, isLoading } = useAuth();
   const location = useLocation();
 
   if (isLoading) {
@@ -37,6 +41,22 @@ export function ProtectedRoute({
 
   if (!user) {
     return <Navigate to={redirectTo} state={{ from: location.pathname }} replace />;
+  }
+
+  const isOnboardingRoute = location.pathname === onboardingTo;
+  const onboardingIncomplete = profile?.onboarding_completed !== true;
+
+  if (requireOnboarding && onboardingIncomplete && !isOnboardingRoute) {
+    return (
+      <Navigate
+        to={onboardingTo}
+        state={{
+          from: location.pathname,
+          onboardingRequired: true,
+        }}
+        replace
+      />
+    );
   }
 
   if (allowedRoles?.length) {
