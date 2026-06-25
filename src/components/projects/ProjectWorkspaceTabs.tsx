@@ -29,6 +29,7 @@ import { ReportSectionStatusTracker } from "@/components/projects/ReportSectionS
 import { ResearcherServiceProfilePanel } from "@/components/projects/ResearcherServiceProfilePanel";
 import { ResearchGapFinderPanel } from "@/components/projects/ResearchGapFinderPanel";
 import { ResearchProposalBuilder } from "@/components/projects/ResearchProposalBuilder";
+import { RevisionRequestFlowPanel } from "@/components/projects/RevisionRequestFlowPanel";
 import { SavedAIOutputsPanel } from "@/components/projects/SavedAIOutputsPanel";
 import { ServicePackagesPanel } from "@/components/projects/ServicePackagesPanel";
 import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePanel";
@@ -195,6 +196,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <DemoOrderCheckoutPanel />
           <OrderWorkroomPanel />
           <DeliverablesTrackerPanel />
+          <RevisionRequestFlowPanel />
           <WorkspacePanel
             icon={Users}
             title="Team"
@@ -212,6 +214,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Demo order checkout",
                 "Order workroom",
                 "Deliverables tracker",
+                "Revision request flow",
                 "Sponsor or institution contact",
               ]}
             />
