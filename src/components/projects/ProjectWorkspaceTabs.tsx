@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AbstractGeneratorPanel } from "@/components/projects/AbstractGeneratorPanel";
 import { AIToolsHub } from "@/components/projects/AIToolsHub";
 import { CitationWarningSystem } from "@/components/projects/CitationWarningSystem";
 import { DocumentExportPlaceholder } from "@/components/projects/DocumentExportPlaceholder";
@@ -107,6 +108,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <AIToolsHub />
           <ResearchGapFinderPanel />
           <LiteratureReviewAssistantPanel />
+          <AbstractGeneratorPanel />
           <WorkspacePanel
             icon={FolderOpen}
             title="Project Overview"
@@ -118,7 +120,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
               <InfoCard label="Budget" value={project.budgetLabel} />
             </div>
             <div className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
-              This overview is the workspace home. Next features will connect this to real project records, health scoring, AI tools, research gap finding, literature review drafting, and report builders.
+              This overview is the workspace home. Next features will connect this to real project records, health scoring, AI tools, research gap finding, literature review drafting, abstract generation, and report builders.
             </div>
           </WorkspacePanel>
         </TabsContent>
