@@ -35,8 +35,17 @@ export type RoleConfig = {
   permissions: RolePermission[];
 };
 
+export type PublicSignupRoleOption = {
+  value: string;
+  role: AppRole;
+  label: string;
+  description: string;
+  dashboardPath: string;
+};
+
 export const DEFAULT_ROLE: AppRole = "student";
 export const DEFAULT_DASHBOARD_PATH = "/home";
+export const ONBOARDING_PATH = "/onboarding";
 
 export const ROLE_CONFIG: Record<AppRole, RoleConfig> = {
   student: {
@@ -125,6 +134,30 @@ export const PUBLIC_SIGNUP_ROLE_MAP: Record<string, AppRole> = {
   professional: "researcher",
 };
 
+export const PUBLIC_SIGNUP_ROLE_OPTIONS: PublicSignupRoleOption[] = [
+  {
+    value: "student",
+    role: "student",
+    label: ROLE_CONFIG.student.label,
+    description: "Learn, collaborate, and earn",
+    dashboardPath: ROLE_CONFIG.student.dashboardPath,
+  },
+  {
+    value: "researcher",
+    role: "researcher",
+    label: ROLE_CONFIG.researcher.label,
+    description: "Lead projects and mentor",
+    dashboardPath: ROLE_CONFIG.researcher.dashboardPath,
+  },
+  {
+    value: "professional",
+    role: "researcher",
+    label: "Professional",
+    description: "Post projects, hire talent, access tools",
+    dashboardPath: ROLE_CONFIG.researcher.dashboardPath,
+  },
+];
+
 export const PUBLIC_SIGNUP_ROLES: AppRole[] = ["student", "researcher"];
 export const PRIVILEGED_ROLES: AppRole[] = Object.values(ROLE_CONFIG)
   .filter((config) => config.isPrivileged)
@@ -158,6 +191,15 @@ export function getRoleDashboardPath(role?: string | null): string {
 
 export function getRoleLabel(role?: string | null): string {
   return getRoleConfig(role).label;
+}
+
+export function getPostAuthRedirectPath(role?: string | null, onboardingCompleted?: boolean | null): string {
+  if (!onboardingCompleted) return ONBOARDING_PATH;
+  return getRoleDashboardPath(role);
+}
+
+export function getPublicSignupRoleOptions(): PublicSignupRoleOption[] {
+  return PUBLIC_SIGNUP_ROLE_OPTIONS;
 }
 
 export function roleHasPermission(role: string | null | undefined, permission: RolePermission): boolean {
