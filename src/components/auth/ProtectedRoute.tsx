@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { getRoleDashboardPath, getRoleLabel, type AppRole } from "@/config/roles";
+import { getRoleLabel, type AppRole } from "@/config/roles";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface ProtectedRouteProps {
@@ -25,7 +25,7 @@ export function ProtectedRoute({
   children,
   allowedRoles,
   redirectTo = "/auth",
-  unauthorizedTo,
+  unauthorizedTo = "/access-denied",
 }: ProtectedRouteProps) {
   const { user, userRole, isLoading } = useAuth();
   const location = useLocation();
@@ -46,10 +46,9 @@ export function ProtectedRoute({
     const hasAllowedRole = allowedRoles.includes(userRole.role);
 
     if (!hasAllowedRole) {
-      const fallbackPath = unauthorizedTo ?? getRoleDashboardPath(userRole.role);
       return (
         <Navigate
-          to={fallbackPath}
+          to={unauthorizedTo}
           state={{
             from: location.pathname,
             accessDenied: true,
