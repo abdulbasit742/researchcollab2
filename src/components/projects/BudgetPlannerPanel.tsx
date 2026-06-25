@@ -18,7 +18,7 @@ import {
   type BudgetPlannerSummary,
   type BudgetReviewCheck,
 } from "@/config/budgetPlanner";
-import { Calculator, ClipboardCheck, FileSpreadsheet, Lock, ReceiptText, ShieldCheck, WalletCards } from "lucide-react";
+import { Calculator, ClipboardCheck, FileSpreadsheet, Lock, ShieldCheck, WalletCards } from "lucide-react";
 
 type BudgetPlannerPanelProps = {
   summary?: BudgetPlannerSummary;
