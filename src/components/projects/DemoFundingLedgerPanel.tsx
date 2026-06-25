@@ -14,7 +14,7 @@ import {
   type DemoFundingLedgerEntry,
   type DemoFundingLedgerSummary,
 } from "@/config/demoFundingLedger";
-import { BookOpenCheck, CheckCircle2, FileSpreadsheet, Lock, ReceiptText, ShieldCheck, WalletCards } from "lucide-react";
+import { BookOpenCheck, CheckCircle2, FileSpreadsheet, Lock, ShieldCheck, WalletCards } from "lucide-react";
 
 type DemoFundingLedgerPanelProps = {
   summary?: DemoFundingLedgerSummary;
