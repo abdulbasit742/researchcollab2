@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
+import { mapPublicSignupRole, getRoleDashboardPath, type AppRole } from "@/config/roles";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 
@@ -23,7 +24,7 @@ export interface Profile {
 export interface UserRole {
   id: string;
   user_id: string;
-  role: "student" | "researcher" | "admin" | "government_admin" | "compliance_officer" | "sponsor_admin" | "tenant_admin" | "super_admin";
+  role: AppRole;
   created_at: string;
 }
 
@@ -42,23 +43,7 @@ interface AuthContextType {
 }
 
 export function getRoleBasedRedirect(role?: string | null): string {
-  switch (role) {
-    case "admin":
-    case "super_admin":
-      return "/admin";
-    case "government_admin":
-      return "/national-oversight";
-    case "compliance_officer":
-      return "/governance";
-    case "sponsor_admin":
-      return "/sponsor-dashboard";
-    case "tenant_admin":
-      return "/institution-control";
-    case "researcher":
-    case "student":
-    default:
-      return "/home";
-  }
+  return getRoleDashboardPath(role);
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -167,15 +152,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     metadata: { first_name: string; last_name: string; role: string }
   ) => {
     const redirectUrl = `${window.location.origin}/`;
-    
-    // Map role to valid app_role enum value
-    const roleMap: Record<string, string> = {
-      "student": "student",
-      "researcher": "researcher",
-      "professional": "researcher",
-    };
-    
-    const mappedRole = roleMap[metadata.role] || "student";
+    const mappedRole = mapPublicSignupRole(metadata.role);
 
     const { error } = await supabase.auth.signUp({
       email,
