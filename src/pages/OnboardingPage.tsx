@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { GraduationCap, User, MapPin, Building, Sparkles, ArrowRight, ArrowLeft, Loader2, Check, SkipForward } from "lucide-react";
+import { getPublicSignupRoleOptions, getRoleDashboardPath, mapPublicSignupRole } from "@/config/roles";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -66,11 +67,7 @@ const researchLevels = [
   { value: "publication-ready", label: "Publication Ready", description: "Published or ready to publish" },
 ];
 
-const roles = [
-  { value: "student", label: "Student", description: "Learn, collaborate, and earn" },
-  { value: "researcher", label: "Researcher", description: "Lead projects and mentor" },
-  { value: "professional", label: "Professional", description: "Post projects, hire talent, access tools" },
-];
+const roles = getPublicSignupRoleOptions();
 
 const interestOptions = [
   "Machine Learning", "Data Science", "Quantum Physics", "Nanotechnology",
@@ -137,11 +134,14 @@ export default function OnboardingPage() {
     setIsSubmitting(true);
 
     try {
+      const mappedRole = mapPublicSignupRole(formData.role);
+      const redirectPath = getRoleDashboardPath(mappedRole);
+
       const { error } = await supabase
         .from("profiles")
         .update({
           full_name: formData.fullName,
-          role: formData.role,
+          role: mappedRole,
           location: formData.location,
           university: formData.university,
           education_level: formData.educationLevel,
@@ -155,17 +155,16 @@ export default function OnboardingPage() {
 
       if (error) throw error;
 
-      const dbRole = formData.role === "professional" ? "researcher" : formData.role;
       await supabase
         .from("user_roles")
-        .update({ role: dbRole as "student" | "researcher" | "admin" })
+        .update({ role: mappedRole })
         .eq("user_id", user.id);
 
       await refreshProfile();
       celebrate(CELEBRATION_PRESETS.onboardingComplete);
 
-      toast({ title: "Profile Complete!", description: "Welcome to RCollab! Your profile is ready." });
-      setTimeout(() => navigate("/home"), 2500);
+      toast({ title: "Profile Complete!", description: "Welcome to RCollab! Redirecting to your dashboard." });
+      setTimeout(() => navigate(redirectPath, { replace: true }), 1800);
     } catch (error: any) {
       console.error("Onboarding error:", error);
       toast({ title: "Error", description: error.message || "Failed to save profile. Please try again.", variant: "destructive" });
@@ -174,7 +173,6 @@ export default function OnboardingPage() {
     }
   };
 
-  const isSkippable = step === 3 || step === 4;
   const meta = stepMeta[step - 1];
 
   return (
@@ -197,24 +195,20 @@ export default function OnboardingPage() {
         transition={{ duration: 0.5 }}
         className="relative w-full max-w-lg"
       >
-        {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-6">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-primary">
             <GraduationCap className="h-6 w-6 text-primary-foreground" />
           </div>
-          <span className="text-2xl font-bold">
-            <span className="text-primary">RCollab</span>
-          </span>
+          <span className="text-2xl font-bold"><span className="text-primary">RCollab</span></span>
         </div>
 
-        {/* Stepper */}
         <div className="flex items-center justify-center gap-1 mb-6">
           {stepMeta.map((s, i) => {
             const stepNum = i + 1;
             const isCompleted = step > stepNum;
             const isCurrent = step === stepNum;
             return (
-              <div key={i} className="flex items-center gap-1">
+              <div key={s.label} className="flex items-center gap-1">
                 <div className="flex flex-col items-center">
                   <div
                     className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
@@ -227,13 +221,9 @@ export default function OnboardingPage() {
                   >
                     {isCompleted ? <Check className="h-4 w-4" /> : stepNum}
                   </div>
-                  <span className={`text-[10px] mt-1 ${isCurrent ? "text-primary font-medium" : "text-muted-foreground"}`}>
-                    {s.label}
-                  </span>
+                  <span className={`text-[10px] mt-1 ${isCurrent ? "text-primary font-medium" : "text-muted-foreground"}`}>{s.label}</span>
                 </div>
-                {i < TOTAL_STEPS - 1 && (
-                  <div className={`h-0.5 w-6 mb-4 rounded-full ${step > stepNum ? "bg-primary" : "bg-muted"}`} />
-                )}
+                {i < TOTAL_STEPS - 1 && <div className={`h-0.5 w-6 mb-4 rounded-full ${step > stepNum ? "bg-primary" : "bg-muted"}`} />}
               </div>
             );
           })}
@@ -241,16 +231,13 @@ export default function OnboardingPage() {
 
         <Card className="border-0 shadow-xl">
           <CardHeader className="text-center pb-4">
-            <Badge variant="secondary" className="mx-auto mb-2">
-              Step {step} of {TOTAL_STEPS}
-            </Badge>
+            <Badge variant="secondary" className="mx-auto mb-2">Step {step} of {TOTAL_STEPS}</Badge>
             <CardTitle className="text-2xl">{meta.title}</CardTitle>
             <CardDescription>{meta.description}</CardDescription>
           </CardHeader>
 
           <CardContent>
             <AnimatePresence mode="wait">
-              {/* Step 1: Personal Info */}
               {step === 1 && (
                 <motion.div key="step1" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="space-y-4">
                   <div className="space-y-2">
@@ -262,7 +249,7 @@ export default function OnboardingPage() {
                   </div>
                   <div className="space-y-2">
                     <Label>I am a...</Label>
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       {roles.map((role) => (
                         <button key={role.value} type="button" onClick={() => setFormData({ ...formData, role: role.value })}
                           className={`p-3 rounded-lg border-2 text-left transition-all ${formData.role === role.value ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
@@ -286,31 +273,24 @@ export default function OnboardingPage() {
                       <Input id="university" placeholder="NUST, PIEAS, GIKI..." className="pl-10" value={formData.university} onChange={(e) => setFormData({ ...formData, university: e.target.value })} />
                     </div>
                   </div>
-                  <Button className="w-full" onClick={handleNext}>
-                    Continue <ArrowRight className="h-4 w-4" />
-                  </Button>
+                  <Button className="w-full" onClick={handleNext}>Continue <ArrowRight className="h-4 w-4" /></Button>
                 </motion.div>
               )}
 
-              {/* Step 2: Academic Profile */}
               {step === 2 && (
                 <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
                   <div className="space-y-2">
                     <Label>Education Level</Label>
                     <Select value={formData.educationLevel} onValueChange={(value) => setFormData({ ...formData, educationLevel: value })}>
                       <SelectTrigger><SelectValue placeholder="Select your education level" /></SelectTrigger>
-                      <SelectContent>
-                        {educationLevels.map((level) => (<SelectItem key={level.value} value={level.value}>{level.label}</SelectItem>))}
-                      </SelectContent>
+                      <SelectContent>{educationLevels.map((level) => <SelectItem key={level.value} value={level.value}>{level.label}</SelectItem>)}</SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-2">
                     <Label>Department</Label>
                     <Select value={formData.department} onValueChange={(value) => setFormData({ ...formData, department: value })}>
                       <SelectTrigger><SelectValue placeholder="Select your department" /></SelectTrigger>
-                      <SelectContent>
-                        {departments.map((dept) => (<SelectItem key={dept.value} value={dept.value}>{dept.label}</SelectItem>))}
-                      </SelectContent>
+                      <SelectContent>{departments.map((dept) => <SelectItem key={dept.value} value={dept.value}>{dept.label}</SelectItem>)}</SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-2">
@@ -344,7 +324,6 @@ export default function OnboardingPage() {
                 </motion.div>
               )}
 
-              {/* Step 3: Skills */}
               {step === 3 && (
                 <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
                   <SkillSelector selectedSkills={formData.skills} onSkillsChange={(skills) => setFormData({ ...formData, skills })} />
@@ -358,14 +337,13 @@ export default function OnboardingPage() {
                 </motion.div>
               )}
 
-              {/* Step 4: Platform Walkthrough */}
               {step === 4 && (
                 <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
                   <PlatformWalkthrough />
                   <div className="flex gap-3">
                     <Button variant="outline" onClick={handleBack} className="flex-1"><ArrowLeft className="h-4 w-4" /> Back</Button>
                     <Button className="flex-1" onClick={handleSubmit} disabled={isSubmitting}>
-                      {isSubmitting ? (<><Loader2 className="h-4 w-4 animate-spin" /> Saving...</>) : (<>Get Started <Sparkles className="h-4 w-4" /></>)}
+                      {isSubmitting ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving...</> : <>Get Started <Sparkles className="h-4 w-4" /></>}
                     </Button>
                   </div>
                   <Button variant="ghost" className="w-full text-muted-foreground" onClick={handleSubmit} disabled={isSubmitting}>
