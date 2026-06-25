@@ -8,6 +8,7 @@ import { MilestoneManager } from "@/components/projects/MilestoneManager";
 import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTimeline";
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
 import { ProjectRiskAlerts } from "@/components/projects/ProjectRiskAlerts";
+import { ResearchProposalBuilder } from "@/components/projects/ResearchProposalBuilder";
 import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePanel";
 import { TaskManager } from "@/components/projects/TaskManager";
 import { TeamMemberInvitePanel } from "@/components/projects/TeamMemberInvitePanel";
@@ -118,6 +119,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
 
         <TabsContent value="files" className="space-y-4">
           <FYPFinalReportBuilder />
+          <ResearchProposalBuilder />
           <WorkspacePanel
             icon={FileText}
             title="Files & Evidence"
