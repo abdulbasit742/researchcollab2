@@ -8,6 +8,7 @@ import { AIPromptLibraryPanel } from "@/components/projects/AIPromptLibraryPanel
 import { AISafetyFeedbackPanel } from "@/components/projects/AISafetyFeedbackPanel";
 import { AIToolsHub } from "@/components/projects/AIToolsHub";
 import { CitationWarningSystem } from "@/components/projects/CitationWarningSystem";
+import { CreateServiceFlowPanel } from "@/components/projects/CreateServiceFlowPanel";
 import { DocumentExportPlaceholder } from "@/components/projects/DocumentExportPlaceholder";
 import { EvidenceLinkingSystem } from "@/components/projects/EvidenceLinkingSystem";
 import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
@@ -183,6 +184,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <SupervisorInvitePanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
+          <CreateServiceFlowPanel />
           <WorkspacePanel
             icon={Users}
             title="Team"
@@ -194,6 +196,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Student/research team",
                 "Supervisor or reviewer",
                 "Researcher service profile",
+                "Create service flow",
                 "Sponsor or institution contact",
               ]}
             />
