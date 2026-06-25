@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CitationWarningSystem } from "@/components/projects/CitationWarningSystem";
+import { EvidenceLinkingSystem } from "@/components/projects/EvidenceLinkingSystem";
 import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
 import { LiteratureReviewMatrix } from "@/components/projects/LiteratureReviewMatrix";
 import { MethodologyBuilder } from "@/components/projects/MethodologyBuilder";
@@ -128,6 +129,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <SupervisorSectionCommentsPanel />
           <VersionHistoryPanel />
           <CitationWarningSystem />
+          <EvidenceLinkingSystem />
           <FYPFinalReportBuilder />
           <ResearchProposalBuilder />
           <LiteratureReviewMatrix />
@@ -142,6 +144,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Proposal / problem brief",
                 "Literature matrix or technical specification",
                 "Citation warnings and reference checks",
+                "Evidence links and claim support",
                 "Methodology and validation plan",
                 "Supervisor comments and response notes",
                 "Version history snapshots",
