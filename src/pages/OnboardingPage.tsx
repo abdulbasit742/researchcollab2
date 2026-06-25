@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -78,7 +78,7 @@ const interestOptions = [
 export default function OnboardingPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user, refreshProfile } = useAuth();
+  const { user, profile, refreshProfile, isLoading } = useAuth();
   const { isActive: isCelebrating, config: celebrationConfig, celebrate } = useCelebration();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -94,6 +94,19 @@ export default function OnboardingPage() {
     interests: [] as string[],
     skills: [] as string[],
   });
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!user) {
+      navigate("/auth", { replace: true });
+      return;
+    }
+
+    if (profile?.onboarding_completed === true) {
+      navigate(getRoleDashboardPath(profile.role), { replace: true });
+    }
+  }, [isLoading, navigate, profile?.onboarding_completed, profile?.role, user]);
 
   const toggleInterest = (interest: string) => {
     setFormData((prev) => ({
