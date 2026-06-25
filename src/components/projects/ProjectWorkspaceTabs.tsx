@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
+import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTimeline";
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
 import { ProjectRiskAlerts } from "@/components/projects/ProjectRiskAlerts";
 import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePanel";
@@ -166,20 +167,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
         </TabsContent>
 
         <TabsContent value="activity">
-          <WorkspacePanel
-            icon={Activity}
-            title="Activity Timeline"
-            description="Capture updates, comments, decisions, and status changes across the project."
-          >
-            <PlaceholderList
-              items={[
-                "Project workspace created",
-                "Project brief submitted for review",
-                "Milestone plan generated",
-                "Team matching pending",
-              ]}
-            />
-          </WorkspacePanel>
+          <ProjectActivityTimeline />
         </TabsContent>
       </Tabs>
     </div>
