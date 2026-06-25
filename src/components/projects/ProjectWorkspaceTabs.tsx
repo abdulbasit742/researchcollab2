@@ -46,6 +46,7 @@ import { RevisionRequestFlowPanel } from "@/components/projects/RevisionRequestF
 import { SavedAIOutputsPanel } from "@/components/projects/SavedAIOutputsPanel";
 import { ServicePackagesPanel } from "@/components/projects/ServicePackagesPanel";
 import { SponsorshipProposalBuilderPanel } from "@/components/projects/SponsorshipProposalBuilderPanel";
+import { StudentImportPlaceholderPanel } from "@/components/projects/StudentImportPlaceholderPanel";
 import { SupervisorDashboardPanel } from "@/components/projects/SupervisorDashboardPanel";
 import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePanel";
 import { SupervisorReviewQueuePanel } from "@/components/projects/SupervisorReviewQueuePanel";
@@ -208,6 +209,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <SupervisorReviewQueuePanel />
           <DepartmentDashboardPanel />
           <BatchSessionManagementPanel />
+          <StudentImportPlaceholderPanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -233,6 +235,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Supervisor review queue",
                 "Department dashboard",
                 "Batch/session management",
+                "Student import placeholder",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
