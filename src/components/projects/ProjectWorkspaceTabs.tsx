@@ -14,6 +14,7 @@ import { DemoOrderCheckoutPanel } from "@/components/projects/DemoOrderCheckoutP
 import { DisputePlaceholderPanel } from "@/components/projects/DisputePlaceholderPanel";
 import { DocumentExportPlaceholder } from "@/components/projects/DocumentExportPlaceholder";
 import { EvidenceLinkingSystem } from "@/components/projects/EvidenceLinkingSystem";
+import { FundingCampaignBuilderPanel } from "@/components/projects/FundingCampaignBuilderPanel";
 import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
 import { LiteratureReviewAssistantPanel } from "@/components/projects/LiteratureReviewAssistantPanel";
 import { LiteratureReviewMatrix } from "@/components/projects/LiteratureReviewMatrix";
@@ -227,7 +228,8 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           </WorkspacePanel>
         </TabsContent>
 
-        <TabsContent value="funding">
+        <TabsContent value="funding" className="space-y-4">
+          <FundingCampaignBuilderPanel />
           <WorkspacePanel
             icon={DollarSign}
             title="Funding & Demo Labels"
@@ -237,7 +239,13 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
               Demo-safe mode: this workspace does not move real funds. Real payment, escrow, or payout flows require verified accounts, policy review, and production payment setup.
             </div>
             <PlaceholderList
-              items={["Budget estimate", "Milestone release labels", "Contribution ledger", "Sponsor review notes"]}
+              items={[
+                "Funding campaign builder",
+                "Budget estimate",
+                "Milestone release labels",
+                "Contribution ledger",
+                "Sponsor review notes",
+              ]}
             />
           </WorkspacePanel>
         </TabsContent>
