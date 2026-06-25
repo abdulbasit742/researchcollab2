@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
+import { ProjectRiskAlerts } from "@/components/projects/ProjectRiskAlerts";
 import { TaskManager } from "@/components/projects/TaskManager";
 import {
   DEMO_PROJECT_WORKSPACE,
@@ -86,6 +87,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
 
         <TabsContent value="overview" className="space-y-4">
           <ProjectHealthScoreCard project={project} />
+          <ProjectRiskAlerts project={project} />
           <WorkspacePanel
             icon={FolderOpen}
             title="Project Overview"
