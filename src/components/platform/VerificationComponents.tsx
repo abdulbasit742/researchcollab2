@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { VerificationStatusBadge, ProfileVerificationBadges } from "@/components/verification/VerificationBadge";
 import { 
   useVerification, 
   VerificationSubmission, 
@@ -21,10 +22,6 @@ import {
 } from "@/hooks/useCredentialVerification";
 import { 
   Shield, 
-  CheckCircle2, 
-  Clock, 
-  XCircle, 
-  AlertCircle,
   Award,
   FileCheck,
   GraduationCap,
@@ -38,31 +35,6 @@ import {
   Sparkles
 } from "lucide-react";
 import { format } from "date-fns";
-
-// =====================================================
-// VERIFICATION STATUS BADGE
-// =====================================================
-export function VerificationStatusBadge({ status }: { status: string }) {
-  const statusConfig: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; icon: React.ReactNode; label: string }> = {
-    pending: { variant: "secondary", icon: <Clock className="h-3 w-3" />, label: "Pending" },
-    approved: { variant: "default", icon: <CheckCircle2 className="h-3 w-3" />, label: "Verified" },
-    rejected: { variant: "destructive", icon: <XCircle className="h-3 w-3" />, label: "Rejected" },
-    requires_more_info: { variant: "outline", icon: <AlertCircle className="h-3 w-3" />, label: "More Info Needed" },
-    verified: { variant: "default", icon: <CheckCircle2 className="h-3 w-3" />, label: "Verified" },
-    expired: { variant: "destructive", icon: <Clock className="h-3 w-3" />, label: "Expired" },
-    revoked: { variant: "destructive", icon: <XCircle className="h-3 w-3" />, label: "Revoked" },
-    disputed: { variant: "outline", icon: <AlertCircle className="h-3 w-3" />, label: "Disputed" },
-  };
-
-  const config = statusConfig[status] || statusConfig.pending;
-
-  return (
-    <Badge variant={config.variant} className="gap-1">
-      {config.icon}
-      {config.label}
-    </Badge>
-  );
-}
 
 // =====================================================
 // TRUST SCORE DISPLAY
@@ -155,26 +127,11 @@ export function TrustProfileCard({ profile }: { profile: UserTrustProfile | null
           </div>
         </div>
 
-        <div className="flex gap-2 flex-wrap">
-          {profile.is_verified_student && (
-            <Badge className="gap-1">
-              <GraduationCap className="h-3 w-3" />
-              Verified Student
-            </Badge>
-          )}
-          {profile.is_verified_researcher && (
-            <Badge className="gap-1">
-              <FileCheck className="h-3 w-3" />
-              Verified Researcher
-            </Badge>
-          )}
-          {profile.is_verified_partner && (
-            <Badge className="gap-1">
-              <Building2 className="h-3 w-3" />
-              Verified Partner
-            </Badge>
-          )}
-        </div>
+        <ProfileVerificationBadges
+          isVerifiedStudent={profile.is_verified_student}
+          isVerifiedResearcher={profile.is_verified_researcher}
+          isVerifiedPartner={profile.is_verified_partner}
+        />
       </CardContent>
     </Card>
   );
@@ -526,47 +483,23 @@ export function VerificationCenterDashboard() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6 mt-6">
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid md:grid-cols-2 gap-6">
             <TrustProfileCard profile={trustProfile} />
             <ProfileModeSwitcher modes={profileModes} onSwitch={switchProfileMode} />
           </div>
-          <CareerTimeline phases={careerPhases} />
+          <BadgesShowcase badges={badges} />
         </TabsContent>
 
         <TabsContent value="credentials" className="space-y-4 mt-6">
-          {credentials.length === 0 ? (
-            <Card>
-              <CardContent className="p-6 text-center">
-                <FileCheck className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
-                <p className="text-muted-foreground">No credentials added yet</p>
-                <Button variant="outline" size="sm" className="mt-3">
-                  Add Credential
-                </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            credentials.map((credential) => (
-              <CredentialCard key={credential.id} credential={credential} />
-            ))
-          )}
+          {credentials.map((credential) => (
+            <CredentialCard key={credential.id} credential={credential} />
+          ))}
         </TabsContent>
 
         <TabsContent value="submissions" className="space-y-4 mt-6">
-          {submissions.length === 0 ? (
-            <Card>
-              <CardContent className="p-6 text-center">
-                <Clock className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
-                <p className="text-muted-foreground">No verification submissions</p>
-                <Button variant="outline" size="sm" className="mt-3">
-                  Start Verification
-                </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            submissions.map((submission) => (
-              <VerificationSubmissionCard key={submission.id} submission={submission} />
-            ))
-          )}
+          {submissions.map((submission) => (
+            <VerificationSubmissionCard key={submission.id} submission={submission} />
+          ))}
         </TabsContent>
 
         <TabsContent value="badges" className="mt-6">
@@ -576,5 +509,3 @@ export function VerificationCenterDashboard() {
     </div>
   );
 }
-
-export default VerificationCenterDashboard;
