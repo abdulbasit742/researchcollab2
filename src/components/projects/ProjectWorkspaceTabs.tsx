@@ -11,6 +11,7 @@ import { CitationWarningSystem } from "@/components/projects/CitationWarningSyst
 import { CreateServiceFlowPanel } from "@/components/projects/CreateServiceFlowPanel";
 import { DeliverablesTrackerPanel } from "@/components/projects/DeliverablesTrackerPanel";
 import { DemoOrderCheckoutPanel } from "@/components/projects/DemoOrderCheckoutPanel";
+import { DisputePlaceholderPanel } from "@/components/projects/DisputePlaceholderPanel";
 import { DocumentExportPlaceholder } from "@/components/projects/DocumentExportPlaceholder";
 import { EvidenceLinkingSystem } from "@/components/projects/EvidenceLinkingSystem";
 import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
@@ -197,6 +198,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <OrderWorkroomPanel />
           <DeliverablesTrackerPanel />
           <RevisionRequestFlowPanel />
+          <DisputePlaceholderPanel />
           <WorkspacePanel
             icon={Users}
             title="Team"
@@ -215,6 +217,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Order workroom",
                 "Deliverables tracker",
                 "Revision request flow",
+                "Dispute placeholder",
                 "Sponsor or institution contact",
               ]}
             />
