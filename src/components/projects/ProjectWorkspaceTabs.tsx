@@ -10,6 +10,7 @@ import { AIToolsHub } from "@/components/projects/AIToolsHub";
 import { CitationWarningSystem } from "@/components/projects/CitationWarningSystem";
 import { CreateServiceFlowPanel } from "@/components/projects/CreateServiceFlowPanel";
 import { DeliverablesTrackerPanel } from "@/components/projects/DeliverablesTrackerPanel";
+import { DemoContributionFlowPanel } from "@/components/projects/DemoContributionFlowPanel";
 import { DemoOrderCheckoutPanel } from "@/components/projects/DemoOrderCheckoutPanel";
 import { DisputePlaceholderPanel } from "@/components/projects/DisputePlaceholderPanel";
 import { DocumentExportPlaceholder } from "@/components/projects/DocumentExportPlaceholder";
@@ -230,6 +231,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
 
         <TabsContent value="funding" className="space-y-4">
           <FundingCampaignBuilderPanel />
+          <DemoContributionFlowPanel />
           <WorkspacePanel
             icon={DollarSign}
             title="Funding & Demo Labels"
@@ -241,6 +243,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
             <PlaceholderList
               items={[
                 "Funding campaign builder",
+                "Demo contribution flow",
                 "Budget estimate",
                 "Milestone release labels",
                 "Contribution ledger",
