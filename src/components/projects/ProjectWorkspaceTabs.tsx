@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
 import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTimeline";
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
@@ -115,7 +116,8 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <TaskManager />
         </TabsContent>
 
-        <TabsContent value="files">
+        <TabsContent value="files" className="space-y-4">
+          <FYPFinalReportBuilder />
           <WorkspacePanel
             icon={FileText}
             title="Files & Evidence"
