@@ -46,6 +46,7 @@ import { ServicePackagesPanel } from "@/components/projects/ServicePackagesPanel
 import { SponsorshipProposalBuilderPanel } from "@/components/projects/SponsorshipProposalBuilderPanel";
 import { SupervisorDashboardPanel } from "@/components/projects/SupervisorDashboardPanel";
 import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePanel";
+import { SupervisorReviewQueuePanel } from "@/components/projects/SupervisorReviewQueuePanel";
 import { SupervisorSectionCommentsPanel } from "@/components/projects/SupervisorSectionCommentsPanel";
 import { TaskManager } from "@/components/projects/TaskManager";
 import { TeamMemberInvitePanel } from "@/components/projects/TeamMemberInvitePanel";
@@ -202,6 +203,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
         <TabsContent value="team" className="space-y-4">
           <SupervisorInvitePanel />
           <SupervisorDashboardPanel />
+          <SupervisorReviewQueuePanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -224,6 +226,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Student/research team",
                 "Supervisor or reviewer",
                 "Supervisor dashboard",
+                "Supervisor review queue",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
