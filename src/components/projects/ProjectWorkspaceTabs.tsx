@@ -34,6 +34,7 @@ import { MethodologyAssistantPanel } from "@/components/projects/MethodologyAssi
 import { MethodologyBuilder } from "@/components/projects/MethodologyBuilder";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
 import { OrderWorkroomPanel } from "@/components/projects/OrderWorkroomPanel";
+import { OutcomeMappingPanel } from "@/components/projects/OutcomeMappingPanel";
 import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTimeline";
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
 import { ProjectRiskAIPanel } from "@/components/projects/ProjectRiskAIPanel";
@@ -216,6 +217,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <SupervisorAllocationSystemPanel />
           <VivaSchedulingPanel />
           <EvaluationRubricSystemPanel />
+          <OutcomeMappingPanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -245,6 +247,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Supervisor allocation system",
                 "Defense/viva scheduling",
                 "Evaluation rubric system",
+                "Outcome mapping",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
