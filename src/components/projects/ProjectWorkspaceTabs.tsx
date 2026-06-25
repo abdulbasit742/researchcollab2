@@ -7,6 +7,7 @@ import { AbstractGeneratorPanel } from "@/components/projects/AbstractGeneratorP
 import { AIPromptLibraryPanel } from "@/components/projects/AIPromptLibraryPanel";
 import { AISafetyFeedbackPanel } from "@/components/projects/AISafetyFeedbackPanel";
 import { AIToolsHub } from "@/components/projects/AIToolsHub";
+import { BatchSessionManagementPanel } from "@/components/projects/BatchSessionManagementPanel";
 import { BudgetPlannerPanel } from "@/components/projects/BudgetPlannerPanel";
 import { CampaignMilestoneFundingPanel } from "@/components/projects/CampaignMilestoneFundingPanel";
 import { CitationWarningSystem } from "@/components/projects/CitationWarningSystem";
@@ -206,6 +207,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <SupervisorDashboardPanel />
           <SupervisorReviewQueuePanel />
           <DepartmentDashboardPanel />
+          <BatchSessionManagementPanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -230,6 +232,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Supervisor dashboard",
                 "Supervisor review queue",
                 "Department dashboard",
+                "Batch/session management",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
