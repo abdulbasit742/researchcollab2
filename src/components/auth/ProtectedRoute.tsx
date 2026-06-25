@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { getRoleLabel, type AppRole } from "@/config/roles";
 import { useAuth } from "@/contexts/AuthContext";
+import AccessDeniedPage from "@/pages/AccessDeniedPage";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -25,7 +26,7 @@ export function ProtectedRoute({
   children,
   allowedRoles,
   redirectTo = "/auth",
-  unauthorizedTo = "/access-denied",
+  unauthorizedTo,
 }: ProtectedRouteProps) {
   const { user, userRole, isLoading } = useAuth();
   const location = useLocation();
@@ -46,16 +47,29 @@ export function ProtectedRoute({
     const hasAllowedRole = allowedRoles.includes(userRole.role);
 
     if (!hasAllowedRole) {
+      const requiredRoles = allowedRoles.map((role) => getRoleLabel(role));
+      const currentRole = getRoleLabel(userRole.role);
+
+      if (unauthorizedTo) {
+        return (
+          <Navigate
+            to={unauthorizedTo}
+            state={{
+              from: location.pathname,
+              accessDenied: true,
+              requiredRoles,
+              currentRole,
+            }}
+            replace
+          />
+        );
+      }
+
       return (
-        <Navigate
-          to={unauthorizedTo}
-          state={{
-            from: location.pathname,
-            accessDenied: true,
-            requiredRoles: allowedRoles.map((role) => getRoleLabel(role)),
-            currentRole: getRoleLabel(userRole.role),
-          }}
-          replace
+        <AccessDeniedPage
+          deniedPath={location.pathname}
+          requiredRoles={requiredRoles}
+          currentRole={currentRole}
         />
       );
     }
