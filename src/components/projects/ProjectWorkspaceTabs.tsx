@@ -14,6 +14,7 @@ import { EvidenceLinkingSystem } from "@/components/projects/EvidenceLinkingSyst
 import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
 import { LiteratureReviewAssistantPanel } from "@/components/projects/LiteratureReviewAssistantPanel";
 import { LiteratureReviewMatrix } from "@/components/projects/LiteratureReviewMatrix";
+import { MarketplaceBrowsePanel } from "@/components/projects/MarketplaceBrowsePanel";
 import { MethodologyAssistantPanel } from "@/components/projects/MethodologyAssistantPanel";
 import { MethodologyBuilder } from "@/components/projects/MethodologyBuilder";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
@@ -185,6 +186,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
+          <MarketplaceBrowsePanel />
           <WorkspacePanel
             icon={Users}
             title="Team"
@@ -197,6 +199,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Supervisor or reviewer",
                 "Researcher service profile",
                 "Create service flow",
+                "Marketplace browse and search",
                 "Sponsor or institution contact",
               ]}
             />
