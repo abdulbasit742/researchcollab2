@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AbstractGeneratorPanel } from "@/components/projects/AbstractGeneratorPanel";
+import { AccreditationSupportReportPanel } from "@/components/projects/AccreditationSupportReportPanel";
 import { AIPromptLibraryPanel } from "@/components/projects/AIPromptLibraryPanel";
 import { AISafetyFeedbackPanel } from "@/components/projects/AISafetyFeedbackPanel";
 import { AIToolsHub } from "@/components/projects/AIToolsHub";
@@ -218,6 +219,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <VivaSchedulingPanel />
           <EvaluationRubricSystemPanel />
           <OutcomeMappingPanel />
+          <AccreditationSupportReportPanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -248,6 +250,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Defense/viva scheduling",
                 "Evaluation rubric system",
                 "Outcome mapping",
+                "Accreditation-support report placeholder",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
