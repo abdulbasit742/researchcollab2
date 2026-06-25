@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Archive, ClipboardCheck, FileText, Lock, ShieldCheck, TableProperties, Download } from "lucide-react";
+import { Archive, FileText, Lock, ShieldCheck, TableProperties, Download } from "lucide-react";
 
 const reportSections = [
   { id: "section-outcomes", title: "Outcome Attainment Summary", status: "Ready", coverage: 78, note: "Outcome Mapping provides PLO attainment preview and evidence gaps." },
