@@ -16,7 +16,7 @@ import {
   type GrantOpportunity,
   type GrantRequirement,
 } from "@/config/grantFinder";
-import { BookMarked, CheckCircle2, FileSearch, Lock, Search, ShieldCheck, Sparkles } from "lucide-react";
+import { BookMarked, FileSearch, Lock, Search, ShieldCheck, Sparkles } from "lucide-react";
 
 type GrantFinderPanelProps = {
   summary?: GrantFinderSummary;
