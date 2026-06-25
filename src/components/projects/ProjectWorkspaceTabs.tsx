@@ -7,6 +7,7 @@ import { AbstractGeneratorPanel } from "@/components/projects/AbstractGeneratorP
 import { AIPromptLibraryPanel } from "@/components/projects/AIPromptLibraryPanel";
 import { AISafetyFeedbackPanel } from "@/components/projects/AISafetyFeedbackPanel";
 import { AIToolsHub } from "@/components/projects/AIToolsHub";
+import { BudgetPlannerPanel } from "@/components/projects/BudgetPlannerPanel";
 import { CampaignMilestoneFundingPanel } from "@/components/projects/CampaignMilestoneFundingPanel";
 import { CitationWarningSystem } from "@/components/projects/CitationWarningSystem";
 import { CreateServiceFlowPanel } from "@/components/projects/CreateServiceFlowPanel";
@@ -244,6 +245,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <DemoFundingLedgerPanel />
           <GrantFinderPanel />
           <GrantApplicationTrackerPanel />
+          <BudgetPlannerPanel />
           <WorkspacePanel
             icon={DollarSign}
             title="Funding & Demo Labels"
@@ -262,6 +264,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Demo funding ledger",
                 "Grant finder",
                 "Grant application tracker",
+                "Budget planner placeholder",
                 "Budget estimate",
                 "Milestone release labels",
                 "Contribution ledger",
