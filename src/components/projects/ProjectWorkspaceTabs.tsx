@@ -16,6 +16,7 @@ import { DemoOrderCheckoutPanel } from "@/components/projects/DemoOrderCheckoutP
 import { DisputePlaceholderPanel } from "@/components/projects/DisputePlaceholderPanel";
 import { DocumentExportPlaceholder } from "@/components/projects/DocumentExportPlaceholder";
 import { EvidenceLinkingSystem } from "@/components/projects/EvidenceLinkingSystem";
+import { FunderDashboardPanel } from "@/components/projects/FunderDashboardPanel";
 import { FundingCampaignBuilderPanel } from "@/components/projects/FundingCampaignBuilderPanel";
 import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
 import { LiteratureReviewAssistantPanel } from "@/components/projects/LiteratureReviewAssistantPanel";
@@ -234,6 +235,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <FundingCampaignBuilderPanel />
           <DemoContributionFlowPanel />
           <CampaignMilestoneFundingPanel />
+          <FunderDashboardPanel />
           <WorkspacePanel
             icon={DollarSign}
             title="Funding & Demo Labels"
@@ -247,6 +249,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Funding campaign builder",
                 "Demo contribution flow",
                 "Campaign milestone funding",
+                "Funder dashboard",
                 "Budget estimate",
                 "Milestone release labels",
                 "Contribution ledger",
