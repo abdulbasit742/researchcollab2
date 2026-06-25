@@ -12,7 +12,7 @@ import {
   type TrackedReportArea,
   type TrackedReportSection,
 } from "@/config/reportStatusTracking";
-import { ClipboardCheck, FileCheck2, FileText, Layers3, Microscope } from "lucide-react";
+import { ClipboardCheck, FileText, Layers3, Microscope } from "lucide-react";
 
 const trackedAreas: { area: TrackedReportArea; label: string; icon: typeof FileText }[] = [
   { area: "final_report", label: "Final Report", icon: FileText },
