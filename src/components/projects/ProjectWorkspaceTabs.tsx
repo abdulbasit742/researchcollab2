@@ -9,6 +9,7 @@ import { AISafetyFeedbackPanel } from "@/components/projects/AISafetyFeedbackPan
 import { AIToolsHub } from "@/components/projects/AIToolsHub";
 import { CitationWarningSystem } from "@/components/projects/CitationWarningSystem";
 import { CreateServiceFlowPanel } from "@/components/projects/CreateServiceFlowPanel";
+import { DeliverablesTrackerPanel } from "@/components/projects/DeliverablesTrackerPanel";
 import { DemoOrderCheckoutPanel } from "@/components/projects/DemoOrderCheckoutPanel";
 import { DocumentExportPlaceholder } from "@/components/projects/DocumentExportPlaceholder";
 import { EvidenceLinkingSystem } from "@/components/projects/EvidenceLinkingSystem";
@@ -193,6 +194,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <ServicePackagesPanel />
           <DemoOrderCheckoutPanel />
           <OrderWorkroomPanel />
+          <DeliverablesTrackerPanel />
           <WorkspacePanel
             icon={Users}
             title="Team"
@@ -209,6 +211,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Service package tiers",
                 "Demo order checkout",
                 "Order workroom",
+                "Deliverables tracker",
                 "Sponsor or institution contact",
               ]}
             />
