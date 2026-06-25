@@ -22,6 +22,7 @@ import { ProjectRiskAlerts } from "@/components/projects/ProjectRiskAlerts";
 import { ReportSectionStatusTracker } from "@/components/projects/ReportSectionStatusTracker";
 import { ResearchGapFinderPanel } from "@/components/projects/ResearchGapFinderPanel";
 import { ResearchProposalBuilder } from "@/components/projects/ResearchProposalBuilder";
+import { SavedAIOutputsPanel } from "@/components/projects/SavedAIOutputsPanel";
 import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePanel";
 import { SupervisorSectionCommentsPanel } from "@/components/projects/SupervisorSectionCommentsPanel";
 import { TaskManager } from "@/components/projects/TaskManager";
@@ -117,6 +118,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <VivaPrepAssistantPanel />
           <ProjectRiskAIPanel />
           <AIPromptLibraryPanel />
+          <SavedAIOutputsPanel />
           <WorkspacePanel
             icon={FolderOpen}
             title="Project Overview"
@@ -128,7 +130,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
               <InfoCard label="Budget" value={project.budgetLabel} />
             </div>
             <div className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
-              This overview is the workspace home. Next features will connect this to real project records, health scoring, AI tools, research gap finding, literature review drafting, abstract generation, methodology assistance, viva prep, project risk AI, prompt library, and report builders.
+              This overview is the workspace home. Next features will connect this to real project records, health scoring, AI tools, research gap finding, literature review drafting, abstract generation, methodology assistance, viva prep, project risk AI, prompt library, saved AI outputs, and report builders.
             </div>
           </WorkspacePanel>
         </TabsContent>
