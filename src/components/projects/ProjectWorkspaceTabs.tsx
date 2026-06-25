@@ -15,6 +15,7 @@ import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTi
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
 import { ProjectRiskAlerts } from "@/components/projects/ProjectRiskAlerts";
 import { ReportSectionStatusTracker } from "@/components/projects/ReportSectionStatusTracker";
+import { ResearchGapFinderPanel } from "@/components/projects/ResearchGapFinderPanel";
 import { ResearchProposalBuilder } from "@/components/projects/ResearchProposalBuilder";
 import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePanel";
 import { SupervisorSectionCommentsPanel } from "@/components/projects/SupervisorSectionCommentsPanel";
@@ -103,6 +104,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <ProjectHealthScoreCard project={project} />
           <ProjectRiskAlerts project={project} />
           <AIToolsHub />
+          <ResearchGapFinderPanel />
           <WorkspacePanel
             icon={FolderOpen}
             title="Project Overview"
@@ -114,7 +116,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
               <InfoCard label="Budget" value={project.budgetLabel} />
             </div>
             <div className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
-              This overview is the workspace home. Next features will connect this to real project records, health scoring, AI tools, and report builders.
+              This overview is the workspace home. Next features will connect this to real project records, health scoring, AI tools, research gap finding, and report builders.
             </div>
           </WorkspacePanel>
         </TabsContent>
