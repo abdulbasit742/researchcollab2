@@ -11,7 +11,7 @@ import {
   getEvidenceTypeLabel,
   type EvidenceLink,
 } from "@/config/evidenceLinks";
-import { AlertTriangle, FileCheck2, Link2, Paperclip, PlusCircle, ShieldCheck, UploadCloud } from "lucide-react";
+import { AlertTriangle, Link2, Paperclip, PlusCircle, ShieldCheck, UploadCloud } from "lucide-react";
 
 type EvidenceLinkingSystemProps = {
   links?: EvidenceLink[];
