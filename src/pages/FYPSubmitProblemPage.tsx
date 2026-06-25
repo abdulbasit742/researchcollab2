@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
+import { ProjectTemplatePicker } from "@/components/projects/ProjectTemplatePicker";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -19,6 +20,7 @@ import {
   type ProjectBuildTier,
   type ProjectCreationType,
 } from "@/config/projectCreation";
+import type { ProjectTemplate } from "@/config/projectTemplates";
 import {
   Send,
   Shield,
@@ -27,7 +29,6 @@ import {
   DollarSign,
   FileText,
   Building2,
-  ArrowRight,
   GraduationCap,
   Lightbulb,
   Sparkles,
@@ -64,6 +65,23 @@ export default function FYPSubmitProblemPage() {
   const selectedType = useMemo(() => getProjectTypeOption(form.project_type), [form.project_type]);
   const selectedTier = useMemo(() => getProjectTierOption(form.prototype_tier), [form.prototype_tier]);
   const parsedSkills = useMemo(() => splitSkills(form.skills_needed), [form.skills_needed]);
+
+  const applyTemplate = (template: ProjectTemplate) => {
+    setForm((current) => ({
+      ...current,
+      project_title: template.title,
+      project_type: template.project_type,
+      academic_department: template.academic_department,
+      problem_description: template.problem_description,
+      expected_outcomes: template.expected_outcomes,
+      skills_needed: template.skills_needed.join(", "),
+      preferred_timeline: template.preferred_timeline,
+      budget_range: template.budget_range,
+      prototype_tier: template.prototype_tier,
+      sponsor_type: template.sponsor_type,
+    }));
+    toast({ title: "Template applied", description: `${template.title} has been loaded into the project form.` });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -169,6 +187,8 @@ export default function FYPSubmitProblemPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  <ProjectTemplatePicker activeType={form.project_type} onApply={applyTemplate} />
+
                   <div className="space-y-3">
                     <Label>Project Type *</Label>
                     <RadioGroup value={form.project_type} onValueChange={(v) => setForm(f => ({ ...f, project_type: v as ProjectCreationType }))}>
