@@ -8,6 +8,7 @@ import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScore
 import { ProjectRiskAlerts } from "@/components/projects/ProjectRiskAlerts";
 import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePanel";
 import { TaskManager } from "@/components/projects/TaskManager";
+import { TeamMemberInvitePanel } from "@/components/projects/TeamMemberInvitePanel";
 import {
   DEMO_PROJECT_WORKSPACE,
   PROJECT_WORKSPACE_TABS,
@@ -132,6 +133,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
 
         <TabsContent value="team" className="space-y-4">
           <SupervisorInvitePanel />
+          <TeamMemberInvitePanel />
           <WorkspacePanel
             icon={Users}
             title="Team"
