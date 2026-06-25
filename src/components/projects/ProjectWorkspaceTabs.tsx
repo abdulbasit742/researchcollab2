@@ -19,6 +19,7 @@ import { DemoOrderCheckoutPanel } from "@/components/projects/DemoOrderCheckoutP
 import { DepartmentDashboardPanel } from "@/components/projects/DepartmentDashboardPanel";
 import { DisputePlaceholderPanel } from "@/components/projects/DisputePlaceholderPanel";
 import { DocumentExportPlaceholder } from "@/components/projects/DocumentExportPlaceholder";
+import { EvaluationRubricSystemPanel } from "@/components/projects/EvaluationRubricSystemPanel";
 import { EvidenceLinkingSystem } from "@/components/projects/EvidenceLinkingSystem";
 import { FunderDashboardPanel } from "@/components/projects/FunderDashboardPanel";
 import { FundingCampaignBuilderPanel } from "@/components/projects/FundingCampaignBuilderPanel";
@@ -214,6 +215,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <StudentImportPlaceholderPanel />
           <SupervisorAllocationSystemPanel />
           <VivaSchedulingPanel />
+          <EvaluationRubricSystemPanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -242,6 +244,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Student import placeholder",
                 "Supervisor allocation system",
                 "Defense/viva scheduling",
+                "Evaluation rubric system",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
