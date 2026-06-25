@@ -16,6 +16,7 @@ import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePan
 import { SupervisorSectionCommentsPanel } from "@/components/projects/SupervisorSectionCommentsPanel";
 import { TaskManager } from "@/components/projects/TaskManager";
 import { TeamMemberInvitePanel } from "@/components/projects/TeamMemberInvitePanel";
+import { VersionHistoryPanel } from "@/components/projects/VersionHistoryPanel";
 import {
   DEMO_PROJECT_WORKSPACE,
   PROJECT_WORKSPACE_TABS,
@@ -124,6 +125,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
         <TabsContent value="files" className="space-y-4">
           <ReportSectionStatusTracker />
           <SupervisorSectionCommentsPanel />
+          <VersionHistoryPanel />
           <FYPFinalReportBuilder />
           <ResearchProposalBuilder />
           <LiteratureReviewMatrix />
@@ -139,6 +141,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Literature matrix or technical specification",
                 "Methodology and validation plan",
                 "Supervisor comments and response notes",
+                "Version history snapshots",
                 "Demo screenshots and test evidence",
                 "Final report and handover package",
               ]}
