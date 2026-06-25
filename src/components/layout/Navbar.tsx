@@ -4,7 +4,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { NotificationBell } from "@/components/layout/NotificationBell";
 import { VoiceSearchButton } from "@/components/search/VoiceSearchButton";
+import { AccountStatusBadge } from "@/components/account/AccountStatusBadge";
 import { useAuth } from "@/contexts/AuthContext";
+import { getRoleDashboardPath, getRoleLabel } from "@/config/roles";
+import {
+  getPrimaryRoleNavItems,
+  getRoleNavGroups,
+  type NavIconKey,
+} from "@/config/navigation";
 import {
   Menu,
   X,
@@ -20,53 +27,50 @@ import {
   FileText,
   ClipboardCheck,
   BarChart3,
+  ShieldCheck,
+  Building2,
+  Landmark,
+  Wallet,
+  type LucideIcon,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { KeyboardShortcutsHelp } from "@/components/navigation/KeyboardShortcutsHelp";
 import { UserAvatarMenu } from "@/components/layout/UserAvatarMenu";
 import { AnnouncementBanner } from "@/components/layout/AnnouncementBanner";
 
-// Execution-focused navigation grouped by pillar
-const primaryNav = [
-  { label: "Dashboard", href: "/home", icon: Home },
-  { label: "Projects", href: "/deals", icon: FolderKanban },
-  { label: "Opportunities", href: "/offers", icon: Target },
-  { label: "Messages", href: "/messages", icon: MessageSquare },
-];
+const navIconMap: Record<NavIconKey, LucideIcon> = {
+  home: Home,
+  projects: FolderKanban,
+  opportunities: Target,
+  messages: MessageSquare,
+  research: FileText,
+  reviews: ClipboardCheck,
+  search: Search,
+  discover: BarChart3,
+  grants: Handshake,
+  admin: ShieldCheck,
+  institution: Building2,
+  sponsor: Handshake,
+  governance: ShieldCheck,
+  national: Landmark,
+  wallet: Wallet,
+};
 
-const mobileNavGroups = [
-  {
-    label: "Execution",
-    items: [
-      { label: "Dashboard", href: "/home", icon: Home },
-      { label: "Projects", href: "/deals", icon: FolderKanban },
-      { label: "Opportunities", href: "/offers", icon: Target },
-      { label: "Reviews", href: "/reviews", icon: ClipboardCheck },
-    ],
-  },
-  {
-    label: "Collaboration",
-    items: [
-      { label: "Messages", href: "/messages", icon: MessageSquare },
-      { label: "Search", href: "/search", icon: Search },
-      { label: "Discover", href: "/discover", icon: BarChart3 },
-    ],
-  },
-  {
-    label: "Knowledge",
-    items: [
-      { label: "Research", href: "/research", icon: FileText },
-      { label: "Grants", href: "/grants", icon: Handshake },
-    ],
-  },
-];
+const isActiveRoute = (pathname: string, href: string) => {
+  if (href === "/") return pathname === href;
+  return pathname === href || pathname.startsWith(`${href}/`);
+};
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-  const { user, signOut } = useAuth();
+  const { user, profile, userRole, signOut } = useAuth();
   const navigate = useNavigate();
+  const currentRole = userRole?.role;
+  const dashboardHref = getRoleDashboardPath(currentRole);
+  const primaryNav = getPrimaryRoleNavItems(currentRole, 6);
+  const mobileNavGroups = getRoleNavGroups(currentRole);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -99,7 +103,7 @@ export function Navbar() {
     >
       <div className="container flex h-14 items-center justify-between px-4">
         {/* Logo */}
-        <Link to={user ? "/home" : "/"} className="flex items-center gap-2">
+        <Link to={user ? dashboardHref : "/"} className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
             <GraduationCap className="h-4 w-4 text-primary-foreground" />
           </div>
@@ -108,25 +112,27 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Navigation — Execution focused */}
+        {/* Desktop Navigation — Role aware */}
         {user && (
           <nav className="hidden lg:flex items-center gap-1">
-            {primaryNav.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  location.pathname.startsWith(item.href) && item.href !== "/"
-                    ? "bg-primary/10 text-primary"
-                    : location.pathname === item.href
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                }`}
-              >
-                <item.icon className="h-4 w-4" />
-                {item.label}
-              </Link>
-            ))}
+            {primaryNav.map((item) => {
+              const Icon = navIconMap[item.icon];
+              const active = isActiveRoute(location.pathname, item.href);
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    active
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
         )}
 
@@ -134,6 +140,10 @@ export function Navbar() {
         <div className="hidden lg:flex items-center gap-2">
           {user && (
             <>
+              <div className="hidden xl:flex items-center gap-2 rounded-full border bg-muted/40 px-3 py-1.5">
+                <span className="text-xs font-medium text-muted-foreground">{getRoleLabel(currentRole)}</span>
+                <AccountStatusBadge status={profile?.account_status} />
+              </div>
               <Button
                 variant="ghost"
                 size="icon"
@@ -181,7 +191,7 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Navigation — Grouped */}
+      {/* Mobile Navigation — Role aware grouped */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -191,27 +201,41 @@ export function Navbar() {
             className="lg:hidden border-t bg-background overflow-y-auto max-h-[70vh]"
           >
             <div className="container py-3 px-4 space-y-4">
-              {mobileNavGroups.map((group) => (
+              {user && (
+                <div className="rounded-lg border bg-muted/40 p-3">
+                  <p className="text-xs text-muted-foreground">Signed in as</p>
+                  <div className="mt-1 flex flex-wrap items-center gap-2">
+                    <span className="text-sm font-medium">{getRoleLabel(currentRole)}</span>
+                    <AccountStatusBadge status={profile?.account_status} />
+                  </div>
+                </div>
+              )}
+
+              {user && mobileNavGroups.map((group) => (
                 <div key={group.label}>
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 mb-1">
                     {group.label}
                   </p>
                   <div className="space-y-0.5">
-                    {group.items.map((item) => (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        onClick={() => setIsOpen(false)}
-                        className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors touch-manipulation ${
-                          location.pathname.startsWith(item.href)
-                            ? "bg-primary/10 text-primary"
-                            : "text-muted-foreground hover:bg-muted"
-                        }`}
-                      >
-                        <item.icon className="h-4 w-4" />
-                        {item.label}
-                      </Link>
-                    ))}
+                    {group.items.map((item) => {
+                      const Icon = navIconMap[item.icon];
+                      const active = isActiveRoute(location.pathname, item.href);
+                      return (
+                        <Link
+                          key={item.href}
+                          to={item.href}
+                          onClick={() => setIsOpen(false)}
+                          className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors touch-manipulation ${
+                            active
+                              ? "bg-primary/10 text-primary"
+                              : "text-muted-foreground hover:bg-muted"
+                          }`}
+                        >
+                          <Icon className="h-4 w-4" />
+                          {item.label}
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
