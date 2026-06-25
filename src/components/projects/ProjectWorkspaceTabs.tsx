@@ -20,6 +20,7 @@ import { EvidenceLinkingSystem } from "@/components/projects/EvidenceLinkingSyst
 import { FunderDashboardPanel } from "@/components/projects/FunderDashboardPanel";
 import { FundingCampaignBuilderPanel } from "@/components/projects/FundingCampaignBuilderPanel";
 import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
+import { GrantApplicationTrackerPanel } from "@/components/projects/GrantApplicationTrackerPanel";
 import { GrantFinderPanel } from "@/components/projects/GrantFinderPanel";
 import { ImpactUpdatesPanel } from "@/components/projects/ImpactUpdatesPanel";
 import { LiteratureReviewAssistantPanel } from "@/components/projects/LiteratureReviewAssistantPanel";
@@ -242,6 +243,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <ImpactUpdatesPanel />
           <DemoFundingLedgerPanel />
           <GrantFinderPanel />
+          <GrantApplicationTrackerPanel />
           <WorkspacePanel
             icon={DollarSign}
             title="Funding & Demo Labels"
@@ -259,6 +261,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Impact updates",
                 "Demo funding ledger",
                 "Grant finder",
+                "Grant application tracker",
                 "Budget estimate",
                 "Milestone release labels",
                 "Contribution ledger",
