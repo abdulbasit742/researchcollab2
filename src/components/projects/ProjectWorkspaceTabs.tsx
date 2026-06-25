@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MilestoneManager } from "@/components/projects/MilestoneManager";
 import {
   DEMO_PROJECT_WORKSPACE,
   PROJECT_WORKSPACE_TABS,
@@ -99,20 +100,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
         </TabsContent>
 
         <TabsContent value="milestones">
-          <WorkspacePanel
-            icon={Milestone}
-            title="Milestones"
-            description="Break execution into reviewable phases with evidence and acceptance criteria."
-          >
-            <PlaceholderList
-              items={[
-                "Milestone 1: Discovery and scope freeze",
-                "Milestone 2: Prototype/research plan approval",
-                "Milestone 3: Build, experiment, or literature execution",
-                "Milestone 4: Final demo, report, and handover",
-              ]}
-            />
-          </WorkspacePanel>
+          <MilestoneManager />
         </TabsContent>
 
         <TabsContent value="tasks">
