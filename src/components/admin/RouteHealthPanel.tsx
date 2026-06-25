@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AlertTriangle, CheckCircle, Route, Shield } from "lucide-react";
+import { AlertTriangle, CheckCircle, Link2, Route, Shield } from "lucide-react";
 
 type RouteHealthStatus = "ready" | "review" | "blocked" | "public";
 
@@ -13,6 +13,18 @@ type RouteHealthCheck = {
   status: RouteHealthStatus;
   evidence: string;
   nextAction: string;
+};
+
+type BrokenLinkStatus = "ok" | "review" | "broken" | "external";
+
+type BrokenLinkCheck = {
+  id: string;
+  source: string;
+  link: string;
+  status: BrokenLinkStatus;
+  risk: "Low" | "Medium" | "High" | "Critical";
+  evidence: string;
+  fix: string;
 };
 
 const routeHealthChecks: RouteHealthCheck[] = [
@@ -126,6 +138,72 @@ const routeHealthChecks: RouteHealthCheck[] = [
   },
 ];
 
+const brokenLinkChecks: BrokenLinkCheck[] = [
+  {
+    id: "lovable-readme-placeholder",
+    source: "README / Lovable project link",
+    link: "https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID",
+    status: "broken",
+    risk: "High",
+    evidence: "Default Lovable placeholder is not a valid buyer/tester link.",
+    fix: "Replace with the real Lovable project URL or remove the placeholder before sharing the repo.",
+  },
+  {
+    id: "legacy-seo-domain",
+    source: "SEO / canonical / sitemap / structured data",
+    link: "https://academic-forge-flow.lovable.app",
+    status: "review",
+    risk: "High",
+    evidence: "Legacy Lovable preview domain can send users and crawlers away from the final brand/domain.",
+    fix: "Replace legacy domain references with the final approved domain when confirmed.",
+  },
+  {
+    id: "admin-links",
+    source: "Admin navigation",
+    link: "/admin/*",
+    status: "review",
+    risk: "Medium",
+    evidence: "Admin links exist and are protected by frontend checks, but role/RLS enforcement still needs backend verification.",
+    fix: "Add role-aware ProtectedRoute and Supabase RLS for admin-only data.",
+  },
+  {
+    id: "finance-links",
+    source: "Billing / checkout / wallet / subscriptions",
+    link: "/billing, /checkout, /wallet, /subscriptions",
+    status: "review",
+    risk: "Critical",
+    evidence: "Finance-like routes can look real if demo labels are missing or inconsistent.",
+    fix: "Add DemoFinanceBadge and no-real-payment copy to every finance-facing route.",
+  },
+  {
+    id: "public-verify-links",
+    source: "Certificate verification",
+    link: "/verify, /verify/:certificateId",
+    status: "ok",
+    risk: "Low",
+    evidence: "Public verification routes are intentional but should only expose public-safe certificate data.",
+    fix: "Keep private student/project details out of public verification payloads.",
+  },
+  {
+    id: "external-docs-links",
+    source: "Documentation / setup links",
+    link: "External docs links",
+    status: "external",
+    risk: "Medium",
+    evidence: "External links can change and should be checked manually before investor/university demos.",
+    fix: "Add rel=noopener for target blank links and verify external docs during release QA.",
+  },
+  {
+    id: "fallback-route",
+    source: "Unknown routes",
+    link: "*",
+    status: "ok",
+    risk: "Low",
+    evidence: "Fallback route exists, so unknown internal links should land on NotFound instead of a blank page.",
+    fix: "Keep NotFound page helpful with safe links back to home, help, and login.",
+  },
+];
+
 const getRouteStatusLabel = (status: RouteHealthStatus) => {
   switch (status) {
     case "ready":
@@ -156,11 +234,68 @@ const getRouteStatusClass = (status: RouteHealthStatus) => {
   }
 };
 
+const getBrokenLinkStatusLabel = (status: BrokenLinkStatus) => {
+  switch (status) {
+    case "ok":
+      return "OK";
+    case "review":
+      return "Review";
+    case "broken":
+      return "Broken";
+    case "external":
+      return "External";
+    default:
+      return "Unknown";
+  }
+};
+
+const getBrokenLinkStatusClass = (status: BrokenLinkStatus) => {
+  switch (status) {
+    case "ok":
+      return "bg-green-500/10 text-green-600 border-green-500/30";
+    case "review":
+      return "bg-amber-500/10 text-amber-600 border-amber-500/30";
+    case "broken":
+      return "bg-red-500/10 text-red-600 border-red-500/30";
+    case "external":
+      return "bg-blue-500/10 text-blue-600 border-blue-500/30";
+    default:
+      return "bg-muted text-muted-foreground";
+  }
+};
+
+const getRiskClass = (risk: BrokenLinkCheck["risk"]) => {
+  switch (risk) {
+    case "Critical":
+      return "bg-red-600/10 text-red-700 border-red-600/30";
+    case "High":
+      return "bg-red-500/10 text-red-600 border-red-500/30";
+    case "Medium":
+      return "bg-amber-500/10 text-amber-600 border-amber-500/30";
+    case "Low":
+      return "bg-green-500/10 text-green-600 border-green-500/30";
+    default:
+      return "bg-muted text-muted-foreground";
+  }
+};
+
 export function RouteHealthPanel() {
   const readyRoutes = routeHealthChecks.filter((check) => check.status === "ready");
   const reviewRoutes = routeHealthChecks.filter((check) => check.status === "review");
   const blockedRoutes = routeHealthChecks.filter((check) => check.status === "blocked");
   const publicRoutes = routeHealthChecks.filter((check) => check.status === "public");
+  const brokenLinks = brokenLinkChecks.filter((check) => check.status === "broken");
+  const reviewLinks = brokenLinkChecks.filter((check) => check.status === "review");
+  const okLinks = brokenLinkChecks.filter((check) => check.status === "ok");
+  const externalLinks = brokenLinkChecks.filter((check) => check.status === "external");
+  const linkReadinessScore = Math.round(
+    brokenLinkChecks.reduce((total, check) => {
+      if (check.status === "ok") return total + 100;
+      if (check.status === "external") return total + 70;
+      if (check.status === "review") return total + 45;
+      return total;
+    }, 0) / brokenLinkChecks.length
+  );
   const routeReadinessScore = Math.round(
     routeHealthChecks.reduce((total, check) => {
       if (check.status === "ready") return total + 100;
@@ -208,6 +343,80 @@ export function RouteHealthPanel() {
 
           <div className="rounded-lg bg-muted/50 p-4 text-sm text-muted-foreground">
             Frontend route checks are only a UX layer. Production security still needs Supabase RLS, tenant filters, and backend authorization checks.
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className={brokenLinks.length > 0 ? "border-red-500/40" : "border-green-500/30"}>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            {brokenLinks.length > 0 ? <AlertTriangle className="h-5 w-5 text-red-500" /> : <CheckCircle className="h-5 w-5 text-green-500" />}
+            Broken Link Scanner
+          </CardTitle>
+          <CardDescription>
+            Static link-readiness scan for placeholder URLs, legacy domains, external docs, admin links, and finance-demo routes.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="rounded-lg border p-3">
+              <p className="text-xs text-muted-foreground">Link Score</p>
+              <p className="text-2xl font-bold">{linkReadinessScore}%</p>
+            </div>
+            <div className="rounded-lg border p-3">
+              <p className="text-xs text-muted-foreground">OK</p>
+              <p className="text-2xl font-bold text-green-600">{okLinks.length}</p>
+            </div>
+            <div className="rounded-lg border p-3">
+              <p className="text-xs text-muted-foreground">External</p>
+              <p className="text-2xl font-bold text-blue-600">{externalLinks.length}</p>
+            </div>
+            <div className="rounded-lg border p-3">
+              <p className="text-xs text-muted-foreground">Review</p>
+              <p className="text-2xl font-bold text-amber-600">{reviewLinks.length}</p>
+            </div>
+            <div className="rounded-lg border p-3">
+              <p className="text-xs text-muted-foreground">Broken</p>
+              <p className="text-2xl font-bold text-red-600">{brokenLinks.length}</p>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Source</TableHead>
+                  <TableHead>Link</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Risk</TableHead>
+                  <TableHead>Evidence</TableHead>
+                  <TableHead>Fix</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {brokenLinkChecks.map((check) => (
+                  <TableRow key={check.id}>
+                    <TableCell className="font-medium">{check.source}</TableCell>
+                    <TableCell className="font-mono text-xs">{check.link}</TableCell>
+                    <TableCell>
+                      <Badge className={getBrokenLinkStatusClass(check.status)}>
+                        <Link2 className="mr-1 h-3 w-3" />
+                        {getBrokenLinkStatusLabel(check.status)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={getRiskClass(check.risk)}>{check.risk}</Badge>
+                    </TableCell>
+                    <TableCell className="max-w-sm text-sm text-muted-foreground">{check.evidence}</TableCell>
+                    <TableCell className="max-w-sm text-sm">{check.fix}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          <div className="rounded-lg bg-muted/50 p-4 text-sm text-muted-foreground">
+            This scanner is a static admin QA checklist. For automated scanning, add a CI job later that crawls built routes and fails on invalid internal links.
           </div>
         </CardContent>
       </Card>
