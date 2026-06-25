@@ -3,6 +3,7 @@ import { AppDiagnosticsPanel } from "@/components/admin/AppDiagnosticsPanel";
 import { ProductionBlockersPanel } from "@/components/admin/ProductionBlockersPanel";
 import { ReleaseCandidateChecklistPanel } from "@/components/admin/ReleaseCandidateChecklistPanel";
 import { RouteHealthPanel } from "@/components/admin/RouteHealthPanel";
+import { SmokeTestChecklistPanel } from "@/components/admin/SmokeTestChecklistPanel";
 import { VersionBuildInfoPanel } from "@/components/admin/VersionBuildInfoPanel";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useObservability } from "@/hooks/useObservability";
-import { Activity, AlertTriangle, CheckCircle, XCircle, Bell, Shield, Clock, Package, ClipboardCheck } from "lucide-react";
+import { Activity, AlertTriangle, CheckCircle, XCircle, Bell, Shield, Clock, Package, ClipboardCheck, ClipboardList } from "lucide-react";
 import { format } from "date-fns";
 
 type BuildCheckStatus = "pass" | "warning" | "blocker" | "manual";
@@ -172,7 +173,7 @@ export default function AdminHealthPage() {
               <Activity className="h-8 w-8 text-primary" />
               Platform Health
             </h1>
-            <p className="text-muted-foreground">Real-time observability, app diagnostics, version/build info, release checklist, route safety, production blockers, and integrity monitoring</p>
+            <p className="text-muted-foreground">Real-time observability, smoke tests, release checklist, app diagnostics, version/build info, route safety, production blockers, and integrity monitoring</p>
           </div>
           <Button onClick={refetch} disabled={loading}>Refresh</Button>
         </div>
@@ -269,6 +270,7 @@ export default function AdminHealthPage() {
         <Tabs defaultValue="build">
           <TabsList className="flex h-auto flex-wrap">
             <TabsTrigger value="build"><AlertTriangle className="h-4 w-4 mr-1" />Build</TabsTrigger>
+            <TabsTrigger value="smoke"><ClipboardList className="h-4 w-4 mr-1" />Smoke Tests</TabsTrigger>
             <TabsTrigger value="release"><ClipboardCheck className="h-4 w-4 mr-1" />RC Checklist</TabsTrigger>
             <TabsTrigger value="version"><Package className="h-4 w-4 mr-1" />Version</TabsTrigger>
             <TabsTrigger value="diagnostics"><Activity className="h-4 w-4 mr-1" />Diagnostics</TabsTrigger>
@@ -322,6 +324,10 @@ export default function AdminHealthPage() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="smoke">
+            <SmokeTestChecklistPanel />
           </TabsContent>
 
           <TabsContent value="release">
