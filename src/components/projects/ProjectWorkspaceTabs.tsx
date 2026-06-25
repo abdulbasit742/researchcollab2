@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
+import { TaskManager } from "@/components/projects/TaskManager";
 import {
   DEMO_PROJECT_WORKSPACE,
   PROJECT_WORKSPACE_TABS,
@@ -104,20 +105,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
         </TabsContent>
 
         <TabsContent value="tasks">
-          <WorkspacePanel
-            icon={ClipboardList}
-            title="Tasks"
-            description="Track daily work, blockers, ownership, and review actions."
-          >
-            <PlaceholderList
-              items={[
-                "Create task board from milestone plan",
-                "Assign team owner and reviewer",
-                "Mark priority, due date, and status",
-                "Surface overdue and blocked tasks",
-              ]}
-            />
-          </WorkspacePanel>
+          <TaskManager />
         </TabsContent>
 
         <TabsContent value="files">
