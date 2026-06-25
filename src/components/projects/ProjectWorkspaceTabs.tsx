@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
 import { ProjectRiskAlerts } from "@/components/projects/ProjectRiskAlerts";
+import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePanel";
 import { TaskManager } from "@/components/projects/TaskManager";
 import {
   DEMO_PROJECT_WORKSPACE,
@@ -129,7 +130,8 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           </WorkspacePanel>
         </TabsContent>
 
-        <TabsContent value="team">
+        <TabsContent value="team" className="space-y-4">
+          <SupervisorInvitePanel />
           <WorkspacePanel
             icon={Users}
             title="Team"
