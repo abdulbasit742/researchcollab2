@@ -27,6 +27,7 @@ import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScore
 import { ProjectRiskAIPanel } from "@/components/projects/ProjectRiskAIPanel";
 import { ProjectRiskAlerts } from "@/components/projects/ProjectRiskAlerts";
 import { ReportSectionStatusTracker } from "@/components/projects/ReportSectionStatusTracker";
+import { ResearcherDemoEarningsPanel } from "@/components/projects/ResearcherDemoEarningsPanel";
 import { ResearcherServiceProfilePanel } from "@/components/projects/ResearcherServiceProfilePanel";
 import { ResearchGapFinderPanel } from "@/components/projects/ResearchGapFinderPanel";
 import { ResearchProposalBuilder } from "@/components/projects/ResearchProposalBuilder";
@@ -199,6 +200,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <DeliverablesTrackerPanel />
           <RevisionRequestFlowPanel />
           <DisputePlaceholderPanel />
+          <ResearcherDemoEarningsPanel />
           <WorkspacePanel
             icon={Users}
             title="Team"
@@ -218,6 +220,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Deliverables tracker",
                 "Revision request flow",
                 "Dispute placeholder",
+                "Researcher demo earnings",
                 "Sponsor or institution contact",
               ]}
             />
