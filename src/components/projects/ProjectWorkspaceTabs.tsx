@@ -21,6 +21,7 @@ import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScore
 import { ProjectRiskAIPanel } from "@/components/projects/ProjectRiskAIPanel";
 import { ProjectRiskAlerts } from "@/components/projects/ProjectRiskAlerts";
 import { ReportSectionStatusTracker } from "@/components/projects/ReportSectionStatusTracker";
+import { ResearcherServiceProfilePanel } from "@/components/projects/ResearcherServiceProfilePanel";
 import { ResearchGapFinderPanel } from "@/components/projects/ResearchGapFinderPanel";
 import { ResearchProposalBuilder } from "@/components/projects/ResearchProposalBuilder";
 import { SavedAIOutputsPanel } from "@/components/projects/SavedAIOutputsPanel";
@@ -181,6 +182,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
         <TabsContent value="team" className="space-y-4">
           <SupervisorInvitePanel />
           <TeamMemberInvitePanel />
+          <ResearcherServiceProfilePanel />
           <WorkspacePanel
             icon={Users}
             title="Team"
@@ -191,6 +193,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Project owner",
                 "Student/research team",
                 "Supervisor or reviewer",
+                "Researcher service profile",
                 "Sponsor or institution contact",
               ]}
             />
