@@ -43,6 +43,7 @@ import { ResearchProposalBuilder } from "@/components/projects/ResearchProposalB
 import { RevisionRequestFlowPanel } from "@/components/projects/RevisionRequestFlowPanel";
 import { SavedAIOutputsPanel } from "@/components/projects/SavedAIOutputsPanel";
 import { ServicePackagesPanel } from "@/components/projects/ServicePackagesPanel";
+import { SponsorshipProposalBuilderPanel } from "@/components/projects/SponsorshipProposalBuilderPanel";
 import { SupervisorInvitePanel } from "@/components/projects/SupervisorInvitePanel";
 import { SupervisorSectionCommentsPanel } from "@/components/projects/SupervisorSectionCommentsPanel";
 import { TaskManager } from "@/components/projects/TaskManager";
@@ -246,6 +247,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <GrantFinderPanel />
           <GrantApplicationTrackerPanel />
           <BudgetPlannerPanel />
+          <SponsorshipProposalBuilderPanel />
           <WorkspacePanel
             icon={DollarSign}
             title="Funding & Demo Labels"
@@ -265,6 +267,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Grant finder",
                 "Grant application tracker",
                 "Budget planner placeholder",
+                "Sponsorship proposal builder",
                 "Budget estimate",
                 "Milestone release labels",
                 "Contribution ledger",
