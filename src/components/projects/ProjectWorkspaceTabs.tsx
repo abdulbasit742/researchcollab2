@@ -19,6 +19,7 @@ import { MarketplaceBrowsePanel } from "@/components/projects/MarketplaceBrowseP
 import { MethodologyAssistantPanel } from "@/components/projects/MethodologyAssistantPanel";
 import { MethodologyBuilder } from "@/components/projects/MethodologyBuilder";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
+import { OrderWorkroomPanel } from "@/components/projects/OrderWorkroomPanel";
 import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTimeline";
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
 import { ProjectRiskAIPanel } from "@/components/projects/ProjectRiskAIPanel";
@@ -191,6 +192,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <MarketplaceBrowsePanel />
           <ServicePackagesPanel />
           <DemoOrderCheckoutPanel />
+          <OrderWorkroomPanel />
           <WorkspacePanel
             icon={Users}
             title="Team"
@@ -206,6 +208,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Marketplace browse and search",
                 "Service package tiers",
                 "Demo order checkout",
+                "Order workroom",
                 "Sponsor or institution contact",
               ]}
             />
