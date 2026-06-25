@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AlertTriangle, ArrowLeft, Home, Lock, Shield } from "lucide-react";
+import { RoleRequestPanel } from "@/components/auth/RoleRequestPanel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -76,6 +77,8 @@ export default function AccessDeniedPage({ deniedPath, requiredRoles, currentRol
               Frontend access checks improve user experience, but production security still requires backend authorization and data access rules.
             </div>
 
+            <RoleRequestPanel sourcePath={requestedPath} requiredRoleLabels={allowedRoleLabels} />
+
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button className="flex-1" onClick={() => navigate(dashboardPath, { replace: true })}>
                 <Home className="mr-2 h-4 w-4" /> Go to my dashboard
@@ -86,7 +89,7 @@ export default function AccessDeniedPage({ deniedPath, requiredRoles, currentRol
             </div>
 
             <p className="text-center text-sm text-muted-foreground">
-              Need access? Contact an administrator and ask them to review your role assignment.
+              Need access? Submit a role request or contact an administrator for urgent review.
             </p>
             <div className="text-center">
               <Link to="/" className="text-sm text-primary hover:underline">Return to public home</Link>
