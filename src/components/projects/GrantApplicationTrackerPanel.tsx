@@ -15,7 +15,7 @@ import {
   type GrantApplicationStage,
   type GrantApplicationTrackerSummary,
 } from "@/config/grantApplicationTracker";
-import { ClipboardCheck, FileCheck2, FileText, Lock, Send, ShieldCheck, TimerReset } from "lucide-react";
+import { ClipboardCheck, FileCheck2, FileText, Lock, Send, ShieldCheck, TimerReset, type LucideIcon } from "lucide-react";
 
 type GrantApplicationTrackerPanelProps = {
   summary?: GrantApplicationTrackerSummary;
@@ -180,7 +180,7 @@ function ApplicationRequirements({ requirements }: { requirements: GrantApplicat
   );
 }
 
-function InfoBlock({ title, icon: Icon, text }: { title: string; icon: typeof ShieldCheck; text: string }) {
+function InfoBlock({ title, icon: Icon, text }: { title: string; icon: LucideIcon; text: string }) {
   return (
     <div className="rounded-lg border bg-primary/5 p-3 text-sm">
       <p className="flex items-center gap-2 font-medium">
