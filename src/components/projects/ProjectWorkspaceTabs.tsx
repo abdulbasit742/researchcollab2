@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CitationWarningSystem } from "@/components/projects/CitationWarningSystem";
 import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
 import { LiteratureReviewMatrix } from "@/components/projects/LiteratureReviewMatrix";
 import { MethodologyBuilder } from "@/components/projects/MethodologyBuilder";
@@ -126,6 +127,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <ReportSectionStatusTracker />
           <SupervisorSectionCommentsPanel />
           <VersionHistoryPanel />
+          <CitationWarningSystem />
           <FYPFinalReportBuilder />
           <ResearchProposalBuilder />
           <LiteratureReviewMatrix />
@@ -139,6 +141,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
               items={[
                 "Proposal / problem brief",
                 "Literature matrix or technical specification",
+                "Citation warnings and reference checks",
                 "Methodology and validation plan",
                 "Supervisor comments and response notes",
                 "Version history snapshots",
