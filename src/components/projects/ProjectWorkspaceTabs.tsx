@@ -25,6 +25,7 @@ import { SupervisorSectionCommentsPanel } from "@/components/projects/Supervisor
 import { TaskManager } from "@/components/projects/TaskManager";
 import { TeamMemberInvitePanel } from "@/components/projects/TeamMemberInvitePanel";
 import { VersionHistoryPanel } from "@/components/projects/VersionHistoryPanel";
+import { VivaPrepAssistantPanel } from "@/components/projects/VivaPrepAssistantPanel";
 import {
   DEMO_PROJECT_WORKSPACE,
   PROJECT_WORKSPACE_TABS,
@@ -111,6 +112,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <LiteratureReviewAssistantPanel />
           <AbstractGeneratorPanel />
           <MethodologyAssistantPanel />
+          <VivaPrepAssistantPanel />
           <WorkspacePanel
             icon={FolderOpen}
             title="Project Overview"
@@ -122,7 +124,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
               <InfoCard label="Budget" value={project.budgetLabel} />
             </div>
             <div className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
-              This overview is the workspace home. Next features will connect this to real project records, health scoring, AI tools, research gap finding, literature review drafting, abstract generation, methodology assistance, and report builders.
+              This overview is the workspace home. Next features will connect this to real project records, health scoring, AI tools, research gap finding, literature review drafting, abstract generation, methodology assistance, viva prep, and report builders.
             </div>
           </WorkspacePanel>
         </TabsContent>
