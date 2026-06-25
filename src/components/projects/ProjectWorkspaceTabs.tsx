@@ -15,6 +15,7 @@ import { DeliverablesTrackerPanel } from "@/components/projects/DeliverablesTrac
 import { DemoContributionFlowPanel } from "@/components/projects/DemoContributionFlowPanel";
 import { DemoFundingLedgerPanel } from "@/components/projects/DemoFundingLedgerPanel";
 import { DemoOrderCheckoutPanel } from "@/components/projects/DemoOrderCheckoutPanel";
+import { DepartmentDashboardPanel } from "@/components/projects/DepartmentDashboardPanel";
 import { DisputePlaceholderPanel } from "@/components/projects/DisputePlaceholderPanel";
 import { DocumentExportPlaceholder } from "@/components/projects/DocumentExportPlaceholder";
 import { EvidenceLinkingSystem } from "@/components/projects/EvidenceLinkingSystem";
@@ -204,6 +205,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <SupervisorInvitePanel />
           <SupervisorDashboardPanel />
           <SupervisorReviewQueuePanel />
+          <DepartmentDashboardPanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -227,6 +229,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Supervisor or reviewer",
                 "Supervisor dashboard",
                 "Supervisor review queue",
+                "Department dashboard",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
