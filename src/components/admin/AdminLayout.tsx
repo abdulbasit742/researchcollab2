@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AdminSidebar } from "./AdminSidebar";
 import { AdminMobileNav } from "./AdminMobileNav";
 import { AdminSearchBar } from "./AdminSearchBar";
+import { ADMIN_ROLES, getRoleDashboardPath, normalizeRole } from "@/config/roles";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
@@ -12,7 +13,7 @@ interface AdminLayoutProps {
 }
 
 export function AdminLayout({ children }: AdminLayoutProps) {
-  const { user } = useAuth();
+  const { user, userRole } = useAuth();
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
@@ -23,22 +24,29 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         return;
       }
 
+      if (userRole && ADMIN_ROLES.includes(userRole.role)) {
+        setIsAdmin(true);
+        return;
+      }
+
       const { data } = await supabase
         .from("user_roles")
         .select("role")
         .eq("user_id", user.id)
         .maybeSingle();
 
-      if (data?.role === "admin") {
+      const resolvedRole = normalizeRole(data?.role);
+
+      if (ADMIN_ROLES.includes(resolvedRole)) {
         setIsAdmin(true);
       } else {
         setIsAdmin(false);
-        navigate("/");
+        navigate(getRoleDashboardPath(resolvedRole));
       }
     };
 
     checkAdmin();
-  }, [user, navigate]);
+  }, [user, userRole, navigate]);
 
   if (isAdmin === null) {
     return (
