@@ -11,6 +11,7 @@ import { EvidenceLinkingSystem } from "@/components/projects/EvidenceLinkingSyst
 import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
 import { LiteratureReviewAssistantPanel } from "@/components/projects/LiteratureReviewAssistantPanel";
 import { LiteratureReviewMatrix } from "@/components/projects/LiteratureReviewMatrix";
+import { MethodologyAssistantPanel } from "@/components/projects/MethodologyAssistantPanel";
 import { MethodologyBuilder } from "@/components/projects/MethodologyBuilder";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
 import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTimeline";
@@ -109,6 +110,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <ResearchGapFinderPanel />
           <LiteratureReviewAssistantPanel />
           <AbstractGeneratorPanel />
+          <MethodologyAssistantPanel />
           <WorkspacePanel
             icon={FolderOpen}
             title="Project Overview"
@@ -120,7 +122,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
               <InfoCard label="Budget" value={project.budgetLabel} />
             </div>
             <div className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
-              This overview is the workspace home. Next features will connect this to real project records, health scoring, AI tools, research gap finding, literature review drafting, abstract generation, and report builders.
+              This overview is the workspace home. Next features will connect this to real project records, health scoring, AI tools, research gap finding, literature review drafting, abstract generation, methodology assistance, and report builders.
             </div>
           </WorkspacePanel>
         </TabsContent>
