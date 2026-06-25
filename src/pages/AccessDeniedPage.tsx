@@ -13,14 +13,21 @@ type AccessDeniedState = {
   currentRole?: string;
 };
 
-export default function AccessDeniedPage() {
+type AccessDeniedPageProps = {
+  deniedPath?: string;
+  requiredRoles?: string[];
+  currentRole?: string;
+};
+
+export default function AccessDeniedPage({ deniedPath, requiredRoles, currentRole }: AccessDeniedPageProps = {}) {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, userRole } = useAuth();
   const state = (location.state || {}) as AccessDeniedState;
-  const currentRoleLabel = state.currentRole ?? getRoleLabel(userRole?.role);
+  const currentRoleLabel = currentRole ?? state.currentRole ?? getRoleLabel(userRole?.role);
+  const allowedRoleLabels = requiredRoles ?? state.requiredRoles ?? [];
   const dashboardPath = user ? getRoleDashboardPath(userRole?.role) : "/auth";
-  const deniedPath = state.from || "the requested page";
+  const requestedPath = deniedPath ?? state.from ?? "the requested page";
 
   return (
     <div className="min-h-screen gradient-hero flex items-center justify-center p-4">
@@ -46,18 +53,18 @@ export default function AccessDeniedPage() {
                 <AlertTriangle className="mt-0.5 h-4 w-4 text-amber-500" />
                 <div>
                   <p className="font-medium">Requested page</p>
-                  <p className="text-muted-foreground break-all">{deniedPath}</p>
+                  <p className="text-muted-foreground break-all">{requestedPath}</p>
                 </div>
               </div>
               <div>
                 <p className="font-medium">Current role</p>
                 <p className="text-muted-foreground">{currentRoleLabel}</p>
               </div>
-              {state.requiredRoles?.length ? (
+              {allowedRoleLabels.length ? (
                 <div>
                   <p className="font-medium">Allowed roles</p>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    {state.requiredRoles.map((role) => (
+                    {allowedRoleLabels.map((role) => (
                       <Badge key={role} variant="secondary">{role}</Badge>
                     ))}
                   </div>
