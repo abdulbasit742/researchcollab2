@@ -11,7 +11,7 @@ import {
   getResearchGapReadiness,
   type ResearchGapCandidate,
 } from "@/config/researchGapFinder";
-import { BrainCircuit, CheckCircle2, Lightbulb, Lock, Microscope, SearchCheck, Sparkles } from "lucide-react";
+import { BrainCircuit, CheckCircle2, Lightbulb, Lock, Microscope, SearchCheck, Sparkles, type LucideIcon } from "lucide-react";
 
 type ResearchGapFinderPanelProps = {
   candidates?: ResearchGapCandidate[];
@@ -113,7 +113,7 @@ function ResearchGapCard({ candidate }: { candidate: ResearchGapCandidate }) {
   );
 }
 
-function Checklist({ title, icon: Icon, items }: { title: string; icon: typeof Microscope; items: string[] }) {
+function Checklist({ title, icon: Icon, items }: { title: string; icon: LucideIcon; items: string[] }) {
   return (
     <div className="rounded-lg border p-3">
       <p className="flex items-center gap-2 text-sm font-medium">
