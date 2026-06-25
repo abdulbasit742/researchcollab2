@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuilder";
+import { LiteratureReviewMatrix } from "@/components/projects/LiteratureReviewMatrix";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
 import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTimeline";
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
@@ -120,6 +121,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
         <TabsContent value="files" className="space-y-4">
           <FYPFinalReportBuilder />
           <ResearchProposalBuilder />
+          <LiteratureReviewMatrix />
           <WorkspacePanel
             icon={FileText}
             title="Files & Evidence"
