@@ -56,6 +56,7 @@ import { TaskManager } from "@/components/projects/TaskManager";
 import { TeamMemberInvitePanel } from "@/components/projects/TeamMemberInvitePanel";
 import { VersionHistoryPanel } from "@/components/projects/VersionHistoryPanel";
 import { VivaPrepAssistantPanel } from "@/components/projects/VivaPrepAssistantPanel";
+import { VivaSchedulingPanel } from "@/components/projects/VivaSchedulingPanel";
 import {
   DEMO_PROJECT_WORKSPACE,
   PROJECT_WORKSPACE_TABS,
@@ -212,6 +213,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <BatchSessionManagementPanel />
           <StudentImportPlaceholderPanel />
           <SupervisorAllocationSystemPanel />
+          <VivaSchedulingPanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -239,6 +241,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Batch/session management",
                 "Student import placeholder",
                 "Supervisor allocation system",
+                "Defense/viva scheduling",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
