@@ -8,12 +8,137 @@ import { useObservability } from "@/hooks/useObservability";
 import { Activity, AlertTriangle, CheckCircle, XCircle, Bell, Shield, Clock } from "lucide-react";
 import { format } from "date-fns";
 
+type BuildCheckStatus = "pass" | "warning" | "blocker" | "manual";
+
+type BuildCheck = {
+  id: string;
+  area: string;
+  label: string;
+  status: BuildCheckStatus;
+  evidence: string;
+  nextAction: string;
+  command?: string;
+};
+
+const buildChecks: BuildCheck[] = [
+  {
+    id: "vite-scripts",
+    area: "Build scripts",
+    label: "Vite build scripts are present",
+    status: "pass",
+    evidence: "package.json defines dev, build, build:dev, lint, and preview scripts.",
+    nextAction: "Run npm run build after every major feature pass.",
+    command: "npm run build",
+  },
+  {
+    id: "static-types",
+    area: "Type safety",
+    label: "Supabase Database type is a temporary fallback",
+    status: "warning",
+    evidence: "src/integrations/supabase/types.ts uses a broad fallback until generated types are restored.",
+    nextAction: "Generate real Supabase types from staging before production.",
+    command: "supabase gen types typescript --project-id <project-id>",
+  },
+  {
+    id: "admin-route-protection",
+    area: "Access control",
+    label: "Admin pages are behind ProtectedRoute and AdminLayout",
+    status: "warning",
+    evidence: "Frontend checks exist, but backend RLS is still required for real enforcement.",
+    nextAction: "Add role-aware ProtectedRoute and RLS policies for production.",
+  },
+  {
+    id: "lovable-compatibility",
+    area: "Lovable",
+    label: "Lovable-compatible Vite setup detected",
+    status: "pass",
+    evidence: "vite.config.ts uses React SWC, lovable-tagger in development, and the @ alias.",
+    nextAction: "Keep imports and routes compatible with Lovable auto-commits.",
+  },
+  {
+    id: "seo-domain",
+    area: "Release readiness",
+    label: "Old Lovable domain cleanup is still required",
+    status: "warning",
+    evidence: "SEO/canonical/structured data can still reference the old Lovable preview domain.",
+    nextAction: "Replace old preview-domain references with the final domain after confirmation.",
+  },
+  {
+    id: "edge-functions-auth",
+    area: "Security",
+    label: "Edge function JWT review required",
+    status: "blocker",
+    evidence: "Several Supabase edge functions are configured for unauthenticated invocation.",
+    nextAction: "Review verify_jwt=false functions before any production deployment.",
+  },
+  {
+    id: "demo-finance-labels",
+    area: "Trust & safety",
+    label: "Finance and escrow flows must remain demo-only",
+    status: "warning",
+    evidence: "Funding, escrow, billing, wallet, payout, and refund experiences need consistent demo labels.",
+    nextAction: "Add a shared DemoFinanceBadge and scan all finance-facing pages.",
+  },
+  {
+    id: "ci-workflow",
+    area: "Automation",
+    label: "GitHub Actions build workflow not verified by this dashboard",
+    status: "manual",
+    evidence: "This dashboard is static and cannot read CI status yet.",
+    nextAction: "Add a GitHub Actions workflow for npm ci, npm run build, and npm run lint.",
+    command: "npm ci && npm run build && npm run lint",
+  },
+];
+
+const getBuildStatusLabel = (status: BuildCheckStatus) => {
+  switch (status) {
+    case "pass":
+      return "Pass";
+    case "warning":
+      return "Needs Review";
+    case "blocker":
+      return "Blocker";
+    case "manual":
+      return "Manual Check";
+    default:
+      return "Unknown";
+  }
+};
+
+const getBuildStatusClass = (status: BuildCheckStatus) => {
+  switch (status) {
+    case "pass":
+      return "bg-green-500/10 text-green-600 border-green-500/30";
+    case "warning":
+      return "bg-amber-500/10 text-amber-600 border-amber-500/30";
+    case "blocker":
+      return "bg-red-500/10 text-red-600 border-red-500/30";
+    case "manual":
+      return "bg-blue-500/10 text-blue-600 border-blue-500/30";
+    default:
+      return "bg-muted text-muted-foreground";
+  }
+};
+
 export default function AdminHealthPage() {
   const {
     healthStatus, alerts, events, integrityLogs, jobRuns, loading,
     overallHealth, unresolvedAlerts, criticalAlerts, recentErrors,
     acknowledgeAlert, resolveAlert, refetch
   } = useObservability();
+
+  const buildPasses = buildChecks.filter((check) => check.status === "pass");
+  const buildWarnings = buildChecks.filter((check) => check.status === "warning");
+  const buildBlockers = buildChecks.filter((check) => check.status === "blocker");
+  const manualChecks = buildChecks.filter((check) => check.status === "manual");
+  const buildReadinessScore = Math.round(
+    buildChecks.reduce((total, check) => {
+      if (check.status === "pass") return total + 100;
+      if (check.status === "warning") return total + 60;
+      if (check.status === "manual") return total + 45;
+      return total;
+    }, 0) / buildChecks.length
+  );
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -42,7 +167,7 @@ export default function AdminHealthPage() {
               <Activity className="h-8 w-8 text-primary" />
               Platform Health
             </h1>
-            <p className="text-muted-foreground">Real-time observability & integrity monitoring</p>
+            <p className="text-muted-foreground">Real-time observability, build readiness, and integrity monitoring</p>
           </div>
           <Button onClick={refetch} disabled={loading}>Refresh</Button>
         </div>
@@ -63,6 +188,46 @@ export default function AdminHealthPage() {
                   <span className="text-sm capitalize">{h.component}</span>
                 </div>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Build Readiness Snapshot */}
+        <Card className={buildBlockers.length > 0 ? "border-red-500/40" : "border-green-500/30"}>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              {buildBlockers.length > 0 ? <AlertTriangle className="h-5 w-5 text-red-500" /> : <CheckCircle className="h-5 w-5 text-green-500" />}
+              Build Readiness Dashboard
+            </CardTitle>
+            <CardDescription>
+              Static release-health view for build commands, type readiness, Lovable compatibility, security blockers, and demo safety.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              <div className="rounded-lg border p-3">
+                <p className="text-xs text-muted-foreground">Readiness Score</p>
+                <p className="text-2xl font-bold">{buildReadinessScore}%</p>
+              </div>
+              <div className="rounded-lg border p-3">
+                <p className="text-xs text-muted-foreground">Passed</p>
+                <p className="text-2xl font-bold text-green-600">{buildPasses.length}</p>
+              </div>
+              <div className="rounded-lg border p-3">
+                <p className="text-xs text-muted-foreground">Needs Review</p>
+                <p className="text-2xl font-bold text-amber-600">{buildWarnings.length}</p>
+              </div>
+              <div className="rounded-lg border p-3">
+                <p className="text-xs text-muted-foreground">Blockers</p>
+                <p className="text-2xl font-bold text-red-600">{buildBlockers.length}</p>
+              </div>
+              <div className="rounded-lg border p-3">
+                <p className="text-xs text-muted-foreground">Manual Checks</p>
+                <p className="text-2xl font-bold text-blue-600">{manualChecks.length}</p>
+              </div>
+            </div>
+            <div className="rounded-lg bg-muted/50 p-4 text-sm text-muted-foreground">
+              This dashboard does not replace a real CI build. Before launch, run <code className="rounded bg-background px-1 py-0.5">npm run build</code> and review Supabase/RLS/security blockers in staging.
             </div>
           </CardContent>
         </Card>
@@ -96,13 +261,58 @@ export default function AdminHealthPage() {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="alerts">
-          <TabsList>
+        <Tabs defaultValue="build">
+          <TabsList className="flex h-auto flex-wrap">
+            <TabsTrigger value="build"><AlertTriangle className="h-4 w-4 mr-1" />Build</TabsTrigger>
             <TabsTrigger value="alerts"><Bell className="h-4 w-4 mr-1" />Alerts</TabsTrigger>
             <TabsTrigger value="events"><Activity className="h-4 w-4 mr-1" />Events</TabsTrigger>
             <TabsTrigger value="integrity"><Shield className="h-4 w-4 mr-1" />Integrity</TabsTrigger>
             <TabsTrigger value="jobs"><Clock className="h-4 w-4 mr-1" />Jobs</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="build">
+            <Card>
+              <CardHeader>
+                <CardTitle>Build Health Checks</CardTitle>
+                <CardDescription>
+                  Launch-readiness checks for compile stability, type safety, CI, Lovable compatibility, and release blockers.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Area</TableHead>
+                        <TableHead>Check</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Evidence</TableHead>
+                        <TableHead>Next Action</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {buildChecks.map((check) => (
+                        <TableRow key={check.id}>
+                          <TableCell className="font-medium">{check.area}</TableCell>
+                          <TableCell>{check.label}</TableCell>
+                          <TableCell>
+                            <Badge className={getBuildStatusClass(check.status)}>{getBuildStatusLabel(check.status)}</Badge>
+                          </TableCell>
+                          <TableCell className="max-w-sm text-sm text-muted-foreground">{check.evidence}</TableCell>
+                          <TableCell className="max-w-sm text-sm">
+                            <div>{check.nextAction}</div>
+                            {check.command && (
+                              <code className="mt-1 inline-block rounded bg-muted px-2 py-1 text-xs text-muted-foreground">{check.command}</code>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="alerts">
             <Card>
