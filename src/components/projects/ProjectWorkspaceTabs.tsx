@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -19,9 +20,10 @@ import {
   FolderOpen,
   Milestone,
   Users,
+  type LucideIcon,
 } from "lucide-react";
 
-const tabIconMap = {
+const tabIconMap: Record<string, LucideIcon> = {
   overview: FolderOpen,
   milestones: Milestone,
   tasks: ClipboardList,
@@ -201,10 +203,10 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
 }
 
 type WorkspacePanelProps = {
-  icon: typeof FolderOpen;
+  icon: LucideIcon;
   title: string;
   description: string;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 function WorkspacePanel({ icon: Icon, title, description, children }: WorkspacePanelProps) {
