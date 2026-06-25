@@ -16,7 +16,7 @@ import { MethodologyBuilder } from "@/components/projects/MethodologyBuilder";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
 import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTimeline";
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
-import { ProjectRiskAIИPanel } from "@/components/projects/ProjectRiskAIPanel";
+import { ProjectRiskAIPanel } from "@/components/projects/ProjectRiskAIPanel";
 import { ProjectRiskAlerts } from "@/components/projects/ProjectRiskAlerts";
 import { ReportSectionStatusTracker } from "@/components/projects/ReportSectionStatusTracker";
 import { ResearchGapFinderPanel } from "@/components/projects/ResearchGapFinderPanel";
@@ -114,7 +114,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <AbstractGeneratorPanel />
           <MethodologyAssistantPanel />
           <VivaPrepAssistantPanel />
-          <ProjectRiskAIИPanel />
+          <ProjectRiskAIPanel />
           <WorkspacePanel
             icon={FolderOpen}
             title="Project Overview"
