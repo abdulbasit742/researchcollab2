@@ -19,7 +19,7 @@ import {
   type FunderImpactUpdate,
   type FunderSupportedCampaign,
 } from "@/config/funderDashboard";
-import { BellRing, Eye, HandCoins, HeartHandshake, Lock, ReceiptText, ShieldCheck, WalletCards } from "lucide-react";
+import { BellRing, Eye, HeartHandshake, Lock, ReceiptText, WalletCards } from "lucide-react";
 
 type FunderDashboardPanelProps = {
   summary?: FunderDashboardSummary;
