@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { EdgeFunctionJWTRiskDashboardPanel } from "@/components/projects/EdgeFunctionJWTRiskDashboardPanel";
 import { AlertTriangle, CheckCircle2, FileWarning, KeyRound, Lock, Radar, Shield, ShieldCheck, UserCheck } from "lucide-react";
 
 const securitySignals = [
@@ -88,6 +89,7 @@ export function SecurityDashboardPanel() {
           </div>
         </CardContent>
       </Card>
+      <EdgeFunctionJWTRiskDashboardPanel />
     </div>
   );
 }
