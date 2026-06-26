@@ -12,7 +12,7 @@ import {
   type DeliverableReviewCheck,
   type OrderDeliverable,
 } from "@/config/deliverablesTracker";
-import { CheckCircle2, ClipboardCheck, FileCheck2, FileText, Lock, RotateCcw, UploadCloud, type LucideIcon } from "lucide-react";
+import { CheckCircle2, ClipboardCheck, FileCheck2, FileText, Lock, RotateCcw, UploadCloud } from "lucide-react";
 
 type DeliverablesTrackerPanelProps = {
   deliverables?: OrderDeliverable[];
