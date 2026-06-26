@@ -50,7 +50,7 @@ Confirm the release does not introduce domain or indexing risk.
 
 ## Verification evidence
 
-Attach or link sanitized evidence only.
+Review `BUILD_VERIFICATION.md` before completing this section.
 
 ```text
 npm ci: pending / pass / fail
