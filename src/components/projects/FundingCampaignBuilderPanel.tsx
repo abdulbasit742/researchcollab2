@@ -18,7 +18,7 @@ import {
   type FundingCampaignReadinessCheck,
   type FundingCampaignSection,
 } from "@/config/fundingCampaignBuilder";
-import { CheckCircle2, ClipboardCheck, Goal, HandCoins, Lock, Megaphone, Rocket, ShieldCheck, type LucideIcon } from "lucide-react";
+import { ClipboardCheck, Goal, HandCoins, Lock, Megaphone, Rocket, ShieldCheck } from "lucide-react";
 
 type FundingCampaignBuilderPanelProps = {
   campaign?: FundingCampaignDraft;
