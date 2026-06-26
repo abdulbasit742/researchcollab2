@@ -5,21 +5,23 @@ This file lists the main ResearchCollab project documents.
 ## Start here
 
 1. `README.md`
-2. `CHANGELOG.md`
-3. `CONTRIBUTING.md`
-4. `RELEASE_CHECKLIST.md`
-5. `RELEASE_NOTES_TEMPLATE.md`
-6. `BUILD_VERIFICATION.md`
-7. `MANUAL_SMOKE_TEST.md`
-8. `SMOKE_TEST_NOTES_TEMPLATE.md`
-9. `DEPLOYMENT_GUIDE.md`
-10. `SEO_DOMAIN_AUDIT.md`
-11. `OPERATIONS_RUNBOOK.md`
-12. `SECURITY.md`
+2. `PROGRESS_150.md`
+3. `CHANGELOG.md`
+4. `CONTRIBUTING.md`
+5. `RELEASE_CHECKLIST.md`
+6. `RELEASE_NOTES_TEMPLATE.md`
+7. `BUILD_VERIFICATION.md`
+8. `MANUAL_SMOKE_TEST.md`
+9. `SMOKE_TEST_NOTES_TEMPLATE.md`
+10. `DEPLOYMENT_GUIDE.md`
+11. `SEO_DOMAIN_AUDIT.md`
+12. `OPERATIONS_RUNBOOK.md`
+13. `SECURITY.md`
 
 ## Project
 
 - `README.md` — project overview
+- `PROGRESS_150.md` — progress note
 - `CHANGELOG.md` — change history
 - `CONTRIBUTING.md` — contribution guide
 - `.env.example` — frontend environment example
@@ -44,9 +46,9 @@ This file lists the main ResearchCollab project documents.
 ## Build and security
 
 - `BUILD_VERIFICATION.md` — build verification guide
-- `MANUAL_SMOKE_TEST.md` — manual smoke-test guide
-- `SMOKE_TEST_NOTES_TEMPLATE.md` — smoke-test notes template
+- `MANUAL_SMOKE_TEST.md` — manual test guide
+- `SMOKE_TEST_NOTES_TEMPLATE.md` — test notes template
 - `.github/workflows/build-check.yml` — build workflow
-- `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build/lint issue template
-- `.github/ISSUE_TEMPLATE/manual_smoke_test.yml` — manual smoke-test template
-- `SECURITY.md` — security policy
+- `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build issue template
+- `.github/ISSUE_TEMPLATE/manual_smoke_test.yml` — manual test template
+- `SECURITY.md` — policy
