@@ -34,6 +34,7 @@ import { MarketplaceBrowsePanel } from "@/components/projects/MarketplaceBrowseP
 import { MethodologyAssistantPanel } from "@/components/projects/MethodologyAssistantPanel";
 import { MethodologyBuilder } from "@/components/projects/MethodologyBuilder";
 import { MilestoneManager } from "@/components/projects/MilestoneManager";
+import { OpportunitiesHubPanel } from "@/components/projects/OpportunitiesHubPanel";
 import { OrderWorkroomPanel } from "@/components/projects/OrderWorkroomPanel";
 import { OutcomeMappingPanel } from "@/components/projects/OutcomeMappingPanel";
 import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTimeline";
@@ -220,6 +221,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <EvaluationRubricSystemPanel />
           <OutcomeMappingPanel />
           <AccreditationSupportReportPanel />
+          <OpportunitiesHubPanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -251,6 +253,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Evaluation rubric system",
                 "Outcome mapping",
                 "Accreditation-support report placeholder",
+                "Opportunities hub",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
