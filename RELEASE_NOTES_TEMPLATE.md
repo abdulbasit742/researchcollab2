@@ -1,6 +1,6 @@
 # Release Notes Template
 
-Use this template for every production, staging, or demo milestone release of ResearchCollab.
+Use this template for ResearchCollab releases.
 
 ## Release summary
 
@@ -8,13 +8,11 @@ Use this template for every production, staging, or demo milestone release of Re
 - Release date:
 - Release owner:
 - Release commit SHA:
-- Environment: production / staging / demo
+- Environment:
 - Deployment provider:
 - Rollback commit SHA:
 
 ## Highlights
-
-List the most important user-facing changes in simple language.
 
 - 
 - 
@@ -22,23 +20,17 @@ List the most important user-facing changes in simple language.
 
 ## Engineering changes
 
-Summarize code, configuration, workflow, route, component, dependency, Supabase, or build changes.
-
 - 
 - 
 - 
 
 ## Safety and trust changes
 
-Document changes that affect auth, roles, privacy, trust, support, moderation, feedback, funding, payments, payouts, certificates, exports, admin actions, or founder controls.
-
 - 
 - 
 - 
 
 ## SEO and domain review
-
-Confirm the release does not introduce domain or indexing risk.
 
 - [ ] `SEO_DOMAIN_AUDIT.md` reviewed.
 - [ ] Canonical URLs use the approved domain.
@@ -50,7 +42,7 @@ Confirm the release does not introduce domain or indexing risk.
 
 ## Verification evidence
 
-Review `BUILD_VERIFICATION.md` and `MANUAL_SMOKE_TEST.md` before completing this section.
+Review `CONTRIBUTING.md`, `BUILD_VERIFICATION.md`, and `MANUAL_SMOKE_TEST.md` before completing this section.
 
 ```text
 npm ci: pending / pass / fail
@@ -62,15 +54,11 @@ Manual smoke test: pending / pass / fail
 
 ## Known limitations
 
-List unresolved issues that are safe to ship with owner approval.
-
 - 
 - 
 - 
 
 ## Launch blockers
-
-List anything that blocks release. If none, write `None`.
 
 - 
 
@@ -79,7 +67,7 @@ List anything that blocks release. If none, write `None`.
 - Last known good commit:
 - Rollback owner:
 - Rollback method:
-- Data or configuration restoration notes:
+- Notes:
 
 ## Post-launch checks
 
