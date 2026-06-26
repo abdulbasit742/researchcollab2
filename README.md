@@ -49,6 +49,7 @@ Use these docs before production launch:
 
 - `RELEASE_CHECKLIST.md` — production release checklist
 - `DEPLOYMENT_GUIDE.md` — deployment, env vars, Supabase redirects, rollback, and post-deploy checks
+- `SEO_DOMAIN_AUDIT.md` — canonical URL, sitemap, robots, structured data, Open Graph, and final-domain audit checklist
 - `SECURITY.md` — vulnerability reporting and release security rules
 - `.github/pull_request_template.md` — PR release verification checklist
 - `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build/lint failure report template
