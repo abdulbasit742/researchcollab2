@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { CertificateVerificationPlaceholderPanel } from "@/components/projects/CertificateVerificationPlaceholderPanel";
 import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, FileText, Lock, Rocket, ShieldCheck, Users } from "lucide-react";
 
 const challengeBriefs = [
@@ -91,6 +92,7 @@ export function IndustryChallengeWorkflowPanel() {
           </div>
         </CardContent>
       </Card>
+      <CertificateVerificationPlaceholderPanel />
     </div>
   );
 }
