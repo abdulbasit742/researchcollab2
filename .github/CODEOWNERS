@@ -1,0 +1,19 @@
+# Repository ownership and release review
+
+# Default owner for all project changes.
+* @abdulbasit742
+
+# GitHub workflow, issue template, and release governance changes.
+.github/ @abdulbasit742
+
+# Supabase migrations and edge-function related files need owner review.
+supabase/ @abdulbasit742
+
+# Core app source and route/component changes need owner review.
+src/ @abdulbasit742
+
+# Package, build, lockfile, and deployment config changes need owner review.
+package.json @abdulbasit742
+package-lock.json @abdulbasit742
+vite.config.ts @abdulbasit742
+tsconfig*.json @abdulbasit742
