@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { AuditLogServicePanel } from "@/components/projects/AuditLogServicePanel";
 import { Award, CheckCircle2, FileCheck2, Fingerprint, Lock, QrCode, ShieldCheck, Stamp, UserCheck } from "lucide-react";
 
 const certificateRecords = [
@@ -80,6 +81,7 @@ export function CertificateVerificationPlaceholderPanel() {
           </div>
         </CardContent>
       </Card>
+      <AuditLogServicePanel />
     </div>
   );
 }
