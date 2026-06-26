@@ -152,22 +152,22 @@ const routeHealthChecks: RouteHealthCheck[] = [
 
 const brokenLinkChecks: BrokenLinkCheck[] = [
   {
-    id: "lovable-readme-placeholder",
-    source: "README / Lovable project link",
-    link: "https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID",
-    status: "broken",
-    risk: "High",
-    evidence: "Default Lovable placeholder is not a valid buyer/tester link.",
-    fix: "Replace with the real Lovable project URL or remove the placeholder before sharing the repo.",
+    id: "readme-handoff-docs",
+    source: "README / release docs",
+    link: "README.md, RELEASE_CHECKLIST.md, DEPLOYMENT_GUIDE.md",
+    status: "ok",
+    risk: "Low",
+    evidence: "README now points maintainers to local release, deployment, security, issue, PR, and owner-review docs.",
+    fix: "Keep handoff docs synchronized whenever release or deployment flow changes.",
   },
   {
-    id: "legacy-seo-domain",
+    id: "production-domain-readiness",
     source: "SEO / canonical / sitemap / structured data",
-    link: "https://academic-forge-flow.lovable.app",
+    link: "Final production domain",
     status: "review",
-    risk: "High",
-    evidence: "Legacy Lovable preview domain can send users and crawlers away from the final brand/domain.",
-    fix: "Replace legacy domain references with the final approved domain when confirmed.",
+    risk: "Medium",
+    evidence: "Admin QA no longer hardcodes old preview domains, but final production SEO URLs still need owner confirmation.",
+    fix: "Set canonical URLs, sitemap entries, structured data, and Supabase redirects to the approved production domain before launch.",
   },
   {
     id: "admin-links",
@@ -483,7 +483,7 @@ export function RouteHealthPanel() {
             Broken Link Scanner
           </CardTitle>
           <CardDescription>
-            Static link-readiness scan for placeholder URLs, legacy domains, external docs, admin links, and finance-demo routes.
+            Static link-readiness scan for release docs, production-domain readiness, external docs, admin links, and finance-demo routes.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
