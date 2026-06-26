@@ -19,7 +19,7 @@ import {
   type CampaignMilestoneFundingSummary,
   type CampaignReleaseCheck,
 } from "@/config/campaignMilestoneFunding";
-import { CheckCircle2, ClipboardCheck, HandCoins, Landmark, Lock, ReceiptText, ShieldCheck, WalletCards, type LucideIcon } from "lucide-react";
+import { CheckCircle2, HandCoins, Landmark, Lock, ReceiptText, ShieldCheck, WalletCards, type LucideIcon } from "lucide-react";
 
 type CampaignMilestoneFundingPanelProps = {
   summary?: CampaignMilestoneFundingSummary;
