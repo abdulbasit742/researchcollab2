@@ -12,6 +12,7 @@
 
 # Production handoff, security, deployment, SEO, release notes, and environment guidance need owner review.
 README.md @abdulbasit742
+CONTRIBUTING.md @abdulbasit742
 DOCS_INDEX.md @abdulbasit742
 RELEASE_CHECKLIST.md @abdulbasit742
 RELEASE_NOTES_TEMPLATE.md @abdulbasit742
