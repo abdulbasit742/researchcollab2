@@ -48,6 +48,7 @@ The GitHub Actions workflow at `.github/workflows/build-check.yml` validates dep
 Use these docs before production launch:
 
 - `DOCS_INDEX.md` — quick index of project docs
+- `SUPPORT.md` — support guide
 - `PROGRESS_150.md` — progress 150 note
 - `CHANGELOG.md` — change history
 - `CONTRIBUTING.md` — contribution guide
