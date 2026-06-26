@@ -49,6 +49,7 @@ Use these docs before production launch:
 
 - `RELEASE_CHECKLIST.md` — production release checklist
 - `RELEASE_NOTES_TEMPLATE.md` — release notes format for highlights, verification evidence, SEO review, known limitations, and rollback plan
+- `OPERATIONS_RUNBOOK.md` — daily/weekly operations, release-day checks, support triage, escalation, rollback triggers, and follow-up routing
 - `DEPLOYMENT_GUIDE.md` — deployment, env vars, Supabase redirects, rollback, and post-deploy checks
 - `SEO_DOMAIN_AUDIT.md` — canonical URL, sitemap, robots, structured data, Open Graph, and final-domain audit checklist
 - `SECURITY.md` — vulnerability reporting and release security rules
