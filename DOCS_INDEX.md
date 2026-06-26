@@ -5,19 +5,21 @@ This file lists the main ResearchCollab project documents.
 ## Start here
 
 1. `README.md`
-2. `RELEASE_CHECKLIST.md`
-3. `RELEASE_NOTES_TEMPLATE.md`
-4. `BUILD_VERIFICATION.md`
-5. `MANUAL_SMOKE_TEST.md`
-6. `SMOKE_TEST_NOTES_TEMPLATE.md`
-7. `DEPLOYMENT_GUIDE.md`
-8. `SEO_DOMAIN_AUDIT.md`
-9. `OPERATIONS_RUNBOOK.md`
-10. `SECURITY.md`
+2. `CONTRIBUTING.md`
+3. `RELEASE_CHECKLIST.md`
+4. `RELEASE_NOTES_TEMPLATE.md`
+5. `BUILD_VERIFICATION.md`
+6. `MANUAL_SMOKE_TEST.md`
+7. `SMOKE_TEST_NOTES_TEMPLATE.md`
+8. `DEPLOYMENT_GUIDE.md`
+9. `SEO_DOMAIN_AUDIT.md`
+10. `OPERATIONS_RUNBOOK.md`
+11. `SECURITY.md`
 
 ## Project
 
-- `README.md` — project overview and setup
+- `README.md` — project overview
+- `CONTRIBUTING.md` — contribution guide
 - `.env.example` — frontend environment example
 
 ## Release
@@ -40,7 +42,7 @@ This file lists the main ResearchCollab project documents.
 ## Build and security
 
 - `BUILD_VERIFICATION.md` — build verification guide
-- `MANUAL_SMOKE_TEST.md` — manual route and UI smoke-test guide
+- `MANUAL_SMOKE_TEST.md` — manual smoke-test guide
 - `SMOKE_TEST_NOTES_TEMPLATE.md` — smoke-test notes template
 - `.github/workflows/build-check.yml` — build workflow
 - `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build/lint issue template
