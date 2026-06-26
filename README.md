@@ -58,6 +58,7 @@ Use these docs before production launch:
 - `SECURITY.md` — vulnerability reporting and release security rules
 - `.github/pull_request_template.md` — PR release verification checklist
 - `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build/lint failure report template
+- `.github/ISSUE_TEMPLATE/manual_smoke_test.yml` — manual smoke-test report template
 - `.github/ISSUE_TEMPLATE/seo_domain_audit.yml` — SEO/domain launch-blocker report template
 - `.github/CODEOWNERS` — owner review rules
 
