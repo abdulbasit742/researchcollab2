@@ -17,7 +17,7 @@ import {
   type DemoContributionPolicyCheck,
   type DemoContributionStep,
 } from "@/config/demoContributionFlow";
-import { CheckCircle2, ClipboardCheck, CreditCard, HandCoins, Lock, ShieldCheck, UserRoundCheck, WalletCards, type LucideIcon } from "lucide-react";
+import { CheckCircle2, ClipboardCheck, CreditCard, HandCoins, Lock, ShieldCheck, WalletCards, type LucideIcon } from "lucide-react";
 
 type DemoContributionFlowPanelProps = {
   flow?: DemoContributionFlow;
