@@ -5,6 +5,7 @@ Describe what changed and why.
 ## Release verification checklist
 
 - [ ] I reviewed `BUILD_VERIFICATION.md` for build evidence expectations.
+- [ ] I reviewed `MANUAL_SMOKE_TEST.md` for route and UI smoke-test expectations.
 - [ ] I reviewed the changed files for unused imports, unused variables, and broken exports.
 - [ ] I confirmed `npm run lint` is expected to pass or documented any known lint blockers.
 - [ ] I confirmed `npm run build` is expected to pass or documented any known build blockers.
