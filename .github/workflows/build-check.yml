@@ -14,10 +14,15 @@ permissions:
 
 env:
   NODE_VERSION: "20"
+  CI: true
+
+concurrency:
+  group: build-check-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-check:
-    name: Install, Build, and Lint
+    name: Install, Lint, and Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -30,15 +35,19 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Validate package lock
+        run: test -f package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Run production build
-        run: npm run build
-
       - name: Run lint
         run: npm run lint
+
+      - name: Run production build
+        run: npm run build
 
       - name: Upload production build artifact
         if: success()
