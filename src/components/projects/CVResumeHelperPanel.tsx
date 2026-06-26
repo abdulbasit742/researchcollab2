@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { IndustryChallengeWorkflowPanel } from "@/components/projects/IndustryChallengeWorkflowPanel";
 import { Award, BriefcaseBusiness, CheckCircle2, FileText, Lock, PenLine, ShieldCheck, Sparkles, Target } from "lucide-react";
 
 const resumeSections = [
@@ -81,7 +82,6 @@ export function CVResumeHelperPanel() {
           <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-4 text-sm text-amber-700 dark:text-amber-300">
             Demo CV/resume helper only. Production export should verify user approval, factual evidence, privacy settings, and revision history.
           </div>
-
           <ResumeSections />
           <div className="grid gap-4 xl:grid-cols-2">
             <BulletSuggestions gaps={gaps} />
@@ -89,6 +89,7 @@ export function CVResumeHelperPanel() {
           </div>
         </CardContent>
       </Card>
+      <IndustryChallengeWorkflowPanel />
     </div>
   );
 }
