@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { FeedbackBugReportWidgetPanel } from "@/components/projects/FeedbackBugReportWidgetPanel";
 import { BookOpen, CheckCircle2, FileQuestion, HelpCircle, LifeBuoy, Lock, MessageCircle, Search, TicketCheck } from "lucide-react";
 
 const helpTopics = [
@@ -86,6 +87,7 @@ export function HelpCenterFAQPanel() {
           </div>
         </CardContent>
       </Card>
+      <FeedbackBugReportWidgetPanel />
     </div>
   );
 }
