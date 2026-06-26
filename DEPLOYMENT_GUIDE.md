@@ -11,7 +11,7 @@ Recommended target for the current Vite React app:
 - output directory: `dist`
 - Node version: `20`
 
-The app should be deployed from the `main` branch only after the release checklist and security policy are reviewed.
+The app should be deployed from the `main` branch only after the release checklist, SEO domain audit, and security policy are reviewed.
 
 ## 2. Required environment variables
 
@@ -95,13 +95,19 @@ Before production traffic, confirm that these actions are still locked or clearl
 
 ## 8. Domain and SEO setup
 
-Before final launch:
+Before final launch, review `SEO_DOMAIN_AUDIT.md` and confirm:
 
-- replace old placeholder or Lovable domains in canonical URLs, sitemap entries, structured data, and README notes
-- verify production domain in the deployment provider
-- verify Supabase redirect URLs match the domain
-- verify HTTPS is active
-- verify robots and metadata are correct
+- final production domain is owner-approved
+- old placeholder, preview, local, or temporary domains are removed from public-facing copy
+- canonical URLs use the approved production domain
+- sitemap includes only public indexable pages
+- robots rules block private, admin, auth, dashboard, checkout, wallet, workroom, moderation, and private workspace routes
+- Open Graph and social preview URLs/images use production-safe assets
+- structured data does not claim unsupported accreditation, payment, certification, government affiliation, or production-verified demo services
+- Supabase Auth site URL and redirect URLs match the approved production/staging domains
+- HTTPS is active before production traffic
+
+Do not connect search indexing or submit the sitemap until the SEO domain audit is complete.
 
 ## 9. Rollback process
 
@@ -114,6 +120,8 @@ If deployment fails:
 5. Attach sanitized logs and suspected files.
 6. Record the rollback owner and follow-up fix.
 
+Rollback or pause indexing immediately if canonical URLs point to the wrong domain, private routes appear in sitemap/search results, auth redirects fail, or demo-only finance/payout flows look production-ready.
+
 ## 10. Post-deploy monitoring
 
 After launch:
@@ -124,6 +132,9 @@ After launch:
 - review GitHub Actions status
 - review deployment provider logs
 - review Supabase auth/logs if backend is enabled
+- verify canonical URL in page source
+- verify sitemap and robots behavior
+- verify Open Graph/social previews
 - create follow-up issues for non-blocking bugs
 
 ## 11. Release approval record
@@ -134,6 +145,7 @@ Record the following for every production release:
 - release commit SHA
 - GitHub Actions result or local command output
 - environment reviewed
+- `SEO_DOMAIN_AUDIT.md` reviewed
 - owner approval
 - rollback commit
 - known issues
