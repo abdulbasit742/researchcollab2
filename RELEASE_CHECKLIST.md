@@ -4,6 +4,7 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 
 ## 1. Code quality gate
 
+- [ ] Review `CONTRIBUTING.md` before changing release-facing files.
 - [ ] Review `BUILD_VERIFICATION.md` before recording build evidence.
 - [ ] Run `npm ci` from a clean checkout.
 - [ ] Run `npm run lint` and resolve unused imports, unused variables, broken exports, and formatting blockers.
