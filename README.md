@@ -1,6 +1,6 @@
 # ResearchCollab
 
-ResearchCollab is a Vite + React + TypeScript platform for research collaboration, FYP/project workspaces, AI-assisted research workflows, researcher services, funding demos, trust/safety previews, and production launch hardening.
+ResearchCollab is a Vite + React + TypeScript platform for research collaboration, FYP/project workspaces, AI-assisted research workflows, researcher services, funding demos, trust previews, and launch hardening.
 
 ## Tech stack
 
@@ -22,7 +22,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-For local development, fill only browser-safe frontend variables in `.env.local`. Never commit `.env`, `.env.local`, service-role keys, payment secrets, cookies, or private tokens.
+For local development, fill only browser-safe frontend variables in `.env.local`.
 
 ## Required frontend environment variables
 
@@ -41,7 +41,7 @@ npm run build
 npm run preview
 ```
 
-The GitHub Actions workflow at `.github/workflows/build-check.yml` validates lockfile presence, dependency install, lint, production build, and build artifact output.
+The GitHub Actions workflow at `.github/workflows/build-check.yml` validates dependency install, lint, production build, and build artifact output.
 
 ## Release and deployment docs
 
@@ -49,22 +49,23 @@ Use these docs before production launch:
 
 - `DOCS_INDEX.md` — quick index of project docs
 - `RELEASE_CHECKLIST.md` — production release checklist
-- `RELEASE_NOTES_TEMPLATE.md` — release notes format for highlights, verification evidence, SEO review, known limitations, and rollback plan
-- `BUILD_VERIFICATION.md` — local command, GitHub Actions, artifact, and smoke-test verification guide
+- `RELEASE_NOTES_TEMPLATE.md` — release notes format
+- `BUILD_VERIFICATION.md` — build verification guide
 - `MANUAL_SMOKE_TEST.md` — manual route and UI smoke-test checklist
-- `OPERATIONS_RUNBOOK.md` — daily/weekly operations, release-day checks, support triage, escalation, rollback triggers, and follow-up routing
-- `DEPLOYMENT_GUIDE.md` — deployment, env vars, Supabase redirects, rollback, and post-deploy checks
-- `SEO_DOMAIN_AUDIT.md` — canonical URL, sitemap, robots, structured data, Open Graph, and final-domain audit checklist
-- `SECURITY.md` — vulnerability reporting and release security rules
+- `SMOKE_TEST_NOTES_TEMPLATE.md` — smoke-test notes template
+- `OPERATIONS_RUNBOOK.md` — operations checklist
+- `DEPLOYMENT_GUIDE.md` — deployment guide
+- `SEO_DOMAIN_AUDIT.md` — SEO and domain checklist
+- `SECURITY.md` — security policy
 - `.github/pull_request_template.md` — PR release verification checklist
-- `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build/lint failure report template
+- `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build/lint report template
 - `.github/ISSUE_TEMPLATE/manual_smoke_test.yml` — manual smoke-test report template
-- `.github/ISSUE_TEMPLATE/seo_domain_audit.yml` — SEO/domain launch-blocker report template
+- `.github/ISSUE_TEMPLATE/seo_domain_audit.yml` — SEO/domain report template
 - `.github/CODEOWNERS` — owner review rules
 
-## Demo and safety notes
+## Demo notes
 
-Several funding, payout, contribution, certificate, moderation, launch, export, and founder actions are intentionally demo-only or locked. Do not enable real payments, payouts, private attachments, or production launch actions until backend services, provider credentials, audit logging, and owner approvals are complete.
+Some funding, payout, contribution, certificate, moderation, launch, export, and founder actions are intentionally demo-only or locked until production services and owner approvals are complete.
 
 ## Deployment summary
 
@@ -76,7 +77,7 @@ Recommended production deployment settings:
 - Node version: `20`
 - source branch: `main`
 
-Before deployment, confirm Supabase production redirect URLs, environment variables, canonical URLs, sitemap, structured data, and domain settings match the final production domain.
+Before deployment, confirm Supabase redirect URLs, environment variables, canonical URLs, sitemap, structured data, and domain settings match the final production domain.
 
 ## Repository owner
 
