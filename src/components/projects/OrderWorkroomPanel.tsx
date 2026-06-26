@@ -14,7 +14,7 @@ import {
   type OrderWorkroomMessage,
   type OrderWorkroomMilestone,
 } from "@/config/orderWorkroom";
-import { CheckCircle2, FileText, Lock, MessageSquareText, PackageCheck, Send, ShieldCheck, Workflow, type LucideIcon } from "lucide-react";
+import { CheckCircle2, FileText, Lock, MessageSquareText, PackageCheck, ShieldCheck, Workflow, type LucideIcon } from "lucide-react";
 
 type OrderWorkroomPanelProps = {
   workroom?: OrderWorkroom;
