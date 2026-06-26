@@ -1,0 +1,56 @@
+name: Build or Lint Failure
+
+description: Report a build, lint, or CI validation failure.
+title: "Build/Lint Failure: "
+labels:
+  - build
+  - lint
+  - release-blocker
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template when `npm run lint`, `npm run build`, or GitHub Actions validation fails.
+  - type: input
+    id: failing-command
+    attributes:
+      label: Failing command or workflow step
+      description: Example: npm run lint, npm run build, Build Check / Run lint.
+      placeholder: npm run lint
+    validations:
+      required: true
+  - type: input
+    id: commit-sha
+    attributes:
+      label: Commit SHA
+      description: Paste the commit SHA where the failure happened.
+      placeholder: 70ec2e9ce977b4cba3fec877d9fbd97f8a7c7d87
+    validations:
+      required: true
+  - type: textarea
+    id: error-output
+    attributes:
+      label: Error output
+      description: Paste the smallest useful error output. Remove secrets, tokens, private emails, or payment credentials.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: suspected-files
+    attributes:
+      label: Suspected files
+      description: List files likely causing the failure.
+      placeholder: |
+        src/components/projects/ExamplePanel.tsx
+        src/config/example.ts
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety checks
+      options:
+        - label: I removed secrets, tokens, credentials, and personal data from the pasted logs.
+          required: true
+        - label: I checked whether this blocks release.
+          required: true
+        - label: I added the latest GitHub Actions link or local command output if available.
+          required: false
