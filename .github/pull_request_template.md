@@ -4,6 +4,7 @@ Describe what changed and why.
 
 ## Release verification checklist
 
+- [ ] I reviewed `CONTRIBUTING.md` for contribution expectations.
 - [ ] I reviewed `BUILD_VERIFICATION.md` for build evidence expectations.
 - [ ] I reviewed `MANUAL_SMOKE_TEST.md` for route and UI smoke-test expectations.
 - [ ] I reviewed the changed files for unused imports, unused variables, and broken exports.
