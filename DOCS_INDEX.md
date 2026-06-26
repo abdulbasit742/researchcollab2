@@ -8,10 +8,11 @@ This file lists the main ResearchCollab project documents.
 2. `RELEASE_CHECKLIST.md`
 3. `RELEASE_NOTES_TEMPLATE.md`
 4. `BUILD_VERIFICATION.md`
-5. `DEPLOYMENT_GUIDE.md`
-6. `SEO_DOMAIN_AUDIT.md`
-7. `OPERATIONS_RUNBOOK.md`
-8. `SECURITY.md`
+5. `MANUAL_SMOKE_TEST.md`
+6. `DEPLOYMENT_GUIDE.md`
+7. `SEO_DOMAIN_AUDIT.md`
+8. `OPERATIONS_RUNBOOK.md`
+9. `SECURITY.md`
 
 ## Project
 
@@ -38,6 +39,7 @@ This file lists the main ResearchCollab project documents.
 ## Build and security
 
 - `BUILD_VERIFICATION.md` — build verification guide
+- `MANUAL_SMOKE_TEST.md` — manual route and UI smoke-test guide
 - `.github/workflows/build-check.yml` — build workflow
 - `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build/lint issue template
 - `SECURITY.md` — security policy
