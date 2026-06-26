@@ -42,7 +42,7 @@ Use this template for ResearchCollab releases.
 
 ## Verification evidence
 
-Review `CONTRIBUTING.md`, `BUILD_VERIFICATION.md`, and `MANUAL_SMOKE_TEST.md` before completing this section.
+Review `CHANGELOG.md`, `CONTRIBUTING.md`, `BUILD_VERIFICATION.md`, and `MANUAL_SMOKE_TEST.md` before completing this section.
 
 ```text
 npm ci: pending / pass / fail
