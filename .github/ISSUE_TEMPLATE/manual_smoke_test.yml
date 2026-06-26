@@ -1,0 +1,86 @@
+name: Manual smoke test report
+description: Report a route or UI issue found during manual smoke testing.
+title: "Manual smoke test: "
+labels:
+  - smoke-test
+  - qa
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form with MANUAL_SMOKE_TEST.md after running the preview build.
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Local, demo, staging, or production.
+      placeholder: local
+    validations:
+      required: true
+
+  - type: input
+    id: commit
+    attributes:
+      label: Commit SHA
+      description: Commit that was tested.
+      placeholder: abc123
+    validations:
+      required: true
+
+  - type: input
+    id: preview_url
+    attributes:
+      label: Preview URL
+      description: URL used during manual smoke testing.
+      placeholder: http://localhost:4173
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Tested area
+      options:
+        - Public routes
+        - Auth routes
+        - Dashboard routes
+        - Project workspace
+        - Release docs links
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue_summary
+    attributes:
+      label: Issue summary
+      description: Explain what did not work.
+      placeholder: The route loaded but the main panel did not render.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_result
+    attributes:
+      label: Expected result
+      description: What should have happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual_result
+    attributes:
+      label: Actual result
+      description: What happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Add safe screenshots, console notes, or short reproduction steps.
+      placeholder: Steps, screenshot link, or browser console summary.
+    validations:
+      required: false
