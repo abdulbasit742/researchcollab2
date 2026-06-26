@@ -1,0 +1,76 @@
+name: SEO Domain Audit
+
+description: Report canonical, sitemap, robots, Open Graph, structured data, or Supabase redirect launch issues.
+title: "SEO Domain Audit: "
+labels:
+  - seo
+  - domain
+  - launch-blocker
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template when `SEO_DOMAIN_AUDIT.md` finds a launch blocker or domain/SEO mismatch.
+  - type: dropdown
+    id: issue-area
+    attributes:
+      label: Issue area
+      description: Choose the main SEO/domain area affected.
+      options:
+        - Final production domain
+        - Canonical URL
+        - Sitemap
+        - Robots/noindex
+        - Structured data
+        - Open Graph/social preview
+        - Supabase Auth redirect
+        - Private route exposure
+        - Demo-only finance/payout claim
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: affected-url
+    attributes:
+      label: Affected URL or route
+      description: Add the public URL, route path, sitemap entry, or Supabase redirect URL involved.
+      placeholder: https://example.com/path-or-/admin/*
+    validations:
+      required: true
+  - type: input
+    id: expected-domain
+    attributes:
+      label: Expected approved domain
+      description: Add the final approved production or staging domain.
+      placeholder: https://your-production-domain.example
+    validations:
+      required: true
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current behavior
+      description: Explain what is wrong, such as wrong canonical, private route in sitemap, broken auth redirect, or old preview domain.
+      placeholder: The page source still shows an old preview domain in canonical metadata.
+    validations:
+      required: true
+  - type: textarea
+    id: verification-evidence
+    attributes:
+      label: Verification evidence
+      description: Add sanitized page-source snippets, sitemap entries, robots lines, social preview output, or Supabase setting notes. Remove secrets and private data.
+      render: shell
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety-checks
+    attributes:
+      label: Safety checks
+      options:
+        - label: I reviewed `SEO_DOMAIN_AUDIT.md` before opening this issue.
+          required: true
+        - label: I removed secrets, tokens, private URLs, private emails, cookies, payment credentials, and personal data from the evidence.
+          required: true
+        - label: I checked whether private/admin/auth/dashboard/payment/workroom routes are exposed to indexing.
+          required: false
+        - label: I checked whether demo-only finance, payout, certificate, or marketplace claims look production-ready.
+          required: false
