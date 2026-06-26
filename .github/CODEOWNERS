@@ -1,17 +1,15 @@
 # Repository ownership and release review
 
-# Default owner for all project changes.
 * @abdulbasit742
 
-# GitHub workflow, issue template, and release governance changes.
 .github/ @abdulbasit742
 .github/workflows/ @abdulbasit742
 .github/ISSUE_TEMPLATE/ @abdulbasit742
 .github/pull_request_template.md @abdulbasit742
 .github/CODEOWNERS @abdulbasit742
 
-# Production handoff, security, deployment, SEO, release notes, and environment guidance need owner review.
 README.md @abdulbasit742
+CHANGELOG.md @abdulbasit742
 CONTRIBUTING.md @abdulbasit742
 DOCS_INDEX.md @abdulbasit742
 RELEASE_CHECKLIST.md @abdulbasit742
@@ -25,13 +23,8 @@ SEO_DOMAIN_AUDIT.md @abdulbasit742
 SECURITY.md @abdulbasit742
 .env.example @abdulbasit742
 
-# Supabase migrations and edge-function related files need owner review.
 supabase/ @abdulbasit742
-
-# Core app source and route/component changes need owner review.
 src/ @abdulbasit742
-
-# Package, build, lockfile, and deployment config changes need owner review.
 package.json @abdulbasit742
 package-lock.json @abdulbasit742
 vite.config.ts @abdulbasit742
