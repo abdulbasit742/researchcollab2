@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { AdminModerationQueuePanel } from "@/components/projects/AdminModerationQueuePanel";
 import { AlertTriangle, CheckCircle2, ClipboardList, FileWarning, Flag, Lock, MessageSquareWarning, ShieldCheck } from "lucide-react";
 
 const reviewQueue = [
@@ -88,6 +89,7 @@ export function ModerationReportFlowPanel() {
           </div>
         </CardContent>
       </Card>
+      <AdminModerationQueuePanel />
     </div>
   );
 }
