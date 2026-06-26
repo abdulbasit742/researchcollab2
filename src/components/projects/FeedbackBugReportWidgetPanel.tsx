@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { FounderControlRoomPanel } from "@/components/projects/FounderControlRoomPanel";
 import { Bug, CheckCircle2, ClipboardList, FileUp, Lightbulb, Lock, MessageSquarePlus, Send, ShieldCheck } from "lucide-react";
 
 const feedbackTypes = [
@@ -87,6 +88,7 @@ export function FeedbackBugReportWidgetPanel() {
           </div>
         </CardContent>
       </Card>
+      <FounderControlRoomPanel />
     </div>
   );
 }
