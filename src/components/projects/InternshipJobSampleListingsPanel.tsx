@@ -49,7 +49,7 @@ export function InternshipJobSampleListingsPanel() {
         <MetricCard label="Top Match" value={topMatches.toString()} helper="80%+" />
         <MetricCard label="Saved" value={saved.toString()} helper="Shortlist" />
         <MetricCard label="Remote" value={remote.toString()} helper="Options" />
-        <MetricCard label="Review" value={needsReview.toString()} helper="Items" danger={needsReview > 0} />
+        <MetricCard label="Review" value={needsReview.toString()} helper={`${missing} missing`} danger={needsReview > 0 || missing > 0} />
         <MetricCard label="Avg Match" value={`${averageMatch}%`} helper="Fit score" danger={averageMatch < 75} />
       </div>
 
