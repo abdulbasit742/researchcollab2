@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { DemoFinanceLabelCheckerPanel } from "@/components/projects/DemoFinanceLabelCheckerPanel";
 import { AlertTriangle, CheckCircle2, CloudCog, FileWarning, KeyRound, Lock, RotateCcwKey, ShieldCheck, Workflow } from "lucide-react";
 
 const functionRisks = [
@@ -88,6 +89,7 @@ export function EdgeFunctionJWTRiskDashboardPanel() {
           </div>
         </CardContent>
       </Card>
+      <DemoFinanceLabelCheckerPanel />
     </div>
   );
 }
