@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { TrustCenterPanel } from "@/components/projects/TrustCenterPanel";
 import { Banknote, CheckCircle2, FileWarning, HandCoins, Lock, ReceiptText, ShieldCheck, Tag, WalletCards } from "lucide-react";
 
 const financeLabels = [
@@ -87,6 +88,7 @@ export function DemoFinanceLabelCheckerPanel() {
           </div>
         </CardContent>
       </Card>
+      <TrustCenterPanel />
     </div>
   );
 }
