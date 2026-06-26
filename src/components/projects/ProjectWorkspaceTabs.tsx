@@ -28,6 +28,7 @@ import { FYPFinalReportBuilder } from "@/components/projects/FYPFinalReportBuild
 import { GrantApplicationTrackerPanel } from "@/components/projects/GrantApplicationTrackerPanel";
 import { GrantFinderPanel } from "@/components/projects/GrantFinderPanel";
 import { ImpactUpdatesPanel } from "@/components/projects/ImpactUpdatesPanel";
+import { InternshipJobSampleListingsPanel } from "@/components/projects/InternshipJobSampleListingsPanel";
 import { LiteratureReviewAssistantPanel } from "@/components/projects/LiteratureReviewAssistantPanel";
 import { LiteratureReviewMatrix } from "@/components/projects/LiteratureReviewMatrix";
 import { MarketplaceBrowsePanel } from "@/components/projects/MarketplaceBrowsePanel";
@@ -222,6 +223,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <OutcomeMappingPanel />
           <AccreditationSupportReportPanel />
           <OpportunitiesHubPanel />
+          <InternshipJobSampleListingsPanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -254,6 +256,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Outcome mapping",
                 "Accreditation-support report placeholder",
                 "Opportunities hub",
+                "Internship/job sample listings",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
