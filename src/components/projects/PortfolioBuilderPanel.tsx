@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { PublicProfilePrivacyControlsPanel } from "@/components/projects/PublicProfilePrivacyControlsPanel";
 import { BriefcaseBusiness, Eye, FileText, Globe2, Image, Link2, Lock, ShieldCheck, Sparkles, Trophy } from "lucide-react";
 
 const portfolioProjects = [
@@ -93,6 +94,7 @@ export function PortfolioBuilderPanel() {
           </div>
         </CardContent>
       </Card>
+      <PublicProfilePrivacyControlsPanel />
     </div>
   );
 }
