@@ -1,73 +1,75 @@
-# Welcome to your Lovable project
+# ResearchCollab
 
-## Project info
+ResearchCollab is a Vite + React + TypeScript platform for research collaboration, FYP/project workspaces, AI-assisted research workflows, researcher services, funding demos, trust/safety previews, and production launch hardening.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Tech stack
 
-## How can I edit this code?
+- Vite
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn-ui
+- Supabase client
+- GitHub Actions build check
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Local setup
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+git clone https://github.com/abdulbasit742/researchcollab2.git
+cd researchcollab2
+npm ci
+cp .env.example .env.local
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+For local development, fill only browser-safe frontend variables in `.env.local`. Never commit `.env`, `.env.local`, service-role keys, payment secrets, cookies, or private tokens.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Required frontend environment variables
 
-**Use GitHub Codespaces**
+```bash
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-anon-key
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Optional metadata and public-only keys are documented in `.env.example`.
 
-## What technologies are used for this project?
+## Quality commands
 
-This project is built with:
+```sh
+npm run lint
+npm run build
+npm run preview
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The GitHub Actions workflow at `.github/workflows/build-check.yml` validates lockfile presence, dependency install, lint, production build, and build artifact output.
 
-## How can I deploy this project?
+## Release and deployment docs
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Use these docs before production launch:
 
-## Can I connect a custom domain to my Lovable project?
+- `RELEASE_CHECKLIST.md` — production release checklist
+- `DEPLOYMENT_GUIDE.md` — deployment, env vars, Supabase redirects, rollback, and post-deploy checks
+- `SECURITY.md` — vulnerability reporting and release security rules
+- `.github/pull_request_template.md` — PR release verification checklist
+- `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build/lint failure report template
+- `.github/CODEOWNERS` — owner review rules
 
-Yes, you can!
+## Demo and safety notes
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Several funding, payout, contribution, certificate, moderation, launch, export, and founder actions are intentionally demo-only or locked. Do not enable real payments, payouts, private attachments, or production launch actions until backend services, provider credentials, audit logging, and owner approvals are complete.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## Deployment summary
+
+Recommended production deployment settings:
+
+- install command: `npm ci`
+- build command: `npm run build`
+- output directory: `dist`
+- Node version: `20`
+- source branch: `main`
+
+Before deployment, confirm Supabase production redirect URLs, environment variables, canonical URLs, sitemap, structured data, and domain settings match the final production domain.
+
+## Repository owner
+
+Primary owner/reviewer: `@abdulbasit742`
