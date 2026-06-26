@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { FileCheck2, GitBranch, Link2, Lock, Map, ShieldCheck, Target } from "lucide-react";
+import { GitBranch, Link2, Lock, Map, ShieldCheck, Target } from "lucide-react";
 
 const outcomeMaps = [
   { id: "outcome-1", code: "PLO-1", title: "Engineering / Computing Knowledge", attainment: 84, status: "Mapped", evidence: 5, note: "Problem brief, methodology, and implementation evidence support this outcome." },
