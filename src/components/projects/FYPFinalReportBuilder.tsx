@@ -25,10 +25,11 @@ export function FYPFinalReportBuilder({ sections = FYP_REPORT_SECTIONS }: FYPFin
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-5">
         <MetricCard label="Report Readiness" value={`${completionScore}%`} helper={getFYPReportReadinessLabel(completionScore)} />
         <MetricCard label="Complete" value={complete.toString()} helper="Finished sections" />
         <MetricCard label="In Review" value={review.toString()} helper="Needs feedback" />
+        <MetricCard label="Draft" value={draft.toString()} helper="In progress" danger={draft > 0} />
         <MetricCard label="Not Started" value={notStarted.toString()} helper="Needs drafting" danger={notStarted > 0} />
       </div>
 
