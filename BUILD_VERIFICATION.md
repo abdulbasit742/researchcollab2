@@ -45,6 +45,10 @@ After a successful build, verify:
 - project workspace tabs load
 - release docs links open from README
 
+## Release history check
+
+Review `CHANGELOG.md` before copying build evidence into release notes.
+
 ## Failure notes
 
 If a command fails, open `.github/ISSUE_TEMPLATE/build_lint_failure.yml` and include:
@@ -69,6 +73,7 @@ npm run preview:
 GitHub Actions Build Check:
 Build artifact:
 Manual smoke test:
+Changelog reviewed:
 Known blockers:
 Owner approval:
 ```
