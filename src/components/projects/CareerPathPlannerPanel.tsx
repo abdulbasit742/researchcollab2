@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { CVResumeHelperPanel } from "@/components/projects/CVResumeHelperPanel";
 import { CalendarDays, CheckCircle2, Compass, Flag, Lock, MapPinned, Route, ShieldCheck, Sparkles } from "lucide-react";
 
 const careerRoutes = [
@@ -83,7 +84,6 @@ export function CareerPathPlannerPanel() {
           <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-4 text-sm text-amber-700 dark:text-amber-300">
             Demo career path planner only. Production plans should verify user goals, local opportunity rules, evidence quality, privacy settings, and revision history.
           </div>
-
           <CareerRoutes />
           <div className="grid gap-4 xl:grid-cols-2">
             <CareerMilestones readyMilestones={readyMilestones} />
@@ -91,91 +91,23 @@ export function CareerPathPlannerPanel() {
           </div>
         </CardContent>
       </Card>
+      <CVResumeHelperPanel />
     </div>
   );
 }
 
 function CareerRoutes() {
-  return (
-    <div className="rounded-lg border p-3">
-      <p className="flex items-center gap-2 text-sm font-medium">
-        <MapPinned className="h-4 w-4 text-primary" /> Career Routes
-      </p>
-      <div className="mt-3 grid gap-3 lg:grid-cols-2">
-        {careerRoutes.map((route) => (
-          <div key={route.id} className="rounded-lg border bg-muted/20 p-3 text-sm">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge className={statusClass(route.status)}>{route.status}</Badge>
-              <Badge variant="outline">{route.horizon}</Badge>
-            </div>
-            <p className="mt-2 font-medium">{route.title}</p>
-            <Progress value={route.readiness} className="mt-3 h-2" />
-            <p className="mt-1 text-xs text-muted-foreground">{route.readiness}% route readiness</p>
-            <p className="mt-2 text-muted-foreground">{route.focus}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <div className="rounded-lg border p-3"><p className="flex items-center gap-2 text-sm font-medium"><MapPinned className="h-4 w-4 text-primary" /> Career Routes</p><div className="mt-3 grid gap-3 lg:grid-cols-2">{careerRoutes.map((route) => <div key={route.id} className="rounded-lg border bg-muted/20 p-3 text-sm"><div className="flex flex-wrap items-center gap-2"><Badge className={statusClass(route.status)}>{route.status}</Badge><Badge variant="outline">{route.horizon}</Badge></div><p className="mt-2 font-medium">{route.title}</p><Progress value={route.readiness} className="mt-3 h-2" /><p className="mt-1 text-xs text-muted-foreground">{route.readiness}% route readiness</p><p className="mt-2 text-muted-foreground">{route.focus}</p></div>)}</div></div>;
 }
 
 function CareerMilestones({ readyMilestones }: { readyMilestones: number }) {
-  return (
-    <div className="rounded-lg border p-3">
-      <p className="flex items-center gap-2 text-sm font-medium">
-        <Flag className="h-4 w-4 text-primary" /> Career Milestones
-      </p>
-      <p className="mt-1 text-xs text-muted-foreground">{readyMilestones} milestones are ready to start.</p>
-      <div className="mt-3 space-y-3">
-        {careerMilestones.map((milestone) => (
-          <div key={milestone.label} className="rounded-lg border bg-muted/20 p-3 text-sm">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge className={statusClass(milestone.status)}>{milestone.status}</Badge>
-              <Badge variant="outline" className="gap-1"><CalendarDays className="h-3 w-3" /> {milestone.period}</Badge>
-            </div>
-            <p className="mt-2 font-medium">{milestone.label}</p>
-            <p className="mt-1 text-xs text-muted-foreground">{milestone.helper}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <div className="rounded-lg border p-3"><p className="flex items-center gap-2 text-sm font-medium"><Flag className="h-4 w-4 text-primary" /> Career Milestones</p><p className="mt-1 text-xs text-muted-foreground">{readyMilestones} milestones are ready to start.</p><div className="mt-3 space-y-3">{careerMilestones.map((milestone) => <div key={milestone.label} className="rounded-lg border bg-muted/20 p-3 text-sm"><div className="flex flex-wrap items-center gap-2"><Badge className={statusClass(milestone.status)}>{milestone.status}</Badge><Badge variant="outline" className="gap-1"><CalendarDays className="h-3 w-3" /> {milestone.period}</Badge></div><p className="mt-2 font-medium">{milestone.label}</p><p className="mt-1 text-xs text-muted-foreground">{milestone.helper}</p></div>)}</div></div>;
 }
 
 function DecisionSignals() {
-  return (
-    <div className="rounded-lg border p-3">
-      <p className="flex items-center gap-2 text-sm font-medium">
-        <ShieldCheck className="h-4 w-4 text-primary" /> Decision Signals
-      </p>
-      <div className="mt-3 space-y-3">
-        {decisionSignals.map((signal) => (
-          <div key={signal.label} className="rounded-lg border bg-muted/20 p-3 text-sm">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge className={statusClass(signal.status)}>{signal.status}</Badge>
-              <p className="font-medium">{signal.label}</p>
-            </div>
-            <p className="mt-2 flex items-center gap-2 text-muted-foreground">
-              <CheckCircle2 className="h-4 w-4 text-primary" /> {signal.value}
-            </p>
-          </div>
-        ))}
-      </div>
-      <div className="mt-3 rounded-lg border bg-muted/20 p-3 text-xs text-muted-foreground">
-        <Sparkles className="mr-1 inline h-3 w-3" /> Use this with Skills Gap Analyzer before choosing a route.
-      </div>
-    </div>
-  );
+  return <div className="rounded-lg border p-3"><p className="flex items-center gap-2 text-sm font-medium"><ShieldCheck className="h-4 w-4 text-primary" /> Decision Signals</p><div className="mt-3 space-y-3">{decisionSignals.map((signal) => <div key={signal.label} className="rounded-lg border bg-muted/20 p-3 text-sm"><div className="flex flex-wrap items-center gap-2"><Badge className={statusClass(signal.status)}>{signal.status}</Badge><p className="font-medium">{signal.label}</p></div><p className="mt-2 flex items-center gap-2 text-muted-foreground"><CheckCircle2 className="h-4 w-4 text-primary" /> {signal.value}</p></div>)}</div><div className="mt-3 rounded-lg border bg-muted/20 p-3 text-xs text-muted-foreground"><Sparkles className="mr-1 inline h-3 w-3" /> Use this with Skills Gap Analyzer before choosing a route.</div></div>;
 }
 
 function MetricCard({ label, value, helper, danger = false }: { label: string; value: string; helper: string; danger?: boolean }) {
-  return (
-    <Card className={danger ? "border-amber-500/30" : undefined}>
-      <CardContent className="p-4">
-        <p className="text-xs text-muted-foreground">{label}</p>
-        <p className={`mt-1 text-xl font-bold ${danger ? "text-amber-600" : ""}`}>{value}</p>
-        <p className="text-xs text-muted-foreground">{helper}</p>
-      </CardContent>
-    </Card>
-  );
+  return <Card className={danger ? "border-amber-500/30" : undefined}><CardContent className="p-4"><p className="text-xs text-muted-foreground">{label}</p><p className={`mt-1 text-xl font-bold ${danger ? "text-amber-600" : ""}`}>{value}</p><p className="text-xs text-muted-foreground">{helper}</p></CardContent></Card>;
 }
