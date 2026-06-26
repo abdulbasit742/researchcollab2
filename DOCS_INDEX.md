@@ -42,4 +42,5 @@ This file lists the main ResearchCollab project documents.
 - `MANUAL_SMOKE_TEST.md` — manual route and UI smoke-test guide
 - `.github/workflows/build-check.yml` — build workflow
 - `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build/lint issue template
+- `.github/ISSUE_TEMPLATE/manual_smoke_test.yml` — manual smoke-test template
 - `SECURITY.md` — security policy
