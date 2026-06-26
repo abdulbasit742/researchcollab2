@@ -34,6 +34,8 @@ Before release approval, record:
 
 ## Manual smoke test
 
+Use `MANUAL_SMOKE_TEST.md` for the full route and UI checklist.
+
 After a successful build, verify:
 
 - landing page loads
