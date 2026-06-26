@@ -47,6 +47,7 @@ The GitHub Actions workflow at `.github/workflows/build-check.yml` validates loc
 
 Use these docs before production launch:
 
+- `DOCS_INDEX.md` — quick index of project docs
 - `RELEASE_CHECKLIST.md` — production release checklist
 - `RELEASE_NOTES_TEMPLATE.md` — release notes format for highlights, verification evidence, SEO review, known limitations, and rollback plan
 - `OPERATIONS_RUNBOOK.md` — daily/weekly operations, release-day checks, support triage, escalation, rollback triggers, and follow-up routing
