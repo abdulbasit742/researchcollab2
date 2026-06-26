@@ -5,20 +5,22 @@ This file lists the main ResearchCollab project documents.
 ## Start here
 
 1. `README.md`
-2. `CONTRIBUTING.md`
-3. `RELEASE_CHECKLIST.md`
-4. `RELEASE_NOTES_TEMPLATE.md`
-5. `BUILD_VERIFICATION.md`
-6. `MANUAL_SMOKE_TEST.md`
-7. `SMOKE_TEST_NOTES_TEMPLATE.md`
-8. `DEPLOYMENT_GUIDE.md`
-9. `SEO_DOMAIN_AUDIT.md`
-10. `OPERATIONS_RUNBOOK.md`
-11. `SECURITY.md`
+2. `CHANGELOG.md`
+3. `CONTRIBUTING.md`
+4. `RELEASE_CHECKLIST.md`
+5. `RELEASE_NOTES_TEMPLATE.md`
+6. `BUILD_VERIFICATION.md`
+7. `MANUAL_SMOKE_TEST.md`
+8. `SMOKE_TEST_NOTES_TEMPLATE.md`
+9. `DEPLOYMENT_GUIDE.md`
+10. `SEO_DOMAIN_AUDIT.md`
+11. `OPERATIONS_RUNBOOK.md`
+12. `SECURITY.md`
 
 ## Project
 
 - `README.md` — project overview
+- `CHANGELOG.md` — change history
 - `CONTRIBUTING.md` — contribution guide
 - `.env.example` — frontend environment example
 
