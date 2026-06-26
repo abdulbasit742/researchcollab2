@@ -63,6 +63,7 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 - [ ] Trust/security owner approves safety wording and protected actions.
 - [ ] Support owner approves help and feedback paths.
 - [ ] Review `DOCS_INDEX.md` before final approval.
+- [ ] Update or review `CHANGELOG.md` before final approval.
 - [ ] Release notes are drafted from `RELEASE_NOTES_TEMPLATE.md`.
 - [ ] Rollback owner is assigned.
 
