@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { ProductionLaunchGatePanel } from "@/components/projects/ProductionLaunchGatePanel";
 import { BarChart3, CheckCircle2, Crown, Flag, Gauge, Lock, Rocket, ShieldCheck, Target } from "lucide-react";
 
 const founderMetrics = [
@@ -87,6 +88,7 @@ export function FounderControlRoomPanel() {
           </div>
         </CardContent>
       </Card>
+      <ProductionLaunchGatePanel />
     </div>
   );
 }
