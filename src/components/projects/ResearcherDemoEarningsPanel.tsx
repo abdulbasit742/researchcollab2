@@ -13,7 +13,7 @@ import {
   type ResearcherDemoEarning,
   type ResearcherDemoEarningsSummary,
 } from "@/config/researcherDemoEarnings";
-import { Banknote, CheckCircle2, Clock, Lock, ReceiptText, ShieldCheck, TrendingUp, WalletCards } from "lucide-react";
+import { Clock, Lock, ReceiptText, ShieldCheck, TrendingUp, WalletCards } from "lucide-react";
 
 type ResearcherDemoEarningsPanelProps = {
   summary?: ResearcherDemoEarningsSummary;
