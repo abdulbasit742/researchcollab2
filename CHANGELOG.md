@@ -15,11 +15,14 @@ Use the newest release at the top.
 ### Changed
 
 - Release checklist, release notes, PR template, README, docs index, and CODEOWNERS now point to the current verification docs.
+- PR template, release checklist, release notes template, and build verification guide now include changelog review checks.
+- Build verification evidence now includes a `Changelog reviewed` field.
 
 ### Verification
 
 Before moving items from Unreleased into a dated release, review:
 
+- `CHANGELOG.md`
 - `CONTRIBUTING.md`
 - `BUILD_VERIFICATION.md`
 - `MANUAL_SMOKE_TEST.md`
@@ -49,4 +52,5 @@ Before moving items from Unreleased into a dated release, review:
 - Build:
 - Lint:
 - Manual smoke test:
+- Changelog reviewed:
 ```
