@@ -13,6 +13,7 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 
 ## 2. Route and UI smoke test
 
+- [ ] Review `MANUAL_SMOKE_TEST.md` before route and UI validation.
 - [ ] Visit the public landing routes.
 - [ ] Visit login, signup, onboarding, and access-denied flows.
 - [ ] Visit admin health, diagnostics, release checklist, and smoke-test panels.
