@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { CareerPathPlannerPanel } from "@/components/projects/CareerPathPlannerPanel";
 import { BarChart3, BookOpenCheck, BrainCircuit, FileText, Lock, Route, ShieldCheck, Target, Trophy } from "lucide-react";
 
 const targetTracks = [
@@ -92,112 +93,31 @@ export function SkillsGapAnalyzerPanel() {
           </div>
         </CardContent>
       </Card>
+      <CareerPathPlannerPanel />
     </div>
   );
 }
 
 function TargetTracks() {
-  return (
-    <div className="rounded-lg border p-3">
-      <p className="flex items-center gap-2 text-sm font-medium">
-        <Target className="h-4 w-4 text-primary" /> Target Tracks
-      </p>
-      <div className="mt-3 grid gap-3 lg:grid-cols-2">
-        {targetTracks.map((track) => (
-          <div key={track.id} className="rounded-lg border bg-muted/20 p-3 text-sm">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge className={statusClass(track.status)}>{track.status}</Badge>
-              <Badge variant="outline">{track.gaps} gaps</Badge>
-            </div>
-            <p className="mt-2 font-medium">{track.title}</p>
-            <Progress value={track.match} className="mt-3 h-2" />
-            <p className="mt-1 text-xs text-muted-foreground">{track.match}% match</p>
-            <p className="mt-2 text-muted-foreground">{track.note}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <div className="rounded-lg border p-3"><p className="flex items-center gap-2 text-sm font-medium"><Target className="h-4 w-4 text-primary" /> Target Tracks</p><div className="mt-3 grid gap-3 lg:grid-cols-2">{targetTracks.map((track) => <div key={track.id} className="rounded-lg border bg-muted/20 p-3 text-sm"><div className="flex flex-wrap items-center gap-2"><Badge className={statusClass(track.status)}>{track.status}</Badge><Badge variant="outline">{track.gaps} gaps</Badge></div><p className="mt-2 font-medium">{track.title}</p><Progress value={track.match} className="mt-3 h-2" /><p className="mt-1 text-xs text-muted-foreground">{track.match}% match</p><p className="mt-2 text-muted-foreground">{track.note}</p></div>)}</div></div>;
 }
 
 function SkillGapCards() {
-  return (
-    <div className="rounded-lg border p-3">
-      <p className="flex items-center gap-2 text-sm font-medium">
-        <BrainCircuit className="h-4 w-4 text-primary" /> Skill Gaps
-      </p>
-      <div className="mt-3 grid gap-3 lg:grid-cols-2">
-        {skillGaps.map((skill) => (
-          <div key={skill.label} className="rounded-lg border bg-muted/20 p-3 text-sm">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge className={statusClass(skill.status)}>{skill.status}</Badge>
-              <Badge variant="outline">Current {skill.current}%</Badge>
-              <Badge variant="secondary">Target {skill.target}%</Badge>
-            </div>
-            <p className="mt-2 font-medium">{skill.label}</p>
-            <Progress value={skill.current} className="mt-3 h-2" />
-            <p className="mt-2 text-muted-foreground">{skill.action}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <div className="rounded-lg border p-3"><p className="flex items-center gap-2 text-sm font-medium"><BrainCircuit className="h-4 w-4 text-primary" /> Skill Gaps</p><div className="mt-3 grid gap-3 lg:grid-cols-2">{skillGaps.map((skill) => <div key={skill.label} className="rounded-lg border bg-muted/20 p-3 text-sm"><div className="flex flex-wrap items-center gap-2"><Badge className={statusClass(skill.status)}>{skill.status}</Badge><Badge variant="outline">Current {skill.current}%</Badge><Badge variant="secondary">Target {skill.target}%</Badge></div><p className="mt-2 font-medium">{skill.label}</p><Progress value={skill.current} className="mt-3 h-2" /><p className="mt-2 text-muted-foreground">{skill.action}</p></div>)}</div></div>;
 }
 
 function LearningActions() {
-  return (
-    <div className="rounded-lg border p-3">
-      <p className="flex items-center gap-2 text-sm font-medium">
-        <BookOpenCheck className="h-4 w-4 text-primary" /> Learning Actions
-      </p>
-      <div className="mt-3 space-y-3">
-        {learningActions.map((action) => (
-          <div key={action.label} className="rounded-lg border bg-muted/20 p-3 text-sm">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge className={statusClass(action.status)}>{action.status}</Badge>
-              <Badge variant="outline">{action.priority}</Badge>
-            </div>
-            <p className="mt-2 font-medium">{action.label}</p>
-            <p className="mt-1 text-xs text-muted-foreground">{action.helper}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <div className="rounded-lg border p-3"><p className="flex items-center gap-2 text-sm font-medium"><BookOpenCheck className="h-4 w-4 text-primary" /> Learning Actions</p><div className="mt-3 space-y-3">{learningActions.map((action) => <div key={action.label} className="rounded-lg border bg-muted/20 p-3 text-sm"><div className="flex flex-wrap items-center gap-2"><Badge className={statusClass(action.status)}>{action.status}</Badge><Badge variant="outline">{action.priority}</Badge></div><p className="mt-2 font-medium">{action.label}</p><p className="mt-1 text-xs text-muted-foreground">{action.helper}</p></div>)}</div></div>;
 }
 
 function ReadinessChecklist({ totalActions }: { totalActions: number }) {
-  return (
-    <div className="rounded-lg border p-3">
-      <p className="flex items-center gap-2 text-sm font-medium">
-        <ShieldCheck className="h-4 w-4 text-primary" /> Readiness Checklist
-      </p>
-      <div className="mt-3 grid gap-3 text-sm">
-        <InfoRow icon={Trophy} label="Portfolio proof" value="Connected" />
-        <InfoRow icon={FileText} label="Evidence notes" value="Needs review" />
-        <InfoRow icon={BookOpenCheck} label="Learning actions" value={`${totalActions} planned`} />
-      </div>
-    </div>
-  );
+  return <div className="rounded-lg border p-3"><p className="flex items-center gap-2 text-sm font-medium"><ShieldCheck className="h-4 w-4 text-primary" /> Readiness Checklist</p><div className="mt-3 grid gap-3 text-sm"><InfoRow icon={Trophy} label="Portfolio proof" value="Connected" /><InfoRow icon={FileText} label="Evidence notes" value="Needs review" /><InfoRow icon={BookOpenCheck} label="Learning actions" value={`${totalActions} planned`} /></div></div>;
 }
 
 function InfoRow({ icon: Icon, label, value }: { icon: typeof Trophy; label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between rounded-lg border bg-muted/20 p-3">
-      <span className="flex items-center gap-2"><Icon className="h-4 w-4 text-primary" /> {label}</span>
-      <Badge variant="outline">{value}</Badge>
-    </div>
-  );
+  return <div className="flex items-center justify-between rounded-lg border bg-muted/20 p-3"><span className="flex items-center gap-2"><Icon className="h-4 w-4 text-primary" /> {label}</span><Badge variant="outline">{value}</Badge></div>;
 }
 
 function MetricCard({ label, value, helper, danger = false }: { label: string; value: string; helper: string; danger?: boolean }) {
-  return (
-    <Card className={danger ? "border-amber-500/30" : undefined}>
-      <CardContent className="p-4">
-        <p className="text-xs text-muted-foreground">{label}</p>
-        <p className={`mt-1 text-xl font-bold ${danger ? "text-amber-600" : ""}`}>{value}</p>
-        <p className="text-xs text-muted-foreground">{helper}</p>
-      </CardContent>
-    </Card>
-  );
+  return <Card className={danger ? "border-amber-500/30" : undefined}><CardContent className="p-4"><p className="text-xs text-muted-foreground">{label}</p><p className={`mt-1 text-xl font-bold ${danger ? "text-amber-600" : ""}`}>{value}</p><p className="text-xs text-muted-foreground">{helper}</p></CardContent></Card>;
 }
