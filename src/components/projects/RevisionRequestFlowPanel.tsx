@@ -15,7 +15,7 @@ import {
   type RevisionRequestFlow,
   type RevisionRequestReason,
 } from "@/config/revisionRequestFlow";
-import { AlertTriangle, CheckCircle2, ClipboardCheck, Lock, MessageSquareReply, RotateCcw, ShieldCheck, type LucideIcon } from "lucide-react";
+import { AlertTriangle, ClipboardCheck, Lock, MessageSquareReply, RotateCcw, ShieldCheck } from "lucide-react";
 
 type RevisionRequestFlowPanelProps = {
   flow?: RevisionRequestFlow;
