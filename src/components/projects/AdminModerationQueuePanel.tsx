@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { SecurityDashboardPanel } from "@/components/projects/SecurityDashboardPanel";
 import { ClipboardCheck, Clock3, Eye, FileCheck2, Lock, Scale, ShieldCheck, UserCog, UsersRound } from "lucide-react";
 
 const moderationCases = [
@@ -87,6 +88,7 @@ export function AdminModerationQueuePanel() {
           </div>
         </CardContent>
       </Card>
+      <SecurityDashboardPanel />
     </div>
   );
 }
