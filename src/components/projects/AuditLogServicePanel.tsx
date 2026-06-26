@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { ModerationReportFlowPanel } from "@/components/projects/ModerationReportFlowPanel";
 import { Activity, Archive, CheckCircle2, Clock3, Download, FileClock, Lock, ShieldCheck, UserCog } from "lucide-react";
 
 const auditEvents = [
@@ -88,6 +89,7 @@ export function AuditLogServicePanel() {
           </div>
         </CardContent>
       </Card>
+      <ModerationReportFlowPanel />
     </div>
   );
 }
