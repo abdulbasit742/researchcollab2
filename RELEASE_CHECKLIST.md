@@ -59,6 +59,7 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 - [ ] Engineering approves build/lint status.
 - [ ] Trust/security owner approves safety wording and protected actions.
 - [ ] Support owner approves help and feedback paths.
+- [ ] Release notes are drafted from `RELEASE_NOTES_TEMPLATE.md`.
 - [ ] Rollback owner is assigned.
 
 ## 9. Rollback plan
@@ -76,4 +77,5 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 - [ ] Verify support and feedback pages load.
 - [ ] Verify canonical URL, sitemap, robots, Open Graph, and social preview behavior.
 - [ ] Review monitoring, error logs, deployment logs, Supabase logs, and GitHub issues after launch.
+- [ ] Update release notes with post-launch findings and follow-up issue links.
 - [ ] Create follow-up tickets for any non-blocking issues found.
