@@ -51,6 +51,7 @@ import { ResearchProposalBuilder } from "@/components/projects/ResearchProposalB
 import { RevisionRequestFlowPanel } from "@/components/projects/RevisionRequestFlowPanel";
 import { SavedAIOutputsPanel } from "@/components/projects/SavedAIOutputsPanel";
 import { ServicePackagesPanel } from "@/components/projects/ServicePackagesPanel";
+import { SkillsGapAnalyzerPanel } from "@/components/projects/SkillsGapAnalyzerPanel";
 import { SponsorshipProposalBuilderPanel } from "@/components/projects/SponsorshipProposalBuilderPanel";
 import { StudentImportPlaceholderPanel } from "@/components/projects/StudentImportPlaceholderPanel";
 import { SupervisorAllocationSystemPanel } from "@/components/projects/SupervisorAllocationSystemPanel";
@@ -226,6 +227,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <OpportunitiesHubPanel />
           <InternshipJobSampleListingsPanel />
           <PortfolioBuilderPanel />
+          <SkillsGapAnalyzerPanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -260,6 +262,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Opportunities hub",
                 "Internship/job sample listings",
                 "Portfolio builder",
+                "Skills gap analyzer",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
