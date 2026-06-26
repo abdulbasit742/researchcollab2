@@ -38,6 +38,7 @@ import { MilestoneManager } from "@/components/projects/MilestoneManager";
 import { OpportunitiesHubPanel } from "@/components/projects/OpportunitiesHubPanel";
 import { OrderWorkroomPanel } from "@/components/projects/OrderWorkroomPanel";
 import { OutcomeMappingPanel } from "@/components/projects/OutcomeMappingPanel";
+import { PortfolioBuilderPanel } from "@/components/projects/PortfolioBuilderPanel";
 import { ProjectActivityTimeline } from "@/components/projects/ProjectActivityTimeline";
 import { ProjectHealthScoreCard } from "@/components/projects/ProjectHealthScoreCard";
 import { ProjectRiskAIPanel } from "@/components/projects/ProjectRiskAIPanel";
@@ -224,6 +225,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
           <AccreditationSupportReportPanel />
           <OpportunitiesHubPanel />
           <InternshipJobSampleListingsPanel />
+          <PortfolioBuilderPanel />
           <TeamMemberInvitePanel />
           <ResearcherServiceProfilePanel />
           <CreateServiceFlowPanel />
@@ -257,6 +259,7 @@ export function ProjectWorkspaceTabs({ project = DEMO_PROJECT_WORKSPACE }: Proje
                 "Accreditation-support report placeholder",
                 "Opportunities hub",
                 "Internship/job sample listings",
+                "Portfolio builder",
                 "Researcher service profile",
                 "Create service flow",
                 "Marketplace browse and search",
