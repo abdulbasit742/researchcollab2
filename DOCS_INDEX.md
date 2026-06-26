@@ -2,6 +2,16 @@
 
 This file lists the main ResearchCollab project documents.
 
+## Start here
+
+1. `README.md`
+2. `RELEASE_CHECKLIST.md`
+3. `RELEASE_NOTES_TEMPLATE.md`
+4. `DEPLOYMENT_GUIDE.md`
+5. `SEO_DOMAIN_AUDIT.md`
+6. `OPERATIONS_RUNBOOK.md`
+7. `SECURITY.md`
+
 ## Project
 
 - `README.md` — project overview and setup
