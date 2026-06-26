@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { HelpCenterFAQPanel } from "@/components/projects/HelpCenterFAQPanel";
 import { BookOpenCheck, CheckCircle2, FileText, Globe2, Lock, ShieldCheck, Sparkles, UsersRound } from "lucide-react";
 
 const trustAreas = [
@@ -85,6 +86,7 @@ export function TrustCenterPanel() {
           </div>
         </CardContent>
       </Card>
+      <HelpCenterFAQPanel />
     </div>
   );
 }
