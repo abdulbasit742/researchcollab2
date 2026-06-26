@@ -46,9 +46,12 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 
 ## 7. SEO and domain cleanup
 
+- [ ] Review `SEO_DOMAIN_AUDIT.md` before connecting the final production domain.
 - [ ] Confirm canonical URLs, sitemap entries, structured data, and README deployment notes use the final production domain.
 - [ ] Remove old Lovable or placeholder domains unless intentionally retained for staging.
 - [ ] Confirm robots and metadata match launch expectations.
+- [ ] Confirm Open Graph and social preview URLs/images are production-safe.
+- [ ] Confirm Supabase Auth site URL and redirect URLs match the final approved domain.
 
 ## 8. Release approval
 
@@ -71,5 +74,6 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 - [ ] Open the production site in a private browser window.
 - [ ] Verify auth redirects, dashboard loading, and protected route behavior.
 - [ ] Verify support and feedback pages load.
-- [ ] Review monitoring, error logs, and GitHub issues after launch.
+- [ ] Verify canonical URL, sitemap, robots, Open Graph, and social preview behavior.
+- [ ] Review monitoring, error logs, deployment logs, Supabase logs, and GitHub issues after launch.
 - [ ] Create follow-up tickets for any non-blocking issues found.
