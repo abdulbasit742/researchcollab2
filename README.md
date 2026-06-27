@@ -41,6 +41,7 @@ Use these docs before release:
 - `SUPPORT_NOTES_TEMPLATE.md` — support note format
 - `PROGRESS_150.md` — progress note
 - `PROGRESS_170.md` — support governance note
+- `PROGRESS_180.md` — latest progress note
 - `CHANGELOG.md` — change history
 - `CONTRIBUTING.md` — contribution guide
 - `RELEASE_CHECKLIST.md` — release checklist
