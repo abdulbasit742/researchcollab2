@@ -10,6 +10,7 @@ Use the newest release at the top.
 
 - Contributing guide for local setup, branch naming, PR checks, and change notes.
 - Support guide for setup, document links, help notes, and owner review.
+- Support notes template for recording help and debug notes.
 - Smoke-test notes template for manual route and UI checks.
 - Manual smoke-test issue template for GitHub follow-up reports.
 
@@ -27,6 +28,7 @@ Before moving items from Unreleased into a dated release, review:
 - `CHANGELOG.md`
 - `CONTRIBUTING.md`
 - `SUPPORT.md`
+- `SUPPORT_NOTES_TEMPLATE.md`
 - `BUILD_VERIFICATION.md`
 - `MANUAL_SMOKE_TEST.md`
 - `SMOKE_TEST_NOTES_TEMPLATE.md`
@@ -55,6 +57,7 @@ Before moving items from Unreleased into a dated release, review:
 - Build:
 - Lint:
 - Manual smoke test:
+- Support notes linked:
 - Changelog reviewed:
 - Support guide reviewed:
 ```
