@@ -42,6 +42,7 @@ Use these docs before release:
 - `PROGRESS_150.md` — progress note
 - `PROGRESS_170.md` — support governance note
 - `PROGRESS_180.md` — latest progress note
+- `PROGRESS_190.md` — latest progress note
 - `CHANGELOG.md` — change history
 - `CONTRIBUTING.md` — contribution guide
 - `RELEASE_CHECKLIST.md` — release checklist
@@ -58,12 +59,3 @@ Use these docs before release:
 - `.github/ISSUE_TEMPLATE/manual_smoke_test.yml` — manual smoke-test template
 - `.github/ISSUE_TEMPLATE/support_note.yml` — support note template
 - `.github/ISSUE_TEMPLATE/seo_domain_audit.yml` — SEO/domain template
-- `.github/CODEOWNERS` — owner review rules
-
-## Demo notes
-
-Some launch controls are demo-only until owner approvals are complete.
-
-## Repository owner
-
-Primary owner/reviewer: `@abdulbasit742`
