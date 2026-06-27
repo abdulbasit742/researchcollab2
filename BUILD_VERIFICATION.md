@@ -53,6 +53,8 @@ Review `CHANGELOG.md` before copying build evidence into release notes.
 
 Review `SUPPORT.md` when build or route checks need a clear help path.
 
+Use `SUPPORT_NOTES_TEMPLATE.md` when support or debug notes should be recorded.
+
 ## Failure notes
 
 If a command fails, open `.github/ISSUE_TEMPLATE/build_lint_failure.yml` and include:
@@ -77,6 +79,7 @@ npm run preview:
 GitHub Actions Build Check:
 Build artifact:
 Manual smoke test:
+Support notes linked:
 Changelog reviewed:
 Support guide reviewed:
 Known blockers:
