@@ -9,6 +9,7 @@ Describe what changed and why.
 - [ ] I reviewed `SUPPORT.md` if this PR touches help, feedback, or support paths.
 - [ ] I reviewed `SUPPORT_NOTES_TEMPLATE.md` if this PR needs support or debug notes.
 - [ ] I reviewed `.github/ISSUE_TEMPLATE/support_note.yml` if this PR needs support follow-up.
+- [ ] I reviewed `PROGRESS_170.md` for support governance notes.
 - [ ] I reviewed `BUILD_VERIFICATION.md` for build evidence expectations.
 - [ ] I reviewed `MANUAL_SMOKE_TEST.md` for route and UI smoke-test expectations.
 - [ ] I reviewed the changed files for unused imports, unused variables, and broken exports.
