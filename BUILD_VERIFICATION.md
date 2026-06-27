@@ -53,7 +53,9 @@ Review `CHANGELOG.md` before copying build evidence into release notes.
 
 Review `SUPPORT.md` when build or route checks need a clear help path.
 
-Use `SUPPORT_NOTES_TEMPLATE.md` when support or debug notes should be recorded.
+Use `SUPPORT_NOTES_TEMPLATE.md` when support notes should be recorded.
+
+Use `.github/ISSUE_TEMPLATE/support_note.yml` when a support follow-up issue is needed.
 
 ## Failure notes
 
@@ -80,6 +82,7 @@ GitHub Actions Build Check:
 Build artifact:
 Manual smoke test:
 Support notes linked:
+Support issue linked:
 Changelog reviewed:
 Support guide reviewed:
 Known blockers:
