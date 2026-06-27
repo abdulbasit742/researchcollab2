@@ -7,6 +7,7 @@ ResearchCollab support docs.
 - `README.md` — setup
 - `DOCS_INDEX.md` — docs list
 - `SUPPORT_NOTES_TEMPLATE.md` — note format
+- `PROGRESS_170.md` — support governance note
 - `BUILD_VERIFICATION.md` — commands
 - `MANUAL_SMOKE_TEST.md` — routes
 - `CHANGELOG.md` — history
@@ -20,6 +21,10 @@ Record:
 - actual
 - browser or system
 - screenshot note
+
+## Handoff check
+
+Review `PROGRESS_170.md` before support handoff.
 
 ## Owner
 
