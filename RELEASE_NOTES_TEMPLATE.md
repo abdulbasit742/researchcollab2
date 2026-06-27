@@ -42,7 +42,7 @@ Use this template for ResearchCollab releases.
 
 ## Verification evidence
 
-Review `CHANGELOG.md`, `CONTRIBUTING.md`, `SUPPORT.md`, `SUPPORT_NOTES_TEMPLATE.md`, `BUILD_VERIFICATION.md`, and `MANUAL_SMOKE_TEST.md` before completing this section.
+Review `CHANGELOG.md`, `CONTRIBUTING.md`, `SUPPORT.md`, `SUPPORT_NOTES_TEMPLATE.md`, `.github/ISSUE_TEMPLATE/support_note.yml`, `BUILD_VERIFICATION.md`, and `MANUAL_SMOKE_TEST.md` before completing this section.
 
 ```text
 npm ci: pending / pass / fail
@@ -51,6 +51,7 @@ npm run build: pending / pass / fail
 GitHub Actions Build Check: pending / pass / fail / not run
 Manual smoke test: pending / pass / fail
 Support notes linked: pending / yes / no
+Support note issue linked: pending / yes / no
 ```
 
 ## Known limitations
@@ -77,6 +78,7 @@ Support notes linked: pending / yes / no
 - [ ] Protected routes behave correctly.
 - [ ] Support and feedback paths load after `SUPPORT.md` review.
 - [ ] Use `SUPPORT_NOTES_TEMPLATE.md` for support notes when needed.
+- [ ] Open `.github/ISSUE_TEMPLATE/support_note.yml` for support follow-up when needed.
 - [ ] Canonical URL, sitemap, robots, and social previews are verified.
 - [ ] Deployment provider logs reviewed.
 - [ ] Supabase logs reviewed if backend is enabled.
