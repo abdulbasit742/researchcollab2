@@ -11,6 +11,8 @@ Describe what changed and why.
 - [ ] I reviewed `.github/ISSUE_TEMPLATE/support_note.yml` if needed.
 - [ ] I reviewed `PROGRESS_170.md`.
 - [ ] I reviewed `PROGRESS_180.md`.
+- [ ] I reviewed `DOC_NOTE_195.md`.
+- [ ] I reviewed `DOC_NOTE_200.md`.
 - [ ] I reviewed `BUILD_VERIFICATION.md`.
 - [ ] I reviewed `MANUAL_SMOKE_TEST.md`.
 - [ ] I checked changed files for unused imports, unused variables, and broken exports.
