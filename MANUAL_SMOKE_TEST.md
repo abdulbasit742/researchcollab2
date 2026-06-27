@@ -44,6 +44,7 @@ Use this guide after `npm run build` and `npm run preview` to verify the most im
 
 - [ ] `README.md` release docs list is current.
 - [ ] `DOCS_INDEX.md` includes the current release docs.
+- [ ] `PROGRESS_180.md` is available.
 - [ ] `BUILD_VERIFICATION.md` is available.
 - [ ] `RELEASE_CHECKLIST.md` is available.
 - [ ] `RELEASE_NOTES_TEMPLATE.md` is available.
@@ -60,5 +61,6 @@ Auth routes:
 Dashboard routes:
 Project workspace:
 Release docs links:
+Progress 180:
 Notes:
 ```
