@@ -44,6 +44,7 @@ Use these docs before release:
 - `PROGRESS_180.md` — latest progress note
 - `PROGRESS_190.md` — latest progress note
 - `DOC_NOTE_195.md` — doc note
+- `DOC_NOTE_200.md` — doc note
 - `CHANGELOG.md` — change history
 - `CONTRIBUTING.md` — contribution guide
 - `RELEASE_CHECKLIST.md` — release checklist
