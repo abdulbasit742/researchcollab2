@@ -55,4 +55,5 @@ This file lists the main ResearchCollab project documents.
 - `.github/workflows/build-check.yml` — build workflow
 - `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build issue template
 - `.github/ISSUE_TEMPLATE/manual_smoke_test.yml` — manual test template
+- `.github/ISSUE_TEMPLATE/support_note.yml` — support note template
 - `SECURITY.md` — policy
