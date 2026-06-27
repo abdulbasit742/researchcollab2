@@ -1,10 +1,8 @@
 # Build Verification Guide
 
-Use this guide to record local and GitHub Actions verification for ResearchCollab releases.
+Use this guide to record ResearchCollab build verification.
 
-## Required commands
-
-Run these commands from a clean checkout:
+## Commands
 
 ```sh
 npm ci
@@ -13,65 +11,16 @@ npm run build
 npm run preview
 ```
 
-## Expected result
+## Review docs
 
-- `npm ci` installs dependencies from `package-lock.json`.
-- `npm run lint` completes without release-blocking lint errors.
-- `npm run build` creates the Vite production output in `dist`.
-- `npm run preview` serves the production build for a local smoke test.
+- `CHANGELOG.md`
+- `PROGRESS_170.md`
+- `PROGRESS_180.md`
+- `SUPPORT.md`
+- `SUPPORT_NOTES_TEMPLATE.md`
+- `MANUAL_SMOKE_TEST.md`
 
-## GitHub Actions check
-
-The workflow at `.github/workflows/build-check.yml` should run for push, pull request, and manual workflow dispatch events.
-
-Before release approval, record:
-
-- workflow run link
-- commit SHA
-- branch name
-- job result
-- artifact status
-
-## Manual smoke test
-
-Use `MANUAL_SMOKE_TEST.md` for the full route and UI checklist.
-
-After a successful build, verify:
-
-- landing page loads
-- auth pages load
-- dashboard route loads for the correct role
-- admin health route loads for allowed roles
-- project workspace tabs load
-- release docs links open from README
-
-## Release history check
-
-Review `CHANGELOG.md` before copying build evidence into release notes.
-
-Review `PROGRESS_170.md` before copying support governance evidence.
-
-## Support notes
-
-Review `SUPPORT.md` when build or route checks need a clear help path.
-
-Use `SUPPORT_NOTES_TEMPLATE.md` when support notes should be recorded.
-
-Use `.github/ISSUE_TEMPLATE/support_note.yml` when a support follow-up issue is needed.
-
-## Failure notes
-
-If a command fails, open `.github/ISSUE_TEMPLATE/build_lint_failure.yml` and include:
-
-- command name
-- failing commit SHA
-- short error summary
-- suspected files
-- local environment notes
-
-## Release evidence block
-
-Copy this block into release notes when verifying a release:
+## Evidence block
 
 ```text
 Commit SHA:
@@ -84,10 +33,9 @@ GitHub Actions Build Check:
 Build artifact:
 Manual smoke test:
 Support notes linked:
-Support issue linked:
 Progress 170 reviewed:
+Progress 180 reviewed:
 Changelog reviewed:
 Support guide reviewed:
-Known blockers:
 Owner approval:
 ```
