@@ -7,6 +7,7 @@ Describe what changed and why.
 - [ ] I reviewed `CONTRIBUTING.md` for contribution expectations.
 - [ ] I updated or reviewed `CHANGELOG.md` for release-facing changes.
 - [ ] I reviewed `SUPPORT.md` if this PR touches help, feedback, or support paths.
+- [ ] I reviewed `SUPPORT_NOTES_TEMPLATE.md` if this PR needs support or debug notes.
 - [ ] I reviewed `BUILD_VERIFICATION.md` for build evidence expectations.
 - [ ] I reviewed `MANUAL_SMOKE_TEST.md` for route and UI smoke-test expectations.
 - [ ] I reviewed the changed files for unused imports, unused variables, and broken exports.
