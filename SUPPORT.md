@@ -1,24 +1,25 @@
 # Support Guide
 
-Use this file for ResearchCollab help notes.
+ResearchCollab support docs.
 
 ## Quick links
 
-- `README.md` — setup and overview
-- `DOCS_INDEX.md` — document list
-- `BUILD_VERIFICATION.md` — command checks
-- `MANUAL_SMOKE_TEST.md` — route checks
-- `CHANGELOG.md` — change history
+- `README.md` — setup
+- `DOCS_INDEX.md` — docs list
+- `SUPPORT_NOTES_TEMPLATE.md` — note format
+- `BUILD_VERIFICATION.md` — commands
+- `MANUAL_SMOKE_TEST.md` — routes
+- `CHANGELOG.md` — history
 
-## When asking for help
+## Note details
 
-Share:
+Record:
 
-- what you tried
-- what you expected
-- what happened
-- browser or system details
-- screenshot or short note, if useful
+- tried
+- expected
+- actual
+- browser or system
+- screenshot note
 
 ## Owner
 
