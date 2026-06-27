@@ -16,6 +16,7 @@ npm run preview
 - `CHANGELOG.md`
 - `PROGRESS_170.md`
 - `PROGRESS_180.md`
+- `DOC_NOTE_200.md`
 - `SUPPORT.md`
 - `SUPPORT_NOTES_TEMPLATE.md`
 - `MANUAL_SMOKE_TEST.md`
@@ -35,6 +36,7 @@ Manual smoke test:
 Support notes linked:
 Progress 170 reviewed:
 Progress 180 reviewed:
+Doc note 200 reviewed:
 Changelog reviewed:
 Support guide reviewed:
 Owner approval:
