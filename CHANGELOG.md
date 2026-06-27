@@ -10,17 +10,17 @@ Use the newest release at the top.
 
 - Contributing guide for local setup, branch naming, PR checks, and change notes.
 - Support guide for setup, document links, help notes, and owner review.
-- Support notes template for recording help and debug notes.
-- Support note issue template for GitHub follow-up reports.
-- Smoke-test notes template for manual route and UI checks.
-- Manual smoke-test issue template for GitHub follow-up reports.
+- Support notes template.
+- Support report template.
+- Progress 170 support governance note.
+- Smoke-test notes template.
+- Manual smoke-test report template.
 
 ### Changed
 
 - Release checklist, release notes, PR template, README, docs index, and CODEOWNERS now point to the current verification docs.
-- PR template, release checklist, release notes template, and build verification guide now include changelog review checks.
-- PR template, release checklist, release notes template, and build verification guide now include support guide review checks.
-- Build verification evidence now includes `Changelog reviewed` and `Support guide reviewed` fields.
+- PR template, release checklist, release notes template, and build verification guide include changelog and support review checks.
+- Build verification evidence includes changelog and support review fields.
 
 ### Verification
 
@@ -30,7 +30,7 @@ Before moving items from Unreleased into a dated release, review:
 - `CONTRIBUTING.md`
 - `SUPPORT.md`
 - `SUPPORT_NOTES_TEMPLATE.md`
-- `.github/ISSUE_TEMPLATE/support_note.yml`
+- `PROGRESS_170.md`
 - `BUILD_VERIFICATION.md`
 - `MANUAL_SMOKE_TEST.md`
 - `SMOKE_TEST_NOTES_TEMPLATE.md`
