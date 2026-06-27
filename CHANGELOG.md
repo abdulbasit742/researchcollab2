@@ -13,6 +13,7 @@ Use the newest release at the top.
 - Support notes template.
 - Support report template.
 - Progress 170 support governance note.
+- Progress 180 document rollup note.
 - Smoke-test notes template.
 - Manual smoke-test report template.
 
@@ -31,6 +32,7 @@ Before moving items from Unreleased into a dated release, review:
 - `SUPPORT.md`
 - `SUPPORT_NOTES_TEMPLATE.md`
 - `PROGRESS_170.md`
+- `PROGRESS_180.md`
 - `BUILD_VERIFICATION.md`
 - `MANUAL_SMOKE_TEST.md`
 - `SMOKE_TEST_NOTES_TEMPLATE.md`
