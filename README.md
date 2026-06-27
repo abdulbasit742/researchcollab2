@@ -1,6 +1,6 @@
 # ResearchCollab
 
-ResearchCollab is a Vite + React + TypeScript platform for research collaboration, FYP/project workspaces, AI-assisted research workflows, researcher services, funding demos, trust previews, and launch hardening.
+ResearchCollab is a Vite + React + TypeScript platform for research collaboration, project workspaces, AI-assisted research workflows, researcher services, funding demos, trust previews, and launch hardening.
 
 ## Tech stack
 
@@ -49,6 +49,7 @@ Use these docs before production launch:
 
 - `DOCS_INDEX.md` — quick index of project docs
 - `SUPPORT.md` — support guide
+- `SUPPORT_NOTES_TEMPLATE.md` — support note format
 - `PROGRESS_150.md` — progress 150 note
 - `CHANGELOG.md` — change history
 - `CONTRIBUTING.md` — contribution guide
@@ -69,7 +70,7 @@ Use these docs before production launch:
 
 ## Demo notes
 
-Some funding, payout, contribution, certificate, moderation, launch, export, and founder actions are intentionally demo-only or locked until production services and owner approvals are complete.
+Some launch controls are demo-only until production services and owner approvals are complete.
 
 ## Deployment summary
 
