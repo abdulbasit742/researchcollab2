@@ -8,6 +8,7 @@ ResearchCollab support docs.
 - `DOCS_INDEX.md` — docs list
 - `SUPPORT_NOTES_TEMPLATE.md` — note format
 - `PROGRESS_170.md` — support governance note
+- `PROGRESS_180.md` — latest progress note
 - `BUILD_VERIFICATION.md` — commands
 - `MANUAL_SMOKE_TEST.md` — routes
 - `CHANGELOG.md` — history
@@ -25,6 +26,8 @@ Record:
 ## Handoff check
 
 Review `PROGRESS_170.md` before support handoff.
+
+Review `PROGRESS_180.md` before support handoff.
 
 ## Owner
 
