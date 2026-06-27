@@ -39,6 +39,7 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 - [ ] Review `SUPPORT.md` before approving help and feedback paths.
 - [ ] Review `SUPPORT_NOTES_TEMPLATE.md` when support notes are needed.
 - [ ] Review `.github/ISSUE_TEMPLATE/support_note.yml` when support follow-up is needed.
+- [ ] Review `PROGRESS_170.md` before support handoff.
 - [ ] Confirm Trust Center, Help Center, Feedback Widget, and Security Dashboard wording is clear.
 - [ ] Confirm feedback attachments, contact preferences, abuse reports, moderation queues, and audit logs are privacy-safe placeholders unless backend storage is approved.
 - [ ] Confirm no private user data, service-role keys, access tokens, cookies, or secrets are committed.
@@ -66,6 +67,7 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 - [ ] Trust/security owner approves safety wording and protected actions.
 - [ ] Support owner approves help and feedback paths after `SUPPORT.md` review.
 - [ ] Review `DOCS_INDEX.md` before final approval.
+- [ ] Review `PROGRESS_170.md` before final approval.
 - [ ] Update or review `CHANGELOG.md` before final approval.
 - [ ] Release notes are drafted from `RELEASE_NOTES_TEMPLATE.md`.
 - [ ] Rollback owner is assigned.
