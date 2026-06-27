@@ -49,6 +49,10 @@ After a successful build, verify:
 
 Review `CHANGELOG.md` before copying build evidence into release notes.
 
+## Support notes
+
+Review `SUPPORT.md` when build or route checks need a clear help path.
+
 ## Failure notes
 
 If a command fails, open `.github/ISSUE_TEMPLATE/build_lint_failure.yml` and include:
@@ -74,6 +78,7 @@ GitHub Actions Build Check:
 Build artifact:
 Manual smoke test:
 Changelog reviewed:
+Support guide reviewed:
 Known blockers:
 Owner approval:
 ```
