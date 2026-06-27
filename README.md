@@ -1,6 +1,6 @@
 # ResearchCollab
 
-ResearchCollab is a Vite + React + TypeScript app for research collaboration, project workspaces, support docs, release checks, and launch hardening.
+ResearchCollab is a Vite + React + TypeScript app for research collaboration, project workspaces, support docs, release checks, and launch notes.
 
 ## Tech stack
 
@@ -22,16 +22,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-For local development, fill only browser-safe frontend variables in `.env.local`.
-
-## Required frontend environment variables
-
-```bash
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-anon-key
-```
-
-Optional metadata and public-only keys are documented in `.env.example`.
+Use `.env.example` for local setup values.
 
 ## Quality commands
 
@@ -41,16 +32,15 @@ npm run build
 npm run preview
 ```
 
-The GitHub Actions workflow at `.github/workflows/build-check.yml` validates install, lint, build, and artifact output.
-
 ## Release and deployment docs
 
-Use these docs before production launch:
+Use these docs before release:
 
 - `DOCS_INDEX.md` — quick index
 - `SUPPORT.md` — support guide
 - `SUPPORT_NOTES_TEMPLATE.md` — support note format
 - `PROGRESS_150.md` — progress note
+- `PROGRESS_170.md` — support governance note
 - `CHANGELOG.md` — change history
 - `CONTRIBUTING.md` — contribution guide
 - `RELEASE_CHECKLIST.md` — release checklist
@@ -71,19 +61,7 @@ Use these docs before production launch:
 
 ## Demo notes
 
-Some launch controls are demo-only until production services and owner approvals are complete.
-
-## Deployment summary
-
-Recommended production deployment settings:
-
-- install command: `npm ci`
-- build command: `npm run build`
-- output directory: `dist`
-- Node version: `20`
-- source branch: `main`
-
-Before deployment, confirm Supabase redirects, environment variables, canonical URLs, sitemap, structured data, and domain settings match the final production domain.
+Some launch controls are demo-only until owner approvals are complete.
 
 ## Repository owner
 
