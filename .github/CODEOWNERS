@@ -5,6 +5,7 @@
 .github/ @abdulbasit742
 .github/workflows/ @abdulbasit742
 .github/ISSUE_TEMPLATE/ @abdulbasit742
+.github/ISSUE_TEMPLATE/support_note.yml @abdulbasit742
 .github/pull_request_template.md @abdulbasit742
 .github/CODEOWNERS @abdulbasit742
 
