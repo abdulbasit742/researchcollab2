@@ -38,6 +38,7 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 
 - [ ] Review `SUPPORT.md` before approving help and feedback paths.
 - [ ] Review `SUPPORT_NOTES_TEMPLATE.md` when support notes are needed.
+- [ ] Review `.github/ISSUE_TEMPLATE/support_note.yml` when support follow-up is needed.
 - [ ] Confirm Trust Center, Help Center, Feedback Widget, and Security Dashboard wording is clear.
 - [ ] Confirm feedback attachments, contact preferences, abuse reports, moderation queues, and audit logs are privacy-safe placeholders unless backend storage is approved.
 - [ ] Confirm no private user data, service-role keys, access tokens, cookies, or secrets are committed.
@@ -83,6 +84,7 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 - [ ] Verify auth redirects, dashboard loading, and protected route behavior.
 - [ ] Verify support and feedback pages load.
 - [ ] Use `SUPPORT_NOTES_TEMPLATE.md` for support notes when needed.
+- [ ] Open `.github/ISSUE_TEMPLATE/support_note.yml` for support follow-up when needed.
 - [ ] Verify canonical URL, sitemap, robots, Open Graph, and social preview behavior.
 - [ ] Review monitoring, error logs, deployment logs, Supabase logs, and GitHub issues after launch.
 - [ ] Update release notes with post-launch findings and follow-up issue links.
