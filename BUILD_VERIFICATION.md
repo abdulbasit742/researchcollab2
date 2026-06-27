@@ -49,6 +49,8 @@ After a successful build, verify:
 
 Review `CHANGELOG.md` before copying build evidence into release notes.
 
+Review `PROGRESS_170.md` before copying support governance evidence.
+
 ## Support notes
 
 Review `SUPPORT.md` when build or route checks need a clear help path.
@@ -83,6 +85,7 @@ Build artifact:
 Manual smoke test:
 Support notes linked:
 Support issue linked:
+Progress 170 reviewed:
 Changelog reviewed:
 Support guide reviewed:
 Known blockers:
