@@ -6,23 +6,25 @@ This file lists the main ResearchCollab project documents.
 
 1. `README.md`
 2. `SUPPORT.md`
-3. `PROGRESS_150.md`
-4. `CHANGELOG.md`
-5. `CONTRIBUTING.md`
-6. `RELEASE_CHECKLIST.md`
-7. `RELEASE_NOTES_TEMPLATE.md`
-8. `BUILD_VERIFICATION.md`
-9. `MANUAL_SMOKE_TEST.md`
-10. `SMOKE_TEST_NOTES_TEMPLATE.md`
-11. `DEPLOYMENT_GUIDE.md`
-12. `SEO_DOMAIN_AUDIT.md`
-13. `OPERATIONS_RUNBOOK.md`
-14. `SECURITY.md`
+3. `SUPPORT_NOTES_TEMPLATE.md`
+4. `PROGRESS_150.md`
+5. `CHANGELOG.md`
+6. `CONTRIBUTING.md`
+7. `RELEASE_CHECKLIST.md`
+8. `RELEASE_NOTES_TEMPLATE.md`
+9. `BUILD_VERIFICATION.md`
+10. `MANUAL_SMOKE_TEST.md`
+11. `SMOKE_TEST_NOTES_TEMPLATE.md`
+12. `DEPLOYMENT_GUIDE.md`
+13. `SEO_DOMAIN_AUDIT.md`
+14. `OPERATIONS_RUNBOOK.md`
+15. `SECURITY.md`
 
 ## Project
 
 - `README.md` — project overview
 - `SUPPORT.md` — support guide
+- `SUPPORT_NOTES_TEMPLATE.md` — support note format
 - `PROGRESS_150.md` — progress note
 - `CHANGELOG.md` — change history
 - `CONTRIBUTING.md` — contribution guide
