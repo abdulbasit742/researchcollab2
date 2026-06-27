@@ -42,6 +42,7 @@ Use this checklist before moving ResearchCollab from demo/hardening mode toward 
 - [ ] Review `PROGRESS_170.md` before support handoff.
 - [ ] Review `PROGRESS_180.md` before support handoff.
 - [ ] Review `DOC_NOTE_195.md` before final release notes.
+- [ ] Review `DOC_NOTE_200.md` before final release notes.
 - [ ] Confirm Trust Center, Help Center, Feedback Widget, and Security Dashboard wording is clear.
 - [ ] Confirm feedback attachments, contact preferences, abuse reports, moderation queues, and audit logs are privacy-safe placeholders unless backend storage is approved.
 - [ ] Confirm no private user data, service-role keys, access tokens, cookies, or secrets are committed.
