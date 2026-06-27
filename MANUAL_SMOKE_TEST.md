@@ -1,34 +1,34 @@
 # Manual Smoke Test Guide
 
-Use this guide after `npm run build` and `npm run preview` to verify the most important ResearchCollab routes and UI flows.
+Use this guide after build and preview commands.
 
 ## Before testing
 
-- [ ] Build output is available in `dist`.
+- [ ] Build output exists.
 - [ ] Preview server is running.
-- [ ] Browser cache is cleared or private browsing is used.
-- [ ] Test environment is identified as local, demo, staging, or production.
+- [ ] Browser cache is cleared.
+- [ ] Test environment is named.
 
 ## Public routes
 
 - [ ] Landing page loads.
 - [ ] Main navigation renders.
-- [ ] Public calls to action open the expected page.
-- [ ] Footer links render without broken UI.
+- [ ] Main links open expected pages.
+- [ ] Footer renders.
 
 ## Auth routes
 
 - [ ] Login page loads.
 - [ ] Signup page loads.
-- [ ] Onboarding route loads when expected.
-- [ ] Access denied page appears for blocked access.
+- [ ] Onboarding route loads.
+- [ ] Access denied page loads.
 
 ## Dashboard routes
 
-- [ ] Student dashboard route loads for student access.
-- [ ] Researcher dashboard route loads for researcher access.
-- [ ] Admin health route loads for allowed admin access.
-- [ ] Protected pages do not show dashboard content to logged-out visitors.
+- [ ] Student dashboard loads.
+- [ ] Researcher dashboard loads.
+- [ ] Admin health page loads.
+- [ ] Logged-out view is checked.
 
 ## Project workspace
 
@@ -42,9 +42,12 @@ Use this guide after `npm run build` and `npm run preview` to verify the most im
 
 ## Release docs links
 
-- [ ] `README.md` release docs list is current.
-- [ ] `DOCS_INDEX.md` includes the current release docs.
+- [ ] `README.md` list is current.
+- [ ] `DOCS_INDEX.md` list is current.
 - [ ] `PROGRESS_180.md` is available.
+- [ ] `PROGRESS_190.md` is available.
+- [ ] `DOC_NOTE_195.md` is available.
+- [ ] `DOC_NOTE_200.md` is available.
 - [ ] `BUILD_VERIFICATION.md` is available.
 - [ ] `RELEASE_CHECKLIST.md` is available.
 - [ ] `RELEASE_NOTES_TEMPLATE.md` is available.
@@ -62,5 +65,8 @@ Dashboard routes:
 Project workspace:
 Release docs links:
 Progress 180:
+Progress 190:
+Doc note 195:
+Doc note 200:
 Notes:
 ```
