@@ -42,7 +42,7 @@ Use this template for ResearchCollab releases.
 
 ## Verification evidence
 
-Review `CHANGELOG.md`, `CONTRIBUTING.md`, `SUPPORT.md`, `SUPPORT_NOTES_TEMPLATE.md`, `PROGRESS_170.md`, `PROGRESS_180.md`, `BUILD_VERIFICATION.md`, and `MANUAL_SMOKE_TEST.md` before completing this section.
+Review `CHANGELOG.md`, `CONTRIBUTING.md`, `SUPPORT.md`, `SUPPORT_NOTES_TEMPLATE.md`, `PROGRESS_170.md`, `PROGRESS_180.md`, `DOC_NOTE_195.md`, `BUILD_VERIFICATION.md`, and `MANUAL_SMOKE_TEST.md` before completing this section.
 
 ```text
 npm ci: pending / pass / fail
@@ -53,6 +53,7 @@ Manual smoke test: pending / pass / fail
 Support notes linked: pending / yes / no
 Progress 170 reviewed: pending / yes / no
 Progress 180 reviewed: pending / yes / no
+Doc note 195 reviewed: pending / yes / no
 ```
 
 ## Known limitations
@@ -68,20 +69,15 @@ Progress 180 reviewed: pending / yes / no
 ## Rollback plan
 
 - Last known good commit:
-- Rollback owner:
-- Rollback method:
-- Notes:
+- Rollback command or deployment action:
+- Data or migration rollback notes:
 
 ## Post-launch checks
 
-- [ ] Production site opens in a private browser session.
-- [ ] Auth redirects work.
-- [ ] Protected routes behave correctly.
-- [ ] Support and feedback paths load after `SUPPORT.md` review.
-- [ ] Use `SUPPORT_NOTES_TEMPLATE.md` for support notes when needed.
-- [ ] Review `PROGRESS_170.md` for support handoff notes.
+- [ ] Public landing page loads on the production domain.
+- [ ] Login and signup open correctly.
+- [ ] Key dashboards render for expected roles.
+- [ ] Support and feedback paths are visible.
 - [ ] Review `PROGRESS_180.md` for latest document rollup.
-- [ ] Canonical URL, sitemap, robots, and social previews are verified.
-- [ ] Deployment provider logs reviewed.
-- [ ] Supabase logs reviewed if backend is enabled.
-- [ ] Follow-up notes are created for non-blocking items.
+- [ ] Review `DOC_NOTE_195.md` for latest doc note.
+- [ ] Monitoring, analytics, or manual observation is assigned.
