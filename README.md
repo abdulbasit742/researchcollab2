@@ -1,6 +1,6 @@
 # ResearchCollab
 
-ResearchCollab is a Vite + React + TypeScript platform for research collaboration, project workspaces, AI-assisted research workflows, researcher services, funding demos, trust previews, and launch hardening.
+ResearchCollab is a Vite + React + TypeScript app for research collaboration, project workspaces, support docs, release checks, and launch hardening.
 
 ## Tech stack
 
@@ -41,31 +41,32 @@ npm run build
 npm run preview
 ```
 
-The GitHub Actions workflow at `.github/workflows/build-check.yml` validates dependency install, lint, production build, and build artifact output.
+The GitHub Actions workflow at `.github/workflows/build-check.yml` validates install, lint, build, and artifact output.
 
 ## Release and deployment docs
 
 Use these docs before production launch:
 
-- `DOCS_INDEX.md` — quick index of project docs
+- `DOCS_INDEX.md` — quick index
 - `SUPPORT.md` — support guide
 - `SUPPORT_NOTES_TEMPLATE.md` — support note format
-- `PROGRESS_150.md` — progress 150 note
+- `PROGRESS_150.md` — progress note
 - `CHANGELOG.md` — change history
 - `CONTRIBUTING.md` — contribution guide
-- `RELEASE_CHECKLIST.md` — production release checklist
+- `RELEASE_CHECKLIST.md` — release checklist
 - `RELEASE_NOTES_TEMPLATE.md` — release notes format
 - `BUILD_VERIFICATION.md` — build verification guide
-- `MANUAL_SMOKE_TEST.md` — manual route and UI smoke-test checklist
-- `SMOKE_TEST_NOTES_TEMPLATE.md` — smoke-test notes template
+- `MANUAL_SMOKE_TEST.md` — smoke-test checklist
+- `SMOKE_TEST_NOTES_TEMPLATE.md` — smoke-test notes
 - `OPERATIONS_RUNBOOK.md` — operations checklist
 - `DEPLOYMENT_GUIDE.md` — deployment guide
 - `SEO_DOMAIN_AUDIT.md` — SEO and domain checklist
 - `SECURITY.md` — security policy
-- `.github/pull_request_template.md` — PR release verification checklist
-- `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build/lint report template
-- `.github/ISSUE_TEMPLATE/manual_smoke_test.yml` — manual smoke-test report template
-- `.github/ISSUE_TEMPLATE/seo_domain_audit.yml` — SEO/domain report template
+- `.github/pull_request_template.md` — PR checklist
+- `.github/ISSUE_TEMPLATE/build_lint_failure.yml` — build issue template
+- `.github/ISSUE_TEMPLATE/manual_smoke_test.yml` — manual smoke-test template
+- `.github/ISSUE_TEMPLATE/support_note.yml` — support note template
+- `.github/ISSUE_TEMPLATE/seo_domain_audit.yml` — SEO/domain template
 - `.github/CODEOWNERS` — owner review rules
 
 ## Demo notes
@@ -82,7 +83,7 @@ Recommended production deployment settings:
 - Node version: `20`
 - source branch: `main`
 
-Before deployment, confirm Supabase redirect URLs, environment variables, canonical URLs, sitemap, structured data, and domain settings match the final production domain.
+Before deployment, confirm Supabase redirects, environment variables, canonical URLs, sitemap, structured data, and domain settings match the final production domain.
 
 ## Repository owner
 
