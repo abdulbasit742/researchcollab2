@@ -13,17 +13,18 @@ This file lists the main ResearchCollab project documents.
 7. `PROGRESS_190.md`
 8. `DOC_NOTE_195.md`
 9. `DOC_NOTE_200.md`
-10. `CHANGELOG.md`
-11. `CONTRIBUTING.md`
-12. `RELEASE_CHECKLIST.md`
-13. `RELEASE_NOTES_TEMPLATE.md`
-14. `BUILD_VERIFICATION.md`
-15. `MANUAL_SMOKE_TEST.md`
-16. `SMOKE_TEST_NOTES_TEMPLATE.md`
-17. `DEPLOYMENT_GUIDE.md`
-18. `SEO_DOMAIN_AUDIT.md`
-19. `OPERATIONS_RUNBOOK.md`
-20. `SECURITY.md`
+10. `DOC_NOTE_218.md`
+11. `CHANGELOG.md`
+12. `CONTRIBUTING.md`
+13. `RELEASE_CHECKLIST.md`
+14. `RELEASE_NOTES_TEMPLATE.md`
+15. `BUILD_VERIFICATION.md`
+16. `MANUAL_SMOKE_TEST.md`
+17. `SMOKE_TEST_NOTES_TEMPLATE.md`
+18. `DEPLOYMENT_GUIDE.md`
+19. `SEO_DOMAIN_AUDIT.md`
+20. `OPERATIONS_RUNBOOK.md`
+21. `SECURITY.md`
 
 ## Project
 
@@ -36,6 +37,7 @@ This file lists the main ResearchCollab project documents.
 - `PROGRESS_190.md` — progress note
 - `DOC_NOTE_195.md` — doc note
 - `DOC_NOTE_200.md` — doc note
+- `DOC_NOTE_218.md` — doc note
 - `CHANGELOG.md` — change history
 - `CONTRIBUTING.md` — contribution guide
 - `.env.example` — environment example
